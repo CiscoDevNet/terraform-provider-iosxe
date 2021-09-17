@@ -1,0 +1,56 @@
+{
+    "data": {
+      "ntp-oper-data": {
+        "ntp-status-info": {
+          "refid": {
+            "ip-addr": "",
+            "kod-data": {
+              "kod-type": ""
+            },
+            "ref-clk-src-data": {
+              "ref-clk-src-type": ""
+            },
+            "exception-code": ""
+          },
+          "reftime": "",
+          "sys-poll": "",
+          "stratum": "",
+          "root-delay": "",
+          "root-disp": "",
+          "offset": "",
+          "ntp-associations": {
+            "assoc-id": "",
+            "peer-reach": "",
+            "peer-stratum": "",
+            "refid": {
+              "ip-addr": "",
+              "kod-data": {
+                "kod-type": ""
+              },
+              "ref-clk-src-data": {
+                "ref-clk-src-type": ""
+              },
+              "exception-code": ""
+            },
+            "reftime": "",
+            "last-poll-time": "",
+            "poll": "",
+            "delay": "",
+            "offset": "",
+            "jitter": "",
+            "ntp-address": {
+              "ip-addr": "",
+              "vrf-name": ""
+            },
+            "num-events": "",
+            "last-peer-event": "",
+            "peer-selection-status": "",
+            "peer-authentication-status": "",
+            "serv-type": "",
+            "psw-crypto": ""
+          },
+          "freq-drift-ppm": ""
+        }
+      }
+    }
+  }
