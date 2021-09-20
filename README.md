@@ -11,4 +11,4 @@ The following versions of Cisco IOS XE are supported:
 
 ## Getting Started
 
-- [Provder developemnt](./DEVELOPMENT.md)
+- [Provider development](./DEVELOPMENT.md)
