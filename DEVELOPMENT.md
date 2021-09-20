@@ -38,7 +38,7 @@ $ $GOPATH/bin/terraform-provider-iosxe
 
 Move the generated binary from the build step to the [plugin directory](https://www.terraform.io/docs/cli/config/config-file.html#implied-local-mirror-directories)/registry.terraform.io/CiscoDevNet/iosxe/`<version>`/`<os>_<arch>`. Examples for `<os>_<arch>` are `windows_amd64`, `linux_arm`, `darwin_amd64`, etc. After placing it into your plugins directory, run `terraform init` to initialize it.
 
-*Note:* Make sure `HOST_IOSXE`, `DEVICE_USERNAME_IOSXE`, and `DEVICE_PASSWORD_IOSXE` variables are set.
+*Note:* Make sure `HOST_IOSXE`, `DEVICE_USERNAME_IOSXE`, and `DEVICE_PASSWORD_IOSXE` variables are set. For windows, copy env.example.bat to env.bat and replace dummy values with credentials and then execute the bat file with command promt.
 
 Example
 ```hcl
@@ -68,6 +68,22 @@ resource "iosxe_rest" "vlan_example" {
         }
     )
 }
+```
+
+## Testing the Provider
+
+In order to test the provider, you can run `make test`.
+
+*Note:* Make sure `HOST_IOSXE`, `DEVICE_USERNAME_IOSXE`, and `DEVICE_PASSWORD_IOSXE` variables are set. For windows, copy env.example.bat to env.bat and replace dummy values with credentials and then execute the bat file with command promt.
+
+```sh
+$ make test
+```
+
+In order to run the full suite of Acceptance tests, run `make testacc`.
+
+```sh
+$ make testacc
 ```
 
 ## Debugging and Troubleshooting

@@ -54,7 +54,7 @@ resource "iosxe_rest" "vlan_example_get" {
   path = "/data/Cisco-IOS-XE-native:native/vlan"
 }
 
-resource "iosxe_rest" "vlan_example_get" {
+resource "iosxe_rest" "vlan_example_get_id" {
   method = "GET"
   path = "/data/Cisco-IOS-XE-native:native/vlan/vlan-list=51"
 }
