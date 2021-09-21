@@ -13,7 +13,7 @@ import (
 
 func resourceIOSXERest() *schema.Resource {
 	return &schema.Resource{
-		Description: "",
+		Description: "Manages Cisco IOS XE Generic Resource",
 
 		CreateContext: resourceIOSXERestCreate,
 		ReadContext:   resourceIOSXERestRead,
