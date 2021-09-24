@@ -10,7 +10,7 @@ cloud.google.com/go/internal/version
 # cloud.google.com/go/storage v1.10.0
 ## explicit; go 1.11
 cloud.google.com/go/storage
-# github.com/CiscoDevNet/iosxe-go-client v0.0.0-20210914113848-6168a637ebce
+# github.com/CiscoDevNet/iosxe-go-client v0.0.1
 ## explicit; go 1.17
 github.com/CiscoDevNet/iosxe-go-client/client
 github.com/CiscoDevNet/iosxe-go-client/container

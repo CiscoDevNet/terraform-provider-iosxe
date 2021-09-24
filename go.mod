@@ -3,7 +3,7 @@ module github.com/hashicorp/terraform-provider-iosxe
 go 1.17
 
 require (
-	github.com/CiscoDevNet/iosxe-go-client v0.0.0-20210914113848-6168a637ebce
+	github.com/CiscoDevNet/iosxe-go-client v0.0.1
 	github.com/hashicorp/terraform-plugin-docs v0.5.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.7.1
 )
