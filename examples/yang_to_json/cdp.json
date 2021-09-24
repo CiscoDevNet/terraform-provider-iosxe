@@ -1,0 +1,55 @@
+{
+    "data": {
+      "cdp-neighbor-details": {
+        "cdp-neighbor-detail": {
+          "device-id": "",
+          "device-name": "",
+          "local-intf-name": "",
+          "port-id": "",
+          "capability": "",
+          "platform-name": "",
+          "version": "",
+          "duplex": "",
+          "adv-version": "",
+          "hello-message": {
+            "oui": "",
+            "protocol-id": "",
+            "payload-value": "",
+            "payload-len": ""
+          },
+          "vty-mgmt-domain": "",
+          "native-vlan": "",
+          "vvid-tag": "",
+          "vvid": "",
+          "power": "",
+          "power-request": {
+            "power-request-id": "",
+            "power-man-id": "",
+            "power-request-level": ""
+          },
+          "power-available": {
+            "power-request-id": "",
+            "power-man-id": "",
+            "power-available": "",
+            "power-man-level": ""
+          },
+          "unidirectional-mode": "",
+          "spare-pair": {
+            "spare-pair-poe": "",
+            "spare-pair-detection-required": "",
+            "spare-pair-pd-config": "",
+            "spare-pair-pse-operational": ""
+          },
+          "mgmt-address": "",
+          "ip-address": "",
+          "ipv6-address": "",
+          "clns-address": "",
+          "decnet-addr": "",
+          "novell-addr": "",
+          "second-port-status": "",
+          "table-id": "",
+          "neighbor-identifier": ""
+        }
+      }
+    }
+  }

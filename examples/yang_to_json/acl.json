@@ -1,0 +1,169 @@
+{
+    "data": {
+      "access-lists": {
+        "access-list": {
+          "access-control-list-name": "",
+          "access-list-entries": {
+            "access-list-entry": {
+              "rule-name": "",
+              "access-list-entries-oper-data": {
+                "match-counter": ""
+              },
+              "access-list-entries-rule-data": {
+                "v4-standard-ace-rule": {
+                  "action": "",
+                  "source-address": {
+                    "address-wildcard": {
+                      "address": "",
+                      "wildcard": ""
+                    },
+                    "host": "",
+                    "object-group": "",
+                    "fqdn-group": "",
+                    "any": "",
+                    "geo-group": ""
+                  }
+                },
+                "v4-extended-ace-rule": {
+                  "action": "",
+                  "protocol": {
+                    "any": "",
+                    "number": "",
+                    "object-group": ""
+                  },
+                  "source-address": {
+                    "address-wildcard": {
+                      "address": "",
+                      "wildcard": ""
+                    },
+                    "host": "",
+                    "object-group": "",
+                    "fqdn-group": "",
+                    "any": "",
+                    "geo-group": ""
+                  },
+                  "source-port": {
+                    "any": "",
+                    "port-data": {
+                      "port-operator": "",
+                      "ports": ""
+                    }
+                  },
+                  "destination-address": {
+                    "address-wildcard": {
+                      "address": "",
+                      "wildcard": ""
+                    },
+                    "host": "",
+                    "object-group": "",
+                    "fqdn-group": "",
+                    "any": "",
+                    "geo-group": ""
+                  },
+                  "destination-port": {
+                    "any": "",
+                    "port-data": {
+                      "port-operator": "",
+                      "ports": ""
+                    }
+                  }
+                },
+                "v4-role-based-ace-rule": {
+                  "action": "",
+                  "protocol": {
+                    "any": "",
+                    "number": "",
+                    "object-group": ""
+                  },
+                  "source-port": {
+                    "any": "",
+                    "port-data": {
+                      "port-operator": "",
+                      "ports": ""
+                    }
+                  },
+                  "destination-port": {
+                    "any": "",
+                    "port-data": {
+                      "port-operator": "",
+                      "ports": ""
+                    }
+                  }
+                },
+                "v6-ace-rule": {
+                  "action": "",
+                  "protocol": {
+                    "any": "",
+                    "number": "",
+                    "object-group": ""
+                  },
+                  "source-address": {
+                    "address-prefix": "",
+                    "address-wildcard": {
+                      "address": "",
+                      "wildcard": ""
+                    },
+                    "host": "",
+                    "object-group": "",
+                    "fqdn-group": "",
+                    "any": "",
+                    "geo-group": ""
+                  },
+                  "source-port": {
+                    "any": "",
+                    "port-data": {
+                      "port-operator": "",
+                      "ports": ""
+                    }
+                  },
+                  "destination-address": {
+                    "address-prefix": "",
+                    "address-wildcard": {
+                      "address": "",
+                      "wildcard": ""
+                    },
+                    "host": "",
+                    "object-group": "",
+                    "fqdn-group": "",
+                    "any": "",
+                    "geo-group": ""
+                  },
+                  "destination-port": {
+                    "any": "",
+                    "port-data": {
+                      "port-operator": "",
+                      "ports": ""
+                    }
+                  }
+                },
+                "v6-role-based-ace-rule": {
+                  "action": "",
+                  "protocol": {
+                    "any": "",
+                    "number": "",
+                    "object-group": ""
+                  },
+                  "source-port": {
+                    "any": "",
+                    "port-data": {
+                      "port-operator": "",
+                      "ports": ""
+                    }
+                  },
+                  "destination-port": {
+                    "any": "",
+                    "port-data": {
+                      "port-operator": "",
+                      "ports": ""
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "access-control-list-type": "",
+          "access-control-list-type-flags": ""
+        }
+      }
+    }
+  }

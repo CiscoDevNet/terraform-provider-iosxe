@@ -1,0 +1,27 @@
+{
+    "data": {
+      "hsrp-oper-data": {
+        "hsrp-group-info": {
+          "group-id": "",
+          "if-name": "",
+          "priority": "",
+          "preempt": "",
+          "state": "",
+          "active-ip": "",
+          "standby-ip": "",
+          "virtual-ip": ""
+        },
+        "hsrp-neighbor": {
+          "if-name": "",
+          "neighbor": {
+            "address": "",
+            "active-list": "",
+            "standby-list": "",
+            "passive": "",
+            "passive-timer-remaining": "",
+            "bfd-enabled": ""
+          }
+        }
+      }
+    }
+  }
