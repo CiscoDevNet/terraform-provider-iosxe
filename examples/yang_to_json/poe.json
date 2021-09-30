@@ -5,7 +5,7 @@
   "inline": {
     "consumption": 0,
     "never": "string",
-    "auto": {
+    "auto-choice": {
       "max": 0
     },
     "four-pair": {
@@ -25,7 +25,7 @@
       "no-xtalk-wa": "string",
       "priority": "high"
     },
-    "static": {
+    "static-choice": {
       "max": 0
     }
   }
