@@ -1,45 +1,45 @@
 {
-    "data": {
-      "nat-data": {
-        "ip-nat-statistics": {
-          "initialized": "",
-          "entries": "",
-          "statics": "",
-          "statics-sorted": "",
-          "flows": "",
-          "insides": "",
-          "outsides": "",
-          "entry-timeouts": "",
-          "hits": "",
-          "misses": "",
-          "interrupt-switched": "",
-          "packets-punted": "",
-          "frag-pak-count": "",
-          "pool-stats-drop": "",
-          "mapping-stats-drop": "",
-          "portlist-req-fail": "",
-          "ipalias-add-fail": "",
-          "limit-entry-add-fail": "",
-          "in2out-drops": "",
-          "out2in-drops": "",
-          "mib-addr-binds": "",
-          "mib-addport-binds": ""
-        },
-        "ip-nat-translation": {
-          "inside-local-addr": "",
-          "outside-local-addr": "",
-          "inside-local-port": "",
-          "outside-local-port": "",
-          "vrfid": "",
-          "protocol": "",
-          "inside-global-addr": "",
-          "outside-global-addr": "",
-          "inside-global-port": "",
-          "outside-global-port": "",
-          "flags": "",
-          "application-type": "",
-          "vrf-name": ""
-        }
+  "data": {
+    "nat-data": {
+      "ip-nat-statistics": {
+        "initialized": "",
+        "entries": "",
+        "statics": "",
+        "statics-sorted": "",
+        "flows": "",
+        "insides": "",
+        "outsides": "",
+        "entry-timeouts": "",
+        "hits": "",
+        "misses": "",
+        "interrupt-switched": "",
+        "packets-punted": "",
+        "frag-pak-count": "",
+        "pool-stats-drop": "",
+        "mapping-stats-drop": "",
+        "portlist-req-fail": "",
+        "ipalias-add-fail": "",
+        "limit-entry-add-fail": "",
+        "in2out-drops": "",
+        "out2in-drops": "",
+        "mib-addr-binds": "",
+        "mib-addport-binds": ""
+      },
+      "ip-nat-translation": {
+        "inside-local-addr": "",
+        "outside-local-addr": "",
+        "inside-local-port": "",
+        "outside-local-port": "",
+        "vrfid": "",
+        "protocol": "",
+        "inside-global-addr": "",
+        "outside-global-addr": "",
+        "inside-global-port": "",
+        "outside-global-port": "",
+        "flags": "",
+        "application-type": "",
+        "vrf-name": ""
       }
     }
   }
+}

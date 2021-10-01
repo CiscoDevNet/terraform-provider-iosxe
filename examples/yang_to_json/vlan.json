@@ -1,19 +1,19 @@
 {
-    "data": {
-      "vlans": {
-        "vlan": {
-          "id": "",
-          "name": "",
-          "status": "",
-          "ports": {
-            "interface": "",
-            "subinterface": ""
-          },
-          "vlan-interfaces": {
-            "interface": "",
-            "subinterface": ""
-          }
+  "data": {
+    "vlans": {
+      "vlan": {
+        "id": "",
+        "name": "",
+        "status": "",
+        "ports": {
+          "interface": "",
+          "subinterface": ""
+        },
+        "vlan-interfaces": {
+          "interface": "",
+          "subinterface": ""
         }
       }
     }
   }
+}

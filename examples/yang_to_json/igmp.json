@@ -1,0 +1,170 @@
+{
+  "vrf": {
+    "forwarding": "string",
+    "name": "string",
+    "immediate-leave": {
+      "group-list": "string"
+    },
+    "limit": 0,
+    "query": {
+      "disperse": true
+    },
+    "ssm-map": {
+      "enable": "string",
+      "query": {
+        "dns": true
+      },
+      "static": {
+        "srcaddress": "string",
+        "aclname": "string"
+      }
+    }
+  },
+  "snooping-conf": {
+    "snooping": true
+  },
+  "snooping": {
+    "check": {
+      "rtr-alert-option": "string",
+      "ttl": "string"
+    },
+    "explicit-tracking": {
+      "limit": 0
+    },
+    "l2-entry-limit": 0,
+    "last-member-query-count": 0,
+    "last-member-query-interval": 0,
+    "querier-conf": {
+      "querier": "string"
+    },
+    "querier-entry": {
+      "address": "string",
+      "max-response-time": 0,
+      "query-interval": 0,
+      "tcn": {
+        "query": {
+          "count": 0,
+          "interval": 0,
+          "solicit": "string",
+          "disperse": true,
+          "dns": true
+        },
+        "flood": {
+          "query": {
+            "count": 0
+          }
+        }
+      },
+      "timer": {
+        "expiry": 0
+      },
+      "version": 0
+    },
+    "querier": {
+      "address": "string",
+      "max-response-time": 0,
+      "query-interval": 0,
+      "tcn": {
+        "query": {
+          "count": 0,
+          "interval": 0
+        }
+      },
+      "timer": {
+        "expiry": 0
+      },
+      "version": 0
+    },
+    "report-suppression": "string",
+    "robustness-variable": 0,
+    "tcn": {
+      "flood": {
+        "query": {
+          "count": 0
+        }
+      },
+      "query": {
+        "solicit": "string"
+      }
+    },
+    "vlan": {
+      "range": {
+        "range": 0,
+        "immediate-leave": "string",
+        "last-member-query-count": 0,
+        "last-member-query-interval": 0,
+        "mrouter": {
+          "interface": "string",
+          "learn": {
+            "cgmp": "string",
+            "pim-dvmrp": "string"
+          }
+        },
+        "querier": {
+          "address": "string",
+          "max-response-time": 0,
+          "query-interval": 0,
+          "tcn": {
+            "query": {
+              "count": 0,
+              "interval": 0
+            }
+          },
+          "timer": {
+            "expiry": 0
+          },
+          "version": 0
+        },
+        "robustness-variable": 0,
+        "static": {
+          "ipv4": {
+            "ipv4": "string",
+            "interface": "string"
+          },
+          "acl": "string",
+          "source-ip": "string",
+          "srcaddress": "string",
+          "aclname": "string"
+        },
+        "low_ip": "string",
+        "high_ip": "string"
+      }
+    }
+  },
+  "query": {
+    "count": 0,
+    "interval": 0,
+    "solicit": "string",
+    "disperse": true,
+    "dns": true
+  },
+  "immediate-leave": {
+    "group-list": "string"
+  },
+  "limit": 0,
+  "ssm-map": {
+    "enable": "string",
+    "query": {
+      "dns": true
+    },
+    "static-list": {
+      "source-ip": "string",
+      "acl": "string"
+    },
+    "static": {
+      "acl": "string",
+      "source-ip": "string",
+      "srcaddress": "string",
+      "aclname": "string"
+    }
+  },
+  "filter": true,
+  "profile": {
+    "id": 0,
+    "action": "deny",
+    "range": {
+      "low_ip": "string",
+      "high_ip": "string"
+    }
+  }
+}

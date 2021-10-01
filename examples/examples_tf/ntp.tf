@@ -1,5 +1,5 @@
 
-# Adding NTP information
+# Adding NTP configuration
 resource "iosxe_rest" "ntp_example_post" {
   method = "POST"
   path = "/data/Cisco-IOS-XE-native:native/ntp"
@@ -28,7 +28,7 @@ resource "iosxe_rest" "ntp_example_post" {
   )
 }
 
-# Updating the available NTP information
+# Updating the available NTP configuration
 resource "iosxe_rest" "ntp_example_put" {
   method = "PUT"
   path = "/data/Cisco-IOS-XE-native:native/ntp"
@@ -78,7 +78,7 @@ resource "iosxe_rest" "ntp_example_put" {
   )
 }
 
-# Adding/Updating the NTP information
+# Adding/Updating the NTP configuration
 resource "iosxe_rest" "ntp_example_patch" {
   method = "PATCH"
   path = "/data/Cisco-IOS-XE-native:native/ntp"
@@ -123,13 +123,13 @@ resource "iosxe_rest" "ntp_example_patch" {
   )
 }
 
-# Fetch the available NTP information
+# Fetch the available NTP configuration
 resource "iosxe_rest" "ntp_example_get" {
   method = "GET"
   path = "/data/Cisco-IOS-XE-native:native/ntp"
 }
 
-# Deletes all the NTP configuration
+# Removes all the NTP configuration
 resource "iosxe_rest" "ntp_example_delete" {
   method = "DELETE"
   path = "/data/Cisco-IOS-XE-native:native/ntp"

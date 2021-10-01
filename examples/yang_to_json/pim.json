@@ -1,50 +1,50 @@
 {
-    "data": {
-      "pim-oper-data": {
-        "pim-rp-mapping-entry": {
-          "vrf": "",
-          "if-name": "",
-          "pim-rp-mapping-caps": "",
-          "auto-rp-mapping-count": "",
-          "auto-rp-mapping-limit": "",
-          "bsr-mapping-count": "",
-          "bsr-mapping-limit": "",
-          "pim-rp-mapping-state": {
-            "acl": "",
-            "state": {
-              "rp": "",
-              "info-source": "",
-              "pim-per-rp-caps": "",
-              "rp-uptime": "",
-              "will-expire": "",
-              "expires": "",
-              "candidate-rp-priority": "",
-              "holdtime": ""
-            }
+  "data": {
+    "pim-oper-data": {
+      "pim-rp-mapping-entry": {
+        "vrf": "",
+        "if-name": "",
+        "pim-rp-mapping-caps": "",
+        "auto-rp-mapping-count": "",
+        "auto-rp-mapping-limit": "",
+        "bsr-mapping-count": "",
+        "bsr-mapping-limit": "",
+        "pim-rp-mapping-state": {
+          "acl": "",
+          "state": {
+            "rp": "",
+            "info-source": "",
+            "pim-per-rp-caps": "",
+            "rp-uptime": "",
+            "will-expire": "",
+            "expires": "",
+            "candidate-rp-priority": "",
+            "holdtime": ""
           }
-        },
-        "pim-neighbor-entry": {
-          "af": "",
-          "vrf": "",
-          "if-name": "",
-          "pim-neighbor-state": {
-            "pim-neighbor-address": "",
-            "state": {
-              "version": "",
-              "dr-priority": "",
-              "gen-id": "",
-              "neighbor-uptime": "",
-              "expires": "",
-              "pim-neighbor-caps": "",
-              "pim-dr": "",
-              "pim-if-addr": "",
-              "neighbor-count": "",
-              "query-interval": "",
-              "jp-interval": "",
-              "pim-mode": ""
-            }
+        }
+      },
+      "pim-neighbor-entry": {
+        "af": "",
+        "vrf": "",
+        "if-name": "",
+        "pim-neighbor-state": {
+          "pim-neighbor-address": "",
+          "state": {
+            "version": "",
+            "dr-priority": "",
+            "gen-id": "",
+            "neighbor-uptime": "",
+            "expires": "",
+            "pim-neighbor-caps": "",
+            "pim-dr": "",
+            "pim-if-addr": "",
+            "neighbor-count": "",
+            "query-interval": "",
+            "jp-interval": "",
+            "pim-mode": ""
           }
         }
       }
     }
   }
+}

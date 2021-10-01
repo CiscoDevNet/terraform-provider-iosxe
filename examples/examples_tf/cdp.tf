@@ -1,5 +1,5 @@
 
-# Adding CDP information
+# Adding CDP configuration
 resource "iosxe_rest" "cdp_example_post" {
   method = "POST"
   path = "/data/Cisco-IOS-XE-native:native/cdp"
@@ -23,7 +23,7 @@ resource "iosxe_rest" "cdp_example_post" {
   )
 }
 
-# Updating the available CDP information
+# Updating the available CDP configuration
 resource "iosxe_rest" "cdp_example_put" {
   method = "PUT"
   path = "/data/Cisco-IOS-XE-native:native/cdp"
@@ -49,7 +49,7 @@ resource "iosxe_rest" "cdp_example_put" {
   )
 }
 
-# Adding/Updating the CDP information
+# Adding/Updating the CDP configuration
 resource "iosxe_rest" "cdp_example_patch" {
   method = "PATCH"
   path = "/data/Cisco-IOS-XE-native:native/cdp"
@@ -83,13 +83,13 @@ resource "iosxe_rest" "cdp_example_patch" {
   )
 }
 
-# Fetch the available CDP information
+# Fetch the available CDP configuration
 resource "iosxe_rest" "cdp_example_get" {
   method = "GET"
   path = "/data/Cisco-IOS-XE-native:native/cdp"
 }
 
-# Deletes all the CDP configuration
+# Removes all the CDP configuration
 resource "iosxe_rest" "cdp_example_delete" {
   method = "DELETE"
   path = "/data/Cisco-IOS-XE-native:native/cdp"

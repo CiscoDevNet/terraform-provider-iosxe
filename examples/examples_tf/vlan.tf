@@ -1,3 +1,4 @@
+# Adding VLAN configuration
 resource "iosxe_rest" "vlan_example_post" {
   method = "POST"
   path = "/data/Cisco-IOS-XE-native:native/vlan"
@@ -11,6 +12,7 @@ resource "iosxe_rest" "vlan_example_post" {
   )
 }
 
+# Updating the available VLAN configuration
 resource "iosxe_rest" "vlan_example_put" {
   method = "PUT"
   path = "/data/Cisco-IOS-XE-native:native/vlan/vlan-list=51"
@@ -24,6 +26,7 @@ resource "iosxe_rest" "vlan_example_put" {
   )
 }
 
+# Adding/Updating the available VLAN configuration
 resource "iosxe_rest" "vlan_example_patch" {
   method = "PATCH"
   path = "/data/Cisco-IOS-XE-native:native/vlan"
@@ -49,16 +52,19 @@ resource "iosxe_rest" "vlan_example_patch" {
   )
 }
 
+# Fetch the available VLAN configuration
 resource "iosxe_rest" "vlan_example_get" {
   method = "GET"
   path = "/data/Cisco-IOS-XE-native:native/vlan"
 }
 
+# Fetch the available VLAN configuration by id
 resource "iosxe_rest" "vlan_example_get_id" {
   method = "GET"
   path = "/data/Cisco-IOS-XE-native:native/vlan/vlan-list=51"
 }
 
+# Remove the available VLAN configuration by id
 resource "iosxe_rest" "vlan_example_delete" {
   method = "DELETE"
   path = "/data/Cisco-IOS-XE-native:native/vlan/vlan-list=51"

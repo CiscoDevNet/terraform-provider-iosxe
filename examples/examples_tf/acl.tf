@@ -354,7 +354,7 @@ resource "iosxe_rest" "acl_example_get_id" {
   path = "/data/Cisco-IOS-XE-native:native/ip/access-list/extended=102"
 }
 
-# Delete the extended ACL with name 102
+# Remove the extended ACL with name 102
 resource "iosxe_rest" "acl_example_delete" {
   method = "DELETE"
   path = "/data/Cisco-IOS-XE-native:native/ip/access-list/extended=102"
