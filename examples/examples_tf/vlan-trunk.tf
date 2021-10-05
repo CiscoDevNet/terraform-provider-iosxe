@@ -1,7 +1,7 @@
 # Adding VLAN-TRUNK configuration
 #
 # POST method is not available for VLAN-TRUNK
-# resource "iosxe_rest" "vlan_trunk_trunk_example_post" {
+# resource "iosxe_rest" "vlan_trunk_example_post" {
 #   method = "POST"
 #   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1{{/}}0{{/}}11/switchport-config"
 #   payload = jsonencode(
@@ -9,7 +9,7 @@
 # }
 
 # Updating the available VLAN-TRUNK configuration for interface Gi1/0/11
-resource "iosxe_rest" "vlan_trunk_trunk_example_put" {
+resource "iosxe_rest" "vlan_trunk_example_put" {
   method = "PUT"
   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1{{/}}0{{/}}11/switchport-config"
   payload = jsonencode(
@@ -35,7 +35,7 @@ resource "iosxe_rest" "vlan_trunk_trunk_example_put" {
 }
 
 # Adding/Updating the available VLAN-TRUNK configuration for interface Gi1/0/11
-resource "iosxe_rest" "vlan_trunk_trunk_example_patch" {
+resource "iosxe_rest" "vlan_trunk_example_patch" {
   method = "PATCH"
   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
   payload = jsonencode(
@@ -64,13 +64,13 @@ resource "iosxe_rest" "vlan_trunk_trunk_example_patch" {
 }
 
 # Fetch the available VLAN-TRUNK configuration for interface Gi1/0/11
-resource "iosxe_rest" "vlan_trunk_trunk_example_get" {
+resource "iosxe_rest" "vlan_trunk_example_get" {
   method = "GET"
   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1{{/}}0{{/}}11"
 }
 
 # Remove the available VLAN-TRUNK configuration for interface Gi1/0/11
-resource "iosxe_rest" "vlan_example_delete" {
+resource "iosxe_rest" "vlan_trunk_example_delete" {
   method = "DELETE"
   path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1{{/}}0{{/}}11/switchport-config"
 }

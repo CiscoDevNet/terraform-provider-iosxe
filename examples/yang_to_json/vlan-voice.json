@@ -1,0 +1,11 @@
+{
+  "vlan": {
+    "vlan": "string",
+    "name": "string"
+  },
+  "detect": {
+    "cisco-phone": {
+      "full-duplex": "string"
+    }
+  }
+}
