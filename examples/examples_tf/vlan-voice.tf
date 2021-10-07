@@ -3,7 +3,7 @@
 # POST method is not available for VLAN-VOICE
 # resource "iosxe_rest" "vlan_voice_example_post" {
 #   method = "POST"
-#   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1{{/}}0{{/}}12/switchport-config"
+#   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/switchport-config"
 #   payload = jsonencode(
 #   )
 # }
@@ -11,7 +11,7 @@
 # Updating the available VLAN-VOICE configuration for interface Gi1/0/12
 resource "iosxe_rest" "vlan_voice_example_put" {
   method = "PUT"
-  path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1{{/}}0{{/}}12/switchport-config"
+  path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/switchport-config"
   payload = jsonencode(
     {
         "Cisco-IOS-XE-native:switchport-config": {
@@ -53,11 +53,11 @@ resource "iosxe_rest" "vlan_voice_example_patch" {
 # Fetch the available VLAN-VOICE configuration for interface Gi1/0/12
 resource "iosxe_rest" "vlan_voice_example_get" {
   method = "GET"
-  path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1{{/}}0{{/}}12"
+  path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12"
 }
 
 # Remove the available VLAN-VOICE configuration for interface Gi1/0/12
 resource "iosxe_rest" "vlan_voice_example_delete" {
   method = "DELETE"
-  path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1{{/}}0{{/}}12/switchport-config"
+  path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/switchport-config"
 }
