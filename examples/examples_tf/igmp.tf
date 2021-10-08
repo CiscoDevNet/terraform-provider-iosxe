@@ -66,18 +66,18 @@ resource "iosxe_rest" "igmp_example_patch" {
 # Fetch the available IGMP configuration
 resource "iosxe_rest" "igmp_example_get" {
   method = "GET"
-  path   = "data/Cisco-IOS-XE-native:native/ip/igmp"
+  path   = "/data/Cisco-IOS-XE-native:native/ip/igmp"
 }
 
 # Fetch the available IGMP configuration by id
 resource "iosxe_rest" "igmp_example_get" {
   method = "GET"
-  path   = "data/Cisco-IOS-XE-native:native/ip/igmp/profile=3"
+  path   = "/data/Cisco-IOS-XE-native:native/ip/igmp/profile=3"
 }
 
 
 # Remove IGMP profile configuration
 resource "iosxe_rest" "igmp_example_delete" {
   method = "DELETE"
-  path   = "data/Cisco-IOS-XE-native:native/ip/igmp/profile=3"
+  path   = "/data/Cisco-IOS-XE-native:native/ip/igmp/profile=3"
 }
