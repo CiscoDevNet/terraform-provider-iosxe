@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/CiscoDevNet/iosxe-go-client/client"
 	"github.com/CiscoDevNet/iosxe-go-client/models"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -13,7 +14,7 @@ import (
 
 func resourceIOSXERest() *schema.Resource {
 	return &schema.Resource{
-		Description: "Manages Cisco IOS XE Generic Resource",
+		Description: "Manages Cisco IOS XE Generic Rest Resource",
 
 		CreateContext: resourceIOSXERestCreate,
 		ReadContext:   resourceIOSXERestRead,
@@ -25,6 +26,9 @@ func resourceIOSXERest() *schema.Resource {
 				Type:        schema.TypeString,
 				Required:    true,
 				Description: `The endopoint for the feature. E.g.: "/data/Cisco-IOS-XE-native:native"`,
+				ValidateDiagFunc: validation.ToDiagFunc(
+					validation.StringIsNotWhiteSpace,
+				),
 			},
 			"method": {
 				Type:     schema.TypeString,
@@ -70,85 +74,34 @@ func resourceIOSXERestCreate(ctx context.Context, d *schema.ResourceData, meta i
 
 	switch oper {
 	case "POST":
-		if payload == "" {
-			return diag.Diagnostics{
-				diag.Diagnostic{
-					Severity: diag.Error,
-					Detail:   "[iosxe_rest] Payload is required at the time of POST call",
-					Summary:  "POST call failed. Payload empty.",
-				},
-			}
-		}
-		_, _, err := iosxeClient.Create(path, iosxeGM)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-		err = d.Set("response", nil)
-		if err != nil {
-			return diag.FromErr(err)
+		diags := resourceIOSXERestPost(iosxeClient, path, iosxeGM, d)
+		if diags != nil {
+			return diags
 		}
 	case "PATCH":
-		if payload == "" {
-			return diag.Diagnostics{
-				diag.Diagnostic{
-					Severity: diag.Error,
-					Detail:   "[iosxe_rest] Payload is required at the time of PATCH call",
-					Summary:  "PATCh call failed. Payload empty.",
-				},
-			}
-		}
-		_, _, err := iosxeClient.Patch(path, iosxeGM)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-		err = d.Set("response", nil)
-		if err != nil {
-			return diag.FromErr(err)
+		diags := resourceIOSXERestPatch(iosxeClient, path, iosxeGM, d)
+		if diags != nil {
+			return diags
 		}
 	case "GET":
-		_, data, err := iosxeClient.Get(path, nil)
+		err := d.Set("payload", nil)
 		if err != nil {
 			return diag.FromErr(err)
 		}
-		log.Println("[DEBUG] GET Response: ", data)
-		err = d.Set("response", data.String())
-		if err != nil {
-			return diag.FromErr(err)
-		}
-		err = d.Set("payload", nil)
-		if err != nil {
-			return diag.FromErr(err)
+
+		diags := resourceIOSXERestGet(iosxeClient, path, d)
+		if diags.HasError() {
+			return diags
 		}
 	case "PUT":
-		if payload == "" {
-			return diag.Diagnostics{
-				diag.Diagnostic{
-					Severity: diag.Error,
-					Detail:   "[iosxe_rest] Payload is required at the time of PUT call",
-					Summary:  "PUT call failed. Payload empty.",
-				},
-			}
-		}
-		_, err := iosxeClient.Update(path, iosxeGM)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-		err = d.Set("response", nil)
-		if err != nil {
-			return diag.FromErr(err)
+		diags := resourceIOSXERestPut(iosxeClient, path, iosxeGM, d)
+		if diags != nil {
+			return diags
 		}
 	case "DELETE":
-		_, err := iosxeClient.Delete(path)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-		err = d.Set("response", nil)
-		if err != nil {
-			return diag.FromErr(err)
-		}
-		err = d.Set("payload", nil)
-		if err != nil {
-			return diag.FromErr(err)
+		diags := resourceIOSXERestRemove(iosxeClient, path, d)
+		if diags != nil {
+			return diags
 		}
 	default:
 		return diag.Diagnostics{
@@ -177,5 +130,97 @@ func resourceIOSXERestRead(ctx context.Context, d *schema.ResourceData, meta int
 
 func resourceIOSXERestDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	d.SetId("")
+	return nil
+}
+
+func resourceIOSXERestGet(iosxeClient *client.V2, path string, d *schema.ResourceData) diag.Diagnostics {
+	_, data, err := iosxeClient.Get(path, nil)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	log.Println("[DEBUG] GET Response: ", data)
+	err = d.Set("response", data.String())
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	return nil
+}
+
+func resourceIOSXERestPost(iosxeClient *client.V2, path string, iosxeGM *models.GenericModel, d *schema.ResourceData) diag.Diagnostics {
+	if iosxeGM.JSONPayload == "" {
+		return diag.Diagnostics{
+			diag.Diagnostic{
+				Severity: diag.Error,
+				Detail:   "[iosxe_rest] Payload is required at the time of POST call",
+				Summary:  "POST call failed. Payload empty.",
+			},
+		}
+	}
+	_, _, err := iosxeClient.Create(path, iosxeGM)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	err = d.Set("response", nil)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	return nil
+}
+
+func resourceIOSXERestPatch(iosxeClient *client.V2, path string, iosxeGM *models.GenericModel, d *schema.ResourceData) diag.Diagnostics {
+	if iosxeGM.JSONPayload == "" {
+		return diag.Diagnostics{
+			diag.Diagnostic{
+				Severity: diag.Error,
+				Detail:   "[iosxe_rest] Payload is required at the time of PATCH call",
+				Summary:  "PATCh call failed. Payload empty.",
+			},
+		}
+	}
+	_, _, err := iosxeClient.Patch(path, iosxeGM)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	err = d.Set("response", nil)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	return nil
+}
+
+func resourceIOSXERestPut(iosxeClient *client.V2, path string, iosxeGM *models.GenericModel, d *schema.ResourceData) diag.Diagnostics {
+	if iosxeGM.JSONPayload == "" {
+		return diag.Diagnostics{
+			diag.Diagnostic{
+				Severity: diag.Error,
+				Detail:   "[iosxe_rest] Payload is required at the time of PUT call",
+				Summary:  "PUT call failed. Payload empty.",
+			},
+		}
+	}
+	_, err := iosxeClient.Update(path, iosxeGM)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	err = d.Set("response", nil)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	return nil
+}
+
+func resourceIOSXERestRemove(iosxeClient *client.V2, path string, d *schema.ResourceData) diag.Diagnostics {
+	_, err := iosxeClient.Delete(path)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	err = d.Set("response", nil)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	err = d.Set("payload", nil)
+	if err != nil {
+		return diag.FromErr(err)
+	}
 	return nil
 }

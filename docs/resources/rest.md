@@ -3,17 +3,17 @@
 page_title: "iosxe_rest Resource - terraform-provider-iosxe"
 subcategory: "Generic Rest Resource"
 description: |-
-  Manages Cisco IOS XE Generic Resource
+  Manages Cisco IOS XE Generic Rest Resource
 ---
 
 # iosxe_rest (Resource)
 
-Manages Cisco IOS XE Generic Resource
+Manages Cisco IOS XE Generic Rest Resource
 
 ## Example Usage
 
 ```terraform
-resource "iosxe_rest" "rest1" {
+resource "iosxe_rest" "example" {
   method = "GET"
   path = "/data/Cisco-IOS-XE-native:native"
   payload = ""
@@ -30,7 +30,6 @@ resource "iosxe_rest" "rest1" {
 
 ### Optional
 
-- **id** (String) The ID of this resource.
 - **payload** (String) The payload for the HTTP "POST", "PATCH", and "PUT". The provider will set it to null-value at the time of HTTP "GET" and "DELETE"
 
 ### Read-Only

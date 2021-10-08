@@ -49,7 +49,7 @@ resource "iosxe_rest" "dhcp_example_put" {
   )
 }
 
-# Adding/Updating the NTP configuration
+# Adding/Updating the DHCP configuration
 resource "iosxe_rest" "dhcp_example_patch" {
   method = "PATCH"
   path   = "/data/Cisco-IOS-XE-native:native/ipv6/dhcp"
@@ -79,13 +79,13 @@ resource "iosxe_rest" "dhcp_example_patch" {
   )
 }
 
-# Fetch the available NTP configuration
+# Fetch the available DHCP configuration
 resource "iosxe_rest" "dhcp_example_get" {
   method = "GET"
   path   = "/data/Cisco-IOS-XE-native:native/ipv6/dhcp"
 }
 
-# Removes all the NTP configuration
+# Removes all the DHCP configuration
 resource "iosxe_rest" "dhcp_example_delete" {
   method = "DELETE"
   path   = "/data/Cisco-IOS-XE-native:native/ipv6/dhcp/pool=7"
