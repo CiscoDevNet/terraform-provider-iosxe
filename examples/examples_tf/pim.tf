@@ -1,12 +1,12 @@
 
 # Adding PIM configuration on the interface Gi1/0/15
 #
-# # POST method is not available for VLAN-TRUNK on the interface Gi1/0/15
-resource "iosxe_rest" "pim_example_post" {
-  method = "POST"
-  path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f15/ip/pim"
-  payload = jsonencode()
-}
+# # POST method is not available for PIM on the interface Gi1/0/15
+# resource "iosxe_rest" "pim_example_post" {
+#   method = "POST"
+#   path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f15/ip/pim"
+#   payload = jsonencode()
+# }
 
 # Updating the available PIM configuration on the interface Gi1/0/15
 resource "iosxe_rest" "pim_example_put" {
