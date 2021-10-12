@@ -13,24 +13,24 @@
 resource "iosxe_rest" "aaa_authorization_example_put" {
   method = "PUT"
   path   = "/data/Cisco-IOS-XE-native:native/aaa/authorization"
-  payload = jsonencode(
-    {
-    "Cisco-IOS-XE-aaa:authorization": {
-        "exec": [
-            {
-                "name": "default",
-                "a1": {
-                    "group": "ISE"
-                },
-                "a2": {
-                    "local": [
-                        null
-                    ]
+    payload = jsonencode(
+        {
+        "Cisco-IOS-XE-aaa:authorization": {
+            "exec": [
+                {
+                    "name": "default",
+                    "a1": {
+                        "group": "ISE"
+                    },
+                    "a2": {
+                        "local": [
+                            null
+                        ]
+                    }
                 }
-            }
-        ]
+            ]
+        }
     }
-}
   )
 }
 
@@ -40,22 +40,22 @@ resource "iosxe_rest" "aaa_authorization_example_patch" {
   path   = "/data/Cisco-IOS-XE-native:native/aaa/authorization"
   payload = jsonencode(
     {
-    "Cisco-IOS-XE-aaa:authorization": {
-        "exec": [
-            {
-                "name": "default",
-                "a1": {
-                    "group": "ISE"
-                },
-                "a2": {
-                    "local": [
-                        null
-                    ]
+        "Cisco-IOS-XE-aaa:authorization": {
+            "exec": [
+                {
+                    "name": "default",
+                    "a1": {
+                        "group": "ISE"
+                    },
+                    "a2": {
+                        "local": [
+                            null
+                        ]
+                    }
                 }
-            }
-        ]
+            ]
+        }
     }
-}
     )
 }
 

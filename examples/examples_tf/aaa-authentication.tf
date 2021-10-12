@@ -4,41 +4,41 @@ resource "iosxe_rest" "aaa_authentication_example_post" {
   path   = "/data/Cisco-IOS-XE-native:native/aaa/authentication"
   payload = jsonencode(
       {
-    "login": [
-        {
-            "name": "default",
-            "a1": {
-                "group": "tacacs+"
-            },
-            "a2": {
-                "none": [
-                    null
-                ]
+        "login": [
+            {
+                "name": "default",
+                "a1": {
+                    "group": "tacacs+"
+                },
+                "a2": {
+                    "none": [
+                        null
+                    ]
+                }
             }
-        }
-    ],
-    "ppp": [
-        {
-            "id": "server-group1",
-            "a1": {
-                "group": "radius"
-            },
-            "a2": {
-                "group": "tacacs+"
-            },
-            "a3": {
-                "local": [
-                    null
-                ]
-            },
-            "a4": {
-                "none": [
-                    null
-                ]
+        ],
+        "ppp": [
+            {
+                "id": "server-group1",
+                "a1": {
+                    "group": "radius"
+                },
+                "a2": {
+                    "group": "tacacs+"
+                },
+                "a3": {
+                    "local": [
+                        null
+                    ]
+                },
+                "a4": {
+                    "none": [
+                        null
+                    ]
+                }
             }
-        }
-    ]
-}
+        ]
+    }
   )
 }
 
@@ -48,43 +48,43 @@ resource "iosxe_rest" "aaa_authentication_example_put" {
   path   = "/data/Cisco-IOS-XE-native:native/aaa/authentication"
   payload = jsonencode(
     {
-    "Cisco-IOS-XE-aaa:authentication": {
-        "login": [
-            {
-                "name": "default-put",
-                "a1": {
-                    "group": "tacacs+"
-                },
-                "a2": {
-                    "none": [
-                        null
-                    ]
+        "Cisco-IOS-XE-aaa:authentication": {
+            "login": [
+                {
+                    "name": "default-put",
+                    "a1": {
+                        "group": "tacacs+"
+                    },
+                    "a2": {
+                        "none": [
+                            null
+                        ]
+                    }
                 }
-            }
-        ],
-        "ppp": [
-            {
-                "id": "server-group1",
-                "a1": {
-                    "group": "radius"
-                },
-                "a2": {
-                    "group": "tacacs+"
-                },
-                "a3": {
-                    "local": [
-                        null
-                    ]
-                },
-                "a4": {
-                    "none": [
-                        null
-                    ]
+            ],
+            "ppp": [
+                {
+                    "id": "server-group1",
+                    "a1": {
+                        "group": "radius"
+                    },
+                    "a2": {
+                        "group": "tacacs+"
+                    },
+                    "a3": {
+                        "local": [
+                            null
+                        ]
+                    },
+                    "a4": {
+                        "none": [
+                            null
+                        ]
+                    }
                 }
-            }
-        ]
+            ]
+        }
     }
-}
   )
 }
 
@@ -94,43 +94,43 @@ resource "iosxe_rest" "aaa_authentication_example_patch" {
   path   = "/data/Cisco-IOS-XE-native:native/aaa/authentication"
   payload = jsonencode(
     {
-    "Cisco-IOS-XE-aaa:authentication": {
-        "login": [
-            {
-                "name": "default-patch",
-                "a1": {
-                    "group": "tacacs+"
-                },
-                "a2": {
-                    "none": [
-                        null
-                    ]
+        "Cisco-IOS-XE-aaa:authentication": {
+            "login": [
+                {
+                    "name": "default-patch",
+                    "a1": {
+                        "group": "tacacs+"
+                    },
+                    "a2": {
+                        "none": [
+                            null
+                        ]
+                    }
                 }
-            }
-        ],
-        "ppp": [
-            {
-                "id": "server-group1",
-                "a1": {
-                    "group": "radius"
-                },
-                "a2": {
-                    "group": "tacacs+"
-                },
-                "a3": {
-                    "local": [
-                        null
-                    ]
-                },
-                "a4": {
-                    "none": [
-                        null
-                    ]
+            ],
+            "ppp": [
+                {
+                    "id": "server-group1",
+                    "a1": {
+                        "group": "radius"
+                    },
+                    "a2": {
+                        "group": "tacacs+"
+                    },
+                    "a3": {
+                        "local": [
+                            null
+                        ]
+                    },
+                    "a4": {
+                        "none": [
+                            null
+                        ]
+                    }
                 }
-            }
-        ]
+            ]
+        }
     }
-}
     )
 }
 
