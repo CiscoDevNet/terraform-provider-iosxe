@@ -8,7 +8,7 @@
 #   )
 # }
 
-# Updating the available EMP configuration
+# Updating the available EMP configuration for interface Gi0/0
 resource "iosxe_rest" "emp_example_put" {
   method = "PUT"
   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=0%2f0"
@@ -25,10 +25,10 @@ resource "iosxe_rest" "emp_example_put" {
   )
 }
 
-# Adding/Updating the available EMP configuration
+# Adding/Updating the available EMP configuration for interface Gi0/0
 resource "iosxe_rest" "emp_example_patch" {
   method = "PATCH"
-  path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=0%2f0"
+  path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
   payload = jsonencode(
     {
         "Cisco-IOS-XE-native:GigabitEthernet": {
@@ -53,13 +53,13 @@ resource "iosxe_rest" "emp_example_patch" {
     )
 }
 
-# Fetch the available EMP configuration 
+# Fetch the available EMP configuration for interface Gi0/0
 resource "iosxe_rest" "emp_example_get" {
   method = "GET"
   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=0%2f0"
 }
 
-# Remove the available EMP configuration 
+# Remove the available EMP configuration for interface Gi0/0
 resource "iosxe_rest" "emp_example_delete" {
   method = "DELETE"
   path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=0%2f0/vrf"
