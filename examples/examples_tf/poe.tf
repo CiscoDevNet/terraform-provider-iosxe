@@ -1,16 +1,18 @@
 
 # Adding POE configuration on the interface Gi1/0/12
-resource "iosxe_rest" "poe_example_post" {
-  method = "POST"
-  path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/Cisco-IOS-XE-power:power/inline"
-  payload = jsonencode(
-    {
-      "static-choice": {
-        "max": 5000
-      }
-    }
-  )
-}
+# 
+# POST method is not suitable for POE, try using PATCH instead 
+# resource "iosxe_rest" "poe_example_post" {
+#   method = "POST"
+#   path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/Cisco-IOS-XE-power:power/inline"
+#   payload = jsonencode(
+#     {
+#       "static-choice": {
+#         "max": 5000
+#       }
+#     }
+#   )
+# }
 
 # Updating the available POE configuration on the interface Gi1/0/12
 resource "iosxe_rest" "poe_example_put" {
