@@ -97,6 +97,9 @@ func New(version string) func() *schema.Provider {
 			ResourcesMap: map[string]*schema.Resource{
 				"iosxe_rest": resourceIOSXERest(),
 			},
+			DataSourcesMap: map[string]*schema.Resource{
+				"iosxe_rest": datasourceIOSXERest(),
+			},
 		}
 		p.ConfigureContextFunc = configure(version, p)
 

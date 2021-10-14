@@ -1,0 +1,43 @@
+{
+  "filter": {
+    "id": "string",
+    "match": "match-all"
+  },
+  "server": {
+    "id": "string",
+    "address": {
+      "auth-port": 0,
+      "acct-port": 0
+    },
+    "timeout": 0,
+    "automate-tester": {
+      "username": "string",
+      "ignore-auth-port": "string",
+      "ignore-acct-port": "string",
+      "probe-on": "string",
+      "idle-time": 0,
+      "vrf": "string"
+    },
+    "backoff": {
+      "exponential": {
+        "max-delay": 0,
+        "backoff-retry": 0
+      }
+    },
+    "key": {
+      "encryption": "0",
+      "key": "string"
+    },
+    "pac": {
+      "key": {
+        "encryption": "0",
+        "key": "string"
+      }
+    },
+    "retransmit": 0,
+    "dscp": {
+      "auth": 0,
+      "acct": 0
+    }
+  }
+}

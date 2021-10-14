@@ -1,0 +1,25 @@
+{
+  "ip/igmp": {
+    "static-group": {
+      "with-source-groups": {
+        "name": "string",
+        "source": "string"
+      },
+      "without-source-groups": {
+        "name": "string"
+      },
+      "class-map": "string"
+    },
+    "mroute-proxy": {
+      "{interface-type}": 0
+    },
+    "limit-container": {
+      "limit": 0,
+      "except": "string"
+    },
+    "unidirectional-link-leaf": [null],
+    "upstream-proxy": "string",
+    "iif-starg": [null],
+    "proxy-report-interval": 0
+  }
+}

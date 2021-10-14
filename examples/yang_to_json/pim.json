@@ -1,50 +1,37 @@
 {
-    "data": {
-      "pim-oper-data": {
-        "pim-rp-mapping-entry": {
-          "vrf": "",
-          "if-name": "",
-          "pim-rp-mapping-caps": "",
-          "auto-rp-mapping-count": "",
-          "auto-rp-mapping-limit": "",
-          "bsr-mapping-count": "",
-          "bsr-mapping-limit": "",
-          "pim-rp-mapping-state": {
-            "acl": "",
-            "state": {
-              "rp": "",
-              "info-source": "",
-              "pim-per-rp-caps": "",
-              "rp-uptime": "",
-              "will-expire": "",
-              "expires": "",
-              "candidate-rp-priority": "",
-              "holdtime": ""
-            }
-          }
-        },
-        "pim-neighbor-entry": {
-          "af": "",
-          "vrf": "",
-          "if-name": "",
-          "pim-neighbor-state": {
-            "pim-neighbor-address": "",
-            "state": {
-              "version": "",
-              "dr-priority": "",
-              "gen-id": "",
-              "neighbor-uptime": "",
-              "expires": "",
-              "pim-neighbor-caps": "",
-              "pim-dr": "",
-              "pim-if-addr": "",
-              "neighbor-count": "",
-              "query-interval": "",
-              "jp-interval": "",
-              "pim-mode": ""
-            }
-          }
-        }
+  "ip/pim": {
+    "accept-register": {
+      "list": "string"
+    },
+    "bfd": "string",
+    "bidir-neighbor-filter": "string",
+    "border": "string",
+    "bsr-border": "string",
+    "pim-mode-choice-cfg": {},
+    "pim-mode": "passive",
+    "nbma-mode": "string",
+    "dr-priority": 0,
+    "drlb": {
+      "rp-mask": "string",
+      "grp-mask": "string",
+      "src-mask": "string"
+    },
+    "join-prune-interval": 0,
+    "neighbor-filter": "string",
+    "non-dr-join": "string",
+    "query-interval": {
+      "neighbor-holdtime": 0
+    },
+    "redundancy": {
+      "group-name": "string",
+      "protocol": "hsrp",
+      "dr-priority": 0
+    },
+    "state-refresh": {
+      "origination-interval": {
+        "interval": 0
       }
-    }
+    },
+    "spt-threshold": "infinity"
   }
+}

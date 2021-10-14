@@ -15,7 +15,9 @@ The following versions of Cisco IOS XE are supported:
 - [Provider development](./DEVELOPMENT.md)
 
 The primary use-case for the Cisco IOS XE provider is managing the following features:
-1. [aaa](./examples/examples_tf/aaa.tf)
+1. [aaa-authentication](./examples/examples_tf/aaa-authentication.tf)
+1. [aaa-authorization](./examples/examples_tf/aaa-authorization.tf)
+1. [aaa-accounting](./examples/examples_tf/aaa-accounting.tf)
 1. [acl](./examples/examples_tf/acl.tf)
 1. [bgp](./examples/examples_tf/bgp.tf)
 1. [cdp](./examples/examples_tf/cdp.tf)

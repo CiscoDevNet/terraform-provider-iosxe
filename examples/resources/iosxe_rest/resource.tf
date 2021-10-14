@@ -1,4 +1,4 @@
-resource "iosxe_rest" "rest1" {
+resource "iosxe_rest" "example" {
   method = "GET"
   path = "/data/Cisco-IOS-XE-native:native"
   payload = ""

@@ -1,156 +1,94 @@
 {
-    "data": {
-      "dhcp-oper-data": {
-        "dhcpv4-server-oper": {
-          "pool-name": "",
-          "client-ip": "",
-          "vrf-name": "",
-          "client-id-type": "",
-          "client-id": "",
-          "expiration": {
-            "time": "",
-            "infinite": ""
-          },
-          "type": "",
-          "state": "",
-          "interface": ""
+  "server": {
+    "vrf": {
+      "enable": "string"
+    },
+    "access-list": "string"
+  },
+  "guard": {
+    "policy": {
+      "dhcp-guard-policy-name": "string",
+      "device-role": {
+        "device-role-choice": {
+          "role-choice": "server"
         },
-        "dhcpv4-client-oper": {
-          "if-name": "",
-          "client-addr": "",
-          "vrf-name": "",
-          "state": "",
-          "lease-server-addr": "",
-          "gateway-addr": "",
-          "lease-time": "",
-          "lease-expiry": {
-            "time": "",
-            "infinite": ""
-          },
-          "lease-remaining": "",
-          "dns-address": "",
-          "dns-address-secondary": "",
-          "subnet-mask": ""
+        "server": "string",
+        "monitor": "string",
+        "client": "string"
+      },
+      "match": {
+        "server": {
+          "access-list": "string"
         },
-        "dhcpv4-pool": {
-          "pool-name": "",
-          "vrf": "",
-          "subnet-info": {
-            "stats": {
-              "total-addresses": "",
-              "leased-addresses": "",
-              "excluded-addresses": "",
-              "first-subnet-size": "",
-              "next-subnet-size": "",
-              "high-util-mark": "",
-              "low-util-mark": "",
-              "auto-grow": "",
-              "autogrow-pool-size": "",
-              "pending-event": ""
-            },
-            "ddns-updates": "",
-            "subnet-count": "",
-            "subnet": {
-              "current-index": "",
-              "first-address": "",
-              "last-address": "",
-              "excluded-addresses": "",
-              "leased-addresses": "",
-              "total-addresses": ""
-            }
-          },
-          "relay-info": {
-            "source": {
-              "address": "",
-              "mask": ""
-            },
-            "target": {
-              "address": "",
-              "vrf": ""
-            },
-            "class-info": {
-              "class-name": "",
-              "class-target": {
-                "target-address": "",
-                "target-vrf": ""
-              }
-            }
-          }
-        },
-        "dhcpv6-binding-vrf-oper": {
-          "v6-vrf": "",
-          "client-addr": "",
-          "duid": "",
-          "ppp-username": "",
-          "interface": "",
-          "iaid": "",
-          "t1": "",
-          "t2": "",
-          "preferred-lifetime": "",
-          "valid-lifetime": "",
-          "expiring-time": ""
-        },
-        "dhcpv6-intf-at-relay-oper": {
-          "v6-intf-at-relay": "",
-          "mode": "",
-          "ipv6-dhcp-intf-addr": "",
-          "via-intf": ""
-        },
-        "dhcpv6-intf-at-srv-oper": {
-          "v6-intf-at-srv": "",
-          "mode": "",
-          "poolname": "",
-          "preference": "",
-          "hint": "",
-          "rapid-commit": "",
-          "pending-aaa-req": "",
-          "prefix": "",
-          "prefix-len": ""
-        },
-        "dhcpv6-intf-at-client-oper": {
-          "v6-intf-at-client": "",
-          "mode": "",
-          "prefix-state": "",
-          "address-state": "",
-          "renew-time": "",
-          "refersh-time": "",
-          "retransmission-time": "",
-          "rebind-time": "",
-          "reachable-via-addr": "",
-          "duid": "",
-          "preference": "",
-          "dns": "",
-          "domain": "",
-          "sip-dns": "",
-          "sip-domain": "",
-          "nis-dns": "",
-          "nis-domain": "",
-          "bootf-url": "",
-          "nsip-dns": "",
-          "nsip-domain": "",
-          "sntp-dns": "",
-          "info-refresh-time": "",
-          "vendor-ent-id": "",
-          "prefix-name": "",
-          "prefix-rapid-commit": "",
-          "address-rapid-commit": "",
-          "prefix": "",
-          "prefix-len": ""
-        },
-        "dhcpv6-relay-binding-oper": {
-          "v6-relay-vrf": "",
-          "num-binding": "",
-          "iapd-binding": "",
-          "iana-binding": "",
-          "binding-bulk-lease-query": "",
-          "addr": "",
-          "prefix": "",
-          "prefix-len": "",
-          "duid": "",
-          "iaid": "",
-          "lifetime": "",
-          "expiration": ""
+        "reply": {
+          "prefix-list": "string"
+        }
+      },
+      "preference": {
+        "max": 0,
+        "min": 0
+      },
+      "trusted-port": "string"
+    }
+  },
+  "pool": {
+    "name": "string",
+    "vrf": "string",
+    "address": {
+      "prefix": {
+        "ipv6-address": "string",
+        "lifetime": {
+          "valid-lifetime": "string",
+          "preferred-lifetime": "string"
         }
       }
+    },
+    "domain-name": "string",
+    "information": {
+      "refresh": {}
+    },
+    "import": {
+      "information": {
+        "refresh": "string"
+      },
+      "bootfile-url": "string",
+      "dns-server": "string",
+      "domain-name": "string",
+      "nis": {
+        "address": "string",
+        "domain-name": "string"
+      },
+      "nisp": {
+        "address": "string",
+        "domain-name": "string"
+      },
+      "sip": {
+        "address": "string",
+        "domain-name": "string"
+      },
+      "sntp": {
+        "address": "string"
+      },
+      "all": "string",
+      "interface": {}
+    },
+    "link-address": {
+      "address": "string"
+    },
+    "bootfile-url": "string",
+    "option": {
+      "include-all": "string"
     }
+  },
+  "binding": {
+    "track": {
+      "ppp": "string"
+    }
+  },
+  "ppp": {
+    "framed-prefix": {
+      "cache": true
+    },
+    "terminate": true
   }
+}

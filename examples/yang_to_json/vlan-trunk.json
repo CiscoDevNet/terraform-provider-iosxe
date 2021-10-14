@@ -1,0 +1,19 @@
+{
+  "allowed": {
+    "vlan": {
+      "tag": true,
+      "vlan-id": 0,
+      "vlans": "string"
+    }
+  },
+  "encapsulation": "dot1q",
+  "native": {
+    "vlan": {
+      "tag": true,
+      "vlan-id": 0
+    }
+  },
+  "pruning": {
+    "vlan": {}
+  }
+}

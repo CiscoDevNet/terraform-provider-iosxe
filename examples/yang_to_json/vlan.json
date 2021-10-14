@@ -1,19 +1,120 @@
 {
-    "data": {
-      "vlans": {
-        "vlan": {
-          "id": "",
-          "name": "",
-          "status": "",
-          "ports": {
-            "interface": "",
-            "subinterface": ""
-          },
-          "vlan-interfaces": {
-            "interface": "",
-            "subinterface": ""
-          }
+  "filter": {
+    "id": "string",
+    "match": "match-all",
+    "word": "string",
+    "vlan-list": "string"
+  },
+  "group": "radius",
+  "access-map": {
+    "name": "string",
+    "value": 0,
+    "action": "drop"
+  },
+  "configuration": {
+    "vlan-id": 0,
+    "ip": {
+      "flow": {
+        "monitor": {
+          "flow-monitor": "string",
+          "input": "string",
+          "output": "string"
         }
       }
+    },
+    "device-tracking": {
+      "attach-policy": "string"
+    },
+    "ipv6": {
+      "nd": {
+        "suppress": {
+          "attach-policy": "string"
+        },
+        "raguard": {
+          "raguard": "string",
+          "attach-policy": "string"
+        }
+      },
+      "dhcp": {
+        "guard": {
+          "attach-policy": "string"
+        }
+      },
+      "destination-guard": {
+        "attach-policy": "string"
+      }
+    },
+    "member": {
+      "evpn-instance": {
+        "evpn-instance": 0,
+        "vni": 0
+      },
+      "vni": 0,
+      "access-vfi": "string"
+    },
+    "mdns-sd": {
+      "gateway": {
+        "service-policy": {
+          "name": "string"
+        },
+        "active-query": {
+          "timer": 0
+        },
+        "transport": "both",
+        "service-inst-suffix": "string",
+        "service-mdns-query": "all",
+        "source-interface": {},
+        "sdg-agent": "string",
+        "service-peer": {
+          "group": "string"
+        },
+        "active-query-vlan": {
+          "timer": 0
+        },
+        "transport-vlan": "both",
+        "service-inst-suffix-vlan": "string",
+        "service-mdns-query-vlan": "all"
+      }
     }
+  },
+  "device-tracking": {
+    "attach-policy": "string"
+  },
+  "accounting": {
+    "input": "string",
+    "output": "string"
+  },
+  "internal": {
+    "allocation": {
+      "policy": "ascending"
+    }
+  },
+  "dot1q": {
+    "tag": {
+      "native": "string"
+    }
+  },
+  "access-log": {
+    "maxflow": 0,
+    "ratelimit": 0,
+    "threshold": 0
+  },
+  "vlan-list": {
+    "vlan-id": "string",
+    "id": 0,
+    "remote-span": "string",
+    "private-vlan": {
+      "primary": "string",
+      "association": "string",
+      "community": "string",
+      "isolated": "string"
+    },
+    "name": "string",
+    "state": "active",
+    "lldp": {
+      "run": "string"
+    },
+    "uni-vlan": "community",
+    "shutdown": "string"
   }
+}
