@@ -14,15 +14,38 @@ resource "iosxe_rest" "aaa_authorization_example_put" {
   method = "PUT"
   path   = "/data/Cisco-IOS-XE-native:native/aaa/authorization"
     payload = jsonencode(
-        {
+    {
         "Cisco-IOS-XE-aaa:authorization": {
             "exec": [
                 {
                     "name": "default",
                     "a1": {
-                        "group": "ISE"
-                    },
-                    "a2": {
+                        "local": [
+                            null
+                        ]
+                    }
+                },
+                {
+                    "name": "put-auth",
+                    "a1": {
+                        "local": [
+                            null
+                        ]
+                    }
+                }
+            ],
+            "network": [
+                {
+                    "id": "default",
+                    "a1": {
+                        "local": [
+                            null
+                        ]
+                    }
+                },
+                {
+                    "id": "put-auth",
+                    "a1": {
                         "local": [
                             null
                         ]
@@ -45,9 +68,32 @@ resource "iosxe_rest" "aaa_authorization_example_patch" {
                 {
                     "name": "default",
                     "a1": {
-                        "group": "ISE"
-                    },
-                    "a2": {
+                        "local": [
+                            null
+                        ]
+                    }
+                },
+                {
+                    "name": "patch-auth",
+                    "a1": {
+                        "local": [
+                            null
+                        ]
+                    }
+                }
+            ],
+            "network": [
+                {
+                    "id": "default",
+                    "a1": {
+                        "local": [
+                            null
+                        ]
+                    }
+                },
+                {
+                    "id": "patch-auth",
+                    "a1": {
                         "local": [
                             null
                         ]
@@ -65,8 +111,8 @@ resource "iosxe_rest" "aaa_authorization_example_get" {
   path   = "/data/Cisco-IOS-XE-native:native/aaa/authorization"
 }
 
-# Remove the available AAA-AUTHORIZATION configuration 
+# Remove the available AAA-AUTHORIZATION configuration by name
 resource "iosxe_rest" "aaa_authorization_example_delete" {
   method = "DELETE"
-  path = "/data/Cisco-IOS-XE-native:native/aaa/authorization"
+  path = "/data/Cisco-IOS-XE-native:native/aaa/authorization/exec=put-auth"
 }
