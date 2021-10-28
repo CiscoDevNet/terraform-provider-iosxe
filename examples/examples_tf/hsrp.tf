@@ -17,30 +17,30 @@ resource "iosxe_rest" "hsrp_example_put" {
         "Cisco-IOS-XE-native:GigabitEthernet": {
             "name": "1/0/13",
             "switchport-conf": {
-                "switchport": false
+            "switchport": false
             },
             "ip": {
-                "address": {
-                    "primary": {
-                        "address": "10.0.0.1",
-                        "mask": "255.255.255.0"
-                    }
+            "address": {
+                "primary": {
+                "address": "10.0.0.1",
+                "mask": "255.255.255.0"
                 }
+            }
             },
             "standby": {
-                "standby-list": [
-                    {
-                        "group-number": 1,
-                        "ip": {
-                            "address": "10.0.0.3"
-                        },
-                        "priority": 110
-                    }
-                ]
+            "standby-list": [
+                {
+                "group-number": 1,
+                "ip": {
+                    "address": "10.0.0.3"
+                },
+                "priority": 110
+                }
+            ]
             }
         }
     }
-  )
+    )
 }
 
 # Adding/Updating the available HSRP configuration for interface Gi1/0/13
@@ -48,35 +48,35 @@ resource "iosxe_rest" "hsrp_example_patch" {
   method = "PATCH"
   path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
   payload = jsonencode(
-   {
-        "Cisco-IOS-XE-native:GigabitEthernet": {
-            "name": "1/0/13",
-            "switchport-conf": {
-                "switchport": false
+    {
+        "Cisco-IOS-XE-native:GigabitEthernet" : {
+            "name" : "1/0/13",
+            "switchport-conf" : {
+            "switchport" : false
             },
-            "ip": {
-                "address": {
-                    "primary": {
-                        "address": "10.0.0.1",
-                        "mask": "255.255.255.0"
+            "ip" : {
+                "address" : {
+                    "primary" : {
+                    "address" : "10.0.0.1",
+                    "mask" : "255.255.255.0"
                     }
                 }
             },
-            "standby": {
-                "standby-list": [
+            "standby" : {
+                "standby-list" : [
                     {
-                        "group-number": 1,
-                        "ip": {
-                            "address": "10.0.0.3"
-                        },
-                        "priority": 110
+                    "group-number" : 1,
+                    "ip" : {
+                        "address" : "10.0.0.3"
+                    },
+                    "priority" : 110
                     },
                     {
-                        "group-number": 2,
-                        "ip": {
-                            "address": "10.0.0.4"
-                        },
-                        "priority": 115
+                    "group-number" : 2,
+                    "ip" : {
+                        "address" : "10.0.0.4"
+                    },
+                    "priority" : 115
                     }
                 ]
             }
@@ -94,5 +94,5 @@ resource "iosxe_rest" "hsrp_example_get" {
 # Remove the available HSRP configuration for interface Gi1/0/13
 resource "iosxe_rest" "hsrp_example_delete" {
   method = "DELETE"
-  path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f13/standby"
+  path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f13/standby"
 }

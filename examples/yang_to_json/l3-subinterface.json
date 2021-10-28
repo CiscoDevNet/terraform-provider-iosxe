@@ -1,0 +1,25 @@
+{
+  "name": "string",
+  "encapsulation": {
+    "dot1Q": {
+      "vlan-id": 0,
+      "native": "",
+      "second-dot1q": "string",
+      "primary": "string",
+      "secondary": "string"
+    }
+  },
+  "ip": {
+    "address": {
+      "primary": {
+        "address": "string",
+        "mask": "string"
+      },
+      "secondary": {
+        "address": "string",
+        "mask": "string",
+        "secondary": "string"
+      }
+    }
+  }
+}
