@@ -1,54 +1,68 @@
 {
-  "Cisco-IOS-XE-bgp:bgp": {
-    "id": 0,
-    "bgp": {
-      "aigp-rib-metric": [null],
-      "always-compare-med": [null],
-      "asnotation": {
-        "dot": [null]
-      },
-      "bestpath": {
-        "as-path": "string",
-        "aigp": "string",
-        "cost-community": "string",
-        "med": {
-          "confed-leaf": [null],
-          "missing-as-worst-leaf": [null]
-        }
-      },
-      "client-to-client":{
-        "reflection": true
-      },
-      "default": {
-        "inter-as-hybrid": {
-          "advertise-source-routes": true
-        },
-        "ipv4-unicast": true,
-        "ipv6-nexthop": true,
-        "local-preference": 0,
-        "route-target": {
-          "filter": true
-        }
-      },
-      "route-map-cache": true,
-      "enforce-first-as-boolean" : true,
-      "log-neighbor-changes": true
-    },
-    "neighbor": [
-      {
-        "id": "string",
-        "remote-as": 0,
-        "peer-group": {
-          "peer-group-name": "string"
-        },
-        "description" : "string",
-        "dont-capabiltiy-negotiate" : {
-          "enhanced-refresh" : [null],
-          "four-octets-as" : [null]
-        },
-        "shutdown" : [null],
-        "version" : 0
-      }
-    ]
-  }
+  "aigp-rib-metric": "string",
+  "always-compare-med": "string",
+  "asnotation": {
+    "dot": "string"
+  },
+  "bestpath": {
+    "as-path": "ignore",
+    "aigp": "ignore",
+    "compare-routerid": "string"
+  },
+  "client-to-client": {
+    "reflection": true
+  },
+  "cluster-id": "string",
+  "confederation": {
+    "identifier": "string"
+  },
+  "default": {
+    "ipv4-unicast": true,
+    "ipv6-nexthop": true,
+    "local-preference": 0
+  },
+  "deterministic-med": "string",
+  "dynamic-med-interval": {
+    "interval": 0
+  },
+  "enforce-first-as-boolean": true,
+  "enforce-first-as": "string",
+  "enhanced-error": true,
+  "fast-external-fallover": true,
+  "graceful-restart": {
+    "all": "string",
+    "extended": "string",
+    "restart-time": 0,
+    "stalepath-time": 0
+  },
+  "sso": {
+    "prefer": "string",
+    "route-refresh-enable": "string"
+  },
+  "listen": {
+    "limit": 0
+  },
+  "log-neighbor-changes": true,
+  "maxas-limit": 0,
+  "maxcommunity-limit": 0,
+  "maxextcommunity-limit": {
+    "number": 0
+  },
+  "maxlargecommunity-limit": 0,
+  "nopeerup-delay": {
+    "cold-boot": 0,
+    "nsf-switchover": 0,
+    "post-boot": 0,
+    "user-initiated": 0
+  },
+  "regexp": {
+    "deterministic": true
+  },
+  "route-map-cache": true,
+  "router-id": {},
+  "safe-ebgp-policy": "string",
+  "transport": {
+    "path-mtu-discovery": true
+  },
+  "update-delay": 0
 }
