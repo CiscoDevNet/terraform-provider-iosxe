@@ -31,9 +31,6 @@ resource "iosxe_rest" "bgp_example_put" {
     "Cisco-IOS-XE-bgp:bgp": [
         {
             "id": 46000,
-            "bgp": {
-                "log-neighbor-changes": true
-            },
             "neighbor": [
                 {
                     "id": "10.106.1.2",
@@ -45,8 +42,8 @@ resource "iosxe_rest" "bgp_example_put" {
                 }
             ]
         }
-    ]
-}
+      ]
+  }
   )
 }
 
