@@ -3,12 +3,12 @@
 page_title: "iosxe_rest Data Source - terraform-provider-iosxe"
 subcategory: ""
 description: |-
-  Represents Cisco IOS XE Generic Rest Resource
+  Represents Cisco IOS XE Generic Rest Data Source
 ---
 
 # iosxe_rest (Data Source)
 
-Represents Cisco IOS XE Generic Rest Resource
+Represents Cisco IOS XE Generic Rest Data Source
 
 ## Example Usage
 
