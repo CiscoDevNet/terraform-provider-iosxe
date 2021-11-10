@@ -1,45 +1,237 @@
 {
-  "data": {
-    "nat-data": {
-      "ip-nat-statistics": {
-        "initialized": "",
-        "entries": "",
-        "statics": "",
-        "statics-sorted": "",
-        "flows": "",
-        "insides": "",
-        "outsides": "",
-        "entry-timeouts": "",
-        "hits": "",
-        "misses": "",
-        "interrupt-switched": "",
-        "packets-punted": "",
-        "frag-pak-count": "",
-        "pool-stats-drop": "",
-        "mapping-stats-drop": "",
-        "portlist-req-fail": "",
-        "ipalias-add-fail": "",
-        "limit-entry-add-fail": "",
-        "in2out-drops": "",
-        "out2in-drops": "",
-        "mib-addr-binds": "",
-        "mib-addport-binds": ""
+  "pool": {
+    "id": "string",
+    "start-address": "string",
+    "end-address": "string",
+    "accounting": "string",
+    "nat-choice": "string",
+    "watermark": {
+      "high": 0,
+      "low": 0
+    }
+  },
+  "inside": {
+    "source": {
+      "static": {
+        "nat-static-transport-list": [
+          {
+            "local-ip": "string",
+            "global-ip": "string",
+            "proto": "string",
+            "local-port": 0,
+            "mask": "string"
+          }
+        ]
       },
-      "ip-nat-translation": {
-        "inside-local-addr": "",
-        "outside-local-addr": "",
-        "inside-local-port": "",
-        "outside-local-port": "",
-        "vrfid": "",
-        "protocol": "",
-        "inside-global-addr": "",
-        "outside-global-addr": "",
-        "inside-global-port": "",
-        "outside-global-port": "",
-        "flags": "",
-        "application-type": "",
-        "vrf-name": ""
+      "route-map": {
+        "route-map-name": "string",
+        "id": "string",
+        "pool": "string",
+        "mapping-id": 0,
+        "vrf": "string",
+        "add-route": "string"
+      }
+    },
+    "destination": {
+      "list": {
+        "id": "string",
+        "pool": {},
+        "interface": {},
+        "redundancy": 0,
+        "mapping-id": 0,
+        "vrf": "string",
+        "add-route": "string",
+        "num-entries": 0,
+        "esp-ike-list": {
+          "type": "ESP",
+          "acl": "string",
+          "spi-match": "string",
+          "preserve-port": "string"
+        },
+        "ftp-list": {
+          "id": "string"
+        }
       }
     }
+  },
+  "outside": {
+    "list": {
+      "id": "string",
+      "pool": "string",
+      "mapping-id": 0,
+      "vrf": "string",
+      "add-route": "string"
+    },
+    "route-map": {
+      "id": "string",
+      "pool": "string",
+      "mapping-id": 0,
+      "vrf": "string",
+      "add-route": "string"
+    }
+  },
+  "translation": {
+    "dns-timeout": {
+      "time-val": 0,
+      "never": "string"
+    },
+    "finrst-timeout": {
+      "time-val": 0,
+      "never": "string"
+    },
+    "icmp-timeout": {
+      "time-val": 0,
+      "never": "string"
+    },
+    "routemap-entry-timeout": {
+      "time-val": 0,
+      "never": "string"
+    },
+    "syn-timeout": {
+      "time-val": 0,
+      "never": "string"
+    },
+    "tcp-timeout": {
+      "time-val": 0,
+      "never": "string"
+    },
+    "timeout": {
+      "time-val": 0,
+      "never": "string"
+    },
+    "udp-timeout": {
+      "time-val": 0,
+      "never": "string"
+    },
+    "max-entries": {
+      "host": {
+        "host-ip": "string",
+        "number-of-entries": 0
+      },
+      "num-entries": 0,
+      "all-host": 0,
+      "all-vrf": 0,
+      "redundancy": {
+        "id": "1",
+        "num-entries": 0
+      },
+      "list": {
+        "id": "string",
+        "num-entries": 0
+      },
+      "vrf": {
+        "id": "string",
+        "num-entries": 0
+      }
+    }
+  },
+  "route": {
+    "vrf": "string",
+    "ipaddr": "string",
+    "mask": "string",
+    "global": "string"
+  },
+  "settings": {
+    "central-policy": "string",
+    "mode": {
+      "choice-mode": {
+        "type": "string"
+      }
+    },
+    "cfg-check": {
+      "static-map-removal": "string"
+    },
+    "gatekeeper-size": 0,
+    "nonpatdrop": "string",
+    "high-performance": "string",
+    "nonpatlog-disable": "string",
+    "trans-err-limit": {
+      "per-ip-pool": 0
+    },
+    "pool": {
+      "watermark": {
+        "high": 0,
+        "low": 0
+      }
+    },
+    "scale": {
+      "bind": "string"
+    },
+    "support": {
+      "mapping": {
+        "outside": "string"
+      }
+    },
+    "pap": {
+      "limit": "1000"
+    }
+  },
+  "create": {
+    "flow-entries": "string"
+  },
+  "switchover": {
+    "replication": {
+      "http": {
+        "port": 0
+      }
+    }
+  },
+  "service": {
+    "H225": "string",
+    "all-algs": "string",
+    "dns": {
+      "tcp": "string",
+      "udp": "string"
+    },
+    "dns-reset-ttl": "string",
+    "dns-v6-config": {
+      "list": "string"
+    },
+    "dns-v6": "string",
+    "ftp": "string",
+    "gatekeeper": "string",
+    "ipsec-esp": {
+      "enable": "string"
+    },
+    "ldap": "string",
+    "modify-in-progress": {
+      "drop": "string"
+    },
+    "list": {
+      "esp-ike-list": {
+        "type": "ESP",
+        "acl": "string",
+        "spi-match": "string",
+        "preserve-port": "string"
+      },
+      "ftp-list": {
+        "id": "string"
+      }
+    },
+    "msrpc": {
+      "tcp": "string"
+    },
+    "multi-wan-link": "string",
+    "netbios-dgm": "string",
+    "netbios-ns": {
+      "tcp": "string",
+      "udp": "string"
+    },
+    "netbios-ssn": "string",
+    "pptp": "string",
+    "ras": "string",
+    "rcmd": "string",
+    "rtsp": {
+      "tcp": "string",
+      "udp": "string"
+    },
+    "tftp": "string",
+    "sunrpc": {
+      "tcp": "string",
+      "udp": "string"
+    }
+  },
+  "log": {
+    "translations": {}
   }
 }
