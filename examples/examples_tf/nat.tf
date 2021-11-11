@@ -39,7 +39,7 @@ resource "iosxe_rest" "nat_example_put" {
 # Adding/Updating the available NAT configuration 
 resource "iosxe_rest" "nat_example_patch" {
   method = "PATCH"
-  path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
+  path   = "/data/Cisco-IOS-XE-native:native/ip/nat"
   payload = jsonencode(
    {
         "Cisco-IOS-XE-nat:nat": {
