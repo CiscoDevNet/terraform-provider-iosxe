@@ -73,5 +73,5 @@ resource "iosxe_rest" "nat_example_get" {
 # Remove the available NAT configuration 
 resource "iosxe_rest" "nat_example_delete" {
   method = "DELETE"
-  path = "/data/Cisco-IOS-XE-native:native/ip/nat"
+  path = "/data/Cisco-IOS-XE-native:native/ip/nat/inside"
 }
