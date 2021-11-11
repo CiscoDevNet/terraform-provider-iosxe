@@ -16,9 +16,9 @@ func resourceIOSXERest() *schema.Resource {
 	return &schema.Resource{
 		Description: "Manages Cisco IOS XE Generic Rest Resource",
 
-		CreateContext: resourceIOSXERestCreate,
+		CreateContext: resourceIOSXERestCreateUpdate,
 		ReadContext:   resourceIOSXERestRead,
-		UpdateContext: resourceIOSXERestCreate,
+		UpdateContext: resourceIOSXERestCreateUpdate,
 		DeleteContext: resourceIOSXERestDelete,
 
 		Schema: map[string]*schema.Schema{
@@ -58,7 +58,7 @@ func resourceIOSXERest() *schema.Resource {
 	}
 }
 
-func resourceIOSXERestCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func resourceIOSXERestCreateUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	log.Println("[DEBUG] Begining Create method ")
 
 	iosxeAC, _ := meta.(*apiClient)
@@ -122,11 +122,6 @@ func resourceIOSXERestRead(ctx context.Context, d *schema.ResourceData, meta int
 
 	return nil
 }
-
-// func resourceIOSXERestUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-
-// 	return nil
-// }
 
 func resourceIOSXERestDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	d.SetId("")
