@@ -155,7 +155,7 @@ func checkForErrors(resp *http.Response) error {
 	case http.StatusUnauthorized:
 		return errors.New("unauthorized: please check your credentials")
 	case http.StatusForbidden:
-		return errors.New("forbidden: you do not have permission OR org_id is invalid")
+		return errors.New("forbidden: you do not have permissions")
 	case http.StatusMethodNotAllowed:
 		return fmt.Errorf("not-allowed: %s is not allowed on %s", method, resourcePath)
 	case http.StatusNotAcceptable:
