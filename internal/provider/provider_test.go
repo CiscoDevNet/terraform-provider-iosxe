@@ -1,10 +1,13 @@
 package provider
 
 import (
+	"fmt"
 	"os"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 // providerFactories are used to instantiate a provider during acceptance testing.
@@ -36,5 +39,18 @@ func testAccPreCheck(t *testing.T) {
 	}
 	if len(missing) > 0 {
 		t.Fatalf("Required environment variables missing: %v", missing)
+	}
+}
+
+// testAccPreCheck To validate the deletion of features in acceptance test
+func testAccCheckIOSXEGeneralizeDestroy() func(s *terraform.State) error {
+	return func(s *terraform.State) error {
+		r, _ := regexp.Compile("iosxe_rest.*")
+		for _, rs := range s.RootModule().Resources {
+			if r.MatchString(rs.Type) {
+				return fmt.Errorf("%s still exists, ResourceID: %v", "iosxe_rest", rs)
+			}
+		}
+		return nil
 	}
 }
