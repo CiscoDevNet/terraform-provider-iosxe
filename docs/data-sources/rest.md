@@ -27,6 +27,6 @@ data "iosxe_rest" "example" {
 
 ### Read-Only
 
-- **response** (String) The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE"
+- **response** (String) The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE".
 
 
