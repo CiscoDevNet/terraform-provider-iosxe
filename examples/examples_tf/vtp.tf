@@ -32,10 +32,13 @@ resource "iosxe_rest" "vtp_example_patch" {
   path = "/data/Cisco-IOS-XE-native:native/vtp"
   payload = jsonencode(
     {
-      "Cisco-IOS-XE-native:vtp": {        
-        "Cisco-IOS-XE-vtp:domain": "example_domain"
-      }
-    }
+				"Cisco-IOS-XE-native:vtp": {
+					"Cisco-IOS-XE-vtp:password": {
+						"password": "some_password"
+					},
+					"Cisco-IOS-XE-vtp:domain": "domain_updated"
+				}
+			}
   )
 }
 
