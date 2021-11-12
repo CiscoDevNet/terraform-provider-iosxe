@@ -30,10 +30,10 @@ resource "iosxe_rest" "example" {
 
 ### Optional
 
-- **payload** (String) The payload for the HTTP "POST", "PATCH", and "PUT". The provider will set it to null-value at the time of HTTP "GET" and "DELETE"
+- **payload** (String) The payload for the HTTP "POST", "PATCH", and "PUT". The provider will set it to null-value at the time of HTTP "GET" and "DELETE".
 
 ### Read-Only
 
-- **response** (String) The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE"
+- **response** (String) The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE".
 
 
