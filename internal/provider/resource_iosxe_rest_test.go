@@ -4,158 +4,651 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func TestAccResourceIOSXERest(t *testing.T) {
-	resource.UnitTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t) },
-		ProviderFactories: providerFactories,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccResourceIOSXERestConfig_Create,
-				Check:  resource.ComposeTestCheckFunc(),
-			},
-			{
-				Config: testAccResourceIOSXERestConfig_Delete,
-				Check:  resource.ComposeTestCheckFunc(),
-			},
-		},
-		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(),
-	})
-}
-
-// For three aaa i.e. aaa-accounting, aaa-authentication, and aaa-authorization, it would be better to not touch them :). Change it if you know what you are doing!
+// For three aaa i.e. aaa-accounting, aaa-authentication, and aaa-authorization, it would be better to not touch them :). Change it if you know what you are doing! (change the 't' in function's name to 'T' to run)
 //
-// Both POE and NAT needs a different hardware to work. Configure the environment variables accordingly!
+// Both POE and NAT needs a different hardware to work. Configure the environment variables accordingly! (change the 't' in function's name to 'T' to run)
 //
 // Dev-vrf needs to be created before executing emp feature test
 
-const testAccResourceIOSXERestConfig_Create = `
-	#resource "iosxe_rest" "aaa_accounting_example_patch" {
-	#	method = "PATCH"
-	#	path   = "/data/Cisco-IOS-XE-native:native/aaa/accounting"
-	#	payload = jsonencode(
-	#	{
-	#		"Cisco-IOS-XE-aaa:accounting": {
-	#			"network": [
-	#				{
-	#					"id": "default-patch"
-	#				},
-	#				{
-	#					"id": "network2",
-	#					"start-stop": {
-	#						"group-config": {
-	#							"group1": {
-	#								"group": "radius"
-	#							},
-	#							"group2": {
-	#								"group": "tacacs+"
-	#							}
-	#						}
-	#					}
-	#				}
-	#			],
-	#			"system": {
-	#				"guarantee-first": false
-	#			}
-	#		}
-	#	}
-	#	)
-	#}
-	
-	#resource "iosxe_rest" "aaa_authentication_example_patch" {
-	#	method = "PATCH"
-	#	path   = "/data/Cisco-IOS-XE-native:native/aaa/authentication"
-	#	payload = jsonencode(
-	#	{
-	#		"Cisco-IOS-XE-aaa:authentication": {
-	#			"login": [
-	#				{
-	#					"name": "default-patch",
-	#					"a1": {
-	#						"group": "tacacs+"
-	#					},
-	#					"a2": {
-	#						"none": [
-	#							null
-	#						]
-	#					}
-	#				}
-	#			],
-	#			"ppp": [
-	#				{
-	#					"id": "server-group1",
-	#					"a1": {
-	#						"group": "radius"
-	#					},
-	#					"a2": {
-	#						"group": "tacacs+"
-	#					},
-	#					"a3": {
-	#						"local": [
-	#							null
-	#						]
-	#					},
-	#					"a4": {
-	#						"none": [
-	#							null
-	#						]
-	#					}
-	#				}
-	#			]
-	#		}
-	#	}
-	#	)
-	#}
-	
-	#resource "iosxe_rest" "aaa_authorization_example_patch" {
-	#	method = "PATCH"
-	#	path   = "/data/Cisco-IOS-XE-native:native/aaa/authorization"
-	#	payload = jsonencode(
-	#	{
-	#		"Cisco-IOS-XE-aaa:authorization": {
-	#			"exec": [
-	#				{
-	#					"name": "default",
-	#					"a1": {
-	#						"local": [
-	#							null
-	#						]
-	#					}
-	#				},
-	#				{
-	#					"name": "patch-auth",
-	#					"a1": {
-	#						"local": [
-	#							null
-	#						]
-	#					}
-	#				}
-	#			],
-	#			"network": [
-	#				{
-	#					"id": "default",
-	#					"a1": {
-	#						"local": [
-	#							null
-	#						]
-	#					}
-	#				},
-	#				{
-	#					"id": "patch-auth",
-	#					"a1": {
-	#						"local": [
-	#							null
-	#						]
-	#					}
-	#				}
-	#			]
-	#		}
-	#	}
-	#	)
-	#}
-	
-	
+var providerIOSXE *schema.Provider
+
+func testAccResource_aaa_accounting_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_aaa_accounting_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_aaa_accounting_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func testAccResource_aaa_authentication_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_aaa_authentication_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_aaa_authentication_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func testAccResource_aaa_authorization_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_aaa_authorization_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_aaa_authorization_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_acl_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_acl_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_acl_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_bgp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_bgp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_bgp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_cdp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_cdp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_cdp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_dhcp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_dhcp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_dhcp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_emp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_emp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_emp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_etherChannel_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_etherChannel_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_etherChannel_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_hsrp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_hsrp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_hsrp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_igmp_proxy_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_igmp_proxy_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_igmp_proxy_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_igmp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_igmp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_igmp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_l3_subinterface_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_l3_subinterface_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_l3_subinterface_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_line_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_line_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_line_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_mdt_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_mdt_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_mdt_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func testAccResource_nat_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_nat_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_nat_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_ntp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_ntp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_ntp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_ospf_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_ospf_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_ospf_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_pim_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_pim_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_pim_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func testAccResource_poe_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_poe_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_poe_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_radius_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_radius_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_radius_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_snmp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_snmp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_snmp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+func TestAccResource_span_rspan_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_span_rspan_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_span_rspan_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+func TestAccResource_vlan_trunk_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_vlan_trunk_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_vlan_trunk_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+func TestAccResource_vlan_voice_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_vlan_voice_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_vlan_voice_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+func TestAccResource_vlan_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_vlan_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_vlan_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+func TestAccResource_vtp_IOSXERest(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactoriesInternal(&providerIOSXE),
+		Steps: []resource.TestStep{
+			{
+				Config: testAccResourceIOSXE_vtp_RestConfig_Create,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+			{
+				Config: testAccResourceIOSXE_vtp_RestConfig_Delete,
+				Check:  resource.ComposeTestCheckFunc(),
+			},
+		},
+		CheckDestroy: testAccCheckIOSXEGeneralizeDestroy(providerIOSXE),
+	})
+}
+
+const testAccResourceIOSXE_aaa_accounting_RestConfig_Create = `
+	resource "iosxe_rest" "aaa_accounting_example_patch" {
+		method = "PATCH"
+		path   = "/data/Cisco-IOS-XE-native:native/aaa/accounting"
+		payload = jsonencode(
+		{
+			"Cisco-IOS-XE-aaa:accounting": {
+				"network": [
+					{
+						"id": "default-patch"
+					},
+					{
+						"id": "network2",
+						"start-stop": {
+							"group-config": {
+								"group1": {
+									"group": "radius"
+								},
+								"group2": {
+									"group": "tacacs+"
+								}
+							}
+						}
+					}
+				],
+				"system": {
+					"guarantee-first": false
+				}
+			}
+		}
+		)
+	}
+`
+
+const testAccResourceIOSXE_aaa_accounting_RestConfig_Delete = `
+	resource "iosxe_rest" "aaa_accounting_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/aaa/accounting"
+	}
+`
+
+const testAccResourceIOSXE_aaa_authentication_RestConfig_Create = `
+	resource "iosxe_rest" "aaa_authentication_example_patch" {
+		method = "PATCH"
+		path   = "/data/Cisco-IOS-XE-native:native/aaa/authentication"
+		payload = jsonencode(
+		{
+			"Cisco-IOS-XE-aaa:authentication": {
+				"login": [
+					{
+						"name": "default-patch",
+						"a1": {
+							"group": "tacacs+"
+						},
+						"a2": {
+							"none": [
+								null
+							]
+						}
+					}
+				],
+				"ppp": [
+					{
+						"id": "server-group1",
+						"a1": {
+							"group": "radius"
+						},
+						"a2": {
+							"group": "tacacs+"
+						},
+						"a3": {
+							"local": [
+								null
+							]
+						},
+						"a4": {
+							"none": [
+								null
+							]
+						}
+					}
+				]
+			}
+		}
+		)
+	}
+`
+
+const testAccResourceIOSXE_aaa_authentication_RestConfig_Delete = `
+	resource "iosxe_rest" "aaa_authentication_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/aaa/authentication"
+	}
+`
+
+const testAccResourceIOSXE_aaa_authorization_RestConfig_Create = `
+	resource "iosxe_rest" "aaa_authorization_example_patch" {
+		method = "PATCH"
+		path   = "/data/Cisco-IOS-XE-native:native/aaa/authorization"
+		payload = jsonencode(
+		{
+			"Cisco-IOS-XE-aaa:authorization": {
+				"exec": [
+					{
+						"name": "default",
+						"a1": {
+							"local": [
+								null
+							]
+						}
+					},
+					{
+						"name": "patch-auth",
+						"a1": {
+							"local": [
+								null
+							]
+						}
+					}
+				],
+				"network": [
+					{
+						"id": "default",
+						"a1": {
+							"local": [
+								null
+							]
+						}
+					},
+					{
+						"id": "patch-auth",
+						"a1": {
+							"local": [
+								null
+							]
+						}
+					}
+				]
+			}
+		}
+		)
+	}
+`
+
+const testAccResourceIOSXE_aaa_authorization_RestConfig_Delete = `
+	resource "iosxe_rest" "aaa_authorization_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/aaa/authorization/exec=put-auth"
+	}
+`
+
+const testAccResourceIOSXE_acl_RestConfig_Create = `
 	resource "iosxe_rest" "acl_example_patch" {
 		method = "PATCH"
 		path = "/data/Cisco-IOS-XE-native:native/ip/access-list"
@@ -244,20 +737,24 @@ const testAccResourceIOSXERestConfig_Create = `
 			}
 			}
 		)
-		}
 	}
-	
+`
+const testAccResourceIOSXE_acl_RestConfig_Delete = `
+	resource "iosxe_rest" "acl_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/ip/access-list/extended=101"
+	}
+`
+
+const testAccResourceIOSXE_bgp_RestConfig_Create = `
 	resource "iosxe_rest" "bgp_example_patch" {
 		method = "PATCH"
-		path = "/data/Cisco-IOS-XE-native:native/router/bgp=46000"
+		path = "/data/Cisco-IOS-XE-native:native/router/bgp"
 		payload = jsonencode(
-			{
+		{
 			"Cisco-IOS-XE-bgp:bgp": [
 				{
 					"id": 46000,
-					"bgp": {
-						"log-neighbor-changes": true
-					},
 					"neighbor": [
 						{
 							"id": "10.109.1.4",
@@ -269,7 +766,15 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_bgp_RestConfig_Delete = `
+	resource "iosxe_rest" "bgp_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/router/bgp=46000"
+	}
+`
+
+const testAccResourceIOSXE_cdp_RestConfig_Create = `
 	resource "iosxe_rest" "cdp_example_patch" {
 		method = "PATCH"
 		path = "/data/Cisco-IOS-XE-native:native/cdp"
@@ -287,7 +792,7 @@ const testAccResourceIOSXERestConfig_Create = `
 					"cos": "",
 					"duplex": "",
 					"trust": ""
-				},            
+				},
 				{
 					"name": "CDP-2",
 					"version": "",
@@ -301,9 +806,16 @@ const testAccResourceIOSXERestConfig_Create = `
 			}
 			}
 		)
-		}
 	}
-	
+`
+const testAccResourceIOSXE_cdp_RestConfig_Delete = `
+	resource "iosxe_rest" "cdp_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/cdp"
+	}
+`
+
+const testAccResourceIOSXE_dhcp_RestConfig_Create = `
 	resource "iosxe_rest" "dhcp_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/ipv6/dhcp"
@@ -324,7 +836,15 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_dhcp_RestConfig_Delete = `
+	resource "iosxe_rest" "dhcp_example_delete" {
+		method = "DELETE"
+		path   = "/data/Cisco-IOS-XE-native:native/ipv6/dhcp/pool=7"
+	}
+`
+
+const testAccResourceIOSXE_emp_RestConfig_Create = `
 	resource "iosxe_rest" "emp_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
@@ -343,7 +863,16 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+
+const testAccResourceIOSXE_emp_RestConfig_Delete = `
+	resource "iosxe_rest" "emp_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f1/switchport-conf"
+	}
+`
+
+const testAccResourceIOSXE_etherChannel_RestConfig_Create = `
 	resource "iosxe_rest" "etherChannel_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f19"
@@ -363,7 +892,15 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_etherChannel_RestConfig_Delete = `
+	resource "iosxe_rest" "etherChannel_example_delete" {
+		method = "DELETE"
+		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f19/Cisco-IOS-XE-ethernet:channel-group"
+	}
+`
+
+const testAccResourceIOSXE_hsrp_RestConfig_Create = `
 	resource "iosxe_rest" "hsrp_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
@@ -404,7 +941,15 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_hsrp_RestConfig_Delete = `
+	resource "iosxe_rest" "hsrp_example_delete" {
+		method = "DELETE"
+		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f13/standby"
+	}
+`
+
+const testAccResourceIOSXE_igmp_proxy_RestConfig_Create = `
 	resource "iosxe_rest" "igmp_proxy_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
@@ -434,7 +979,16 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+
+const testAccResourceIOSXE_igmp_proxy_RestConfig_Delete = `
+	resource "iosxe_rest" "igmp_proxy_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f18/ip/igmp"
+	}
+`
+
+const testAccResourceIOSXE_igmp_RestConfig_Create = `
 	resource "iosxe_rest" "igmp_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/ip/igmp"
@@ -460,6 +1014,16 @@ const testAccResourceIOSXERestConfig_Create = `
 		)
 	}
 	
+`
+
+const testAccResourceIOSXE_igmp_RestConfig_Delete = `
+	resource "iosxe_rest" "igmp_example_delete" {
+		method = "DELETE"
+		path   = "/data/Cisco-IOS-XE-native:native/ip/igmp/profile=3"
+	}
+`
+
+const testAccResourceIOSXE_l3_subinterface_RestConfig_Create = `
 	resource "iosxe_rest" "l3_subinterface_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel"
@@ -484,7 +1048,16 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+
+const testAccResourceIOSXE_l3_subinterface_RestConfig_Delete = `
+	resource "iosxe_rest" "l3_subinterface_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=2.10"
+	}
+`
+
+const testAccResourceIOSXE_line_RestConfig_Create = `
 	resource "iosxe_rest" "line_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/line"
@@ -573,7 +1146,16 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+
+const testAccResourceIOSXE_line_RestConfig_Delete = `
+	resource "iosxe_rest" "line_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/line/vty=32"
+	}
+`
+
+const testAccResourceIOSXE_mdt_RestConfig_Create = `
 	resource "iosxe_rest" "mdt_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-mdt-cfg:mdt-config-data"
@@ -603,34 +1185,52 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
-	#resource "iosxe_rest" "nat_example_patch" {
-	#	method = "PATCH"
-	#	path   = "/data/Cisco-IOS-XE-native:native/ip/nat"
-	#	payload = jsonencode(
-	#	{
-	#		"Cisco-IOS-XE-nat:nat": {
-	#			"pool": [
-	#				{
-	#					"id": "net-208",
-	#					"prefix-length": 27
-	#				}
-	#			],
-	#			"inside": {
-	#				"source": {
-	#					"list": [
-	#						{
-	#							"id": 1,
-	#							"pool": "net-208"
-	#						}
-	#					]
-	#				}
-	#			}
-	#		}
-	#	}
-	#	)
-	#}
-	
+`
+
+const testAccResourceIOSXE_mdt_RestConfig_Delete = `
+	resource "iosxe_rest" "mdt_example_delete" {
+		method = "DELETE"
+		path   = "/data/Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=1200"
+	}
+`
+
+const testAccResourceIOSXE_nat_RestConfig_Create = `
+	resource "iosxe_rest" "nat_example_patch" {
+		method = "PATCH"
+		path   = "/data/Cisco-IOS-XE-native:native/ip/nat"
+		payload = jsonencode(
+		{
+			"Cisco-IOS-XE-nat:nat": {
+				"pool": [
+					{
+						"id": "net-208",
+						"prefix-length": 27
+					}
+				],
+				"inside": {
+					"source": {
+						"list": [
+							{
+								"id": 1,
+								"pool": "net-208"
+							}
+						]
+					}
+				}
+			}
+		}
+		)
+	}
+`
+const testAccResourceIOSXE_nat_RestConfig_Delete = `
+	resource "iosxe_rest" "nat_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/ip/nat/inside"
+	}
+`
+
+const testAccResourceIOSXE_ntp_RestConfig_Create = `
+
 	resource "iosxe_rest" "ntp_example_patch" {
 		method = "PATCH"
 		path = "/data/Cisco-IOS-XE-native:native/ntp"
@@ -674,7 +1274,16 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_ntp_RestConfig_Delete = `
+
+	resource "iosxe_rest" "ntp_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/ntp"
+	}
+`
+
+const testAccResourceIOSXE_ospf_RestConfig_Create = `
 	resource "iosxe_rest" "ospf_example_patch" {
 		method = "PATCH"
 		path = "/data/Cisco-IOS-XE-native:native/router/router-ospf/ospf"
@@ -706,7 +1315,15 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_ospf_RestConfig_Delete = `
+	resource "iosxe_rest" "ospf_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/router/router-ospf/ospf/process-id=15"
+	}
+`
+
+const testAccResourceIOSXE_pim_RestConfig_Create = `
 	resource "iosxe_rest" "pim_example_patch" {
 		method = "PATCH"
 		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f15/ip/pim"
@@ -722,21 +1339,37 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
-	#resource "iosxe_rest" "poe_example_patch" {
-	#	method = "PATCH"
-	#	path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/Cisco-IOS-XE-power:power/inline"
-	#	payload = jsonencode(
-	#	{
-	#		"Cisco-IOS-XE-power:inline": {
-	#		"auto-choice": {
-	#			"max": 5000
-	#		}
-	#		}
-	#	}
-	#	)
-	#}
-	
+`
+const testAccResourceIOSXE_pim_RestConfig_Delete = `
+	resource "iosxe_rest" "pim_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f15/ip/pim"
+	} 
+`
+
+const testAccResourceIOSXE_poe_RestConfig_Create = `
+	resource "iosxe_rest" "poe_example_patch" {
+		method = "PATCH"
+		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/Cisco-IOS-XE-power:power/inline"
+		payload = jsonencode(
+		{
+			"Cisco-IOS-XE-power:inline": {
+			"auto-choice": {
+				"max": 5000
+			}
+			}
+		}
+		)
+	}
+`
+const testAccResourceIOSXE_poe_RestConfig_Delete = `
+	resource "iosxe_rest" "poe_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/Cisco-IOS-XE-power:power/inline"
+	}
+`
+
+const testAccResourceIOSXE_radius_RestConfig_Create = `
 	resource "iosxe_rest" "radius_example_patch" {
 		method = "PATCH"
 		path = "/data/Cisco-IOS-XE-native:native/radius"
@@ -762,7 +1395,15 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_radius_RestConfig_Delete = `
+	resource "iosxe_rest" "radius_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/radius/server=rsim"
+	}
+`
+
+const testAccResourceIOSXE_snmp_RestConfig_Create = `
 	resource "iosxe_rest" "snmp_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/snmp-server"
@@ -1218,8 +1859,17 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
-	resource "iosxe_rest" "span-rspan_example_patch" {
+`
+
+const testAccResourceIOSXE_snmp_RestConfig_Delete = `
+	resource "iosxe_rest" "snmp_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/snmp-server"
+	}
+`
+
+const testAccResourceIOSXE_span_rspan_RestConfig_Create = `
+	resource "iosxe_rest" "span_rspan_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/monitor"
 		payload = jsonencode(
@@ -1248,7 +1898,15 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_span_rspan_RestConfig_Delete = `
+	resource "iosxe_rest" "span_rspan_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/monitor/session=1"
+	}
+`
+
+const testAccResourceIOSXE_vlan_trunk_RestConfig_Create = `
 	resource "iosxe_rest" "vlan_trunk_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
@@ -1276,7 +1934,15 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_vlan_trunk_RestConfig_Delete = `
+	resource "iosxe_rest" "vlan_trunk_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f11/switchport-config"
+	}
+`
+
+const testAccResourceIOSXE_vlan_voice_RestConfig_Create = `
 	resource "iosxe_rest" "vlan_voice_example_patch" {
 		method = "PATCH"
 		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet"
@@ -1298,7 +1964,16 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
+`
+const testAccResourceIOSXE_vlan_voice_RestConfig_Delete = `
+	resource "iosxe_rest" "vlan_voice_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/switchport-config"
+	}
+`
+
+const testAccResourceIOSXE_vlan_RestConfig_Create = `
+ 
 	resource "iosxe_rest" "vlan_example_patch" {
 		method = "PATCH"
 		path = "/data/Cisco-IOS-XE-native:native/vlan"
@@ -1315,8 +1990,17 @@ const testAccResourceIOSXERestConfig_Create = `
 		}
 		)
 	}
-	
-	resource "iosxe_rest" "vtp_example_patch" {
+`
+
+const testAccResourceIOSXE_vlan_RestConfig_Delete = `
+	resource "iosxe_rest" "vlan_example_delete" {
+		method = "DELETE"
+		path = "/data/Cisco-IOS-XE-native:native/vlan/vlan-list=51"
+	}
+`
+
+const testAccResourceIOSXE_vtp_RestConfig_Create = `
+  resource "iosxe_rest" "vtp_example_patch" {
 		method = "PATCH"
 		path = "/data/Cisco-IOS-XE-native:native/vtp"
 		payload = jsonencode(
@@ -1331,141 +2015,9 @@ const testAccResourceIOSXERestConfig_Create = `
 		)
 	}
 `
-
-const testAccResourceIOSXERestConfig_Delete = `
-	#resource "iosxe_rest" "aaa_accounting_example_delete" {
-	#	method = "DELETE"
-	#	path = "/data/Cisco-IOS-XE-native:native/aaa/accounting"
-	#}
-
-	#resource "iosxe_rest" "aaa_authentication_example_delete" {
-	#	method = "DELETE"
-	#	path = "/data/Cisco-IOS-XE-native:native/aaa/authentication"
-	#}
-
-	#resource "iosxe_rest" "aaa_authorization_example_delete" {
-	#	method = "DELETE"
-	#	path = "/data/Cisco-IOS-XE-native:native/aaa/authorization/exec=put-auth"
-	#}
-
-	resource "iosxe_rest" "acl_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/ip/access-list/extended=101"
-	}
-
-	resource "iosxe_rest" "bgp_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/router/bgp=46000"
-	}
-
-	resource "iosxe_rest" "cdp_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/cdp"
-	}
-
-	resource "iosxe_rest" "dhcp_example_delete" {
-		method = "DELETE"
-		path   = "/data/Cisco-IOS-XE-native:native/ipv6/dhcp/pool=7"
-	}
-
-	resource "iosxe_rest" "emp_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f1/switchport-conf"
-	}
-
-	resource "iosxe_rest" "etherChannel_example_delete" {
-		method = "DELETE"
-		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f19/Cisco-IOS-XE-ethernet:channel-group"
-	}
-
-	resource "iosxe_rest" "hsrp_example_delete" {
-		method = "DELETE"
-		path   = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f13/standby"
-	}
-
-	resource "iosxe_rest" "igmp_proxy_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f18/ip/igmp"
-	}
-
-	resource "iosxe_rest" "igmp_example_delete" {
-		method = "DELETE"
-		path   = "/data/Cisco-IOS-XE-native:native/ip/igmp/profile=3"
-	}
-
-	resource "iosxe_rest" "l3_subinterface_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=2.10"
-	}
-
-	resource "iosxe_rest" "line_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/line/vty=32"
-	}
-
-	resource "iosxe_rest" "mdt_example_delete" {
-		method = "DELETE"
-		path   = "/data/Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=1200"
-	}
-
-	#resource "iosxe_rest" "nat_example_delete" {
-	#	method = "DELETE"
-	#	path = "/data/Cisco-IOS-XE-native:native/ip/nat/inside"
-	#}
-
-	resource "iosxe_rest" "ntp_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/ntp"
-	}
-
-	resource "iosxe_rest" "ospf_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/router/router-ospf/ospf/process-id=15"
-	}
-
-	resource "iosxe_rest" "pim_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f15/ip/pim"
-	} 
-
-	#resource "iosxe_rest" "poe_example_delete" {
-	#	method = "DELETE"
-	#	path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/Cisco-IOS-XE-power:power/inline"
-	#}
-
-	resource "iosxe_rest" "radius_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/radius/server=rsim"
-	}
-
-	resource "iosxe_rest" "snmp_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/snmp-server"
-	}
-
-	resource "iosxe_rest" "span-rspan_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/monitor/session=1"
-	}
-
-	resource "iosxe_rest" "vlan_trunk_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f11/switchport-config"
-	}
-
-	resource "iosxe_rest" "vlan_voice_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2f0%2f12/switchport-config"
-	}
-
-	resource "iosxe_rest" "vlan_example_delete" {
-		method = "DELETE"
-		path = "/data/Cisco-IOS-XE-native:native/vlan/vlan-list=51"
-	}
-
+const testAccResourceIOSXE_vtp_RestConfig_Delete = `
 	resource "iosxe_rest" "vtp_example_delete" {
 		method = "DELETE"
 		path = "/data/Cisco-IOS-XE-native:native/vtp/password"
 	}
-
 `
