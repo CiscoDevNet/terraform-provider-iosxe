@@ -42,17 +42,17 @@ func resourceIOSXERest() *schema.Resource {
 						"PATCH",
 					}, false),
 				),
-				Description: `The HTTP method. Allowed values for method are "GET", "POST", "PUT", "PATCH" and "DELETE".`,
+				Description: `The HTTP method. Allowed values for method are "GET", "POST", "PUT", "PATCH" and "DELETE.".`,
 			},
 			"payload": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: `The payload for the HTTP "POST", "PATCH", and "PUT". The provider will set it to null-value at the time of HTTP "GET" and "DELETE"`,
+				Description: `The payload for the HTTP "POST", "PATCH", and "PUT". The provider will set it to null-value at the time of HTTP "GET" and "DELETE."`,
 			},
 			"response": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: `The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE"`,
+				Description: `The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE."`,
 			},
 		},
 	}
