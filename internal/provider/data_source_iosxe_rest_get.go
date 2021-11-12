@@ -28,7 +28,7 @@ func datasourceIOSXERest() *schema.Resource {
 			"response": {
 				Type:        schema.TypeString,
 				Computed:    true,
-				Description: `The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE"`,
+				Description: `The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE."`,
 			},
 		},
 	}
