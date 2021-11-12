@@ -6,5 +6,5 @@ The document generation tool looks for files in the following locations by defau
 
 * **examples_tf** example tf files in HCL
 * **provider/provider.tf** example file for the provider index page
-* **resources/<full resource name>/resource.tf** example file for the named data source page
+* **resources/\<full resource name\>/resource.tf** example file for the named data source page
 * **yang_to_json** JSON-converted schema from the YANG modules
