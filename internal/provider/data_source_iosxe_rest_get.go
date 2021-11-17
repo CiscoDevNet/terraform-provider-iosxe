@@ -12,7 +12,7 @@ import (
 
 func datasourceIOSXERest() *schema.Resource {
 	return &schema.Resource{
-		Description: "Represents Cisco IOS XE Generic Rest Resource",
+		Description: "Represents Cisco IOS XE Generic Rest Data Source",
 
 		ReadContext: datasourceIOSXERestRead,
 

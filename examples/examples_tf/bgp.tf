@@ -1,39 +1,24 @@
-# Adding BGP configuration
+# Adding BGP configuration(s)
 resource "iosxe_rest" "bgp_example_post" {
   method = "POST"
-  path = "/data/Cisco-IOS-XE-native:native/router/bgp"
+  path = "/data/Cisco-IOS-XE-native:native/router"
   payload = jsonencode(
     {
-        "Cisco-IOS-XE-bgp:bgp": {
-            "id": 45000,
+    "Cisco-IOS-XE-bgp:bgp": [
+        {
+            "id": 46000,
             "bgp": {
-                "always-compare-med": [
-                    null
-                ],
-                "bestpath": {
-                    "as-path": "ignore",
-                    "med": {
-                        "confed-leaf": [
-                            null
-                        ],
-                        "missing-as-worst-leaf": [
-                            null
-                        ]
-                    }
-                },
-                "default": {
-                    "local-preference": 200
-                },
                 "log-neighbor-changes": true
             },
             "neighbor": [
                 {
-                    "id": "10.106.1.2",
-                    "remote-as": 65000
+                    "id": "10.108.1.2",
+                    "remote-as": 65200
                 }
             ]
         }
-    }
+    ]
+}
   )
 }
 
@@ -43,28 +28,9 @@ resource "iosxe_rest" "bgp_example_put" {
   path = "/data/Cisco-IOS-XE-native:native/router/bgp=46000"
   payload = jsonencode(
     {
-        "Cisco-IOS-XE-bgp:bgp": {
+    "Cisco-IOS-XE-bgp:bgp": [
+        {
             "id": 46000,
-            "bgp": {
-                "always-compare-med": [
-                    null
-                ],
-                "bestpath": {
-                    "as-path": "ignore",
-                    "med": {
-                        "confed-leaf": [
-                            null
-                        ],
-                        "missing-as-worst-leaf": [
-                            null
-                        ]
-                    }
-                },
-                "default": {
-                    "local-preference": 200
-                },
-                "log-neighbor-changes": true
-            },
             "neighbor": [
                 {
                     "id": "10.106.1.2",
@@ -76,48 +42,31 @@ resource "iosxe_rest" "bgp_example_put" {
                 }
             ]
         }
-    }
+      ]
+  }
   )
 }
 
 # Adding/Updating the available BGP configuration
 resource "iosxe_rest" "bgp_example_patch" {
-  method = "PATCH"
-  path = "/data/Cisco-IOS-XE-native:native/router/bgp"
-  payload = jsonencode(
-    {
-        "Cisco-IOS-XE-bgp:bgp": {
-            "id": 46000,
-            "bgp": {
-                "always-compare-med": [
-                    null
-                ],
-                "bestpath": {
-                    "as-path": "ignore",
-                    "med": {
-                        "confed-leaf": [
-                            null
-                        ],
-                        "missing-as-worst-leaf": [
-                            null
-                        ]
+		method = "PATCH"
+		path = "/data/Cisco-IOS-XE-native:native/router/bgp"
+		payload = jsonencode(
+        {
+            "Cisco-IOS-XE-bgp:bgp": [
+            {
+                "id": 46000,
+                "neighbor": [
+                    {
+                        "id": "10.109.1.4",
+                        "remote-as": 66000
                     }
-                },
-                "default": {
-                    "local-preference": 200
-                },
-                "log-neighbor-changes": true
-            },
-            "neighbor": [
-                {
-                    "id": "10.108.1.2",
-                    "remote-as": 65200
-                }
+                ]
+            }
             ]
         }
-    }
-  )
-}
+		)
+	}
 
 # Fetch the available BGP configuration
 resource "iosxe_rest" "bgp_example_get" {

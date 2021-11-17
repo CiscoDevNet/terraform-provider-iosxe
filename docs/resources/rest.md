@@ -36,4 +36,6 @@ resource "iosxe_rest" "example" {
 
 - **response** (String) The HTTP response from the HTTP "GET". The provider will set it to null-value at the time of HTTP "POST", "PATCH", "PUT", and "DELETE".
 
+---
 
+> Note: The API requires sequential input for the payload (for some features like NAT and BGP) whereas Terraform sorts/reorders the specified payload which can cause the call to fail.
