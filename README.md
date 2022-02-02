@@ -42,3 +42,25 @@ The primary use-case for the Cisco IOS XE provider is managing the following fea
 1. [vlan-trunk](./examples/examples_tf/vlan-trunk.tf)
 1. [vlan-voice](./examples/examples_tf/vlan-voice.tf)
 1. [vtp](./examples/examples_tf/vtp.tf)
+
+## Creating Additional Terraform Resources
+Any feature or Remote Procedure Call (RPC) supported by RESTCONF & YANG is also supported by Terraform. If a particular feature is not yet in this GitHub repository, you can create the necessary Terraform file using these steps
+1.	Configure the feature as per the CLI config guide, if needed.
+1.	Execute the feature's RESTCONF XPATH and provide any necessary JSON. 
+    -	You can find the JSON for features currently configured device using `show run | format restconf-json`
+    -	An alternate approach to find the RESTCONF JSON can be done using [YANG Suite](https://github.com/CiscoDevNet/yangsuite), a tool to visualize and understand YANG models
+    ![](restconf_with_yang_suite.gif)
+1.  The resulting JSON found from executing RESTCONF can be used to create the .tf file. For example, replace each of the values in angle brackets (<>) in the example Terraform file below with the corresponding Xpath and JSON:
+
+    example.tf
+    ```
+    resource "iosxe_rest" "feature_put" {
+        method = "PUT"
+        path   = <RESTCONF_XPATH>
+        payload = jsonencode(    
+            {
+                <JSON_RESPONSE>
+            }
+        )
+    }
+    ```
