@@ -16,5 +16,5 @@ Use the [simplified_vlan.tf](simplified_acl_and_vlan.tf) file to configure a VLA
    terraform apply -auto-approve
    ```
 
-See an example terraform file to configure an ACL
+See an example terraform file to configure a VLAN
 ![](vlan.gif)
