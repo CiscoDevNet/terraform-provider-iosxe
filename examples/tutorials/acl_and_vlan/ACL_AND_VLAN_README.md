@@ -16,5 +16,5 @@ Use the [simplified_acl_and_vlan.tf](simplified_acl_and_vlan.tf) file to configu
    terraform apply -auto-approve
    ```
 
-See an example terraform file to configure an ACL
+See an example terraform file to configure an ACL and a VLAN
 ![](acl_and_vlan.gif)
