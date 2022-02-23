@@ -13,6 +13,8 @@ The following versions of Cisco IOS XE are supported:
 
 - [Using the provider](docs/index.md)
 - [Provider development](./DEVELOPMENT.md)
+- [Intro to IOS XE slides](docs/resources/intro_to_terraform_video.pdf)
+
 
 The primary use-case for the Cisco IOS XE provider is managing the following features:
 1. [aaa-authentication](./examples/examples_tf/aaa-authentication.tf)
