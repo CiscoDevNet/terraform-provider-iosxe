@@ -1,18 +1,3 @@
-terraform {
-  required_providers {
-    iosxe = {
-      source = "local.plugin/ciscodevnet/iosxe"
-    }
-  }
-}
-
-provider "iosxe" {
-  host = "https://128.107.251.88"
-  insecure = true
-  device_username = "netadmin"
-  device_password = "C1sc0dna"
-}
-
 # Configure a Crypto IPsec tunnel
 resource "iosxe_rest" "crypto_example_post" {
   method = "PATCH"
