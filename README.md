@@ -25,7 +25,7 @@ The primary usecase for the Cisco IOS XE provider is managing the following feat
 | [igmp](./examples/examples_tf/igmp.tf)  | [igmp-proxy](./examples/examples_tf/igmp-proxy.tf)  | [l3-subinterface](./examples/examples_tf/l3-subinterface.tf)  | [line](./examples/examples_tf/line.tf)  | [mdt](./examples/examples_tf/mdt.tf)  |
 | [nat](./examples/examples_tf/nat.tf)  | [ntp](./examples/examples_tf/ntp.tf)  | [ospf](./examples/examples_tf/ospf.tf)  | [pim](./examples/examples_tf/pim.tf)  | [poe](./examples/examples_tf/poe.tf)  | 
 | [radius](./examples/examples_tf/radius.tf)  | [snmp](./examples/examples_tf/snmp.tf)  | [span-rspan](./examples/examples_tf/span-rspan.tf)  | [vlan](./examples/examples_tf/vlan.tf)  | [vlan-trunk](./examples/examples_tf/vlan-trunk.tf)  | 
-| [vlan-voice](./examples/examples_tf/vlan-voice.tf)  | [vtp](./examples/examples_tf/vtp.tf) |
+| [vlan-voice](./examples/examples_tf/vlan-voice.tf)  | [vtp](./examples/examples_tf/vtp.tf) | [ipsec crypto tunnel](./examples/examples_tf/crypto-tunnel.tf) |
 
 ## Creating Additional Terraform Resources
 Any feature or Remote Procedure Call (RPC) supported by RESTCONF & YANG is supported by this Terraform provider. If a particular feature example is not yet in this GitHub repository, you can create the necessary Terraform file using these steps
