@@ -7,7 +7,7 @@
 The terraform-provider-iosxe is a plugin for Terraform that one can use to manage the configuration and state on Cisco Catalyst IOS XE devices including switches, routers, and wireless LAN controllers.
 
 The provider was build and tested with Cisco Catalyst IOS XE and all subsequent releases are supported
-- Cisco IOS XE 17.6.1
+- Cisco IOS XE 17.7
 
 ## Getting Started
 
@@ -30,7 +30,7 @@ The primary usecase for the Cisco IOS XE provider is managing the following feat
 ## Creating Additional Terraform Resources
 Any feature or Remote Procedure Call (RPC) supported by RESTCONF & YANG is supported by this Terraform provider. If a particular feature example is not yet in this GitHub repository, you can create the necessary Terraform file using these steps
 1.	Configure the feature as per the CLI config guide, if needed.
-1.	You can find the JSON for features currently configured device using `show run | format restconf-json`
+1.	You can find the JSON for features currently configured device using `show run | format restconf-json` ![](cli2yang.png)
     -	An alternate approach to find the RESTCONF JSON can be done using [YANG Suite](https://github.com/CiscoDevNet/yangsuite), a tool to visualize and understand YANG models
     ![](restconf_with_yang_suite.gif)
 1.  The resulting JSON found from executing RESTCONF can be used to create the .tf file. For example, replace each of the values in angle brackets (<>) in the example Terraform file below with the corresponding Xpath and JSON:
