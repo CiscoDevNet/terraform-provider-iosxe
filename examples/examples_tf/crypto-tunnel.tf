@@ -1,19 +1,4 @@
-terraform {
-  required_providers {
-    iosxe = {
-      source = "local.plugin/ciscodevnet/iosxe"
-    }
-  }
-}
-
-provider "iosxe" {
-  host = "https://10.1.1.5"
-  insecure = true
-  device_username = "admin"
-  device_password = ""
-}
-
-# crypto:
+# crypto stuffs:
 resource "iosxe_rest" "crypto_example_post" {
   method = "PATCH"
   path = "/data/Cisco-IOS-XE-native:native/crypto"
