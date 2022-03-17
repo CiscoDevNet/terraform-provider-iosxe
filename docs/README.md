@@ -41,6 +41,7 @@ provider "iosxe" {
   proxy_creds = ""
 }
 
+# GET against Cisco-IOS-XE-native "show running-config" example
 resource "iosxe_rest" "rest1" {
   method = "GET"
   path = "/data/Cisco-IOS-XE-native:native"
