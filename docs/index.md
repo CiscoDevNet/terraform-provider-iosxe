@@ -18,6 +18,15 @@ The provider needs to be configured with the host and credentials before it can 
 ## Example Usage
 
 ```terraform
+terraform {
+  required_providers {
+    iosxe = {
+      source = "CiscoDevNet/iosxe"
+      version = "0.1.1"
+    }
+  }
+}
+
 provider "iosxe" {
   // Required but Optional if env variable are set
   host = "https://10.1.1.5"
