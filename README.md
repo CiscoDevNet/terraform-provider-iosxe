@@ -10,13 +10,49 @@ The provider was build and tested with Cisco Catalyst IOS XE and all subsequent 
 - Cisco IOS XE 17.7
 
 ## Getting Started
+Review the [Intro to IOS XE slides](docs/resources/intro_to_terraform_video.pdf) for reference
+1. Enable RESTCONF on the device
+```
+device# conf t
+device(conf)# restconf
+```
+2. [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) on the host that will apply the changes to the device
+3. Create a Terraform file on the host like the following example that adds VLAN 1 to the device:
 
-- [Using the provider](docs/index.md)
-- [Provider development](./DEVELOPMENT.md)
-- [Intro to IOS XE slides](docs/resources/intro_to_terraform_video.pdf)
+vlan.tf
+```
+terraform {
+    required_providers {
+        iosxe = {
+        version = "0.1"
+        source  = "CiscoDevNet/iosxe"
+        }
+    }
+}
+
+provider "iosxe" {
+    request_timeout = 30
+    insecure = true
+}
+
+resource "iosxe_rest" "vlan_example" {
+    method = "POST"
+    path = "/data/Cisco-IOS-XE-native:native/vlan"
+    payload = jsonencode(
+        {
+            "Cisco-IOS-XE-vlan:vlan-list": {
+            "id": "1",
+            "name": "VLAN1"
+            }
+        }
+    )
+}
+```
+4. Initialize Terraform on the host `$ terrafrom init`
+5. Apply the Terraform file `$ terrafrom apply -auto-approve`
 
 
-The primary usecase for the Cisco IOS XE provider is managing the following features:
+### Cisco IOS XE Example Resources 
 
 | Features examples: |  |  |  |  | 
 | ---- | ---- |---- |---- |---- |
