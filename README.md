@@ -24,7 +24,7 @@ vlan.tf
 terraform {
     required_providers {
         iosxe = {
-        version = "0.1"
+        version = "0.1.1"
         source  = "CiscoDevNet/iosxe"
         }
     }
