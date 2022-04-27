@@ -48,8 +48,8 @@ resource "iosxe_rest" "vlan_example" {
     )
 }
 ```
-4. Initialize Terraform on the host `$ terrafrom init`
-5. Apply the Terraform file `$ terrafrom apply -auto-approve`
+4. Initialize Terraform on the host `$ terraform init`
+5. Apply the Terraform file `$ terraform apply -auto-approve`
 
 
 ### Cisco IOS XE Example Resources 
