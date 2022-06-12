@@ -24,7 +24,7 @@ Use the [create-9800-in-aws.tf](create-9800-in-aws.tf) file to create a Catalyst
     username admin privilege 15 password 0 pass123
      ```
 1. Navigate to the `configure-WLC` folder
-1. Modify the "X.X.X.X" values in [configure-WLC/9800.tfvars](configure-WLC/9800.tfvars) to be the IP address of the new 9800.
+1. Modify the "X.X.X.X" values in [9800.tfvars](configure-WLC/9800.tfvars) to be the IP address of the new 9800.
 1. Initialize Terraform from a host to use the IOS XE Terraform Provider
    ```
    terraform init
