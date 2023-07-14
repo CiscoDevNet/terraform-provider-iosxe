@@ -113,9 +113,6 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 			"source_template": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Get config from a template").String,
 				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 9223372036854775807),
-				},
 			},
 			"switchport_mode_trunk": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set trunking mode to TRUNK unconditionally").String,
