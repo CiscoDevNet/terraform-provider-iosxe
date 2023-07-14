@@ -1,0 +1,189 @@
+---
+name: Template
+path: Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=%v
+test_tags: [C9000V]
+doc_category: System
+attributes:
+  - yang_name: template_name
+    example: TEMP1
+  - yang_name: dot1x/pae
+    example: both
+  - yang_name: dot1x/max-reauth-req
+    example: 3
+  - yang_name: dot1x/max-req
+    example: 3
+  - yang_name: service-policy/input/policy-map-name
+    tf_name: service_policy_input
+    example: SP1
+  - yang_name: service-policy/output/policy-map-name
+    tf_name: service_policy_output
+    example: SP2
+  - yang_name: source/template
+    exclude_test: true
+    example: TEMP2
+  - yang_name: switchport/mode/trunk
+    example: true
+  - yang_name: switchport/mode/access
+    example: false
+  - yang_name: switchport/nonegotiate
+    example: false
+  - yang_name: switchport/block/unicast
+    example: false
+  - yang_name: switchport/port-security
+    example: true
+  - yang_name: switchport/port-security/aging/static
+    example: false
+  - yang_name: switchport/port-security/aging/time
+    example: 100
+  - yang_name: switchport/port-security/aging/type
+    example: true
+  - yang_name: switchport/port-security/aging/type/inactivity
+    example: true
+  - yang_name: switchport/port-security/maximum/range
+    type: List
+    attributes:
+      - yang_name: range
+        example: 100
+        id: true
+      - yang_name: vlan
+        example: true
+      - yang_name: vlan/access
+        example: true
+  - yang_name: switchport/port-security/violation/protect
+    example: false
+  - yang_name: switchport/port-security/violation/restrict
+    example: false
+  - yang_name: switchport/port-security/violation/shutdown
+    example: false
+  - yang_name: switchport/access/vlan
+    example: 200
+  - yang_name: switchport/voice/vlan
+    example: 201
+  - yang_name: switchport/private-vlan/host-association/primary-range
+    example: 301
+    delete_parent: true
+  - yang_name: switchport/private-vlan/host-association/secondary-range
+    example: 302
+    delete_parent: true
+  - yang_name: switchport/trunk/allowed/vlan/vlan-choice/vlans/vlans
+    xpath: switchport/trunk/allowed/vlan/vlans
+    tf_name: switchport_trunk_allowed_vlans
+    example: 500-599
+  - yang_name: switchport/trunk/native/vlan/tag
+    exclude_test: true
+    example: false
+  - yang_name: switchport/trunk/native/vlan/vlan-id
+    example: 10
+  - yang_name: mab
+    example: true
+  - yang_name: mab/eap
+    example: true
+  - yang_name: access-session/closed
+    example: true
+  - yang_name: access-session/monitor
+    example: true
+  - yang_name: access-session/port-control
+    example: auto
+  - yang_name: access-session/control-direction
+    example: both
+  - yang_name: access-session/host-mode
+    example: single-host
+  - yang_name: access-session/interface-template/sticky
+    example: true
+  - yang_name: access-session/interface-template/sticky/timer
+    example: 100
+  - yang_name: authentication/periodic
+    example: true
+  - yang_name: authentication/timer/reauthenticate/value/server/server
+    xpath: authentication/timer/reauthenticate/server
+    tf_name: authentication_timer_reauthenticate_server
+    example: true
+  - yang_name: authentication/timer/reauthenticate/value/range/range
+    xpath: authentication/timer/reauthenticate/range
+    tf_name: authentication_timer_reauthenticate_range
+    exclude_test: true
+    example: 4000
+  - yang_name: spanning-tree/bpduguard/enable
+    example: true
+  - yang_name: spanning-tree/service-policy
+    exclude_test: true
+    example: true
+  - yang_name: spanning-tree/portfast
+    example: true
+    no_delete: true
+  - yang_name: spanning-tree/portfast/disable
+    example: false
+  - yang_name: spanning-tree/portfast/edge
+    example: false
+  - yang_name: spanning-tree/portfast/network
+    example: false
+  - yang_name: storm-control/broadcast/level/pps/threshold
+    example: 10
+  - yang_name: storm-control/broadcast/level/bps/threshold
+    example: 10
+  - yang_name: storm-control/broadcast/level/threshold
+    example: 10
+  - yang_name: storm-control/multicast/level/pps/threshold
+    example: 10
+  - yang_name: storm-control/multicast/level/bps/threshold
+    example: 10000
+  - yang_name: storm-control/multicast/level/threshold
+    example: 10
+  - yang_name: storm-control/action/shutdown
+    example: true
+  - yang_name: storm-control/action/trap
+    example: true
+  - yang_name: load-interval
+    example: 30
+  - yang_name: ip/dhcp/snooping/limit/rate
+    example: 10
+  - yang_name: ip/dhcp/snooping/trust
+    example: true
+  - yang_name: ip/access-group
+    type: List
+    attributes:
+      - yang_name: direction
+        example: in
+        id: true
+      - yang_name: access-list
+        example: ACL1
+  - yang_name: subscriber/aging/timer-probe/inactivity-timer/inactivity-timer/value
+    xpath: subscriber/aging/inactivity-timer/value
+    tf_name: subscriber_aging_inactivity_timer_value
+    exclude_test: true
+    example: 10
+  - yang_name: subscriber/aging/timer-probe/inactivity-timer/inactivity-timer/probe
+    xpath: subscriber/aging/inactivity-timer/probe
+    tf_name: subscriber_aging_inactivity_timer_probe
+    exclude_test: true
+    example: false
+  - yang_name: subscriber/aging/timer-probe/probe/probe
+    xpath: subscriber/aging/probe
+    tf_name: subscriber_aging_probe
+    example: true
+  - yang_name: device-tracking
+    example: true
+  - yang_name: device-tracking/attach-policy/policy-name
+    tf_name: device_tracking_attach_policy
+    exclude_test: true
+    type: List
+    attributes:
+      - yang_name: policy-name
+        example: POL1
+        id: true
+      - yang_name: vlan/vlan-range
+        tf_name: vlan_range
+        example: 100-199
+  - yang_name: device-tracking/vlan/vlan-range
+    tf_name: device_tracking_vlan_range
+    example: 100-199
+  - yang_name: cts/manual
+    example: true
+  - yang_name: cts/manual/policy/static/sgt
+    example: 100
+  - yang_name: cts/manual/policy/static/trusted
+    example: false
+  - yang_name: cts/manual/propagate/sgt
+    example: false
+  - yang_name: cts/role-based/enforcement
+    example: false

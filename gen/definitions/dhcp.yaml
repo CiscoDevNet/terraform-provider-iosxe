@@ -1,0 +1,32 @@
+---
+name: DHCP
+path: Cisco-IOS-XE-native:native/ip/dhcp
+doc_category: System
+attributes:
+  - yang_name: Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection
+    exclude_test: true
+    example: standard
+  - yang_name: Cisco-IOS-XE-dhcp:compatibility/suboption/server-override
+    exclude_test: true
+    example: standard
+  - yang_name: Cisco-IOS-XE-dhcp:relay/information/trust-all
+    tf_name: relay_information_trust_all
+    example: false
+  - yang_name: Cisco-IOS-XE-dhcp:relay/information/option/option-default
+    tf_name: relay_information_option_default
+    example: false
+  - yang_name: Cisco-IOS-XE-dhcp:relay/information/option/vpn
+    tf_name: relay_information_option_vpn
+    example: true
+  - yang_name: Cisco-IOS-XE-dhcp:snooping
+    exclude_test: true
+    example: true
+  - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan
+    tf_name: snooping_vlans
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: id
+        tf_name: vlan_id
+        example: 1
+        id: true

@@ -10,14 +10,12 @@ builds:
     # usage by users in CI/CD systems like Terraform Cloud where
     # they are unable to install libraries.
     - CGO_ENABLED=0
-  id: terraform-provider-iosxe
   mod_timestamp: '{{ .CommitTimestamp }}'
   flags:
     - -trimpath
   ldflags:
     - '-s -w -X main.version={{.Version}} -X main.commit={{.Commit}}'
   goos:
-    - openbsd
     - freebsd
     - windows
     - linux
@@ -33,12 +31,11 @@ builds:
   binary: '{{ .ProjectName }}_v{{ .Version }}'
 archives:
 - format: zip
-  builds: ['terraform-provider-iosxe']
-  id: terraform-provider-iosxe
   name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
 checksum:
-  ids: 
-    - terraform-provider-iosxe
+  extra_files:
+    - glob: 'terraform-registry-manifest.json'
+      name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
   name_template: '{{ .ProjectName }}_{{ .Version }}_SHA256SUMS'
   algorithm: sha256
 signs:
@@ -54,6 +51,9 @@ signs:
       - "--detach-sign"
       - "${artifact}"
 release:
+  extra_files:
+    - glob: 'terraform-registry-manifest.json'
+      name_template: '{{ .ProjectName }}_{{ .Version }}_manifest.json'
   # If you want to manually examine the release before its live, uncomment this line:
   # draft: true
 changelog:

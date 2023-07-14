@@ -1,0 +1,127 @@
+---
+name: Interface Ethernet
+path: Cisco-IOS-XE-native:native/interface/%s=%v
+augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v
+test_tags: [C8000V]
+no_delete: true
+doc_category: Interface
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+    example: GigabitEthernet
+  - yang_name: name
+    example: 3
+  - yang_name: media-type
+    exclude_test: true
+    example: sfp
+  - yang_name: switchport-conf/switchport
+    tf_name: switchport
+    exclude_test: true
+    example: false
+  - yang_name: description
+    example: My Interface Description
+  - yang_name: shutdown
+    example: false
+  - yang_name: ip/proxy-arp
+    example: false
+  - yang_name: ip/redirects
+    example: false
+  - yang_name: ip/Cisco-IOS-XE-icmp:unreachables
+    example: false
+  - yang_name: vrf-choice/vrf/vrf/forwarding
+    xpath: vrf/forwarding
+    tf_name: vrf_forwarding
+    exclude_test: true
+    example: VRF1
+  - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/address
+    xpath: ip/address/primary/address
+    tf_name: ipv4_address
+    delete_parent: true
+    example: 15.1.1.1
+  - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/mask
+    xpath: ip/address/primary/mask
+    tf_name: ipv4_address_mask
+    delete_parent: true
+    example: 255.255.255.252
+  - yang_name: ip/address-choice/unnumbered/unnumbered
+    xpath: ip/unnumbered
+    tf_name: unnumbered
+    exclude_test: true
+    example: Loopback1
+  - yang_name: encapsulation/encap-choice/dot1Q/dot1Q/vlan-id
+    xpath: encapsulation/dot1Q/vlan-id
+    tf_name: encapsulation_dot1q_vlan_id
+    exclude_test: true
+    example: 666
+  - yang_name: Cisco-IOS-XE-ethernet:channel-group/number
+    exclude_test: true
+    example: 10
+  - yang_name: Cisco-IOS-XE-ethernet:channel-group/mode
+    exclude_test: true
+    example: active
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface
+    tf_name: ip_dhcp_relay_source_interface
+    example: Loopback100
+  - yang_name: ip/access-group/in/apply-type/apply-intf/acl/acl-name
+    xpath: ip/access-group/in/acl/acl-name
+    tf_name: ip_access_group_in
+    delete_parent: true
+    example: 1
+  - yang_name: ip/access-group/in/apply-type/apply-intf/acl/in
+    xpath: ip/access-group/in/acl/in
+    tf_name: ip_access_group_in_enable
+    example: true
+  - yang_name: ip/access-group/out/apply-type/apply-intf/acl/acl-name
+    xpath: ip/access-group/out/acl/acl-name
+    tf_name: ip_access_group_out
+    delete_parent: true
+    example: 1
+  - yang_name: ip/access-group/out/apply-type/apply-intf/acl/out
+    xpath: ip/access-group/out/acl/out
+    tf_name: ip_access_group_out_enable
+    example: true
+  - yang_name: ip/helper-address
+    tf_name: helper_addresses
+    type: List
+    attributes:
+      - yang_name: address
+        example: 10.10.10.10
+        id: true
+      - yang_name: helper-choice/global/global
+        xpath: global
+        tf_name: global
+        example: false
+      - yang_name: helper-choice/vrf/vrf
+        xpath: vrf
+        tf_name: vrf
+        example: VRF1
+  - yang_name: source/template/template-name
+    tf_name: source_template
+    type: List
+    attributes:
+      - yang_name: template-name
+        example: TEMP1
+        id: true
+      - yang_name: merge
+        example: false
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""

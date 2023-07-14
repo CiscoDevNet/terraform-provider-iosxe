@@ -1,0 +1,57 @@
+---
+name: Interface PIM
+path: Cisco-IOS-XE-native:native/interface/%s=%v/ip/pim
+augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/ip/pim
+no_delete: true
+doc_category: Multicast
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+      - Loopback
+      - Vlan
+    example: Loopback
+  - yang_name: name
+    example: 100
+  - yang_name: Cisco-IOS-XE-multicast:pim-mode-choice-cfg/pim-mode-choice/passive-mode/passive
+    xpath: Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive
+    tf_name: passive
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:pim-mode-choice-cfg/pim-mode-choice/dense/dense-mode
+    xpath: Cisco-IOS-XE-multicast:pim-mode-choice-cfg/dense-mode
+    tf_name: dense_mode
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:pim-mode-choice-cfg/pim-mode-choice/sparse/sparse-mode
+    xpath: Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-mode
+    tf_name: sparse_mode
+    example: true
+  - yang_name: Cisco-IOS-XE-multicast:pim-mode-choice-cfg/pim-mode-choice/sparse-dense/sparse-dense-mode
+    xpath: Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-dense-mode
+    tf_name: sparse_dense_mode
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:bfd
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:border
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:bsr-border
+    example: false
+  - yang_name: Cisco-IOS-XE-multicast:dr-priority
+    example: 10
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+    attributes:
+      - name: name
+        value: 100

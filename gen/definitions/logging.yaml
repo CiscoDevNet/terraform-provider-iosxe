@@ -1,0 +1,118 @@
+---
+name: Logging
+path: Cisco-IOS-XE-native:native/logging
+no_delete: true
+doc_category: Management
+attributes:
+  - yang_name: monitor-config/config-options/common-case/common-config/monitor/severity
+    xpath: monitor-config/common-config/monitor/severity
+    tf_name: monitor_severity
+    example: informational
+  - yang_name: buffered/size-value
+    tf_name: buffered_size
+    example: 16000
+  - yang_name: buffered/severity-level
+    tf_name: buffered_severity
+    example: informational
+  - yang_name: console-config/config-options/common-case/common-config/console/severity
+    xpath: console-config/common-config/console/severity
+    tf_name: console_severity
+    example: informational
+  - yang_name: facility
+    example: local0
+  - yang_name: history/size
+    tf_name: history_size
+    example: 100
+  - yang_name: history/severity-level
+    tf_name: history_severity
+    example: informational
+  - yang_name: trap
+    example: true
+  - yang_name: trap/level/set-level/severity
+    xpath: trap/severity
+    tf_name: trap_severity
+    example: informational
+  - yang_name: origin-id/origin-choice/origin-type/type-value
+    xpath: origin-id/type-value
+    tf_name: origin_id_type
+    example: hostname
+  - yang_name: origin-id/origin-choice/origin-name/string
+    xpath: origin-id/string
+    tf_name: origin_id_name
+    example: host1
+    exclude_test: true
+  - yang_name: file/name
+    exclude_test: true
+    example: test_log
+  - yang_name: file/max-size
+    exclude_test: true
+    example: 20000
+  - yang_name: file/min-size
+    exclude_test: true
+    example: 10000
+  - yang_name: file/severity
+    exclude_test: true
+    example: informational
+  - yang_name: source-interface-conf/interface-name-non-vrf
+    tf_name: source_interface
+    example: Loopback0
+  - yang_name: source-interface-conf/source-interface-vrf
+    tf_name: source_interfaces_vrf
+    type: List
+    attributes:
+      - yang_name: vrf
+        example: VRF1
+        id: true
+      - yang_name: interface-name
+        example: Loopback100
+  - yang_name: host/ipv4-host-list
+    tf_name: ipv4_hosts
+    type: List
+    attributes:
+      - yang_name: ipv4-host
+        example: 1.1.1.1
+        id: true
+  - yang_name: host/ipv4-host-vrf-list
+    tf_name: ipv4_vrf_hosts
+    type: List
+    attributes:
+      - yang_name: ipv4-host
+        example: 1.1.1.1
+        id: true
+      - yang_name: vrf
+        example: VRF1
+        id: true
+  - yang_name: host/ipv6/ipv6-host-list
+    tf_name: ipv6_hosts
+    type: List
+    attributes:
+      - yang_name: ipv6-host
+        example: 2001::1
+        id: true
+  - yang_name: host/ipv6/ipv6-host-vrf-list
+    tf_name: ipv6_vrf_hosts
+    type: List
+    attributes:
+      - yang_name: ipv6-host
+        example: 2001::1
+        id: true
+      - yang_name: vrf
+        example: VRF1
+        id: true
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
+      - name: address-family/ipv6
+        value: ""
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+    attributes:
+      - name: name
+        value: 100
+      - name: vrf/forwarding
+        value: VRF1
+    dependencies: [0]

@@ -1,0 +1,44 @@
+---
+name: EVPN
+path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn
+test_tags: [C9000V]
+doc_category: EVPN
+attributes:
+  - yang_name: replication-type/replication-type-choice/ingress/ingress
+    xpath: replication-type/ingress
+    tf_name: replication_type_ingress
+    example: false
+  - yang_name: replication-type/replication-type-choice/static/static
+    xpath: replication-type/static
+    tf_name: replication_type_static
+    example: true
+  - yang_name: replication-type/replication-type-choice/p2mp/p2mp
+    xpath: replication-type/p2mp
+    tf_name: replication_type_p2mp
+    example: false
+  - yang_name: replication-type/replication-type-choice/mp2mp/mp2mp
+    xpath: replication-type/mp2mp
+    tf_name: replication_type_mp2mp
+    example: false
+  - yang_name: mac/duplication/limit
+    delete_parent: true
+    example: 10
+  - yang_name: mac/duplication/time
+    delete_parent: true
+    example: 100
+  - yang_name: ip/duplication/limit
+    delete_parent: true
+    example: 10
+  - yang_name: ip/duplication/time
+    delete_parent: true
+    example: 100
+  - yang_name: router-id/interface/interface-choice/Loopback/Loopback
+    xpath: router-id/interface/Loopback
+    tf_name: router_id_loopback
+    example: 100
+  - yang_name: default-gateway/advertise
+    example: true
+  - yang_name: logging/peer/state
+    example: true
+  - yang_name: route-target/auto/vni
+    example: true

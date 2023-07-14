@@ -1,0 +1,31 @@
+---
+name: Logging IPv6 Host Transport
+path: Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-transport-list=%s
+doc_category: Management
+attributes:
+  - yang_name: ipv6-host
+    example: 2001::1
+  - yang_name: transport/udp/port-config
+    tf_name: transport_udp_ports
+    type: List
+    attributes:
+      - yang_name: port-number
+        example: 10000
+        id: true
+  - yang_name: transport/tcp/port-config
+    tf_name: transport_tcp_ports
+    type: List
+    attributes:
+      - yang_name: port-number
+        example: 10001
+        id: true
+  - yang_name: transport/tls/port
+    tf_name: transport_tls_ports
+    type: List
+    attributes:
+      - yang_name: port-number
+        example: 10002
+        id: true
+      - yang_name: profile
+        example: PROF1
+        exclude_test: true

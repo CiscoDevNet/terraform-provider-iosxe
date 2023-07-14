@@ -1,0 +1,24 @@
+---
+name: Username
+path: Cisco-IOS-XE-native:native/username=%s
+no_delete_attributes: true
+doc_category: System
+attributes:
+  - yang_name: name
+    example: user1
+  - yang_name: privilege
+    example: 15
+  - yang_name: description
+    example: User1 description
+  - yang_name: password/encryption
+    example: 0
+  - yang_name: password/password
+    tf_name: password
+    example: MyPassword
+  - yang_name: secret/encryption
+    example: 0
+    exclude_test: true
+  - yang_name: secret/secret
+    tf_name: secret
+    example: MySecretPassword
+    exclude_test: true

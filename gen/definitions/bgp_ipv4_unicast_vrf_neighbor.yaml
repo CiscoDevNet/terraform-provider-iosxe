@@ -1,0 +1,79 @@
+---
+name: BGP IPv4 Unicast VRF Neighbor
+path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv4=unicast/vrf=%s/ipv4-unicast/neighbor=%s
+skip_minimum_test: true
+doc_category: BGP
+attributes:
+  - yang_name: id
+    yang_scope: bgp
+    tf_name: asn
+    example: 65000
+  - yang_name: name
+    yang_scope: vrf
+    tf_name: vrf
+    example: VRF1
+  - yang_name: id
+    yang_scope: neighbor
+    tf_name: ip
+    example: 3.3.3.3
+  - yang_name: remote-as
+    example: 65000
+    no_delete: true
+  - yang_name: description
+    example: BGP Neighbor Description
+  - yang_name: shutdown
+    example: false
+  - yang_name: update-source/interface/interface-choice/Loopback/Loopback
+    xpath: update-source/interface/Loopback
+    tf_name: update_source_loopback
+    type: Int64
+    example: 100
+  - yang_name: activate
+    default_value: true
+    example: true
+    no_delete: true
+  - yang_name: send-community/send-community-where
+    tf_name: send_community
+    example: both
+  - yang_name: route-reflector-client
+    example: false
+  - yang_name: route-map
+    tf_name: route_maps
+    type: List
+    attributes:
+      - yang_name: inout
+        tf_name: in_out
+        id: true
+        example: in
+      - yang_name: route-map-name
+        example: RM1
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: rd
+        value: 1:1
+      - name: address-family/ipv4
+        value: ""
+  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+    attributes:
+      - name: id
+        value: 65000
+  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/with-vrf/ipv4=unicast
+    attributes:
+      - name: af-name
+        value: unicast
+    lists:
+      - name: vrf
+        key: name
+        items:
+          - attributes:
+              - name: name
+                value: VRF1
+    dependencies: [0, 1]
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+    attributes:
+      - name: name
+        value: 100

@@ -1,0 +1,156 @@
+---
+name: Access List Extended
+path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:extended=%v
+no_delete_attributes: true
+doc_category: System
+attributes:
+  - yang_name: name
+    example: EACL1
+  - yang_name: access-list-seq-rule
+    tf_name: entries
+    type: List
+    attributes:
+      - yang_name: sequence
+        example: 10
+        id: true
+      - yang_name: remark
+        example: Description
+      - yang_name: ace-rule/action
+        example: permit
+      - yang_name: ace-rule/protocol
+        example: tcp
+      - yang_name: ace-rule/object-group-str
+        tf_name: service_object_group
+        example: SOG1
+        exclude_test: true
+      - yang_name: ace-rule/source-choice/ipv4-prefix-case/ipv4-address
+        xpath: ace-rule/ipv4-address
+        tf_name: source_prefix
+        example: 10.0.0.0
+      - yang_name: ace-rule/source-choice/ipv4-prefix-case/mask
+        xpath: ace-rule/mask
+        tf_name: source_prefix_mask
+        example: 0.0.0.255
+      - yang_name: ace-rule/source-choice/any-case/any
+        xpath: ace-rule/any
+        tf_name: source_any
+        example: true
+        exclude_test: true
+      - yang_name: ace-rule/source-choice/host-case/host-address
+        xpath: ace-rule/host-address
+        tf_name: source_host
+        example: 10.1.1.1
+        exclude_test: true
+      - yang_name: ace-rule/source-choice/object-group-case/object-group
+        xpath: ace-rule/object-group
+        tf_name: source_object_group
+        example: OG1
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-eq-case/src-eq
+        xpath: ace-rule/src-eq
+        tf_name: source_port_equal
+        example: 1000
+      - yang_name: ace-rule/src-port-choice/src-gt-case/src-gt
+        xpath: ace-rule/src-gt
+        tf_name: source_port_greater_than
+        example: 1000
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-lt-case/src-lt
+        xpath: ace-rule/src-lt
+        tf_name: source_port_lesser_than
+        example: 1000
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-range-case/src-range1
+        xpath: ace-rule/src-range1
+        tf_name: source_port_range_from
+        example: 1000
+        exclude_test: true
+      - yang_name: ace-rule/src-port-choice/src-range-case/src-range2
+        xpath: ace-rule/src-range2
+        tf_name: source_port_range_to
+        example: 2000
+        exclude_test: true
+      - yang_name: ace-rule/destination-choice/ipv4-prefix-case/dest-ipv4-address
+        xpath: ace-rule/dest-ipv4-address
+        tf_name: destination_prefix
+        example: 10.0.0.0
+        exclude_test: true
+      - yang_name: ace-rule/destination-choice/ipv4-prefix-case/dest-mask
+        xpath: ace-rule/dest-mask
+        tf_name: destination_prefix_mask
+        example: 0.0.0.255
+        exclude_test: true
+      - yang_name: ace-rule/destination-choice/any-case/dst-any
+        xpath: ace-rule/dst-any
+        tf_name: destination_any
+        example: true
+        exclude_test: true
+      - yang_name: ace-rule/destination-choice/host-case/dst-host-address
+        xpath: ace-rule/dst-host-address
+        tf_name: destination_host
+        example: 10.1.1.1
+      - yang_name: ace-rule/destination-choice/object-group-case/dst-object-group
+        xpath: ace-rule/dst-object-group
+        tf_name: destination_object_group
+        example: OG1
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq
+        xpath: ace-rule/dst-eq
+        tf_name: destination_port_equal
+        example: 1000
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-gt-case/dst-gt
+        xpath: ace-rule/dst-gt
+        tf_name: destination_port_greater_than
+        example: 1000
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-lt-case/dst-lt
+        xpath: ace-rule/dst-lt
+        tf_name: destination_port_lesser_than
+        example: 1000
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-range-case/dst-range1
+        xpath: ace-rule/dst-range1
+        tf_name: destination_port_range_from
+        example: 1000
+      - yang_name: ace-rule/dst-port-choice/dst-range-case/dst-range2
+        xpath: ace-rule/dst-range2
+        tf_name: destination_port_range_to
+        example: 2000
+      - yang_name: ace-rule/ack
+        tf_name: ack
+        example: true
+      - yang_name: ace-rule/fin
+        tf_name: fin
+        example: true
+      - yang_name: ace-rule/psh
+        tf_name: psh
+        example: true
+      - yang_name: ace-rule/rst
+        tf_name: rst
+        example: true
+      - yang_name: ace-rule/syn
+        tf_name: syn
+        example: true
+      - yang_name: ace-rule/urg
+        tf_name: urg
+        example: true
+      - yang_name: ace-rule/established
+        tf_name: established
+        example: true
+        exclude_test: true
+      - yang_name: ace-rule/dscp
+        tf_name: dscp
+        example: 46
+      - yang_name: ace-rule/fragments
+        tf_name: fragments
+        example: true
+        exclude_test: true
+      - yang_name: ace-rule/precedence
+        tf_name: precedence
+        example: 3
+        exclude_test: true
+      - yang_name: ace-rule/tos
+        tf_name: tos
+        example: 3
+        exclude_test: true

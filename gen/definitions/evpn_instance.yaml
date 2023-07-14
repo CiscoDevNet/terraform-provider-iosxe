@@ -1,0 +1,70 @@
+---
+name: EVPN Instance
+path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=%v
+test_tags: [C9000V]
+no_delete_attributes: true
+skip_minimum_test: true
+doc_category: EVPN
+attributes:
+  - yang_name: evpn-instance-num
+    example: 10
+  - yang_name: evpn-service-type/vlan-based/vlan-based/replication-type/replication-type-choice/ingress-case/ingress
+    xpath: vlan-based/replication-type/ingress
+    tf_name: vlan_based_replication_type_ingress
+    example: false
+  - yang_name: evpn-service-type/vlan-based/vlan-based/replication-type/replication-type-choice/static-case/static
+    xpath: vlan-based/replication-type/static
+    tf_name: vlan_based_replication_type_static
+    example: true
+  - yang_name: evpn-service-type/vlan-based/vlan-based/replication-type/replication-type-choice/static-p2mp/p2mp
+    xpath: vlan-based/replication-type/p2mp
+    tf_name: vlan_based_replication_type_p2mp
+    example: false
+  - yang_name: evpn-service-type/vlan-based/vlan-based/replication-type/replication-type-choice/static-mp2mp/mp2mp
+    xpath: vlan-based/replication-type/mp2mp
+    tf_name: vlan_based_replication_type_mp2mp
+    example: false
+  - yang_name: evpn-service-type/vlan-based/vlan-based/encapsulation
+    xpath: vlan-based/encapsulation
+    tf_name: vlan_based_encapsulation
+    example: vxlan
+  - yang_name: evpn-service-type/vlan-based/vlan-based/auto-route-target_cont/auto-route-target
+    xpath: vlan-based/auto-route-target_cont/auto-route-target
+    tf_name: vlan_based_auto_route_target
+    example: false
+  - yang_name: evpn-service-type/vlan-based/vlan-based/rd/rd-value
+    xpath: vlan-based/rd/rd-value
+    tf_name: vlan_based_rd
+    example: 10:10
+  - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/rt-value
+    xpath: vlan-based/route-target/rt-value
+    tf_name: vlan_based_route_target
+    example: 10:10
+  - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/both/rt-value
+    xpath: vlan-based/route-target/both/rt-value
+    tf_name: vlan_based_route_target_both
+    example: 10:10
+  - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/import/rt-value
+    xpath: vlan-based/route-target/import/rt-value
+    tf_name: vlan_based_route_target_import
+    example: 10:10
+  - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/export/rt-value
+    xpath: vlan-based/route-target/export/rt-value
+    tf_name: vlan_based_route_target_export
+    example: 10:10
+  - yang_name: evpn-service-type/vlan-based/vlan-based/ip/local-learning/local-learning-choice/disable-case/disable
+    xpath: vlan-based/ip/local-learning/disable
+    tf_name: vlan_based_ip_local_learning_disable
+    example: false
+  - yang_name: evpn-service-type/vlan-based/vlan-based/ip/local-learning/local-learning-choice/enable-case/enable
+    xpath: vlan-based/ip/local-learning/enable
+    tf_name: vlan_based_ip_local_learning_enable
+    example: true
+  - yang_name: evpn-service-type/vlan-based/vlan-based/default-gateway/advertise
+    xpath: vlan-based/default-gateway/advertise
+    tf_name: vlan_based_default_gateway_advertise
+    example: enable
+  - yang_name: evpn-service-type/vlan-based/vlan-based/re-originate/route-type5
+    xpath: vlan-based/re-originate/route-type5
+    tf_name: vlan_based_re_originate_route_type5
+    example: true

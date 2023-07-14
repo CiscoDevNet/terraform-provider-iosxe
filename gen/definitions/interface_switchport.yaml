@@ -1,0 +1,67 @@
+---
+name: Interface Switchport
+path: Cisco-IOS-XE-native:native/interface/%s=%v/switchport-config/switchport
+augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/switchport-config/switchport
+test_tags: [C9000V]
+doc_category: Switching
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+    example: GigabitEthernet
+  - yang_name: name
+    example: 1/0/3
+  - yang_name: Cisco-IOS-XE-switch:mode/mode-choice/access/access
+    xpath: Cisco-IOS-XE-switch:mode/access
+    tf_name: mode_access
+    example: false
+  - yang_name: Cisco-IOS-XE-switch:mode/mode-choice/dot1q-tunnel/dot1q-tunnel
+    xpath: Cisco-IOS-XE-switch:mode/dot1q-tunnel
+    tf_name: mode_dot1q_tunnel
+    example: false
+  - yang_name: Cisco-IOS-XE-switch:mode/mode-choice/private-vlan/private-vlan/trunk
+    xpath: Cisco-IOS-XE-switch:mode/private-vlan/trunk
+    tf_name: mode_private_vlan_trunk
+    example: false
+  - yang_name: Cisco-IOS-XE-switch:mode/mode-choice/private-vlan/private-vlan/host
+    xpath: Cisco-IOS-XE-switch:mode/private-vlan/host
+    tf_name: mode_private_vlan_host
+    example: false
+  - yang_name: Cisco-IOS-XE-switch:mode/mode-choice/private-vlan/private-vlan/promiscuous
+    xpath: Cisco-IOS-XE-switch:mode/private-vlan/promiscuous
+    tf_name: mode_private_vlan_promiscuous
+    example: false
+  - yang_name: Cisco-IOS-XE-switch:mode/mode-choice/trunk/trunk
+    xpath: Cisco-IOS-XE-switch:mode/trunk
+    tf_name: mode_trunk
+    example: true
+  - yang_name: Cisco-IOS-XE-switch:nonegotiate
+    example: false
+  - yang_name: Cisco-IOS-XE-switch:access/vlan/vlan
+    tf_name: access_vlan
+    example: 100
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlan-choice/vlans/vlans
+    xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlans
+    tf_name: trunk_allowed_vlans
+    example: 100,101
+  - yang_name: Cisco-IOS-XE-switch:trunk/native/vlan/tag
+    tf_name: trunk_native_vlan_tag
+    exclude_test: true
+    example: false
+  - yang_name: Cisco-IOS-XE-switch:trunk/native/vlan/vlan-id
+    tf_name: trunk_native_vlan
+    example: 100
+  - yang_name: host
+    example: false

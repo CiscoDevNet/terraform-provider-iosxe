@@ -1,0 +1,61 @@
+---
+name: OSPF
+path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=%v
+doc_category: OSPF
+attributes:
+  - yang_name: id
+    tf_name: process_id
+    example: 1
+  - yang_name: bfd/all-interfaces
+    example: true
+  - yang_name: default-information/originate
+    example: true
+  - yang_name: default-information/originate/always
+    example: true
+  - yang_name: default-metric
+    example: 21
+  - yang_name: distance/distance
+    tf_name: distance
+    example: 120
+  - yang_name: domain-tag
+    example: 10
+  - yang_name: mpls/ldp/autoconfig
+    exclude_test: true
+    example: true
+  - yang_name: mpls/ldp/sync
+    exclude_test: true
+    example: true
+  - yang_name: neighbor
+    type: List
+    attributes:
+      - yang_name: ip
+        example: 2.2.2.2
+        id: true
+      - yang_name: priority
+        example: 10
+      - yang_name: cost
+        example: 100
+  - yang_name: network
+    type: List
+    attributes:
+      - yang_name: ip
+        example: 3.3.3.0
+        id: true
+      - yang_name: wildcard
+        example: 0.0.0.255
+      - yang_name: area
+        example: 0
+  - yang_name: priority
+    example: 100
+  - yang_name: router-id
+    example: 1.2.3.4
+  - yang_name: shutdown
+    example: false
+  - yang_name: summary-address
+    type: List
+    attributes:
+      - yang_name: ip
+        example: 3.3.3.0
+        id: true
+      - yang_name: mask
+        example: 255.255.255.0

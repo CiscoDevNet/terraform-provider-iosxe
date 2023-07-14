@@ -1,0 +1,53 @@
+---
+name: BGP IPv4 Unicast Neighbor
+path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=%s
+doc_category: BGP
+attributes:
+  - yang_name: id
+    yang_scope: bgp
+    tf_name: asn
+    example: 65000
+  - yang_name: id
+    yang_scope: neighbor
+    tf_name: ip
+    example: 3.3.3.3
+  - yang_name: activate
+    default_value: true
+    no_delete: true
+    example: true
+  - yang_name: send-community/send-community-where
+    tf_name: send_community
+    example: both
+  - yang_name: route-reflector-client
+    example: false
+  - yang_name: route-map
+    tf_name: route_maps
+    type: List
+    attributes:
+      - yang_name: inout
+        tf_name: in_out
+        id: true
+        example: in
+      - yang_name: route-map-name
+        example: RM1
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+    attributes:
+      - name: id
+        value: 65000
+  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv4=unicast
+    attributes:
+      - name: af-name
+        value: unicast
+    dependencies: [0]
+  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/neighbor=3.3.3.3
+    attributes:
+      - name: id
+        value: 3.3.3.3
+      - name: remote-as
+        value: 65000
+    dependencies: [0]
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+    attributes:
+      - name: name
+        value: 100

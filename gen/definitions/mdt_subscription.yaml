@@ -1,0 +1,45 @@
+---
+name: MDT Subscription
+path: Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=%s
+no_delete_attributes: true
+doc_category: MDT
+attributes:
+  - yang_name: subscription-id
+    example: 101
+  - yang_name: base/stream
+    tf_name: stream
+    example: yang-notif-native
+  - yang_name: base/encoding
+    tf_name: encoding
+    example: encode-kvgpb
+  - yang_name: base/source-vrf
+    tf_name: source_vrf
+    example: Mgmt-vrf
+  - yang_name: base/source-address
+    tf_name: source_address
+    example: 1.2.3.4
+  - yang_name: base/update-trigger-choice/sub-upd-trig-periodic/period
+    xpath: base/period
+    tf_name: update_policy_periodic
+    example: 6000
+    exclude_test: true
+  - yang_name: base/update-trigger-choice/sub-upd-trig-on-change/no-synch-on-start
+    xpath: base/no-synch-on-start
+    tf_name: update_policy_on_change
+    example: true
+  - yang_name: base/filter-type-choice/sub-filter-type-xpath/xpath
+    xpath: base/xpath
+    tf_name: filter_xpath
+    example: /ios-events-ios-xe-oper:ospf-neighbor-state-change
+  - yang_name: mdt-receivers
+    tf_name: receivers
+    type: List
+    attributes:
+      - yang_name: address
+        id: true
+        example: 5.6.7.8
+      - yang_name: port
+        id: true
+        example: 57600
+      - yang_name: protocol
+        example: grpc-tcp

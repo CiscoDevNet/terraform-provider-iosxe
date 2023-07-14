@@ -1,0 +1,193 @@
+---
+name: NTP
+path: Cisco-IOS-XE-native:native/ntp
+doc_category: System
+attributes:
+  - yang_name: Cisco-IOS-XE-ntp:authenticate
+    example: true
+  - yang_name: Cisco-IOS-XE-ntp:logging
+    example: false
+  - yang_name: Cisco-IOS-XE-ntp:access-group/peer/acl
+    example: SACL1
+  - yang_name: Cisco-IOS-XE-ntp:access-group/query-only/acl
+    example: SACL1
+  - yang_name: Cisco-IOS-XE-ntp:access-group/serve/acl
+    example: SACL1
+  - yang_name: Cisco-IOS-XE-ntp:access-group/serve-only/acl
+    example: SACL1
+  - yang_name: Cisco-IOS-XE-ntp:authentication-key
+    tf_name: authentication_keys
+    type: List
+    attributes:
+      - yang_name: number
+        id: true
+        example: 1
+      - yang_name: authtype/md5-cfg/md5-cfg
+        xpath: md5-cfg
+        tf_name: md5
+        example: 060506324F41584B564347
+      - yang_name: authtype/cmac-aes-128/cmac-aes-128
+        xpath: cmac-aes-128
+        tf_name: cmac_aes_128
+        exclude_test: true
+        example: 060506324F41584B564347
+      - yang_name: authtype/hmac-sha1/hmac-sha1
+        xpath: hmac-sha1
+        tf_name: hmac_sha1
+        exclude_test: true
+        example: 060506324F41584B564347
+      - yang_name: authtype/hmac-sha2-256/hmac-sha2-256
+        xpath: hmac-sha2-256
+        tf_name: hmac_sha2_256
+        exclude_test: true
+        example: 060506324F41584B564347
+      - yang_name: authtype/sha1/sha1
+        xpath: sha1
+        tf_name: sha1
+        exclude_test: true
+        example: 060506324F41584B564347
+      - yang_name: authtype/sha2/sha2
+        xpath: sha2
+        tf_name: sha2
+        exclude_test: true
+        example: 060506324F41584B564347
+      - yang_name: encryption-type
+        example: 7
+  - yang_name: Cisco-IOS-XE-ntp:clock-period
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ntp:master
+    example: true
+  - yang_name: Cisco-IOS-XE-ntp:master/stratum-number
+    tf_name: master_stratum
+    example: 5
+  - yang_name: Cisco-IOS-XE-ntp:passive
+    example: false
+  - yang_name: Cisco-IOS-XE-ntp:update-calendar
+    example: false
+  - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: Cisco-IOS-XE-ntp:source/GigabitEthernet
+    tf_name: trap_source_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: Cisco-IOS-XE-ntp:source/TenGigabitEthernet
+    tf_name: trap_source_ten_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: Cisco-IOS-XE-ntp:source/FortyGigabitEthernet
+    tf_name: trap_source_forty_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/HundredGigE/HundredGigE
+    xpath: Cisco-IOS-XE-ntp:source/HundredGigE
+    tf_name: trap_source_hundred_gig_e
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Loopback/Loopback
+    xpath: Cisco-IOS-XE-ntp:source/Loopback
+    tf_name: trap_source_loopback
+    example: 1
+  - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Port-channel/Port-channel
+    xpath: Cisco-IOS-XE-ntp:source/Port-channel
+    tf_name: trap_source_port_channel
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Port-channel-subinterface/Port-channel-subinterface/Port-channel
+    xpath: Cisco-IOS-XE-ntp:source/Port-channel-subinterface/Port-channel
+    tf_name: trap_source_port_channel_subinterface
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Vlan/Vlan
+    xpath: Cisco-IOS-XE-ntp:source/Vlan
+    tf_name: trap_source_vlan
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ntp:server/server-list
+    tf_name: servers
+    type: List
+    attributes:
+      - yang_name: ip-address
+        id: true
+        example: 1.2.3.4
+      - yang_name: source
+        example: Loopback1
+      - yang_name: key
+        example: 1
+      - yang_name: prefer
+        example: true
+      - yang_name: version
+        example: 2
+  - yang_name: Cisco-IOS-XE-ntp:server/vrf
+    tf_name: server_vrfs
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: VRF1
+      - yang_name: server-list
+        tf_name: servers
+        type: List
+        attributes:
+          - yang_name: ip-address
+            id: true
+            example: 3.4.5.6
+          - yang_name: key
+            example: 1
+          - yang_name: prefer
+            example: true
+          - yang_name: version
+            example: 2
+  - yang_name: Cisco-IOS-XE-ntp:peer/server-list
+    tf_name: peers
+    type: List
+    attributes:
+      - yang_name: ip-address
+        id: true
+        example: 5.2.3.4
+      - yang_name: source
+        example: Loopback1
+      - yang_name: key
+        example: 1
+      - yang_name: prefer
+        example: true
+      - yang_name: version
+        example: 2
+  - yang_name: Cisco-IOS-XE-ntp:peer/vrf
+    tf_name: peer_vrfs
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: VRF1
+      - yang_name: server-list
+        tf_name: peers
+        type: List
+        attributes:
+          - yang_name: ip-address
+            id: true
+            example: 5.4.5.6
+          - yang_name: key
+            example: 1
+          - yang_name: prefer
+            example: true
+          - yang_name: version
+            example: 2
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
+  - path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=SACL1
+    attributes:
+      - name: name
+        value: SACL1
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+    attributes:
+      - name: name
+        value: 1

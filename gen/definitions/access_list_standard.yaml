@@ -1,0 +1,55 @@
+---
+name: Access List Standard
+path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=%v
+no_delete_attributes: true
+doc_category: System
+attributes:
+  - yang_name: name
+    example: SACL1
+  - yang_name: access-list-seq-rule
+    tf_name: entries
+    type: List
+    attributes:
+      - yang_name: sequence
+        example: 10
+        id: true
+      - yang_name: remark
+        example: Description
+      - yang_name: deny-permit/deny/deny/std-ace/source-choice/ipv4-prefix-case/ipv4-address-prefix
+        xpath: deny/std-ace/ipv4-address-prefix
+        tf_name: deny_prefix
+        example: 10.0.0.0
+      - yang_name: deny-permit/deny/deny/std-ace/source-choice/ipv4-prefix-case/mask
+        xpath: deny/std-ace/mask
+        tf_name: deny_prefix_mask
+        example: 0.0.0.255
+      - yang_name: deny-permit/deny/deny/std-ace/source-choice/any-case/any
+        xpath: deny/std-ace/any
+        tf_name: deny_any
+        example: true
+        exclude_test: true
+      - yang_name: deny-permit/deny/deny/std-ace/source-choice/host-case/host-address
+        xpath: deny/std-ace/host-address
+        tf_name: deny_host
+        example: 10.1.1.1
+        exclude_test: true
+      - yang_name: deny-permit/permit/permit/std-ace/source-choice/ipv4-prefix-case/ipv4-address-prefix
+        xpath: permit/std-ace/ipv4-address-prefix
+        tf_name: permit_prefix
+        example: 10.0.0.0
+        exclude_test: true
+      - yang_name: deny-permit/permit/permit/std-ace/source-choice/ipv4-prefix-case/mask
+        xpath: permit/std-ace/mask
+        tf_name: permit_prefix_mask
+        example: 0.0.0.255
+        exclude_test: true
+      - yang_name: deny-permit/permit/permit/std-ace/source-choice/any-case/any
+        xpath: permit/std-ace/any
+        tf_name: permit_any
+        example: true
+        exclude_test: true
+      - yang_name: deny-permit/permit/permit/std-ace/source-choice/host-case/host-address
+        xpath: permit/std-ace/host-address
+        tf_name: permit_host
+        example: 10.1.1.1
+        exclude_test: true

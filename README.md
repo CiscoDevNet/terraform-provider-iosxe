@@ -1,85 +1,56 @@
-<a href="https://terraform.io">
-    <img src=".github/terraform_logo.svg" alt="Terraform logo" title="Terraform" align="right" height="50" />
-</a>
+[![Tests](https://github.com/CiscoDevNet/terraform-provider-iosxe/actions/workflows/test.yml/badge.svg)](https://github.com/CiscoDevNet/terraform-provider-iosxe/actions/workflows/test.yml)
 
-# Terraform Provider for Cisco IOS XE
+# Terraform Provider IOS-XE
 
-The terraform-provider-iosxe is a plugin for Terraform that one can use to manage the configuration and state on Cisco Catalyst IOS XE devices including switches, routers, and wireless LAN controllers.
+## Requirements
 
-The provider was build and tested with Cisco Catalyst IOS XE and all subsequent releases are supported
-- Cisco IOS XE 17.7
+- [Terraform](https://www.terraform.io/downloads.html) >= 1.0
+- [Go](https://golang.org/doc/install) >= 1.19
 
-## Getting Started
-Review the [Intro to IOS XE slides](docs/resources/intro_to_terraform_video.pdf) for reference
-1. Enable RESTCONF on the device
+## Building The Provider
+
+1. Clone the repository
+2. Enter the repository directory
+3. Build the provider using the Go `install` command:
+
+```shell
+go install
 ```
-device# conf t
-device(conf)# restconf
+
+## Adding Dependencies
+
+This provider uses [Go modules](https://github.com/golang/go/wiki/Modules).
+Please see the Go documentation for the most up to date information about using Go modules.
+
+To add a new dependency `github.com/author/dependency` to your Terraform provider:
+
+```shell
+go get github.com/author/dependency
+go mod tidy
 ```
-2. [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli) on the host that will apply the changes to the device
-3. Create a Terraform file on the host like the following example that adds VLAN 1 to the device:
 
-vlan.tf
+Then commit the changes to `go.mod` and `go.sum`.
+
+## Using the provider
+
+This Terraform Provider is available to install automatically via `terraform init`. If you're building the provider, follow the instructions to
+[install it as a plugin.](https://www.terraform.io/docs/plugins/basics.html#installing-a-plugin)
+After placing it into your plugins directory,  run `terraform init` to initialize it.
+
+Additional documentation, including available resources and their arguments/attributes can be found on the [Terraform documentation website](https://registry.terraform.io/providers/CiscoDevNet/iosxe/latest/docs).
+
+## Developing the Provider
+
+If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (see [Requirements](#requirements) above).
+
+To compile the provider, run `go install`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+
+To generate or update documentation, run `go generate`.
+
+In order to run the full suite of Acceptance tests, run `make testacc`. Make sure the respective environment variables are set (e.g., `IOSXE_USERNAME`, `IOSXE_PASSWORD`, `IOSXE_URL`).
+
+*Note:* Acceptance tests create real resources.
+
+```shell
+make testacc
 ```
-terraform {
-    required_providers {
-        iosxe = {
-        version = "0.1.1"
-        source  = "CiscoDevNet/iosxe"
-        }
-    }
-}
-
-provider "iosxe" {
-    request_timeout = 30
-    insecure = true
-}
-
-resource "iosxe_rest" "vlan_example" {
-    method = "POST"
-    path = "/data/Cisco-IOS-XE-native:native/vlan"
-    payload = jsonencode(
-        {
-            "Cisco-IOS-XE-vlan:vlan-list": {
-            "id": "1",
-            "name": "VLAN1"
-            }
-        }
-    )
-}
-```
-4. Initialize Terraform on the host `$ terraform init`
-5. Apply the Terraform file `$ terraform apply -auto-approve`
-
-
-### Cisco IOS XE Example Resources 
-
-| Features examples: |  |  |  |  | 
-| ---- | ---- |---- |---- |---- |
-| [aaa-authentication](./examples/examples_tf/aaa-authentication.tf)  | [aaa-authorization](./examples/examples_tf/aaa-authorization.tf)  | [aaa-accounting](./examples/examples_tf/aaa-accounting.tf)  | [acl](./examples/examples_tf/acl.tf)  | [bgp](./examples/examples_tf/bgp.tf)  |
-| [cdp](./examples/examples_tf/cdp.tf)  | [dhcp](./examples/examples_tf/dhcp.tf)  | [emp](./examples/examples_tf/emp.tf)  | [etherChannel](./examples/examples_tf/etherChannel.tf)  | [hsrp](./examples/examples_tf/hsrp.tf)  
-| [igmp](./examples/examples_tf/igmp.tf)  | [igmp-proxy](./examples/examples_tf/igmp-proxy.tf)  | [l3-subinterface](./examples/examples_tf/l3-subinterface.tf)  | [line](./examples/examples_tf/line.tf)  | [mdt](./examples/examples_tf/mdt.tf)  |
-| [nat](./examples/examples_tf/nat.tf)  | [ntp](./examples/examples_tf/ntp.tf)  | [ospf](./examples/examples_tf/ospf.tf)  | [pim](./examples/examples_tf/pim.tf)  | [poe](./examples/examples_tf/poe.tf)  | 
-| [radius](./examples/examples_tf/radius.tf)  | [snmp](./examples/examples_tf/snmp.tf)  | [span-rspan](./examples/examples_tf/span-rspan.tf)  | [vlan](./examples/examples_tf/vlan.tf)  | [vlan-trunk](./examples/examples_tf/vlan-trunk.tf)  | 
-| [vlan-voice](./examples/examples_tf/vlan-voice.tf)  | [vtp](./examples/examples_tf/vtp.tf) | [ipsec crypto tunnel](./examples/examples_tf/crypto-tunnel.tf) |
-
-## Creating Additional Terraform Resources
-Any feature or Remote Procedure Call (RPC) supported by RESTCONF & YANG is supported by this Terraform provider. If a particular feature example is not yet in this GitHub repository, you can create the necessary Terraform file using these steps
-1.	Configure the feature as per the CLI config guide, if needed.
-1.	You can find the JSON for features currently configured device using `show run | format restconf-json` ![](cli2yang.png)
-    -	An alternate approach to find the RESTCONF JSON can be done using [YANG Suite](https://github.com/CiscoDevNet/yangsuite), a tool to visualize and understand YANG models
-    ![](restconf_with_yang_suite.gif)
-1.  The resulting JSON found from executing RESTCONF can be used to create the .tf file. For example, replace each of the values in angle brackets (<>) in the example Terraform file below with the corresponding Xpath and JSON:
-
-    example.tf
-    ```
-    resource "iosxe_rest" "feature_put" {
-        method = "PUT"
-        path   = <RESTCONF_XPATH>
-        payload = jsonencode(    
-            {
-                <JSON_RESPONSE>
-            }
-        )
-    }
-    ```

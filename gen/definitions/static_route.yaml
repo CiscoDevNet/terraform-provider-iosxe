@@ -1,0 +1,29 @@
+---
+name: Static Route
+path: Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list=%s,%s
+no_delete_attributes: true
+skip_minimum_test: true
+doc_category: Routing
+attributes:
+  - yang_name: prefix
+    example: 5.5.5.5
+  - yang_name: mask
+    example: 255.255.255.255
+  - yang_name: fwd-list
+    tf_name: next_hops
+    type: List
+    attributes:
+      - yang_name: fwd
+        tf_name: next_hop
+        example: 6.6.6.6
+        id: true
+      - yang_name: metric
+        example: 10
+      - yang_name: global
+        example: false
+      - yang_name: name
+        example: Route1
+      - yang_name: permanent
+        example: true
+      - yang_name: tag
+        example: 100

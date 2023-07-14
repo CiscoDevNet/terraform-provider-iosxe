@@ -1,0 +1,64 @@
+---
+name: Service
+path: Cisco-IOS-XE-native:native/service
+doc_category: System
+no_delete: true
+attributes:
+  - yang_name: pad-conf/pad
+    tf_name: pad
+    example: true
+  - yang_name: password-encryption
+    example: true
+  - yang_name: password-recovery
+    example: true
+    no_delete: true
+  - yang_name: timestamps
+    example: true
+  - yang_name: timestamps/debug-config
+    tf_name: timestamps_debug
+    example: true
+  - yang_name: timestamps/debug-config/datetime
+    tf_name: timestamps_debug_datetime
+    example: true
+  - yang_name: timestamps/debug-config/datetime/msec
+    tf_name: timestamps_debug_datetime_msec
+    example: true
+  - yang_name: timestamps/debug-config/datetime/localtime
+    tf_name: timestamps_debug_datetime_localtime
+    example: true
+  - yang_name: timestamps/debug-config/datetime/show-timezone
+    tf_name: timestamps_debug_datetime_show_timezone
+    example: true
+  - yang_name: timestamps/debug-config/datetime/year
+    tf_name: timestamps_debug_datetime_year
+    example: true
+  - yang_name: timestamps/debug-config/uptime
+    tf_name: timestamps_debug_uptime
+    example: true
+  - yang_name: timestamps/log-config
+    tf_name: timestamps_log
+    example: true
+  - yang_name: timestamps/log-config/datetime
+    tf_name: timestamps_log_datetime
+    example: true
+  - yang_name: timestamps/log-config/datetime/msec
+    tf_name: timestamps_log_datetime_msec
+    example: true
+  - yang_name: timestamps/log-config/datetime/localtime
+    tf_name: timestamps_log_datetime_localtime
+    example: true
+  - yang_name: timestamps/log-config/datetime/show-timezone
+    tf_name: timestamps_log_datetime_show_timezone
+    example: true
+  - yang_name: timestamps/log-config/datetime/year
+    tf_name: timestamps_log_datetime_year
+    example: true
+  - yang_name: timestamps/log-config/uptime
+    tf_name: timestamps_log_uptime
+    example: true
+  - yang_name: dhcp
+    example: true
+  - yang_name: tcp-keepalives-in
+    example: true
+  - yang_name: tcp-keepalives-out
+    example: true

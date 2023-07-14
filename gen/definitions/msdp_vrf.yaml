@@ -1,0 +1,52 @@
+---
+name: MSDP VRF
+path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp/vrf=%s
+skip_minimum_test: true
+doc_category: Multicast
+attributes:
+  - yang_name: name
+    tf_name: vrf
+    id: true
+    example: VRF1
+  - yang_name: originator-id
+    example: Loopback100
+  - yang_name: password/peer-list
+    tf_name: passwords
+    type: List
+    attributes:
+      - yang_name: addr
+        example: 10.1.1.1
+        id: true
+      - yang_name: encryption
+        example: 0
+      - yang_name: password
+        example: Cisco123
+  - yang_name: peer
+    tf_name: peers
+    type: List
+    no_delete: true
+    attributes:
+      - yang_name: addr
+        example: 10.1.1.1
+        id: true
+      - yang_name: remote-as
+        example: 65000
+      - yang_name: connect-source/interface-choice/Loopback/Loopback
+        xpath: connect-source/Loopback
+        tf_name: connect_source_loopback
+        example: 100
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+    attributes:
+      - name: name
+        value: 100
+      - name: vrf/forwarding
+        value: VRF1
+    dependencies: [0]

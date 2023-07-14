@@ -1,0 +1,29 @@
+---
+name: VLAN
+path: Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list=%v
+no_delete_attributes: true
+test_tags: [C9000V]
+doc_category: Switching
+attributes:
+  - yang_name: id
+    tf_name: vlan_id
+    example: 123
+  - yang_name: remote-span
+    exclude_test: true
+    example: false
+  - yang_name: private-vlan/primary
+    exclude_test: true
+    example: false
+  - yang_name: private-vlan/association
+    exclude_test: true
+    example: ""
+  - yang_name: private-vlan/community
+    exclude_test: true
+    example: false
+  - yang_name: private-vlan/isolated
+    exclude_test: true
+    example: false
+  - yang_name: name
+    example: Vlan123
+  - yang_name: shutdown
+    example: false

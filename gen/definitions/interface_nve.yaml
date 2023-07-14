@@ -1,0 +1,43 @@
+---
+name: Interface NVE
+path: Cisco-IOS-XE-native:native/interface/nve=%v
+test_tags: [C9000V]
+doc_category: Interface
+attributes:
+  - yang_name: name
+    example: 1
+  - yang_name: description
+    example: My Interface Description
+  - yang_name: shutdown
+    example: false
+  - yang_name: host-reachability/protocol/bgp
+    no_delete: true
+    example: true
+  - yang_name: source-interface/interface-choice/Loopback/Loopback
+    xpath: source-interface/Loopback
+    tf_name: source_interface_loopback
+    example: 100
+  - yang_name: member-in-one-line/member/vni
+    tf_name: vni_vrfs
+    exclude_test: true
+    type: List
+    attributes:
+      - yang_name: vni-range
+        example: 10000
+        id: true
+      - yang_name: vrf
+        example: VRF1
+  - yang_name: member/vni
+    tf_name: vnis
+    type: List
+    attributes:
+      - yang_name: vni-range
+        example: 10000
+        id: true
+      - yang_name: mcast-group/multicast-group-min
+        tf_name: ipv4_multicast_group
+        example: 225.1.1.1
+      - yang_name: ir-cp-config/ingress-replication
+        tf_name: ingress_replication
+        exclude_test: true
+        example: true

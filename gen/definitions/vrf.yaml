@@ -1,0 +1,126 @@
+---
+name: VRF
+path: Cisco-IOS-XE-native:native/vrf/definition=%s
+doc_category: VRF
+attributes:
+  - yang_name: name
+    example: VRF22
+  - yang_name: description
+    example: VRF22 description
+  - yang_name: rd
+    requires_replace: true
+    example: 22:22
+  - yang_name: address-family/ipv4
+    example: true
+  - yang_name: address-family/ipv6
+    example: true
+  - yang_name: vpn/id
+    example: 22:22
+  - yang_name: route-target/import
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+      - yang_name: stitching
+        example: false
+  - yang_name: route-target/export
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+      - yang_name: stitching
+        example: false
+  - yang_name: address-family/ipv4/route-target/import-route-target/without-stitching
+    tf_name: ipv4_route_target_import
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+  - yang_name: address-family/ipv4/route-target/import-route-target/with-stitching
+    tf_name: ipv4_route_target_import_stitching
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+      - yang_name: stitching
+        default_value: true
+        exclude_test: true
+        example: true
+  - yang_name: address-family/ipv4/route-target/export-route-target/without-stitching
+    tf_name: ipv4_route_target_export
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+  - yang_name: address-family/ipv4/route-target/export-route-target/with-stitching
+    tf_name: ipv4_route_target_export_stitching
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+      - yang_name: stitching
+        default_value: true
+        exclude_test: true
+        example: true
+  - yang_name: address-family/ipv6/route-target/import-route-target/without-stitching
+    tf_name: ipv6_route_target_import
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+  - yang_name: address-family/ipv6/route-target/import-route-target/with-stitching
+    tf_name: ipv6_route_target_import_stitching
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+      - yang_name: stitching
+        default_value: true
+        exclude_test: true
+        example: true
+  - yang_name: address-family/ipv6/route-target/export-route-target/without-stitching
+    tf_name: ipv6_route_target_export
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+  - yang_name: address-family/ipv6/route-target/export-route-target/with-stitching
+    tf_name: ipv6_route_target_export_stitching
+    type: List
+    attributes:
+      - yang_name: asn-ip
+        tf_name: value
+        description: Value
+        example: 22:22
+        id: true
+      - yang_name: stitching
+        default_value: true
+        exclude_test: true
+        example: true

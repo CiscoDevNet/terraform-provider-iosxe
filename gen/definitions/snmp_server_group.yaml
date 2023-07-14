@@ -1,0 +1,40 @@
+---
+name: SNMP Server Group
+path: Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:group=%s
+no_delete_attributes: true
+skip_minimum_test: true
+doc_category: Management
+attributes:
+  - yang_name: id
+    tf_name: name
+    example: GROUP1
+  - yang_name: security-model/v3/v3/security-level-list
+    xpath: v3/security-level-list
+    tf_name: v3_security
+    type: List
+    attributes:
+      - yang_name: security-level
+        example: priv
+        id: true
+      - yang_name: context-node
+        example: CON1
+      - yang_name: match-node
+        example: exact
+      - yang_name: read-node
+        example: VIEW1
+      - yang_name: write-node
+        example: VIEW2
+      - yang_name: notify-node
+        example: VIEW3
+      - yang_name: access-config/ipv6-acl
+        tf_name: access_ipv6_acl
+        example: V6ACL1
+      - yang_name: access-config/access-option/standard-acl/standard-acl
+        xpath: access-config/standard-acl
+        tf_name: access_standard_acl
+        example: 1
+        exclude_test: true
+      - yang_name: access-config/access-option/acl-name/acl-name
+        xpath: access-config/acl-name
+        tf_name: access_acl_name
+        example: ACL1

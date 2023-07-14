@@ -1,0 +1,58 @@
+---
+name: Interface OSPF
+path: Cisco-IOS-XE-native:native/interface/%s=%v/ip/Cisco-IOS-XE-ospf:router-ospf/ospf
+augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/ip/Cisco-IOS-XE-ospf:router-ospf/ospf
+doc_category: OSPF
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+      - Loopback
+      - Vlan
+    example: Loopback
+  - yang_name: name
+    example: 1
+  - yang_name: cost
+    example: 10
+  - yang_name: dead-interval
+    example: 30
+  - yang_name: hello-interval
+    example: 5
+  - yang_name: mtu-ignore
+    example: false
+  - yang_name: network/network-type-choice/broadcast/broadcast
+    xpath: network/broadcast
+    tf_name: network_type_broadcast
+    example: false
+  - yang_name: network/network-type-choice/non-broadcast/non-broadcast
+    xpath: network/non-broadcast
+    tf_name: network_type_non_broadcast
+    example: false
+  - yang_name: network/network-type-choice/point-to-multipoint/point-to-multipoint
+    xpath: network/point-to-multipoint
+    tf_name: network_type_point_to_multipoint
+    example: false
+  - yang_name: network/network-type-choice/point-to-point/point-to-point
+    xpath: network/point-to-point
+    tf_name: network_type_point_to_point
+    example: true
+  - yang_name: priority
+    example: 10
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+    attributes:
+      - name: name
+        value: 1

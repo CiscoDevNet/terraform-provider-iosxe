@@ -1,0 +1,202 @@
+---
+name: SNMP Server
+path: Cisco-IOS-XE-native:native/snmp-server
+doc_category: Management
+attributes:
+  - yang_name: Cisco-IOS-XE-snmp:chassis-id
+    example: R1
+  - yang_name: Cisco-IOS-XE-snmp:contact
+    example: Contact1
+  - yang_name: Cisco-IOS-XE-snmp:ifindex/persist
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:location
+    example: Location1
+  - yang_name: Cisco-IOS-XE-snmp:packetsize
+    example: 2000
+  - yang_name: Cisco-IOS-XE-snmp:queue-length
+    example: 100
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/logging/getop
+    tf_name: enable_logging_getop
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/logging/setop
+    tf_name: enable_logging_setop
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/informs
+    tf_name: enable_informs
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps
+    tf_name: enable_traps
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/authentication
+    tf_name: enable_traps_snmp_authentication
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/coldstart
+    tf_name: enable_traps_snmp_coldstart
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/linkdown
+    tf_name: enable_traps_snmp_linkdown
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/linkup
+    tf_name: enable_traps_snmp_linkup
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/warmstart
+    tf_name: enable_traps_snmp_warmstart
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet
+    tf_name: source_interface_informs_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:source-interface/informs/TenGigabitEthernet
+    tf_name: source_interface_informs_ten_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:source-interface/informs/FortyGigabitEthernet
+    tf_name: source_interface_informs_forty_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/HundredGigE/HundredGigE
+    xpath: Cisco-IOS-XE-snmp:source-interface/informs/HundredGigE
+    tf_name: source_interface_informs_hundred_gig_e
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/Loopback/Loopback
+    xpath: Cisco-IOS-XE-snmp:source-interface/informs/Loopback
+    tf_name: source_interface_informs_loopback
+    example: 1
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/Port-channel/Port-channel
+    xpath: Cisco-IOS-XE-snmp:source-interface/informs/Port-channel
+    tf_name: source_interface_informs_port_channel
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/Port-channel-subinterface/Port-channel-subinterface/Port-channel
+    xpath: Cisco-IOS-XE-snmp:source-interface/informs/Port-channel-subinterface/Port-channel
+    tf_name: source_interface_informs_port_channel_subinterface
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/Vlan/Vlan
+    xpath: Cisco-IOS-XE-snmp:source-interface/informs/Vlan
+    tf_name: source_interface_informs_vlan
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:source-interface/traps/GigabitEthernet
+    tf_name: source_interface_traps_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:source-interface/traps/TenGigabitEthernet
+    tf_name: source_interface_traps_ten_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:source-interface/traps/FortyGigabitEthernet
+    tf_name: source_interface_traps_forty_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/HundredGigE/HundredGigE
+    xpath: Cisco-IOS-XE-snmp:source-interface/traps/HundredGigE
+    tf_name: source_interface_traps_hundred_gig_e
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/Loopback/Loopback
+    xpath: Cisco-IOS-XE-snmp:source-interface/traps/Loopback
+    tf_name: source_interface_traps_loopback
+    example: 1
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/Port-channel/Port-channel
+    xpath: Cisco-IOS-XE-snmp:source-interface/traps/Port-channel
+    tf_name: source_interface_traps_port_channel
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/Port-channel-subinterface/Port-channel-subinterface/Port-channel
+    xpath: Cisco-IOS-XE-snmp:source-interface/traps/Port-channel-subinterface/Port-channel
+    tf_name: source_interface_traps_port_channel_subinterface
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/Vlan/Vlan
+    xpath: Cisco-IOS-XE-snmp:source-interface/traps/Vlan
+    tf_name: source_interface_traps_vlan
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:trap-source/GigabitEthernet
+    tf_name: trap_source_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:trap-source/TenGigabitEthernet
+    tf_name: trap_source_ten_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: Cisco-IOS-XE-snmp:trap-source/FortyGigabitEthernet
+    tf_name: trap_source_forty_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/HundredGigE/HundredGigE
+    xpath: Cisco-IOS-XE-snmp:trap-source/HundredGigE
+    tf_name: trap_source_hundred_gig_e
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/Loopback/Loopback
+    xpath: Cisco-IOS-XE-snmp:trap-source/Loopback
+    tf_name: trap_source_loopback
+    example: 1
+  - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/Port-channel/Port-channel
+    xpath: Cisco-IOS-XE-snmp:trap-source/Port-channel
+    tf_name: trap_source_port_channel
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/Port-channel-subinterface/Port-channel-subinterface/Port-channel
+    xpath: Cisco-IOS-XE-snmp:trap-source/Port-channel-subinterface/Port-channel
+    tf_name: trap_source_port_channel_subinterface
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/Vlan/Vlan
+    xpath: Cisco-IOS-XE-snmp:trap-source/Vlan
+    tf_name: trap_source_vlan
+    example: 1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:community-config
+    tf_name: snmp_communities
+    type: List
+    attributes:
+      - yang_name: name
+        example: COM1
+        id: true
+      - yang_name: view
+        example: VIEW1
+      - yang_name: permission
+        example: ro
+      - yang_name: ipv6
+        example: ACL1
+      - yang_name: access-list-name
+        example: 1
+  - yang_name: Cisco-IOS-XE-snmp:context
+    tf_name: contexts
+    type: List
+    attributes:
+      - yang_name: name
+        example: CON1
+        id: true
+  - yang_name: Cisco-IOS-XE-snmp:view
+    tf_name: views
+    type: List
+    attributes:
+      - yang_name: name
+        example: VIEW1
+        id: true
+      - yang_name: mib
+        example: interfaces
+        id: true
+      - yang_name: inc-exl
+        example: included
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+    attributes:
+      - name: name
+        value: 1

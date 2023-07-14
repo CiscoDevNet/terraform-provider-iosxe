@@ -1,0 +1,64 @@
+---
+name: System
+path: Cisco-IOS-XE-native:native
+no_delete: true
+doc_category: System
+attributes:
+  - yang_name: hostname
+    example: ROUTER-1
+  - yang_name: ip/routing-conf/routing
+    tf_name: ip_routing
+    exclude_test: true
+    example: true
+  - yang_name: ipv6/unicast-routing
+    example: true
+  - yang_name: system/Cisco-IOS-XE-switch:mtu/size
+    tf_name: mtu
+    exclude_test: true
+    example: 9198
+  - yang_name: ip/source-route
+    example: false
+  - yang_name: ip/domain/lookup
+    example: false
+  - yang_name: ip/domain/name
+    example: test.com
+  - yang_name: login/delay
+    example: 10
+  - yang_name: login/on-failure
+    example: true
+  - yang_name: login/on-failure/log
+    example: true
+  - yang_name: login/on-success
+    example: true
+  - yang_name: login/on-success/log
+    example: true
+  - yang_name: ip/Cisco-IOS-XE-multicast:multicast-routing
+    example: true
+    test_tags: [C8000V]
+  - yang_name: ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing
+    tf_name: multicast_routing_switch
+    description: Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.
+    example: true
+    test_tags: [C9000V]
+  - yang_name: ip/Cisco-IOS-XE-multicast:multicast-routing/distributed
+    example: true
+    test_tags: [C8000V]
+  - yang_name: ip/Cisco-IOS-XE-multicast:multicast-routing/vrf
+    tf_name: multicast_routing_vrfs
+    type: List
+    attributes:
+      - yang_name: name
+        tf_name: vrf
+        example: VRF1
+        id: true
+      - yang_name: distributed
+        example: true
+        test_tags: [C8000V]
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""

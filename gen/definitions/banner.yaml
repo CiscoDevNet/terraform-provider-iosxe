@@ -1,0 +1,13 @@
+---
+name: Banner
+path: Cisco-IOS-XE-native:native/banner
+doc_category: System
+attributes:
+  - yang_name: exec/banner
+    example: My Exec Banner
+  - yang_name: login/banner
+    example: My Login Banner
+  - yang_name: prompt-timeout/banner
+    example: My Prompt-Timeout Banner
+  - yang_name: motd/banner
+    example: My MOTD Banner
