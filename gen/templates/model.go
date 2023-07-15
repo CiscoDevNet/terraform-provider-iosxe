@@ -597,6 +597,7 @@ func (data *{{camelCase .Name}}) getDeletedListItems(ctx context.Context, state 
 	deletedListItems := make([]string, 0)
 	{{- range .Attributes}}
 	{{- if eq .Type "List"}}
+	{{- $xpath := getXPath .YangName .XPath}}
 	for i := range state.{{toGoName .TfName}} {
 		{{- $list := (toGoName .TfName)}}
 		stateKeyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(state.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(state.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}state.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -657,7 +658,7 @@ func (data *{{camelCase .Name}}) getDeletedListItems(ctx context.Context, state 
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}=%v/{{getXPath .YangName .XPath}}%v", state.getPath(), strings.Join(cstateKeyValues[:], ","), strings.Join(stateKeyValues[:], ",")))
+						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				{{- end}}

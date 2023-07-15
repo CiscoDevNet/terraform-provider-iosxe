@@ -1114,7 +1114,7 @@ func (data *NTP) getDeletedListItems(ctx context.Context, state NTP) []string {
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/server-list=%v/server-list%v", state.getPath(), strings.Join(cstateKeyValues[:], ","), strings.Join(stateKeyValues[:], ",")))
+						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
@@ -1189,7 +1189,7 @@ func (data *NTP) getDeletedListItems(ctx context.Context, state NTP) []string {
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/server-list=%v/server-list%v", state.getPath(), strings.Join(cstateKeyValues[:], ","), strings.Join(stateKeyValues[:], ",")))
+						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break

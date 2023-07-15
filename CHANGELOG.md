@@ -1,3 +1,7 @@
+## 0.3.1 (unreleased)
+
+- Fix issue with deletion of servers and peers of `iosxe_ntp` resource
+
 ## 0.3.0
 
 - BREAKING CHANGE: Completely revamped the provider based on `github.com/netascode/terraform-provider-iosxe` codebase, replacing all existing resources and data sources
