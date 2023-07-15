@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.3.1 (unreleased)
+## 0.3.1
 
 - Fix issue with deletion of servers and peers of `iosxe_ntp` resource
 
