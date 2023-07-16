@@ -53,6 +53,20 @@ type InterfacePortChannel struct {
 	IpAccessGroupOut           types.String                          `tfsdk:"ip_access_group_out"`
 	IpAccessGroupOutEnable     types.Bool                            `tfsdk:"ip_access_group_out_enable"`
 	IpDhcpRelaySourceInterface types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
+	SpanningTreeGuard          types.String                          `tfsdk:"spanning_tree_guard"`
+	AutoQosClassify            types.Bool                            `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice      types.Bool                            `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust               types.Bool                            `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos            types.Bool                            `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp           types.Bool                            `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts            types.Bool                            `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera       types.Bool                            `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer    types.Bool                            `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                types.Bool                            `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone      types.Bool                            `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone  types.Bool                            `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust           types.Bool                            `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                types.String                          `tfsdk:"trust_device"`
 	HelperAddresses            []InterfacePortChannelHelperAddresses `tfsdk:"helper_addresses"`
 }
 
@@ -74,6 +88,20 @@ type InterfacePortChannelData struct {
 	IpAccessGroupOut           types.String                          `tfsdk:"ip_access_group_out"`
 	IpAccessGroupOutEnable     types.Bool                            `tfsdk:"ip_access_group_out_enable"`
 	IpDhcpRelaySourceInterface types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
+	SpanningTreeGuard          types.String                          `tfsdk:"spanning_tree_guard"`
+	AutoQosClassify            types.Bool                            `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice      types.Bool                            `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust               types.Bool                            `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos            types.Bool                            `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp           types.Bool                            `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts            types.Bool                            `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera       types.Bool                            `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer    types.Bool                            `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                types.Bool                            `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone      types.Bool                            `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone  types.Bool                            `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust           types.Bool                            `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                types.String                          `tfsdk:"trust_device"`
 	HelperAddresses            []InterfacePortChannelHelperAddresses `tfsdk:"helper_addresses"`
 }
 type InterfacePortChannelHelperAddresses struct {
@@ -153,6 +181,72 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() && !data.IpDhcpRelaySourceInterface.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface", data.IpDhcpRelaySourceInterface.ValueString())
+	}
+	if !data.SpanningTreeGuard.IsNull() && !data.SpanningTreeGuard.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.guard", data.SpanningTreeGuard.ValueString())
+	}
+	if !data.AutoQosClassify.IsNull() && !data.AutoQosClassify.IsUnknown() {
+		if data.AutoQosClassify.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.classify", map[string]string{})
+		}
+	}
+	if !data.AutoQosClassifyPolice.IsNull() && !data.AutoQosClassifyPolice.IsUnknown() {
+		if data.AutoQosClassifyPolice.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.classify.police", map[string]string{})
+		}
+	}
+	if !data.AutoQosTrust.IsNull() && !data.AutoQosTrust.IsUnknown() {
+		if data.AutoQosTrust.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.trust", map[string]string{})
+		}
+	}
+	if !data.AutoQosTrustCos.IsNull() && !data.AutoQosTrustCos.IsUnknown() {
+		if data.AutoQosTrustCos.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.trust.cos", map[string]string{})
+		}
+	}
+	if !data.AutoQosTrustDscp.IsNull() && !data.AutoQosTrustDscp.IsUnknown() {
+		if data.AutoQosTrustDscp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.trust.dscp", map[string]string{})
+		}
+	}
+	if !data.AutoQosVideoCts.IsNull() && !data.AutoQosVideoCts.IsUnknown() {
+		if data.AutoQosVideoCts.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.video.cts", map[string]string{})
+		}
+	}
+	if !data.AutoQosVideoIpCamera.IsNull() && !data.AutoQosVideoIpCamera.IsUnknown() {
+		if data.AutoQosVideoIpCamera.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.video.ip-camera", map[string]string{})
+		}
+	}
+	if !data.AutoQosVideoMediaPlayer.IsNull() && !data.AutoQosVideoMediaPlayer.IsUnknown() {
+		if data.AutoQosVideoMediaPlayer.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.video.media-player", map[string]string{})
+		}
+	}
+	if !data.AutoQosVoip.IsNull() && !data.AutoQosVoip.IsUnknown() {
+		if data.AutoQosVoip.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.voip", map[string]string{})
+		}
+	}
+	if !data.AutoQosVoipCiscoPhone.IsNull() && !data.AutoQosVoipCiscoPhone.IsUnknown() {
+		if data.AutoQosVoipCiscoPhone.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.voip.cisco-phone", map[string]string{})
+		}
+	}
+	if !data.AutoQosVoipCiscoSoftphone.IsNull() && !data.AutoQosVoipCiscoSoftphone.IsUnknown() {
+		if data.AutoQosVoipCiscoSoftphone.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.voip.cisco-softphone", map[string]string{})
+		}
+	}
+	if !data.AutoQosVoipTrust.IsNull() && !data.AutoQosVoipTrust.IsUnknown() {
+		if data.AutoQosVoipTrust.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:auto.qos.voip.trust", map[string]string{})
+		}
+	}
+	if !data.TrustDevice.IsNull() && !data.TrustDevice.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trust.device", data.TrustDevice.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -273,6 +367,124 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.IpDhcpRelaySourceInterface = types.StringNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.guard"); value.Exists() && !data.SpanningTreeGuard.IsNull() {
+		data.SpanningTreeGuard = types.StringValue(value.String())
+	} else {
+		data.SpanningTreeGuard = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.classify"); !data.AutoQosClassify.IsNull() {
+		if value.Exists() {
+			data.AutoQosClassify = types.BoolValue(true)
+		} else {
+			data.AutoQosClassify = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosClassify = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.classify.police"); !data.AutoQosClassifyPolice.IsNull() {
+		if value.Exists() {
+			data.AutoQosClassifyPolice = types.BoolValue(true)
+		} else {
+			data.AutoQosClassifyPolice = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosClassifyPolice = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.trust"); !data.AutoQosTrust.IsNull() {
+		if value.Exists() {
+			data.AutoQosTrust = types.BoolValue(true)
+		} else {
+			data.AutoQosTrust = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosTrust = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.trust.cos"); !data.AutoQosTrustCos.IsNull() {
+		if value.Exists() {
+			data.AutoQosTrustCos = types.BoolValue(true)
+		} else {
+			data.AutoQosTrustCos = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosTrustCos = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.trust.dscp"); !data.AutoQosTrustDscp.IsNull() {
+		if value.Exists() {
+			data.AutoQosTrustDscp = types.BoolValue(true)
+		} else {
+			data.AutoQosTrustDscp = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosTrustDscp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.video.cts"); !data.AutoQosVideoCts.IsNull() {
+		if value.Exists() {
+			data.AutoQosVideoCts = types.BoolValue(true)
+		} else {
+			data.AutoQosVideoCts = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosVideoCts = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.video.ip-camera"); !data.AutoQosVideoIpCamera.IsNull() {
+		if value.Exists() {
+			data.AutoQosVideoIpCamera = types.BoolValue(true)
+		} else {
+			data.AutoQosVideoIpCamera = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosVideoIpCamera = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.video.media-player"); !data.AutoQosVideoMediaPlayer.IsNull() {
+		if value.Exists() {
+			data.AutoQosVideoMediaPlayer = types.BoolValue(true)
+		} else {
+			data.AutoQosVideoMediaPlayer = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosVideoMediaPlayer = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip"); !data.AutoQosVoip.IsNull() {
+		if value.Exists() {
+			data.AutoQosVoip = types.BoolValue(true)
+		} else {
+			data.AutoQosVoip = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosVoip = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.cisco-phone"); !data.AutoQosVoipCiscoPhone.IsNull() {
+		if value.Exists() {
+			data.AutoQosVoipCiscoPhone = types.BoolValue(true)
+		} else {
+			data.AutoQosVoipCiscoPhone = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosVoipCiscoPhone = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.cisco-softphone"); !data.AutoQosVoipCiscoSoftphone.IsNull() {
+		if value.Exists() {
+			data.AutoQosVoipCiscoSoftphone = types.BoolValue(true)
+		} else {
+			data.AutoQosVoipCiscoSoftphone = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosVoipCiscoSoftphone = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.trust"); !data.AutoQosVoipTrust.IsNull() {
+		if value.Exists() {
+			data.AutoQosVoipTrust = types.BoolValue(true)
+		} else {
+			data.AutoQosVoipTrust = types.BoolValue(false)
+		}
+	} else {
+		data.AutoQosVoipTrust = types.BoolNull()
+	}
+	if value := res.Get(prefix + "trust.device"); value.Exists() && !data.TrustDevice.IsNull() {
+		data.TrustDevice = types.StringValue(value.String())
+	} else {
+		data.TrustDevice = types.StringNull()
+	}
 	for i := range data.HelperAddresses {
 		keys := [...]string{"address"}
 		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
@@ -379,6 +591,72 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.guard"); value.Exists() {
+		data.SpanningTreeGuard = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.classify"); value.Exists() {
+		data.AutoQosClassify = types.BoolValue(true)
+	} else {
+		data.AutoQosClassify = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.classify.police"); value.Exists() {
+		data.AutoQosClassifyPolice = types.BoolValue(true)
+	} else {
+		data.AutoQosClassifyPolice = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.trust"); value.Exists() {
+		data.AutoQosTrust = types.BoolValue(true)
+	} else {
+		data.AutoQosTrust = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.trust.cos"); value.Exists() {
+		data.AutoQosTrustCos = types.BoolValue(true)
+	} else {
+		data.AutoQosTrustCos = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.trust.dscp"); value.Exists() {
+		data.AutoQosTrustDscp = types.BoolValue(true)
+	} else {
+		data.AutoQosTrustDscp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.video.cts"); value.Exists() {
+		data.AutoQosVideoCts = types.BoolValue(true)
+	} else {
+		data.AutoQosVideoCts = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.video.ip-camera"); value.Exists() {
+		data.AutoQosVideoIpCamera = types.BoolValue(true)
+	} else {
+		data.AutoQosVideoIpCamera = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.video.media-player"); value.Exists() {
+		data.AutoQosVideoMediaPlayer = types.BoolValue(true)
+	} else {
+		data.AutoQosVideoMediaPlayer = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip"); value.Exists() {
+		data.AutoQosVoip = types.BoolValue(true)
+	} else {
+		data.AutoQosVoip = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.cisco-phone"); value.Exists() {
+		data.AutoQosVoipCiscoPhone = types.BoolValue(true)
+	} else {
+		data.AutoQosVoipCiscoPhone = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.cisco-softphone"); value.Exists() {
+		data.AutoQosVoipCiscoSoftphone = types.BoolValue(true)
+	} else {
+		data.AutoQosVoipCiscoSoftphone = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.voip.trust"); value.Exists() {
+		data.AutoQosVoipTrust = types.BoolValue(true)
+	} else {
+		data.AutoQosVoipTrust = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "trust.device"); value.Exists() {
+		data.TrustDevice = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "ip.helper-address"); value.Exists() {
 		data.HelperAddresses = make([]InterfacePortChannelHelperAddresses, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -441,6 +719,42 @@ func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []str
 	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
 	}
+	if !data.AutoQosClassify.IsNull() && !data.AutoQosClassify.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", data.getPath()))
+	}
+	if !data.AutoQosClassifyPolice.IsNull() && !data.AutoQosClassifyPolice.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify/police", data.getPath()))
+	}
+	if !data.AutoQosTrust.IsNull() && !data.AutoQosTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust", data.getPath()))
+	}
+	if !data.AutoQosTrustCos.IsNull() && !data.AutoQosTrustCos.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/cos", data.getPath()))
+	}
+	if !data.AutoQosTrustDscp.IsNull() && !data.AutoQosTrustDscp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/dscp", data.getPath()))
+	}
+	if !data.AutoQosVideoCts.IsNull() && !data.AutoQosVideoCts.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/cts", data.getPath()))
+	}
+	if !data.AutoQosVideoIpCamera.IsNull() && !data.AutoQosVideoIpCamera.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/ip-camera", data.getPath()))
+	}
+	if !data.AutoQosVideoMediaPlayer.IsNull() && !data.AutoQosVideoMediaPlayer.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", data.getPath()))
+	}
+	if !data.AutoQosVoip.IsNull() && !data.AutoQosVoip.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", data.getPath()))
+	}
+	if !data.AutoQosVoipCiscoPhone.IsNull() && !data.AutoQosVoipCiscoPhone.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", data.getPath()))
+	}
+	if !data.AutoQosVoipCiscoSoftphone.IsNull() && !data.AutoQosVoipCiscoSoftphone.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone", data.getPath()))
+	}
+	if !data.AutoQosVoipTrust.IsNull() && !data.AutoQosVoipTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/trust", data.getPath()))
+	}
 
 	for i := range data.HelperAddresses {
 		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
@@ -494,6 +808,48 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.getPath()))
+	}
+	if !data.SpanningTreeGuard.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/guard", data.getPath()))
+	}
+	if !data.AutoQosClassify.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", data.getPath()))
+	}
+	if !data.AutoQosClassifyPolice.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify/police", data.getPath()))
+	}
+	if !data.AutoQosTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust", data.getPath()))
+	}
+	if !data.AutoQosTrustCos.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/cos", data.getPath()))
+	}
+	if !data.AutoQosTrustDscp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/dscp", data.getPath()))
+	}
+	if !data.AutoQosVideoCts.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/cts", data.getPath()))
+	}
+	if !data.AutoQosVideoIpCamera.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/ip-camera", data.getPath()))
+	}
+	if !data.AutoQosVideoMediaPlayer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", data.getPath()))
+	}
+	if !data.AutoQosVoip.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", data.getPath()))
+	}
+	if !data.AutoQosVoipCiscoPhone.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", data.getPath()))
+	}
+	if !data.AutoQosVoipCiscoSoftphone.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone", data.getPath()))
+	}
+	if !data.AutoQosVoipTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/trust", data.getPath()))
+	}
+	if !data.TrustDevice.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/trust/device", data.getPath()))
 	}
 	for i := range data.HelperAddresses {
 		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}

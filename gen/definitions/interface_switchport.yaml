@@ -56,6 +56,11 @@ attributes:
     xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlans
     tf_name: trunk_allowed_vlans
     example: 100,101
+  - yang_name: Cisco-IOS-XE-switch:trunk/allowed/vlan/vlan-choice/none/none
+    xpath: Cisco-IOS-XE-switch:trunk/allowed/vlan/none
+    tf_name: trunk_allowed_vlans_none
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-switch:trunk/native/vlan/tag
     tf_name: trunk_native_vlan_tag
     exclude_test: true

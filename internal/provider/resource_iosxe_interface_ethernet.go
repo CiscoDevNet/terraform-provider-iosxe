@@ -185,6 +185,68 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
 				Optional:            true,
 			},
+			"spanning_tree_guard": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Change an interface's spanning tree guard mode").AddStringEnumDescription("loop", "none", "root").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("loop", "none", "root"),
+				},
+			},
+			"auto_qos_classify": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure classification for untrusted devices").String,
+				Optional:            true,
+			},
+			"auto_qos_classify_police": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure QoS policing for untrusted devices").String,
+				Optional:            true,
+			},
+			"auto_qos_trust": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP/CoS marking").String,
+				Optional:            true,
+			},
+			"auto_qos_trust_cos": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the CoS marking").String,
+				Optional:            true,
+			},
+			"auto_qos_trust_dscp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP marking").String,
+				Optional:            true,
+			},
+			"auto_qos_video_cts": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of the Cisco Telepresence System").String,
+				Optional:            true,
+			},
+			"auto_qos_video_ip_camera": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of the Ip Video Surveillance camera").String,
+				Optional:            true,
+			},
+			"auto_qos_video_media_player": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the Qos marking of the Cisco Media Player").String,
+				Optional:            true,
+			},
+			"auto_qos_voip": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure AutoQoS for VoIP").String,
+				Optional:            true,
+			},
+			"auto_qos_voip_cisco_phone": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP Phone").String,
+				Optional:            true,
+			},
+			"auto_qos_voip_cisco_softphone": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the QoS marking of Cisco IP SoftPhone").String,
+				Optional:            true,
+			},
+			"auto_qos_voip_trust": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Trust the DSCP/CoS marking").String,
+				Optional:            true,
+			},
+			"trust_device": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("trusted device class").AddStringEnumDescription("cisco-phone", "cts", "ip-camera", "media-player").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("cisco-phone", "cts", "ip-camera", "media-player"),
+				},
+			},
 			"helper_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify a destination address for UDP broadcasts").String,
 				Optional:            true,

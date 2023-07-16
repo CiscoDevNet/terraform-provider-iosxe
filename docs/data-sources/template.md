@@ -96,6 +96,8 @@ data "iosxe_template" "example" {
 - `switchport_private_vlan_host_association_primary_range` (Number) Primary normal range VLAN ID of the private VLAN port association
 - `switchport_private_vlan_host_association_secondary_range` (Number) Secondary normal range VLAN ID of the private VLAN host port association
 - `switchport_trunk_allowed_vlans` (String) VLAN IDs of the allowed VLANs when this port is in trunking mode
+- `switchport_trunk_allowed_vlans_all` (Boolean) all VLANs
+- `switchport_trunk_allowed_vlans_none` (Boolean) no VLANs
 - `switchport_trunk_native_vlan_tag` (Boolean) Set native VLAN tagging state
 - `switchport_trunk_native_vlan_vlan_id` (Number) VLAN ID of the native VLAN when this port is in trunking mode
 - `switchport_voice_vlan` (Number) Vlan for voice traffic

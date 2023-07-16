@@ -93,6 +93,48 @@ attributes:
     xpath: ip/access-group/out/acl/out
     tf_name: ip_access_group_out_enable
     example: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/guard
+    example: loop
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/classify
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/classify/police
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/trust
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/trust/cos
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/trust/dscp
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/video/cts
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/video/ip-camera
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/video/media-player
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/voip
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:auto/qos/voip/trust
+    example: true
+    exclude_test: true
+  - yang_name: trust/device
+    example: cisco-phone
+    exclude_test: true
   - yang_name: ip/helper-address
     tf_name: helper_addresses
     type: List

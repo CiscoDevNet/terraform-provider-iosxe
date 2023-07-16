@@ -1,3 +1,11 @@
+## 0.3.2 (unreleased)
+
+- Add `auto_qos` attributes to `iosxe_interface_ethernet`, `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
+- Add `spanning_tree_guard` attribute to `iosxe_interface_ethernet` and `iosxe_interface_port_channel` resources and data sources
+- Add `trust_device` attribute to `iosxe_interface_ethernet`, `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
+- Add `trunk_allowed_vlans_none` attribute to `iosxe_interface_switchport` and `iosxe_template` resources and data sources
+- Add `trunk_allowed_vlans_all` attribute to `iosxe_template` resource and data source
+
 ## 0.3.1
 
 - Fix issue with deletion of servers and peers of `iosxe_ntp` resource

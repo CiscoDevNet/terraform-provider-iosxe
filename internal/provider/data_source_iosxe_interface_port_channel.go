@@ -123,6 +123,62 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Set source interface for relayed messages",
 				Computed:            true,
 			},
+			"spanning_tree_guard": schema.StringAttribute{
+				MarkdownDescription: "Change an interface's spanning tree guard mode",
+				Computed:            true,
+			},
+			"auto_qos_classify": schema.BoolAttribute{
+				MarkdownDescription: "Configure classification for untrusted devices",
+				Computed:            true,
+			},
+			"auto_qos_classify_police": schema.BoolAttribute{
+				MarkdownDescription: "Configure QoS policing for untrusted devices",
+				Computed:            true,
+			},
+			"auto_qos_trust": schema.BoolAttribute{
+				MarkdownDescription: "Trust the DSCP/CoS marking",
+				Computed:            true,
+			},
+			"auto_qos_trust_cos": schema.BoolAttribute{
+				MarkdownDescription: "Trust the CoS marking",
+				Computed:            true,
+			},
+			"auto_qos_trust_dscp": schema.BoolAttribute{
+				MarkdownDescription: "Trust the DSCP marking",
+				Computed:            true,
+			},
+			"auto_qos_video_cts": schema.BoolAttribute{
+				MarkdownDescription: "Trust the QoS marking of the Cisco Telepresence System",
+				Computed:            true,
+			},
+			"auto_qos_video_ip_camera": schema.BoolAttribute{
+				MarkdownDescription: "Trust the QoS marking of the Ip Video Surveillance camera",
+				Computed:            true,
+			},
+			"auto_qos_video_media_player": schema.BoolAttribute{
+				MarkdownDescription: "Trust the Qos marking of the Cisco Media Player",
+				Computed:            true,
+			},
+			"auto_qos_voip": schema.BoolAttribute{
+				MarkdownDescription: "Configure AutoQoS for VoIP",
+				Computed:            true,
+			},
+			"auto_qos_voip_cisco_phone": schema.BoolAttribute{
+				MarkdownDescription: "Trust the QoS marking of Cisco IP Phone",
+				Computed:            true,
+			},
+			"auto_qos_voip_cisco_softphone": schema.BoolAttribute{
+				MarkdownDescription: "Trust the QoS marking of Cisco IP SoftPhone",
+				Computed:            true,
+			},
+			"auto_qos_voip_trust": schema.BoolAttribute{
+				MarkdownDescription: "Trust the DSCP/CoS marking",
+				Computed:            true,
+			},
+			"trust_device": schema.StringAttribute{
+				MarkdownDescription: "trusted device class",
+				Computed:            true,
+			},
 			"helper_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify a destination address for UDP broadcasts",
 				Computed:            true,

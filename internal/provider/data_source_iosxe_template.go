@@ -179,6 +179,14 @@ func (d *TemplateDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "VLAN IDs of the allowed VLANs when this port is in trunking mode",
 				Computed:            true,
 			},
+			"switchport_trunk_allowed_vlans_none": schema.BoolAttribute{
+				MarkdownDescription: "no VLANs",
+				Computed:            true,
+			},
+			"switchport_trunk_allowed_vlans_all": schema.BoolAttribute{
+				MarkdownDescription: "all VLANs",
+				Computed:            true,
+			},
 			"switchport_trunk_native_vlan_tag": schema.BoolAttribute{
 				MarkdownDescription: "Set native VLAN tagging state",
 				Computed:            true,

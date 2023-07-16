@@ -54,6 +54,7 @@ resource "iosxe_interface_switchport" "example" {
 - `mode_trunk` (Boolean) Set trunking mode to TRUNK unconditionally
 - `nonegotiate` (Boolean) Device will not engage in negotiation protocol on this interface
 - `trunk_allowed_vlans` (String)
+- `trunk_allowed_vlans_none` (Boolean) no VLANs
 - `trunk_native_vlan` (Number) - Range: `1`-`4094`
 - `trunk_native_vlan_tag` (Boolean)
 

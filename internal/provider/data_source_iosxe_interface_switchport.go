@@ -107,6 +107,10 @@ func (d *InterfaceSwitchportDataSource) Schema(ctx context.Context, req datasour
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"trunk_allowed_vlans_none": schema.BoolAttribute{
+				MarkdownDescription: "no VLANs",
+				Computed:            true,
+			},
 			"trunk_native_vlan_tag": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,

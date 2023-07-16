@@ -220,6 +220,14 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: helpers.NewAttributeDescription("VLAN IDs of the allowed VLANs when this port is in trunking mode").String,
 				Optional:            true,
 			},
+			"switchport_trunk_allowed_vlans_none": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("no VLANs").String,
+				Optional:            true,
+			},
+			"switchport_trunk_allowed_vlans_all": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("all VLANs").String,
+				Optional:            true,
+			},
 			"switchport_trunk_native_vlan_tag": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set native VLAN tagging state").String,
 				Optional:            true,

@@ -33,6 +33,18 @@ data "iosxe_interface_ethernet" "example" {
 
 ### Read-Only
 
+- `auto_qos_classify` (Boolean) Configure classification for untrusted devices
+- `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
+- `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
+- `auto_qos_trust_cos` (Boolean) Trust the CoS marking
+- `auto_qos_trust_dscp` (Boolean) Trust the DSCP marking
+- `auto_qos_video_cts` (Boolean) Trust the QoS marking of the Cisco Telepresence System
+- `auto_qos_video_ip_camera` (Boolean) Trust the QoS marking of the Ip Video Surveillance camera
+- `auto_qos_video_media_player` (Boolean) Trust the Qos marking of the Cisco Media Player
+- `auto_qos_voip` (Boolean) Configure AutoQoS for VoIP
+- `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
+- `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
+- `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
 - `channel_group_mode` (String) Etherchannel Mode of the interface
 - `channel_group_number` (Number)
 - `description` (String) Interface specific description
@@ -51,7 +63,9 @@ data "iosxe_interface_ethernet" "example" {
 - `media_type` (String) Media type
 - `shutdown` (Boolean) Shutdown the selected interface
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
+- `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
 - `switchport` (Boolean)
+- `trust_device` (String) trusted device class
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table

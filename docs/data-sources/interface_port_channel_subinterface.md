@@ -31,6 +31,18 @@ data "iosxe_interface_port_channel_subinterface" "example" {
 
 ### Read-Only
 
+- `auto_qos_classify` (Boolean) Configure classification for untrusted devices
+- `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
+- `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
+- `auto_qos_trust_cos` (Boolean) Trust the CoS marking
+- `auto_qos_trust_dscp` (Boolean) Trust the DSCP marking
+- `auto_qos_video_cts` (Boolean) Trust the QoS marking of the Cisco Telepresence System
+- `auto_qos_video_ip_camera` (Boolean) Trust the QoS marking of the Ip Video Surveillance camera
+- `auto_qos_video_media_player` (Boolean) Trust the Qos marking of the Cisco Media Player
+- `auto_qos_voip` (Boolean) Configure AutoQoS for VoIP
+- `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
+- `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
+- `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
 - `description` (String) Interface specific description
 - `encapsulation_dot1q_vlan_id` (Number)
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
@@ -44,6 +56,7 @@ data "iosxe_interface_port_channel_subinterface" "example" {
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
 - `shutdown` (Boolean) Shutdown the selected interface
+- `trust_device` (String) trusted device class
 - `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table
 

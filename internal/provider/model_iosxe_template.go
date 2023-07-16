@@ -63,6 +63,8 @@ type Template struct {
 	SwitchportPrivateVlanHostAssociationPrimaryRange   types.Int64                                  `tfsdk:"switchport_private_vlan_host_association_primary_range"`
 	SwitchportPrivateVlanHostAssociationSecondaryRange types.Int64                                  `tfsdk:"switchport_private_vlan_host_association_secondary_range"`
 	SwitchportTrunkAllowedVlans                        types.String                                 `tfsdk:"switchport_trunk_allowed_vlans"`
+	SwitchportTrunkAllowedVlansNone                    types.Bool                                   `tfsdk:"switchport_trunk_allowed_vlans_none"`
+	SwitchportTrunkAllowedVlansAll                     types.Bool                                   `tfsdk:"switchport_trunk_allowed_vlans_all"`
 	SwitchportTrunkNativeVlanTag                       types.Bool                                   `tfsdk:"switchport_trunk_native_vlan_tag"`
 	SwitchportTrunkNativeVlanVlanId                    types.Int64                                  `tfsdk:"switchport_trunk_native_vlan_vlan_id"`
 	Mab                                                types.Bool                                   `tfsdk:"mab"`
@@ -136,6 +138,8 @@ type TemplateData struct {
 	SwitchportPrivateVlanHostAssociationPrimaryRange   types.Int64                                  `tfsdk:"switchport_private_vlan_host_association_primary_range"`
 	SwitchportPrivateVlanHostAssociationSecondaryRange types.Int64                                  `tfsdk:"switchport_private_vlan_host_association_secondary_range"`
 	SwitchportTrunkAllowedVlans                        types.String                                 `tfsdk:"switchport_trunk_allowed_vlans"`
+	SwitchportTrunkAllowedVlansNone                    types.Bool                                   `tfsdk:"switchport_trunk_allowed_vlans_none"`
+	SwitchportTrunkAllowedVlansAll                     types.Bool                                   `tfsdk:"switchport_trunk_allowed_vlans_all"`
 	SwitchportTrunkNativeVlanTag                       types.Bool                                   `tfsdk:"switchport_trunk_native_vlan_tag"`
 	SwitchportTrunkNativeVlanVlanId                    types.Int64                                  `tfsdk:"switchport_trunk_native_vlan_vlan_id"`
 	Mab                                                types.Bool                                   `tfsdk:"mab"`
@@ -308,6 +312,16 @@ func (data Template) toBody(ctx context.Context) string {
 	}
 	if !data.SwitchportTrunkAllowedVlans.IsNull() && !data.SwitchportTrunkAllowedVlans.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"switchport.trunk.allowed.vlan.vlans", data.SwitchportTrunkAllowedVlans.ValueString())
+	}
+	if !data.SwitchportTrunkAllowedVlansNone.IsNull() && !data.SwitchportTrunkAllowedVlansNone.IsUnknown() {
+		if data.SwitchportTrunkAllowedVlansNone.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"switchport.trunk.allowed.vlan.none", map[string]string{})
+		}
+	}
+	if !data.SwitchportTrunkAllowedVlansAll.IsNull() && !data.SwitchportTrunkAllowedVlansAll.IsUnknown() {
+		if data.SwitchportTrunkAllowedVlansAll.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"switchport.trunk.allowed.vlan.all", map[string]string{})
+		}
 	}
 	if !data.SwitchportTrunkNativeVlanTag.IsNull() && !data.SwitchportTrunkNativeVlanTag.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"switchport.trunk.native.vlan.tag", data.SwitchportTrunkNativeVlanTag.ValueBool())
@@ -730,6 +744,24 @@ func (data *Template) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.SwitchportTrunkAllowedVlans = types.StringValue(value.String())
 	} else {
 		data.SwitchportTrunkAllowedVlans = types.StringNull()
+	}
+	if value := res.Get(prefix + "switchport.trunk.allowed.vlan.none"); !data.SwitchportTrunkAllowedVlansNone.IsNull() {
+		if value.Exists() {
+			data.SwitchportTrunkAllowedVlansNone = types.BoolValue(true)
+		} else {
+			data.SwitchportTrunkAllowedVlansNone = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportTrunkAllowedVlansNone = types.BoolNull()
+	}
+	if value := res.Get(prefix + "switchport.trunk.allowed.vlan.all"); !data.SwitchportTrunkAllowedVlansAll.IsNull() {
+		if value.Exists() {
+			data.SwitchportTrunkAllowedVlansAll = types.BoolValue(true)
+		} else {
+			data.SwitchportTrunkAllowedVlansAll = types.BoolValue(false)
+		}
+	} else {
+		data.SwitchportTrunkAllowedVlansAll = types.BoolNull()
 	}
 	if value := res.Get(prefix + "switchport.trunk.native.vlan.tag"); !data.SwitchportTrunkNativeVlanTag.IsNull() {
 		if value.Exists() {
@@ -1211,6 +1243,16 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "switchport.trunk.allowed.vlan.vlans"); value.Exists() {
 		data.SwitchportTrunkAllowedVlans = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "switchport.trunk.allowed.vlan.none"); value.Exists() {
+		data.SwitchportTrunkAllowedVlansNone = types.BoolValue(true)
+	} else {
+		data.SwitchportTrunkAllowedVlansNone = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "switchport.trunk.allowed.vlan.all"); value.Exists() {
+		data.SwitchportTrunkAllowedVlansAll = types.BoolValue(true)
+	} else {
+		data.SwitchportTrunkAllowedVlansAll = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "switchport.trunk.native.vlan.tag"); value.Exists() {
 		data.SwitchportTrunkNativeVlanTag = types.BoolValue(value.Bool())
 	} else {
@@ -1537,6 +1579,12 @@ func (data *Template) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.SwitchportPortSecurityViolationShutdown.IsNull() && !data.SwitchportPortSecurityViolationShutdown.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/switchport/port-security/violation/shutdown", data.getPath()))
 	}
+	if !data.SwitchportTrunkAllowedVlansNone.IsNull() && !data.SwitchportTrunkAllowedVlansNone.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/switchport/trunk/allowed/vlan/none", data.getPath()))
+	}
+	if !data.SwitchportTrunkAllowedVlansAll.IsNull() && !data.SwitchportTrunkAllowedVlansAll.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/switchport/trunk/allowed/vlan/all", data.getPath()))
+	}
 	if !data.Mab.IsNull() && !data.Mab.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mab", data.getPath()))
 	}
@@ -1677,6 +1725,12 @@ func (data *Template) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.SwitchportTrunkAllowedVlans.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport/trunk/allowed/vlan/vlans", data.getPath()))
+	}
+	if !data.SwitchportTrunkAllowedVlansNone.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport/trunk/allowed/vlan/none", data.getPath()))
+	}
+	if !data.SwitchportTrunkAllowedVlansAll.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport/trunk/allowed/vlan/all", data.getPath()))
 	}
 	if !data.SwitchportTrunkNativeVlanTag.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport/trunk/native/vlan/tag", data.getPath()))

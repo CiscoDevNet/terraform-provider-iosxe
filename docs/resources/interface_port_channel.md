@@ -43,6 +43,18 @@ resource "iosxe_interface_port_channel" "example" {
 
 ### Optional
 
+- `auto_qos_classify` (Boolean) Configure classification for untrusted devices
+- `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
+- `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
+- `auto_qos_trust_cos` (Boolean) Trust the CoS marking
+- `auto_qos_trust_dscp` (Boolean) Trust the DSCP marking
+- `auto_qos_video_cts` (Boolean) Trust the QoS marking of the Cisco Telepresence System
+- `auto_qos_video_ip_camera` (Boolean) Trust the QoS marking of the Ip Video Surveillance camera
+- `auto_qos_video_media_player` (Boolean) Trust the Qos marking of the Cisco Media Player
+- `auto_qos_voip` (Boolean) Configure AutoQoS for VoIP
+- `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
+- `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
+- `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
@@ -58,7 +70,11 @@ resource "iosxe_interface_port_channel" "example" {
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
 - `shutdown` (Boolean) Shutdown the selected interface
+- `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
+  - Choices: `loop`, `none`, `root`
 - `switchport` (Boolean)
+- `trust_device` (String) trusted device class
+  - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
 - `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table
 

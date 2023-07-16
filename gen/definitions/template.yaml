@@ -73,6 +73,16 @@ attributes:
     xpath: switchport/trunk/allowed/vlan/vlans
     tf_name: switchport_trunk_allowed_vlans
     example: 500-599
+  - yang_name: switchport/trunk/allowed/vlan/vlan-choice/none/none
+    xpath: switchport/trunk/allowed/vlan/none
+    tf_name: switchport_trunk_allowed_vlans_none
+    example: true
+    exclude_test: true
+  - yang_name: switchport/trunk/allowed/vlan/vlan-choice/all/all
+    xpath: switchport/trunk/allowed/vlan/all
+    tf_name: switchport_trunk_allowed_vlans_all
+    example: true
+    exclude_test: true
   - yang_name: switchport/trunk/native/vlan/tag
     exclude_test: true
     example: false
