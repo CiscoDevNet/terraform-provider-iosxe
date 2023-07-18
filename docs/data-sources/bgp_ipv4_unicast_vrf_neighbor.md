@@ -37,6 +37,8 @@ data "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 
 - `activate` (Boolean) Enable the address family for this neighbor
 - `description` (String) Neighbor specific description
+- `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
+- `ebgp_multihop_max_hop` (Number)
 - `id` (String) The path of the retrieved object.
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))

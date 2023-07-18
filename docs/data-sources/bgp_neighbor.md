@@ -34,6 +34,8 @@ data "iosxe_bgp_neighbor" "example" {
 ### Read-Only
 
 - `description` (String) Neighbor specific description
+- `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
+- `ebgp_multihop_max_hop` (Number)
 - `id` (String) The path of the retrieved object.
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `shutdown` (Boolean) Administratively shut down this neighbor

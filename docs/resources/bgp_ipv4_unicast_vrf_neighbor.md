@@ -50,6 +50,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Neighbor specific description
 - `device` (String) A device name from the provider configuration.
+- `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
+- `ebgp_multihop_max_hop` (Number) - Range: `2`-`255`
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
