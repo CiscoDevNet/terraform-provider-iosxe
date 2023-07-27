@@ -1,0 +1,14 @@
+---
+name: Crypto IPSec Transform Set
+path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=%s
+doc_category: Crypto
+attributes:
+  - yang_name: tag
+    example: TEST
+  - yang_name: esp
+    example: esp-aes
+  - yang_name: esp-hmac
+    example: esp-sha-hmac
+  - yang_name: mode/mode-type/tunnel-case/tunnel-choice
+    xpath: mode/tunnel-choice
+    example: true

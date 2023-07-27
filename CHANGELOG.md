@@ -1,3 +1,13 @@
+## 0.3.3
+
+- Add `iosxe_aaa` resource and data source
+- Add `iosxe_aaa_accounting` resource and data source
+- Add `iosxe_aaa_authorization` resource and data source
+- Add `iosxe_interface_mpls` resource and data source
+- Add `iosxe_interface_ospfv3` resource and data source
+- Add `iosxe_interface_tunnel` resource and data source
+- Add `iosxe_crypto_ipsec_transform_set` resource and data source
+
 ## 0.3.2
 
 - Add `auto_qos` attributes to `iosxe_interface_ethernet`, `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources

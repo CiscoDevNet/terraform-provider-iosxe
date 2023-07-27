@@ -1,0 +1,30 @@
+---
+name: Interface MPLS
+path: Cisco-IOS-XE-native:native/interface/%s=%v/mpls
+augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/mpls
+doc_category: MPLS
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+      - Loopback
+      - Vlan
+    example: GigabitEthernet
+  - yang_name: name
+    example: 1
+  - yang_name: Cisco-IOS-XE-mpls:ip
+    example: true
+  - yang_name: Cisco-IOS-XE-mpls:mtu
+    example: 1200
