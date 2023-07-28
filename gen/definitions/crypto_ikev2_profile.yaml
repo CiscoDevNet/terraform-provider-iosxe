@@ -1,0 +1,34 @@
+name: Crypto IKEv2 Profile
+path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/profile=%v
+doc_category: Crypto
+attributes:
+  - yang_name: name
+    example: aws_vpg_1
+  - yang_name: match/identity/remote/address/ipv4
+    type: List
+    attributes: 
+      - yang_name: ipv4-address
+        id: true 
+        example: 1.2.3.4
+      - yang_name: ipv4-mask
+        example: 255.255.255.0
+  - yang_name: authentication/remote/pre-share
+    example: true 
+  - yang_name: authentication/local/pre-share
+    example: true 
+  - yang_name: keyring/local/name
+    example: test
+  - yang_name: dpd/interval
+    example: 10
+  - yang_name: dpd/retry
+    example: 2
+  - yang_name: dpd/query
+    example: periodic
+  - yang_name: config-exchange/request-1
+    example: false
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=test
+    attributes:
+      - name: name
+        value: test
+    

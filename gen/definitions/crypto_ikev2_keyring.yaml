@@ -1,0 +1,37 @@
+---
+name: Crypto IKEv2 Keyring
+path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=%v
+no_delete_attributes: true
+doc_category: Crypto
+attributes:
+  - yang_name: name
+    example: aws_vpg_1
+  - yang_name: peer
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: aws_vpg_1
+      - yang_name: address/ipv4-ipv6/ipv4-case/ipv4/ipv4-address
+        xpath: address/ipv4/ipv4-address
+        tf_name: ipv4_address
+        example: 1.2.3.4
+      - yang_name: address/ipv4-ipv6/ipv4-case/ipv4/ipv4-mask
+        xpath: address/ipv4/ipv4-mask
+        tf_name: ipv4_mask
+        example: 255.255.255.248
+      - yang_name: identity/identity/key-id/key-id-number
+        xpath: identity/key-id-number
+        example: vpn200
+      - yang_name: pre-shared-key/local-option/encryption-hex/encryption-case/encryption
+        xpath: pre-shared-key/local-option/encryption
+        example: 6
+      - yang_name: pre-shared-key/local-option/encryption-hex/encryption-case/key
+        xpath: pre-shared-key/local-option/key
+        example: cisco123
+      - yang_name: pre-shared-key/remote-option/encryption-hex/encryption-case/encryption
+        xpath: pre-shared-key/remote-option/encryption
+        example: 6
+      - yang_name: pre-shared-key/remote-option/encryption-hex/encryption-case/key
+        xpath: pre-shared-key/remote-option/key
+        example: cisco123

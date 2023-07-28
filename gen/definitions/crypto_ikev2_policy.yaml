@@ -1,0 +1,28 @@
+name: Crypto IKEv2 Policy
+path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy=%v
+no_delete_attributes: true
+doc_category: Crypto
+attributes:
+  - yang_name: name
+    example: aws_vpg_1
+  - yang_name: match/fvrf/any
+    example: true
+  - yang_name: proposal
+    tf_name: proposals
+    type: List
+    mandatory: true
+    attributes:
+      - yang_name: proposals
+        id: true
+        example: proposal123
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=proposal123
+    attributes:
+      - name: name
+        value: proposal123
+      - name: encryption/en-3des
+        value: ""
+      - name: group/fourteen
+        value: ""
+      - name: integrity/md5
+        value: ""
