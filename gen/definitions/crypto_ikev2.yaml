@@ -1,0 +1,14 @@
+--- 
+name: Crypto IKEv2
+path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2
+no_delete_attributes: true
+doc_category: Crypto
+attributes:
+  - yang_name: nat/keepalive
+    example:  20
+  - yang_name: dpd-container/dpd
+    example: 10
+  - yang_name: dpd-container/retry-interval
+    example:  5
+  - yang_name: dpd-container/dpd-query
+    example: periodic

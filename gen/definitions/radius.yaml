@@ -1,0 +1,60 @@
+---
+name: Radius
+path: Cisco-IOS-XE-native:native/radius-server
+no_delete_attributes: true
+doc_category: AAA
+attributes:
+  - yang_name: Cisco-IOS-XE-aaa:attribute
+    tf_name: attributes
+    type: List
+    attributes: 
+      - yang_name: number
+        id: true
+        example: 31
+      # - yang_name: access-request/include
+      #   example: true
+      #   exclude_test: trur
+      - yang_name: attri31/attri31-list
+        tf_name: attri31
+        type: List
+        #exclude_test: true
+        attributes:
+          - yang_name: calling-station-id
+            id: true
+            example: mac
+            #exclude_test: true
+          - yang_name: id-mac/format
+            tf_name: attri31_format
+            example: ietf
+            #exclude_test: true
+          - yang_name: id-mac/lu-case
+            tf_name: attri31_lu_case
+            example: lower-case
+            #exclude_test: true
+          # - yang_name: id-send/nas-port-detail
+          #   tf_name: attri31_nas_port_details
+          #   example: true
+          #   exclude_test: true
+          # - yang_name: id-send/mac-only
+          #   tf_name: attri31_mac_only
+          #   example: true
+          #   exclude_test: true
+          # - yang_name: send-attribute
+      #   example: true
+        # type: enumeration
+        # reference: true
+        # enum_values:
+        # - include-in-access-req
+        #- on-for-login-auth
+        #example: include-in-access-req
+  # - yang_name: Cisco-IOS-XE-aaa:dead-criteria/time
+  #   example: 5
+  # - yang_name: Cisco-IOS-XE-aaa:dead-criteria/tries
+  #   example: 3
+  # - yang_name: Cisco-IOS-XE-aaa:deadtime
+  #   example: 3
+
+
+
+
+  

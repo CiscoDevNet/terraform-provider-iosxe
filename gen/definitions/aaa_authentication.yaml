@@ -1,0 +1,25 @@
+---
+name : AAA Authentication
+path: Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authentication
+no_delete_attributes: true
+doc_category: AAA
+attributes:
+  - yang_name: login  
+    tf_name : login
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: test
+  - yang_name: login/a1/auth-login-choice/group/group
+    xpath: login/a1/group
+    example: Radius-GROUP
+  - yang_name: login/a2/auth-login-choice/group/group
+    xpath: login/a2/group
+    example: Tacacs-GROUP
+    exclude_test: true
+  - yang_name: login/a2/auth-login-choice/none/none
+    xpath: login/a2/none
+    example: true
+  - yang_name: dot1x/default/group/
+    example: Radius-GROUP

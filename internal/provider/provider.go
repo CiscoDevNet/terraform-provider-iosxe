@@ -275,6 +275,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewRestconfResource,
+		NewAAAAuthenticationResource,
 		NewAccessListExtendedResource,
 		NewAccessListStandardResource,
 		NewBannerResource,
@@ -290,6 +291,9 @@ func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resourc
 		NewBGPL2VPNEVPNNeighborResource,
 		NewBGPNeighborResource,
 		NewClockResource,
+		NewCryptoIKEv2Resource,
+		NewCryptoIKEv2ProposalResource,
+		NewCryptoIPSecProfileResource,
 		NewDHCPResource,
 		NewEVPNResource,
 		NewEVPNInstanceResource,
@@ -317,6 +321,7 @@ func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resourc
 		NewPIMResource,
 		NewPIMVRFResource,
 		NewPrefixListResource,
+		NewRadiusResource,
 		NewRouteMapResource,
 		NewServiceResource,
 		NewSNMPServerResource,
@@ -335,6 +340,7 @@ func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resourc
 func (p *IosxeProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewRestconfDataSource,
+		NewAAAAuthenticationDataSource,
 		NewAccessListExtendedDataSource,
 		NewAccessListStandardDataSource,
 		NewBannerDataSource,
@@ -350,6 +356,9 @@ func (p *IosxeProvider) DataSources(ctx context.Context) []func() datasource.Dat
 		NewBGPL2VPNEVPNNeighborDataSource,
 		NewBGPNeighborDataSource,
 		NewClockDataSource,
+		NewCryptoIKEv2DataSource,
+		NewCryptoIKEv2ProposalDataSource,
+		NewCryptoIPSecProfileDataSource,
 		NewDHCPDataSource,
 		NewEVPNDataSource,
 		NewEVPNInstanceDataSource,
@@ -377,6 +386,7 @@ func (p *IosxeProvider) DataSources(ctx context.Context) []func() datasource.Dat
 		NewPIMDataSource,
 		NewPIMVRFDataSource,
 		NewPrefixListDataSource,
+		NewRadiusDataSource,
 		NewRouteMapDataSource,
 		NewServiceDataSource,
 		NewSNMPServerDataSource,
