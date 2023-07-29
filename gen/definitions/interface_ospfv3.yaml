@@ -1,0 +1,32 @@
+---
+name: Interface OSPFv3
+path: Cisco-IOS-XE-native:native/interface/%s=%v/Cisco-IOS-XE-ospfv3:ospfv3
+augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/Cisco-IOS-XE-ospfv3:ospfv3
+doc_category: OSPF
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - TwoHundredGigE
+      - FourHundredGigE
+      - Loopback
+      - Vlan
+    example: GigabitEthernet
+  - yang_name: name
+    example: 1
+  - yang_name: network/point-to-point
+    example: true
+  - yang_name: cost-config/cost-options/value/value
+    xpath: cost-config/value
+    tf_name: cost_config_value
+    example: 1000

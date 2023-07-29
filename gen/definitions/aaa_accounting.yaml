@@ -1,0 +1,45 @@
+---
+name: AAA Accounting
+path: Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:accounting
+doc_category: AAA
+attributes:
+  - yang_name: update/update-choice/newinfo/newinfo/periodic
+    xpath: update/newinfo/periodic
+    tf_name: update_newinfo_periodic 
+    example: 2880
+  - yang_name: identity/default/start-stop/group
+    tf_name: identity_start_stop_group
+    example: RADIUS-GROUP
+
+  ## TEST Cases running till this config
+
+  - yang_name: exec
+    tf_name: exec
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: default
+      - yang_name: accounting-choice/start-stop/start-stop/group1/group
+        xpath: start-stop/group1/group
+        tf_name: group1
+        example: T-Group
+
+  - yang_name: network
+    tf_name: network
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: network1
+      - yang_name: start-stop/group-config/group1/group
+        tf_name: group1
+        example: radius
+      - yang_name: start-stop/group-config/group2/group
+        tf_name: group2
+        example: tacacs+
+
+  - yang_name: system/default-guarantee-first/guarantee-first-case/guarantee-first
+    xpath: system/guarantee-first
+    tf_name: system_guarantee_first
+    example: false

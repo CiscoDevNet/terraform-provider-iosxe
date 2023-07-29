@@ -1,0 +1,56 @@
+---
+name: AAA
+path: Cisco-IOS-XE-native:native/aaa
+no_delete_attributes: true
+doc_category: AAA
+attributes:
+  - yang_name: Cisco-IOS-XE-aaa:new-model
+    example: true
+  - yang_name: Cisco-IOS-XE-aaa:server/radius/dynamic-author
+    example: true
+  - yang_name: Cisco-IOS-XE-aaa:session-id
+    example: common
+
+  - yang_name: Cisco-IOS-XE-aaa:server/radius/dynamic-author/client
+    tf_name: server_radius_dynamic_author_clients
+    type: List
+    attributes:
+      - yang_name: ip
+        id: true
+        example: 11.1.1.1
+      - yang_name: server-key/key
+        tf_name: server_key_type
+        example: 0
+      - yang_name: server-key/string
+        tf_name: server_key
+        example: abcd123
+
+  - yang_name: Cisco-IOS-XE-aaa:group/server/radius
+    tf_name: group_server_radius
+    type: List
+    attributes:
+      - yang_name: name
+        example: T-Group
+        id: true
+      - yang_name: server/name
+        tf_name: server_names
+        type: List
+        attributes:
+          - yang_name: name
+            example: TESTRADIUS
+            id: true
+
+  - yang_name: Cisco-IOS-XE-aaa:group/server/tacacsplus
+    tf_name: group_tacacsplus
+    type: List
+    attributes:
+      - yang_name: name
+        example: tacacs-group
+        id: true
+      - yang_name: server/name
+        tf_name: servers
+        type: List
+        attributes:
+          - yang_name: name
+            example: tacacs_10.10.15.12
+            id: true

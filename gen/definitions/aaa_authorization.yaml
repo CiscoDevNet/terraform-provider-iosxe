@@ -1,0 +1,34 @@
+---
+name: AAA Authorization
+path: Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authorization
+doc_category: AAA
+attributes:
+  - yang_name: exec
+    tf_name: exec
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: TEST
+      - yang_name: a1/auth-exec-choice/local/local
+        xpath: a1/local
+        tf_name: a1_local
+        example: false
+
+      - yang_name: a1/auth-exec-choice/if-authenticated/if-authenticated
+        xpath: a1/if-authenticated
+        tf_name: a1_if_authenticated
+        example: true
+        
+  - yang_name: network
+    tf_name: network
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: id
+        id: true
+        example: TEST11
+      - yang_name: a1/auth-choice/group/group
+        xpath: network/a1/group
+        tf_name: network_a1_group
+        example: Radius-GROUP

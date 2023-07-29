@@ -1,0 +1,76 @@
+---
+name: Interface Tunnel
+path: Cisco-IOS-XE-native:native/interface/Tunnel=%s
+doc_category: Interface
+no_delete:
+attributes:
+  - yang_name: name
+    example: 90
+  - yang_name: ipv6/enable
+    example: true
+  - yang_name: ipv6/mtu
+    example: 1300
+  - yang_name: ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all
+    tf_name: ipv6_nd_suppress_all
+    example: true
+  - yang_name: ipv6/address/autoconfig/default
+    example: true
+    exclude_test: true
+  - yang_name: ipv6/address/dhcp
+    example: true
+  - yang_name: ipv6/address/link-local-address
+    tf_name: ipv6_link_local_address
+    type: List
+    attributes:
+      - yang_name: address
+        id: true
+        example: fe80::9656:d028:8652:66b6
+      - yang_name: link-local
+        example: true
+
+  - yang_name: ipv6/address/prefix-list
+    tf_name: ipv6_prefix_list_address
+    type: List
+    attributes:
+      - yang_name: prefix
+        id: true
+        example: 2001:DB8::/32
+      - yang_name: eui-64
+        example: true
+
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/source
+    example: GigabitEthernet1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/destination-config/dest-choice/ipv4/ipv4
+    xpath: tunnel/destination-config/ipv4
+    tf_name: tunnel_destination_config_ipv4
+    example: 2.2.2.2
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/protection/Cisco-IOS-XE-crypto:ipsec/profile
+    tf_name: tunnel_protection_ipsec_profiles
+    example: vpn300
+    exclude_test: true
+
+  - yang_name: Cisco-IOS-XE-crypto:crypto/ipsec/df-bit
+    example: clear
+  - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/address
+    xpath: ip/address/primary/address
+    tf_name: ip_primary_address
+    example: 170.254.10.2
+  - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/mask
+    xpath: ip/address/primary/mask
+    tf_name: ip_primary_address_mask
+    example: 255.255.255.252
+    
+  - yang_name: Cisco-IOS-XE-tunnel:tunnel/mode/mode-choice/ipsec/ipsec/ipv4
+    xpath: tunnel/mode/ipsec/ipv4
+    tf_name: tunnel_mode_ipsec_ipv4
+    example: true
+    exclude_test: true
+
+
+# test_prerequisites:
+#   - path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=vpn300
+#     attributes:
+#       - name: name
+#         value: vpn300
