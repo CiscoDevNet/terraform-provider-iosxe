@@ -27,7 +27,7 @@ import (
 
 func TestAccDataSourceIosxeCTS(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "authorization_list", "dnac-Tacacs-GROUP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "authorization_list", "Tacacs-GROUP"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -43,7 +43,7 @@ func TestAccDataSourceIosxeCTS(t *testing.T) {
 func testAccDataSourceIosxeCTSConfig() string {
 	config := `resource "iosxe_cts" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	authorization_list = "dnac-Tacacs-GROUP"` + "\n"
+	config += `	authorization_list = "Tacacs-GROUP"` + "\n"
 	config += `}` + "\n"
 
 	config += `

@@ -4,4 +4,4 @@ path: Cisco-IOS-XE-native:native/cts
 doc_category: CTS
 attributes:
   - yang_name: Cisco-IOS-XE-cts:authorization/list
-    example: dnac-Tacacs-GROUP
+    example: Tacacs-GROUP
