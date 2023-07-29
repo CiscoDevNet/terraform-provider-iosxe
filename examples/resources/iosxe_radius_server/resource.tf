@@ -1,4 +1,4 @@
-resource "iosxe_radius" "example" {
+resource "iosxe_radius_server" "example" {
   attributes = [
     {
       number = "31"

@@ -1,5 +1,5 @@
 ---
-name: Radius
+name: Radius Server
 path: Cisco-IOS-XE-native:native/radius-server
 no_delete_attributes: true
 doc_category: AAA
@@ -7,7 +7,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-aaa:attribute
     tf_name: attributes
     type: List
-    attributes: 
+    attributes:
       - yang_name: number
         id: true
         example: 31
@@ -41,20 +41,15 @@ attributes:
           #   exclude_test: true
           # - yang_name: send-attribute
       #   example: true
-        # type: enumeration
-        # reference: true
-        # enum_values:
-        # - include-in-access-req
-        #- on-for-login-auth
-        #example: include-in-access-req
+      # type: enumeration
+      # reference: true
+      # enum_values:
+      # - include-in-access-req
+      #- on-for-login-auth
+      #example: include-in-access-req
   # - yang_name: Cisco-IOS-XE-aaa:dead-criteria/time
   #   example: 5
   # - yang_name: Cisco-IOS-XE-aaa:dead-criteria/tries
   #   example: 3
   # - yang_name: Cisco-IOS-XE-aaa:deadtime
   #   example: 3
-
-
-
-
-  

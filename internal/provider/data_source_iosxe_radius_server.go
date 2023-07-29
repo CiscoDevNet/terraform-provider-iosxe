@@ -33,26 +33,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &RadiusDataSource{}
-	_ datasource.DataSourceWithConfigure = &RadiusDataSource{}
+	_ datasource.DataSource              = &RadiusServerDataSource{}
+	_ datasource.DataSourceWithConfigure = &RadiusServerDataSource{}
 )
 
-func NewRadiusDataSource() datasource.DataSource {
-	return &RadiusDataSource{}
+func NewRadiusServerDataSource() datasource.DataSource {
+	return &RadiusServerDataSource{}
 }
 
-type RadiusDataSource struct {
+type RadiusServerDataSource struct {
 	clients map[string]*restconf.Client
 }
 
-func (d *RadiusDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_radius"
+func (d *RadiusServerDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_radius_server"
 }
 
-func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *RadiusServerDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Radius configuration.",
+		MarkdownDescription: "This data source can read the Radius Server configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -99,7 +99,7 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 	}
 }
 
-func (d *RadiusDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *RadiusServerDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -107,8 +107,8 @@ func (d *RadiusDataSource) Configure(_ context.Context, req datasource.Configure
 	d.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (d *RadiusDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config RadiusData
+func (d *RadiusServerDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config RadiusServerData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -126,7 +126,7 @@ func (d *RadiusDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 
 	res, err := d.clients[config.Device.ValueString()].GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = RadiusData{Device: config.Device}
+		config = RadiusServerData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))

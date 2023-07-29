@@ -33,37 +33,37 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-type Radius struct {
-	Device     types.String       `tfsdk:"device"`
-	Id         types.String       `tfsdk:"id"`
-	Attributes []RadiusAttributes `tfsdk:"attributes"`
+type RadiusServer struct {
+	Device     types.String             `tfsdk:"device"`
+	Id         types.String             `tfsdk:"id"`
+	Attributes []RadiusServerAttributes `tfsdk:"attributes"`
 }
 
-type RadiusData struct {
-	Device     types.String       `tfsdk:"device"`
-	Id         types.String       `tfsdk:"id"`
-	Attributes []RadiusAttributes `tfsdk:"attributes"`
+type RadiusServerData struct {
+	Device     types.String             `tfsdk:"device"`
+	Id         types.String             `tfsdk:"id"`
+	Attributes []RadiusServerAttributes `tfsdk:"attributes"`
 }
-type RadiusAttributes struct {
-	Number  types.String              `tfsdk:"number"`
-	Attri31 []RadiusAttributesAttri31 `tfsdk:"attri31"`
+type RadiusServerAttributes struct {
+	Number  types.String                    `tfsdk:"number"`
+	Attri31 []RadiusServerAttributesAttri31 `tfsdk:"attri31"`
 }
-type RadiusAttributesAttri31 struct {
+type RadiusServerAttributesAttri31 struct {
 	CallingStationId types.String `tfsdk:"calling_station_id"`
 	Attri31Format    types.String `tfsdk:"attri31_format"`
 	Attri31LuCase    types.String `tfsdk:"attri31_lu_case"`
 }
 
-func (data Radius) getPath() string {
+func (data RadiusServer) getPath() string {
 	return "Cisco-IOS-XE-native:native/radius-server"
 }
 
-func (data RadiusData) getPath() string {
+func (data RadiusServerData) getPath() string {
 	return "Cisco-IOS-XE-native:native/radius-server"
 }
 
 // if last path element has a key -> remove it
-func (data Radius) getPathShort() string {
+func (data RadiusServer) getPathShort() string {
 	path := data.getPath()
 	re := regexp.MustCompile(`(.*)=[^\/]*$`)
 	matches := re.FindStringSubmatch(path)
@@ -73,7 +73,7 @@ func (data Radius) getPathShort() string {
 	return matches[1]
 }
 
-func (data Radius) toBody(ctx context.Context) string {
+func (data RadiusServer) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if len(data.Attributes) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute", []interface{}{})
@@ -100,7 +100,7 @@ func (data Radius) toBody(ctx context.Context) string {
 	return body
 }
 
-func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
+func (data *RadiusServer) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -175,22 +175,22 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
+func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:attribute"); value.Exists() {
-		data.Attributes = make([]RadiusAttributes, 0)
+		data.Attributes = make([]RadiusServerAttributes, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := RadiusAttributes{}
+			item := RadiusServerAttributes{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Number = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("attri31.attri31-list"); cValue.Exists() {
-				item.Attri31 = make([]RadiusAttributesAttri31, 0)
+				item.Attri31 = make([]RadiusServerAttributesAttri31, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := RadiusAttributesAttri31{}
+					cItem := RadiusServerAttributesAttri31{}
 					if ccValue := cv.Get("calling-station-id"); ccValue.Exists() {
 						cItem.CallingStationId = types.StringValue(ccValue.String())
 					}
@@ -210,7 +210,7 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Radius) getDeletedListItems(ctx context.Context, state Radius) []string {
+func (data *RadiusServer) getDeletedListItems(ctx context.Context, state RadiusServer) []string {
 	deletedListItems := make([]string, 0)
 	for i := range state.Attributes {
 		stateKeyValues := [...]string{state.Attributes[i].Number.ValueString()}
@@ -265,13 +265,13 @@ func (data *Radius) getDeletedListItems(ctx context.Context, state Radius) []str
 	return deletedListItems
 }
 
-func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
+func (data *RadiusServer) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
 	return emptyLeafsDelete
 }
 
-func (data *Radius) getDeletePaths(ctx context.Context) []string {
+func (data *RadiusServer) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	for i := range data.Attributes {
 		keyValues := [...]string{data.Attributes[i].Number.ValueString()}

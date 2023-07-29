@@ -25,40 +25,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccIosxeRadius(t *testing.T) {
+func TestAccDataSourceIosxeRadiusServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "attributes.0.number", "31"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "attributes.0.attri31.0.calling_station_id", "mac"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "attributes.0.attri31.0.attri31_format", "ietf"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "attributes.0.attri31.0.attri31_lu_case", "lower-case"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.number", "31"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attri31.0.calling_station_id", "mac"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attri31.0.attri31_format", "ietf"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attri31.0.attri31_lu_case", "lower-case"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeRadiusConfig_minimum(),
-			},
-			{
-				Config: testAccIosxeRadiusConfig_all(),
+				Config: testAccDataSourceIosxeRadiusServerConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
-			},
-			{
-				ResourceName:  "iosxe_radius.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/radius-server",
 			},
 		},
 	})
 }
 
-func testAccIosxeRadiusConfig_minimum() string {
-	config := `resource "iosxe_radius" "test" {` + "\n"
-	config += `}` + "\n"
-	return config
-}
-
-func testAccIosxeRadiusConfig_all() string {
-	config := `resource "iosxe_radius" "test" {` + "\n"
+func testAccDataSourceIosxeRadiusServerConfig() string {
+	config := `resource "iosxe_radius_server" "test" {` + "\n"
 	config += `	attributes = [{` + "\n"
 	config += `		number = "31"` + "\n"
 	config += `		attri31 = [{` + "\n"
@@ -68,5 +54,11 @@ func testAccIosxeRadiusConfig_all() string {
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
+
+	config += `
+		data "iosxe_radius_server" "test" {
+			depends_on = [iosxe_radius_server.test]
+		}
+	`
 	return config
 }
