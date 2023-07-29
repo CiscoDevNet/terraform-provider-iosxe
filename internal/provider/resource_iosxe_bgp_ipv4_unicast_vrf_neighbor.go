@@ -24,6 +24,7 @@ import (
 	"fmt"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -144,6 +145,17 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 							Required:            true,
 						},
 					},
+				},
+			},
+			"ebgp_multihop": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").String,
+				Optional:            true,
+			},
+			"ebgp_multihop_max_hop": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(2, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(2, 255),
 				},
 			},
 		},

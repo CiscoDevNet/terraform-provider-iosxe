@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -41,6 +42,8 @@ type BGPNeighbor struct {
 	Description          types.String `tfsdk:"description"`
 	Shutdown             types.Bool   `tfsdk:"shutdown"`
 	UpdateSourceLoopback types.String `tfsdk:"update_source_loopback"`
+	EbgpMultihop         types.Bool   `tfsdk:"ebgp_multihop"`
+	EbgpMultihopMaxHop   types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
 }
 
 type BGPNeighborData struct {
@@ -52,6 +55,8 @@ type BGPNeighborData struct {
 	Description          types.String `tfsdk:"description"`
 	Shutdown             types.Bool   `tfsdk:"shutdown"`
 	UpdateSourceLoopback types.String `tfsdk:"update_source_loopback"`
+	EbgpMultihop         types.Bool   `tfsdk:"ebgp_multihop"`
+	EbgpMultihopMaxHop   types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
 }
 
 func (data BGPNeighbor) getPath() string {
@@ -92,6 +97,14 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", data.UpdateSourceLoopback.ValueString())
 	}
+	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
+		if data.EbgpMultihop.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ebgp-multihop", map[string]string{})
+		}
+	}
+	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ebgp-multihop.max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
+	}
 	return body
 }
 
@@ -129,6 +142,20 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.UpdateSourceLoopback = types.StringNull()
 	}
+	if value := res.Get(prefix + "ebgp-multihop"); !data.EbgpMultihop.IsNull() {
+		if value.Exists() {
+			data.EbgpMultihop = types.BoolValue(true)
+		} else {
+			data.EbgpMultihop = types.BoolValue(false)
+		}
+	} else {
+		data.EbgpMultihop = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() && !data.EbgpMultihopMaxHop.IsNull() {
+		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	} else {
+		data.EbgpMultihopMaxHop = types.Int64Null()
+	}
 }
 
 func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
@@ -150,6 +177,14 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
 		data.UpdateSourceLoopback = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ebgp-multihop"); value.Exists() {
+		data.EbgpMultihop = types.BoolValue(true)
+	} else {
+		data.EbgpMultihop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
+		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	}
 }
 
 func (data *BGPNeighbor) getDeletedListItems(ctx context.Context, state BGPNeighbor) []string {
@@ -161,6 +196,9 @@ func (data *BGPNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
+	}
+	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -175,6 +213,12 @@ func (data *BGPNeighbor) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.UpdateSourceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/interface/Loopback", data.getPath()))
+	}
+	if !data.EbgpMultihop.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
+	}
+	if !data.EbgpMultihopMaxHop.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop/max-hop", data.getPath()))
 	}
 	return deletePaths
 }

@@ -47,6 +47,12 @@ attributes:
         example: in
       - yang_name: route-map-name
         example: RM1
+  - yang_name: ebgp-multihop
+    example: true
+    exclude_test: true
+  - yang_name: ebgp-multihop/max-hop
+    example: 10
+    exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

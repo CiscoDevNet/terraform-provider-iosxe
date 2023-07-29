@@ -87,6 +87,14 @@ func (d *BGPNeighborDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},
+			"ebgp_multihop": schema.BoolAttribute{
+				MarkdownDescription: "Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.",
+				Computed:            true,
+			},
+			"ebgp_multihop_max_hop": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

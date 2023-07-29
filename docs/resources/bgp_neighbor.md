@@ -37,6 +37,8 @@ resource "iosxe_bgp_neighbor" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Neighbor specific description
 - `device` (String) A device name from the provider configuration.
+- `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
+- `ebgp_multihop_max_hop` (Number) - Range: `2`-`255`
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `shutdown` (Boolean) Administratively shut down this neighbor
 - `update_source_loopback` (String) Loopback interface

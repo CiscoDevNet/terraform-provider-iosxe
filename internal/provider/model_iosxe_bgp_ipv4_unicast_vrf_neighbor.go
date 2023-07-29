@@ -49,6 +49,8 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	SendCommunity        types.String                         `tfsdk:"send_community"`
 	RouteReflectorClient types.Bool                           `tfsdk:"route_reflector_client"`
 	RouteMaps            []BGPIPv4UnicastVRFNeighborRouteMaps `tfsdk:"route_maps"`
+	EbgpMultihop         types.Bool                           `tfsdk:"ebgp_multihop"`
+	EbgpMultihopMaxHop   types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
 }
 
 type BGPIPv4UnicastVRFNeighborData struct {
@@ -65,6 +67,8 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	SendCommunity        types.String                         `tfsdk:"send_community"`
 	RouteReflectorClient types.Bool                           `tfsdk:"route_reflector_client"`
 	RouteMaps            []BGPIPv4UnicastVRFNeighborRouteMaps `tfsdk:"route_maps"`
+	EbgpMultihop         types.Bool                           `tfsdk:"ebgp_multihop"`
+	EbgpMultihopMaxHop   types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
 }
 type BGPIPv4UnicastVRFNeighborRouteMaps struct {
 	InOut        types.String `tfsdk:"in_out"`
@@ -121,6 +125,14 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 		if data.RouteReflectorClient.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-reflector-client", map[string]string{})
 		}
+	}
+	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
+		if data.EbgpMultihop.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ebgp-multihop", map[string]string{})
+		}
+	}
+	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ebgp-multihop.max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
 	}
 	if len(data.RouteMaps) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
@@ -227,6 +239,20 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 			data.RouteMaps[i].RouteMapName = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "ebgp-multihop"); !data.EbgpMultihop.IsNull() {
+		if value.Exists() {
+			data.EbgpMultihop = types.BoolValue(true)
+		} else {
+			data.EbgpMultihop = types.BoolValue(false)
+		}
+	} else {
+		data.EbgpMultihop = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() && !data.EbgpMultihopMaxHop.IsNull() {
+		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	} else {
+		data.EbgpMultihopMaxHop = types.Int64Null()
+	}
 }
 
 func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjson.Result) {
@@ -275,6 +301,14 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ebgp-multihop"); value.Exists() {
+		data.EbgpMultihop = types.BoolValue(true)
+	} else {
+		data.EbgpMultihop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
+		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	}
 }
 
 func (data *BGPIPv4UnicastVRFNeighbor) getDeletedListItems(ctx context.Context, state BGPIPv4UnicastVRFNeighbor) []string {
@@ -319,6 +353,9 @@ func (data *BGPIPv4UnicastVRFNeighbor) getEmptyLeafsDelete(ctx context.Context) 
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
 	}
 
+	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -343,6 +380,12 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []str
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-map=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.EbgpMultihop.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
+	}
+	if !data.EbgpMultihopMaxHop.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop/max-hop", data.getPath()))
 	}
 	return deletePaths
 }

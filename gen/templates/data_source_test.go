@@ -38,10 +38,16 @@ func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if and (not .Id) (not .Reference) (not .WriteOnly) (not .ExcludeTest)}}
 	{{- if eq .Type "List"}}
 	{{- $list := .TfName }}
+	{{- if len .TestTags}}
+	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
+	{{- end}}
 	{{- range .Attributes}}
 	{{- if and (not .WriteOnly) (not .ExcludeTest)}}
 	{{- if eq .Type "List"}}
 	{{- $clist := .TfName }}
+	{{- if len .TestTags}}
+	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
+	{{- end}}
 	{{- range .Attributes}}
 	{{- if and (not .WriteOnly) (not .ExcludeTest)}}
 	{{- if len .TestTags}}
@@ -53,6 +59,9 @@ func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- end}}
 	{{- end}}
 	{{- end}}
+	{{- if len .TestTags}}
+	}
+	{{- end}}
 	{{- else}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
@@ -63,6 +72,9 @@ func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- end}}
 	{{- end}}
 	{{- end}}
+	{{- end}}
+	{{- if len .TestTags}}
+	}
 	{{- end}}
 	{{- else}}
 	{{- if len .TestTags}}
@@ -135,10 +147,16 @@ func testAccDataSourceIosxe{{camelCase .Name}}Config() string {
 	{{- range  .Attributes}}
 	{{- if not .ExcludeTest}}
 	{{- if eq .Type "List"}}
+	{{- if len .TestTags}}
+	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
+	{{- end}}
 	config += `	{{.TfName}} = [{` + "\n"
 		{{- range  .Attributes}}
 		{{- if not .ExcludeTest}}
 		{{- if eq .Type "List"}}
+		{{- if len .TestTags}}
+		if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
+		{{- end}}
 	config += `		{{.TfName}} = [{` + "\n"
 			{{- range  .Attributes}}
 			{{- if not .ExcludeTest}}
@@ -152,6 +170,9 @@ func testAccDataSourceIosxe{{camelCase .Name}}Config() string {
 			{{- end}}
 			{{- end}}
 	config += `		}]` + "\n"
+		{{- if len .TestTags}}
+	}
+		{{- end}}
 		{{- else}}
 		{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
@@ -164,6 +185,9 @@ func testAccDataSourceIosxe{{camelCase .Name}}Config() string {
 		{{- end}}
 		{{- end}}
 		config += `	}]` + "\n"
+	{{- if len .TestTags}}
+	}
+	{{- end}}
 	{{- else}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
