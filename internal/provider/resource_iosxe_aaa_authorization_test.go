@@ -20,12 +20,16 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccIosxeAAAAuthorization(t *testing.T) {
+	if os.Getenv("AAA") == "" {
+		t.Skip("skipping test, set environment variable AAA")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.name", "TEST"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a1_local", "false"))
