@@ -65,7 +65,7 @@ func (r *CryptoIPSecTransformSetResource) Schema(ctx context.Context, req resour
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"tag": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
@@ -74,14 +74,14 @@ func (r *CryptoIPSecTransformSetResource) Schema(ctx context.Context, req resour
 			},
 			"esp": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("esp-3des", "esp-aes", "esp-des", "esp-gcm", "esp-gmac", "esp-null", "esp-seal").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("esp-3des", "esp-aes", "esp-des", "esp-gcm", "esp-gmac", "esp-null", "esp-seal"),
 				},
 			},
 			"esp_hmac": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("esp-md5-hmac", "esp-sha-hmac", "esp-sha256-hmac", "esp-sha384-hmac", "esp-sha512-hmac").String,
-				Optional:            true,
+				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("esp-md5-hmac", "esp-sha-hmac", "esp-sha256-hmac", "esp-sha384-hmac", "esp-sha512-hmac"),
 				},

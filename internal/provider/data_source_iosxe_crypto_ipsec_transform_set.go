@@ -63,7 +63,7 @@ func (d *CryptoIPSecTransformSetDataSource) Schema(ctx context.Context, req data
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"tag": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				MarkdownDescription: "",
 				Required:            true,
 			},

@@ -44,7 +44,7 @@ func TestAccDataSourceIosxeCryptoIPSecTransformSet(t *testing.T) {
 
 func testAccDataSourceIosxeCryptoIPSecTransformSetConfig() string {
 	config := `resource "iosxe_crypto_ipsec_transform_set" "test" {` + "\n"
-	config += `	tag = "TEST"` + "\n"
+	config += `	name = "TEST"` + "\n"
 	config += `	esp = "esp-aes"` + "\n"
 	config += `	esp_hmac = "esp-sha-hmac"` + "\n"
 	config += `	mode_tunnel = true` + "\n"
@@ -52,7 +52,7 @@ func testAccDataSourceIosxeCryptoIPSecTransformSetConfig() string {
 
 	config += `
 		data "iosxe_crypto_ipsec_transform_set" "test" {
-			tag = "TEST"
+			name = "TEST"
 			depends_on = [iosxe_crypto_ipsec_transform_set.test]
 		}
 	`

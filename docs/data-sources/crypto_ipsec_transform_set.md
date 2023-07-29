@@ -14,7 +14,7 @@ This data source can read the Crypto IPSec Transform Set configuration.
 
 ```terraform
 data "iosxe_crypto_ipsec_transform_set" "example" {
-  tag = "TEST"
+  name = "TEST"
 }
 ```
 
@@ -23,7 +23,7 @@ data "iosxe_crypto_ipsec_transform_set" "example" {
 
 ### Required
 
-- `tag` (String)
+- `name` (String)
 
 ### Optional
 

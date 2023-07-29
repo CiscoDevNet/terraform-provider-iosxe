@@ -34,7 +34,7 @@ import (
 type CryptoIPSecTransformSet struct {
 	Device     types.String `tfsdk:"device"`
 	Id         types.String `tfsdk:"id"`
-	Tag        types.String `tfsdk:"tag"`
+	Name       types.String `tfsdk:"name"`
 	Esp        types.String `tfsdk:"esp"`
 	EspHmac    types.String `tfsdk:"esp_hmac"`
 	ModeTunnel types.Bool   `tfsdk:"mode_tunnel"`
@@ -43,18 +43,18 @@ type CryptoIPSecTransformSet struct {
 type CryptoIPSecTransformSetData struct {
 	Device     types.String `tfsdk:"device"`
 	Id         types.String `tfsdk:"id"`
-	Tag        types.String `tfsdk:"tag"`
+	Name       types.String `tfsdk:"name"`
 	Esp        types.String `tfsdk:"esp"`
 	EspHmac    types.String `tfsdk:"esp_hmac"`
 	ModeTunnel types.Bool   `tfsdk:"mode_tunnel"`
 }
 
 func (data CryptoIPSecTransformSet) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=%s", url.QueryEscape(fmt.Sprintf("%v", data.Tag.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 func (data CryptoIPSecTransformSetData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=%s", url.QueryEscape(fmt.Sprintf("%v", data.Tag.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it
@@ -70,8 +70,8 @@ func (data CryptoIPSecTransformSet) getPathShort() string {
 
 func (data CryptoIPSecTransformSet) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Tag.IsNull() && !data.Tag.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"tag", data.Tag.ValueString())
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"tag", data.Name.ValueString())
 	}
 	if !data.Esp.IsNull() && !data.Esp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"esp", data.Esp.ValueString())
@@ -92,10 +92,10 @@ func (data *CryptoIPSecTransformSet) updateFromBody(ctx context.Context, res gjs
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	if value := res.Get(prefix + "tag"); value.Exists() && !data.Tag.IsNull() {
-		data.Tag = types.StringValue(value.String())
+	if value := res.Get(prefix + "tag"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
 	} else {
-		data.Tag = types.StringNull()
+		data.Name = types.StringNull()
 	}
 	if value := res.Get(prefix + "esp"); value.Exists() && !data.Esp.IsNull() {
 		data.Esp = types.StringValue(value.String())

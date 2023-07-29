@@ -14,7 +14,7 @@ This resource can manage the Crypto IPSec Transform Set configuration.
 
 ```terraform
 resource "iosxe_crypto_ipsec_transform_set" "example" {
-  tag         = "TEST"
+  name        = "TEST"
   esp         = "esp-aes"
   esp_hmac    = "esp-sha-hmac"
   mode_tunnel = true
@@ -26,13 +26,13 @@ resource "iosxe_crypto_ipsec_transform_set" "example" {
 
 ### Required
 
-- `tag` (String)
+- `esp` (String) - Choices: `esp-3des`, `esp-aes`, `esp-des`, `esp-gcm`, `esp-gmac`, `esp-null`, `esp-seal`
+- `esp_hmac` (String) - Choices: `esp-md5-hmac`, `esp-sha-hmac`, `esp-sha256-hmac`, `esp-sha384-hmac`, `esp-sha512-hmac`
+- `name` (String)
 
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `esp` (String) - Choices: `esp-3des`, `esp-aes`, `esp-des`, `esp-gcm`, `esp-gmac`, `esp-null`, `esp-seal`
-- `esp_hmac` (String) - Choices: `esp-md5-hmac`, `esp-sha-hmac`, `esp-sha256-hmac`, `esp-sha384-hmac`, `esp-sha512-hmac`
 - `mode_tunnel` (Boolean) tunnel (datagram encapsulation) mode
 
 ### Read-Only

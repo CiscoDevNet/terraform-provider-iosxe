@@ -27,7 +27,7 @@ import (
 
 func TestAccIosxeCryptoIPSecTransformSet(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "tag", "TEST"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "name", "TEST"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "esp", "esp-aes"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "esp_hmac", "esp-sha-hmac"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "mode_tunnel", "true"))
@@ -53,14 +53,16 @@ func TestAccIosxeCryptoIPSecTransformSet(t *testing.T) {
 
 func testAccIosxeCryptoIPSecTransformSetConfig_minimum() string {
 	config := `resource "iosxe_crypto_ipsec_transform_set" "test" {` + "\n"
-	config += `	tag = "TEST"` + "\n"
+	config += `	name = "TEST"` + "\n"
+	config += `	esp = "esp-aes"` + "\n"
+	config += `	esp_hmac = "esp-sha-hmac"` + "\n"
 	config += `}` + "\n"
 	return config
 }
 
 func testAccIosxeCryptoIPSecTransformSetConfig_all() string {
 	config := `resource "iosxe_crypto_ipsec_transform_set" "test" {` + "\n"
-	config += `	tag = "TEST"` + "\n"
+	config += `	name = "TEST"` + "\n"
 	config += `	esp = "esp-aes"` + "\n"
 	config += `	esp_hmac = "esp-sha-hmac"` + "\n"
 	config += `	mode_tunnel = true` + "\n"
