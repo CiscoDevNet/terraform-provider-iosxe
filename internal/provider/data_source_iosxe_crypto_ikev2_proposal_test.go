@@ -27,12 +27,18 @@ import (
 
 func TestAccDataSourceIosxeCryptoIKEv2Proposal(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "ikev2_proposals.0.name", "aws_vpg_2"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "ikev2_proposals.0.encryption_aes_cbc_256", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "ikev2_proposals.0.group_fourteen", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "ikev2_proposals.0.group_nineteen", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "ikev2_proposals.0.group_twenty", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "ikev2_proposals.0.integrity_sha1", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "encryption_aes_gcm_256", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_one", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_two", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_fourteen", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_fifteen", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_sixteen", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_nineteen", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_twenty", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_twenty_one", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "group_twenty_four", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "integrity_sha1", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_proposal.test", "prf_sha1", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -47,18 +53,24 @@ func TestAccDataSourceIosxeCryptoIKEv2Proposal(t *testing.T) {
 
 func testAccDataSourceIosxeCryptoIKEv2ProposalConfig() string {
 	config := `resource "iosxe_crypto_ikev2_proposal" "test" {` + "\n"
-	config += `	ikev2_proposals = [{` + "\n"
-	config += `		name = "aws_vpg_2"` + "\n"
-	config += `		encryption_aes_cbc_256 = true` + "\n"
-	config += `		group_fourteen = true` + "\n"
-	config += `		group_nineteen = true` + "\n"
-	config += `		group_twenty = true` + "\n"
-	config += `		integrity_sha1 = true` + "\n"
-	config += `	}]` + "\n"
+	config += `	name = "PROPOSAL1"` + "\n"
+	config += `	encryption_aes_gcm_256 = true` + "\n"
+	config += `	group_one = true` + "\n"
+	config += `	group_two = true` + "\n"
+	config += `	group_fourteen = true` + "\n"
+	config += `	group_fifteen = true` + "\n"
+	config += `	group_sixteen = true` + "\n"
+	config += `	group_nineteen = true` + "\n"
+	config += `	group_twenty = true` + "\n"
+	config += `	group_twenty_one = true` + "\n"
+	config += `	group_twenty_four = true` + "\n"
+	config += `	integrity_sha1 = true` + "\n"
+	config += `	prf_sha1 = true` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_crypto_ikev2_proposal" "test" {
+			name = "PROPOSAL1"
 			depends_on = [iosxe_crypto_ikev2_proposal.test]
 		}
 	`

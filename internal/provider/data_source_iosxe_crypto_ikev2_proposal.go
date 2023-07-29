@@ -63,37 +63,109 @@ func (d *CryptoIKEv2ProposalDataSource) Schema(ctx context.Context, req datasour
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"ikev2_proposals": schema.ListNestedAttribute{
-				MarkdownDescription: "Define IKEV2 proposals",
+			"name": schema.StringAttribute{
+				MarkdownDescription: "",
+				Required:            true,
+			},
+			"encryption_en_3des": schema.BoolAttribute{
+				MarkdownDescription: "3DES",
 				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-						"encryption_aes_cbc_256": schema.BoolAttribute{
-							MarkdownDescription: "AES-CBC-256",
-							Computed:            true,
-						},
-						"group_fourteen": schema.BoolAttribute{
-							MarkdownDescription: "DH 2048 MODP",
-							Computed:            true,
-						},
-						"group_nineteen": schema.BoolAttribute{
-							MarkdownDescription: "DH 256 ECP",
-							Computed:            true,
-						},
-						"group_twenty": schema.BoolAttribute{
-							MarkdownDescription: "DH 384 ECP",
-							Computed:            true,
-						},
-						"integrity_sha1": schema.BoolAttribute{
-							MarkdownDescription: "Secure Hash Standard",
-							Computed:            true,
-						},
-					},
-				},
+			},
+			"encryption_aes_cbc_128": schema.BoolAttribute{
+				MarkdownDescription: "AES-CBC-128",
+				Computed:            true,
+			},
+			"encryption_aes_cbc_192": schema.BoolAttribute{
+				MarkdownDescription: "AES-CBC-192",
+				Computed:            true,
+			},
+			"encryption_aes_cbc_256": schema.BoolAttribute{
+				MarkdownDescription: "AES-CBC-256",
+				Computed:            true,
+			},
+			"encryption_aes_gcm_128": schema.BoolAttribute{
+				MarkdownDescription: "Combined-mode,128 bit key,16 byte ICV(Authentication Tag)",
+				Computed:            true,
+			},
+			"encryption_aes_gcm_256": schema.BoolAttribute{
+				MarkdownDescription: "Combined-mode,256 bit key,16 byte ICV(Authentication Tag)",
+				Computed:            true,
+			},
+			"group_one": schema.BoolAttribute{
+				MarkdownDescription: "DH 768 MODP",
+				Computed:            true,
+			},
+			"group_two": schema.BoolAttribute{
+				MarkdownDescription: "DH 1024 MODP",
+				Computed:            true,
+			},
+			"group_fourteen": schema.BoolAttribute{
+				MarkdownDescription: "DH 2048 MODP",
+				Computed:            true,
+			},
+			"group_fifteen": schema.BoolAttribute{
+				MarkdownDescription: "DH 3072 MODP",
+				Computed:            true,
+			},
+			"group_sixteen": schema.BoolAttribute{
+				MarkdownDescription: "DH 4096 MODP",
+				Computed:            true,
+			},
+			"group_nineteen": schema.BoolAttribute{
+				MarkdownDescription: "DH 256 ECP",
+				Computed:            true,
+			},
+			"group_twenty": schema.BoolAttribute{
+				MarkdownDescription: "DH 384 ECP",
+				Computed:            true,
+			},
+			"group_twenty_one": schema.BoolAttribute{
+				MarkdownDescription: "DH 521 ECP",
+				Computed:            true,
+			},
+			"group_twenty_four": schema.BoolAttribute{
+				MarkdownDescription: "DH 2048 (256 subgroup) MODP",
+				Computed:            true,
+			},
+			"integrity_md5": schema.BoolAttribute{
+				MarkdownDescription: "Message Digest 5",
+				Computed:            true,
+			},
+			"integrity_sha1": schema.BoolAttribute{
+				MarkdownDescription: "Secure Hash Standard",
+				Computed:            true,
+			},
+			"integrity_sha256": schema.BoolAttribute{
+				MarkdownDescription: "Secure Hash Standard 2 (256 bit)",
+				Computed:            true,
+			},
+			"integrity_sha384": schema.BoolAttribute{
+				MarkdownDescription: "Secure Hash Standard 2 (384 bit)",
+				Computed:            true,
+			},
+			"integrity_sha512": schema.BoolAttribute{
+				MarkdownDescription: "Secure Hash Standard 2 (512 bit)",
+				Computed:            true,
+			},
+			"prf_md5": schema.BoolAttribute{
+				MarkdownDescription: "Message Digest 5",
+				Computed:            true,
+			},
+			"prf_sha1": schema.BoolAttribute{
+				MarkdownDescription: "Secure Hash Standard",
+				Computed:            true,
+			},
+			"prf_sha256": schema.BoolAttribute{
+				MarkdownDescription: "Secure Hash Standard 2 (256 bit)",
+				Computed:            true,
+			},
+			"prf_sha384": schema.BoolAttribute{
+				MarkdownDescription: "Secure Hash Standard 2 (384 bit)",
+				Computed:            true,
+			},
+			"prf_sha512": schema.BoolAttribute{
+				MarkdownDescription: "Secure Hash Standard 2 (512 bit)",
+				Computed:            true,
 			},
 		},
 	}

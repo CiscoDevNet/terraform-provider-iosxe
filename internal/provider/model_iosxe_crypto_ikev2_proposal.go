@@ -22,10 +22,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"reflect"
+	"net/url"
 	"regexp"
-	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -34,31 +32,73 @@ import (
 )
 
 type CryptoIKEv2Proposal struct {
-	Device         types.String                        `tfsdk:"device"`
-	Id             types.String                        `tfsdk:"id"`
-	Ikev2Proposals []CryptoIKEv2ProposalIkev2Proposals `tfsdk:"ikev2_proposals"`
+	Device              types.String `tfsdk:"device"`
+	Id                  types.String `tfsdk:"id"`
+	Name                types.String `tfsdk:"name"`
+	EncryptionEn3des    types.Bool   `tfsdk:"encryption_en_3des"`
+	EncryptionAesCbc128 types.Bool   `tfsdk:"encryption_aes_cbc_128"`
+	EncryptionAesCbc192 types.Bool   `tfsdk:"encryption_aes_cbc_192"`
+	EncryptionAesCbc256 types.Bool   `tfsdk:"encryption_aes_cbc_256"`
+	EncryptionAesGcm128 types.Bool   `tfsdk:"encryption_aes_gcm_128"`
+	EncryptionAesGcm256 types.Bool   `tfsdk:"encryption_aes_gcm_256"`
+	GroupOne            types.Bool   `tfsdk:"group_one"`
+	GroupTwo            types.Bool   `tfsdk:"group_two"`
+	GroupFourteen       types.Bool   `tfsdk:"group_fourteen"`
+	GroupFifteen        types.Bool   `tfsdk:"group_fifteen"`
+	GroupSixteen        types.Bool   `tfsdk:"group_sixteen"`
+	GroupNineteen       types.Bool   `tfsdk:"group_nineteen"`
+	GroupTwenty         types.Bool   `tfsdk:"group_twenty"`
+	GroupTwentyOne      types.Bool   `tfsdk:"group_twenty_one"`
+	GroupTwentyFour     types.Bool   `tfsdk:"group_twenty_four"`
+	IntegrityMd5        types.Bool   `tfsdk:"integrity_md5"`
+	IntegritySha1       types.Bool   `tfsdk:"integrity_sha1"`
+	IntegritySha256     types.Bool   `tfsdk:"integrity_sha256"`
+	IntegritySha384     types.Bool   `tfsdk:"integrity_sha384"`
+	IntegritySha512     types.Bool   `tfsdk:"integrity_sha512"`
+	PrfMd5              types.Bool   `tfsdk:"prf_md5"`
+	PrfSha1             types.Bool   `tfsdk:"prf_sha1"`
+	PrfSha256           types.Bool   `tfsdk:"prf_sha256"`
+	PrfSha384           types.Bool   `tfsdk:"prf_sha384"`
+	PrfSha512           types.Bool   `tfsdk:"prf_sha512"`
 }
 
 type CryptoIKEv2ProposalData struct {
-	Device         types.String                        `tfsdk:"device"`
-	Id             types.String                        `tfsdk:"id"`
-	Ikev2Proposals []CryptoIKEv2ProposalIkev2Proposals `tfsdk:"ikev2_proposals"`
-}
-type CryptoIKEv2ProposalIkev2Proposals struct {
+	Device              types.String `tfsdk:"device"`
+	Id                  types.String `tfsdk:"id"`
 	Name                types.String `tfsdk:"name"`
+	EncryptionEn3des    types.Bool   `tfsdk:"encryption_en_3des"`
+	EncryptionAesCbc128 types.Bool   `tfsdk:"encryption_aes_cbc_128"`
+	EncryptionAesCbc192 types.Bool   `tfsdk:"encryption_aes_cbc_192"`
 	EncryptionAesCbc256 types.Bool   `tfsdk:"encryption_aes_cbc_256"`
+	EncryptionAesGcm128 types.Bool   `tfsdk:"encryption_aes_gcm_128"`
+	EncryptionAesGcm256 types.Bool   `tfsdk:"encryption_aes_gcm_256"`
+	GroupOne            types.Bool   `tfsdk:"group_one"`
+	GroupTwo            types.Bool   `tfsdk:"group_two"`
 	GroupFourteen       types.Bool   `tfsdk:"group_fourteen"`
+	GroupFifteen        types.Bool   `tfsdk:"group_fifteen"`
+	GroupSixteen        types.Bool   `tfsdk:"group_sixteen"`
 	GroupNineteen       types.Bool   `tfsdk:"group_nineteen"`
 	GroupTwenty         types.Bool   `tfsdk:"group_twenty"`
+	GroupTwentyOne      types.Bool   `tfsdk:"group_twenty_one"`
+	GroupTwentyFour     types.Bool   `tfsdk:"group_twenty_four"`
+	IntegrityMd5        types.Bool   `tfsdk:"integrity_md5"`
 	IntegritySha1       types.Bool   `tfsdk:"integrity_sha1"`
+	IntegritySha256     types.Bool   `tfsdk:"integrity_sha256"`
+	IntegritySha384     types.Bool   `tfsdk:"integrity_sha384"`
+	IntegritySha512     types.Bool   `tfsdk:"integrity_sha512"`
+	PrfMd5              types.Bool   `tfsdk:"prf_md5"`
+	PrfSha1             types.Bool   `tfsdk:"prf_sha1"`
+	PrfSha256           types.Bool   `tfsdk:"prf_sha256"`
+	PrfSha384           types.Bool   `tfsdk:"prf_sha384"`
+	PrfSha512           types.Bool   `tfsdk:"prf_sha512"`
 }
 
 func (data CryptoIKEv2Proposal) getPath() string {
-	return "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2"
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 func (data CryptoIKEv2ProposalData) getPath() string {
-	return "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2"
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it
@@ -74,37 +114,132 @@ func (data CryptoIKEv2Proposal) getPathShort() string {
 
 func (data CryptoIKEv2Proposal) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if len(data.Ikev2Proposals) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal", []interface{}{})
-		for index, item := range data.Ikev2Proposals {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-			if !item.EncryptionAesCbc256.IsNull() && !item.EncryptionAesCbc256.IsUnknown() {
-				if item.EncryptionAesCbc256.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal"+"."+strconv.Itoa(index)+"."+"encryption.aes-cbc-256", map[string]string{})
-				}
-			}
-			if !item.GroupFourteen.IsNull() && !item.GroupFourteen.IsUnknown() {
-				if item.GroupFourteen.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal"+"."+strconv.Itoa(index)+"."+"group.fourteen", map[string]string{})
-				}
-			}
-			if !item.GroupNineteen.IsNull() && !item.GroupNineteen.IsUnknown() {
-				if item.GroupNineteen.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal"+"."+strconv.Itoa(index)+"."+"group.nineteen", map[string]string{})
-				}
-			}
-			if !item.GroupTwenty.IsNull() && !item.GroupTwenty.IsUnknown() {
-				if item.GroupTwenty.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal"+"."+strconv.Itoa(index)+"."+"group.twenty", map[string]string{})
-				}
-			}
-			if !item.IntegritySha1.IsNull() && !item.IntegritySha1.IsUnknown() {
-				if item.IntegritySha1.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"proposal"+"."+strconv.Itoa(index)+"."+"integrity.sha1", map[string]string{})
-				}
-			}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
+	}
+	if !data.EncryptionEn3des.IsNull() && !data.EncryptionEn3des.IsUnknown() {
+		if data.EncryptionEn3des.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encryption.en-3des", map[string]string{})
+		}
+	}
+	if !data.EncryptionAesCbc128.IsNull() && !data.EncryptionAesCbc128.IsUnknown() {
+		if data.EncryptionAesCbc128.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encryption.aes-cbc-128", map[string]string{})
+		}
+	}
+	if !data.EncryptionAesCbc192.IsNull() && !data.EncryptionAesCbc192.IsUnknown() {
+		if data.EncryptionAesCbc192.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encryption.aes-cbc-192", map[string]string{})
+		}
+	}
+	if !data.EncryptionAesCbc256.IsNull() && !data.EncryptionAesCbc256.IsUnknown() {
+		if data.EncryptionAesCbc256.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encryption.aes-cbc-256", map[string]string{})
+		}
+	}
+	if !data.EncryptionAesGcm128.IsNull() && !data.EncryptionAesGcm128.IsUnknown() {
+		if data.EncryptionAesGcm128.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encryption.aes-gcm-128", map[string]string{})
+		}
+	}
+	if !data.EncryptionAesGcm256.IsNull() && !data.EncryptionAesGcm256.IsUnknown() {
+		if data.EncryptionAesGcm256.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encryption.aes-gcm-256", map[string]string{})
+		}
+	}
+	if !data.GroupOne.IsNull() && !data.GroupOne.IsUnknown() {
+		if data.GroupOne.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.one", map[string]string{})
+		}
+	}
+	if !data.GroupTwo.IsNull() && !data.GroupTwo.IsUnknown() {
+		if data.GroupTwo.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.two", map[string]string{})
+		}
+	}
+	if !data.GroupFourteen.IsNull() && !data.GroupFourteen.IsUnknown() {
+		if data.GroupFourteen.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.fourteen", map[string]string{})
+		}
+	}
+	if !data.GroupFifteen.IsNull() && !data.GroupFifteen.IsUnknown() {
+		if data.GroupFifteen.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.fifteen", map[string]string{})
+		}
+	}
+	if !data.GroupSixteen.IsNull() && !data.GroupSixteen.IsUnknown() {
+		if data.GroupSixteen.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.sixteen", map[string]string{})
+		}
+	}
+	if !data.GroupNineteen.IsNull() && !data.GroupNineteen.IsUnknown() {
+		if data.GroupNineteen.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.nineteen", map[string]string{})
+		}
+	}
+	if !data.GroupTwenty.IsNull() && !data.GroupTwenty.IsUnknown() {
+		if data.GroupTwenty.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.twenty", map[string]string{})
+		}
+	}
+	if !data.GroupTwentyOne.IsNull() && !data.GroupTwentyOne.IsUnknown() {
+		if data.GroupTwentyOne.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.twenty-one", map[string]string{})
+		}
+	}
+	if !data.GroupTwentyFour.IsNull() && !data.GroupTwentyFour.IsUnknown() {
+		if data.GroupTwentyFour.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"group.twenty-four", map[string]string{})
+		}
+	}
+	if !data.IntegrityMd5.IsNull() && !data.IntegrityMd5.IsUnknown() {
+		if data.IntegrityMd5.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"integrity.md5", map[string]string{})
+		}
+	}
+	if !data.IntegritySha1.IsNull() && !data.IntegritySha1.IsUnknown() {
+		if data.IntegritySha1.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"integrity.sha1", map[string]string{})
+		}
+	}
+	if !data.IntegritySha256.IsNull() && !data.IntegritySha256.IsUnknown() {
+		if data.IntegritySha256.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"integrity.sha256", map[string]string{})
+		}
+	}
+	if !data.IntegritySha384.IsNull() && !data.IntegritySha384.IsUnknown() {
+		if data.IntegritySha384.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"integrity.sha384", map[string]string{})
+		}
+	}
+	if !data.IntegritySha512.IsNull() && !data.IntegritySha512.IsUnknown() {
+		if data.IntegritySha512.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"integrity.sha512", map[string]string{})
+		}
+	}
+	if !data.PrfMd5.IsNull() && !data.PrfMd5.IsUnknown() {
+		if data.PrfMd5.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prf.md5", map[string]string{})
+		}
+	}
+	if !data.PrfSha1.IsNull() && !data.PrfSha1.IsUnknown() {
+		if data.PrfSha1.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prf.sha1", map[string]string{})
+		}
+	}
+	if !data.PrfSha256.IsNull() && !data.PrfSha256.IsUnknown() {
+		if data.PrfSha256.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prf.sha256", map[string]string{})
+		}
+	}
+	if !data.PrfSha384.IsNull() && !data.PrfSha384.IsUnknown() {
+		if data.PrfSha384.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prf.sha384", map[string]string{})
+		}
+	}
+	if !data.PrfSha512.IsNull() && !data.PrfSha512.IsUnknown() {
+		if data.PrfSha512.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prf.sha512", map[string]string{})
 		}
 	}
 	return body
@@ -115,79 +250,235 @@ func (data *CryptoIKEv2Proposal) updateFromBody(ctx context.Context, res gjson.R
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	for i := range data.Ikev2Proposals {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Ikev2Proposals[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "proposal").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.Ikev2Proposals[i].Name.IsNull() {
-			data.Ikev2Proposals[i].Name = types.StringValue(value.String())
+	if value := res.Get(prefix + "name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := res.Get(prefix + "encryption.en-3des"); !data.EncryptionEn3des.IsNull() {
+		if value.Exists() {
+			data.EncryptionEn3des = types.BoolValue(true)
 		} else {
-			data.Ikev2Proposals[i].Name = types.StringNull()
+			data.EncryptionEn3des = types.BoolValue(false)
 		}
-		if value := r.Get("encryption.aes-cbc-256"); !data.Ikev2Proposals[i].EncryptionAesCbc256.IsNull() {
-			if value.Exists() {
-				data.Ikev2Proposals[i].EncryptionAesCbc256 = types.BoolValue(true)
-			} else {
-				data.Ikev2Proposals[i].EncryptionAesCbc256 = types.BoolValue(false)
-			}
+	} else {
+		data.EncryptionEn3des = types.BoolNull()
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-128"); !data.EncryptionAesCbc128.IsNull() {
+		if value.Exists() {
+			data.EncryptionAesCbc128 = types.BoolValue(true)
 		} else {
-			data.Ikev2Proposals[i].EncryptionAesCbc256 = types.BoolNull()
+			data.EncryptionAesCbc128 = types.BoolValue(false)
 		}
-		if value := r.Get("group.fourteen"); !data.Ikev2Proposals[i].GroupFourteen.IsNull() {
-			if value.Exists() {
-				data.Ikev2Proposals[i].GroupFourteen = types.BoolValue(true)
-			} else {
-				data.Ikev2Proposals[i].GroupFourteen = types.BoolValue(false)
-			}
+	} else {
+		data.EncryptionAesCbc128 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-192"); !data.EncryptionAesCbc192.IsNull() {
+		if value.Exists() {
+			data.EncryptionAesCbc192 = types.BoolValue(true)
 		} else {
-			data.Ikev2Proposals[i].GroupFourteen = types.BoolNull()
+			data.EncryptionAesCbc192 = types.BoolValue(false)
 		}
-		if value := r.Get("group.nineteen"); !data.Ikev2Proposals[i].GroupNineteen.IsNull() {
-			if value.Exists() {
-				data.Ikev2Proposals[i].GroupNineteen = types.BoolValue(true)
-			} else {
-				data.Ikev2Proposals[i].GroupNineteen = types.BoolValue(false)
-			}
+	} else {
+		data.EncryptionAesCbc192 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-256"); !data.EncryptionAesCbc256.IsNull() {
+		if value.Exists() {
+			data.EncryptionAesCbc256 = types.BoolValue(true)
 		} else {
-			data.Ikev2Proposals[i].GroupNineteen = types.BoolNull()
+			data.EncryptionAesCbc256 = types.BoolValue(false)
 		}
-		if value := r.Get("group.twenty"); !data.Ikev2Proposals[i].GroupTwenty.IsNull() {
-			if value.Exists() {
-				data.Ikev2Proposals[i].GroupTwenty = types.BoolValue(true)
-			} else {
-				data.Ikev2Proposals[i].GroupTwenty = types.BoolValue(false)
-			}
+	} else {
+		data.EncryptionAesCbc256 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "encryption.aes-gcm-128"); !data.EncryptionAesGcm128.IsNull() {
+		if value.Exists() {
+			data.EncryptionAesGcm128 = types.BoolValue(true)
 		} else {
-			data.Ikev2Proposals[i].GroupTwenty = types.BoolNull()
+			data.EncryptionAesGcm128 = types.BoolValue(false)
 		}
-		if value := r.Get("integrity.sha1"); !data.Ikev2Proposals[i].IntegritySha1.IsNull() {
-			if value.Exists() {
-				data.Ikev2Proposals[i].IntegritySha1 = types.BoolValue(true)
-			} else {
-				data.Ikev2Proposals[i].IntegritySha1 = types.BoolValue(false)
-			}
+	} else {
+		data.EncryptionAesGcm128 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "encryption.aes-gcm-256"); !data.EncryptionAesGcm256.IsNull() {
+		if value.Exists() {
+			data.EncryptionAesGcm256 = types.BoolValue(true)
 		} else {
-			data.Ikev2Proposals[i].IntegritySha1 = types.BoolNull()
+			data.EncryptionAesGcm256 = types.BoolValue(false)
 		}
+	} else {
+		data.EncryptionAesGcm256 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.one"); !data.GroupOne.IsNull() {
+		if value.Exists() {
+			data.GroupOne = types.BoolValue(true)
+		} else {
+			data.GroupOne = types.BoolValue(false)
+		}
+	} else {
+		data.GroupOne = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.two"); !data.GroupTwo.IsNull() {
+		if value.Exists() {
+			data.GroupTwo = types.BoolValue(true)
+		} else {
+			data.GroupTwo = types.BoolValue(false)
+		}
+	} else {
+		data.GroupTwo = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.fourteen"); !data.GroupFourteen.IsNull() {
+		if value.Exists() {
+			data.GroupFourteen = types.BoolValue(true)
+		} else {
+			data.GroupFourteen = types.BoolValue(false)
+		}
+	} else {
+		data.GroupFourteen = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.fifteen"); !data.GroupFifteen.IsNull() {
+		if value.Exists() {
+			data.GroupFifteen = types.BoolValue(true)
+		} else {
+			data.GroupFifteen = types.BoolValue(false)
+		}
+	} else {
+		data.GroupFifteen = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.sixteen"); !data.GroupSixteen.IsNull() {
+		if value.Exists() {
+			data.GroupSixteen = types.BoolValue(true)
+		} else {
+			data.GroupSixteen = types.BoolValue(false)
+		}
+	} else {
+		data.GroupSixteen = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.nineteen"); !data.GroupNineteen.IsNull() {
+		if value.Exists() {
+			data.GroupNineteen = types.BoolValue(true)
+		} else {
+			data.GroupNineteen = types.BoolValue(false)
+		}
+	} else {
+		data.GroupNineteen = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.twenty"); !data.GroupTwenty.IsNull() {
+		if value.Exists() {
+			data.GroupTwenty = types.BoolValue(true)
+		} else {
+			data.GroupTwenty = types.BoolValue(false)
+		}
+	} else {
+		data.GroupTwenty = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.twenty-one"); !data.GroupTwentyOne.IsNull() {
+		if value.Exists() {
+			data.GroupTwentyOne = types.BoolValue(true)
+		} else {
+			data.GroupTwentyOne = types.BoolValue(false)
+		}
+	} else {
+		data.GroupTwentyOne = types.BoolNull()
+	}
+	if value := res.Get(prefix + "group.twenty-four"); !data.GroupTwentyFour.IsNull() {
+		if value.Exists() {
+			data.GroupTwentyFour = types.BoolValue(true)
+		} else {
+			data.GroupTwentyFour = types.BoolValue(false)
+		}
+	} else {
+		data.GroupTwentyFour = types.BoolNull()
+	}
+	if value := res.Get(prefix + "integrity.md5"); !data.IntegrityMd5.IsNull() {
+		if value.Exists() {
+			data.IntegrityMd5 = types.BoolValue(true)
+		} else {
+			data.IntegrityMd5 = types.BoolValue(false)
+		}
+	} else {
+		data.IntegrityMd5 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "integrity.sha1"); !data.IntegritySha1.IsNull() {
+		if value.Exists() {
+			data.IntegritySha1 = types.BoolValue(true)
+		} else {
+			data.IntegritySha1 = types.BoolValue(false)
+		}
+	} else {
+		data.IntegritySha1 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "integrity.sha256"); !data.IntegritySha256.IsNull() {
+		if value.Exists() {
+			data.IntegritySha256 = types.BoolValue(true)
+		} else {
+			data.IntegritySha256 = types.BoolValue(false)
+		}
+	} else {
+		data.IntegritySha256 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "integrity.sha384"); !data.IntegritySha384.IsNull() {
+		if value.Exists() {
+			data.IntegritySha384 = types.BoolValue(true)
+		} else {
+			data.IntegritySha384 = types.BoolValue(false)
+		}
+	} else {
+		data.IntegritySha384 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "integrity.sha512"); !data.IntegritySha512.IsNull() {
+		if value.Exists() {
+			data.IntegritySha512 = types.BoolValue(true)
+		} else {
+			data.IntegritySha512 = types.BoolValue(false)
+		}
+	} else {
+		data.IntegritySha512 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "prf.md5"); !data.PrfMd5.IsNull() {
+		if value.Exists() {
+			data.PrfMd5 = types.BoolValue(true)
+		} else {
+			data.PrfMd5 = types.BoolValue(false)
+		}
+	} else {
+		data.PrfMd5 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "prf.sha1"); !data.PrfSha1.IsNull() {
+		if value.Exists() {
+			data.PrfSha1 = types.BoolValue(true)
+		} else {
+			data.PrfSha1 = types.BoolValue(false)
+		}
+	} else {
+		data.PrfSha1 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "prf.sha256"); !data.PrfSha256.IsNull() {
+		if value.Exists() {
+			data.PrfSha256 = types.BoolValue(true)
+		} else {
+			data.PrfSha256 = types.BoolValue(false)
+		}
+	} else {
+		data.PrfSha256 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "prf.sha384"); !data.PrfSha384.IsNull() {
+		if value.Exists() {
+			data.PrfSha384 = types.BoolValue(true)
+		} else {
+			data.PrfSha384 = types.BoolValue(false)
+		}
+	} else {
+		data.PrfSha384 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "prf.sha512"); !data.PrfSha512.IsNull() {
+		if value.Exists() {
+			data.PrfSha512 = types.BoolValue(true)
+		} else {
+			data.PrfSha512 = types.BoolValue(false)
+		}
+	} else {
+		data.PrfSha512 = types.BoolNull()
 	}
 }
 
@@ -196,104 +487,294 @@ func (data *CryptoIKEv2ProposalData) fromBody(ctx context.Context, res gjson.Res
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	if value := res.Get(prefix + "proposal"); value.Exists() {
-		data.Ikev2Proposals = make([]CryptoIKEv2ProposalIkev2Proposals, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CryptoIKEv2ProposalIkev2Proposals{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("encryption.aes-cbc-256"); cValue.Exists() {
-				item.EncryptionAesCbc256 = types.BoolValue(true)
-			} else {
-				item.EncryptionAesCbc256 = types.BoolValue(false)
-			}
-			if cValue := v.Get("group.fourteen"); cValue.Exists() {
-				item.GroupFourteen = types.BoolValue(true)
-			} else {
-				item.GroupFourteen = types.BoolValue(false)
-			}
-			if cValue := v.Get("group.nineteen"); cValue.Exists() {
-				item.GroupNineteen = types.BoolValue(true)
-			} else {
-				item.GroupNineteen = types.BoolValue(false)
-			}
-			if cValue := v.Get("group.twenty"); cValue.Exists() {
-				item.GroupTwenty = types.BoolValue(true)
-			} else {
-				item.GroupTwenty = types.BoolValue(false)
-			}
-			if cValue := v.Get("integrity.sha1"); cValue.Exists() {
-				item.IntegritySha1 = types.BoolValue(true)
-			} else {
-				item.IntegritySha1 = types.BoolValue(false)
-			}
-			data.Ikev2Proposals = append(data.Ikev2Proposals, item)
-			return true
-		})
+	if value := res.Get(prefix + "encryption.en-3des"); value.Exists() {
+		data.EncryptionEn3des = types.BoolValue(true)
+	} else {
+		data.EncryptionEn3des = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-128"); value.Exists() {
+		data.EncryptionAesCbc128 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesCbc128 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-192"); value.Exists() {
+		data.EncryptionAesCbc192 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesCbc192 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-256"); value.Exists() {
+		data.EncryptionAesCbc256 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesCbc256 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-gcm-128"); value.Exists() {
+		data.EncryptionAesGcm128 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesGcm128 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-gcm-256"); value.Exists() {
+		data.EncryptionAesGcm256 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesGcm256 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.one"); value.Exists() {
+		data.GroupOne = types.BoolValue(true)
+	} else {
+		data.GroupOne = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.two"); value.Exists() {
+		data.GroupTwo = types.BoolValue(true)
+	} else {
+		data.GroupTwo = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.fourteen"); value.Exists() {
+		data.GroupFourteen = types.BoolValue(true)
+	} else {
+		data.GroupFourteen = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.fifteen"); value.Exists() {
+		data.GroupFifteen = types.BoolValue(true)
+	} else {
+		data.GroupFifteen = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.sixteen"); value.Exists() {
+		data.GroupSixteen = types.BoolValue(true)
+	} else {
+		data.GroupSixteen = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.nineteen"); value.Exists() {
+		data.GroupNineteen = types.BoolValue(true)
+	} else {
+		data.GroupNineteen = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.twenty"); value.Exists() {
+		data.GroupTwenty = types.BoolValue(true)
+	} else {
+		data.GroupTwenty = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.twenty-one"); value.Exists() {
+		data.GroupTwentyOne = types.BoolValue(true)
+	} else {
+		data.GroupTwentyOne = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.twenty-four"); value.Exists() {
+		data.GroupTwentyFour = types.BoolValue(true)
+	} else {
+		data.GroupTwentyFour = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.md5"); value.Exists() {
+		data.IntegrityMd5 = types.BoolValue(true)
+	} else {
+		data.IntegrityMd5 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.sha1"); value.Exists() {
+		data.IntegritySha1 = types.BoolValue(true)
+	} else {
+		data.IntegritySha1 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.sha256"); value.Exists() {
+		data.IntegritySha256 = types.BoolValue(true)
+	} else {
+		data.IntegritySha256 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.sha384"); value.Exists() {
+		data.IntegritySha384 = types.BoolValue(true)
+	} else {
+		data.IntegritySha384 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.sha512"); value.Exists() {
+		data.IntegritySha512 = types.BoolValue(true)
+	} else {
+		data.IntegritySha512 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.md5"); value.Exists() {
+		data.PrfMd5 = types.BoolValue(true)
+	} else {
+		data.PrfMd5 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.sha1"); value.Exists() {
+		data.PrfSha1 = types.BoolValue(true)
+	} else {
+		data.PrfSha1 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.sha256"); value.Exists() {
+		data.PrfSha256 = types.BoolValue(true)
+	} else {
+		data.PrfSha256 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.sha384"); value.Exists() {
+		data.PrfSha384 = types.BoolValue(true)
+	} else {
+		data.PrfSha384 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.sha512"); value.Exists() {
+		data.PrfSha512 = types.BoolValue(true)
+	} else {
+		data.PrfSha512 = types.BoolValue(false)
 	}
 }
 
 func (data *CryptoIKEv2Proposal) getDeletedListItems(ctx context.Context, state CryptoIKEv2Proposal) []string {
 	deletedListItems := make([]string, 0)
-	for i := range state.Ikev2Proposals {
-		stateKeyValues := [...]string{state.Ikev2Proposals[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Ikev2Proposals[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Ikev2Proposals {
-			found = true
-			if state.Ikev2Proposals[i].Name.ValueString() != data.Ikev2Proposals[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/proposal=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
 	return deletedListItems
 }
 
 func (data *CryptoIKEv2Proposal) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.Ikev2Proposals {
-		keyValues := [...]string{data.Ikev2Proposals[i].Name.ValueString()}
-		if !data.Ikev2Proposals[i].EncryptionAesCbc256.IsNull() && !data.Ikev2Proposals[i].EncryptionAesCbc256.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/proposal=%v/encryption/aes-cbc-256", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Ikev2Proposals[i].GroupFourteen.IsNull() && !data.Ikev2Proposals[i].GroupFourteen.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/proposal=%v/group/fourteen", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Ikev2Proposals[i].GroupNineteen.IsNull() && !data.Ikev2Proposals[i].GroupNineteen.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/proposal=%v/group/nineteen", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Ikev2Proposals[i].GroupTwenty.IsNull() && !data.Ikev2Proposals[i].GroupTwenty.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/proposal=%v/group/twenty", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Ikev2Proposals[i].IntegritySha1.IsNull() && !data.Ikev2Proposals[i].IntegritySha1.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/proposal=%v/integrity/sha1", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
+	if !data.EncryptionEn3des.IsNull() && !data.EncryptionEn3des.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/encryption/en-3des", data.getPath()))
+	}
+	if !data.EncryptionAesCbc128.IsNull() && !data.EncryptionAesCbc128.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/encryption/aes-cbc-128", data.getPath()))
+	}
+	if !data.EncryptionAesCbc192.IsNull() && !data.EncryptionAesCbc192.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/encryption/aes-cbc-192", data.getPath()))
+	}
+	if !data.EncryptionAesCbc256.IsNull() && !data.EncryptionAesCbc256.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/encryption/aes-cbc-256", data.getPath()))
+	}
+	if !data.EncryptionAesGcm128.IsNull() && !data.EncryptionAesGcm128.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/encryption/aes-gcm-128", data.getPath()))
+	}
+	if !data.EncryptionAesGcm256.IsNull() && !data.EncryptionAesGcm256.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/encryption/aes-gcm-256", data.getPath()))
+	}
+	if !data.GroupOne.IsNull() && !data.GroupOne.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/one", data.getPath()))
+	}
+	if !data.GroupTwo.IsNull() && !data.GroupTwo.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/two", data.getPath()))
+	}
+	if !data.GroupFourteen.IsNull() && !data.GroupFourteen.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/fourteen", data.getPath()))
+	}
+	if !data.GroupFifteen.IsNull() && !data.GroupFifteen.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/fifteen", data.getPath()))
+	}
+	if !data.GroupSixteen.IsNull() && !data.GroupSixteen.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/sixteen", data.getPath()))
+	}
+	if !data.GroupNineteen.IsNull() && !data.GroupNineteen.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/nineteen", data.getPath()))
+	}
+	if !data.GroupTwenty.IsNull() && !data.GroupTwenty.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/twenty", data.getPath()))
+	}
+	if !data.GroupTwentyOne.IsNull() && !data.GroupTwentyOne.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/twenty-one", data.getPath()))
+	}
+	if !data.GroupTwentyFour.IsNull() && !data.GroupTwentyFour.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/group/twenty-four", data.getPath()))
+	}
+	if !data.IntegrityMd5.IsNull() && !data.IntegrityMd5.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/integrity/md5", data.getPath()))
+	}
+	if !data.IntegritySha1.IsNull() && !data.IntegritySha1.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/integrity/sha1", data.getPath()))
+	}
+	if !data.IntegritySha256.IsNull() && !data.IntegritySha256.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/integrity/sha256", data.getPath()))
+	}
+	if !data.IntegritySha384.IsNull() && !data.IntegritySha384.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/integrity/sha384", data.getPath()))
+	}
+	if !data.IntegritySha512.IsNull() && !data.IntegritySha512.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/integrity/sha512", data.getPath()))
+	}
+	if !data.PrfMd5.IsNull() && !data.PrfMd5.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/prf/md5", data.getPath()))
+	}
+	if !data.PrfSha1.IsNull() && !data.PrfSha1.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/prf/sha1", data.getPath()))
+	}
+	if !data.PrfSha256.IsNull() && !data.PrfSha256.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/prf/sha256", data.getPath()))
+	}
+	if !data.PrfSha384.IsNull() && !data.PrfSha384.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/prf/sha384", data.getPath()))
+	}
+	if !data.PrfSha512.IsNull() && !data.PrfSha512.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/prf/sha512", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
 
 func (data *CryptoIKEv2Proposal) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Ikev2Proposals {
-		keyValues := [...]string{data.Ikev2Proposals[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/proposal=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.EncryptionEn3des.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/encryption/en-3des", data.getPath()))
+	}
+	if !data.EncryptionAesCbc128.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/encryption/aes-cbc-128", data.getPath()))
+	}
+	if !data.EncryptionAesCbc192.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/encryption/aes-cbc-192", data.getPath()))
+	}
+	if !data.EncryptionAesCbc256.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/encryption/aes-cbc-256", data.getPath()))
+	}
+	if !data.EncryptionAesGcm128.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/encryption/aes-gcm-128", data.getPath()))
+	}
+	if !data.EncryptionAesGcm256.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/encryption/aes-gcm-256", data.getPath()))
+	}
+	if !data.GroupOne.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/one", data.getPath()))
+	}
+	if !data.GroupTwo.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/two", data.getPath()))
+	}
+	if !data.GroupFourteen.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/fourteen", data.getPath()))
+	}
+	if !data.GroupFifteen.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/fifteen", data.getPath()))
+	}
+	if !data.GroupSixteen.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/sixteen", data.getPath()))
+	}
+	if !data.GroupNineteen.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/nineteen", data.getPath()))
+	}
+	if !data.GroupTwenty.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/twenty", data.getPath()))
+	}
+	if !data.GroupTwentyOne.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/twenty-one", data.getPath()))
+	}
+	if !data.GroupTwentyFour.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/group/twenty-four", data.getPath()))
+	}
+	if !data.IntegrityMd5.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/integrity/md5", data.getPath()))
+	}
+	if !data.IntegritySha1.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/integrity/sha1", data.getPath()))
+	}
+	if !data.IntegritySha256.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/integrity/sha256", data.getPath()))
+	}
+	if !data.IntegritySha384.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/integrity/sha384", data.getPath()))
+	}
+	if !data.IntegritySha512.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/integrity/sha512", data.getPath()))
+	}
+	if !data.PrfMd5.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/prf/md5", data.getPath()))
+	}
+	if !data.PrfSha1.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/prf/sha1", data.getPath()))
+	}
+	if !data.PrfSha256.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/prf/sha256", data.getPath()))
+	}
+	if !data.PrfSha384.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/prf/sha384", data.getPath()))
+	}
+	if !data.PrfSha512.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/prf/sha512", data.getPath()))
 	}
 	return deletePaths
 }

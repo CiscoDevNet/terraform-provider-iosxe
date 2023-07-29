@@ -63,37 +63,112 @@ func (r *CryptoIKEv2ProposalResource) Schema(ctx context.Context, req resource.S
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"ikev2_proposals": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Define IKEV2 proposals").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-						},
-						"encryption_aes_cbc_256": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("AES-CBC-256").String,
-							Optional:            true,
-						},
-						"group_fourteen": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("DH 2048 MODP").String,
-							Optional:            true,
-						},
-						"group_nineteen": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("DH 256 ECP").String,
-							Optional:            true,
-						},
-						"group_twenty": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("DH 384 ECP").String,
-							Optional:            true,
-						},
-						"integrity_sha1": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard").String,
-							Optional:            true,
-						},
-					},
+			"name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
+			},
+			"encryption_en_3des": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("3DES").String,
+				Optional:            true,
+			},
+			"encryption_aes_cbc_128": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("AES-CBC-128").String,
+				Optional:            true,
+			},
+			"encryption_aes_cbc_192": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("AES-CBC-192").String,
+				Optional:            true,
+			},
+			"encryption_aes_cbc_256": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("AES-CBC-256").String,
+				Optional:            true,
+			},
+			"encryption_aes_gcm_128": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Combined-mode,128 bit key,16 byte ICV(Authentication Tag)").String,
+				Optional:            true,
+			},
+			"encryption_aes_gcm_256": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Combined-mode,256 bit key,16 byte ICV(Authentication Tag)").String,
+				Optional:            true,
+			},
+			"group_one": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 768 MODP").String,
+				Optional:            true,
+			},
+			"group_two": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 1024 MODP").String,
+				Optional:            true,
+			},
+			"group_fourteen": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 2048 MODP").String,
+				Optional:            true,
+			},
+			"group_fifteen": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 3072 MODP").String,
+				Optional:            true,
+			},
+			"group_sixteen": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 4096 MODP").String,
+				Optional:            true,
+			},
+			"group_nineteen": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 256 ECP").String,
+				Optional:            true,
+			},
+			"group_twenty": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 384 ECP").String,
+				Optional:            true,
+			},
+			"group_twenty_one": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 521 ECP").String,
+				Optional:            true,
+			},
+			"group_twenty_four": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DH 2048 (256 subgroup) MODP").String,
+				Optional:            true,
+			},
+			"integrity_md5": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Message Digest 5").String,
+				Optional:            true,
+			},
+			"integrity_sha1": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard").String,
+				Optional:            true,
+			},
+			"integrity_sha256": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard 2 (256 bit)").String,
+				Optional:            true,
+			},
+			"integrity_sha384": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard 2 (384 bit)").String,
+				Optional:            true,
+			},
+			"integrity_sha512": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard 2 (512 bit)").String,
+				Optional:            true,
+			},
+			"prf_md5": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Message Digest 5").String,
+				Optional:            true,
+			},
+			"prf_sha1": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard").String,
+				Optional:            true,
+			},
+			"prf_sha256": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard 2 (256 bit)").String,
+				Optional:            true,
+			},
+			"prf_sha384": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard 2 (384 bit)").String,
+				Optional:            true,
+			},
+			"prf_sha512": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Secure Hash Standard 2 (512 bit)").String,
+				Optional:            true,
 			},
 		},
 	}
