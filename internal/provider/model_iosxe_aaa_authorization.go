@@ -34,27 +34,27 @@ import (
 )
 
 type AAAAuthorization struct {
-	Device     types.String              `tfsdk:"device"`
-	Id         types.String              `tfsdk:"id"`
-	DeleteMode types.String              `tfsdk:"delete_mode"`
-	Exec       []AAAAuthorizationExec    `tfsdk:"exec"`
-	Network    []AAAAuthorizationNetwork `tfsdk:"network"`
+	Device     types.String               `tfsdk:"device"`
+	Id         types.String               `tfsdk:"id"`
+	DeleteMode types.String               `tfsdk:"delete_mode"`
+	Execs      []AAAAuthorizationExecs    `tfsdk:"execs"`
+	Networks   []AAAAuthorizationNetworks `tfsdk:"networks"`
 }
 
 type AAAAuthorizationData struct {
-	Device  types.String              `tfsdk:"device"`
-	Id      types.String              `tfsdk:"id"`
-	Exec    []AAAAuthorizationExec    `tfsdk:"exec"`
-	Network []AAAAuthorizationNetwork `tfsdk:"network"`
+	Device   types.String               `tfsdk:"device"`
+	Id       types.String               `tfsdk:"id"`
+	Execs    []AAAAuthorizationExecs    `tfsdk:"execs"`
+	Networks []AAAAuthorizationNetworks `tfsdk:"networks"`
 }
-type AAAAuthorizationExec struct {
+type AAAAuthorizationExecs struct {
 	Name              types.String `tfsdk:"name"`
 	A1Local           types.Bool   `tfsdk:"a1_local"`
 	A1IfAuthenticated types.Bool   `tfsdk:"a1_if_authenticated"`
 }
-type AAAAuthorizationNetwork struct {
-	Id             types.String `tfsdk:"id"`
-	NetworkA1Group types.String `tfsdk:"network_a1_group"`
+type AAAAuthorizationNetworks struct {
+	Id      types.String `tfsdk:"id"`
+	A1Group types.String `tfsdk:"a1_group"`
 }
 
 func (data AAAAuthorization) getPath() string {
@@ -78,9 +78,9 @@ func (data AAAAuthorization) getPathShort() string {
 
 func (data AAAAuthorization) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if len(data.Exec) > 0 {
+	if len(data.Execs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec", []interface{}{})
-		for index, item := range data.Exec {
+		for index, item := range data.Execs {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
@@ -96,14 +96,14 @@ func (data AAAAuthorization) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.Network) > 0 {
+	if len(data.Networks) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network", []interface{}{})
-		for index, item := range data.Network {
+		for index, item := range data.Networks {
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"id", item.Id.ValueString())
 			}
-			if !item.NetworkA1Group.IsNull() && !item.NetworkA1Group.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"network.a1.group", item.NetworkA1Group.ValueString())
+			if !item.A1Group.IsNull() && !item.A1Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"a1.group", item.A1Group.ValueString())
 			}
 		}
 	}
@@ -115,9 +115,9 @@ func (data *AAAAuthorization) updateFromBody(ctx context.Context, res gjson.Resu
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	for i := range data.Exec {
+	for i := range data.Execs {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.Exec[i].Name.ValueString()}
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "exec").ForEach(
@@ -138,33 +138,33 @@ func (data *AAAAuthorization) updateFromBody(ctx context.Context, res gjson.Resu
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.Exec[i].Name.IsNull() {
-			data.Exec[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.Execs[i].Name.IsNull() {
+			data.Execs[i].Name = types.StringValue(value.String())
 		} else {
-			data.Exec[i].Name = types.StringNull()
+			data.Execs[i].Name = types.StringNull()
 		}
-		if value := r.Get("a1.local"); !data.Exec[i].A1Local.IsNull() {
+		if value := r.Get("a1.local"); !data.Execs[i].A1Local.IsNull() {
 			if value.Exists() {
-				data.Exec[i].A1Local = types.BoolValue(true)
+				data.Execs[i].A1Local = types.BoolValue(true)
 			} else {
-				data.Exec[i].A1Local = types.BoolValue(false)
+				data.Execs[i].A1Local = types.BoolValue(false)
 			}
 		} else {
-			data.Exec[i].A1Local = types.BoolNull()
+			data.Execs[i].A1Local = types.BoolNull()
 		}
-		if value := r.Get("a1.if-authenticated"); !data.Exec[i].A1IfAuthenticated.IsNull() {
+		if value := r.Get("a1.if-authenticated"); !data.Execs[i].A1IfAuthenticated.IsNull() {
 			if value.Exists() {
-				data.Exec[i].A1IfAuthenticated = types.BoolValue(true)
+				data.Execs[i].A1IfAuthenticated = types.BoolValue(true)
 			} else {
-				data.Exec[i].A1IfAuthenticated = types.BoolValue(false)
+				data.Execs[i].A1IfAuthenticated = types.BoolValue(false)
 			}
 		} else {
-			data.Exec[i].A1IfAuthenticated = types.BoolNull()
+			data.Execs[i].A1IfAuthenticated = types.BoolNull()
 		}
 	}
-	for i := range data.Network {
+	for i := range data.Networks {
 		keys := [...]string{"id"}
-		keyValues := [...]string{data.Network[i].Id.ValueString()}
+		keyValues := [...]string{data.Networks[i].Id.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "network").ForEach(
@@ -185,15 +185,15 @@ func (data *AAAAuthorization) updateFromBody(ctx context.Context, res gjson.Resu
 				return true
 			},
 		)
-		if value := r.Get("id"); value.Exists() && !data.Network[i].Id.IsNull() {
-			data.Network[i].Id = types.StringValue(value.String())
+		if value := r.Get("id"); value.Exists() && !data.Networks[i].Id.IsNull() {
+			data.Networks[i].Id = types.StringValue(value.String())
 		} else {
-			data.Network[i].Id = types.StringNull()
+			data.Networks[i].Id = types.StringNull()
 		}
-		if value := r.Get("network.a1.group"); value.Exists() && !data.Network[i].NetworkA1Group.IsNull() {
-			data.Network[i].NetworkA1Group = types.StringValue(value.String())
+		if value := r.Get("a1.group"); value.Exists() && !data.Networks[i].A1Group.IsNull() {
+			data.Networks[i].A1Group = types.StringValue(value.String())
 		} else {
-			data.Network[i].NetworkA1Group = types.StringNull()
+			data.Networks[i].A1Group = types.StringNull()
 		}
 	}
 }
@@ -204,9 +204,9 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "exec"); value.Exists() {
-		data.Exec = make([]AAAAuthorizationExec, 0)
+		data.Execs = make([]AAAAuthorizationExecs, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthorizationExec{}
+			item := AAAAuthorizationExecs{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -220,21 +220,21 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 			} else {
 				item.A1IfAuthenticated = types.BoolValue(false)
 			}
-			data.Exec = append(data.Exec, item)
+			data.Execs = append(data.Execs, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "network"); value.Exists() {
-		data.Network = make([]AAAAuthorizationNetwork, 0)
+		data.Networks = make([]AAAAuthorizationNetworks, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthorizationNetwork{}
+			item := AAAAuthorizationNetworks{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get("network.a1.group"); cValue.Exists() {
-				item.NetworkA1Group = types.StringValue(cValue.String())
+			if cValue := v.Get("a1.group"); cValue.Exists() {
+				item.A1Group = types.StringValue(cValue.String())
 			}
-			data.Network = append(data.Network, item)
+			data.Networks = append(data.Networks, item)
 			return true
 		})
 	}
@@ -242,11 +242,11 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 
 func (data *AAAAuthorization) getDeletedListItems(ctx context.Context, state AAAAuthorization) []string {
 	deletedListItems := make([]string, 0)
-	for i := range state.Exec {
-		stateKeyValues := [...]string{state.Exec[i].Name.ValueString()}
+	for i := range state.Execs {
+		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Exec[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Execs[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -254,9 +254,9 @@ func (data *AAAAuthorization) getDeletedListItems(ctx context.Context, state AAA
 		}
 
 		found := false
-		for j := range data.Exec {
+		for j := range data.Execs {
 			found = true
-			if state.Exec[i].Name.ValueString() != data.Exec[j].Name.ValueString() {
+			if state.Execs[i].Name.ValueString() != data.Execs[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -267,11 +267,11 @@ func (data *AAAAuthorization) getDeletedListItems(ctx context.Context, state AAA
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Network {
-		stateKeyValues := [...]string{state.Network[i].Id.ValueString()}
+	for i := range state.Networks {
+		stateKeyValues := [...]string{state.Networks[i].Id.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Network[i].Id.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Networks[i].Id.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -279,9 +279,9 @@ func (data *AAAAuthorization) getDeletedListItems(ctx context.Context, state AAA
 		}
 
 		found := false
-		for j := range data.Network {
+		for j := range data.Networks {
 			found = true
-			if state.Network[i].Id.ValueString() != data.Network[j].Id.ValueString() {
+			if state.Networks[i].Id.ValueString() != data.Networks[j].Id.ValueString() {
 				found = false
 			}
 			if found {
@@ -298,12 +298,12 @@ func (data *AAAAuthorization) getDeletedListItems(ctx context.Context, state AAA
 func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
-	for i := range data.Exec {
-		keyValues := [...]string{data.Exec[i].Name.ValueString()}
-		if !data.Exec[i].A1Local.IsNull() && !data.Exec[i].A1Local.ValueBool() {
+	for i := range data.Execs {
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
+		if !data.Execs[i].A1Local.IsNull() && !data.Execs[i].A1Local.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Exec[i].A1IfAuthenticated.IsNull() && !data.Exec[i].A1IfAuthenticated.ValueBool() {
+		if !data.Execs[i].A1IfAuthenticated.IsNull() && !data.Execs[i].A1IfAuthenticated.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
@@ -313,13 +313,13 @@ func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string 
 
 func (data *AAAAuthorization) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Exec {
-		keyValues := [...]string{data.Exec[i].Name.ValueString()}
+	for i := range data.Execs {
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.Network {
-		keyValues := [...]string{data.Network[i].Id.ValueString()}
+	for i := range data.Networks {
+		keyValues := [...]string{data.Networks[i].Id.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

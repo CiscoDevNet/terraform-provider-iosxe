@@ -67,11 +67,11 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Periodic intervals to send accounting update records(in minutes)",
 				Computed:            true,
 			},
-			"identity_start_stop_group": schema.StringAttribute{
+			"identity_default_start_stop_group": schema.StringAttribute{
 				MarkdownDescription: "Use Server-group",
 				Computed:            true,
 			},
-			"exec": schema.ListNestedAttribute{
+			"execs": schema.ListNestedAttribute{
 				MarkdownDescription: "For starting an exec (shell).",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -80,14 +80,14 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"group1": schema.StringAttribute{
+						"start_stop_group1": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},
 					},
 				},
 			},
-			"network": schema.ListNestedAttribute{
+			"networks": schema.ListNestedAttribute{
 				MarkdownDescription: "For network services. (PPP, SLIP, ARAP)",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -96,11 +96,11 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"group1": schema.StringAttribute{
+						"start_stop_group1": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},
-						"group2": schema.StringAttribute{
+						"start_stop_group2": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},

@@ -28,12 +28,12 @@ import (
 func TestAccDataSourceIosxeAAAAccounting(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "update_newinfo_periodic", "2880"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identity_start_stop_group", "RADIUS-GROUP"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "exec.0.name", "default"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "exec.0.group1", "T-Group"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "network.0.id", "network1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "network.0.group1", "radius"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "network.0.group2", "tacacs+"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identity_default_start_stop_group", "RADIUS-GROUP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "execs.0.name", "default"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "execs.0.start_stop_group1", "T-Group"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "networks.0.id", "network1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "networks.0.start_stop_group1", "radius"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "networks.0.start_stop_group2", "tacacs+"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "system_guarantee_first", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -51,15 +51,15 @@ func testAccDataSourceIosxeAAAAccountingConfig() string {
 	config := `resource "iosxe_aaa_accounting" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	update_newinfo_periodic = 2880` + "\n"
-	config += `	identity_start_stop_group = "RADIUS-GROUP"` + "\n"
-	config += `	exec = [{` + "\n"
+	config += `	identity_default_start_stop_group = "RADIUS-GROUP"` + "\n"
+	config += `	execs = [{` + "\n"
 	config += `		name = "default"` + "\n"
-	config += `		group1 = "T-Group"` + "\n"
+	config += `		start_stop_group1 = "T-Group"` + "\n"
 	config += `	}]` + "\n"
-	config += `	network = [{` + "\n"
+	config += `	networks = [{` + "\n"
 	config += `		id = "network1"` + "\n"
-	config += `		group1 = "radius"` + "\n"
-	config += `		group2 = "tacacs+"` + "\n"
+	config += `		start_stop_group1 = "radius"` + "\n"
+	config += `		start_stop_group2 = "tacacs+"` + "\n"
 	config += `	}]` + "\n"
 	config += `	system_guarantee_first = false` + "\n"
 	config += `}` + "\n"

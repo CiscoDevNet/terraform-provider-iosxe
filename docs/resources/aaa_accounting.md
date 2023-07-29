@@ -14,19 +14,19 @@ This resource can manage the AAA Accounting configuration.
 
 ```terraform
 resource "iosxe_aaa_accounting" "example" {
-  update_newinfo_periodic   = 2880
-  identity_start_stop_group = "RADIUS-GROUP"
-  exec = [
+  update_newinfo_periodic           = 2880
+  identity_default_start_stop_group = "RADIUS-GROUP"
+  execs = [
     {
-      name   = "default"
-      group1 = "T-Group"
+      name              = "default"
+      start_stop_group1 = "T-Group"
     }
   ]
-  network = [
+  networks = [
     {
-      id     = "network1"
-      group1 = "radius"
-      group2 = "tacacs+"
+      id                = "network1"
+      start_stop_group1 = "radius"
+      start_stop_group2 = "tacacs+"
     }
   ]
   system_guarantee_first = false
@@ -41,9 +41,9 @@ resource "iosxe_aaa_accounting" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `exec` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--exec))
-- `identity_start_stop_group` (String) Use Server-group
-- `network` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--network))
+- `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
+- `identity_default_start_stop_group` (String) Use Server-group
+- `networks` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--networks))
 - `system_guarantee_first` (Boolean) Guarantee system accounting as first record.
 - `update_newinfo_periodic` (Number) Periodic intervals to send accounting update records(in minutes)
   - Range: `1`-`71582`
@@ -52,8 +52,8 @@ resource "iosxe_aaa_accounting" "example" {
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--exec"></a>
-### Nested Schema for `exec`
+<a id="nestedatt--execs"></a>
+### Nested Schema for `execs`
 
 Required:
 
@@ -61,11 +61,11 @@ Required:
 
 Optional:
 
-- `group1` (String) Use Server-group
+- `start_stop_group1` (String) Use Server-group
 
 
-<a id="nestedatt--network"></a>
-### Nested Schema for `network`
+<a id="nestedatt--networks"></a>
+### Nested Schema for `networks`
 
 Required:
 
@@ -73,8 +73,8 @@ Required:
 
 Optional:
 
-- `group1` (String) Use Server-group
-- `group2` (String) Use Server-group
+- `start_stop_group1` (String) Use Server-group
+- `start_stop_group2` (String) Use Server-group
 
 ## Import
 

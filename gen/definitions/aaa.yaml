@@ -3,6 +3,7 @@ name: AAA
 path: Cisco-IOS-XE-native:native/aaa
 no_delete_attributes: true
 doc_category: AAA
+test_tags: [AAA]
 attributes:
   - yang_name: Cisco-IOS-XE-aaa:new-model
     example: true
@@ -10,7 +11,6 @@ attributes:
     example: true
   - yang_name: Cisco-IOS-XE-aaa:session-id
     example: common
-
   - yang_name: Cisco-IOS-XE-aaa:server/radius/dynamic-author/client
     tf_name: server_radius_dynamic_author_clients
     type: List
@@ -24,7 +24,6 @@ attributes:
       - yang_name: server-key/string
         tf_name: server_key
         example: abcd123
-
   - yang_name: Cisco-IOS-XE-aaa:group/server/radius
     tf_name: group_server_radius
     type: List
@@ -39,7 +38,6 @@ attributes:
           - yang_name: name
             example: TESTRADIUS
             id: true
-
   - yang_name: Cisco-IOS-XE-aaa:group/server/tacacsplus
     tf_name: group_tacacsplus
     type: List

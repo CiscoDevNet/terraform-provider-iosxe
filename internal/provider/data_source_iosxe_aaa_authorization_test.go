@@ -27,9 +27,9 @@ import (
 
 func TestAccDataSourceIosxeAAAAuthorization(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "exec.0.name", "TEST"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "exec.0.a1_local", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "exec.0.a1_if_authenticated", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "execs.0.name", "TEST"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "execs.0.a1_local", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authorization.test", "execs.0.a1_if_authenticated", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -45,7 +45,7 @@ func TestAccDataSourceIosxeAAAAuthorization(t *testing.T) {
 func testAccDataSourceIosxeAAAAuthorizationConfig() string {
 	config := `resource "iosxe_aaa_authorization" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	exec = [{` + "\n"
+	config += `	execs = [{` + "\n"
 	config += `		name = "TEST"` + "\n"
 	config += `		a1_local = false` + "\n"
 	config += `		a1_if_authenticated = true` + "\n"

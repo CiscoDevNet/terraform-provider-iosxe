@@ -72,7 +72,7 @@ func (r *AAAAuthorizationResource) Schema(ctx context.Context, req resource.Sche
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"exec": schema.ListNestedAttribute{
+			"execs": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("For starting an exec (shell).").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -92,7 +92,7 @@ func (r *AAAAuthorizationResource) Schema(ctx context.Context, req resource.Sche
 					},
 				},
 			},
-			"network": schema.ListNestedAttribute{
+			"networks": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("For network services. (PPP, SLIP, ARAP)").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -101,7 +101,7 @@ func (r *AAAAuthorizationResource) Schema(ctx context.Context, req resource.Sche
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"network_a1_group": schema.StringAttribute{
+						"a1_group": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},

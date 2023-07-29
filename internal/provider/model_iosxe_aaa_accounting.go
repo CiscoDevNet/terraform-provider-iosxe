@@ -34,33 +34,33 @@ import (
 )
 
 type AAAAccounting struct {
-	Device                 types.String           `tfsdk:"device"`
-	Id                     types.String           `tfsdk:"id"`
-	DeleteMode             types.String           `tfsdk:"delete_mode"`
-	UpdateNewinfoPeriodic  types.Int64            `tfsdk:"update_newinfo_periodic"`
-	IdentityStartStopGroup types.String           `tfsdk:"identity_start_stop_group"`
-	Exec                   []AAAAccountingExec    `tfsdk:"exec"`
-	Network                []AAAAccountingNetwork `tfsdk:"network"`
-	SystemGuaranteeFirst   types.Bool             `tfsdk:"system_guarantee_first"`
+	Device                        types.String            `tfsdk:"device"`
+	Id                            types.String            `tfsdk:"id"`
+	DeleteMode                    types.String            `tfsdk:"delete_mode"`
+	UpdateNewinfoPeriodic         types.Int64             `tfsdk:"update_newinfo_periodic"`
+	IdentityDefaultStartStopGroup types.String            `tfsdk:"identity_default_start_stop_group"`
+	Execs                         []AAAAccountingExecs    `tfsdk:"execs"`
+	Networks                      []AAAAccountingNetworks `tfsdk:"networks"`
+	SystemGuaranteeFirst          types.Bool              `tfsdk:"system_guarantee_first"`
 }
 
 type AAAAccountingData struct {
-	Device                 types.String           `tfsdk:"device"`
-	Id                     types.String           `tfsdk:"id"`
-	UpdateNewinfoPeriodic  types.Int64            `tfsdk:"update_newinfo_periodic"`
-	IdentityStartStopGroup types.String           `tfsdk:"identity_start_stop_group"`
-	Exec                   []AAAAccountingExec    `tfsdk:"exec"`
-	Network                []AAAAccountingNetwork `tfsdk:"network"`
-	SystemGuaranteeFirst   types.Bool             `tfsdk:"system_guarantee_first"`
+	Device                        types.String            `tfsdk:"device"`
+	Id                            types.String            `tfsdk:"id"`
+	UpdateNewinfoPeriodic         types.Int64             `tfsdk:"update_newinfo_periodic"`
+	IdentityDefaultStartStopGroup types.String            `tfsdk:"identity_default_start_stop_group"`
+	Execs                         []AAAAccountingExecs    `tfsdk:"execs"`
+	Networks                      []AAAAccountingNetworks `tfsdk:"networks"`
+	SystemGuaranteeFirst          types.Bool              `tfsdk:"system_guarantee_first"`
 }
-type AAAAccountingExec struct {
-	Name   types.String `tfsdk:"name"`
-	Group1 types.String `tfsdk:"group1"`
+type AAAAccountingExecs struct {
+	Name            types.String `tfsdk:"name"`
+	StartStopGroup1 types.String `tfsdk:"start_stop_group1"`
 }
-type AAAAccountingNetwork struct {
-	Id     types.String `tfsdk:"id"`
-	Group1 types.String `tfsdk:"group1"`
-	Group2 types.String `tfsdk:"group2"`
+type AAAAccountingNetworks struct {
+	Id              types.String `tfsdk:"id"`
+	StartStopGroup1 types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2 types.String `tfsdk:"start_stop_group2"`
 }
 
 func (data AAAAccounting) getPath() string {
@@ -87,34 +87,34 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 	if !data.UpdateNewinfoPeriodic.IsNull() && !data.UpdateNewinfoPeriodic.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update.newinfo.periodic", strconv.FormatInt(data.UpdateNewinfoPeriodic.ValueInt64(), 10))
 	}
-	if !data.IdentityStartStopGroup.IsNull() && !data.IdentityStartStopGroup.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.default.start-stop.group", data.IdentityStartStopGroup.ValueString())
+	if !data.IdentityDefaultStartStopGroup.IsNull() && !data.IdentityDefaultStartStopGroup.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.default.start-stop.group", data.IdentityDefaultStartStopGroup.ValueString())
 	}
 	if !data.SystemGuaranteeFirst.IsNull() && !data.SystemGuaranteeFirst.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"system.guarantee-first", data.SystemGuaranteeFirst.ValueBool())
 	}
-	if len(data.Exec) > 0 {
+	if len(data.Execs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec", []interface{}{})
-		for index, item := range data.Exec {
+		for index, item := range data.Execs {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
-			if !item.Group1.IsNull() && !item.Group1.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.group1.group", item.Group1.ValueString())
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.group1.group", item.StartStopGroup1.ValueString())
 			}
 		}
 	}
-	if len(data.Network) > 0 {
+	if len(data.Networks) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network", []interface{}{})
-		for index, item := range data.Network {
+		for index, item := range data.Networks {
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"id", item.Id.ValueString())
 			}
-			if !item.Group1.IsNull() && !item.Group1.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group1.group", item.Group1.ValueString())
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group1.group", item.StartStopGroup1.ValueString())
 			}
-			if !item.Group2.IsNull() && !item.Group2.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group2.group", item.Group2.ValueString())
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group2.group", item.StartStopGroup2.ValueString())
 			}
 		}
 	}
@@ -131,14 +131,14 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.UpdateNewinfoPeriodic = types.Int64Null()
 	}
-	if value := res.Get(prefix + "identity.default.start-stop.group"); value.Exists() && !data.IdentityStartStopGroup.IsNull() {
-		data.IdentityStartStopGroup = types.StringValue(value.String())
+	if value := res.Get(prefix + "identity.default.start-stop.group"); value.Exists() && !data.IdentityDefaultStartStopGroup.IsNull() {
+		data.IdentityDefaultStartStopGroup = types.StringValue(value.String())
 	} else {
-		data.IdentityStartStopGroup = types.StringNull()
+		data.IdentityDefaultStartStopGroup = types.StringNull()
 	}
-	for i := range data.Exec {
+	for i := range data.Execs {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.Exec[i].Name.ValueString()}
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "exec").ForEach(
@@ -159,20 +159,20 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.Exec[i].Name.IsNull() {
-			data.Exec[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.Execs[i].Name.IsNull() {
+			data.Execs[i].Name = types.StringValue(value.String())
 		} else {
-			data.Exec[i].Name = types.StringNull()
+			data.Execs[i].Name = types.StringNull()
 		}
-		if value := r.Get("start-stop.group1.group"); value.Exists() && !data.Exec[i].Group1.IsNull() {
-			data.Exec[i].Group1 = types.StringValue(value.String())
+		if value := r.Get("start-stop.group1.group"); value.Exists() && !data.Execs[i].StartStopGroup1.IsNull() {
+			data.Execs[i].StartStopGroup1 = types.StringValue(value.String())
 		} else {
-			data.Exec[i].Group1 = types.StringNull()
+			data.Execs[i].StartStopGroup1 = types.StringNull()
 		}
 	}
-	for i := range data.Network {
+	for i := range data.Networks {
 		keys := [...]string{"id"}
-		keyValues := [...]string{data.Network[i].Id.ValueString()}
+		keyValues := [...]string{data.Networks[i].Id.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "network").ForEach(
@@ -193,20 +193,20 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 				return true
 			},
 		)
-		if value := r.Get("id"); value.Exists() && !data.Network[i].Id.IsNull() {
-			data.Network[i].Id = types.StringValue(value.String())
+		if value := r.Get("id"); value.Exists() && !data.Networks[i].Id.IsNull() {
+			data.Networks[i].Id = types.StringValue(value.String())
 		} else {
-			data.Network[i].Id = types.StringNull()
+			data.Networks[i].Id = types.StringNull()
 		}
-		if value := r.Get("start-stop.group-config.group1.group"); value.Exists() && !data.Network[i].Group1.IsNull() {
-			data.Network[i].Group1 = types.StringValue(value.String())
+		if value := r.Get("start-stop.group-config.group1.group"); value.Exists() && !data.Networks[i].StartStopGroup1.IsNull() {
+			data.Networks[i].StartStopGroup1 = types.StringValue(value.String())
 		} else {
-			data.Network[i].Group1 = types.StringNull()
+			data.Networks[i].StartStopGroup1 = types.StringNull()
 		}
-		if value := r.Get("start-stop.group-config.group2.group"); value.Exists() && !data.Network[i].Group2.IsNull() {
-			data.Network[i].Group2 = types.StringValue(value.String())
+		if value := r.Get("start-stop.group-config.group2.group"); value.Exists() && !data.Networks[i].StartStopGroup2.IsNull() {
+			data.Networks[i].StartStopGroup2 = types.StringValue(value.String())
 		} else {
-			data.Network[i].Group2 = types.StringNull()
+			data.Networks[i].StartStopGroup2 = types.StringNull()
 		}
 	}
 	if value := res.Get(prefix + "system.guarantee-first"); !data.SystemGuaranteeFirst.IsNull() {
@@ -227,36 +227,36 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 		data.UpdateNewinfoPeriodic = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "identity.default.start-stop.group"); value.Exists() {
-		data.IdentityStartStopGroup = types.StringValue(value.String())
+		data.IdentityDefaultStartStopGroup = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "exec"); value.Exists() {
-		data.Exec = make([]AAAAccountingExec, 0)
+		data.Execs = make([]AAAAccountingExecs, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingExec{}
+			item := AAAAccountingExecs{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("start-stop.group1.group"); cValue.Exists() {
-				item.Group1 = types.StringValue(cValue.String())
+				item.StartStopGroup1 = types.StringValue(cValue.String())
 			}
-			data.Exec = append(data.Exec, item)
+			data.Execs = append(data.Execs, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "network"); value.Exists() {
-		data.Network = make([]AAAAccountingNetwork, 0)
+		data.Networks = make([]AAAAccountingNetworks, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingNetwork{}
+			item := AAAAccountingNetworks{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("start-stop.group-config.group1.group"); cValue.Exists() {
-				item.Group1 = types.StringValue(cValue.String())
+				item.StartStopGroup1 = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("start-stop.group-config.group2.group"); cValue.Exists() {
-				item.Group2 = types.StringValue(cValue.String())
+				item.StartStopGroup2 = types.StringValue(cValue.String())
 			}
-			data.Network = append(data.Network, item)
+			data.Networks = append(data.Networks, item)
 			return true
 		})
 	}
@@ -269,11 +269,11 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *AAAAccounting) getDeletedListItems(ctx context.Context, state AAAAccounting) []string {
 	deletedListItems := make([]string, 0)
-	for i := range state.Exec {
-		stateKeyValues := [...]string{state.Exec[i].Name.ValueString()}
+	for i := range state.Execs {
+		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Exec[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Execs[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -281,9 +281,9 @@ func (data *AAAAccounting) getDeletedListItems(ctx context.Context, state AAAAcc
 		}
 
 		found := false
-		for j := range data.Exec {
+		for j := range data.Execs {
 			found = true
-			if state.Exec[i].Name.ValueString() != data.Exec[j].Name.ValueString() {
+			if state.Execs[i].Name.ValueString() != data.Execs[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -294,11 +294,11 @@ func (data *AAAAccounting) getDeletedListItems(ctx context.Context, state AAAAcc
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Network {
-		stateKeyValues := [...]string{state.Network[i].Id.ValueString()}
+	for i := range state.Networks {
+		stateKeyValues := [...]string{state.Networks[i].Id.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Network[i].Id.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Networks[i].Id.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -306,9 +306,9 @@ func (data *AAAAccounting) getDeletedListItems(ctx context.Context, state AAAAcc
 		}
 
 		found := false
-		for j := range data.Network {
+		for j := range data.Networks {
 			found = true
-			if state.Network[i].Id.ValueString() != data.Network[j].Id.ValueString() {
+			if state.Networks[i].Id.ValueString() != data.Networks[j].Id.ValueString() {
 				found = false
 			}
 			if found {
@@ -333,16 +333,16 @@ func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 	if !data.UpdateNewinfoPeriodic.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/update/newinfo/periodic", data.getPath()))
 	}
-	if !data.IdentityStartStopGroup.IsNull() {
+	if !data.IdentityDefaultStartStopGroup.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/default/start-stop/group", data.getPath()))
 	}
-	for i := range data.Exec {
-		keyValues := [...]string{data.Exec[i].Name.ValueString()}
+	for i := range data.Execs {
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.Network {
-		keyValues := [...]string{data.Network[i].Id.ValueString()}
+	for i := range data.Networks {
+		keyValues := [...]string{data.Networks[i].Id.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

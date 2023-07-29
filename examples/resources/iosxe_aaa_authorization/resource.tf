@@ -1,5 +1,5 @@
 resource "iosxe_aaa_authorization" "example" {
-  exec = [
+  execs = [
     {
       name                = "TEST"
       a1_local            = false

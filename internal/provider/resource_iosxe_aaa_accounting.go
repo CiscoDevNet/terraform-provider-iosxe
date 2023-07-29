@@ -80,11 +80,11 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 					int64validator.Between(1, 71582),
 				},
 			},
-			"identity_start_stop_group": schema.StringAttribute{
+			"identity_default_start_stop_group": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 				Optional:            true,
 			},
-			"exec": schema.ListNestedAttribute{
+			"execs": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("For starting an exec (shell).").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -93,14 +93,14 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"group1": schema.StringAttribute{
+						"start_stop_group1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},
 					},
 				},
 			},
-			"network": schema.ListNestedAttribute{
+			"networks": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("For network services. (PPP, SLIP, ARAP)").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -109,11 +109,11 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"group1": schema.StringAttribute{
+						"start_stop_group1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},
-						"group2": schema.StringAttribute{
+						"start_stop_group2": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},

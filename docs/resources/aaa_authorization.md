@@ -14,7 +14,7 @@ This resource can manage the AAA Authorization configuration.
 
 ```terraform
 resource "iosxe_aaa_authorization" "example" {
-  exec = [
+  execs = [
     {
       name                = "TEST"
       a1_local            = false
@@ -32,15 +32,15 @@ resource "iosxe_aaa_authorization" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `exec` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--exec))
-- `network` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--network))
+- `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
+- `networks` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--networks))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--exec"></a>
-### Nested Schema for `exec`
+<a id="nestedatt--execs"></a>
+### Nested Schema for `execs`
 
 Required:
 
@@ -52,8 +52,8 @@ Optional:
 - `a1_local` (Boolean) Use local database
 
 
-<a id="nestedatt--network"></a>
-### Nested Schema for `network`
+<a id="nestedatt--networks"></a>
+### Nested Schema for `networks`
 
 Required:
 
@@ -61,7 +61,7 @@ Required:
 
 Optional:
 
-- `network_a1_group` (String) Use Server-group
+- `a1_group` (String) Use Server-group
 
 ## Import
 

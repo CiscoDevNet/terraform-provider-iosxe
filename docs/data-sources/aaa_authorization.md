@@ -26,12 +26,12 @@ data "iosxe_aaa_authorization" "example" {
 
 ### Read-Only
 
-- `exec` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--exec))
+- `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `id` (String) The path of the retrieved object.
-- `network` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--network))
+- `networks` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--networks))
 
-<a id="nestedatt--exec"></a>
-### Nested Schema for `exec`
+<a id="nestedatt--execs"></a>
+### Nested Schema for `execs`
 
 Read-Only:
 
@@ -40,10 +40,10 @@ Read-Only:
 - `name` (String)
 
 
-<a id="nestedatt--network"></a>
-### Nested Schema for `network`
+<a id="nestedatt--networks"></a>
+### Nested Schema for `networks`
 
 Read-Only:
 
+- `a1_group` (String) Use Server-group
 - `id` (String)
-- `network_a1_group` (String) Use Server-group

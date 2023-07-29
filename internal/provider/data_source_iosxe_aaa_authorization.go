@@ -63,7 +63,7 @@ func (d *AAAAuthorizationDataSource) Schema(ctx context.Context, req datasource.
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"exec": schema.ListNestedAttribute{
+			"execs": schema.ListNestedAttribute{
 				MarkdownDescription: "For starting an exec (shell).",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -83,7 +83,7 @@ func (d *AAAAuthorizationDataSource) Schema(ctx context.Context, req datasource.
 					},
 				},
 			},
-			"network": schema.ListNestedAttribute{
+			"networks": schema.ListNestedAttribute{
 				MarkdownDescription: "For network services. (PPP, SLIP, ARAP)",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -92,7 +92,7 @@ func (d *AAAAuthorizationDataSource) Schema(ctx context.Context, req datasource.
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"network_a1_group": schema.StringAttribute{
+						"a1_group": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},

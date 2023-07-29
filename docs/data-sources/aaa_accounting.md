@@ -26,27 +26,27 @@ data "iosxe_aaa_accounting" "example" {
 
 ### Read-Only
 
-- `exec` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--exec))
+- `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `id` (String) The path of the retrieved object.
-- `identity_start_stop_group` (String) Use Server-group
-- `network` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--network))
+- `identity_default_start_stop_group` (String) Use Server-group
+- `networks` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--networks))
 - `system_guarantee_first` (Boolean) Guarantee system accounting as first record.
 - `update_newinfo_periodic` (Number) Periodic intervals to send accounting update records(in minutes)
 
-<a id="nestedatt--exec"></a>
-### Nested Schema for `exec`
+<a id="nestedatt--execs"></a>
+### Nested Schema for `execs`
 
 Read-Only:
 
-- `group1` (String) Use Server-group
 - `name` (String)
+- `start_stop_group1` (String) Use Server-group
 
 
-<a id="nestedatt--network"></a>
-### Nested Schema for `network`
+<a id="nestedatt--networks"></a>
+### Nested Schema for `networks`
 
 Read-Only:
 
-- `group1` (String) Use Server-group
-- `group2` (String) Use Server-group
 - `id` (String)
+- `start_stop_group1` (String) Use Server-group
+- `start_stop_group2` (String) Use Server-group
