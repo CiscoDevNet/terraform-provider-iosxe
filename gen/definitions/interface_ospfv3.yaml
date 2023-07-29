@@ -21,7 +21,7 @@ attributes:
       - FourHundredGigE
       - Loopback
       - Vlan
-    example: GigabitEthernet
+    example: Loopback
   - yang_name: name
     example: 1
   - yang_name: network/point-to-point
@@ -30,3 +30,9 @@ attributes:
     xpath: cost-config/value
     tf_name: cost
     example: 1000
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+    attributes:
+      - name: name
+        value: 1

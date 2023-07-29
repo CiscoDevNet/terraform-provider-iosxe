@@ -34,25 +34,36 @@ func TestAccDataSourceIosxeInterfaceMPLS(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeInterfaceMPLSConfig(),
+				Config: testAccDataSourceIosxeInterfaceMPLSPrerequisitesConfig + testAccDataSourceIosxeInterfaceMPLSConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
 }
 
+const testAccDataSourceIosxeInterfaceMPLSPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+	attributes = {
+		"name" = "1"
+	}
+}
+
+`
+
 func testAccDataSourceIosxeInterfaceMPLSConfig() string {
 	config := `resource "iosxe_interface_mpls" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	type = "GigabitEthernet"` + "\n"
+	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	ip = true` + "\n"
 	config += `	mtu = "1200"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_interface_mpls" "test" {
-			type = "GigabitEthernet"
+			type = "Loopback"
 			name = "1"
 			depends_on = [iosxe_interface_mpls.test]
 		}

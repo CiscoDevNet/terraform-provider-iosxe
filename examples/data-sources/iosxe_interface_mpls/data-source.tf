@@ -1,4 +1,4 @@
 data "iosxe_interface_mpls" "example" {
-  type = "GigabitEthernet"
+  type = "Loopback"
   name = "1"
 }

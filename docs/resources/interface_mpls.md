@@ -14,7 +14,7 @@ This resource can manage the Interface MPLS configuration.
 
 ```terraform
 resource "iosxe_interface_mpls" "example" {
-  type = "GigabitEthernet"
+  type = "Loopback"
   name = "1"
   ip   = true
   mtu  = "1200"
@@ -47,5 +47,5 @@ resource "iosxe_interface_mpls" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxe_interface_mpls.example "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1/mpls"
+terraform import iosxe_interface_mpls.example "Cisco-IOS-XE-native:native/interface/Loopback=1/mpls"
 ```

@@ -14,7 +14,7 @@ This data source can read the Interface MPLS configuration.
 
 ```terraform
 data "iosxe_interface_mpls" "example" {
-  type = "GigabitEthernet"
+  type = "Loopback"
   name = "1"
 }
 ```

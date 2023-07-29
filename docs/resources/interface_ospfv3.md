@@ -14,7 +14,7 @@ This resource can manage the Interface OSPFv3 configuration.
 
 ```terraform
 resource "iosxe_interface_ospfv3" "example" {
-  type                   = "GigabitEthernet"
+  type                   = "Loopback"
   name                   = "1"
   network_point_to_point = true
   cost                   = 1000
@@ -48,5 +48,5 @@ resource "iosxe_interface_ospfv3" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxe_interface_ospfv3.example "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1/Cisco-IOS-XE-ospfv3:ospfv3"
+terraform import iosxe_interface_ospfv3.example "Cisco-IOS-XE-native:native/interface/Loopback=1/Cisco-IOS-XE-ospfv3:ospfv3"
 ```

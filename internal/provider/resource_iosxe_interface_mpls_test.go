@@ -34,35 +34,47 @@ func TestAccIosxeInterfaceMPLS(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeInterfaceMPLSConfig_minimum(),
+				Config: testAccIosxeInterfaceMPLSPrerequisitesConfig + testAccIosxeInterfaceMPLSConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeInterfaceMPLSConfig_all(),
+				Config: testAccIosxeInterfaceMPLSPrerequisitesConfig + testAccIosxeInterfaceMPLSConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
 				ResourceName:  "iosxe_interface_mpls.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1/mpls",
+				ImportStateId: "Cisco-IOS-XE-native:native/interface/Loopback=1/mpls",
 			},
 		},
 	})
 }
 
+const testAccIosxeInterfaceMPLSPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+	attributes = {
+		"name" = "1"
+	}
+}
+
+`
+
 func testAccIosxeInterfaceMPLSConfig_minimum() string {
 	config := `resource "iosxe_interface_mpls" "test" {` + "\n"
-	config += `	type = "GigabitEthernet"` + "\n"
+	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
 
 func testAccIosxeInterfaceMPLSConfig_all() string {
 	config := `resource "iosxe_interface_mpls" "test" {` + "\n"
-	config += `	type = "GigabitEthernet"` + "\n"
+	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	ip = true` + "\n"
 	config += `	mtu = "1200"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

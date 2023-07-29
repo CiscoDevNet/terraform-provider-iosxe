@@ -21,10 +21,16 @@ attributes:
       - FourHundredGigE
       - Loopback
       - Vlan
-    example: GigabitEthernet
+    example: Loopback
   - yang_name: name
     example: 1
   - yang_name: Cisco-IOS-XE-mpls:ip
     example: true
   - yang_name: Cisco-IOS-XE-mpls:mtu
     example: 1200
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+    attributes:
+      - name: name
+        value: 1
