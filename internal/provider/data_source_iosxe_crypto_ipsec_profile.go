@@ -63,26 +63,22 @@ func (d *CryptoIPSecProfileDataSource) Schema(ctx context.Context, req datasourc
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"profile": schema.ListNestedAttribute{
-				MarkdownDescription: "Configure an ipsec policy profile",
+			"name": schema.StringAttribute{
+				MarkdownDescription: "",
+				Required:            true,
+			},
+			"set_transform_set": schema.ListAttribute{
+				MarkdownDescription: "Specify list of transform sets in priority order",
+				ElementType:         types.StringType,
 				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-						"set_transform_set": schema.ListAttribute{
-							MarkdownDescription: "Specify list of transform sets in priority order",
-							ElementType:         types.StringType,
-							Computed:            true,
-						},
-						"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile": schema.StringAttribute{
-							MarkdownDescription: "Specify ikev2 Profile",
-							Computed:            true,
-						},
-					},
-				},
+			},
+			"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile": schema.StringAttribute{
+				MarkdownDescription: "Specify ikev2 Profile",
+				Computed:            true,
+			},
+			"set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile": schema.StringAttribute{
+				MarkdownDescription: "Specify isakmp Profile",
+				Computed:            true,
 			},
 		},
 	}

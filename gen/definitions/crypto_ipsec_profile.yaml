@@ -1,26 +1,26 @@
 ---
 name: Crypto IPSec Profile
-path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec
+path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=%v
 no_delete_attributes: true
 doc_category: Crypto
 attributes:
-  - yang_name: profile
-    type: List
-    attributes:
-      - yang_name: name
-        id: true
-        example: vpn200
-      - yang_name: set/transform-set
-        example: TSET1
-      - yang_name: set/isakmp_profile-ikev2_profile/ikev2-profile-case/ikev2-profile
-        xpath: set/ikev2-profile
-        example: vpn300
+  - yang_name: name
+    example: vpn200
+  - yang_name: set/transform-set
+    example: TS1
+  - yang_name: set/isakmp_profile-ikev2_profile/ikev2-profile-case/ikev2-profile
+    xpath: set/ikev2-profile
+    example: vpn300
+  - yang_name: set/isakmp_profile-ikev2_profile/isakmp-profile-case/isakmp-profile
+    xpath: set/isakmp-profile
+    example: vpn300
+    exclude_test: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=TSET1
+  - path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=TS1
     attributes:
       - name: tag
-        value: TSET1
+        value: TS1
       - name: esp
         value: esp-aes
       - name: key-bit
@@ -31,4 +31,3 @@ test_prerequisites:
         value: vpn300
       - name: aaa/authentication/anyconnect-eap
         value: attached
-

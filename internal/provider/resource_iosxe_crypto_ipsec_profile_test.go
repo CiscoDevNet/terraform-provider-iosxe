@@ -27,9 +27,9 @@ import (
 
 func TestAccIosxeCryptoIPSecProfile(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "profile.0.name", "vpn200"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "profile.0.set_transform_set.0", "TSET1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "profile.0.set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile", "vpn300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "name", "vpn200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "set_transform_set.0", "TS1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_profile.test", "set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile", "vpn300"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -44,7 +44,7 @@ func TestAccIosxeCryptoIPSecProfile(t *testing.T) {
 			{
 				ResourceName:  "iosxe_crypto_ipsec_profile.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec",
+				ImportStateId: "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=vpn200",
 			},
 		},
 	})
@@ -52,9 +52,9 @@ func TestAccIosxeCryptoIPSecProfile(t *testing.T) {
 
 const testAccIosxeCryptoIPSecProfilePrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=TSET1"
+	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/transform-set=TS1"
 	attributes = {
-		"tag" = "TSET1"
+		"tag" = "TS1"
 		"esp" = "esp-aes"
 		"key-bit" = "192"
 	}
@@ -72,6 +72,7 @@ resource "iosxe_restconf" "PreReq1" {
 
 func testAccIosxeCryptoIPSecProfileConfig_minimum() string {
 	config := `resource "iosxe_crypto_ipsec_profile" "test" {` + "\n"
+	config += `	name = "vpn200"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
@@ -79,11 +80,9 @@ func testAccIosxeCryptoIPSecProfileConfig_minimum() string {
 
 func testAccIosxeCryptoIPSecProfileConfig_all() string {
 	config := `resource "iosxe_crypto_ipsec_profile" "test" {` + "\n"
-	config += `	profile = [{` + "\n"
-	config += `		name = "vpn200"` + "\n"
-	config += `		set_transform_set = ["TSET1"]` + "\n"
-	config += `		set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile = "vpn300"` + "\n"
-	config += `	}]` + "\n"
+	config += `	name = "vpn200"` + "\n"
+	config += `	set_transform_set = ["TS1"]` + "\n"
+	config += `	set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile = "vpn300"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config

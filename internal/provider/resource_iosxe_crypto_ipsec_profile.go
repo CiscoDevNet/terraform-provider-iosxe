@@ -63,26 +63,25 @@ func (r *CryptoIPSecProfileResource) Schema(ctx context.Context, req resource.Sc
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"profile": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure an ipsec policy profile").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-						},
-						"set_transform_set": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify list of transform sets in priority order").String,
-							ElementType:         types.StringType,
-							Optional:            true,
-						},
-						"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify ikev2 Profile").String,
-							Optional:            true,
-						},
-					},
+			"name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
+			},
+			"set_transform_set": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify list of transform sets in priority order").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify ikev2 Profile").String,
+				Optional:            true,
+			},
+			"set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify isakmp Profile").String,
+				Optional:            true,
 			},
 		},
 	}
