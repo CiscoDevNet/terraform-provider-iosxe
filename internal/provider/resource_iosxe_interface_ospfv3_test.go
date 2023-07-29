@@ -27,7 +27,10 @@ import (
 
 func TestAccIosxeInterfaceOSPFv3(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "network_point_to_point", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "network_type_broadcast", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "network_type_non_broadcast", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "network_type_point_to_multipoint", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "network_type_point_to_point", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospfv3.test", "cost", "1000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -72,7 +75,10 @@ func testAccIosxeInterfaceOSPFv3Config_all() string {
 	config := `resource "iosxe_interface_ospfv3" "test" {` + "\n"
 	config += `	type = "Loopback"` + "\n"
 	config += `	name = "1"` + "\n"
-	config += `	network_point_to_point = true` + "\n"
+	config += `	network_type_broadcast = false` + "\n"
+	config += `	network_type_non_broadcast = false` + "\n"
+	config += `	network_type_point_to_multipoint = false` + "\n"
+	config += `	network_type_point_to_point = true` + "\n"
 	config += `	cost = 1000` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"

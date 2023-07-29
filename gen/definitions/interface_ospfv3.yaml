@@ -24,7 +24,21 @@ attributes:
     example: Loopback
   - yang_name: name
     example: 1
-  - yang_name: network/point-to-point
+  - yang_name: network-type/network-type-choice/broadcast/broadcast
+    xpath: network-type/broadcast
+    tf_name: network_type_broadcast
+    example: false
+  - yang_name: network-type/network-type-choice/non-broadcast/non-broadcast
+    xpath: network-type/non-broadcast
+    tf_name: network_type_non_broadcast
+    example: false
+  - yang_name: network-type/network-type-choice/point-to-multipoint/point-to-multipoint
+    xpath: network-type/point-to-multipoint
+    tf_name: network_type_point_to_multipoint
+    example: false
+  - yang_name: network-type/network-type-choice/point-to-point/point-to-point
+    xpath: network-type/point-to-point
+    tf_name: network_type_point_to_point
     example: true
   - yang_name: cost-config/cost-options/value/value
     xpath: cost-config/value

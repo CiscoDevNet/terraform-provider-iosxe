@@ -71,7 +71,19 @@ func (d *InterfaceOSPFv3DataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"network_point_to_point": schema.BoolAttribute{
+			"network_type_broadcast": schema.BoolAttribute{
+				MarkdownDescription: "Specify OSPF broadcast multi-access network",
+				Computed:            true,
+			},
+			"network_type_non_broadcast": schema.BoolAttribute{
+				MarkdownDescription: "Specify OSPF NBMA network",
+				Computed:            true,
+			},
+			"network_type_point_to_multipoint": schema.BoolAttribute{
+				MarkdownDescription: "Specify OSPF point-to-multipoint network",
+				Computed:            true,
+			},
+			"network_type_point_to_point": schema.BoolAttribute{
 				MarkdownDescription: "Specify OSPF point-to-point network",
 				Computed:            true,
 			},

@@ -94,7 +94,19 @@ func (r *InterfaceOSPFv3Resource) Schema(ctx context.Context, req resource.Schem
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"network_point_to_point": schema.BoolAttribute{
+			"network_type_broadcast": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF broadcast multi-access network").String,
+				Optional:            true,
+			},
+			"network_type_non_broadcast": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF NBMA network").String,
+				Optional:            true,
+			},
+			"network_type_point_to_multipoint": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-multipoint network").String,
+				Optional:            true,
+			},
+			"network_type_point_to_point": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-point network").String,
 				Optional:            true,
 			},

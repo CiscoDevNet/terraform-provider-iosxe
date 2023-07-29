@@ -35,4 +35,7 @@ data "iosxe_interface_ospfv3" "example" {
 
 - `cost` (Number) Static route cost value of the interface
 - `id` (String) The path of the retrieved object.
-- `network_point_to_point` (Boolean) Specify OSPF point-to-point network
+- `network_type_broadcast` (Boolean) Specify OSPF broadcast multi-access network
+- `network_type_non_broadcast` (Boolean) Specify OSPF NBMA network
+- `network_type_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
+- `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
