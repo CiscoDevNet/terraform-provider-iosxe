@@ -1,0 +1,23 @@
+---
+name: Crypto IKEv2 Proposal
+path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2
+no_delete_attributes: true
+doc_category: Crypto
+attributes:
+  - yang_name: proposal
+    tf_name: ikev2_proposals
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: aws_vpg_2
+      - yang_name: encryption/aes-cbc-256
+        example: true
+      - yang_name: group/fourteen
+        example: true
+      - yang_name: group/nineteen
+        example:  true
+      - yang_name: group/twenty
+        example: true
+      - yang_name: integrity/sha1
+        example: true
