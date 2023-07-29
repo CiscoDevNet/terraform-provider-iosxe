@@ -1,10 +1,11 @@
 resource "iosxe_aaa_authentication" "example" {
-  login = [
+  logins = [
     {
-      name = "test"
+      name     = "test"
+      a1_group = "Radius-GROUP"
+      a2_none  = true
     }
   ]
-  login_a1_auth_login_choice_group_group = "Radius-GROUP"
-  login_a2_auth_login_choice_none_none   = true
-  dot1x_default_group_                   = "Radius-GROUP"
+  dot1x_default_a1_group = "Radius-GROUP"
+  dot1x_default_a2_group = "Radius-GROUP2"
 }

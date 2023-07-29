@@ -26,16 +26,40 @@ data "iosxe_aaa_authentication" "example" {
 
 ### Read-Only
 
-- `dot1x_default_group_` (String) Use Server-group (DEPRECATED, use group within container)
+- `dot1x_default_a1_group` (String) Use Server-group
+- `dot1x_default_a1_local` (Boolean) Use local username authentication
+- `dot1x_default_a2_group` (String) Use Server-group
+- `dot1x_default_a2_local` (Boolean) Use local username authentication
+- `dot1x_default_a3_group` (String) Use Server-group
+- `dot1x_default_a3_local` (Boolean) Use local username authentication
+- `dot1x_default_a4_group` (String) Use Server-group
+- `dot1x_default_a4_local` (Boolean) Use local username authentication
 - `id` (String) The path of the retrieved object.
-- `login` (Attributes List) Set authentication lists for logins. (see [below for nested schema](#nestedatt--login))
-- `login_a1_auth_login_choice_group_group` (String) Use Server-group
-- `login_a2_auth_login_choice_group_group` (String) Use Server-group
-- `login_a2_auth_login_choice_none_none` (Boolean) NO authentication.
+- `logins` (Attributes List) Set authentication lists for logins. (see [below for nested schema](#nestedatt--logins))
 
-<a id="nestedatt--login"></a>
-### Nested Schema for `login`
+<a id="nestedatt--logins"></a>
+### Nested Schema for `logins`
 
 Read-Only:
 
+- `a1_enable` (Boolean) Use enable password for authentication.
+- `a1_group` (String) Use Server-group
+- `a1_line` (Boolean) Use line password for authentication.
+- `a1_local` (Boolean) Use local username authentication.
+- `a1_none` (Boolean) NO authentication.
+- `a2_enable` (Boolean) Use enable password for authentication.
+- `a2_group` (String) Use Server-group
+- `a2_line` (Boolean) Use line password for authentication.
+- `a2_local` (Boolean)
+- `a2_none` (Boolean) NO authentication.
+- `a3_enable` (Boolean) Use enable password for authentication.
+- `a3_group` (String) Use Server-group
+- `a3_line` (Boolean) Use line password for authentication.
+- `a3_local` (Boolean)
+- `a3_none` (Boolean) NO authentication.
+- `a4_enable` (Boolean) Use enable password for authentication.
+- `a4_group` (String) Use Server-group
+- `a4_line` (Boolean) Use line password for authentication.
+- `a4_local` (Boolean)
+- `a4_none` (Boolean) NO authentication.
 - `name` (String)

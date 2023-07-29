@@ -34,26 +34,55 @@ import (
 )
 
 type AAAAuthentication struct {
-	Device                           types.String             `tfsdk:"device"`
-	Id                               types.String             `tfsdk:"id"`
-	Login                            []AAAAuthenticationLogin `tfsdk:"login"`
-	LoginA1AuthLoginChoiceGroupGroup types.String             `tfsdk:"login_a1_auth_login_choice_group_group"`
-	LoginA2AuthLoginChoiceGroupGroup types.String             `tfsdk:"login_a2_auth_login_choice_group_group"`
-	LoginA2AuthLoginChoiceNoneNone   types.Bool               `tfsdk:"login_a2_auth_login_choice_none_none"`
-	Dot1xDefaultGroup                types.String             `tfsdk:"dot1x_default_group_"`
+	Device              types.String              `tfsdk:"device"`
+	Id                  types.String              `tfsdk:"id"`
+	DeleteMode          types.String              `tfsdk:"delete_mode"`
+	Logins              []AAAAuthenticationLogins `tfsdk:"logins"`
+	Dot1xDefaultA1Group types.String              `tfsdk:"dot1x_default_a1_group"`
+	Dot1xDefaultA1Local types.Bool                `tfsdk:"dot1x_default_a1_local"`
+	Dot1xDefaultA2Group types.String              `tfsdk:"dot1x_default_a2_group"`
+	Dot1xDefaultA2Local types.Bool                `tfsdk:"dot1x_default_a2_local"`
+	Dot1xDefaultA3Group types.String              `tfsdk:"dot1x_default_a3_group"`
+	Dot1xDefaultA3Local types.Bool                `tfsdk:"dot1x_default_a3_local"`
+	Dot1xDefaultA4Group types.String              `tfsdk:"dot1x_default_a4_group"`
+	Dot1xDefaultA4Local types.Bool                `tfsdk:"dot1x_default_a4_local"`
 }
 
 type AAAAuthenticationData struct {
-	Device                           types.String             `tfsdk:"device"`
-	Id                               types.String             `tfsdk:"id"`
-	Login                            []AAAAuthenticationLogin `tfsdk:"login"`
-	LoginA1AuthLoginChoiceGroupGroup types.String             `tfsdk:"login_a1_auth_login_choice_group_group"`
-	LoginA2AuthLoginChoiceGroupGroup types.String             `tfsdk:"login_a2_auth_login_choice_group_group"`
-	LoginA2AuthLoginChoiceNoneNone   types.Bool               `tfsdk:"login_a2_auth_login_choice_none_none"`
-	Dot1xDefaultGroup                types.String             `tfsdk:"dot1x_default_group_"`
+	Device              types.String              `tfsdk:"device"`
+	Id                  types.String              `tfsdk:"id"`
+	Logins              []AAAAuthenticationLogins `tfsdk:"logins"`
+	Dot1xDefaultA1Group types.String              `tfsdk:"dot1x_default_a1_group"`
+	Dot1xDefaultA1Local types.Bool                `tfsdk:"dot1x_default_a1_local"`
+	Dot1xDefaultA2Group types.String              `tfsdk:"dot1x_default_a2_group"`
+	Dot1xDefaultA2Local types.Bool                `tfsdk:"dot1x_default_a2_local"`
+	Dot1xDefaultA3Group types.String              `tfsdk:"dot1x_default_a3_group"`
+	Dot1xDefaultA3Local types.Bool                `tfsdk:"dot1x_default_a3_local"`
+	Dot1xDefaultA4Group types.String              `tfsdk:"dot1x_default_a4_group"`
+	Dot1xDefaultA4Local types.Bool                `tfsdk:"dot1x_default_a4_local"`
 }
-type AAAAuthenticationLogin struct {
-	Name types.String `tfsdk:"name"`
+type AAAAuthenticationLogins struct {
+	Name     types.String `tfsdk:"name"`
+	A1None   types.Bool   `tfsdk:"a1_none"`
+	A1Line   types.Bool   `tfsdk:"a1_line"`
+	A1Enable types.Bool   `tfsdk:"a1_enable"`
+	A1Local  types.Bool   `tfsdk:"a1_local"`
+	A1Group  types.String `tfsdk:"a1_group"`
+	A2None   types.Bool   `tfsdk:"a2_none"`
+	A2Line   types.Bool   `tfsdk:"a2_line"`
+	A2Enable types.Bool   `tfsdk:"a2_enable"`
+	A2Local  types.Bool   `tfsdk:"a2_local"`
+	A2Group  types.String `tfsdk:"a2_group"`
+	A3None   types.Bool   `tfsdk:"a3_none"`
+	A3Line   types.Bool   `tfsdk:"a3_line"`
+	A3Enable types.Bool   `tfsdk:"a3_enable"`
+	A3Local  types.Bool   `tfsdk:"a3_local"`
+	A3Group  types.String `tfsdk:"a3_group"`
+	A4None   types.Bool   `tfsdk:"a4_none"`
+	A4Line   types.Bool   `tfsdk:"a4_line"`
+	A4Enable types.Bool   `tfsdk:"a4_enable"`
+	A4Local  types.Bool   `tfsdk:"a4_local"`
+	A4Group  types.String `tfsdk:"a4_group"`
 }
 
 func (data AAAAuthentication) getPath() string {
@@ -77,25 +106,135 @@ func (data AAAAuthentication) getPathShort() string {
 
 func (data AAAAuthentication) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.LoginA1AuthLoginChoiceGroupGroup.IsNull() && !data.LoginA1AuthLoginChoiceGroupGroup.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login.a1.group", data.LoginA1AuthLoginChoiceGroupGroup.ValueString())
+	if !data.Dot1xDefaultA1Group.IsNull() && !data.Dot1xDefaultA1Group.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a1-config.group", data.Dot1xDefaultA1Group.ValueString())
 	}
-	if !data.LoginA2AuthLoginChoiceGroupGroup.IsNull() && !data.LoginA2AuthLoginChoiceGroupGroup.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login.a2.group", data.LoginA2AuthLoginChoiceGroupGroup.ValueString())
-	}
-	if !data.LoginA2AuthLoginChoiceNoneNone.IsNull() && !data.LoginA2AuthLoginChoiceNoneNone.IsUnknown() {
-		if data.LoginA2AuthLoginChoiceNoneNone.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login.a2.none", map[string]string{})
+	if !data.Dot1xDefaultA1Local.IsNull() && !data.Dot1xDefaultA1Local.IsUnknown() {
+		if data.Dot1xDefaultA1Local.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a1-config.local", map[string]string{})
 		}
 	}
-	if !data.Dot1xDefaultGroup.IsNull() && !data.Dot1xDefaultGroup.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.group.", data.Dot1xDefaultGroup.ValueString())
+	if !data.Dot1xDefaultA2Group.IsNull() && !data.Dot1xDefaultA2Group.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a2-config.group", data.Dot1xDefaultA2Group.ValueString())
 	}
-	if len(data.Login) > 0 {
+	if !data.Dot1xDefaultA2Local.IsNull() && !data.Dot1xDefaultA2Local.IsUnknown() {
+		if data.Dot1xDefaultA2Local.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a2-config.local", map[string]string{})
+		}
+	}
+	if !data.Dot1xDefaultA3Group.IsNull() && !data.Dot1xDefaultA3Group.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a3-config.group", data.Dot1xDefaultA3Group.ValueString())
+	}
+	if !data.Dot1xDefaultA3Local.IsNull() && !data.Dot1xDefaultA3Local.IsUnknown() {
+		if data.Dot1xDefaultA3Local.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a3-config.local", map[string]string{})
+		}
+	}
+	if !data.Dot1xDefaultA4Group.IsNull() && !data.Dot1xDefaultA4Group.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a4-config.group", data.Dot1xDefaultA4Group.ValueString())
+	}
+	if !data.Dot1xDefaultA4Local.IsNull() && !data.Dot1xDefaultA4Local.IsUnknown() {
+		if data.Dot1xDefaultA4Local.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.default.a4-config.local", map[string]string{})
+		}
+	}
+	if len(data.Logins) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login", []interface{}{})
-		for index, item := range data.Login {
+		for index, item := range data.Logins {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.A1None.IsNull() && !item.A1None.IsUnknown() {
+				if item.A1None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a1.none", map[string]string{})
+				}
+			}
+			if !item.A1Line.IsNull() && !item.A1Line.IsUnknown() {
+				if item.A1Line.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a1.line", map[string]string{})
+				}
+			}
+			if !item.A1Enable.IsNull() && !item.A1Enable.IsUnknown() {
+				if item.A1Enable.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a1.enable", map[string]string{})
+				}
+			}
+			if !item.A1Local.IsNull() && !item.A1Local.IsUnknown() {
+				if item.A1Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a1.local", map[string]string{})
+				}
+			}
+			if !item.A1Group.IsNull() && !item.A1Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a1.group", item.A1Group.ValueString())
+			}
+			if !item.A2None.IsNull() && !item.A2None.IsUnknown() {
+				if item.A2None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a2.none", map[string]string{})
+				}
+			}
+			if !item.A2Line.IsNull() && !item.A2Line.IsUnknown() {
+				if item.A2Line.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a2.line", map[string]string{})
+				}
+			}
+			if !item.A2Enable.IsNull() && !item.A2Enable.IsUnknown() {
+				if item.A2Enable.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a2.enable", map[string]string{})
+				}
+			}
+			if !item.A2Local.IsNull() && !item.A2Local.IsUnknown() {
+				if item.A2Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a2.local", map[string]string{})
+				}
+			}
+			if !item.A2Group.IsNull() && !item.A2Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a2.group", item.A2Group.ValueString())
+			}
+			if !item.A3None.IsNull() && !item.A3None.IsUnknown() {
+				if item.A3None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a3.none", map[string]string{})
+				}
+			}
+			if !item.A3Line.IsNull() && !item.A3Line.IsUnknown() {
+				if item.A3Line.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a3.line", map[string]string{})
+				}
+			}
+			if !item.A3Enable.IsNull() && !item.A3Enable.IsUnknown() {
+				if item.A3Enable.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a3.enable", map[string]string{})
+				}
+			}
+			if !item.A3Local.IsNull() && !item.A3Local.IsUnknown() {
+				if item.A3Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a3.local", map[string]string{})
+				}
+			}
+			if !item.A3Group.IsNull() && !item.A3Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a3.group", item.A3Group.ValueString())
+			}
+			if !item.A4None.IsNull() && !item.A4None.IsUnknown() {
+				if item.A4None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a4.none", map[string]string{})
+				}
+			}
+			if !item.A4Line.IsNull() && !item.A4Line.IsUnknown() {
+				if item.A4Line.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a4.line", map[string]string{})
+				}
+			}
+			if !item.A4Enable.IsNull() && !item.A4Enable.IsUnknown() {
+				if item.A4Enable.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a4.enable", map[string]string{})
+				}
+			}
+			if !item.A4Local.IsNull() && !item.A4Local.IsUnknown() {
+				if item.A4Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a4.local", map[string]string{})
+				}
+			}
+			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a4.group", item.A4Group.ValueString())
 			}
 		}
 	}
@@ -107,9 +246,9 @@ func (data *AAAAuthentication) updateFromBody(ctx context.Context, res gjson.Res
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	for i := range data.Login {
+	for i := range data.Logins {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.Login[i].Name.ValueString()}
+		keyValues := [...]string{data.Logins[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "login").ForEach(
@@ -130,35 +269,231 @@ func (data *AAAAuthentication) updateFromBody(ctx context.Context, res gjson.Res
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.Login[i].Name.IsNull() {
-			data.Login[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.Logins[i].Name.IsNull() {
+			data.Logins[i].Name = types.StringValue(value.String())
 		} else {
-			data.Login[i].Name = types.StringNull()
+			data.Logins[i].Name = types.StringNull()
+		}
+		if value := r.Get("a1.none"); !data.Logins[i].A1None.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A1None = types.BoolValue(true)
+			} else {
+				data.Logins[i].A1None = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A1None = types.BoolNull()
+		}
+		if value := r.Get("a1.line"); !data.Logins[i].A1Line.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A1Line = types.BoolValue(true)
+			} else {
+				data.Logins[i].A1Line = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A1Line = types.BoolNull()
+		}
+		if value := r.Get("a1.enable"); !data.Logins[i].A1Enable.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A1Enable = types.BoolValue(true)
+			} else {
+				data.Logins[i].A1Enable = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A1Enable = types.BoolNull()
+		}
+		if value := r.Get("a1.local"); !data.Logins[i].A1Local.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A1Local = types.BoolValue(true)
+			} else {
+				data.Logins[i].A1Local = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A1Local = types.BoolNull()
+		}
+		if value := r.Get("a1.group"); value.Exists() && !data.Logins[i].A1Group.IsNull() {
+			data.Logins[i].A1Group = types.StringValue(value.String())
+		} else {
+			data.Logins[i].A1Group = types.StringNull()
+		}
+		if value := r.Get("a2.none"); !data.Logins[i].A2None.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A2None = types.BoolValue(true)
+			} else {
+				data.Logins[i].A2None = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A2None = types.BoolNull()
+		}
+		if value := r.Get("a2.line"); !data.Logins[i].A2Line.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A2Line = types.BoolValue(true)
+			} else {
+				data.Logins[i].A2Line = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A2Line = types.BoolNull()
+		}
+		if value := r.Get("a2.enable"); !data.Logins[i].A2Enable.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A2Enable = types.BoolValue(true)
+			} else {
+				data.Logins[i].A2Enable = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A2Enable = types.BoolNull()
+		}
+		if value := r.Get("a2.local"); !data.Logins[i].A2Local.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A2Local = types.BoolValue(true)
+			} else {
+				data.Logins[i].A2Local = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A2Local = types.BoolNull()
+		}
+		if value := r.Get("a2.group"); value.Exists() && !data.Logins[i].A2Group.IsNull() {
+			data.Logins[i].A2Group = types.StringValue(value.String())
+		} else {
+			data.Logins[i].A2Group = types.StringNull()
+		}
+		if value := r.Get("a3.none"); !data.Logins[i].A3None.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A3None = types.BoolValue(true)
+			} else {
+				data.Logins[i].A3None = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A3None = types.BoolNull()
+		}
+		if value := r.Get("a3.line"); !data.Logins[i].A3Line.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A3Line = types.BoolValue(true)
+			} else {
+				data.Logins[i].A3Line = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A3Line = types.BoolNull()
+		}
+		if value := r.Get("a3.enable"); !data.Logins[i].A3Enable.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A3Enable = types.BoolValue(true)
+			} else {
+				data.Logins[i].A3Enable = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A3Enable = types.BoolNull()
+		}
+		if value := r.Get("a3.local"); !data.Logins[i].A3Local.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A3Local = types.BoolValue(true)
+			} else {
+				data.Logins[i].A3Local = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A3Local = types.BoolNull()
+		}
+		if value := r.Get("a3.group"); value.Exists() && !data.Logins[i].A3Group.IsNull() {
+			data.Logins[i].A3Group = types.StringValue(value.String())
+		} else {
+			data.Logins[i].A3Group = types.StringNull()
+		}
+		if value := r.Get("a4.none"); !data.Logins[i].A4None.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A4None = types.BoolValue(true)
+			} else {
+				data.Logins[i].A4None = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A4None = types.BoolNull()
+		}
+		if value := r.Get("a4.line"); !data.Logins[i].A4Line.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A4Line = types.BoolValue(true)
+			} else {
+				data.Logins[i].A4Line = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A4Line = types.BoolNull()
+		}
+		if value := r.Get("a4.enable"); !data.Logins[i].A4Enable.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A4Enable = types.BoolValue(true)
+			} else {
+				data.Logins[i].A4Enable = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A4Enable = types.BoolNull()
+		}
+		if value := r.Get("a4.local"); !data.Logins[i].A4Local.IsNull() {
+			if value.Exists() {
+				data.Logins[i].A4Local = types.BoolValue(true)
+			} else {
+				data.Logins[i].A4Local = types.BoolValue(false)
+			}
+		} else {
+			data.Logins[i].A4Local = types.BoolNull()
+		}
+		if value := r.Get("a4.group"); value.Exists() && !data.Logins[i].A4Group.IsNull() {
+			data.Logins[i].A4Group = types.StringValue(value.String())
+		} else {
+			data.Logins[i].A4Group = types.StringNull()
 		}
 	}
-	if value := res.Get(prefix + "login.a1.group"); value.Exists() && !data.LoginA1AuthLoginChoiceGroupGroup.IsNull() {
-		data.LoginA1AuthLoginChoiceGroupGroup = types.StringValue(value.String())
+	if value := res.Get(prefix + "dot1x.default.a1-config.group"); value.Exists() && !data.Dot1xDefaultA1Group.IsNull() {
+		data.Dot1xDefaultA1Group = types.StringValue(value.String())
 	} else {
-		data.LoginA1AuthLoginChoiceGroupGroup = types.StringNull()
+		data.Dot1xDefaultA1Group = types.StringNull()
 	}
-	if value := res.Get(prefix + "login.a2.group"); value.Exists() && !data.LoginA2AuthLoginChoiceGroupGroup.IsNull() {
-		data.LoginA2AuthLoginChoiceGroupGroup = types.StringValue(value.String())
-	} else {
-		data.LoginA2AuthLoginChoiceGroupGroup = types.StringNull()
-	}
-	if value := res.Get(prefix + "login.a2.none"); !data.LoginA2AuthLoginChoiceNoneNone.IsNull() {
+	if value := res.Get(prefix + "dot1x.default.a1-config.local"); !data.Dot1xDefaultA1Local.IsNull() {
 		if value.Exists() {
-			data.LoginA2AuthLoginChoiceNoneNone = types.BoolValue(true)
+			data.Dot1xDefaultA1Local = types.BoolValue(true)
 		} else {
-			data.LoginA2AuthLoginChoiceNoneNone = types.BoolValue(false)
+			data.Dot1xDefaultA1Local = types.BoolValue(false)
 		}
 	} else {
-		data.LoginA2AuthLoginChoiceNoneNone = types.BoolNull()
+		data.Dot1xDefaultA1Local = types.BoolNull()
 	}
-	if value := res.Get(prefix + "dot1x.default.group."); value.Exists() && !data.Dot1xDefaultGroup.IsNull() {
-		data.Dot1xDefaultGroup = types.StringValue(value.String())
+	if value := res.Get(prefix + "dot1x.default.a2-config.group"); value.Exists() && !data.Dot1xDefaultA2Group.IsNull() {
+		data.Dot1xDefaultA2Group = types.StringValue(value.String())
 	} else {
-		data.Dot1xDefaultGroup = types.StringNull()
+		data.Dot1xDefaultA2Group = types.StringNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.a2-config.local"); !data.Dot1xDefaultA2Local.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultA2Local = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultA2Local = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultA2Local = types.BoolNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.a3-config.group"); value.Exists() && !data.Dot1xDefaultA3Group.IsNull() {
+		data.Dot1xDefaultA3Group = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultA3Group = types.StringNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.a3-config.local"); !data.Dot1xDefaultA3Local.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultA3Local = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultA3Local = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultA3Local = types.BoolNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.a4-config.group"); value.Exists() && !data.Dot1xDefaultA4Group.IsNull() {
+		data.Dot1xDefaultA4Group = types.StringValue(value.String())
+	} else {
+		data.Dot1xDefaultA4Group = types.StringNull()
+	}
+	if value := res.Get(prefix + "dot1x.default.a4-config.local"); !data.Dot1xDefaultA4Local.IsNull() {
+		if value.Exists() {
+			data.Dot1xDefaultA4Local = types.BoolValue(true)
+		} else {
+			data.Dot1xDefaultA4Local = types.BoolValue(false)
+		}
+	} else {
+		data.Dot1xDefaultA4Local = types.BoolNull()
 	}
 }
 
@@ -168,39 +503,149 @@ func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Resul
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "login"); value.Exists() {
-		data.Login = make([]AAAAuthenticationLogin, 0)
+		data.Logins = make([]AAAAuthenticationLogins, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAuthenticationLogin{}
+			item := AAAAuthenticationLogins{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			data.Login = append(data.Login, item)
+			if cValue := v.Get("a1.none"); cValue.Exists() {
+				item.A1None = types.BoolValue(true)
+			} else {
+				item.A1None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.line"); cValue.Exists() {
+				item.A1Line = types.BoolValue(true)
+			} else {
+				item.A1Line = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.enable"); cValue.Exists() {
+				item.A1Enable = types.BoolValue(true)
+			} else {
+				item.A1Enable = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.local"); cValue.Exists() {
+				item.A1Local = types.BoolValue(true)
+			} else {
+				item.A1Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.group"); cValue.Exists() {
+				item.A1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2.none"); cValue.Exists() {
+				item.A2None = types.BoolValue(true)
+			} else {
+				item.A2None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.line"); cValue.Exists() {
+				item.A2Line = types.BoolValue(true)
+			} else {
+				item.A2Line = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.enable"); cValue.Exists() {
+				item.A2Enable = types.BoolValue(true)
+			} else {
+				item.A2Enable = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.local"); cValue.Exists() {
+				item.A2Local = types.BoolValue(true)
+			} else {
+				item.A2Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.group"); cValue.Exists() {
+				item.A2Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a3.none"); cValue.Exists() {
+				item.A3None = types.BoolValue(true)
+			} else {
+				item.A3None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.line"); cValue.Exists() {
+				item.A3Line = types.BoolValue(true)
+			} else {
+				item.A3Line = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.enable"); cValue.Exists() {
+				item.A3Enable = types.BoolValue(true)
+			} else {
+				item.A3Enable = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.local"); cValue.Exists() {
+				item.A3Local = types.BoolValue(true)
+			} else {
+				item.A3Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.group"); cValue.Exists() {
+				item.A3Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a4.none"); cValue.Exists() {
+				item.A4None = types.BoolValue(true)
+			} else {
+				item.A4None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.line"); cValue.Exists() {
+				item.A4Line = types.BoolValue(true)
+			} else {
+				item.A4Line = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.enable"); cValue.Exists() {
+				item.A4Enable = types.BoolValue(true)
+			} else {
+				item.A4Enable = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.local"); cValue.Exists() {
+				item.A4Local = types.BoolValue(true)
+			} else {
+				item.A4Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.group"); cValue.Exists() {
+				item.A4Group = types.StringValue(cValue.String())
+			}
+			data.Logins = append(data.Logins, item)
 			return true
 		})
 	}
-	if value := res.Get(prefix + "login.a1.group"); value.Exists() {
-		data.LoginA1AuthLoginChoiceGroupGroup = types.StringValue(value.String())
+	if value := res.Get(prefix + "dot1x.default.a1-config.group"); value.Exists() {
+		data.Dot1xDefaultA1Group = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "login.a2.group"); value.Exists() {
-		data.LoginA2AuthLoginChoiceGroupGroup = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "login.a2.none"); value.Exists() {
-		data.LoginA2AuthLoginChoiceNoneNone = types.BoolValue(true)
+	if value := res.Get(prefix + "dot1x.default.a1-config.local"); value.Exists() {
+		data.Dot1xDefaultA1Local = types.BoolValue(true)
 	} else {
-		data.LoginA2AuthLoginChoiceNoneNone = types.BoolValue(false)
+		data.Dot1xDefaultA1Local = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "dot1x.default.group."); value.Exists() {
-		data.Dot1xDefaultGroup = types.StringValue(value.String())
+	if value := res.Get(prefix + "dot1x.default.a2-config.group"); value.Exists() {
+		data.Dot1xDefaultA2Group = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.a2-config.local"); value.Exists() {
+		data.Dot1xDefaultA2Local = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultA2Local = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.a3-config.group"); value.Exists() {
+		data.Dot1xDefaultA3Group = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.a3-config.local"); value.Exists() {
+		data.Dot1xDefaultA3Local = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultA3Local = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.a4-config.group"); value.Exists() {
+		data.Dot1xDefaultA4Group = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.a4-config.local"); value.Exists() {
+		data.Dot1xDefaultA4Local = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultA4Local = types.BoolValue(false)
 	}
 }
 
 func (data *AAAAuthentication) getDeletedListItems(ctx context.Context, state AAAAuthentication) []string {
 	deletedListItems := make([]string, 0)
-	for i := range state.Login {
-		stateKeyValues := [...]string{state.Login[i].Name.ValueString()}
+	for i := range state.Logins {
+		stateKeyValues := [...]string{state.Logins[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Login[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Logins[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -208,9 +653,9 @@ func (data *AAAAuthentication) getDeletedListItems(ctx context.Context, state AA
 		}
 
 		found := false
-		for j := range data.Login {
+		for j := range data.Logins {
 			found = true
-			if state.Login[i].Name.ValueString() != data.Login[j].Name.ValueString() {
+			if state.Logins[i].Name.ValueString() != data.Logins[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -227,30 +672,102 @@ func (data *AAAAuthentication) getDeletedListItems(ctx context.Context, state AA
 func (data *AAAAuthentication) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
-	if !data.LoginA2AuthLoginChoiceNoneNone.IsNull() && !data.LoginA2AuthLoginChoiceNoneNone.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/a2/none", data.getPath()))
+	for i := range data.Logins {
+		keyValues := [...]string{data.Logins[i].Name.ValueString()}
+		if !data.Logins[i].A1None.IsNull() && !data.Logins[i].A1None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a1/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A1Line.IsNull() && !data.Logins[i].A1Line.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a1/line", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A1Enable.IsNull() && !data.Logins[i].A1Enable.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a1/enable", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A1Local.IsNull() && !data.Logins[i].A1Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a1/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A2None.IsNull() && !data.Logins[i].A2None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a2/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A2Line.IsNull() && !data.Logins[i].A2Line.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a2/line", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A2Enable.IsNull() && !data.Logins[i].A2Enable.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a2/enable", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A2Local.IsNull() && !data.Logins[i].A2Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a2/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A3None.IsNull() && !data.Logins[i].A3None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a3/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A3Line.IsNull() && !data.Logins[i].A3Line.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a3/line", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A3Enable.IsNull() && !data.Logins[i].A3Enable.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a3/enable", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A3Local.IsNull() && !data.Logins[i].A3Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a3/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A4None.IsNull() && !data.Logins[i].A4None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a4/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A4Line.IsNull() && !data.Logins[i].A4Line.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a4/line", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A4Enable.IsNull() && !data.Logins[i].A4Enable.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a4/enable", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Logins[i].A4Local.IsNull() && !data.Logins[i].A4Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a4/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+	if !data.Dot1xDefaultA1Local.IsNull() && !data.Dot1xDefaultA1Local.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/default/a1-config/local", data.getPath()))
+	}
+	if !data.Dot1xDefaultA2Local.IsNull() && !data.Dot1xDefaultA2Local.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/default/a2-config/local", data.getPath()))
+	}
+	if !data.Dot1xDefaultA3Local.IsNull() && !data.Dot1xDefaultA3Local.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/default/a3-config/local", data.getPath()))
+	}
+	if !data.Dot1xDefaultA4Local.IsNull() && !data.Dot1xDefaultA4Local.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/default/a4-config/local", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
 
 func (data *AAAAuthentication) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Login {
-		keyValues := [...]string{data.Login[i].Name.ValueString()}
+	for i := range data.Logins {
+		keyValues := [...]string{data.Logins[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/login=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.LoginA1AuthLoginChoiceGroupGroup.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/a1/group", data.getPath()))
+	if !data.Dot1xDefaultA1Group.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a1-config/group", data.getPath()))
 	}
-	if !data.LoginA2AuthLoginChoiceGroupGroup.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/a2/group", data.getPath()))
+	if !data.Dot1xDefaultA1Local.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a1-config/local", data.getPath()))
 	}
-	if !data.LoginA2AuthLoginChoiceNoneNone.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/a2/none", data.getPath()))
+	if !data.Dot1xDefaultA2Group.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a2-config/group", data.getPath()))
 	}
-	if !data.Dot1xDefaultGroup.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/group/", data.getPath()))
+	if !data.Dot1xDefaultA2Local.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a2-config/local", data.getPath()))
+	}
+	if !data.Dot1xDefaultA3Group.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a3-config/group", data.getPath()))
+	}
+	if !data.Dot1xDefaultA3Local.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a3-config/local", data.getPath()))
+	}
+	if !data.Dot1xDefaultA4Group.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a4-config/group", data.getPath()))
+	}
+	if !data.Dot1xDefaultA4Local.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a4-config/local", data.getPath()))
 	}
 	return deletePaths
 }

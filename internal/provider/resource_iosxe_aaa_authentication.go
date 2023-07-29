@@ -24,11 +24,13 @@ import (
 	"fmt"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
@@ -63,7 +65,14 @@ func (r *AAAAuthenticationResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"login": schema.ListNestedAttribute{
+			"delete_mode": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("all", "attributes"),
+				},
+			},
+			"logins": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set authentication lists for logins.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -72,23 +81,119 @@ func (r *AAAAuthenticationResource) Schema(ctx context.Context, req resource.Sch
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
+						"a1_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NO authentication.").String,
+							Optional:            true,
+						},
+						"a1_line": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use line password for authentication.").String,
+							Optional:            true,
+						},
+						"a1_enable": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use enable password for authentication.").String,
+							Optional:            true,
+						},
+						"a1_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication.").String,
+							Optional:            true,
+						},
+						"a1_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a2_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NO authentication.").String,
+							Optional:            true,
+						},
+						"a2_line": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use line password for authentication.").String,
+							Optional:            true,
+						},
+						"a2_enable": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use enable password for authentication.").String,
+							Optional:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"a2_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a3_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NO authentication.").String,
+							Optional:            true,
+						},
+						"a3_line": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use line password for authentication.").String,
+							Optional:            true,
+						},
+						"a3_enable": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use enable password for authentication.").String,
+							Optional:            true,
+						},
+						"a3_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"a3_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a4_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("NO authentication.").String,
+							Optional:            true,
+						},
+						"a4_line": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use line password for authentication.").String,
+							Optional:            true,
+						},
+						"a4_enable": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use enable password for authentication.").String,
+							Optional:            true,
+						},
+						"a4_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"a4_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
 					},
 				},
 			},
-			"login_a1_auth_login_choice_group_group": schema.StringAttribute{
+			"dot1x_default_a1_group": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 				Optional:            true,
 			},
-			"login_a2_auth_login_choice_group_group": schema.StringAttribute{
+			"dot1x_default_a1_local": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
+				Optional:            true,
+			},
+			"dot1x_default_a2_group": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 				Optional:            true,
 			},
-			"login_a2_auth_login_choice_none_none": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("NO authentication.").String,
+			"dot1x_default_a2_local": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
 				Optional:            true,
 			},
-			"dot1x_default_group_": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group (DEPRECATED, use group within container)").String,
+			"dot1x_default_a3_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"dot1x_default_a3_local": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
+				Optional:            true,
+			},
+			"dot1x_default_a4_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"dot1x_default_a4_local": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
 				Optional:            true,
 			},
 		},
@@ -290,6 +395,11 @@ func (r *AAAAuthenticationResource) Delete(ctx context.Context, req resource.Del
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
 	deleteMode := "all"
+	if state.DeleteMode.ValueString() == "all" {
+		deleteMode = "all"
+	} else if state.DeleteMode.ValueString() == "attributes" {
+		deleteMode = "attributes"
+	}
 
 	if deleteMode == "all" {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())

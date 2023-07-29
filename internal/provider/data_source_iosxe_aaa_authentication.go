@@ -63,7 +63,7 @@ func (d *AAAAuthenticationDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"login": schema.ListNestedAttribute{
+			"logins": schema.ListNestedAttribute{
 				MarkdownDescription: "Set authentication lists for logins.",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -72,23 +72,119 @@ func (d *AAAAuthenticationDataSource) Schema(ctx context.Context, req datasource
 							MarkdownDescription: "",
 							Computed:            true,
 						},
+						"a1_none": schema.BoolAttribute{
+							MarkdownDescription: "NO authentication.",
+							Computed:            true,
+						},
+						"a1_line": schema.BoolAttribute{
+							MarkdownDescription: "Use line password for authentication.",
+							Computed:            true,
+						},
+						"a1_enable": schema.BoolAttribute{
+							MarkdownDescription: "Use enable password for authentication.",
+							Computed:            true,
+						},
+						"a1_local": schema.BoolAttribute{
+							MarkdownDescription: "Use local username authentication.",
+							Computed:            true,
+						},
+						"a1_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a2_none": schema.BoolAttribute{
+							MarkdownDescription: "NO authentication.",
+							Computed:            true,
+						},
+						"a2_line": schema.BoolAttribute{
+							MarkdownDescription: "Use line password for authentication.",
+							Computed:            true,
+						},
+						"a2_enable": schema.BoolAttribute{
+							MarkdownDescription: "Use enable password for authentication.",
+							Computed:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a2_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a3_none": schema.BoolAttribute{
+							MarkdownDescription: "NO authentication.",
+							Computed:            true,
+						},
+						"a3_line": schema.BoolAttribute{
+							MarkdownDescription: "Use line password for authentication.",
+							Computed:            true,
+						},
+						"a3_enable": schema.BoolAttribute{
+							MarkdownDescription: "Use enable password for authentication.",
+							Computed:            true,
+						},
+						"a3_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a3_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a4_none": schema.BoolAttribute{
+							MarkdownDescription: "NO authentication.",
+							Computed:            true,
+						},
+						"a4_line": schema.BoolAttribute{
+							MarkdownDescription: "Use line password for authentication.",
+							Computed:            true,
+						},
+						"a4_enable": schema.BoolAttribute{
+							MarkdownDescription: "Use enable password for authentication.",
+							Computed:            true,
+						},
+						"a4_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a4_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
 					},
 				},
 			},
-			"login_a1_auth_login_choice_group_group": schema.StringAttribute{
+			"dot1x_default_a1_group": schema.StringAttribute{
 				MarkdownDescription: "Use Server-group",
 				Computed:            true,
 			},
-			"login_a2_auth_login_choice_group_group": schema.StringAttribute{
+			"dot1x_default_a1_local": schema.BoolAttribute{
+				MarkdownDescription: "Use local username authentication",
+				Computed:            true,
+			},
+			"dot1x_default_a2_group": schema.StringAttribute{
 				MarkdownDescription: "Use Server-group",
 				Computed:            true,
 			},
-			"login_a2_auth_login_choice_none_none": schema.BoolAttribute{
-				MarkdownDescription: "NO authentication.",
+			"dot1x_default_a2_local": schema.BoolAttribute{
+				MarkdownDescription: "Use local username authentication",
 				Computed:            true,
 			},
-			"dot1x_default_group_": schema.StringAttribute{
-				MarkdownDescription: "Use Server-group (DEPRECATED, use group within container)",
+			"dot1x_default_a3_group": schema.StringAttribute{
+				MarkdownDescription: "Use Server-group",
+				Computed:            true,
+			},
+			"dot1x_default_a3_local": schema.BoolAttribute{
+				MarkdownDescription: "Use local username authentication",
+				Computed:            true,
+			},
+			"dot1x_default_a4_group": schema.StringAttribute{
+				MarkdownDescription: "Use Server-group",
+				Computed:            true,
+			},
+			"dot1x_default_a4_local": schema.BoolAttribute{
+				MarkdownDescription: "Use local username authentication",
 				Computed:            true,
 			},
 		},

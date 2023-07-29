@@ -14,14 +14,15 @@ This resource can manage the AAA Authentication configuration.
 
 ```terraform
 resource "iosxe_aaa_authentication" "example" {
-  login = [
+  logins = [
     {
-      name = "test"
+      name     = "test"
+      a1_group = "Radius-GROUP"
+      a2_none  = true
     }
   ]
-  login_a1_auth_login_choice_group_group = "Radius-GROUP"
-  login_a2_auth_login_choice_none_none   = true
-  dot1x_default_group_                   = "Radius-GROUP"
+  dot1x_default_a1_group = "Radius-GROUP"
+  dot1x_default_a2_group = "Radius-GROUP2"
 }
 ```
 
@@ -30,23 +31,52 @@ resource "iosxe_aaa_authentication" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `dot1x_default_group_` (String) Use Server-group (DEPRECATED, use group within container)
-- `login` (Attributes List) Set authentication lists for logins. (see [below for nested schema](#nestedatt--login))
-- `login_a1_auth_login_choice_group_group` (String) Use Server-group
-- `login_a2_auth_login_choice_group_group` (String) Use Server-group
-- `login_a2_auth_login_choice_none_none` (Boolean) NO authentication.
+- `dot1x_default_a1_group` (String) Use Server-group
+- `dot1x_default_a1_local` (Boolean) Use local username authentication
+- `dot1x_default_a2_group` (String) Use Server-group
+- `dot1x_default_a2_local` (Boolean) Use local username authentication
+- `dot1x_default_a3_group` (String) Use Server-group
+- `dot1x_default_a3_local` (Boolean) Use local username authentication
+- `dot1x_default_a4_group` (String) Use Server-group
+- `dot1x_default_a4_local` (Boolean) Use local username authentication
+- `logins` (Attributes List) Set authentication lists for logins. (see [below for nested schema](#nestedatt--logins))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--login"></a>
-### Nested Schema for `login`
+<a id="nestedatt--logins"></a>
+### Nested Schema for `logins`
 
 Required:
 
 - `name` (String)
+
+Optional:
+
+- `a1_enable` (Boolean) Use enable password for authentication.
+- `a1_group` (String) Use Server-group
+- `a1_line` (Boolean) Use line password for authentication.
+- `a1_local` (Boolean) Use local username authentication.
+- `a1_none` (Boolean) NO authentication.
+- `a2_enable` (Boolean) Use enable password for authentication.
+- `a2_group` (String) Use Server-group
+- `a2_line` (Boolean) Use line password for authentication.
+- `a2_local` (Boolean)
+- `a2_none` (Boolean) NO authentication.
+- `a3_enable` (Boolean) Use enable password for authentication.
+- `a3_group` (String) Use Server-group
+- `a3_line` (Boolean) Use line password for authentication.
+- `a3_local` (Boolean)
+- `a3_none` (Boolean) NO authentication.
+- `a4_enable` (Boolean) Use enable password for authentication.
+- `a4_group` (String) Use Server-group
+- `a4_line` (Boolean) Use line password for authentication.
+- `a4_local` (Boolean)
+- `a4_none` (Boolean) NO authentication.
 
 ## Import
 

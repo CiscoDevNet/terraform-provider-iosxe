@@ -1,25 +1,149 @@
 ---
-name : AAA Authentication
+name: AAA Authentication
 path: Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authentication
-no_delete_attributes: true
 doc_category: AAA
+test_tags: [AAA]
 attributes:
-  - yang_name: login  
-    tf_name : login
+  - yang_name: login
+    tf_name: logins
     type: List
     attributes:
       - yang_name: name
         id: true
         example: test
-  - yang_name: login/a1/auth-login-choice/group/group
-    xpath: login/a1/group
+      - yang_name: a1/auth-login-choice/none/none
+        xpath: a1/none
+        tf_name: a1_none
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-login-choice/line/line
+        xpath: a1/line
+        tf_name: a1_line
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-login-choice/enable/enable
+        xpath: a1/enable
+        tf_name: a1_enable
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-login-choice/local/local
+        xpath: a1/local
+        tf_name: a1_local
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-login-choice/group/group
+        xpath: a1/group
+        tf_name: a1_group
+        example: Radius-GROUP
+      - yang_name: a2/auth-login-choice/none/none
+        xpath: a2/none
+        tf_name: a2_none
+        example: true
+      - yang_name: a2/auth-login-choice/line/line
+        xpath: a2/line
+        tf_name: a2_line
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-login-choice/enable/enable
+        xpath: a2/enable
+        tf_name: a2_enable
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-login-choice/local/local
+        xpath: a2/local
+        tf_name: a2_local
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-login-choice/group/group
+        xpath: a2/group
+        tf_name: a2_group
+        example: Tacacs-GROUP
+        exclude_test: true
+      - yang_name: a3/auth-login-choice/none/none
+        xpath: a3/none
+        tf_name: a3_none
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-login-choice/line/line
+        xpath: a3/line
+        tf_name: a3_line
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-login-choice/enable/enable
+        xpath: a3/enable
+        tf_name: a3_enable
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-login-choice/local/local
+        xpath: a3/local
+        tf_name: a3_local
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-login-choice/group/group
+        xpath: a3/group
+        tf_name: a3_group
+        example: Tacacs-GROUP
+        exclude_test: true
+      - yang_name: a4/auth-login-choice/none/none
+        xpath: a4/none
+        tf_name: a4_none
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-login-choice/line/line
+        xpath: a4/line
+        tf_name: a4_line
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-login-choice/enable/enable
+        xpath: a4/enable
+        tf_name: a4_enable
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-login-choice/local/local
+        xpath: a4/local
+        tf_name: a4_local
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-login-choice/group/group
+        xpath: a4/group
+        tf_name: a4_group
+        example: Tacacs-GROUP
+        exclude_test: true
+  - yang_name: dot1x/default/a1-config/dot1x-auth/group/group
+    xpath: dot1x/default/a1-config/group
+    tf_name: dot1x_default_a1_group
     example: Radius-GROUP
-  - yang_name: login/a2/auth-login-choice/group/group
-    xpath: login/a2/group
-    example: Tacacs-GROUP
-    exclude_test: true
-  - yang_name: login/a2/auth-login-choice/none/none
-    xpath: login/a2/none
+  - yang_name: dot1x/default/a1-config/dot1x-auth/local/local
+    xpath: dot1x/default/a1-config/local
+    tf_name: dot1x_default_a1_local
     example: true
-  - yang_name: dot1x/default/group/
+    exclude_test: true
+  - yang_name: dot1x/default/a2-config/dot1x-auth/group/group
+    xpath: dot1x/default/a2-config/group
+    tf_name: dot1x_default_a2_group
+    example: Radius-GROUP2
+  - yang_name: dot1x/default/a2-config/dot1x-auth/local/local
+    xpath: dot1x/default/a2-config/local
+    tf_name: dot1x_default_a2_local
+    example: true
+    exclude_test: true
+  - yang_name: dot1x/default/a3-config/dot1x-auth/group/group
+    xpath: dot1x/default/a3-config/group
+    tf_name: dot1x_default_a3_group
     example: Radius-GROUP
+    exclude_test: true
+  - yang_name: dot1x/default/a3-config/dot1x-auth/local/local
+    xpath: dot1x/default/a3-config/local
+    tf_name: dot1x_default_a3_local
+    example: true
+    exclude_test: true
+  - yang_name: dot1x/default/a4-config/dot1x-auth/group/group
+    xpath: dot1x/default/a4-config/group
+    tf_name: dot1x_default_a4_group
+    example: Radius-GROUP
+    exclude_test: true
+  - yang_name: dot1x/default/a4-config/dot1x-auth/local/local
+    xpath: dot1x/default/a4-config/local
+    tf_name: dot1x_default_a4_local
+    example: true
+    exclude_test: true

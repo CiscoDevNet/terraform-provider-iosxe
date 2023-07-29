@@ -20,17 +20,22 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccDataSourceIosxeAAAAuthentication(t *testing.T) {
+	if os.Getenv("AAA") == "" {
+		t.Skip("skipping test, set environment variable AAA")
+	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "login.0.name", "test"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "login_a1_auth_login_choice_group_group", "Radius-GROUP"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "login_a2_auth_login_choice_none_none", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x_default_group_", "Radius-GROUP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "logins.0.name", "test"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "logins.0.a1_group", "Radius-GROUP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "logins.0.a2_none", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x_default_a1_group", "Radius-GROUP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x_default_a2_group", "Radius-GROUP2"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -45,12 +50,14 @@ func TestAccDataSourceIosxeAAAAuthentication(t *testing.T) {
 
 func testAccDataSourceIosxeAAAAuthenticationConfig() string {
 	config := `resource "iosxe_aaa_authentication" "test" {` + "\n"
-	config += `	login = [{` + "\n"
+	config += `	delete_mode = "attributes"` + "\n"
+	config += `	logins = [{` + "\n"
 	config += `		name = "test"` + "\n"
+	config += `		a1_group = "Radius-GROUP"` + "\n"
+	config += `		a2_none = true` + "\n"
 	config += `	}]` + "\n"
-	config += `	login_a1_auth_login_choice_group_group = "Radius-GROUP"` + "\n"
-	config += `	login_a2_auth_login_choice_none_none = true` + "\n"
-	config += `	dot1x_default_group_ = "Radius-GROUP"` + "\n"
+	config += `	dot1x_default_a1_group = "Radius-GROUP"` + "\n"
+	config += `	dot1x_default_a2_group = "Radius-GROUP2"` + "\n"
 	config += `}` + "\n"
 
 	config += `
