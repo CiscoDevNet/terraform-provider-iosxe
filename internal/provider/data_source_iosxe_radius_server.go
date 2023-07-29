@@ -72,7 +72,11 @@ func (d *RadiusServerDataSource) Schema(ctx context.Context, req datasource.Sche
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"attri31": schema.ListNestedAttribute{
+						"access_request_include": schema.BoolAttribute{
+							MarkdownDescription: "Include attribute",
+							Computed:            true,
+						},
+						"attribute_31_parameters": schema.ListNestedAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
@@ -81,19 +85,44 @@ func (d *RadiusServerDataSource) Schema(ctx context.Context, req datasource.Sche
 										MarkdownDescription: "",
 										Computed:            true,
 									},
-									"attri31_format": schema.StringAttribute{
+									"id_mac_format": schema.StringAttribute{
 										MarkdownDescription: "Specify format (default format ex: 0000.4096.3e4a) ietf - format ex: 00-00-40-96-3E-4A",
 										Computed:            true,
 									},
-									"attri31_lu_case": schema.StringAttribute{
+									"id_mac_lu_case": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"id_send_nas_port_detail": schema.BoolAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"id_send_mac_only": schema.BoolAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
 									},
 								},
 							},
 						},
+						"send_attributes": schema.ListAttribute{
+							MarkdownDescription: "",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
 					},
 				},
+			},
+			"dead_criteria_time": schema.Int64Attribute{
+				MarkdownDescription: "The time during which no properly formed response must be received from the RADIUS server",
+				Computed:            true,
+			},
+			"dead_criteria_tries": schema.Int64Attribute{
+				MarkdownDescription: "The number of times the router must fail to receive a response from the radius server to mark it as dead",
+				Computed:            true,
+			},
+			"deadtime": schema.Int64Attribute{
+				MarkdownDescription: "Time to stop using a server that does not respond",
+				Computed:            true,
 			},
 		},
 	}

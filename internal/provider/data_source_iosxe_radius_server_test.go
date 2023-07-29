@@ -28,9 +28,12 @@ import (
 func TestAccDataSourceIosxeRadiusServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.number", "31"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attri31.0.calling_station_id", "mac"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attri31.0.attri31_format", "ietf"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attri31.0.attri31_lu_case", "lower-case"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attribute_31_parameters.0.calling_station_id", "mac"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attribute_31_parameters.0.id_mac_format", "ietf"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "attributes.0.attribute_31_parameters.0.id_mac_lu_case", "lower-case"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "dead_criteria_time", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "dead_criteria_tries", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server.test", "deadtime", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -47,12 +50,15 @@ func testAccDataSourceIosxeRadiusServerConfig() string {
 	config := `resource "iosxe_radius_server" "test" {` + "\n"
 	config += `	attributes = [{` + "\n"
 	config += `		number = "31"` + "\n"
-	config += `		attri31 = [{` + "\n"
+	config += `		attribute_31_parameters = [{` + "\n"
 	config += `			calling_station_id = "mac"` + "\n"
-	config += `			attri31_format = "ietf"` + "\n"
-	config += `			attri31_lu_case = "lower-case"` + "\n"
+	config += `			id_mac_format = "ietf"` + "\n"
+	config += `			id_mac_lu_case = "lower-case"` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
+	config += `	dead_criteria_time = 5` + "\n"
+	config += `	dead_criteria_tries = 3` + "\n"
+	config += `	deadtime = 3` + "\n"
 	config += `}` + "\n"
 
 	config += `

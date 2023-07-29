@@ -27,6 +27,9 @@ data "iosxe_radius_server" "example" {
 ### Read-Only
 
 - `attributes` (Attributes List) Customize selected radius attributes (see [below for nested schema](#nestedatt--attributes))
+- `dead_criteria_time` (Number) The time during which no properly formed response must be received from the RADIUS server
+- `dead_criteria_tries` (Number) The number of times the router must fail to receive a response from the radius server to mark it as dead
+- `deadtime` (Number) Time to stop using a server that does not respond
 - `id` (String) The path of the retrieved object.
 
 <a id="nestedatt--attributes"></a>
@@ -34,14 +37,18 @@ data "iosxe_radius_server" "example" {
 
 Read-Only:
 
-- `attri31` (Attributes List) (see [below for nested schema](#nestedatt--attributes--attri31))
+- `access_request_include` (Boolean) Include attribute
+- `attribute_31_parameters` (Attributes List) (see [below for nested schema](#nestedatt--attributes--attribute_31_parameters))
 - `number` (String)
+- `send_attributes` (List of String)
 
-<a id="nestedatt--attributes--attri31"></a>
-### Nested Schema for `attributes.attri31`
+<a id="nestedatt--attributes--attribute_31_parameters"></a>
+### Nested Schema for `attributes.attribute_31_parameters`
 
 Read-Only:
 
-- `attri31_format` (String) Specify format (default format ex: 0000.4096.3e4a) ietf - format ex: 00-00-40-96-3E-4A
-- `attri31_lu_case` (String)
 - `calling_station_id` (String)
+- `id_mac_format` (String) Specify format (default format ex: 0000.4096.3e4a) ietf - format ex: 00-00-40-96-3E-4A
+- `id_mac_lu_case` (String)
+- `id_send_mac_only` (Boolean)
+- `id_send_nas_port_detail` (Boolean)

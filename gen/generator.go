@@ -354,7 +354,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 	//fmt.Printf("%s, Kind: %+v, ListAttr: %+v, Type: %+v\n\n", leaf.Name, leaf.Kind, leaf.ListAttr, leaf.Type)
 	if leaf.Kind.String() == "Leaf" {
 		if leaf.ListAttr != nil {
-			if contains([]string{"string", "union", "leafref"}, leaf.Type.Kind.String()) {
+			if contains([]string{"string", "union", "leafref", "enumeration"}, leaf.Type.Kind.String()) {
 				attr.Type = "StringList"
 			} else if contains([]string{"uint8", "uint16", "uint32", "uint64"}, leaf.Type.Kind.String()) {
 				attr.Type = "Int64List"

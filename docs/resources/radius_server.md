@@ -17,15 +17,18 @@ resource "iosxe_radius_server" "example" {
   attributes = [
     {
       number = "31"
-      attri31 = [
+      attribute_31_parameters = [
         {
           calling_station_id = "mac"
-          attri31_format     = "ietf"
-          attri31_lu_case    = "lower-case"
+          id_mac_format      = "ietf"
+          id_mac_lu_case     = "lower-case"
         }
       ]
     }
   ]
+  dead_criteria_time  = 5
+  dead_criteria_tries = 3
+  deadtime            = 3
 }
 ```
 
@@ -35,6 +38,12 @@ resource "iosxe_radius_server" "example" {
 ### Optional
 
 - `attributes` (Attributes List) Customize selected radius attributes (see [below for nested schema](#nestedatt--attributes))
+- `dead_criteria_time` (Number) The time during which no properly formed response must be received from the RADIUS server
+  - Range: `1`-`120`
+- `dead_criteria_tries` (Number) The number of times the router must fail to receive a response from the radius server to mark it as dead
+  - Range: `1`-`100`
+- `deadtime` (Number) Time to stop using a server that does not respond
+  - Range: `1`-`1440`
 - `device` (String) A device name from the provider configuration.
 
 ### Read-Only
@@ -50,10 +59,12 @@ Required:
 
 Optional:
 
-- `attri31` (Attributes List) (see [below for nested schema](#nestedatt--attributes--attri31))
+- `access_request_include` (Boolean) Include attribute
+- `attribute_31_parameters` (Attributes List) (see [below for nested schema](#nestedatt--attributes--attribute_31_parameters))
+- `send_attributes` (List of String)
 
-<a id="nestedatt--attributes--attri31"></a>
-### Nested Schema for `attributes.attri31`
+<a id="nestedatt--attributes--attribute_31_parameters"></a>
+### Nested Schema for `attributes.attribute_31_parameters`
 
 Required:
 
@@ -61,9 +72,11 @@ Required:
 
 Optional:
 
-- `attri31_format` (String) Specify format (default format ex: 0000.4096.3e4a) ietf - format ex: 00-00-40-96-3E-4A
+- `id_mac_format` (String) Specify format (default format ex: 0000.4096.3e4a) ietf - format ex: 00-00-40-96-3E-4A
   - Choices: `ietf`
-- `attri31_lu_case` (String) - Choices: `lower-case`, `upper-case`
+- `id_mac_lu_case` (String) - Choices: `lower-case`, `upper-case`
+- `id_send_mac_only` (Boolean)
+- `id_send_nas_port_detail` (Boolean)
 
 ## Import
 

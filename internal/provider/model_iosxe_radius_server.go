@@ -34,24 +34,34 @@ import (
 )
 
 type RadiusServer struct {
-	Device     types.String             `tfsdk:"device"`
-	Id         types.String             `tfsdk:"id"`
-	Attributes []RadiusServerAttributes `tfsdk:"attributes"`
+	Device            types.String             `tfsdk:"device"`
+	Id                types.String             `tfsdk:"id"`
+	Attributes        []RadiusServerAttributes `tfsdk:"attributes"`
+	DeadCriteriaTime  types.Int64              `tfsdk:"dead_criteria_time"`
+	DeadCriteriaTries types.Int64              `tfsdk:"dead_criteria_tries"`
+	Deadtime          types.Int64              `tfsdk:"deadtime"`
 }
 
 type RadiusServerData struct {
-	Device     types.String             `tfsdk:"device"`
-	Id         types.String             `tfsdk:"id"`
-	Attributes []RadiusServerAttributes `tfsdk:"attributes"`
+	Device            types.String             `tfsdk:"device"`
+	Id                types.String             `tfsdk:"id"`
+	Attributes        []RadiusServerAttributes `tfsdk:"attributes"`
+	DeadCriteriaTime  types.Int64              `tfsdk:"dead_criteria_time"`
+	DeadCriteriaTries types.Int64              `tfsdk:"dead_criteria_tries"`
+	Deadtime          types.Int64              `tfsdk:"deadtime"`
 }
 type RadiusServerAttributes struct {
-	Number  types.String                    `tfsdk:"number"`
-	Attri31 []RadiusServerAttributesAttri31 `tfsdk:"attri31"`
+	Number                types.String                                  `tfsdk:"number"`
+	AccessRequestInclude  types.Bool                                    `tfsdk:"access_request_include"`
+	Attribute31Parameters []RadiusServerAttributesAttribute31Parameters `tfsdk:"attribute_31_parameters"`
+	SendAttributes        types.List                                    `tfsdk:"send_attributes"`
 }
-type RadiusServerAttributesAttri31 struct {
-	CallingStationId types.String `tfsdk:"calling_station_id"`
-	Attri31Format    types.String `tfsdk:"attri31_format"`
-	Attri31LuCase    types.String `tfsdk:"attri31_lu_case"`
+type RadiusServerAttributesAttribute31Parameters struct {
+	CallingStationId    types.String `tfsdk:"calling_station_id"`
+	IdMacFormat         types.String `tfsdk:"id_mac_format"`
+	IdMacLuCase         types.String `tfsdk:"id_mac_lu_case"`
+	IdSendNasPortDetail types.Bool   `tfsdk:"id_send_nas_port_detail"`
+	IdSendMacOnly       types.Bool   `tfsdk:"id_send_mac_only"`
 }
 
 func (data RadiusServer) getPath() string {
@@ -75,23 +85,52 @@ func (data RadiusServer) getPathShort() string {
 
 func (data RadiusServer) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
+	if !data.DeadCriteriaTime.IsNull() && !data.DeadCriteriaTime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:dead-criteria.time", strconv.FormatInt(data.DeadCriteriaTime.ValueInt64(), 10))
+	}
+	if !data.DeadCriteriaTries.IsNull() && !data.DeadCriteriaTries.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:dead-criteria.tries", strconv.FormatInt(data.DeadCriteriaTries.ValueInt64(), 10))
+	}
+	if !data.Deadtime.IsNull() && !data.Deadtime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:deadtime", strconv.FormatInt(data.Deadtime.ValueInt64(), 10))
+	}
 	if len(data.Attributes) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute", []interface{}{})
 		for index, item := range data.Attributes {
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"number", item.Number.ValueString())
 			}
-			if len(item.Attri31) > 0 {
+			if !item.AccessRequestInclude.IsNull() && !item.AccessRequestInclude.IsUnknown() {
+				if item.AccessRequestInclude.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"access-request.include", map[string]string{})
+				}
+			}
+			if !item.SendAttributes.IsNull() && !item.SendAttributes.IsUnknown() {
+				var values []string
+				item.SendAttributes.ElementsAs(ctx, &values, false)
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"send-attribute", values)
+			}
+			if len(item.Attribute31Parameters) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"attri31.attri31-list", []interface{}{})
-				for cindex, citem := range item.Attri31 {
+				for cindex, citem := range item.Attribute31Parameters {
 					if !citem.CallingStationId.IsNull() && !citem.CallingStationId.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"attri31.attri31-list"+"."+strconv.Itoa(cindex)+"."+"calling-station-id", citem.CallingStationId.ValueString())
 					}
-					if !citem.Attri31Format.IsNull() && !citem.Attri31Format.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"attri31.attri31-list"+"."+strconv.Itoa(cindex)+"."+"id-mac.format", citem.Attri31Format.ValueString())
+					if !citem.IdMacFormat.IsNull() && !citem.IdMacFormat.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"attri31.attri31-list"+"."+strconv.Itoa(cindex)+"."+"id-mac.format", citem.IdMacFormat.ValueString())
 					}
-					if !citem.Attri31LuCase.IsNull() && !citem.Attri31LuCase.IsUnknown() {
-						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"attri31.attri31-list"+"."+strconv.Itoa(cindex)+"."+"id-mac.lu-case", citem.Attri31LuCase.ValueString())
+					if !citem.IdMacLuCase.IsNull() && !citem.IdMacLuCase.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"attri31.attri31-list"+"."+strconv.Itoa(cindex)+"."+"id-mac.lu-case", citem.IdMacLuCase.ValueString())
+					}
+					if !citem.IdSendNasPortDetail.IsNull() && !citem.IdSendNasPortDetail.IsUnknown() {
+						if citem.IdSendNasPortDetail.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"attri31.attri31-list"+"."+strconv.Itoa(cindex)+"."+"id-send.nas-port-detail", map[string]string{})
+						}
+					}
+					if !citem.IdSendMacOnly.IsNull() && !citem.IdSendMacOnly.IsUnknown() {
+						if citem.IdSendMacOnly.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"attri31.attri31-list"+"."+strconv.Itoa(cindex)+"."+"id-send.mac-only", map[string]string{})
+						}
 					}
 				}
 			}
@@ -133,9 +172,18 @@ func (data *RadiusServer) updateFromBody(ctx context.Context, res gjson.Result) 
 		} else {
 			data.Attributes[i].Number = types.StringNull()
 		}
-		for ci := range data.Attributes[i].Attri31 {
+		if value := r.Get("access-request.include"); !data.Attributes[i].AccessRequestInclude.IsNull() {
+			if value.Exists() {
+				data.Attributes[i].AccessRequestInclude = types.BoolValue(true)
+			} else {
+				data.Attributes[i].AccessRequestInclude = types.BoolValue(false)
+			}
+		} else {
+			data.Attributes[i].AccessRequestInclude = types.BoolNull()
+		}
+		for ci := range data.Attributes[i].Attribute31Parameters {
 			keys := [...]string{"calling-station-id"}
-			keyValues := [...]string{data.Attributes[i].Attri31[ci].CallingStationId.ValueString()}
+			keyValues := [...]string{data.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
 
 			var cr gjson.Result
 			r.Get("attri31.attri31-list").ForEach(
@@ -156,22 +204,60 @@ func (data *RadiusServer) updateFromBody(ctx context.Context, res gjson.Result) 
 					return true
 				},
 			)
-			if value := cr.Get("calling-station-id"); value.Exists() && !data.Attributes[i].Attri31[ci].CallingStationId.IsNull() {
-				data.Attributes[i].Attri31[ci].CallingStationId = types.StringValue(value.String())
+			if value := cr.Get("calling-station-id"); value.Exists() && !data.Attributes[i].Attribute31Parameters[ci].CallingStationId.IsNull() {
+				data.Attributes[i].Attribute31Parameters[ci].CallingStationId = types.StringValue(value.String())
 			} else {
-				data.Attributes[i].Attri31[ci].CallingStationId = types.StringNull()
+				data.Attributes[i].Attribute31Parameters[ci].CallingStationId = types.StringNull()
 			}
-			if value := cr.Get("id-mac.format"); value.Exists() && !data.Attributes[i].Attri31[ci].Attri31Format.IsNull() {
-				data.Attributes[i].Attri31[ci].Attri31Format = types.StringValue(value.String())
+			if value := cr.Get("id-mac.format"); value.Exists() && !data.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() {
+				data.Attributes[i].Attribute31Parameters[ci].IdMacFormat = types.StringValue(value.String())
 			} else {
-				data.Attributes[i].Attri31[ci].Attri31Format = types.StringNull()
+				data.Attributes[i].Attribute31Parameters[ci].IdMacFormat = types.StringNull()
 			}
-			if value := cr.Get("id-mac.lu-case"); value.Exists() && !data.Attributes[i].Attri31[ci].Attri31LuCase.IsNull() {
-				data.Attributes[i].Attri31[ci].Attri31LuCase = types.StringValue(value.String())
+			if value := cr.Get("id-mac.lu-case"); value.Exists() && !data.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() {
+				data.Attributes[i].Attribute31Parameters[ci].IdMacLuCase = types.StringValue(value.String())
 			} else {
-				data.Attributes[i].Attri31[ci].Attri31LuCase = types.StringNull()
+				data.Attributes[i].Attribute31Parameters[ci].IdMacLuCase = types.StringNull()
+			}
+			if value := cr.Get("id-send.nas-port-detail"); !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() {
+				if value.Exists() {
+					data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail = types.BoolValue(true)
+				} else {
+					data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail = types.BoolValue(false)
+				}
+			} else {
+				data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail = types.BoolNull()
+			}
+			if value := cr.Get("id-send.mac-only"); !data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() {
+				if value.Exists() {
+					data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly = types.BoolValue(true)
+				} else {
+					data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly = types.BoolValue(false)
+				}
+			} else {
+				data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly = types.BoolNull()
 			}
 		}
+		if value := r.Get("send-attribute"); value.Exists() && !data.Attributes[i].SendAttributes.IsNull() {
+			data.Attributes[i].SendAttributes = helpers.GetStringList(value.Array())
+		} else {
+			data.Attributes[i].SendAttributes = types.ListNull(types.StringType)
+		}
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:dead-criteria.time"); value.Exists() && !data.DeadCriteriaTime.IsNull() {
+		data.DeadCriteriaTime = types.Int64Value(value.Int())
+	} else {
+		data.DeadCriteriaTime = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:dead-criteria.tries"); value.Exists() && !data.DeadCriteriaTries.IsNull() {
+		data.DeadCriteriaTries = types.Int64Value(value.Int())
+	} else {
+		data.DeadCriteriaTries = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:deadtime"); value.Exists() && !data.Deadtime.IsNull() {
+		data.Deadtime = types.Int64Value(value.Int())
+	} else {
+		data.Deadtime = types.Int64Null()
 	}
 }
 
@@ -187,26 +273,55 @@ func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Number = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("access-request.include"); cValue.Exists() {
+				item.AccessRequestInclude = types.BoolValue(true)
+			} else {
+				item.AccessRequestInclude = types.BoolValue(false)
+			}
 			if cValue := v.Get("attri31.attri31-list"); cValue.Exists() {
-				item.Attri31 = make([]RadiusServerAttributesAttri31, 0)
+				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31Parameters, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := RadiusServerAttributesAttri31{}
+					cItem := RadiusServerAttributesAttribute31Parameters{}
 					if ccValue := cv.Get("calling-station-id"); ccValue.Exists() {
 						cItem.CallingStationId = types.StringValue(ccValue.String())
 					}
 					if ccValue := cv.Get("id-mac.format"); ccValue.Exists() {
-						cItem.Attri31Format = types.StringValue(ccValue.String())
+						cItem.IdMacFormat = types.StringValue(ccValue.String())
 					}
 					if ccValue := cv.Get("id-mac.lu-case"); ccValue.Exists() {
-						cItem.Attri31LuCase = types.StringValue(ccValue.String())
+						cItem.IdMacLuCase = types.StringValue(ccValue.String())
 					}
-					item.Attri31 = append(item.Attri31, cItem)
+					if ccValue := cv.Get("id-send.nas-port-detail"); ccValue.Exists() {
+						cItem.IdSendNasPortDetail = types.BoolValue(true)
+					} else {
+						cItem.IdSendNasPortDetail = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("id-send.mac-only"); ccValue.Exists() {
+						cItem.IdSendMacOnly = types.BoolValue(true)
+					} else {
+						cItem.IdSendMacOnly = types.BoolValue(false)
+					}
+					item.Attribute31Parameters = append(item.Attribute31Parameters, cItem)
 					return true
 				})
+			}
+			if cValue := v.Get("send-attribute"); cValue.Exists() {
+				item.SendAttributes = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SendAttributes = types.ListNull(types.StringType)
 			}
 			data.Attributes = append(data.Attributes, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:dead-criteria.time"); value.Exists() {
+		data.DeadCriteriaTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:dead-criteria.tries"); value.Exists() {
+		data.DeadCriteriaTries = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:deadtime"); value.Exists() {
+		data.Deadtime = types.Int64Value(value.Int())
 	}
 }
 
@@ -230,11 +345,11 @@ func (data *RadiusServer) getDeletedListItems(ctx context.Context, state RadiusS
 				found = false
 			}
 			if found {
-				for ci := range state.Attributes[i].Attri31 {
-					cstateKeyValues := [...]string{state.Attributes[i].Attri31[ci].CallingStationId.ValueString()}
+				for ci := range state.Attributes[i].Attribute31Parameters {
+					cstateKeyValues := [...]string{state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.Attributes[i].Attri31[ci].CallingStationId.ValueString()).IsZero() {
+					if !reflect.ValueOf(state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -242,9 +357,9 @@ func (data *RadiusServer) getDeletedListItems(ctx context.Context, state RadiusS
 					}
 
 					found := false
-					for cj := range data.Attributes[j].Attri31 {
+					for cj := range data.Attributes[j].Attribute31Parameters {
 						found = true
-						if state.Attributes[i].Attri31[ci].CallingStationId.ValueString() != data.Attributes[j].Attri31[cj].CallingStationId.ValueString() {
+						if state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString() != data.Attributes[j].Attribute31Parameters[cj].CallingStationId.ValueString() {
 							found = false
 						}
 						if found {
@@ -268,6 +383,22 @@ func (data *RadiusServer) getDeletedListItems(ctx context.Context, state RadiusS
 func (data *RadiusServer) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	for i := range data.Attributes {
+		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
+		if !data.Attributes[i].AccessRequestInclude.IsNull() && !data.Attributes[i].AccessRequestInclude.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/access-request/include", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+
+		for ci := range data.Attributes[i].Attribute31Parameters {
+			ckeyValues := [...]string{data.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
+			if !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/nas-port-detail", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && !data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/mac-only", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+		}
+	}
 	return emptyLeafsDelete
 }
 
@@ -277,6 +408,15 @@ func (data *RadiusServer) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.DeadCriteriaTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/time", data.getPath()))
+	}
+	if !data.DeadCriteriaTries.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/tries", data.getPath()))
+	}
+	if !data.Deadtime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:deadtime", data.getPath()))
 	}
 	return deletePaths
 }

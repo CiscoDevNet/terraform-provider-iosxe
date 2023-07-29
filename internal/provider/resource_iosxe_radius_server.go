@@ -24,6 +24,7 @@ import (
 	"fmt"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -74,7 +75,11 @@ func (r *RadiusServerResource) Schema(ctx context.Context, req resource.SchemaRe
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"attri31": schema.ListNestedAttribute{
+						"access_request_include": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Include attribute").String,
+							Optional:            true,
+						},
+						"attribute_31_parameters": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{
@@ -86,24 +91,58 @@ func (r *RadiusServerResource) Schema(ctx context.Context, req resource.SchemaRe
 											stringvalidator.OneOf("mac", "send"),
 										},
 									},
-									"attri31_format": schema.StringAttribute{
+									"id_mac_format": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("Specify format (default format ex: 0000.4096.3e4a) ietf - format ex: 00-00-40-96-3E-4A").AddStringEnumDescription("ietf").String,
 										Optional:            true,
 										Validators: []validator.String{
 											stringvalidator.OneOf("ietf"),
 										},
 									},
-									"attri31_lu_case": schema.StringAttribute{
+									"id_mac_lu_case": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("lower-case", "upper-case").String,
 										Optional:            true,
 										Validators: []validator.String{
 											stringvalidator.OneOf("lower-case", "upper-case"),
 										},
 									},
+									"id_send_nas_port_detail": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
+									"id_send_mac_only": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
 								},
 							},
 						},
+						"send_attributes": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
 					},
+				},
+			},
+			"dead_criteria_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The time during which no properly formed response must be received from the RADIUS server").AddIntegerRangeDescription(1, 120).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 120),
+				},
+			},
+			"dead_criteria_tries": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The number of times the router must fail to receive a response from the radius server to mark it as dead").AddIntegerRangeDescription(1, 100).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 100),
+				},
+			},
+			"deadtime": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Time to stop using a server that does not respond").AddIntegerRangeDescription(1, 1440).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1440),
 				},
 			},
 		},
