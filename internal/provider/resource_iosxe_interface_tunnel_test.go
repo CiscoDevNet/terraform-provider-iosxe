@@ -28,26 +28,40 @@ import (
 func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "name", "90"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "description", "My Interface Description"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "shutdown", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_proxy_arp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_redirects", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "unreachables", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "vrf_forwarding", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_mtu", "1300"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_nd_suppress_all", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_address_dhcp", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_address.0.address", "fe80::9656:d028:8652:66b6"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_address.0.link_local", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_prefix_list_address.0.prefix", "2001:DB8::/32"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_prefix_list_address.0.eui_64", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b6"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.link_local", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_address_prefix_lists.0.prefix", "2001:DB8::/32"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_address_prefix_lists.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "crypto_ipsec_df_bit", "clear"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_primary_address", "170.254.10.2"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_primary_address_mask", "255.255.255.252"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address_mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_dhcp_relay_source_interface", "Loopback100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_access_group_in", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_access_group_in_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_access_group_out", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_access_group_out_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "helper_addresses.0.address", "10.10.10.10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "helper_addresses.0.global", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "helper_addresses.0.vrf", "VRF1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeInterfaceTunnelConfig_minimum(),
+				Config: testAccIosxeInterfaceTunnelPrerequisitesConfig + testAccIosxeInterfaceTunnelConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeInterfaceTunnelConfig_all(),
+				Config: testAccIosxeInterfaceTunnelPrerequisitesConfig + testAccIosxeInterfaceTunnelConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -59,9 +73,23 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	})
 }
 
+const testAccIosxeInterfaceTunnelPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"address-family/ipv4" = ""
+		"address-family/ipv6" = ""
+	}
+}
+
+`
+
 func testAccIosxeInterfaceTunnelConfig_minimum() string {
 	config := `resource "iosxe_interface_tunnel" "test" {` + "\n"
 	config += `	name = 90` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -69,21 +97,38 @@ func testAccIosxeInterfaceTunnelConfig_minimum() string {
 func testAccIosxeInterfaceTunnelConfig_all() string {
 	config := `resource "iosxe_interface_tunnel" "test" {` + "\n"
 	config += `	name = 90` + "\n"
+	config += `	description = "My Interface Description"` + "\n"
+	config += `	shutdown = false` + "\n"
+	config += `	ip_proxy_arp = false` + "\n"
+	config += `	ip_redirects = false` + "\n"
+	config += `	unreachables = false` + "\n"
+	config += `	vrf_forwarding = "VRF1"` + "\n"
 	config += `	ipv6_enable = true` + "\n"
 	config += `	ipv6_mtu = 1300` + "\n"
-	config += `	ipv6_nd_suppress_all = true` + "\n"
+	config += `	ra_suppress_all = true` + "\n"
 	config += `	ipv6_address_dhcp = true` + "\n"
-	config += `	ipv6_link_local_address = [{` + "\n"
+	config += `	ipv6_link_local_addresses = [{` + "\n"
 	config += `		address = "fe80::9656:d028:8652:66b6"` + "\n"
 	config += `		link_local = true` + "\n"
 	config += `	}]` + "\n"
-	config += `	ipv6_prefix_list_address = [{` + "\n"
+	config += `	ipv6_address_prefix_lists = [{` + "\n"
 	config += `		prefix = "2001:DB8::/32"` + "\n"
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	crypto_ipsec_df_bit = "clear"` + "\n"
-	config += `	ip_primary_address = "170.254.10.2"` + "\n"
-	config += `	ip_primary_address_mask = "255.255.255.252"` + "\n"
+	config += `	ipv4_address = "10.1.1.1"` + "\n"
+	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
+	config += `	ip_dhcp_relay_source_interface = "Loopback100"` + "\n"
+	config += `	ip_access_group_in = "1"` + "\n"
+	config += `	ip_access_group_in_enable = true` + "\n"
+	config += `	ip_access_group_out = "1"` + "\n"
+	config += `	ip_access_group_out_enable = true` + "\n"
+	config += `	helper_addresses = [{` + "\n"
+	config += `		address = "10.10.10.10"` + "\n"
+	config += `		global = false` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

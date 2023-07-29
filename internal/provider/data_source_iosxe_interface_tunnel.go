@@ -67,6 +67,30 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "",
 				Required:            true,
 			},
+			"description": schema.StringAttribute{
+				MarkdownDescription: "Interface specific description",
+				Computed:            true,
+			},
+			"shutdown": schema.BoolAttribute{
+				MarkdownDescription: "Shutdown the selected interface",
+				Computed:            true,
+			},
+			"ip_proxy_arp": schema.BoolAttribute{
+				MarkdownDescription: "Enable proxy ARP",
+				Computed:            true,
+			},
+			"ip_redirects": schema.BoolAttribute{
+				MarkdownDescription: "Enable sending ICMP Redirect messages",
+				Computed:            true,
+			},
+			"unreachables": schema.BoolAttribute{
+				MarkdownDescription: "Enable sending ICMP Unreachable messages",
+				Computed:            true,
+			},
+			"vrf_forwarding": schema.StringAttribute{
+				MarkdownDescription: "Configure forwarding table",
+				Computed:            true,
+			},
 			"ipv6_enable": schema.BoolAttribute{
 				MarkdownDescription: "Enable IPv6 on interface",
 				Computed:            true,
@@ -75,7 +99,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Set IPv6 Maximum Transmission Unit",
 				Computed:            true,
 			},
-			"ipv6_nd_suppress_all": schema.BoolAttribute{
+			"ra_suppress_all": schema.BoolAttribute{
 				MarkdownDescription: "Suppress all IPv6 RA",
 				Computed:            true,
 			},
@@ -87,7 +111,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Obtain IPv6 address from DHCP server",
 				Computed:            true,
 			},
-			"ipv6_link_local_address": schema.ListNestedAttribute{
+			"ipv6_link_local_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -103,7 +127,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 					},
 				},
 			},
-			"ipv6_prefix_list_address": schema.ListNestedAttribute{
+			"ipv6_address_prefix_lists": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -123,11 +147,11 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "source of tunnel packets",
 				Computed:            true,
 			},
-			"tunnel_destination_config_ipv4": schema.StringAttribute{
+			"tunnel_destination_ipv4": schema.StringAttribute{
 				MarkdownDescription: "ip address or host name",
 				Computed:            true,
 			},
-			"tunnel_protection_ipsec_profiles": schema.StringAttribute{
+			"tunnel_protection_ipsec_profile": schema.StringAttribute{
 				MarkdownDescription: "Determine the ipsec policy profile to use.",
 				Computed:            true,
 			},
@@ -135,13 +159,57 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Handling of encapsulated DF bit.",
 				Computed:            true,
 			},
-			"ip_primary_address": schema.StringAttribute{
+			"ipv4_address": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"ip_primary_address_mask": schema.StringAttribute{
+			"ipv4_address_mask": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
+			},
+			"unnumbered": schema.StringAttribute{
+				MarkdownDescription: "Enable IP processing without an explicit address",
+				Computed:            true,
+			},
+			"ip_dhcp_relay_source_interface": schema.StringAttribute{
+				MarkdownDescription: "Set source interface for relayed messages",
+				Computed:            true,
+			},
+			"ip_access_group_in": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ip_access_group_in_enable": schema.BoolAttribute{
+				MarkdownDescription: "inbound packets",
+				Computed:            true,
+			},
+			"ip_access_group_out": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ip_access_group_out_enable": schema.BoolAttribute{
+				MarkdownDescription: "outbound packets",
+				Computed:            true,
+			},
+			"helper_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify a destination address for UDP broadcasts",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"global": schema.BoolAttribute{
+							MarkdownDescription: "Helper-address is global",
+							Computed:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VRF name for helper-address (if different from interface VRF)",
+							Computed:            true,
+						},
+					},
+				},
 			},
 			"tunnel_mode_ipsec_ipv4": schema.BoolAttribute{
 				MarkdownDescription: "over IPv4",

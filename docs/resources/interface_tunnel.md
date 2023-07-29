@@ -14,26 +14,44 @@ This resource can manage the Interface Tunnel configuration.
 
 ```terraform
 resource "iosxe_interface_tunnel" "example" {
-  name                 = 90
-  ipv6_enable          = true
-  ipv6_mtu             = 1300
-  ipv6_nd_suppress_all = true
-  ipv6_address_dhcp    = true
-  ipv6_link_local_address = [
+  name              = 90
+  description       = "My Interface Description"
+  shutdown          = false
+  ip_proxy_arp      = false
+  ip_redirects      = false
+  unreachables      = false
+  vrf_forwarding    = "VRF1"
+  ipv6_enable       = true
+  ipv6_mtu          = 1300
+  ra_suppress_all   = true
+  ipv6_address_dhcp = true
+  ipv6_link_local_addresses = [
     {
       address    = "fe80::9656:d028:8652:66b6"
       link_local = true
     }
   ]
-  ipv6_prefix_list_address = [
+  ipv6_address_prefix_lists = [
     {
       prefix = "2001:DB8::/32"
       eui_64 = true
     }
   ]
-  crypto_ipsec_df_bit     = "clear"
-  ip_primary_address      = "170.254.10.2"
-  ip_primary_address_mask = "255.255.255.252"
+  crypto_ipsec_df_bit            = "clear"
+  ipv4_address                   = "10.1.1.1"
+  ipv4_address_mask              = "255.255.255.0"
+  ip_dhcp_relay_source_interface = "Loopback100"
+  ip_access_group_in             = "1"
+  ip_access_group_in_enable      = true
+  ip_access_group_out            = "1"
+  ip_access_group_out_enable     = true
+  helper_addresses = [
+    {
+      address = "10.10.10.10"
+      global  = false
+      vrf     = "VRF1"
+    }
+  ]
 }
 ```
 
@@ -50,28 +68,41 @@ resource "iosxe_interface_tunnel" "example" {
   - Choices: `clear`, `copy`, `set`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
+- `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
-- `ip_primary_address` (String)
-- `ip_primary_address_mask` (String)
+- `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
+- `ip_access_group_in` (String)
+- `ip_access_group_in_enable` (Boolean) inbound packets
+- `ip_access_group_out` (String)
+- `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
+- `ip_proxy_arp` (Boolean) Enable proxy ARP
+- `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ipv4_address` (String)
+- `ipv4_address_mask` (String)
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
+- `ipv6_address_prefix_lists` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_address_prefix_lists))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
-- `ipv6_link_local_address` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_address))
+- `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
-- `ipv6_nd_suppress_all` (Boolean) Suppress all IPv6 RA
-- `ipv6_prefix_list_address` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_prefix_list_address))
-- `tunnel_destination_config_ipv4` (String) ip address or host name
+- `ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `shutdown` (Boolean) Shutdown the selected interface
+- `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
-- `tunnel_protection_ipsec_profiles` (String) Determine the ipsec policy profile to use.
+- `tunnel_protection_ipsec_profile` (String) Determine the ipsec policy profile to use.
 - `tunnel_source` (String) source of tunnel packets
+- `unnumbered` (String) Enable IP processing without an explicit address
+- `unreachables` (Boolean) Enable sending ICMP Unreachable messages
+- `vrf_forwarding` (String) Configure forwarding table
 
 ### Read-Only
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--ipv6_link_local_address"></a>
-### Nested Schema for `ipv6_link_local_address`
+<a id="nestedatt--helper_addresses"></a>
+### Nested Schema for `helper_addresses`
 
 Required:
 
@@ -79,11 +110,12 @@ Required:
 
 Optional:
 
-- `link_local` (Boolean) Use link-local address
+- `global` (Boolean) Helper-address is global
+- `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
-<a id="nestedatt--ipv6_prefix_list_address"></a>
-### Nested Schema for `ipv6_prefix_list_address`
+<a id="nestedatt--ipv6_address_prefix_lists"></a>
+### Nested Schema for `ipv6_address_prefix_lists`
 
 Required:
 
@@ -92,6 +124,18 @@ Required:
 Optional:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
+
+
+<a id="nestedatt--ipv6_link_local_addresses"></a>
+### Nested Schema for `ipv6_link_local_addresses`
+
+Required:
+
+- `address` (String)
+
+Optional:
+
+- `link_local` (Boolean) Use link-local address
 
 ## Import
 

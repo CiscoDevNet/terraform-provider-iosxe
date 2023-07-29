@@ -85,6 +85,34 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					int64planmodifier.RequiresReplace(),
 				},
 			},
+			"description": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Interface specific description").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(0, 200),
+					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
+			},
+			"shutdown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
+				Optional:            true,
+			},
+			"ip_proxy_arp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
+				Optional:            true,
+			},
+			"ip_redirects": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
+				Optional:            true,
+			},
+			"unreachables": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
+				Optional:            true,
+			},
+			"vrf_forwarding": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
+				Optional:            true,
+			},
 			"ipv6_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
 				Optional:            true,
@@ -96,7 +124,7 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					int64validator.Between(1280, 9976),
 				},
 			},
-			"ipv6_nd_suppress_all": schema.BoolAttribute{
+			"ra_suppress_all": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
 				Optional:            true,
 			},
@@ -108,7 +136,7 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
 				Optional:            true,
 			},
-			"ipv6_link_local_address": schema.ListNestedAttribute{
+			"ipv6_link_local_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -128,7 +156,7 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					},
 				},
 			},
-			"ipv6_prefix_list_address": schema.ListNestedAttribute{
+			"ipv6_address_prefix_lists": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -152,14 +180,14 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("source of tunnel packets").String,
 				Optional:            true,
 			},
-			"tunnel_destination_config_ipv4": schema.StringAttribute{
+			"tunnel_destination_ipv4": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("ip address or host name").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
-			"tunnel_protection_ipsec_profiles": schema.StringAttribute{
+			"tunnel_protection_ipsec_profile": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Determine the ipsec policy profile to use.").String,
 				Optional:            true,
 			},
@@ -170,18 +198,65 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					stringvalidator.OneOf("clear", "copy", "set"),
 				},
 			},
-			"ip_primary_address": schema.StringAttribute{
+			"ipv4_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
-			"ip_primary_address_mask": schema.StringAttribute{
+			"ipv4_address_mask": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+				},
+			},
+			"unnumbered": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IP processing without an explicit address").String,
+				Optional:            true,
+			},
+			"ip_dhcp_relay_source_interface": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set source interface for relayed messages").String,
+				Optional:            true,
+			},
+			"ip_access_group_in": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"ip_access_group_in_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
+				Optional:            true,
+			},
+			"ip_access_group_out": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"ip_access_group_out_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
+				Optional:            true,
+			},
+			"helper_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify a destination address for UDP broadcasts").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"global": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").String,
+							Optional:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VRF name for helper-address (if different from interface VRF)").String,
+							Optional:            true,
+						},
+					},
 				},
 			},
 			"tunnel_mode_ipsec_ipv4": schema.BoolAttribute{
