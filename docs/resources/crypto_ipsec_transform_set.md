@@ -14,10 +14,10 @@ This resource can manage the Crypto IPSec Transform Set configuration.
 
 ```terraform
 resource "iosxe_crypto_ipsec_transform_set" "example" {
-  tag                                      = "TEST"
-  esp                                      = "esp-aes"
-  esp_hmac                                 = "esp-sha-hmac"
-  mode_mode_type_tunnel_case_tunnel_choice = true
+  tag         = "TEST"
+  esp         = "esp-aes"
+  esp_hmac    = "esp-sha-hmac"
+  mode_tunnel = true
 }
 ```
 
@@ -30,12 +30,10 @@ resource "iosxe_crypto_ipsec_transform_set" "example" {
 
 ### Optional
 
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `esp` (String) - Choices: `esp-3des`, `esp-aes`, `esp-des`, `esp-gcm`, `esp-gmac`, `esp-null`, `esp-seal`
 - `esp_hmac` (String) - Choices: `esp-md5-hmac`, `esp-sha-hmac`, `esp-sha256-hmac`, `esp-sha384-hmac`, `esp-sha512-hmac`
-- `mode_mode_type_tunnel_case_tunnel_choice` (Boolean) tunnel (datagram encapsulation) mode
+- `mode_tunnel` (Boolean) tunnel (datagram encapsulation) mode
 
 ### Read-Only
 

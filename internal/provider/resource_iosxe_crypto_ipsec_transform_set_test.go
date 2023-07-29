@@ -30,7 +30,7 @@ func TestAccIosxeCryptoIPSecTransformSet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "tag", "TEST"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "esp", "esp-aes"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "esp_hmac", "esp-sha-hmac"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "mode_mode_type_tunnel_case_tunnel_choice", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ipsec_transform_set.test", "mode_tunnel", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -63,7 +63,7 @@ func testAccIosxeCryptoIPSecTransformSetConfig_all() string {
 	config += `	tag = "TEST"` + "\n"
 	config += `	esp = "esp-aes"` + "\n"
 	config += `	esp_hmac = "esp-sha-hmac"` + "\n"
-	config += `	mode_mode_type_tunnel_case_tunnel_choice = true` + "\n"
+	config += `	mode_tunnel = true` + "\n"
 	config += `}` + "\n"
 	return config
 }

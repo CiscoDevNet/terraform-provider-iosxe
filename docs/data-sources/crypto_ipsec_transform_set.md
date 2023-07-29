@@ -34,4 +34,4 @@ data "iosxe_crypto_ipsec_transform_set" "example" {
 - `esp` (String)
 - `esp_hmac` (String)
 - `id` (String) The path of the retrieved object.
-- `mode_mode_type_tunnel_case_tunnel_choice` (Boolean) tunnel (datagram encapsulation) mode
+- `mode_tunnel` (Boolean) tunnel (datagram encapsulation) mode

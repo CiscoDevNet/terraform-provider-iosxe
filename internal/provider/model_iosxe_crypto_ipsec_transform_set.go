@@ -32,22 +32,21 @@ import (
 )
 
 type CryptoIPSecTransformSet struct {
-	Device                             types.String `tfsdk:"device"`
-	Id                                 types.String `tfsdk:"id"`
-	DeleteMode                         types.String `tfsdk:"delete_mode"`
-	Tag                                types.String `tfsdk:"tag"`
-	Esp                                types.String `tfsdk:"esp"`
-	EspHmac                            types.String `tfsdk:"esp_hmac"`
-	ModeModeTypeTunnelCaseTunnelChoice types.Bool   `tfsdk:"mode_mode_type_tunnel_case_tunnel_choice"`
+	Device     types.String `tfsdk:"device"`
+	Id         types.String `tfsdk:"id"`
+	Tag        types.String `tfsdk:"tag"`
+	Esp        types.String `tfsdk:"esp"`
+	EspHmac    types.String `tfsdk:"esp_hmac"`
+	ModeTunnel types.Bool   `tfsdk:"mode_tunnel"`
 }
 
 type CryptoIPSecTransformSetData struct {
-	Device                             types.String `tfsdk:"device"`
-	Id                                 types.String `tfsdk:"id"`
-	Tag                                types.String `tfsdk:"tag"`
-	Esp                                types.String `tfsdk:"esp"`
-	EspHmac                            types.String `tfsdk:"esp_hmac"`
-	ModeModeTypeTunnelCaseTunnelChoice types.Bool   `tfsdk:"mode_mode_type_tunnel_case_tunnel_choice"`
+	Device     types.String `tfsdk:"device"`
+	Id         types.String `tfsdk:"id"`
+	Tag        types.String `tfsdk:"tag"`
+	Esp        types.String `tfsdk:"esp"`
+	EspHmac    types.String `tfsdk:"esp_hmac"`
+	ModeTunnel types.Bool   `tfsdk:"mode_tunnel"`
 }
 
 func (data CryptoIPSecTransformSet) getPath() string {
@@ -80,8 +79,8 @@ func (data CryptoIPSecTransformSet) toBody(ctx context.Context) string {
 	if !data.EspHmac.IsNull() && !data.EspHmac.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"esp-hmac", data.EspHmac.ValueString())
 	}
-	if !data.ModeModeTypeTunnelCaseTunnelChoice.IsNull() && !data.ModeModeTypeTunnelCaseTunnelChoice.IsUnknown() {
-		if data.ModeModeTypeTunnelCaseTunnelChoice.ValueBool() {
+	if !data.ModeTunnel.IsNull() && !data.ModeTunnel.IsUnknown() {
+		if data.ModeTunnel.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mode.tunnel-choice", map[string]string{})
 		}
 	}
@@ -108,14 +107,14 @@ func (data *CryptoIPSecTransformSet) updateFromBody(ctx context.Context, res gjs
 	} else {
 		data.EspHmac = types.StringNull()
 	}
-	if value := res.Get(prefix + "mode.tunnel-choice"); !data.ModeModeTypeTunnelCaseTunnelChoice.IsNull() {
+	if value := res.Get(prefix + "mode.tunnel-choice"); !data.ModeTunnel.IsNull() {
 		if value.Exists() {
-			data.ModeModeTypeTunnelCaseTunnelChoice = types.BoolValue(true)
+			data.ModeTunnel = types.BoolValue(true)
 		} else {
-			data.ModeModeTypeTunnelCaseTunnelChoice = types.BoolValue(false)
+			data.ModeTunnel = types.BoolValue(false)
 		}
 	} else {
-		data.ModeModeTypeTunnelCaseTunnelChoice = types.BoolNull()
+		data.ModeTunnel = types.BoolNull()
 	}
 }
 
@@ -131,9 +130,9 @@ func (data *CryptoIPSecTransformSetData) fromBody(ctx context.Context, res gjson
 		data.EspHmac = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "mode.tunnel-choice"); value.Exists() {
-		data.ModeModeTypeTunnelCaseTunnelChoice = types.BoolValue(true)
+		data.ModeTunnel = types.BoolValue(true)
 	} else {
-		data.ModeModeTypeTunnelCaseTunnelChoice = types.BoolValue(false)
+		data.ModeTunnel = types.BoolValue(false)
 	}
 }
 
@@ -144,7 +143,7 @@ func (data *CryptoIPSecTransformSet) getDeletedListItems(ctx context.Context, st
 
 func (data *CryptoIPSecTransformSet) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.ModeModeTypeTunnelCaseTunnelChoice.IsNull() && !data.ModeModeTypeTunnelCaseTunnelChoice.ValueBool() {
+	if !data.ModeTunnel.IsNull() && !data.ModeTunnel.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mode/tunnel-choice", data.getPath()))
 	}
 	return emptyLeafsDelete
@@ -158,7 +157,7 @@ func (data *CryptoIPSecTransformSet) getDeletePaths(ctx context.Context) []strin
 	if !data.EspHmac.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/esp-hmac", data.getPath()))
 	}
-	if !data.ModeModeTypeTunnelCaseTunnelChoice.IsNull() {
+	if !data.ModeTunnel.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/mode/tunnel-choice", data.getPath()))
 	}
 	return deletePaths

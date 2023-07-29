@@ -75,7 +75,7 @@ func (d *CryptoIPSecTransformSetDataSource) Schema(ctx context.Context, req data
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"mode_mode_type_tunnel_case_tunnel_choice": schema.BoolAttribute{
+			"mode_tunnel": schema.BoolAttribute{
 				MarkdownDescription: "tunnel (datagram encapsulation) mode",
 				Computed:            true,
 			},
