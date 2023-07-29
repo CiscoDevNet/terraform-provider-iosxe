@@ -32,21 +32,22 @@ import (
 )
 
 type CryptoIKEv2 struct {
-	Device                    types.String `tfsdk:"device"`
-	Id                        types.String `tfsdk:"id"`
-	NatKeepalive              types.Int64  `tfsdk:"nat_keepalive"`
-	DpdContainerDpd           types.Int64  `tfsdk:"dpd_container_dpd"`
-	DpdContainerRetryInterval types.Int64  `tfsdk:"dpd_container_retry_interval"`
-	DpdContainerDpdQuery      types.String `tfsdk:"dpd_container_dpd_query"`
+	Device           types.String `tfsdk:"device"`
+	Id               types.String `tfsdk:"id"`
+	DeleteMode       types.String `tfsdk:"delete_mode"`
+	NatKeepalive     types.Int64  `tfsdk:"nat_keepalive"`
+	Dpd              types.Int64  `tfsdk:"dpd"`
+	DpdRetryInterval types.Int64  `tfsdk:"dpd_retry_interval"`
+	DpdQuery         types.String `tfsdk:"dpd_query"`
 }
 
 type CryptoIKEv2Data struct {
-	Device                    types.String `tfsdk:"device"`
-	Id                        types.String `tfsdk:"id"`
-	NatKeepalive              types.Int64  `tfsdk:"nat_keepalive"`
-	DpdContainerDpd           types.Int64  `tfsdk:"dpd_container_dpd"`
-	DpdContainerRetryInterval types.Int64  `tfsdk:"dpd_container_retry_interval"`
-	DpdContainerDpdQuery      types.String `tfsdk:"dpd_container_dpd_query"`
+	Device           types.String `tfsdk:"device"`
+	Id               types.String `tfsdk:"id"`
+	NatKeepalive     types.Int64  `tfsdk:"nat_keepalive"`
+	Dpd              types.Int64  `tfsdk:"dpd"`
+	DpdRetryInterval types.Int64  `tfsdk:"dpd_retry_interval"`
+	DpdQuery         types.String `tfsdk:"dpd_query"`
 }
 
 func (data CryptoIKEv2) getPath() string {
@@ -73,14 +74,14 @@ func (data CryptoIKEv2) toBody(ctx context.Context) string {
 	if !data.NatKeepalive.IsNull() && !data.NatKeepalive.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nat.keepalive", strconv.FormatInt(data.NatKeepalive.ValueInt64(), 10))
 	}
-	if !data.DpdContainerDpd.IsNull() && !data.DpdContainerDpd.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd-container.dpd", strconv.FormatInt(data.DpdContainerDpd.ValueInt64(), 10))
+	if !data.Dpd.IsNull() && !data.Dpd.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd-container.dpd", strconv.FormatInt(data.Dpd.ValueInt64(), 10))
 	}
-	if !data.DpdContainerRetryInterval.IsNull() && !data.DpdContainerRetryInterval.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd-container.retry-interval", strconv.FormatInt(data.DpdContainerRetryInterval.ValueInt64(), 10))
+	if !data.DpdRetryInterval.IsNull() && !data.DpdRetryInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd-container.retry-interval", strconv.FormatInt(data.DpdRetryInterval.ValueInt64(), 10))
 	}
-	if !data.DpdContainerDpdQuery.IsNull() && !data.DpdContainerDpdQuery.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd-container.dpd-query", data.DpdContainerDpdQuery.ValueString())
+	if !data.DpdQuery.IsNull() && !data.DpdQuery.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd-container.dpd-query", data.DpdQuery.ValueString())
 	}
 	return body
 }
@@ -95,20 +96,20 @@ func (data *CryptoIKEv2) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.NatKeepalive = types.Int64Null()
 	}
-	if value := res.Get(prefix + "dpd-container.dpd"); value.Exists() && !data.DpdContainerDpd.IsNull() {
-		data.DpdContainerDpd = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "dpd-container.dpd"); value.Exists() && !data.Dpd.IsNull() {
+		data.Dpd = types.Int64Value(value.Int())
 	} else {
-		data.DpdContainerDpd = types.Int64Null()
+		data.Dpd = types.Int64Null()
 	}
-	if value := res.Get(prefix + "dpd-container.retry-interval"); value.Exists() && !data.DpdContainerRetryInterval.IsNull() {
-		data.DpdContainerRetryInterval = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "dpd-container.retry-interval"); value.Exists() && !data.DpdRetryInterval.IsNull() {
+		data.DpdRetryInterval = types.Int64Value(value.Int())
 	} else {
-		data.DpdContainerRetryInterval = types.Int64Null()
+		data.DpdRetryInterval = types.Int64Null()
 	}
-	if value := res.Get(prefix + "dpd-container.dpd-query"); value.Exists() && !data.DpdContainerDpdQuery.IsNull() {
-		data.DpdContainerDpdQuery = types.StringValue(value.String())
+	if value := res.Get(prefix + "dpd-container.dpd-query"); value.Exists() && !data.DpdQuery.IsNull() {
+		data.DpdQuery = types.StringValue(value.String())
 	} else {
-		data.DpdContainerDpdQuery = types.StringNull()
+		data.DpdQuery = types.StringNull()
 	}
 }
 
@@ -121,13 +122,13 @@ func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 		data.NatKeepalive = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "dpd-container.dpd"); value.Exists() {
-		data.DpdContainerDpd = types.Int64Value(value.Int())
+		data.Dpd = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "dpd-container.retry-interval"); value.Exists() {
-		data.DpdContainerRetryInterval = types.Int64Value(value.Int())
+		data.DpdRetryInterval = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "dpd-container.dpd-query"); value.Exists() {
-		data.DpdContainerDpdQuery = types.StringValue(value.String())
+		data.DpdQuery = types.StringValue(value.String())
 	}
 }
 
@@ -146,14 +147,14 @@ func (data *CryptoIKEv2) getDeletePaths(ctx context.Context) []string {
 	if !data.NatKeepalive.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/nat/keepalive", data.getPath()))
 	}
-	if !data.DpdContainerDpd.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container/dpd", data.getPath()))
+	if !data.Dpd.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container", data.getPath()))
 	}
-	if !data.DpdContainerRetryInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container/retry-interval", data.getPath()))
+	if !data.DpdRetryInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container", data.getPath()))
 	}
-	if !data.DpdContainerDpdQuery.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container/dpd-query", data.getPath()))
+	if !data.DpdQuery.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container", data.getPath()))
 	}
 	return deletePaths
 }

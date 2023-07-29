@@ -28,9 +28,9 @@ import (
 func TestAccDataSourceIosxeCryptoIKEv2(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "nat_keepalive", "20"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd_container_dpd", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd_container_retry_interval", "5"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd_container_dpd_query", "periodic"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd_retry_interval", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd_query", "periodic"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -45,10 +45,11 @@ func TestAccDataSourceIosxeCryptoIKEv2(t *testing.T) {
 
 func testAccDataSourceIosxeCryptoIKEv2Config() string {
 	config := `resource "iosxe_crypto_ikev2" "test" {` + "\n"
+	config += `	delete_mode = "attributes"` + "\n"
 	config += `	nat_keepalive = 20` + "\n"
-	config += `	dpd_container_dpd = 10` + "\n"
-	config += `	dpd_container_retry_interval = 5` + "\n"
-	config += `	dpd_container_dpd_query = "periodic"` + "\n"
+	config += `	dpd = 10` + "\n"
+	config += `	dpd_retry_interval = 5` + "\n"
+	config += `	dpd_query = "periodic"` + "\n"
 	config += `}` + "\n"
 
 	config += `

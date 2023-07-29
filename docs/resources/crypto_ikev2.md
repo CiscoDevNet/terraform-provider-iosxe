@@ -14,10 +14,10 @@ This resource can manage the Crypto IKEv2 configuration.
 
 ```terraform
 resource "iosxe_crypto_ikev2" "example" {
-  nat_keepalive                = 20
-  dpd_container_dpd            = 10
-  dpd_container_retry_interval = 5
-  dpd_container_dpd_query      = "periodic"
+  nat_keepalive      = 20
+  dpd                = 10
+  dpd_retry_interval = 5
+  dpd_query          = "periodic"
 }
 ```
 
@@ -26,11 +26,13 @@ resource "iosxe_crypto_ikev2" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `dpd_container_dpd` (Number) Enable IKE liveness check for peers
+- `dpd` (Number) Enable IKE liveness check for peers
   - Range: `10`-`3600`
-- `dpd_container_dpd_query` (String) - Choices: `on-demand`, `periodic`
-- `dpd_container_retry_interval` (Number) - Range: `2`-`60`
+- `dpd_query` (String) - Choices: `on-demand`, `periodic`
+- `dpd_retry_interval` (Number) - Range: `2`-`60`
 - `nat_keepalive` (Number) Set NAT keepalive interval
   - Range: `5`-`3600`
 

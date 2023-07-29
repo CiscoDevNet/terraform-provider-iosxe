@@ -26,8 +26,8 @@ data "iosxe_crypto_ikev2" "example" {
 
 ### Read-Only
 
-- `dpd_container_dpd` (Number) Enable IKE liveness check for peers
-- `dpd_container_dpd_query` (String)
-- `dpd_container_retry_interval` (Number)
+- `dpd` (Number) Enable IKE liveness check for peers
+- `dpd_query` (String)
+- `dpd_retry_interval` (Number)
 - `id` (String) The path of the retrieved object.
 - `nat_keepalive` (Number) Set NAT keepalive interval

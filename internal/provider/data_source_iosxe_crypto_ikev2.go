@@ -67,15 +67,15 @@ func (d *CryptoIKEv2DataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "Set NAT keepalive interval",
 				Computed:            true,
 			},
-			"dpd_container_dpd": schema.Int64Attribute{
+			"dpd": schema.Int64Attribute{
 				MarkdownDescription: "Enable IKE liveness check for peers",
 				Computed:            true,
 			},
-			"dpd_container_retry_interval": schema.Int64Attribute{
+			"dpd_retry_interval": schema.Int64Attribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"dpd_container_dpd_query": schema.StringAttribute{
+			"dpd_query": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
