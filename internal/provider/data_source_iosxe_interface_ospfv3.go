@@ -75,7 +75,7 @@ func (d *InterfaceOSPFv3DataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Specify OSPF point-to-point network",
 				Computed:            true,
 			},
-			"cost_config_value": schema.Int64Attribute{
+			"cost": schema.Int64Attribute{
 				MarkdownDescription: "Static route cost value of the interface",
 				Computed:            true,
 			},

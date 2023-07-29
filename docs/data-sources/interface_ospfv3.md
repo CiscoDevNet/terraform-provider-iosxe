@@ -33,6 +33,6 @@ data "iosxe_interface_ospfv3" "example" {
 
 ### Read-Only
 
-- `cost_config_value` (Number) Static route cost value of the interface
+- `cost` (Number) Static route cost value of the interface
 - `id` (String) The path of the retrieved object.
 - `network_point_to_point` (Boolean) Specify OSPF point-to-point network

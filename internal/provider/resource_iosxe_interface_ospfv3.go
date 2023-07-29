@@ -98,7 +98,7 @@ func (r *InterfaceOSPFv3Resource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-point network").String,
 				Optional:            true,
 			},
-			"cost_config_value": schema.Int64Attribute{
+			"cost": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Static route cost value of the interface").AddIntegerRangeDescription(1, 65535).String,
 				Optional:            true,
 				Validators: []validator.Int64{

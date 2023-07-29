@@ -39,7 +39,7 @@ type InterfaceOSPFv3 struct {
 	Type                types.String `tfsdk:"type"`
 	Name                types.String `tfsdk:"name"`
 	NetworkPointToPoint types.Bool   `tfsdk:"network_point_to_point"`
-	CostConfigValue     types.Int64  `tfsdk:"cost_config_value"`
+	Cost                types.Int64  `tfsdk:"cost"`
 }
 
 type InterfaceOSPFv3Data struct {
@@ -48,7 +48,7 @@ type InterfaceOSPFv3Data struct {
 	Type                types.String `tfsdk:"type"`
 	Name                types.String `tfsdk:"name"`
 	NetworkPointToPoint types.Bool   `tfsdk:"network_point_to_point"`
-	CostConfigValue     types.Int64  `tfsdk:"cost_config_value"`
+	Cost                types.Int64  `tfsdk:"cost"`
 }
 
 func (data InterfaceOSPFv3) getPath() string {
@@ -77,8 +77,8 @@ func (data InterfaceOSPFv3) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network.point-to-point", map[string]string{})
 		}
 	}
-	if !data.CostConfigValue.IsNull() && !data.CostConfigValue.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"cost-config.value", strconv.FormatInt(data.CostConfigValue.ValueInt64(), 10))
+	if !data.Cost.IsNull() && !data.Cost.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"cost-config.value", strconv.FormatInt(data.Cost.ValueInt64(), 10))
 	}
 	return body
 }
@@ -97,10 +97,10 @@ func (data *InterfaceOSPFv3) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.NetworkPointToPoint = types.BoolNull()
 	}
-	if value := res.Get(prefix + "cost-config.value"); value.Exists() && !data.CostConfigValue.IsNull() {
-		data.CostConfigValue = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "cost-config.value"); value.Exists() && !data.Cost.IsNull() {
+		data.Cost = types.Int64Value(value.Int())
 	} else {
-		data.CostConfigValue = types.Int64Null()
+		data.Cost = types.Int64Null()
 	}
 }
 
@@ -115,7 +115,7 @@ func (data *InterfaceOSPFv3Data) fromBody(ctx context.Context, res gjson.Result)
 		data.NetworkPointToPoint = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "cost-config.value"); value.Exists() {
-		data.CostConfigValue = types.Int64Value(value.Int())
+		data.Cost = types.Int64Value(value.Int())
 	}
 }
 
@@ -137,7 +137,7 @@ func (data *InterfaceOSPFv3) getDeletePaths(ctx context.Context) []string {
 	if !data.NetworkPointToPoint.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/point-to-point", data.getPath()))
 	}
-	if !data.CostConfigValue.IsNull() {
+	if !data.Cost.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/cost-config/value", data.getPath()))
 	}
 	return deletePaths

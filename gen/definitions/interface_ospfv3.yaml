@@ -28,5 +28,5 @@ attributes:
     example: true
   - yang_name: cost-config/cost-options/value/value
     xpath: cost-config/value
-    tf_name: cost_config_value
+    tf_name: cost
     example: 1000

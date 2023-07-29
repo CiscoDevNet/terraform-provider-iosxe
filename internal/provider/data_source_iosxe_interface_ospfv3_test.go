@@ -28,7 +28,7 @@ import (
 func TestAccDataSourceIosxeInterfaceOSPFv3(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "network_point_to_point", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "cost_config_value", "1000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospfv3.test", "cost", "1000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -47,7 +47,7 @@ func testAccDataSourceIosxeInterfaceOSPFv3Config() string {
 	config += `	type = "GigabitEthernet"` + "\n"
 	config += `	name = "1"` + "\n"
 	config += `	network_point_to_point = true` + "\n"
-	config += `	cost_config_value = 1000` + "\n"
+	config += `	cost = 1000` + "\n"
 	config += `}` + "\n"
 
 	config += `

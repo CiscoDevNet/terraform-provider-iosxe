@@ -17,7 +17,7 @@ resource "iosxe_interface_ospfv3" "example" {
   type                   = "GigabitEthernet"
   name                   = "1"
   network_point_to_point = true
-  cost_config_value      = 1000
+  cost                   = 1000
 }
 ```
 
@@ -32,7 +32,7 @@ resource "iosxe_interface_ospfv3" "example" {
 
 ### Optional
 
-- `cost_config_value` (Number) Static route cost value of the interface
+- `cost` (Number) Static route cost value of the interface
   - Range: `1`-`65535`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
