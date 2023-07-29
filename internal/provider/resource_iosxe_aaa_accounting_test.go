@@ -28,7 +28,10 @@ import (
 func TestAccIosxeAAAAccounting(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "update_newinfo_periodic", "2880"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identity_default_start_stop_group", "RADIUS-GROUP"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identity_default_start_stop_group1", "RADIUS-GROUP"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identity_default_start_stop_group2", "RADIUS-GROUP2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identity_default_start_stop_group3", "RADIUS-GROUP3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identity_default_start_stop_group4", "RADIUS-GROUP4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "execs.0.name", "default"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "execs.0.start_stop_group1", "T-Group"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "networks.0.id", "network1"))
@@ -64,7 +67,10 @@ func testAccIosxeAAAAccountingConfig_minimum() string {
 func testAccIosxeAAAAccountingConfig_all() string {
 	config := `resource "iosxe_aaa_accounting" "test" {` + "\n"
 	config += `	update_newinfo_periodic = 2880` + "\n"
-	config += `	identity_default_start_stop_group = "RADIUS-GROUP"` + "\n"
+	config += `	identity_default_start_stop_group1 = "RADIUS-GROUP"` + "\n"
+	config += `	identity_default_start_stop_group2 = "RADIUS-GROUP2"` + "\n"
+	config += `	identity_default_start_stop_group3 = "RADIUS-GROUP3"` + "\n"
+	config += `	identity_default_start_stop_group4 = "RADIUS-GROUP4"` + "\n"
 	config += `	execs = [{` + "\n"
 	config += `		name = "default"` + "\n"
 	config += `		start_stop_group1 = "T-Group"` + "\n"

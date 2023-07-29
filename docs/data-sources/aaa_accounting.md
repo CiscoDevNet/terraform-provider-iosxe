@@ -28,7 +28,10 @@ data "iosxe_aaa_accounting" "example" {
 
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `id` (String) The path of the retrieved object.
-- `identity_default_start_stop_group` (String) Use Server-group
+- `identity_default_start_stop_group1` (String) Use Server-group
+- `identity_default_start_stop_group2` (String) Use Server-group
+- `identity_default_start_stop_group3` (String) Use Server-group
+- `identity_default_start_stop_group4` (String) Use Server-group
 - `networks` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--networks))
 - `system_guarantee_first` (Boolean) Guarantee system accounting as first record.
 - `update_newinfo_periodic` (Number) Periodic intervals to send accounting update records(in minutes)

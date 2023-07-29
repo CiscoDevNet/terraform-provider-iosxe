@@ -80,7 +80,19 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 					int64validator.Between(1, 71582),
 				},
 			},
-			"identity_default_start_stop_group": schema.StringAttribute{
+			"identity_default_start_stop_group1": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"identity_default_start_stop_group2": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"identity_default_start_stop_group3": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+				Optional:            true,
+			},
+			"identity_default_start_stop_group4": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 				Optional:            true,
 			},

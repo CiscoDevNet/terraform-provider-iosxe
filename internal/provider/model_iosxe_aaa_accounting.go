@@ -34,24 +34,30 @@ import (
 )
 
 type AAAAccounting struct {
-	Device                        types.String            `tfsdk:"device"`
-	Id                            types.String            `tfsdk:"id"`
-	DeleteMode                    types.String            `tfsdk:"delete_mode"`
-	UpdateNewinfoPeriodic         types.Int64             `tfsdk:"update_newinfo_periodic"`
-	IdentityDefaultStartStopGroup types.String            `tfsdk:"identity_default_start_stop_group"`
-	Execs                         []AAAAccountingExecs    `tfsdk:"execs"`
-	Networks                      []AAAAccountingNetworks `tfsdk:"networks"`
-	SystemGuaranteeFirst          types.Bool              `tfsdk:"system_guarantee_first"`
+	Device                         types.String            `tfsdk:"device"`
+	Id                             types.String            `tfsdk:"id"`
+	DeleteMode                     types.String            `tfsdk:"delete_mode"`
+	UpdateNewinfoPeriodic          types.Int64             `tfsdk:"update_newinfo_periodic"`
+	IdentityDefaultStartStopGroup1 types.String            `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2 types.String            `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3 types.String            `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4 types.String            `tfsdk:"identity_default_start_stop_group4"`
+	Execs                          []AAAAccountingExecs    `tfsdk:"execs"`
+	Networks                       []AAAAccountingNetworks `tfsdk:"networks"`
+	SystemGuaranteeFirst           types.Bool              `tfsdk:"system_guarantee_first"`
 }
 
 type AAAAccountingData struct {
-	Device                        types.String            `tfsdk:"device"`
-	Id                            types.String            `tfsdk:"id"`
-	UpdateNewinfoPeriodic         types.Int64             `tfsdk:"update_newinfo_periodic"`
-	IdentityDefaultStartStopGroup types.String            `tfsdk:"identity_default_start_stop_group"`
-	Execs                         []AAAAccountingExecs    `tfsdk:"execs"`
-	Networks                      []AAAAccountingNetworks `tfsdk:"networks"`
-	SystemGuaranteeFirst          types.Bool              `tfsdk:"system_guarantee_first"`
+	Device                         types.String            `tfsdk:"device"`
+	Id                             types.String            `tfsdk:"id"`
+	UpdateNewinfoPeriodic          types.Int64             `tfsdk:"update_newinfo_periodic"`
+	IdentityDefaultStartStopGroup1 types.String            `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2 types.String            `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3 types.String            `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4 types.String            `tfsdk:"identity_default_start_stop_group4"`
+	Execs                          []AAAAccountingExecs    `tfsdk:"execs"`
+	Networks                       []AAAAccountingNetworks `tfsdk:"networks"`
+	SystemGuaranteeFirst           types.Bool              `tfsdk:"system_guarantee_first"`
 }
 type AAAAccountingExecs struct {
 	Name            types.String `tfsdk:"name"`
@@ -87,8 +93,17 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 	if !data.UpdateNewinfoPeriodic.IsNull() && !data.UpdateNewinfoPeriodic.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update.newinfo.periodic", strconv.FormatInt(data.UpdateNewinfoPeriodic.ValueInt64(), 10))
 	}
-	if !data.IdentityDefaultStartStopGroup.IsNull() && !data.IdentityDefaultStartStopGroup.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.default.start-stop.group", data.IdentityDefaultStartStopGroup.ValueString())
+	if !data.IdentityDefaultStartStopGroup1.IsNull() && !data.IdentityDefaultStartStopGroup1.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.default.start-stop.group-config.group1.group", data.IdentityDefaultStartStopGroup1.ValueString())
+	}
+	if !data.IdentityDefaultStartStopGroup2.IsNull() && !data.IdentityDefaultStartStopGroup2.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.default.start-stop.group-config.group2.group", data.IdentityDefaultStartStopGroup2.ValueString())
+	}
+	if !data.IdentityDefaultStartStopGroup3.IsNull() && !data.IdentityDefaultStartStopGroup3.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.default.start-stop.group-config.group3.group", data.IdentityDefaultStartStopGroup3.ValueString())
+	}
+	if !data.IdentityDefaultStartStopGroup4.IsNull() && !data.IdentityDefaultStartStopGroup4.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.default.start-stop.group-config.group4.group", data.IdentityDefaultStartStopGroup4.ValueString())
 	}
 	if !data.SystemGuaranteeFirst.IsNull() && !data.SystemGuaranteeFirst.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"system.guarantee-first", data.SystemGuaranteeFirst.ValueBool())
@@ -131,10 +146,25 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.UpdateNewinfoPeriodic = types.Int64Null()
 	}
-	if value := res.Get(prefix + "identity.default.start-stop.group"); value.Exists() && !data.IdentityDefaultStartStopGroup.IsNull() {
-		data.IdentityDefaultStartStopGroup = types.StringValue(value.String())
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group1.group"); value.Exists() && !data.IdentityDefaultStartStopGroup1.IsNull() {
+		data.IdentityDefaultStartStopGroup1 = types.StringValue(value.String())
 	} else {
-		data.IdentityDefaultStartStopGroup = types.StringNull()
+		data.IdentityDefaultStartStopGroup1 = types.StringNull()
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group2.group"); value.Exists() && !data.IdentityDefaultStartStopGroup2.IsNull() {
+		data.IdentityDefaultStartStopGroup2 = types.StringValue(value.String())
+	} else {
+		data.IdentityDefaultStartStopGroup2 = types.StringNull()
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group3.group"); value.Exists() && !data.IdentityDefaultStartStopGroup3.IsNull() {
+		data.IdentityDefaultStartStopGroup3 = types.StringValue(value.String())
+	} else {
+		data.IdentityDefaultStartStopGroup3 = types.StringNull()
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group4.group"); value.Exists() && !data.IdentityDefaultStartStopGroup4.IsNull() {
+		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
+	} else {
+		data.IdentityDefaultStartStopGroup4 = types.StringNull()
 	}
 	for i := range data.Execs {
 		keys := [...]string{"name"}
@@ -226,8 +256,17 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "update.newinfo.periodic"); value.Exists() {
 		data.UpdateNewinfoPeriodic = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "identity.default.start-stop.group"); value.Exists() {
-		data.IdentityDefaultStartStopGroup = types.StringValue(value.String())
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group1.group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup1 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group2.group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup2 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group3.group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup3 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group4.group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "exec"); value.Exists() {
 		data.Execs = make([]AAAAccountingExecs, 0)
@@ -333,8 +372,17 @@ func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 	if !data.UpdateNewinfoPeriodic.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/update/newinfo/periodic", data.getPath()))
 	}
-	if !data.IdentityDefaultStartStopGroup.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/default/start-stop/group", data.getPath()))
+	if !data.IdentityDefaultStartStopGroup1.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/default/start-stop/group-config/group1/group", data.getPath()))
+	}
+	if !data.IdentityDefaultStartStopGroup2.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/default/start-stop/group-config/group2/group", data.getPath()))
+	}
+	if !data.IdentityDefaultStartStopGroup3.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/default/start-stop/group-config/group3/group", data.getPath()))
+	}
+	if !data.IdentityDefaultStartStopGroup4.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/default/start-stop/group-config/group4/group", data.getPath()))
 	}
 	for i := range data.Execs {
 		keyValues := [...]string{data.Execs[i].Name.ValueString()}

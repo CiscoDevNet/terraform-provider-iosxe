@@ -67,7 +67,19 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Periodic intervals to send accounting update records(in minutes)",
 				Computed:            true,
 			},
-			"identity_default_start_stop_group": schema.StringAttribute{
+			"identity_default_start_stop_group1": schema.StringAttribute{
+				MarkdownDescription: "Use Server-group",
+				Computed:            true,
+			},
+			"identity_default_start_stop_group2": schema.StringAttribute{
+				MarkdownDescription: "Use Server-group",
+				Computed:            true,
+			},
+			"identity_default_start_stop_group3": schema.StringAttribute{
+				MarkdownDescription: "Use Server-group",
+				Computed:            true,
+			},
+			"identity_default_start_stop_group4": schema.StringAttribute{
 				MarkdownDescription: "Use Server-group",
 				Computed:            true,
 			},
