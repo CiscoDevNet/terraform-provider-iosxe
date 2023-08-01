@@ -216,6 +216,14 @@ func (d *AccessListExtendedDataSource) Schema(ctx context.Context, req datasourc
 							MarkdownDescription: "Match packets with given TOS value",
 							Computed:            true,
 						},
+						"log": schema.BoolAttribute{
+							MarkdownDescription: "Log matches against this entry",
+							Computed:            true,
+						},
+						"log_input": schema.BoolAttribute{
+							MarkdownDescription: "Log matches against this entry, including input interface",
+							Computed:            true,
+						},
 					},
 				},
 			},

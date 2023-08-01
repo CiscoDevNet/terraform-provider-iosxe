@@ -84,6 +84,8 @@ type AccessListExtendedEntries struct {
 	Fragments                  types.Bool   `tfsdk:"fragments"`
 	Precedence                 types.String `tfsdk:"precedence"`
 	Tos                        types.String `tfsdk:"tos"`
+	Log                        types.Bool   `tfsdk:"log"`
+	LogInput                   types.Bool   `tfsdk:"log_input"`
 }
 
 func (data AccessListExtended) getPath() string {
@@ -240,6 +242,16 @@ func (data AccessListExtended) toBody(ctx context.Context) string {
 			}
 			if !item.Tos.IsNull() && !item.Tos.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.tos", item.Tos.ValueString())
+			}
+			if !item.Log.IsNull() && !item.Log.IsUnknown() {
+				if item.Log.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.log", map[string]string{})
+				}
+			}
+			if !item.LogInput.IsNull() && !item.LogInput.IsUnknown() {
+				if item.LogInput.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.log-input", map[string]string{})
+				}
 			}
 		}
 	}
@@ -499,6 +511,24 @@ func (data *AccessListExtended) updateFromBody(ctx context.Context, res gjson.Re
 		} else {
 			data.Entries[i].Tos = types.StringNull()
 		}
+		if value := r.Get("ace-rule.log"); !data.Entries[i].Log.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Log = types.BoolValue(true)
+			} else {
+				data.Entries[i].Log = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Log = types.BoolNull()
+		}
+		if value := r.Get("ace-rule.log-input"); !data.Entries[i].LogInput.IsNull() {
+			if value.Exists() {
+				data.Entries[i].LogInput = types.BoolValue(true)
+			} else {
+				data.Entries[i].LogInput = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].LogInput = types.BoolNull()
+		}
 	}
 }
 
@@ -639,6 +669,16 @@ func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Resu
 			if cValue := v.Get("ace-rule.tos"); cValue.Exists() {
 				item.Tos = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("ace-rule.log"); cValue.Exists() {
+				item.Log = types.BoolValue(true)
+			} else {
+				item.Log = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.log-input"); cValue.Exists() {
+				item.LogInput = types.BoolValue(true)
+			} else {
+				item.LogInput = types.BoolValue(false)
+			}
 			data.Entries = append(data.Entries, item)
 			return true
 		})
@@ -709,6 +749,12 @@ func (data *AccessListExtended) getEmptyLeafsDelete(ctx context.Context) []strin
 		}
 		if !data.Entries[i].Fragments.IsNull() && !data.Entries[i].Fragments.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/fragments", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Entries[i].Log.IsNull() && !data.Entries[i].Log.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/log", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Entries[i].LogInput.IsNull() && !data.Entries[i].LogInput.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/log-input", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 	return emptyLeafsDelete

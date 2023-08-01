@@ -96,6 +96,10 @@ func (d *AccessListStandardDataSource) Schema(ctx context.Context, req datasourc
 							MarkdownDescription: "A single source host",
 							Computed:            true,
 						},
+						"deny_log": schema.BoolAttribute{
+							MarkdownDescription: "Log matches against this entry",
+							Computed:            true,
+						},
 						"permit_prefix": schema.StringAttribute{
 							MarkdownDescription: "Network address prefix",
 							Computed:            true,
@@ -110,6 +114,10 @@ func (d *AccessListStandardDataSource) Schema(ctx context.Context, req datasourc
 						},
 						"permit_host": schema.StringAttribute{
 							MarkdownDescription: "A single source host",
+							Computed:            true,
+						},
+						"permit_log": schema.BoolAttribute{
+							MarkdownDescription: "Log matches against this entry",
 							Computed:            true,
 						},
 					},

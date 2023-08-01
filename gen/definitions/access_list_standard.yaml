@@ -33,6 +33,10 @@ attributes:
         tf_name: deny_host
         example: 10.1.1.1
         exclude_test: true
+      - yang_name: deny-permit/deny/deny/std-ace/log
+        xpath: deny/std-ace/log
+        tf_name: deny_log
+        example: true
       - yang_name: deny-permit/permit/permit/std-ace/source-choice/ipv4-prefix-case/ipv4-address-prefix
         xpath: permit/std-ace/ipv4-address-prefix
         tf_name: permit_prefix
@@ -52,4 +56,9 @@ attributes:
         xpath: permit/std-ace/host-address
         tf_name: permit_host
         example: 10.1.1.1
+        exclude_test: true
+      - yang_name: deny-permit/permit/permit/std-ace/log
+        xpath: permit/std-ace/log
+        tf_name: permit_log
+        example: true
         exclude_test: true

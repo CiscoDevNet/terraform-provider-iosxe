@@ -15,6 +15,8 @@
 - Add `iosxe_crypto_ikev2_keyring` resource and data source
 - Add `iosxe_crypto_ikev2_policy` resource and data source
 - Add `iosxe_crypto_ikev2_profile` resource and data source
+- Add `deny_log` and `permit_log` attributes to `iosxe_access_list_standard` resource and data source
+- Add `log` and `log_input` attributes to `iosxe_access_list_extended` resource and data source
 
 ## 0.3.2
 

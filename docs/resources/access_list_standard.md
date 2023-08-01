@@ -21,6 +21,7 @@ resource "iosxe_access_list_standard" "example" {
       remark           = "Description"
       deny_prefix      = "10.0.0.0"
       deny_prefix_mask = "0.0.0.255"
+      deny_log         = true
     }
   ]
 }
@@ -53,10 +54,12 @@ Optional:
 
 - `deny_any` (Boolean) Any source prefix
 - `deny_host` (String) A single source host
+- `deny_log` (Boolean) Log matches against this entry
 - `deny_prefix` (String) Network address prefix
 - `deny_prefix_mask` (String) Wildcard bits
 - `permit_any` (Boolean) Any source prefix
 - `permit_host` (String) A single source host
+- `permit_log` (Boolean) Log matches against this entry
 - `permit_prefix` (String) Network address prefix
 - `permit_prefix_mask` (String) Wildcard bits
 - `remark` (String) Access list entry comment

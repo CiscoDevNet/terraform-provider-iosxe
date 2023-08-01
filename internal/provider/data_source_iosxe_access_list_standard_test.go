@@ -31,6 +31,7 @@ func TestAccDataSourceIosxeAccessListStandard(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_standard.test", "entries.0.remark", "Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_standard.test", "entries.0.deny_prefix", "10.0.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_standard.test", "entries.0.deny_prefix_mask", "0.0.0.255"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_standard.test", "entries.0.deny_log", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -51,6 +52,7 @@ func testAccDataSourceIosxeAccessListStandardConfig() string {
 	config += `		remark = "Description"` + "\n"
 	config += `		deny_prefix = "10.0.0.0"` + "\n"
 	config += `		deny_prefix_mask = "0.0.0.255"` + "\n"
+	config += `		deny_log = true` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 

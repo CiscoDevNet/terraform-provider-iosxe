@@ -54,10 +54,12 @@ type AccessListStandardEntries struct {
 	DenyPrefixMask   types.String `tfsdk:"deny_prefix_mask"`
 	DenyAny          types.Bool   `tfsdk:"deny_any"`
 	DenyHost         types.String `tfsdk:"deny_host"`
+	DenyLog          types.Bool   `tfsdk:"deny_log"`
 	PermitPrefix     types.String `tfsdk:"permit_prefix"`
 	PermitPrefixMask types.String `tfsdk:"permit_prefix_mask"`
 	PermitAny        types.Bool   `tfsdk:"permit_any"`
 	PermitHost       types.String `tfsdk:"permit_host"`
+	PermitLog        types.Bool   `tfsdk:"permit_log"`
 }
 
 func (data AccessListStandard) getPath() string {
@@ -107,6 +109,11 @@ func (data AccessListStandard) toBody(ctx context.Context) string {
 			if !item.DenyHost.IsNull() && !item.DenyHost.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"deny.std-ace.host-address", item.DenyHost.ValueString())
 			}
+			if !item.DenyLog.IsNull() && !item.DenyLog.IsUnknown() {
+				if item.DenyLog.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"deny.std-ace.log", map[string]string{})
+				}
+			}
 			if !item.PermitPrefix.IsNull() && !item.PermitPrefix.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"permit.std-ace.ipv4-address-prefix", item.PermitPrefix.ValueString())
 			}
@@ -120,6 +127,11 @@ func (data AccessListStandard) toBody(ctx context.Context) string {
 			}
 			if !item.PermitHost.IsNull() && !item.PermitHost.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"permit.std-ace.host-address", item.PermitHost.ValueString())
+			}
+			if !item.PermitLog.IsNull() && !item.PermitLog.IsUnknown() {
+				if item.PermitLog.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"permit.std-ace.log", map[string]string{})
+				}
 			}
 		}
 	}
@@ -193,6 +205,15 @@ func (data *AccessListStandard) updateFromBody(ctx context.Context, res gjson.Re
 		} else {
 			data.Entries[i].DenyHost = types.StringNull()
 		}
+		if value := r.Get("deny.std-ace.log"); !data.Entries[i].DenyLog.IsNull() {
+			if value.Exists() {
+				data.Entries[i].DenyLog = types.BoolValue(true)
+			} else {
+				data.Entries[i].DenyLog = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].DenyLog = types.BoolNull()
+		}
 		if value := r.Get("permit.std-ace.ipv4-address-prefix"); value.Exists() && !data.Entries[i].PermitPrefix.IsNull() {
 			data.Entries[i].PermitPrefix = types.StringValue(value.String())
 		} else {
@@ -216,6 +237,15 @@ func (data *AccessListStandard) updateFromBody(ctx context.Context, res gjson.Re
 			data.Entries[i].PermitHost = types.StringValue(value.String())
 		} else {
 			data.Entries[i].PermitHost = types.StringNull()
+		}
+		if value := r.Get("permit.std-ace.log"); !data.Entries[i].PermitLog.IsNull() {
+			if value.Exists() {
+				data.Entries[i].PermitLog = types.BoolValue(true)
+			} else {
+				data.Entries[i].PermitLog = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].PermitLog = types.BoolNull()
 		}
 	}
 }
@@ -249,6 +279,11 @@ func (data *AccessListStandardData) fromBody(ctx context.Context, res gjson.Resu
 			if cValue := v.Get("deny.std-ace.host-address"); cValue.Exists() {
 				item.DenyHost = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("deny.std-ace.log"); cValue.Exists() {
+				item.DenyLog = types.BoolValue(true)
+			} else {
+				item.DenyLog = types.BoolValue(false)
+			}
 			if cValue := v.Get("permit.std-ace.ipv4-address-prefix"); cValue.Exists() {
 				item.PermitPrefix = types.StringValue(cValue.String())
 			}
@@ -262,6 +297,11 @@ func (data *AccessListStandardData) fromBody(ctx context.Context, res gjson.Resu
 			}
 			if cValue := v.Get("permit.std-ace.host-address"); cValue.Exists() {
 				item.PermitHost = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("permit.std-ace.log"); cValue.Exists() {
+				item.PermitLog = types.BoolValue(true)
+			} else {
+				item.PermitLog = types.BoolValue(false)
 			}
 			data.Entries = append(data.Entries, item)
 			return true
@@ -307,8 +347,14 @@ func (data *AccessListStandard) getEmptyLeafsDelete(ctx context.Context) []strin
 		if !data.Entries[i].DenyAny.IsNull() && !data.Entries[i].DenyAny.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/any", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
+		if !data.Entries[i].DenyLog.IsNull() && !data.Entries[i].DenyLog.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/log", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 		if !data.Entries[i].PermitAny.IsNull() && !data.Entries[i].PermitAny.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/any", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Entries[i].PermitLog.IsNull() && !data.Entries[i].PermitLog.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/log", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 	return emptyLeafsDelete

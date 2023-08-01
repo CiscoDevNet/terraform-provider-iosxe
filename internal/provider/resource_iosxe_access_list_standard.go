@@ -118,6 +118,10 @@ func (r *AccessListStandardResource) Schema(ctx context.Context, req resource.Sc
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 							},
 						},
+						"deny_log": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
+							Optional:            true,
+						},
 						"permit_prefix": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Network address prefix").String,
 							Optional:            true,
@@ -142,6 +146,10 @@ func (r *AccessListStandardResource) Schema(ctx context.Context, req resource.Sc
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 							},
+						},
+						"permit_log": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
+							Optional:            true,
 						},
 					},
 				},

@@ -56,6 +56,8 @@ Read-Only:
 - `established` (Boolean) Match established connections
 - `fin` (Boolean) Match on the FIN bit
 - `fragments` (Boolean) Check non-initial fragments
+- `log` (Boolean) Log matches against this entry
+- `log_input` (Boolean) Log matches against this entry, including input interface
 - `precedence` (String) Match packets with given precedence value
 - `psh` (Boolean) Match on the PSH bit
 - `remark` (String) Access list entry comment

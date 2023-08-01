@@ -154,3 +154,10 @@ attributes:
         tf_name: tos
         example: 3
         exclude_test: true
+      - yang_name: ace-rule/log
+        tf_name: log
+        example: true
+      - yang_name: ace-rule/log-input
+        tf_name: log_input
+        example: true
+        exclude_test: true

@@ -19,6 +19,7 @@ resource "iosxe_access_list_extended" "example" {
       syn                         = true
       urg                         = true
       dscp                        = "46"
+      log                         = true
     }
   ]
 }

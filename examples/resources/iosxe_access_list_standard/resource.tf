@@ -6,6 +6,7 @@ resource "iosxe_access_list_standard" "example" {
       remark           = "Description"
       deny_prefix      = "10.0.0.0"
       deny_prefix_mask = "0.0.0.255"
+      deny_log         = true
     }
   ]
 }

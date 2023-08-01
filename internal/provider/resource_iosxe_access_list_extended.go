@@ -250,6 +250,14 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given TOS value").String,
 							Optional:            true,
 						},
+						"log": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
+							Optional:            true,
+						},
+						"log_input": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry, including input interface").String,
+							Optional:            true,
+						},
 					},
 				},
 			},
