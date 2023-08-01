@@ -93,11 +93,11 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 				MarkdownDescription: helpers.NewAttributeDescription("Pre-Shared Key").String,
 				Optional:            true,
 			},
-			"identity_local_identity_address_case_address": schema.StringAttribute{
+			"identity_local_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("address").String,
 				Optional:            true,
 			},
-			"identity_local_identity_key_id_case_key_id": schema.StringAttribute{
+			"identity_local_key_id": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("key-id opaque string - proprietary types of identification key-id string").String,
 				Optional:            true,
 			},

@@ -48,24 +48,24 @@ type CryptoIKEv2KeyringData struct {
 	Peers  []CryptoIKEv2KeyringPeers `tfsdk:"peers"`
 }
 type CryptoIKEv2KeyringPeers struct {
-	Name                                                   types.String `tfsdk:"name"`
-	Description                                            types.String `tfsdk:"description"`
-	Hostname                                               types.String `tfsdk:"hostname"`
-	Ipv4Address                                            types.String `tfsdk:"ipv4_address"`
-	Ipv4Mask                                               types.String `tfsdk:"ipv4_mask"`
-	Ipv6Prefix                                             types.String `tfsdk:"ipv6_prefix"`
-	IdentityIdentityKeyIdKeyIdNumber                       types.String `tfsdk:"identity_identity_key_id_key_id_number"`
-	IdentityIdentityAddressAddressType                     types.String `tfsdk:"identity_identity_address_address_type"`
-	IdentityIdentityEmailEmailOptionNameDomainNameName     types.String `tfsdk:"identity_identity_email_email_option_name_domain_name_name"`
-	IdentityIdentityEmailEmailOptionNameDomainDomainDomain types.String `tfsdk:"identity_identity_email_email_option_name_domain_domain_domain"`
-	IdentityIdentityFqdnFqdnOptionNameDomainNameName       types.String `tfsdk:"identity_identity_fqdn_fqdn_option_name_domain_name_name"`
-	IdentityIdentityFqdnFqdnOptionNameDomainDomainDomain   types.String `tfsdk:"identity_identity_fqdn_fqdn_option_name_domain_domain_domain"`
-	PreSharedKeyLocalEncryption                            types.String `tfsdk:"pre_shared_key_local_encryption"`
-	PreSharedKeyLocal                                      types.String `tfsdk:"pre_shared_key_local"`
-	PreSharedKeyRemoteEncryption                           types.String `tfsdk:"pre_shared_key_remote_encryption"`
-	PreSharedKeyRemote                                     types.String `tfsdk:"pre_shared_key_remote"`
-	PreSharedKeyEncryption                                 types.String `tfsdk:"pre_shared_key_encryption"`
-	PreSharedKey                                           types.String `tfsdk:"pre_shared_key"`
+	Name                         types.String `tfsdk:"name"`
+	Description                  types.String `tfsdk:"description"`
+	Hostname                     types.String `tfsdk:"hostname"`
+	Ipv4Address                  types.String `tfsdk:"ipv4_address"`
+	Ipv4Mask                     types.String `tfsdk:"ipv4_mask"`
+	Ipv6Prefix                   types.String `tfsdk:"ipv6_prefix"`
+	IdentityKeyId                types.String `tfsdk:"identity_key_id"`
+	IdentityAddress              types.String `tfsdk:"identity_address"`
+	IdentityEmailName            types.String `tfsdk:"identity_email_name"`
+	IdentityEmailDomain          types.String `tfsdk:"identity_email_domain"`
+	IdentityFqdnName             types.String `tfsdk:"identity_fqdn_name"`
+	IdentityFqdnDomain           types.String `tfsdk:"identity_fqdn_domain"`
+	PreSharedKeyLocalEncryption  types.String `tfsdk:"pre_shared_key_local_encryption"`
+	PreSharedKeyLocal            types.String `tfsdk:"pre_shared_key_local"`
+	PreSharedKeyRemoteEncryption types.String `tfsdk:"pre_shared_key_remote_encryption"`
+	PreSharedKeyRemote           types.String `tfsdk:"pre_shared_key_remote"`
+	PreSharedKeyEncryption       types.String `tfsdk:"pre_shared_key_encryption"`
+	PreSharedKey                 types.String `tfsdk:"pre_shared_key"`
 }
 
 func (data CryptoIKEv2Keyring) getPath() string {
@@ -113,23 +113,23 @@ func (data CryptoIKEv2Keyring) toBody(ctx context.Context) string {
 			if !item.Ipv6Prefix.IsNull() && !item.Ipv6Prefix.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"address.ipv6-prefix", item.Ipv6Prefix.ValueString())
 			}
-			if !item.IdentityIdentityKeyIdKeyIdNumber.IsNull() && !item.IdentityIdentityKeyIdKeyIdNumber.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.key-id-number", item.IdentityIdentityKeyIdKeyIdNumber.ValueString())
+			if !item.IdentityKeyId.IsNull() && !item.IdentityKeyId.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.key-id-number", item.IdentityKeyId.ValueString())
 			}
-			if !item.IdentityIdentityAddressAddressType.IsNull() && !item.IdentityIdentityAddressAddressType.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.address-type", item.IdentityIdentityAddressAddressType.ValueString())
+			if !item.IdentityAddress.IsNull() && !item.IdentityAddress.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.address-type", item.IdentityAddress.ValueString())
 			}
-			if !item.IdentityIdentityEmailEmailOptionNameDomainNameName.IsNull() && !item.IdentityIdentityEmailEmailOptionNameDomainNameName.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.email-option.name", item.IdentityIdentityEmailEmailOptionNameDomainNameName.ValueString())
+			if !item.IdentityEmailName.IsNull() && !item.IdentityEmailName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.email-option.name", item.IdentityEmailName.ValueString())
 			}
-			if !item.IdentityIdentityEmailEmailOptionNameDomainDomainDomain.IsNull() && !item.IdentityIdentityEmailEmailOptionNameDomainDomainDomain.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.email-option.domain", item.IdentityIdentityEmailEmailOptionNameDomainDomainDomain.ValueString())
+			if !item.IdentityEmailDomain.IsNull() && !item.IdentityEmailDomain.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.email-option.domain", item.IdentityEmailDomain.ValueString())
 			}
-			if !item.IdentityIdentityFqdnFqdnOptionNameDomainNameName.IsNull() && !item.IdentityIdentityFqdnFqdnOptionNameDomainNameName.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.fqdn-option.name", item.IdentityIdentityFqdnFqdnOptionNameDomainNameName.ValueString())
+			if !item.IdentityFqdnName.IsNull() && !item.IdentityFqdnName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.fqdn-option.name", item.IdentityFqdnName.ValueString())
 			}
-			if !item.IdentityIdentityFqdnFqdnOptionNameDomainDomainDomain.IsNull() && !item.IdentityIdentityFqdnFqdnOptionNameDomainDomainDomain.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.fqdn-option.domain", item.IdentityIdentityFqdnFqdnOptionNameDomainDomainDomain.ValueString())
+			if !item.IdentityFqdnDomain.IsNull() && !item.IdentityFqdnDomain.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"identity.fqdn-option.domain", item.IdentityFqdnDomain.ValueString())
 			}
 			if !item.PreSharedKeyLocalEncryption.IsNull() && !item.PreSharedKeyLocalEncryption.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"pre-shared-key.local-option.encryption", item.PreSharedKeyLocalEncryption.ValueString())
@@ -217,35 +217,35 @@ func (data *CryptoIKEv2Keyring) updateFromBody(ctx context.Context, res gjson.Re
 		} else {
 			data.Peers[i].Ipv6Prefix = types.StringNull()
 		}
-		if value := r.Get("identity.key-id-number"); value.Exists() && !data.Peers[i].IdentityIdentityKeyIdKeyIdNumber.IsNull() {
-			data.Peers[i].IdentityIdentityKeyIdKeyIdNumber = types.StringValue(value.String())
+		if value := r.Get("identity.key-id-number"); value.Exists() && !data.Peers[i].IdentityKeyId.IsNull() {
+			data.Peers[i].IdentityKeyId = types.StringValue(value.String())
 		} else {
-			data.Peers[i].IdentityIdentityKeyIdKeyIdNumber = types.StringNull()
+			data.Peers[i].IdentityKeyId = types.StringNull()
 		}
-		if value := r.Get("identity.address-type"); value.Exists() && !data.Peers[i].IdentityIdentityAddressAddressType.IsNull() {
-			data.Peers[i].IdentityIdentityAddressAddressType = types.StringValue(value.String())
+		if value := r.Get("identity.address-type"); value.Exists() && !data.Peers[i].IdentityAddress.IsNull() {
+			data.Peers[i].IdentityAddress = types.StringValue(value.String())
 		} else {
-			data.Peers[i].IdentityIdentityAddressAddressType = types.StringNull()
+			data.Peers[i].IdentityAddress = types.StringNull()
 		}
-		if value := r.Get("identity.email-option.name"); value.Exists() && !data.Peers[i].IdentityIdentityEmailEmailOptionNameDomainNameName.IsNull() {
-			data.Peers[i].IdentityIdentityEmailEmailOptionNameDomainNameName = types.StringValue(value.String())
+		if value := r.Get("identity.email-option.name"); value.Exists() && !data.Peers[i].IdentityEmailName.IsNull() {
+			data.Peers[i].IdentityEmailName = types.StringValue(value.String())
 		} else {
-			data.Peers[i].IdentityIdentityEmailEmailOptionNameDomainNameName = types.StringNull()
+			data.Peers[i].IdentityEmailName = types.StringNull()
 		}
-		if value := r.Get("identity.email-option.domain"); value.Exists() && !data.Peers[i].IdentityIdentityEmailEmailOptionNameDomainDomainDomain.IsNull() {
-			data.Peers[i].IdentityIdentityEmailEmailOptionNameDomainDomainDomain = types.StringValue(value.String())
+		if value := r.Get("identity.email-option.domain"); value.Exists() && !data.Peers[i].IdentityEmailDomain.IsNull() {
+			data.Peers[i].IdentityEmailDomain = types.StringValue(value.String())
 		} else {
-			data.Peers[i].IdentityIdentityEmailEmailOptionNameDomainDomainDomain = types.StringNull()
+			data.Peers[i].IdentityEmailDomain = types.StringNull()
 		}
-		if value := r.Get("identity.fqdn-option.name"); value.Exists() && !data.Peers[i].IdentityIdentityFqdnFqdnOptionNameDomainNameName.IsNull() {
-			data.Peers[i].IdentityIdentityFqdnFqdnOptionNameDomainNameName = types.StringValue(value.String())
+		if value := r.Get("identity.fqdn-option.name"); value.Exists() && !data.Peers[i].IdentityFqdnName.IsNull() {
+			data.Peers[i].IdentityFqdnName = types.StringValue(value.String())
 		} else {
-			data.Peers[i].IdentityIdentityFqdnFqdnOptionNameDomainNameName = types.StringNull()
+			data.Peers[i].IdentityFqdnName = types.StringNull()
 		}
-		if value := r.Get("identity.fqdn-option.domain"); value.Exists() && !data.Peers[i].IdentityIdentityFqdnFqdnOptionNameDomainDomainDomain.IsNull() {
-			data.Peers[i].IdentityIdentityFqdnFqdnOptionNameDomainDomainDomain = types.StringValue(value.String())
+		if value := r.Get("identity.fqdn-option.domain"); value.Exists() && !data.Peers[i].IdentityFqdnDomain.IsNull() {
+			data.Peers[i].IdentityFqdnDomain = types.StringValue(value.String())
 		} else {
-			data.Peers[i].IdentityIdentityFqdnFqdnOptionNameDomainDomainDomain = types.StringNull()
+			data.Peers[i].IdentityFqdnDomain = types.StringNull()
 		}
 		if value := r.Get("pre-shared-key.local-option.encryption"); value.Exists() && !data.Peers[i].PreSharedKeyLocalEncryption.IsNull() {
 			data.Peers[i].PreSharedKeyLocalEncryption = types.StringValue(value.String())
@@ -308,22 +308,22 @@ func (data *CryptoIKEv2KeyringData) fromBody(ctx context.Context, res gjson.Resu
 				item.Ipv6Prefix = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("identity.key-id-number"); cValue.Exists() {
-				item.IdentityIdentityKeyIdKeyIdNumber = types.StringValue(cValue.String())
+				item.IdentityKeyId = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("identity.address-type"); cValue.Exists() {
-				item.IdentityIdentityAddressAddressType = types.StringValue(cValue.String())
+				item.IdentityAddress = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("identity.email-option.name"); cValue.Exists() {
-				item.IdentityIdentityEmailEmailOptionNameDomainNameName = types.StringValue(cValue.String())
+				item.IdentityEmailName = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("identity.email-option.domain"); cValue.Exists() {
-				item.IdentityIdentityEmailEmailOptionNameDomainDomainDomain = types.StringValue(cValue.String())
+				item.IdentityEmailDomain = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("identity.fqdn-option.name"); cValue.Exists() {
-				item.IdentityIdentityFqdnFqdnOptionNameDomainNameName = types.StringValue(cValue.String())
+				item.IdentityFqdnName = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("identity.fqdn-option.domain"); cValue.Exists() {
-				item.IdentityIdentityFqdnFqdnOptionNameDomainDomainDomain = types.StringValue(cValue.String())
+				item.IdentityFqdnDomain = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("pre-shared-key.local-option.encryption"); cValue.Exists() {
 				item.PreSharedKeyLocalEncryption = types.StringValue(cValue.String())

@@ -35,50 +35,50 @@ import (
 )
 
 type CryptoIKEv2Profile struct {
-	Device                                  types.String                                         `tfsdk:"device"`
-	Id                                      types.String                                         `tfsdk:"id"`
-	DeleteMode                              types.String                                         `tfsdk:"delete_mode"`
-	Name                                    types.String                                         `tfsdk:"name"`
-	Description                             types.String                                         `tfsdk:"description"`
-	AuthenticationRemotePreShare            types.Bool                                           `tfsdk:"authentication_remote_pre_share"`
-	AuthenticationLocalPreShare             types.Bool                                           `tfsdk:"authentication_local_pre_share"`
-	IdentityLocalIdentityAddressCaseAddress types.String                                         `tfsdk:"identity_local_identity_address_case_address"`
-	IdentityLocalIdentityKeyIdCaseKeyId     types.String                                         `tfsdk:"identity_local_identity_key_id_case_key_id"`
-	MatchInboundOnly                        types.Bool                                           `tfsdk:"match_inbound_only"`
-	MatchAddressLocalIp                     types.String                                         `tfsdk:"match_address_local_ip"`
-	MatchFvrf                               types.String                                         `tfsdk:"match_fvrf"`
-	MatchFvrfAny                            types.Bool                                           `tfsdk:"match_fvrf_any"`
-	MatchIdentityRemoteIpv4Addresses        []CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses `tfsdk:"match_identity_remote_ipv4_addresses"`
-	MatchIdentityRemoteIpv6Prefixes         types.List                                           `tfsdk:"match_identity_remote_ipv6_prefixes"`
-	MatchIdentityRemoteKeys                 types.List                                           `tfsdk:"match_identity_remote_keys"`
-	KeyringLocal                            types.String                                         `tfsdk:"keyring_local"`
-	DpdInterval                             types.Int64                                          `tfsdk:"dpd_interval"`
-	DpdRetry                                types.Int64                                          `tfsdk:"dpd_retry"`
-	DpdQuery                                types.String                                         `tfsdk:"dpd_query"`
-	ConfigExchangeRequest                   types.Bool                                           `tfsdk:"config_exchange_request"`
+	Device                           types.String                                         `tfsdk:"device"`
+	Id                               types.String                                         `tfsdk:"id"`
+	DeleteMode                       types.String                                         `tfsdk:"delete_mode"`
+	Name                             types.String                                         `tfsdk:"name"`
+	Description                      types.String                                         `tfsdk:"description"`
+	AuthenticationRemotePreShare     types.Bool                                           `tfsdk:"authentication_remote_pre_share"`
+	AuthenticationLocalPreShare      types.Bool                                           `tfsdk:"authentication_local_pre_share"`
+	IdentityLocalAddress             types.String                                         `tfsdk:"identity_local_address"`
+	IdentityLocalKeyId               types.String                                         `tfsdk:"identity_local_key_id"`
+	MatchInboundOnly                 types.Bool                                           `tfsdk:"match_inbound_only"`
+	MatchAddressLocalIp              types.String                                         `tfsdk:"match_address_local_ip"`
+	MatchFvrf                        types.String                                         `tfsdk:"match_fvrf"`
+	MatchFvrfAny                     types.Bool                                           `tfsdk:"match_fvrf_any"`
+	MatchIdentityRemoteIpv4Addresses []CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses `tfsdk:"match_identity_remote_ipv4_addresses"`
+	MatchIdentityRemoteIpv6Prefixes  types.List                                           `tfsdk:"match_identity_remote_ipv6_prefixes"`
+	MatchIdentityRemoteKeys          types.List                                           `tfsdk:"match_identity_remote_keys"`
+	KeyringLocal                     types.String                                         `tfsdk:"keyring_local"`
+	DpdInterval                      types.Int64                                          `tfsdk:"dpd_interval"`
+	DpdRetry                         types.Int64                                          `tfsdk:"dpd_retry"`
+	DpdQuery                         types.String                                         `tfsdk:"dpd_query"`
+	ConfigExchangeRequest            types.Bool                                           `tfsdk:"config_exchange_request"`
 }
 
 type CryptoIKEv2ProfileData struct {
-	Device                                  types.String                                         `tfsdk:"device"`
-	Id                                      types.String                                         `tfsdk:"id"`
-	Name                                    types.String                                         `tfsdk:"name"`
-	Description                             types.String                                         `tfsdk:"description"`
-	AuthenticationRemotePreShare            types.Bool                                           `tfsdk:"authentication_remote_pre_share"`
-	AuthenticationLocalPreShare             types.Bool                                           `tfsdk:"authentication_local_pre_share"`
-	IdentityLocalIdentityAddressCaseAddress types.String                                         `tfsdk:"identity_local_identity_address_case_address"`
-	IdentityLocalIdentityKeyIdCaseKeyId     types.String                                         `tfsdk:"identity_local_identity_key_id_case_key_id"`
-	MatchInboundOnly                        types.Bool                                           `tfsdk:"match_inbound_only"`
-	MatchAddressLocalIp                     types.String                                         `tfsdk:"match_address_local_ip"`
-	MatchFvrf                               types.String                                         `tfsdk:"match_fvrf"`
-	MatchFvrfAny                            types.Bool                                           `tfsdk:"match_fvrf_any"`
-	MatchIdentityRemoteIpv4Addresses        []CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses `tfsdk:"match_identity_remote_ipv4_addresses"`
-	MatchIdentityRemoteIpv6Prefixes         types.List                                           `tfsdk:"match_identity_remote_ipv6_prefixes"`
-	MatchIdentityRemoteKeys                 types.List                                           `tfsdk:"match_identity_remote_keys"`
-	KeyringLocal                            types.String                                         `tfsdk:"keyring_local"`
-	DpdInterval                             types.Int64                                          `tfsdk:"dpd_interval"`
-	DpdRetry                                types.Int64                                          `tfsdk:"dpd_retry"`
-	DpdQuery                                types.String                                         `tfsdk:"dpd_query"`
-	ConfigExchangeRequest                   types.Bool                                           `tfsdk:"config_exchange_request"`
+	Device                           types.String                                         `tfsdk:"device"`
+	Id                               types.String                                         `tfsdk:"id"`
+	Name                             types.String                                         `tfsdk:"name"`
+	Description                      types.String                                         `tfsdk:"description"`
+	AuthenticationRemotePreShare     types.Bool                                           `tfsdk:"authentication_remote_pre_share"`
+	AuthenticationLocalPreShare      types.Bool                                           `tfsdk:"authentication_local_pre_share"`
+	IdentityLocalAddress             types.String                                         `tfsdk:"identity_local_address"`
+	IdentityLocalKeyId               types.String                                         `tfsdk:"identity_local_key_id"`
+	MatchInboundOnly                 types.Bool                                           `tfsdk:"match_inbound_only"`
+	MatchAddressLocalIp              types.String                                         `tfsdk:"match_address_local_ip"`
+	MatchFvrf                        types.String                                         `tfsdk:"match_fvrf"`
+	MatchFvrfAny                     types.Bool                                           `tfsdk:"match_fvrf_any"`
+	MatchIdentityRemoteIpv4Addresses []CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses `tfsdk:"match_identity_remote_ipv4_addresses"`
+	MatchIdentityRemoteIpv6Prefixes  types.List                                           `tfsdk:"match_identity_remote_ipv6_prefixes"`
+	MatchIdentityRemoteKeys          types.List                                           `tfsdk:"match_identity_remote_keys"`
+	KeyringLocal                     types.String                                         `tfsdk:"keyring_local"`
+	DpdInterval                      types.Int64                                          `tfsdk:"dpd_interval"`
+	DpdRetry                         types.Int64                                          `tfsdk:"dpd_retry"`
+	DpdQuery                         types.String                                         `tfsdk:"dpd_query"`
+	ConfigExchangeRequest            types.Bool                                           `tfsdk:"config_exchange_request"`
 }
 type CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses struct {
 	Address types.String `tfsdk:"address"`
@@ -122,11 +122,11 @@ func (data CryptoIKEv2Profile) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.local.pre-share", map[string]string{})
 		}
 	}
-	if !data.IdentityLocalIdentityAddressCaseAddress.IsNull() && !data.IdentityLocalIdentityAddressCaseAddress.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.local.address", data.IdentityLocalIdentityAddressCaseAddress.ValueString())
+	if !data.IdentityLocalAddress.IsNull() && !data.IdentityLocalAddress.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.local.address", data.IdentityLocalAddress.ValueString())
 	}
-	if !data.IdentityLocalIdentityKeyIdCaseKeyId.IsNull() && !data.IdentityLocalIdentityKeyIdCaseKeyId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.local.key-id", data.IdentityLocalIdentityKeyIdCaseKeyId.ValueString())
+	if !data.IdentityLocalKeyId.IsNull() && !data.IdentityLocalKeyId.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"identity.local.key-id", data.IdentityLocalKeyId.ValueString())
 	}
 	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.IsUnknown() {
 		if data.MatchInboundOnly.ValueBool() {
@@ -216,15 +216,15 @@ func (data *CryptoIKEv2Profile) updateFromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.AuthenticationLocalPreShare = types.BoolNull()
 	}
-	if value := res.Get(prefix + "identity.local.address"); value.Exists() && !data.IdentityLocalIdentityAddressCaseAddress.IsNull() {
-		data.IdentityLocalIdentityAddressCaseAddress = types.StringValue(value.String())
+	if value := res.Get(prefix + "identity.local.address"); value.Exists() && !data.IdentityLocalAddress.IsNull() {
+		data.IdentityLocalAddress = types.StringValue(value.String())
 	} else {
-		data.IdentityLocalIdentityAddressCaseAddress = types.StringNull()
+		data.IdentityLocalAddress = types.StringNull()
 	}
-	if value := res.Get(prefix + "identity.local.key-id"); value.Exists() && !data.IdentityLocalIdentityKeyIdCaseKeyId.IsNull() {
-		data.IdentityLocalIdentityKeyIdCaseKeyId = types.StringValue(value.String())
+	if value := res.Get(prefix + "identity.local.key-id"); value.Exists() && !data.IdentityLocalKeyId.IsNull() {
+		data.IdentityLocalKeyId = types.StringValue(value.String())
 	} else {
-		data.IdentityLocalIdentityKeyIdCaseKeyId = types.StringNull()
+		data.IdentityLocalKeyId = types.StringNull()
 	}
 	if value := res.Get(prefix + "match.inbound-only"); !data.MatchInboundOnly.IsNull() {
 		if value.Exists() {
@@ -346,10 +346,10 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 		data.AuthenticationLocalPreShare = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "identity.local.address"); value.Exists() {
-		data.IdentityLocalIdentityAddressCaseAddress = types.StringValue(value.String())
+		data.IdentityLocalAddress = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "identity.local.key-id"); value.Exists() {
-		data.IdentityLocalIdentityKeyIdCaseKeyId = types.StringValue(value.String())
+		data.IdentityLocalKeyId = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "match.inbound-only"); value.Exists() {
 		data.MatchInboundOnly = types.BoolValue(true)
@@ -469,10 +469,10 @@ func (data *CryptoIKEv2Profile) getDeletePaths(ctx context.Context) []string {
 	if !data.AuthenticationLocalPreShare.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/local/pre-share", data.getPath()))
 	}
-	if !data.IdentityLocalIdentityAddressCaseAddress.IsNull() {
+	if !data.IdentityLocalAddress.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/local/address", data.getPath()))
 	}
-	if !data.IdentityLocalIdentityKeyIdCaseKeyId.IsNull() {
+	if !data.IdentityLocalKeyId.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/local/key-id", data.getPath()))
 	}
 	if !data.MatchInboundOnly.IsNull() {

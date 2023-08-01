@@ -112,27 +112,27 @@ func (r *CryptoIKEv2KeyringResource) Schema(ctx context.Context, req resource.Sc
 								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
 							},
 						},
-						"identity_identity_key_id_key_id_number": schema.StringAttribute{
+						"identity_key_id": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("proprietary types of identification (ID KEY ID)").String,
 							Optional:            true,
 						},
-						"identity_identity_address_address_type": schema.StringAttribute{
+						"identity_address": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("IP address").String,
 							Optional:            true,
 						},
-						"identity_identity_email_email_option_name_domain_name_name": schema.StringAttribute{
+						"identity_email_name": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify the name string").String,
 							Optional:            true,
 						},
-						"identity_identity_email_email_option_name_domain_domain_domain": schema.StringAttribute{
+						"identity_email_domain": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("email Domain Name").String,
 							Optional:            true,
 						},
-						"identity_identity_fqdn_fqdn_option_name_domain_name_name": schema.StringAttribute{
+						"identity_fqdn_name": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify the name string").String,
 							Optional:            true,
 						},
-						"identity_identity_fqdn_fqdn_option_name_domain_domain_domain": schema.StringAttribute{
+						"identity_fqdn_domain": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("email Domain Name").String,
 							Optional:            true,
 						},

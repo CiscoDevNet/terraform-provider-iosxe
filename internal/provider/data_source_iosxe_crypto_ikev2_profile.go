@@ -79,11 +79,11 @@ func (d *CryptoIKEv2ProfileDataSource) Schema(ctx context.Context, req datasourc
 				MarkdownDescription: "Pre-Shared Key",
 				Computed:            true,
 			},
-			"identity_local_identity_address_case_address": schema.StringAttribute{
+			"identity_local_address": schema.StringAttribute{
 				MarkdownDescription: "address",
 				Computed:            true,
 			},
-			"identity_local_identity_key_id_case_key_id": schema.StringAttribute{
+			"identity_local_key_id": schema.StringAttribute{
 				MarkdownDescription: "key-id opaque string - proprietary types of identification key-id string",
 				Computed:            true,
 			},

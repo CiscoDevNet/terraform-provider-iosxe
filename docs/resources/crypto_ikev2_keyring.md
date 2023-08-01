@@ -17,15 +17,15 @@ resource "iosxe_crypto_ikev2_keyring" "example" {
   name = "keyring1"
   peers = [
     {
-      name                                   = "peer1"
-      description                            = "My description"
-      ipv4_address                           = "1.2.3.4"
-      ipv4_mask                              = "255.255.255.248"
-      identity_identity_key_id_key_id_number = "key1"
-      pre_shared_key_local_encryption        = "6"
-      pre_shared_key_local                   = "cisco123"
-      pre_shared_key_remote_encryption       = "6"
-      pre_shared_key_remote                  = "cisco123"
+      name                             = "peer1"
+      description                      = "My description"
+      ipv4_address                     = "1.2.3.4"
+      ipv4_mask                        = "255.255.255.248"
+      identity_key_id                  = "key1"
+      pre_shared_key_local_encryption  = "6"
+      pre_shared_key_local             = "cisco123"
+      pre_shared_key_remote_encryption = "6"
+      pre_shared_key_remote            = "cisco123"
     }
   ]
 }
@@ -58,12 +58,12 @@ Optional:
 
 - `description` (String) Specify a description of this peer
 - `hostname` (String) Hostname of peer
-- `identity_identity_address_address_type` (String) IP address
-- `identity_identity_email_email_option_name_domain_domain_domain` (String) email Domain Name
-- `identity_identity_email_email_option_name_domain_name_name` (String) Specify the name string
-- `identity_identity_fqdn_fqdn_option_name_domain_domain_domain` (String) email Domain Name
-- `identity_identity_fqdn_fqdn_option_name_domain_name_name` (String) Specify the name string
-- `identity_identity_key_id_key_id_number` (String) proprietary types of identification (ID KEY ID)
+- `identity_address` (String) IP address
+- `identity_email_domain` (String) email Domain Name
+- `identity_email_name` (String) Specify the name string
+- `identity_fqdn_domain` (String) email Domain Name
+- `identity_fqdn_name` (String) Specify the name string
+- `identity_key_id` (String) proprietary types of identification (ID KEY ID)
 - `ipv4_address` (String)
 - `ipv4_mask` (String)
 - `ipv6_prefix` (String)

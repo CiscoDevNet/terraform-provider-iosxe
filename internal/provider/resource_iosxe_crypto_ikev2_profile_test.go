@@ -31,7 +31,7 @@ func TestAccIosxeCryptoIKEv2Profile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "description", "My description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "authentication_remote_pre_share", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "authentication_local_pre_share", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "identity_local_identity_key_id_case_key_id", "key1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "identity_local_key_id", "key1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "match_address_local_ip", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "match_fvrf_any", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "match_identity_remote_ipv4_addresses.0.address", "1.2.3.4"))
@@ -86,7 +86,7 @@ func testAccIosxeCryptoIKEv2ProfileConfig_all() string {
 	config += `	description = "My description"` + "\n"
 	config += `	authentication_remote_pre_share = true` + "\n"
 	config += `	authentication_local_pre_share = true` + "\n"
-	config += `	identity_local_identity_key_id_case_key_id = "key1"` + "\n"
+	config += `	identity_local_key_id = "key1"` + "\n"
 	config += `	match_address_local_ip = "1.2.3.4"` + "\n"
 	config += `	match_fvrf_any = true` + "\n"
 	config += `	match_identity_remote_ipv4_addresses = [{` + "\n"

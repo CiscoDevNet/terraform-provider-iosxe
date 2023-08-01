@@ -14,13 +14,13 @@ This resource can manage the Crypto IKEv2 Profile configuration.
 
 ```terraform
 resource "iosxe_crypto_ikev2_profile" "example" {
-  name                                       = "profile1"
-  description                                = "My description"
-  authentication_remote_pre_share            = true
-  authentication_local_pre_share             = true
-  identity_local_identity_key_id_case_key_id = "key1"
-  match_address_local_ip                     = "1.2.3.4"
-  match_fvrf_any                             = true
+  name                            = "profile1"
+  description                     = "My description"
+  authentication_remote_pre_share = true
+  authentication_local_pre_share  = true
+  identity_local_key_id           = "key1"
+  match_address_local_ip          = "1.2.3.4"
+  match_fvrf_any                  = true
   match_identity_remote_ipv4_addresses = [
     {
       address = "1.2.3.4"
@@ -55,8 +55,8 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `dpd_interval` (Number) - Range: `10`-`3600`
 - `dpd_query` (String) - Choices: `on-demand`, `periodic`
 - `dpd_retry` (Number) - Range: `2`-`60`
-- `identity_local_identity_address_case_address` (String) address
-- `identity_local_identity_key_id_case_key_id` (String) key-id opaque string - proprietary types of identification key-id string
+- `identity_local_address` (String) address
+- `identity_local_key_id` (String) key-id opaque string - proprietary types of identification key-id string
 - `keyring_local` (String) Keyring name
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)

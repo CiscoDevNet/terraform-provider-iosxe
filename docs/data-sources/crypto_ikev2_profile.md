@@ -39,8 +39,8 @@ data "iosxe_crypto_ikev2_profile" "example" {
 - `dpd_query` (String)
 - `dpd_retry` (Number)
 - `id` (String) The path of the retrieved object.
-- `identity_local_identity_address_case_address` (String) address
-- `identity_local_identity_key_id_case_key_id` (String) key-id opaque string - proprietary types of identification key-id string
+- `identity_local_address` (String) address
+- `identity_local_key_id` (String) key-id opaque string - proprietary types of identification key-id string
 - `keyring_local` (String) Keyring name
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)

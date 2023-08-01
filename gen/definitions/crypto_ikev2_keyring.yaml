@@ -33,31 +33,31 @@ attributes:
         exclude_test: true
       - yang_name: identity/identity/key-id/key-id-number
         xpath: identity/key-id-number
-        identity: identity_key_id
+        tf_name: identity_key_id
         example: key1
       - yang_name: identity/identity/address/address-type
         xpath: identity/address-type
-        identity: identity_address
+        tf_name: identity_address
         example: 3.4.5.6
         exclude_test: true
       - yang_name: identity/identity/email/email-option/name-domain/name/name
         xpath: identity/email-option/name
-        identity: identity_email_name
+        tf_name: identity_email_name
         example: abc
         exclude_test: true
       - yang_name: identity/identity/email/email-option/name-domain/domain/domain
         xpath: identity/email-option/domain
-        identity: identity_email_domain
+        tf_name: identity_email_domain
         example: cisco.com
         exclude_test: true
       - yang_name: identity/identity/fqdn/fqdn-option/name-domain/name/name
         xpath: identity/fqdn-option/name
-        identity: identity_fqdn_name
+        tf_name: identity_fqdn_name
         example: abc
         exclude_test: true
       - yang_name: identity/identity/fqdn/fqdn-option/name-domain/domain/domain
         xpath: identity/fqdn-option/domain
-        identity: identity_fqdn_domain
+        tf_name: identity_fqdn_domain
         example: cisco.com
         exclude_test: true
       - yang_name: pre-shared-key/local-option/encryption-hex/encryption-case/encryption

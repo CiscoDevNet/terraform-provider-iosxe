@@ -13,12 +13,12 @@ attributes:
     example: true
   - yang_name: identity/local/identity/address-case/address
     xpath: identity/local/address
-    identity: identity_local_address
+    tf_name: identity_local_address
     example: 3.4.5.6
     exclude_test: true
   - yang_name: identity/local/identity/key-id-case/key-id
     xpath: identity/local/key-id
-    identity: identity_local_key_id
+    tf_name: identity_local_key_id
     example: key1
   - yang_name: match/inbound-only
     example: true

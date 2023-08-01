@@ -32,7 +32,7 @@ func TestAccIosxeCryptoIKEv2Keyring(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.description", "My description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.ipv4_address", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.ipv4_mask", "255.255.255.248"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.identity_identity_key_id_key_id_number", "key1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.identity_key_id", "key1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.pre_shared_key_local_encryption", "6"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.pre_shared_key_local", "cisco123"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.pre_shared_key_remote_encryption", "6"))
@@ -72,7 +72,7 @@ func testAccIosxeCryptoIKEv2KeyringConfig_all() string {
 	config += `		description = "My description"` + "\n"
 	config += `		ipv4_address = "1.2.3.4"` + "\n"
 	config += `		ipv4_mask = "255.255.255.248"` + "\n"
-	config += `		identity_identity_key_id_key_id_number = "key1"` + "\n"
+	config += `		identity_key_id = "key1"` + "\n"
 	config += `		pre_shared_key_local_encryption = "6"` + "\n"
 	config += `		pre_shared_key_local = "cisco123"` + "\n"
 	config += `		pre_shared_key_remote_encryption = "6"` + "\n"

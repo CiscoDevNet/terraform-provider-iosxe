@@ -96,27 +96,27 @@ func (d *CryptoIKEv2KeyringDataSource) Schema(ctx context.Context, req datasourc
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"identity_identity_key_id_key_id_number": schema.StringAttribute{
+						"identity_key_id": schema.StringAttribute{
 							MarkdownDescription: "proprietary types of identification (ID KEY ID)",
 							Computed:            true,
 						},
-						"identity_identity_address_address_type": schema.StringAttribute{
+						"identity_address": schema.StringAttribute{
 							MarkdownDescription: "IP address",
 							Computed:            true,
 						},
-						"identity_identity_email_email_option_name_domain_name_name": schema.StringAttribute{
+						"identity_email_name": schema.StringAttribute{
 							MarkdownDescription: "Specify the name string",
 							Computed:            true,
 						},
-						"identity_identity_email_email_option_name_domain_domain_domain": schema.StringAttribute{
+						"identity_email_domain": schema.StringAttribute{
 							MarkdownDescription: "email Domain Name",
 							Computed:            true,
 						},
-						"identity_identity_fqdn_fqdn_option_name_domain_name_name": schema.StringAttribute{
+						"identity_fqdn_name": schema.StringAttribute{
 							MarkdownDescription: "Specify the name string",
 							Computed:            true,
 						},
-						"identity_identity_fqdn_fqdn_option_name_domain_domain_domain": schema.StringAttribute{
+						"identity_fqdn_domain": schema.StringAttribute{
 							MarkdownDescription: "email Domain Name",
 							Computed:            true,
 						},
