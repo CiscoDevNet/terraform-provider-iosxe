@@ -21,6 +21,7 @@ description: |-
 - Add `iosxe_crypto_ikev2_proposal` resource and data source
 - Add `iosxe_crypto_ipsec_profile` resource and data source
 - Add `iosxe_radius_server` resource and data source
+- Add `iosxe_crypto_ikev2_keyring` resource and data source
 
 ## 0.3.2
 
