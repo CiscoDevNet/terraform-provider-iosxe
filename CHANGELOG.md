@@ -1,4 +1,4 @@
-## 0.3.3 (unreleased)
+## 0.3.3
 
 - Add `iosxe_aaa` resource and data source
 - Add `iosxe_aaa_accounting` resource and data source
