@@ -33,26 +33,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &CryptoIKEv2PolicyDataSource{}
-	_ datasource.DataSourceWithConfigure = &CryptoIKEv2PolicyDataSource{}
+	_ datasource.DataSource              = &CryptoIKEv2ProfileDataSource{}
+	_ datasource.DataSourceWithConfigure = &CryptoIKEv2ProfileDataSource{}
 )
 
-func NewCryptoIKEv2PolicyDataSource() datasource.DataSource {
-	return &CryptoIKEv2PolicyDataSource{}
+func NewCryptoIKEv2ProfileDataSource() datasource.DataSource {
+	return &CryptoIKEv2ProfileDataSource{}
 }
 
-type CryptoIKEv2PolicyDataSource struct {
+type CryptoIKEv2ProfileDataSource struct {
 	clients map[string]*restconf.Client
 }
 
-func (d *CryptoIKEv2PolicyDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_crypto_ikev2_policy"
+func (d *CryptoIKEv2ProfileDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_crypto_ikev2_profile"
 }
 
-func (d *CryptoIKEv2PolicyDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *CryptoIKEv2ProfileDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Crypto IKEv2 Policy configuration.",
+		MarkdownDescription: "This data source can read the Crypto IKEv2 Profile configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -67,13 +67,32 @@ func (d *CryptoIKEv2PolicyDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"match_inbound_only": schema.BoolAttribute{
-				MarkdownDescription: "inbound only for controller",
+			"description": schema.StringAttribute{
+				MarkdownDescription: "Specify a description of this profile",
 				Computed:            true,
 			},
-			"match_address_local_ip": schema.ListAttribute{
-				MarkdownDescription: "Local address",
-				ElementType:         types.StringType,
+			"authentication_remote_pre_share": schema.BoolAttribute{
+				MarkdownDescription: "Pre-Shared Key",
+				Computed:            true,
+			},
+			"authentication_local_pre_share": schema.BoolAttribute{
+				MarkdownDescription: "Pre-Shared Key",
+				Computed:            true,
+			},
+			"identity_local_identity_address_case_address": schema.StringAttribute{
+				MarkdownDescription: "address",
+				Computed:            true,
+			},
+			"identity_local_identity_key_id_case_key_id": schema.StringAttribute{
+				MarkdownDescription: "key-id opaque string - proprietary types of identification key-id string",
+				Computed:            true,
+			},
+			"match_inbound_only": schema.BoolAttribute{
+				MarkdownDescription: "Match the profile for incoming connections only",
+				Computed:            true,
+			},
+			"match_address_local_ip": schema.StringAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
 			"match_fvrf": schema.StringAttribute{
@@ -84,23 +103,57 @@ func (d *CryptoIKEv2PolicyDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Any fvrf",
 				Computed:            true,
 			},
-			"proposals": schema.ListNestedAttribute{
-				MarkdownDescription: "Specify Proposal",
+			"match_identity_remote_ipv4_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"proposals": schema.StringAttribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"mask": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
 					},
 				},
 			},
+			"match_identity_remote_ipv6_prefixes": schema.ListAttribute{
+				MarkdownDescription: "",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"match_identity_remote_keys": schema.ListAttribute{
+				MarkdownDescription: "key-id opaque string",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"keyring_local": schema.StringAttribute{
+				MarkdownDescription: "Keyring name",
+				Computed:            true,
+			},
+			"dpd_interval": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"dpd_retry": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"dpd_query": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"config_exchange_request": schema.BoolAttribute{
+				MarkdownDescription: "enable config-exchange request",
+				Computed:            true,
+			},
 		},
 	}
 }
 
-func (d *CryptoIKEv2PolicyDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *CryptoIKEv2ProfileDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -108,8 +161,8 @@ func (d *CryptoIKEv2PolicyDataSource) Configure(_ context.Context, req datasourc
 	d.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (d *CryptoIKEv2PolicyDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config CryptoIKEv2PolicyData
+func (d *CryptoIKEv2ProfileDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config CryptoIKEv2ProfileData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -127,7 +180,7 @@ func (d *CryptoIKEv2PolicyDataSource) Read(ctx context.Context, req datasource.R
 
 	res, err := d.clients[config.Device.ValueString()].GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = CryptoIKEv2PolicyData{Device: config.Device}
+		config = CryptoIKEv2ProfileData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))

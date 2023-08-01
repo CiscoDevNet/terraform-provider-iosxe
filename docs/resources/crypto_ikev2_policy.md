@@ -37,8 +37,8 @@ resource "iosxe_crypto_ikev2_policy" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `match_address_local_ip` (List of String) Local address
+- `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf
-- `match_fvrf_name` (String)
 - `match_inbound_only` (Boolean) inbound only for controller
 
 ### Read-Only

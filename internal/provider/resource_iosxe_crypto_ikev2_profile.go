@@ -22,34 +22,38 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
 )
 
-func NewCryptoIKEv2PolicyResource() resource.Resource {
-	return &CryptoIKEv2PolicyResource{}
+func NewCryptoIKEv2ProfileResource() resource.Resource {
+	return &CryptoIKEv2ProfileResource{}
 }
 
-type CryptoIKEv2PolicyResource struct {
+type CryptoIKEv2ProfileResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *CryptoIKEv2PolicyResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_crypto_ikev2_policy"
+func (r *CryptoIKEv2ProfileResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_crypto_ikev2_profile"
 }
 
-func (r *CryptoIKEv2PolicyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Crypto IKEv2 Policy configuration.",
+		MarkdownDescription: "This resource can manage the Crypto IKEv2 Profile configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -63,6 +67,13 @@ func (r *CryptoIKEv2PolicyResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
+			"delete_mode": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("all", "attributes"),
+				},
+			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
@@ -70,13 +81,32 @@ func (r *CryptoIKEv2PolicyResource) Schema(ctx context.Context, req resource.Sch
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"match_inbound_only": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound only for controller").String,
+			"description": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify a description of this profile").String,
 				Optional:            true,
 			},
-			"match_address_local_ip": schema.ListAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Local address").String,
-				ElementType:         types.StringType,
+			"authentication_remote_pre_share": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Pre-Shared Key").String,
+				Optional:            true,
+			},
+			"authentication_local_pre_share": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Pre-Shared Key").String,
+				Optional:            true,
+			},
+			"identity_local_identity_address_case_address": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("address").String,
+				Optional:            true,
+			},
+			"identity_local_identity_key_id_case_key_id": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("key-id opaque string - proprietary types of identification key-id string").String,
+				Optional:            true,
+			},
+			"match_inbound_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match the profile for incoming connections only").String,
+				Optional:            true,
+			},
+			"match_address_local_ip": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"match_fvrf": schema.StringAttribute{
@@ -87,23 +117,72 @@ func (r *CryptoIKEv2PolicyResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Any fvrf").String,
 				Optional:            true,
 			},
-			"proposals": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify Proposal").String,
-				Required:            true,
+			"match_identity_remote_ipv4_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"proposals": schema.StringAttribute{
+						"address": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"mask": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
 						},
 					},
 				},
+			},
+			"match_identity_remote_ipv6_prefixes": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"match_identity_remote_keys": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("key-id opaque string").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"keyring_local": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Keyring name").String,
+				Optional:            true,
+			},
+			"dpd_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(10, 3600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(10, 3600),
+				},
+			},
+			"dpd_retry": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(2, 60).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(2, 60),
+				},
+			},
+			"dpd_query": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("on-demand", "periodic").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("on-demand", "periodic"),
+				},
+			},
+			"config_exchange_request": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("enable config-exchange request").String,
+				Optional:            true,
 			},
 		},
 	}
 }
 
-func (r *CryptoIKEv2PolicyResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *CryptoIKEv2ProfileResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -111,8 +190,8 @@ func (r *CryptoIKEv2PolicyResource) Configure(_ context.Context, req resource.Co
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *CryptoIKEv2PolicyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan CryptoIKEv2Policy
+func (r *CryptoIKEv2ProfileResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan CryptoIKEv2Profile
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -170,8 +249,8 @@ func (r *CryptoIKEv2PolicyResource) Create(ctx context.Context, req resource.Cre
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *CryptoIKEv2PolicyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state CryptoIKEv2Policy
+func (r *CryptoIKEv2ProfileResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state CryptoIKEv2Profile
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -189,7 +268,7 @@ func (r *CryptoIKEv2PolicyResource) Read(ctx context.Context, req resource.ReadR
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = CryptoIKEv2Policy{Device: state.Device, Id: state.Id}
+		state = CryptoIKEv2Profile{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -205,8 +284,8 @@ func (r *CryptoIKEv2PolicyResource) Read(ctx context.Context, req resource.ReadR
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *CryptoIKEv2PolicyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state CryptoIKEv2Policy
+func (r *CryptoIKEv2ProfileResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state CryptoIKEv2Profile
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -281,8 +360,8 @@ func (r *CryptoIKEv2PolicyResource) Update(ctx context.Context, req resource.Upd
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *CryptoIKEv2PolicyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state CryptoIKEv2Policy
+func (r *CryptoIKEv2ProfileResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state CryptoIKEv2Profile
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -298,6 +377,11 @@ func (r *CryptoIKEv2PolicyResource) Delete(ctx context.Context, req resource.Del
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
 	deleteMode := "all"
+	if state.DeleteMode.ValueString() == "all" {
+		deleteMode = "all"
+	} else if state.DeleteMode.ValueString() == "attributes" {
+		deleteMode = "attributes"
+	}
 
 	if deleteMode == "all" {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())
@@ -335,6 +419,6 @@ func (r *CryptoIKEv2PolicyResource) Delete(ctx context.Context, req resource.Del
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *CryptoIKEv2PolicyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *CryptoIKEv2ProfileResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

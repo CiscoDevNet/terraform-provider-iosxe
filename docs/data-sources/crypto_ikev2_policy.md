@@ -33,8 +33,8 @@ data "iosxe_crypto_ikev2_policy" "example" {
 
 - `id` (String) The path of the retrieved object.
 - `match_address_local_ip` (List of String) Local address
+- `match_fvrf` (String)
 - `match_fvrf_any` (Boolean) Any fvrf
-- `match_fvrf_name` (String)
 - `match_inbound_only` (Boolean) inbound only for controller
 - `proposals` (Attributes List) Specify Proposal (see [below for nested schema](#nestedatt--proposals))
 

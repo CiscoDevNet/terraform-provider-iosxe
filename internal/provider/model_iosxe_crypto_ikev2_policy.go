@@ -40,7 +40,7 @@ type CryptoIKEv2Policy struct {
 	Name                types.String                 `tfsdk:"name"`
 	MatchInboundOnly    types.Bool                   `tfsdk:"match_inbound_only"`
 	MatchAddressLocalIp types.List                   `tfsdk:"match_address_local_ip"`
-	MatchFvrfName       types.String                 `tfsdk:"match_fvrf_name"`
+	MatchFvrf           types.String                 `tfsdk:"match_fvrf"`
 	MatchFvrfAny        types.Bool                   `tfsdk:"match_fvrf_any"`
 	Proposals           []CryptoIKEv2PolicyProposals `tfsdk:"proposals"`
 }
@@ -51,7 +51,7 @@ type CryptoIKEv2PolicyData struct {
 	Name                types.String                 `tfsdk:"name"`
 	MatchInboundOnly    types.Bool                   `tfsdk:"match_inbound_only"`
 	MatchAddressLocalIp types.List                   `tfsdk:"match_address_local_ip"`
-	MatchFvrfName       types.String                 `tfsdk:"match_fvrf_name"`
+	MatchFvrf           types.String                 `tfsdk:"match_fvrf"`
 	MatchFvrfAny        types.Bool                   `tfsdk:"match_fvrf_any"`
 	Proposals           []CryptoIKEv2PolicyProposals `tfsdk:"proposals"`
 }
@@ -93,8 +93,8 @@ func (data CryptoIKEv2Policy) toBody(ctx context.Context) string {
 		data.MatchAddressLocalIp.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.address.local-ip", values)
 	}
-	if !data.MatchFvrfName.IsNull() && !data.MatchFvrfName.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.fvrf.name", data.MatchFvrfName.ValueString())
+	if !data.MatchFvrf.IsNull() && !data.MatchFvrf.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.fvrf.name", data.MatchFvrf.ValueString())
 	}
 	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.IsUnknown() {
 		if data.MatchFvrfAny.ValueBool() {
@@ -136,10 +136,10 @@ func (data *CryptoIKEv2Policy) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.MatchAddressLocalIp = types.ListNull(types.StringType)
 	}
-	if value := res.Get(prefix + "match.fvrf.name"); value.Exists() && !data.MatchFvrfName.IsNull() {
-		data.MatchFvrfName = types.StringValue(value.String())
+	if value := res.Get(prefix + "match.fvrf.name"); value.Exists() && !data.MatchFvrf.IsNull() {
+		data.MatchFvrf = types.StringValue(value.String())
 	} else {
-		data.MatchFvrfName = types.StringNull()
+		data.MatchFvrf = types.StringNull()
 	}
 	if value := res.Get(prefix + "match.fvrf.any"); !data.MatchFvrfAny.IsNull() {
 		if value.Exists() {
@@ -197,7 +197,7 @@ func (data *CryptoIKEv2PolicyData) fromBody(ctx context.Context, res gjson.Resul
 		data.MatchAddressLocalIp = types.ListNull(types.StringType)
 	}
 	if value := res.Get(prefix + "match.fvrf.name"); value.Exists() {
-		data.MatchFvrfName = types.StringValue(value.String())
+		data.MatchFvrf = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "match.fvrf.any"); value.Exists() {
 		data.MatchFvrfAny = types.BoolValue(true)
@@ -267,7 +267,7 @@ func (data *CryptoIKEv2Policy) getDeletePaths(ctx context.Context) []string {
 	if !data.MatchAddressLocalIp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/address/local-ip", data.getPath()))
 	}
-	if !data.MatchFvrfName.IsNull() {
+	if !data.MatchFvrf.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/name", data.getPath()))
 	}
 	if !data.MatchFvrfAny.IsNull() {
