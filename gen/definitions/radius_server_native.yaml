@@ -1,0 +1,21 @@
+---
+name: Radius Server Native
+path: Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v
+doc_category: AAA
+attributes:
+  - yang_name: id
+    tf_name: name
+    id: true
+    example: radius_10.10.15.12
+  - yang_name: address/radius-host-address/ipv4/ipv4
+    xpath: address/ipv4
+    tf_name: radius_host_address_ipv4
+    example: 10.10.15.12
+  - yang_name: address/auth-port
+    example: 1813
+  - yang_name: timeout
+    example: 4
+  - yang_name: retransmit
+    example: 3
+  - yang_name: key/key
+    example: 123
