@@ -1,5 +1,5 @@
 ---
-name: Radius Server Native
+name: Radius
 path: Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v
 doc_category: AAA
 attributes:
