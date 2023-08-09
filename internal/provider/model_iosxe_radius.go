@@ -32,7 +32,7 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-type RadiusServerNative struct {
+type Radius struct {
 	Device                types.String `tfsdk:"device"`
 	Id                    types.String `tfsdk:"id"`
 	DeleteMode            types.String `tfsdk:"delete_mode"`
@@ -44,7 +44,7 @@ type RadiusServerNative struct {
 	KeyKey                types.String `tfsdk:"key_key"`
 }
 
-type RadiusServerNativeData struct {
+type RadiusData struct {
 	Device                types.String `tfsdk:"device"`
 	Id                    types.String `tfsdk:"id"`
 	Name                  types.String `tfsdk:"name"`
@@ -55,16 +55,16 @@ type RadiusServerNativeData struct {
 	KeyKey                types.String `tfsdk:"key_key"`
 }
 
-func (data RadiusServerNative) getPath() string {
+func (data Radius) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
-func (data RadiusServerNativeData) getPath() string {
+func (data RadiusData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it
-func (data RadiusServerNative) getPathShort() string {
+func (data Radius) getPathShort() string {
 	path := data.getPath()
 	re := regexp.MustCompile(`(.*)=[^\/]*$`)
 	matches := re.FindStringSubmatch(path)
@@ -74,7 +74,7 @@ func (data RadiusServerNative) getPathShort() string {
 	return matches[1]
 }
 
-func (data RadiusServerNative) toBody(ctx context.Context) string {
+func (data Radius) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Name.ValueString())
@@ -97,7 +97,7 @@ func (data RadiusServerNative) toBody(ctx context.Context) string {
 	return body
 }
 
-func (data *RadiusServerNative) updateFromBody(ctx context.Context, res gjson.Result) {
+func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -134,7 +134,7 @@ func (data *RadiusServerNative) updateFromBody(ctx context.Context, res gjson.Re
 	}
 }
 
-func (data *RadiusServerNativeData) fromBody(ctx context.Context, res gjson.Result) {
+func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -156,17 +156,17 @@ func (data *RadiusServerNativeData) fromBody(ctx context.Context, res gjson.Resu
 	}
 }
 
-func (data *RadiusServerNative) getDeletedListItems(ctx context.Context, state RadiusServerNative) []string {
+func (data *Radius) getDeletedListItems(ctx context.Context, state Radius) []string {
 	deletedListItems := make([]string, 0)
 	return deletedListItems
 }
 
-func (data *RadiusServerNative) getEmptyLeafsDelete(ctx context.Context) []string {
+func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	return emptyLeafsDelete
 }
 
-func (data *RadiusServerNative) getDeletePaths(ctx context.Context) []string {
+func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.RadiusHostAddressIpv4.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/ipv4", data.getPath()))

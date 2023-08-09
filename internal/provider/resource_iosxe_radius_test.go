@@ -25,28 +25,43 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccDataSourceIosxeRadiusServerNative(t *testing.T) {
+func TestAccIosxeRadius(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server_native.test", "radius_host_address_ipv4", "10.10.15.12"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server_native.test", "address_auth_port", "1813"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server_native.test", "timeout", "4"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server_native.test", "retransmit", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius_server_native.test", "key_key", "123"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "name", "radius_10.10.15.12"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "radius_host_address_ipv4", "10.10.15.12"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "address_auth_port", "1813"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "timeout", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "retransmit", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "key_key", "123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeRadiusServerNativeConfig(),
+				Config: testAccIosxeRadiusConfig_minimum(),
+			},
+			{
+				Config: testAccIosxeRadiusConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
+			},
+			{
+				ResourceName:  "iosxe_radius.test",
+				ImportState:   true,
+				ImportStateId: "Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=radius_10.10.15.12",
 			},
 		},
 	})
 }
 
-func testAccDataSourceIosxeRadiusServerNativeConfig() string {
-	config := `resource "iosxe_radius_server_native" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
+func testAccIosxeRadiusConfig_minimum() string {
+	config := `resource "iosxe_radius" "test" {` + "\n"
+	config += `	name = "radius_10.10.15.12"` + "\n"
+	config += `}` + "\n"
+	return config
+}
+
+func testAccIosxeRadiusConfig_all() string {
+	config := `resource "iosxe_radius" "test" {` + "\n"
 	config += `	name = "radius_10.10.15.12"` + "\n"
 	config += `	radius_host_address_ipv4 = "10.10.15.12"` + "\n"
 	config += `	address_auth_port = 1813` + "\n"
@@ -54,12 +69,5 @@ func testAccDataSourceIosxeRadiusServerNativeConfig() string {
 	config += `	retransmit = 3` + "\n"
 	config += `	key_key = "123"` + "\n"
 	config += `}` + "\n"
-
-	config += `
-		data "iosxe_radius_server_native" "test" {
-			name = "radius_10.10.15.12"
-			depends_on = [iosxe_radius_server_native.test]
-		}
-	`
 	return config
 }

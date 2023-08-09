@@ -1,4 +1,4 @@
-resource "iosxe_radius_server_native" "example" {
+resource "iosxe_radius" "example" {
   name                     = "radius_10.10.15.12"
   radius_host_address_ipv4 = "10.10.15.12"
   address_auth_port        = 1813

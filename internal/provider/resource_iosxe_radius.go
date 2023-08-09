@@ -38,22 +38,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewRadiusServerNativeResource() resource.Resource {
-	return &RadiusServerNativeResource{}
+func NewRadiusResource() resource.Resource {
+	return &RadiusResource{}
 }
 
-type RadiusServerNativeResource struct {
+type RadiusResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *RadiusServerNativeResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_radius_server_native"
+func (r *RadiusResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_radius"
 }
 
-func (r *RadiusServerNativeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Radius Server Native configuration.",
+		MarkdownDescription: "This resource can manage the Radius configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -117,7 +117,7 @@ func (r *RadiusServerNativeResource) Schema(ctx context.Context, req resource.Sc
 	}
 }
 
-func (r *RadiusServerNativeResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *RadiusResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -125,8 +125,8 @@ func (r *RadiusServerNativeResource) Configure(_ context.Context, req resource.C
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *RadiusServerNativeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan RadiusServerNative
+func (r *RadiusResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan Radius
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -184,8 +184,8 @@ func (r *RadiusServerNativeResource) Create(ctx context.Context, req resource.Cr
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *RadiusServerNativeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state RadiusServerNative
+func (r *RadiusResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state Radius
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -203,7 +203,7 @@ func (r *RadiusServerNativeResource) Read(ctx context.Context, req resource.Read
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = RadiusServerNative{Device: state.Device, Id: state.Id}
+		state = Radius{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -219,8 +219,8 @@ func (r *RadiusServerNativeResource) Read(ctx context.Context, req resource.Read
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *RadiusServerNativeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state RadiusServerNative
+func (r *RadiusResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state Radius
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -295,8 +295,8 @@ func (r *RadiusServerNativeResource) Update(ctx context.Context, req resource.Up
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *RadiusServerNativeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state RadiusServerNative
+func (r *RadiusResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state Radius
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -354,6 +354,6 @@ func (r *RadiusServerNativeResource) Delete(ctx context.Context, req resource.De
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *RadiusServerNativeResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *RadiusResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
