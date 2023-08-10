@@ -41,6 +41,13 @@ resource "iosxe_interface_ethernet" "example" {
       merge         = false
     }
   ]
+  template                      = "bfd_template1"
+  enable                        = true
+  local_address                 = "1.2.3.4"
+  interval_interface_msecs      = 50
+  interval_interface_min_rx     = 50
+  interval_interface_multiplier = 3
+  echo                          = true
 }
 ```
 
@@ -49,6 +56,11 @@ resource "iosxe_interface_ethernet" "example" {
 
 ### Required
 
+- `interval_interface_min_rx` (Number) Minimum receive interval capability
+  - Range: `50`-`9999`
+- `interval_interface_msecs` (Number) - Range: `50`-`9999`
+- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
+  - Range: `3`-`50`
 - `name` (String)
 - `type` (String) Interface type
   - Choices: `GigabitEthernet`, `TwoGigabitEthernet`, `FiveGigabitEthernet`, `TenGigabitEthernet`, `TwentyFiveGigE`, `FortyGigabitEthernet`, `HundredGigE`, `TwoHundredGigE`, `FourHundredGigE`
@@ -72,6 +84,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `channel_group_number` (Number) - Range: `1`-`512`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
+- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `enable` (Boolean) Enable BFD under the interface
 - `encapsulation_dot1q_vlan_id` (Number) - Range: `1`-`4094`
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
@@ -83,6 +97,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
+- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `media_type` (String) Media type
   - Choices: `auto-select`, `rj45`, `sfp`
 - `shutdown` (Boolean) Shutdown the selected interface
@@ -90,6 +105,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`
 - `switchport` (Boolean)
+- `template` (String) BFD template
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
 - `unnumbered` (String) Enable IP processing without an explicit address

@@ -1,0 +1,128 @@
+---
+name: BFD
+path: Cisco-IOS-XE-native:native/bfd
+doc_category: BFD
+attributes:
+  - yang_name: Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4
+    tf_name: ipv4_both_vrfs
+    type: List
+    attributes:
+      - yang_name : dst-vrf
+        id: true
+        example: dest_vrf1
+      - yang_name: dest-ip
+        id: true
+        example: 1.2.3.4/4
+      - yang_name: src-vrf
+        id: true
+        example: src_vrf1
+      - yang_name: src-ip
+        id: true
+        example: 11.22.33.44/12
+      - yang_name: template-name
+        example: template1
+  - yang_name: Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4
+    tf_name: ipv4_without_vrfs
+    type: List
+    attributes:
+      - yang_name: dest-ip
+        id: true
+        example: 1.2.3.4/4
+      - yang_name: src-ip
+        id: true
+        example: 11.22.33.44/12
+      - yang_name: template-name
+        example: template1
+  - yang_name: Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4
+    tf_name: ipv4_with_src_vrfs
+    type: List
+    attributes:
+      - yang_name: dest-ip
+        id: true
+        example: 1.2.3.4/4
+      - yang_name: src-vrf
+        id: true
+        example: src_vrf1
+      - yang_name: src-ip
+        id: true
+        example: 11.22.33.44/12
+      - yang_name: template-name
+        example: template1
+  - yang_name: Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4
+    tf_name: ipv4_with_dst_vrfs
+    type: List
+    attributes:
+      - yang_name : dst-vrf
+        id: true
+        example: dest_vrf1
+      - yang_name: dest-ip
+        id: true
+        example: 1.2.3.4/4
+      - yang_name: src-ip
+        id: true
+        example: 11.22.33.44/12
+      - yang_name: template-name
+        example: template1
+  - yang_name: Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6
+    tf_name: ipv6_with_both_vrfs
+    type: List
+    attributes:
+      - yang_name: dst-vrf
+        id: true
+        example: dst_vrf1
+      - yang_name: dest-ipv6
+        id: true
+        example: 2001:DB8:0:1::/64
+      - yang_name: src-vrf
+        id: true
+        example: src_vrf1
+      - yang_name: src-ipv6
+        id: true
+        example: 2001:DB8:0:2::/64
+      - yang_name: template-name
+        example: template1
+  - yang_name: Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6
+    tf_name: ipv6_without_vrfs
+    type: List
+    attributes:
+      - yang_name: dest-ipv6
+        id: true
+        example: 2001:DB8:0:1::/64
+      - yang_name: src-ipv6
+        id: true
+        example: 2001:DB8:0:2::/64
+      - yang_name: template-name
+        example: template1
+  - yang_name: Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6
+    tf_name: ipv6_with_src_vrfs
+    type: List
+    attributes:
+      - yang_name: dest-ipv6
+        id: true
+        example: 2001:DB8:0:1::/64
+      - yang_name: src-vrf
+        id: true
+        example: src_vrf1
+      - yang_name: src-ipv6
+        id: true
+        example: 2001:DB8:0:2::/64
+      - yang_name: template-name
+        example: template1
+  - yang_name: Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6
+    tf_name: ipv6_with_dst_vrfs
+    type: List
+    attributes:
+      - yang_name: dst-vrf
+        id: true
+        example: dst_vrf1
+      - yang_name: dest-ipv6
+        id: true
+        example: 2001:DB8:0:1::/64
+      - yang_name: src-ipv6
+        id: true
+        example: 2001:DB8:0:2::/64
+      - yang_name: template-name
+        example: template1
+
+  - yang_name: Cisco-IOS-XE-bfd:slow-timers
+    example: 1000

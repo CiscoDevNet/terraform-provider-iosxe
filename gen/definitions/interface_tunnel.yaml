@@ -119,7 +119,20 @@ attributes:
     tf_name: tunnel_mode_ipsec_ipv4
     example: true
     exclude_test: true
-
+  - yang_name: bfd/Cisco-IOS-XE-bfd:template
+    example: Tunnel_template1
+  - yang_name: bfd/Cisco-IOS-XE-bfd:enable
+    example: true 
+  - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
+    example: 1.2.3.4
+  - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/msecs
+    example: 50
+  - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx
+    example: 50
+  - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier
+    example: 3
+  - yang_name: bfd/Cisco-IOS-XE-bfd:echo
+    example: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

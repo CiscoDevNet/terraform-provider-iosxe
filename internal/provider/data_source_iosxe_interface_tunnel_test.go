@@ -52,6 +52,13 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "template", "Tunnel_template1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "local_address", "1.2.3.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "interval_interface_msecs", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "interval_interface_min_rx", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "interval_interface_multiplier", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "echo", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -112,6 +119,13 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 	config += `		global = false` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
+	config += `	template = "Tunnel_template1"` + "\n"
+	config += `	enable = true` + "\n"
+	config += `	local_address = "1.2.3.4"` + "\n"
+	config += `	interval_interface_msecs = 50` + "\n"
+	config += `	interval_interface_min_rx = 50` + "\n"
+	config += `	interval_interface_multiplier = 3` + "\n"
+	config += `	echo = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

@@ -52,6 +52,13 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
+  template                      = "Tunnel_template1"
+  enable                        = true
+  local_address                 = "1.2.3.4"
+  interval_interface_msecs      = 50
+  interval_interface_min_rx     = 50
+  interval_interface_multiplier = 3
+  echo                          = true
 }
 ```
 
@@ -60,6 +67,11 @@ resource "iosxe_interface_tunnel" "example" {
 
 ### Required
 
+- `interval_interface_min_rx` (Number) Minimum receive interval capability
+  - Range: `50`-`9999`
+- `interval_interface_msecs` (Number) - Range: `50`-`9999`
+- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
+  - Range: `3`-`50`
 - `name` (Number) - Range: `0`-`4294967295`
 
 ### Optional
@@ -70,6 +82,8 @@ resource "iosxe_interface_tunnel" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
+- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `enable` (Boolean) Enable BFD under the interface
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -87,8 +101,10 @@ resource "iosxe_interface_tunnel" "example" {
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
+- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `shutdown` (Boolean) Shutdown the selected interface
+- `template` (String) BFD template
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) Determine the ipsec policy profile to use.

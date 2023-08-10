@@ -48,6 +48,13 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "helper_addresses.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.template_name", "TEMP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.merge", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "template", "bfd_template1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "local_address", "1.2.3.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "interval_interface_msecs", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "interval_interface_min_rx", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "interval_interface_multiplier", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "echo", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -97,6 +104,13 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		template_name = "TEMP1"` + "\n"
 	config += `		merge = false` + "\n"
 	config += `	}]` + "\n"
+	config += `	template = "bfd_template1"` + "\n"
+	config += `	enable = true` + "\n"
+	config += `	local_address = "1.2.3.4"` + "\n"
+	config += `	interval_interface_msecs = 50` + "\n"
+	config += `	interval_interface_min_rx = 50` + "\n"
+	config += `	interval_interface_multiplier = 3` + "\n"
+	config += `	echo = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

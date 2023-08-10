@@ -19,4 +19,8 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
       global  = false
     }
   ]
+  interval_interface_msecs      = 50
+  interval_interface_min_rx     = 50
+  interval_interface_multiplier = 3
+  echo                          = true
 }

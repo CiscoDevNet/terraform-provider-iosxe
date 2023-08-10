@@ -48,6 +48,13 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "helper_addresses.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "template", "vlan_template1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "local_address", "1.2.3.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "interval_interface_msecs", "999"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "interval_interface_min_rx", "999"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "interval_interface_multiplier", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "echo", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -95,6 +102,13 @@ func testAccDataSourceIosxeInterfaceVLANConfig() string {
 	config += `		global = false` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
+	config += `	template = "vlan_template1"` + "\n"
+	config += `	enable = true` + "\n"
+	config += `	local_address = "1.2.3.4"` + "\n"
+	config += `	interval_interface_msecs = 999` + "\n"
+	config += `	interval_interface_min_rx = 999` + "\n"
+	config += `	interval_interface_multiplier = 3` + "\n"
+	config += `	echo = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
