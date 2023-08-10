@@ -23,6 +23,71 @@ attributes:
     example: BGP Neighbor Description
   - yang_name: shutdown
     example: false
+  - yang_name: cluster-id
+    example: 2.2.2.2
+  - yang_name: log-neighbor-changes/disable
+    example: true
+  - yang_name: password/enctype
+    tf_name: password_enctype
+    example: 1
+  - yang_name: password/text
+    tf_name: password_text
+    example: LINE
+  - yang_name: timers/keepalive-interval
+    tf_name: timers_keepalive_interval
+    example: 30
+  - yang_name: timers/holdtime
+    tf_name: timers_holdtime
+    example: 40
+  - yang_name: timers/minimum-neighbor-hold
+    tf_name: timers_minimum_neighbor_hold
+    example: 30
+  - yang_name: version
+    example: 4
+  - yang_name: fall-over/default/route-map
+    tf_name: fall_over_default_route_map
+    example: RMAP
+  - yang_name: fall-over/bfd/hop-choice/multi-hop/multi-hop
+    xpath: fall-over/bfd/multi-hop
+    tf_name: fall_over_bfd_multi_hop
+    example: true
+    exclude_test: true
+  - yang_name: fall-over/bfd/hop-choice/single-hop/single-hop
+    xpath: fall-over/bfd/single-hop
+    tf_name: fall_over_bfd_single_hop
+    example: true
+  - yang_name: fall-over/bfd/check-control-plane-failure
+    tf_name: fall_over_bfd_check_control_plane_failure
+    example: true
+  - yang_name: fall-over/bfd/strict-mode
+    tf_name: fall_over_bfd_strict_mode
+    example: true
+  - yang_name: fall-over/maximum-metric/route-map
+    tf_name: fall_over_maximum_metric_route_map
+    example: ROUTEMAP
+  - yang_name: disable-connected-check
+    example: false
+    exclude_test: true
+  - yang_name: ttl-security/hops
+    tf_name: ttl_security_hops
+    example: 2
+    exclude_test: true
+  - yang_name: local-as/as-no
+    tf_name: local_as_as_no
+    example: 1
+    exclude_test: true
+  - yang_name: local-as/no-prepend
+    tf_name: local_as_no_prepend
+    example:  true
+    exclude_test: true
+  - yang_name: local-as/replace-as
+    tf_name: local_as_replace_as
+    example: true
+    exclude_test: true
+  - yang_name: local-as/dual-as
+    tf_name: local_as_dual_as
+    example: true
+    exclude_test: true
   - yang_name: update-source/interface/interface-choice/Loopback/Loopback
     xpath: update-source/interface/Loopback
     tf_name: update_source_loopback

@@ -21,11 +21,9 @@ description: |-
 - Add `iosxe_crypto_ikev2_proposal` resource and data source
 - Add `iosxe_crypto_ipsec_profile` resource and data source
 - Add `iosxe_radius_server` resource and data source
-- Add `iosxe_crypto_ikev2_keyring` resource and data source
-- Add `iosxe_crypto_ikev2_policy` resource and data source
-- Add `iosxe_crypto_ikev2_profile` resource and data source
-- Add `deny_log` and `permit_log` attributes to `iosxe_access_list_standard` resource and data source
-- Add `log` and `log_input` attributes to `iosxe_access_list_extended` resource and data source
+- Add `iosxe_bfd_template_single_hop` resource and data source
+- Add `iosxe_cdp` resource and data source
+- Add `cluster-id` ,``fall-over `,`disable-connected-check`,`local-as`,`log-neighbor-changes`,`password`,`timers`,`ttl-security` attributes to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resources and data sources
 
 ## 0.3.2
 

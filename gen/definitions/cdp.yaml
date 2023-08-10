@@ -1,0 +1,30 @@
+---
+name: CDP
+path: Cisco-IOS-XE-native:native/cdp
+no_delete_attributes: true
+doc_category: System
+attributes:
+  - yang_name: Cisco-IOS-XE-cdp:holdtime
+    example: 15
+  - yang_name: Cisco-IOS-XE-cdp:timer
+    example: 5
+  - yang_name: Cisco-IOS-XE-cdp:run-enable
+    example: true
+  - yang_name: Cisco-IOS-XE-cdp:filter-tlv-list
+    example: TLIST
+  - yang_name: Cisco-IOS-XE-cdp:tlv-list
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: TLIST
+      - yang_name: vtp-mgmt-domain
+        example: true
+      - yang_name: cos
+        example: true
+      - yang_name: duplex
+        example: true
+      - yang_name: trust
+        example: true
+      - yang_name: version
+        example: true

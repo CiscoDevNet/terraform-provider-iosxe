@@ -22,15 +22,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -39,22 +36,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewBGPIPv4UnicastVRFNeighborResource() resource.Resource {
-	return &BGPIPv4UnicastVRFNeighborResource{}
+func NewBFDTemplateSingleHopResource() resource.Resource {
+	return &BFDTemplateSingleHopResource{}
 }
 
-type BGPIPv4UnicastVRFNeighborResource struct {
+type BFDTemplateSingleHopResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_bgp_ipv4_unicast_vrf_neighbor"
+func (r *BFDTemplateSingleHopResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_bfd_template_single_hop"
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *BFDTemplateSingleHopResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the BGP IPv4 Unicast VRF Neighbor configuration.",
+		MarkdownDescription: "This resource can manage the BFD Template Single Hop configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -68,204 +65,108 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
-			"asn": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"vrf": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"ip": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"remote_as": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP peer-group remote-as").String,
+			"authentication_md5_keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
 				Optional:            true,
 			},
-			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Neighbor specific description").String,
+			"authentication_meticulous_md5_keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
 				Optional:            true,
 			},
-			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Administratively shut down this neighbor").String,
+			"authentication_meticulous_sha_1_keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
 				Optional:            true,
 			},
-			"cluster_id": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"authentication_sha_1_keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
 				Optional:            true,
 			},
-			"log_neighbor_changes_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("disable").String,
-				Optional:            true,
-			},
-			"password_enctype": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 to disable encryption, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
+			"interval_singlehop_v2_mill_unit_min_tx": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(0, 7),
+					int64validator.Between(4, 9999),
 				},
 			},
-			"password_text": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 52),
-					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-				},
-			},
-			"timers_keepalive_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
+			"interval_singlehop_v2_mill_unit_min_rx": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
+					int64validator.Between(4, 9999),
 				},
 			},
-			"timers_holdtime": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
+			"interval_singlehop_v2_mill_unit_both": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit and receive interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
+					int64validator.Between(4, 9999),
 				},
 			},
-			"timers_minimum_neighbor_hold": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
+			"interval_singlehop_v2_mill_unit_multiplier": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Multiplier value used to compute holddown").AddIntegerRangeDescription(3, 50).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
+					int64validator.Between(3, 50),
 				},
 			},
-			"version": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the BGP version to match a neighbor").AddIntegerRangeDescription(4, 4).String,
+			"interval_singlehop_v2_ms_unit_min_rx": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(3300, 9999000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(4, 4),
+					int64validator.Between(3300, 9999000),
 				},
 			},
-			"fall_over_default_route_map": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_multi_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_single_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD single-hop to detect failure").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_check_control_plane_failure": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_strict_mode": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD strict-mode").String,
-				Optional:            true,
-			},
-			"fall_over_maximum_metric_route_map": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"disable_connected_check": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").String,
-				Optional:            true,
-			},
-			"ttl_security_hops": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IP hops").AddIntegerRangeDescription(1, 254).String,
+			"interval_singlehop_v2_ms_unit_min_tx": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit interval capability").AddIntegerRangeDescription(3300, 9999000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1, 254),
+					int64validator.Between(3300, 9999000),
 				},
 			},
-			"local_as_as_no": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"echo": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 				Optional:            true,
 			},
-			"local_as_no_prepend": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not prepend local-as to updates from ebgp peers").String,
-				Optional:            true,
-			},
-			"local_as_replace_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Replace real AS with local AS in the EBGP updates").String,
-				Optional:            true,
-			},
-			"local_as_dual_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").String,
-				Optional:            true,
-			},
-			"update_source_loopback": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
-				Optional:            true,
-			},
-			"activate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable the address family for this neighbor").AddDefaultValueDescription("true").String,
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
-			},
-			"send_community": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("both", "extended", "standard").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("both", "extended", "standard"),
-				},
-			},
-			"route_reflector_client": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").String,
-				Optional:            true,
-			},
-			"route_maps": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Apply route map to neighbor").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"in_out": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("in", "out").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("in", "out"),
-							},
-						},
-						"route_map_name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-						},
-					},
-				},
-			},
-			"ebgp_multihop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").String,
-				Optional:            true,
-			},
-			"ebgp_multihop_max_hop": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(2, 255).String,
+			"dampening_half_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Half-life time for the penalty").AddIntegerRangeDescription(1, 30).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(2, 255),
+					int64validator.Between(1, 30),
+				},
+			},
+			"dampening_unsuppress_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Value to unsuppress a session").AddIntegerRangeDescription(1, 18000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 18000),
+				},
+			},
+			"dampening_suppress_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Value to start suppressing a session").AddIntegerRangeDescription(1, 18000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 18000),
+				},
+			},
+			"dampening_max_suppressing_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum duration to suppress a session").AddIntegerRangeDescription(1, 420).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 420),
 				},
 			},
 		},
 	}
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *BFDTemplateSingleHopResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -273,8 +174,8 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Configure(_ context.Context, req res
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan BGPIPv4UnicastVRFNeighbor
+func (r *BFDTemplateSingleHopResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan BFDTemplateSingleHop
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -332,8 +233,8 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Create(ctx context.Context, req reso
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state BGPIPv4UnicastVRFNeighbor
+func (r *BFDTemplateSingleHopResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state BFDTemplateSingleHop
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -351,7 +252,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Read(ctx context.Context, req resour
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = BGPIPv4UnicastVRFNeighbor{Device: state.Device, Id: state.Id}
+		state = BFDTemplateSingleHop{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -367,8 +268,8 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Read(ctx context.Context, req resour
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state BGPIPv4UnicastVRFNeighbor
+func (r *BFDTemplateSingleHopResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state BFDTemplateSingleHop
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -443,8 +344,8 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Update(ctx context.Context, req reso
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state BGPIPv4UnicastVRFNeighbor
+func (r *BFDTemplateSingleHopResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state BFDTemplateSingleHop
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -460,11 +361,6 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Delete(ctx context.Context, req reso
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
 	deleteMode := "all"
-	if state.DeleteMode.ValueString() == "all" {
-		deleteMode = "all"
-	} else if state.DeleteMode.ValueString() == "attributes" {
-		deleteMode = "attributes"
-	}
 
 	if deleteMode == "all" {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())
@@ -502,6 +398,6 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Delete(ctx context.Context, req reso
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *BFDTemplateSingleHopResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
