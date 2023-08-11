@@ -185,7 +185,7 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-tunnel:tunnel.source", data.TunnelSource.ValueString())
 	}
 	if !data.TunnelDestinationIpv4.IsNull() && !data.TunnelDestinationIpv4.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"tunnel.destination-config.ipv4", data.TunnelDestinationIpv4.ValueString())
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-tunnel:tunnel.destination-config.ipv4", data.TunnelDestinationIpv4.ValueString())
 	}
 	if !data.TunnelProtectionIpsecProfile.IsNull() && !data.TunnelProtectionIpsecProfile.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-tunnel:tunnel.protection.Cisco-IOS-XE-crypto:ipsec.profile", data.TunnelProtectionIpsecProfile.ValueString())
@@ -223,7 +223,7 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	}
 	if !data.TunnelModeIpsecIpv4.IsNull() && !data.TunnelModeIpsecIpv4.IsUnknown() {
 		if data.TunnelModeIpsecIpv4.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"tunnel.mode.ipsec.ipv4", map[string]string{})
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-tunnel:tunnel.mode.ipsec.ipv4", map[string]string{})
 		}
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
@@ -443,7 +443,7 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.TunnelSource = types.StringNull()
 	}
-	if value := res.Get(prefix + "tunnel.destination-config.ipv4"); value.Exists() && !data.TunnelDestinationIpv4.IsNull() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.destination-config.ipv4"); value.Exists() && !data.TunnelDestinationIpv4.IsNull() {
 		data.TunnelDestinationIpv4 = types.StringValue(value.String())
 	} else {
 		data.TunnelDestinationIpv4 = types.StringNull()
@@ -549,7 +549,7 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 			data.HelperAddresses[i].Vrf = types.StringNull()
 		}
 	}
-	if value := res.Get(prefix + "tunnel.mode.ipsec.ipv4"); !data.TunnelModeIpsecIpv4.IsNull() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.mode.ipsec.ipv4"); !data.TunnelModeIpsecIpv4.IsNull() {
 		if value.Exists() {
 			data.TunnelModeIpsecIpv4 = types.BoolValue(true)
 		} else {
@@ -649,7 +649,7 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.source"); value.Exists() {
 		data.TunnelSource = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "tunnel.destination-config.ipv4"); value.Exists() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.destination-config.ipv4"); value.Exists() {
 		data.TunnelDestinationIpv4 = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.protection.Cisco-IOS-XE-crypto:ipsec.profile"); value.Exists() {
@@ -705,7 +705,7 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 			return true
 		})
 	}
-	if value := res.Get(prefix + "tunnel.mode.ipsec.ipv4"); value.Exists() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.mode.ipsec.ipv4"); value.Exists() {
 		data.TunnelModeIpsecIpv4 = types.BoolValue(true)
 	} else {
 		data.TunnelModeIpsecIpv4 = types.BoolValue(false)
@@ -837,7 +837,7 @@ func (data *InterfaceTunnel) getEmptyLeafsDelete(ctx context.Context) []string {
 		}
 	}
 	if !data.TunnelModeIpsecIpv4.IsNull() && !data.TunnelModeIpsecIpv4.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/tunnel/mode/ipsec/ipv4", data.getPath()))
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -891,7 +891,7 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/source", data.getPath()))
 	}
 	if !data.TunnelDestinationIpv4.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/tunnel/destination-config/ipv4", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/destination-config/ipv4", data.getPath()))
 	}
 	if !data.TunnelProtectionIpsecProfile.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/protection/Cisco-IOS-XE-crypto:ipsec/profile", data.getPath()))
@@ -929,7 +929,7 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/helper-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.TunnelModeIpsecIpv4.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/tunnel/mode/ipsec/ipv4", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4", data.getPath()))
 	}
 	return deletePaths
 }

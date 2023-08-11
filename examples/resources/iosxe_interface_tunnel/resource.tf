@@ -22,6 +22,7 @@ resource "iosxe_interface_tunnel" "example" {
       eui_64 = true
     }
   ]
+  tunnel_destination_ipv4        = "2.2.2.2"
   crypto_ipsec_df_bit            = "clear"
   ipv4_address                   = "10.1.1.1"
   ipv4_address_mask              = "255.255.255.0"
@@ -37,4 +38,5 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
+  tunnel_mode_ipsec_ipv4 = true
 }

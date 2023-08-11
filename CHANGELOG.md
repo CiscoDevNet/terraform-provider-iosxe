@@ -1,3 +1,7 @@
+## 0.3.4 (unreleased)
+
+- Fix issue when using `tunnel_destination_ipv4` or `tunnel_mode_ipsec_ipv4` attributes of `iosxe_interface_tunnel` resource
+
 ## 0.3.3
 
 - Add `iosxe_aaa` resource and data source
