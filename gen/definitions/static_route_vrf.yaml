@@ -1,0 +1,47 @@
+---
+name: Static Route VRF
+path: Cisco-IOS-XE-native:native/ip/route/vrf=%s
+no_delete_attributes: true
+skip_minimum_test: true
+doc_category: Routing
+attributes:
+  - yang_name: name
+    tf_name: vrf
+    example: VRF1
+  - yang_name: ip-route-interface-forwarding-list
+    tf_name: routes
+    type: List
+    attributes:
+      - yang_name: prefix
+        id: true
+        example: 6.6.6.6
+      - yang_name: mask
+        id: true
+        example: 255.255.255.255
+      - yang_name: fwd-list
+        tf_name: next_hops
+        type: List
+        attributes:
+          - yang_name: fwd
+            tf_name: next_hop
+            example: 7.7.7.7
+            id: true
+          - yang_name: metric
+            example: 10
+          - yang_name: global
+            example: false
+          - yang_name: name
+            example: Route1
+          - yang_name: permanent
+            example: true
+          - yang_name: tag
+            example: 100
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""

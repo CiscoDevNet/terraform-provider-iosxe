@@ -10,6 +10,7 @@ description: |-
 ## 0.3.4 (unreleased)
 
 - Fix issue when using `tunnel_destination_ipv4` or `tunnel_mode_ipsec_ipv4` attributes of `iosxe_interface_tunnel` resource
+- Add `iosxe_static_route_vrf` resource and data source
 
 ## 0.3.3
 
