@@ -1,0 +1,92 @@
+---
+name: BFD Template Multi Hop
+path: Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=%s
+no_delete_attributes: true
+doc_category: BFD
+attributes:
+  - yang_name: name
+    example: T11
+  - yang_name: echo
+    example: true  
+  - yang_name: interval-multihop-v2/units/unit-mill/mill-unit/interval-types/both/both
+    xpath: interval-multihop-v2/mill-unit/both
+    tf_name: interval_multihop_v2_units_both
+    example: 8234
+    exclude_test: true
+  - yang_name: interval-multihop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-tx
+    xpath: interval-multihop-v2/mill-unit/min-tx
+    tf_name: interval_multihop_v2_units_mill_unit_min_tx
+    example: 4500
+  - yang_name: interval-multihop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-rx
+    xpath: interval-multihop-v2/mill-unit/min-rx
+    tf_name: interval_multihop_v2_units_mill_unit_min_rx
+    example: 5500
+  - yang_name: interval-multihop-v2/units/unit-mill/mill-unit/multiplier
+    xpath: interval-multihop-v2/mill-unit/multiplier
+    tf_name: interval_multihop_v2_mill_unit_multiplier
+    example: 40
+  - yang_name: authentication/auth-type/md5/md5/keychain
+    xpath: authentication/md5/keychain
+    tf_name: authentication_md5_keychain
+    example: KEYNAME
+
+  - yang_name: authentication/auth-type/meticulous-md5/meticulous-md5/keychain
+    xpath: authentication/meticulous-md5/keychain
+    tf_name: authentication_meticulous_md5_keychain
+    example: KEYNAME11
+    exclude_test: true
+
+  - yang_name: authentication/auth-type/meticulous-sha-1/meticulous-sha-1/keychain
+    xpath: authentication/meticulous-sha-1_keychain
+    tf_name: authentication_meticulous_sha_1keychain
+    example: KEYNAME22
+    exclude_test: true
+
+  - yang_name: authentication/auth-type/sha-1/sha-1/keychain
+    xpath: authentication/sha-1/keychain
+    tf_name: authentication_sha_1_keychain
+    example: KEYNAME33
+    exclude_test: true
+
+  - yang_name: dampening/half-time
+    example: 21
+  - yang_name: dampening/unsuppress-time
+    example: 1800
+  - yang_name: dampening/suppress-time
+    example: 1900
+  - yang_name: dampening/max-suppressing-time
+    example: 70
+  - yang_name: dampening/threshold
+    example: 3200
+    exclude_test: true
+  - yang_name: dampening/down-monitoring
+    example: true
+    exclude_test: true
+
+
+# - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/microseconds
+  #   xpath: interval-multihop-v2/microseconds
+  #   tf_name: interval_multihop_v2_units_microseconds
+  #   example: true
+
+  # - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/interval-types/both/both
+  #   xpath: interval-multihop-v2/both
+  #   tf_name: interval_multihop_v2_units_interval_types_both
+  #   example: 9999
+  #   exclude_test: true
+
+  # - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-tx
+  #   xpath: interval-multihop-v2/min-tx
+  #   tf_name: interval_multihop_v2_units_interval_types_min_tx
+  #   example: 4500
+
+  # - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-rx
+  #   xpath: interval-multihop-v2/min-rx
+  #   tf_name: interval_multihop_v2_units_interval_types_min_rx
+  #   example: 5500
+
+  # - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/multiplier
+  #   xpath: interval-multihop-v2/multiplier
+  #   tf_name: interval_multihop_v2_ms_unit_multiplier
+  #   example: 40
+

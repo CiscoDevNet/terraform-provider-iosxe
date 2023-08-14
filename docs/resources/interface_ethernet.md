@@ -41,6 +41,22 @@ resource "iosxe_interface_ethernet" "example" {
       merge         = false
     }
   ]
+  ipv6_enable       = true
+  ipv6_mtu          = 1300
+  ra_suppress_all   = true
+  ipv6_address_dhcp = true
+  ipv6_link_local_addresses = [
+    {
+      address    = "fe80::9656:d028:8652:66b6"
+      link_local = true
+    }
+  ]
+  ipv6_address_prefix_lists = [
+    {
+      prefix = "2001:DB8::/32"
+      eui_64 = true
+    }
+  ]
 }
 ```
 
@@ -83,8 +99,16 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
+- `ipv6_address_autoconfig_default` (Boolean) Insert default route
+- `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
+- `ipv6_address_prefix_lists` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_address_prefix_lists))
+- `ipv6_enable` (Boolean) Enable IPv6 on interface
+- `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
+- `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
+  - Range: `1280`-`9976`
 - `media_type` (String) Media type
   - Choices: `auto-select`, `rj45`, `sfp`
+- `ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `shutdown` (Boolean) Shutdown the selected interface
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
@@ -111,6 +135,30 @@ Optional:
 
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
+
+
+<a id="nestedatt--ipv6_address_prefix_lists"></a>
+### Nested Schema for `ipv6_address_prefix_lists`
+
+Required:
+
+- `prefix` (String)
+
+Optional:
+
+- `eui_64` (Boolean) Use eui-64 interface identifier
+
+
+<a id="nestedatt--ipv6_link_local_addresses"></a>
+### Nested Schema for `ipv6_link_local_addresses`
+
+Required:
+
+- `address` (String)
+
+Optional:
+
+- `link_local` (Boolean) Use link-local address
 
 
 <a id="nestedatt--source_template"></a>

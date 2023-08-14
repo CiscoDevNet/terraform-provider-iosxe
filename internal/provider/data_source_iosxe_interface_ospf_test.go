@@ -36,6 +36,8 @@ func TestAccDataSourceIosxeInterfaceOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "network_type_point_to_multipoint", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "network_type_point_to_point", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "process_ids.0.id", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "process_ids.0.areas.0.area_id", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -72,6 +74,12 @@ func testAccDataSourceIosxeInterfaceOSPFConfig() string {
 	config += `	network_type_point_to_multipoint = false` + "\n"
 	config += `	network_type_point_to_point = true` + "\n"
 	config += `	priority = 10` + "\n"
+	config += `	process_ids = [{` + "\n"
+	config += `		id = 10` + "\n"
+	config += `		areas = [{` + "\n"
+	config += `			area_id = "0"` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

@@ -14,7 +14,7 @@ This data source can read the BGP Neighbor configuration.
 
 ```terraform
 data "iosxe_bgp_neighbor" "example" {
-  asn = "65000"
+  asn = "61000"
   ip  = "3.3.3.3"
 }
 ```
@@ -33,10 +33,30 @@ data "iosxe_bgp_neighbor" "example" {
 
 ### Read-Only
 
+- `cluster_id` (String)
 - `description` (String) Neighbor specific description
+- `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address
 - `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
 - `ebgp_multihop_max_hop` (Number)
+- `fall_over_bfd_check_control_plane_failure` (Boolean) Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation
+- `fall_over_bfd_multi_hops` (Boolean) Force BFD multi-hop to detect failure
+- `fall_over_bfd_single_hop` (Boolean) Force BFD single-hop to detect failure
+- `fall_over_bfd_strict_mode` (Boolean) Enable BFD strict-mode
+- `fall_over_default_enable` (Boolean)
+- `fall_over_default_route_map` (String)
+- `fall_over_maximum_metric_route_map` (String)
 - `id` (String) The path of the retrieved object.
+- `local_as_as_no` (String)
+- `local_as_dual_as` (Boolean) Accept either real AS or local AS from the ebgp peer
+- `local_as_no_prepend` (Boolean) Do not prepend local-as to updates from ebgp peers
+- `local_as_replace_as` (Boolean) Replace real AS with local AS in the EBGP updates
+- `log_neighbor_changes` (Boolean) Log neighbor up/down and reset reason
+- `password_text` (String)
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `shutdown` (Boolean) Administratively shut down this neighbor
+- `timers_holdtime` (Number)
+- `timers_keepalive_interval` (Number)
+- `timers_minimum_neighbor_hold` (Number)
+- `ttl_security_hops` (Number) IP hops
 - `update_source_loopback` (String) Loopback interface
+- `version` (Number) Set the BGP version to match a neighbor

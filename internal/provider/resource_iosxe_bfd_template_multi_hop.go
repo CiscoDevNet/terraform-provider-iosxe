@@ -22,15 +22,12 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -39,22 +36,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewInterfaceVLANResource() resource.Resource {
-	return &InterfaceVLANResource{}
+func NewBFDTemplateMultiHopResource() resource.Resource {
+	return &BFDTemplateMultiHopResource{}
 }
 
-type InterfaceVLANResource struct {
+type BFDTemplateMultiHopResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *InterfaceVLANResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_vlan"
+func (r *BFDTemplateMultiHopResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_bfd_template_multi_hop"
 }
 
-func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *BFDTemplateMultiHopResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface VLAN configuration.",
+		MarkdownDescription: "This resource can manage the BFD Template Multi Hop configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -68,184 +65,105 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
-			"name": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
+			"name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 4094),
-				},
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplace(),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"autostate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable auto-state determination for VLAN").String,
+			"echo": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 				Optional:            true,
 			},
-			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface specific description").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(0, 200),
-					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-				},
-			},
-			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the selected interface").String,
-				Optional:            true,
-			},
-			"ip_proxy_arp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable proxy ARP").String,
-				Optional:            true,
-			},
-			"ip_redirects": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
-				Optional:            true,
-			},
-			"unreachables": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
-				Optional:            true,
-			},
-			"vrf_forwarding": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
-				Optional:            true,
-			},
-			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"unnumbered": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IP processing without an explicit address").String,
-				Optional:            true,
-			},
-			"ip_dhcp_relay_source_interface": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set source interface for relayed messages").String,
-				Optional:            true,
-			},
-			"ip_access_group_in": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
-				Optional:            true,
-			},
-			"ip_access_group_out": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
-				Optional:            true,
-			},
-			"helper_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify a destination address for UDP broadcasts").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"global": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Helper-address is global").String,
-							Optional:            true,
-						},
-						"vrf": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VRF name for helper-address (if different from interface VRF)").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"ipv6_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
-				Optional:            true,
-			},
-			"ipv6_mtu": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set IPv6 Maximum Transmission Unit").AddIntegerRangeDescription(1280, 9976).String,
+			"interval_multihop_v2_units_both": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit and receive interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1280, 9976),
+					int64validator.Between(4, 9999),
 				},
 			},
-			"ra_suppress_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
+			"interval_multihop_v2_units_mill_unit_min_tx": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
-			},
-			"ipv6_address_autoconfig_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").String,
-				Optional:            true,
-			},
-			"ipv6_address_dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
-				Optional:            true,
-			},
-			"ipv6_link_local_addresses": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
-							},
-						},
-						"link_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
-							Optional:            true,
-						},
-					},
+				Validators: []validator.Int64{
+					int64validator.Between(4, 9999),
 				},
 			},
-			"ipv6_address_prefix_lists": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"interval_multihop_v2_units_mill_unit_min_rx": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"prefix": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
-							},
-						},
-						"eui_64": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
-							Optional:            true,
-						},
-					},
+				Validators: []validator.Int64{
+					int64validator.Between(4, 9999),
 				},
+			},
+			"interval_multihop_v2_mill_unit_multiplier": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Multiplier value used to compute holddown").AddIntegerRangeDescription(3, 50).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(3, 50),
+				},
+			},
+			"authentication_md5_keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
+				Optional:            true,
+			},
+			"authentication_meticulous_md5_keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
+				Optional:            true,
+			},
+			"authentication_meticulous_sha_1keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
+				Optional:            true,
+			},
+			"authentication_sha_1_keychain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
+				Optional:            true,
+			},
+			"dampening_half_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Half-life time for the penalty").AddIntegerRangeDescription(1, 30).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 30),
+				},
+			},
+			"dampening_unsuppress_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Value to unsuppress a session").AddIntegerRangeDescription(1, 18000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 18000),
+				},
+			},
+			"dampening_suppress_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Value to start suppressing a session").AddIntegerRangeDescription(1, 18000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 18000),
+				},
+			},
+			"dampening_max_suppressing_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum duration to suppress a session").AddIntegerRangeDescription(1, 420).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 420),
+				},
+			},
+			"dampening_threshold": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Stability threshold to enter dampening in down dampened state(seconds)").AddIntegerRangeDescription(60, 3600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(60, 3600),
+				},
+			},
+			"dampening_down_monitoring": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("down monitoring").String,
+				Optional:            true,
 			},
 		},
 	}
 }
 
-func (r *InterfaceVLANResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *BFDTemplateMultiHopResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -253,8 +171,8 @@ func (r *InterfaceVLANResource) Configure(_ context.Context, req resource.Config
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *InterfaceVLANResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan InterfaceVLAN
+func (r *BFDTemplateMultiHopResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan BFDTemplateMultiHop
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -312,8 +230,8 @@ func (r *InterfaceVLANResource) Create(ctx context.Context, req resource.CreateR
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceVLANResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state InterfaceVLAN
+func (r *BFDTemplateMultiHopResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state BFDTemplateMultiHop
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -331,7 +249,7 @@ func (r *InterfaceVLANResource) Read(ctx context.Context, req resource.ReadReque
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = InterfaceVLAN{Device: state.Device, Id: state.Id}
+		state = BFDTemplateMultiHop{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -347,8 +265,8 @@ func (r *InterfaceVLANResource) Read(ctx context.Context, req resource.ReadReque
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceVLANResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state InterfaceVLAN
+func (r *BFDTemplateMultiHopResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state BFDTemplateMultiHop
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -423,8 +341,8 @@ func (r *InterfaceVLANResource) Update(ctx context.Context, req resource.UpdateR
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceVLANResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state InterfaceVLAN
+func (r *BFDTemplateMultiHopResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state BFDTemplateMultiHop
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -440,11 +358,6 @@ func (r *InterfaceVLANResource) Delete(ctx context.Context, req resource.DeleteR
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
 	deleteMode := "all"
-	if state.DeleteMode.ValueString() == "all" {
-		deleteMode = "all"
-	} else if state.DeleteMode.ValueString() == "attributes" {
-		deleteMode = "attributes"
-	}
 
 	if deleteMode == "all" {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())
@@ -482,6 +395,6 @@ func (r *InterfaceVLANResource) Delete(ctx context.Context, req resource.DeleteR
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *InterfaceVLANResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *BFDTemplateMultiHopResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

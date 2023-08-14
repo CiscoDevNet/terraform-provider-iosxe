@@ -25,6 +25,16 @@ resource "iosxe_interface_ospf" "example" {
   network_type_point_to_multipoint = false
   network_type_point_to_point      = true
   priority                         = 10
+  process_ids = [
+    {
+      id = 10
+      areas = [
+        {
+          area_id = "0"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -55,10 +65,32 @@ resource "iosxe_interface_ospf" "example" {
 - `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
 - `priority` (Number) Router priority
   - Range: `0`-`255`
+- `process_ids` (Attributes List) (see [below for nested schema](#nestedatt--process_ids))
+- `ttl_security_hops` (Number) IP hops
+  - Range: `1`-`254`
 
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--process_ids"></a>
+### Nested Schema for `process_ids`
+
+Required:
+
+- `id` (Number) Process ID
+  - Range: `1`-`65535`
+
+Optional:
+
+- `areas` (Attributes List) (see [below for nested schema](#nestedatt--process_ids--areas))
+
+<a id="nestedatt--process_ids--areas"></a>
+### Nested Schema for `process_ids.areas`
+
+Required:
+
+- `area_id` (String) Set the OSPF area ID
 
 ## Import
 

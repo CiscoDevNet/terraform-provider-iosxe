@@ -17,6 +17,11 @@
 - Add `iosxe_crypto_ikev2_profile` resource and data source
 - Add `deny_log` and `permit_log` attributes to `iosxe_access_list_standard` resource and data source
 - Add `log` and `log_input` attributes to `iosxe_access_list_extended` resource and data source
+- Add `ipv6` attributes to `iosxe_interface_ethernet`, `iosxe_interface_port_channel` `iosxe_vlan` `iosxe_interface_loopback` and `iosxe_interface_port_channel_subinterface` resources and data sources
+- Add `iosxe_bfd_template_multi_hop` resource and data source
+- Add `disable-connected-check`, `fall-over`, `local-as`, `log-neighbor-changes`, `password`, `timers` and `ttl-security` attributes to `iosxe_bgp_neighbor` resource and data source
+- Add `iosxe_bfd_template_multi_hop` resource and data source
+- Add `ttl-security` and `process-id` attributes to `iosxe_interface_ospf` resources and data sources
 
 ## 0.3.2
 

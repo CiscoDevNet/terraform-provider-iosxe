@@ -35,87 +35,101 @@ import (
 )
 
 type InterfaceEthernet struct {
-	Device                     types.String                       `tfsdk:"device"`
-	Id                         types.String                       `tfsdk:"id"`
-	Type                       types.String                       `tfsdk:"type"`
-	Name                       types.String                       `tfsdk:"name"`
-	MediaType                  types.String                       `tfsdk:"media_type"`
-	Switchport                 types.Bool                         `tfsdk:"switchport"`
-	Description                types.String                       `tfsdk:"description"`
-	Shutdown                   types.Bool                         `tfsdk:"shutdown"`
-	IpProxyArp                 types.Bool                         `tfsdk:"ip_proxy_arp"`
-	IpRedirects                types.Bool                         `tfsdk:"ip_redirects"`
-	Unreachables               types.Bool                         `tfsdk:"unreachables"`
-	VrfForwarding              types.String                       `tfsdk:"vrf_forwarding"`
-	Ipv4Address                types.String                       `tfsdk:"ipv4_address"`
-	Ipv4AddressMask            types.String                       `tfsdk:"ipv4_address_mask"`
-	Unnumbered                 types.String                       `tfsdk:"unnumbered"`
-	EncapsulationDot1qVlanId   types.Int64                        `tfsdk:"encapsulation_dot1q_vlan_id"`
-	ChannelGroupNumber         types.Int64                        `tfsdk:"channel_group_number"`
-	ChannelGroupMode           types.String                       `tfsdk:"channel_group_mode"`
-	IpDhcpRelaySourceInterface types.String                       `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupIn            types.String                       `tfsdk:"ip_access_group_in"`
-	IpAccessGroupInEnable      types.Bool                         `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut           types.String                       `tfsdk:"ip_access_group_out"`
-	IpAccessGroupOutEnable     types.Bool                         `tfsdk:"ip_access_group_out_enable"`
-	SpanningTreeGuard          types.String                       `tfsdk:"spanning_tree_guard"`
-	AutoQosClassify            types.Bool                         `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice      types.Bool                         `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust               types.Bool                         `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos            types.Bool                         `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp           types.Bool                         `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts            types.Bool                         `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera       types.Bool                         `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer    types.Bool                         `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip                types.Bool                         `tfsdk:"auto_qos_voip"`
-	AutoQosVoipCiscoPhone      types.Bool                         `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone  types.Bool                         `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust           types.Bool                         `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice                types.String                       `tfsdk:"trust_device"`
-	HelperAddresses            []InterfaceEthernetHelperAddresses `tfsdk:"helper_addresses"`
-	SourceTemplate             []InterfaceEthernetSourceTemplate  `tfsdk:"source_template"`
+	Device                       types.String                              `tfsdk:"device"`
+	Id                           types.String                              `tfsdk:"id"`
+	Type                         types.String                              `tfsdk:"type"`
+	Name                         types.String                              `tfsdk:"name"`
+	MediaType                    types.String                              `tfsdk:"media_type"`
+	Switchport                   types.Bool                                `tfsdk:"switchport"`
+	Description                  types.String                              `tfsdk:"description"`
+	Shutdown                     types.Bool                                `tfsdk:"shutdown"`
+	IpProxyArp                   types.Bool                                `tfsdk:"ip_proxy_arp"`
+	IpRedirects                  types.Bool                                `tfsdk:"ip_redirects"`
+	Unreachables                 types.Bool                                `tfsdk:"unreachables"`
+	VrfForwarding                types.String                              `tfsdk:"vrf_forwarding"`
+	Ipv4Address                  types.String                              `tfsdk:"ipv4_address"`
+	Ipv4AddressMask              types.String                              `tfsdk:"ipv4_address_mask"`
+	Unnumbered                   types.String                              `tfsdk:"unnumbered"`
+	EncapsulationDot1qVlanId     types.Int64                               `tfsdk:"encapsulation_dot1q_vlan_id"`
+	ChannelGroupNumber           types.Int64                               `tfsdk:"channel_group_number"`
+	ChannelGroupMode             types.String                              `tfsdk:"channel_group_mode"`
+	IpDhcpRelaySourceInterface   types.String                              `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpAccessGroupIn              types.String                              `tfsdk:"ip_access_group_in"`
+	IpAccessGroupInEnable        types.Bool                                `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupOut             types.String                              `tfsdk:"ip_access_group_out"`
+	IpAccessGroupOutEnable       types.Bool                                `tfsdk:"ip_access_group_out_enable"`
+	SpanningTreeGuard            types.String                              `tfsdk:"spanning_tree_guard"`
+	AutoQosClassify              types.Bool                                `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice        types.Bool                                `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                 types.Bool                                `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos              types.Bool                                `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp             types.Bool                                `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts              types.Bool                                `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera         types.Bool                                `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer      types.Bool                                `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                  types.Bool                                `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone        types.Bool                                `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone    types.Bool                                `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust             types.Bool                                `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                  types.String                              `tfsdk:"trust_device"`
+	HelperAddresses              []InterfaceEthernetHelperAddresses        `tfsdk:"helper_addresses"`
+	SourceTemplate               []InterfaceEthernetSourceTemplate         `tfsdk:"source_template"`
+	Ipv6Enable                   types.Bool                                `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                      types.Int64                               `tfsdk:"ipv6_mtu"`
+	RaSuppressAll                types.Bool                                `tfsdk:"ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault types.Bool                                `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp              types.Bool                                `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses       []InterfaceEthernetIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6AddressPrefixLists       []InterfaceEthernetIpv6AddressPrefixLists `tfsdk:"ipv6_address_prefix_lists"`
 }
 
 type InterfaceEthernetData struct {
-	Device                     types.String                       `tfsdk:"device"`
-	Id                         types.String                       `tfsdk:"id"`
-	Type                       types.String                       `tfsdk:"type"`
-	Name                       types.String                       `tfsdk:"name"`
-	MediaType                  types.String                       `tfsdk:"media_type"`
-	Switchport                 types.Bool                         `tfsdk:"switchport"`
-	Description                types.String                       `tfsdk:"description"`
-	Shutdown                   types.Bool                         `tfsdk:"shutdown"`
-	IpProxyArp                 types.Bool                         `tfsdk:"ip_proxy_arp"`
-	IpRedirects                types.Bool                         `tfsdk:"ip_redirects"`
-	Unreachables               types.Bool                         `tfsdk:"unreachables"`
-	VrfForwarding              types.String                       `tfsdk:"vrf_forwarding"`
-	Ipv4Address                types.String                       `tfsdk:"ipv4_address"`
-	Ipv4AddressMask            types.String                       `tfsdk:"ipv4_address_mask"`
-	Unnumbered                 types.String                       `tfsdk:"unnumbered"`
-	EncapsulationDot1qVlanId   types.Int64                        `tfsdk:"encapsulation_dot1q_vlan_id"`
-	ChannelGroupNumber         types.Int64                        `tfsdk:"channel_group_number"`
-	ChannelGroupMode           types.String                       `tfsdk:"channel_group_mode"`
-	IpDhcpRelaySourceInterface types.String                       `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupIn            types.String                       `tfsdk:"ip_access_group_in"`
-	IpAccessGroupInEnable      types.Bool                         `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut           types.String                       `tfsdk:"ip_access_group_out"`
-	IpAccessGroupOutEnable     types.Bool                         `tfsdk:"ip_access_group_out_enable"`
-	SpanningTreeGuard          types.String                       `tfsdk:"spanning_tree_guard"`
-	AutoQosClassify            types.Bool                         `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice      types.Bool                         `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust               types.Bool                         `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos            types.Bool                         `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp           types.Bool                         `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts            types.Bool                         `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera       types.Bool                         `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer    types.Bool                         `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip                types.Bool                         `tfsdk:"auto_qos_voip"`
-	AutoQosVoipCiscoPhone      types.Bool                         `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone  types.Bool                         `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust           types.Bool                         `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice                types.String                       `tfsdk:"trust_device"`
-	HelperAddresses            []InterfaceEthernetHelperAddresses `tfsdk:"helper_addresses"`
-	SourceTemplate             []InterfaceEthernetSourceTemplate  `tfsdk:"source_template"`
+	Device                       types.String                              `tfsdk:"device"`
+	Id                           types.String                              `tfsdk:"id"`
+	Type                         types.String                              `tfsdk:"type"`
+	Name                         types.String                              `tfsdk:"name"`
+	MediaType                    types.String                              `tfsdk:"media_type"`
+	Switchport                   types.Bool                                `tfsdk:"switchport"`
+	Description                  types.String                              `tfsdk:"description"`
+	Shutdown                     types.Bool                                `tfsdk:"shutdown"`
+	IpProxyArp                   types.Bool                                `tfsdk:"ip_proxy_arp"`
+	IpRedirects                  types.Bool                                `tfsdk:"ip_redirects"`
+	Unreachables                 types.Bool                                `tfsdk:"unreachables"`
+	VrfForwarding                types.String                              `tfsdk:"vrf_forwarding"`
+	Ipv4Address                  types.String                              `tfsdk:"ipv4_address"`
+	Ipv4AddressMask              types.String                              `tfsdk:"ipv4_address_mask"`
+	Unnumbered                   types.String                              `tfsdk:"unnumbered"`
+	EncapsulationDot1qVlanId     types.Int64                               `tfsdk:"encapsulation_dot1q_vlan_id"`
+	ChannelGroupNumber           types.Int64                               `tfsdk:"channel_group_number"`
+	ChannelGroupMode             types.String                              `tfsdk:"channel_group_mode"`
+	IpDhcpRelaySourceInterface   types.String                              `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpAccessGroupIn              types.String                              `tfsdk:"ip_access_group_in"`
+	IpAccessGroupInEnable        types.Bool                                `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupOut             types.String                              `tfsdk:"ip_access_group_out"`
+	IpAccessGroupOutEnable       types.Bool                                `tfsdk:"ip_access_group_out_enable"`
+	SpanningTreeGuard            types.String                              `tfsdk:"spanning_tree_guard"`
+	AutoQosClassify              types.Bool                                `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice        types.Bool                                `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                 types.Bool                                `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos              types.Bool                                `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp             types.Bool                                `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts              types.Bool                                `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera         types.Bool                                `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer      types.Bool                                `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                  types.Bool                                `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone        types.Bool                                `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone    types.Bool                                `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust             types.Bool                                `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                  types.String                              `tfsdk:"trust_device"`
+	HelperAddresses              []InterfaceEthernetHelperAddresses        `tfsdk:"helper_addresses"`
+	SourceTemplate               []InterfaceEthernetSourceTemplate         `tfsdk:"source_template"`
+	Ipv6Enable                   types.Bool                                `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                      types.Int64                               `tfsdk:"ipv6_mtu"`
+	RaSuppressAll                types.Bool                                `tfsdk:"ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault types.Bool                                `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp              types.Bool                                `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses       []InterfaceEthernetIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6AddressPrefixLists       []InterfaceEthernetIpv6AddressPrefixLists `tfsdk:"ipv6_address_prefix_lists"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -125,6 +139,14 @@ type InterfaceEthernetHelperAddresses struct {
 type InterfaceEthernetSourceTemplate struct {
 	TemplateName types.String `tfsdk:"template_name"`
 	Merge        types.Bool   `tfsdk:"merge"`
+}
+type InterfaceEthernetIpv6LinkLocalAddresses struct {
+	Address   types.String `tfsdk:"address"`
+	LinkLocal types.Bool   `tfsdk:"link_local"`
+}
+type InterfaceEthernetIpv6AddressPrefixLists struct {
+	Prefix types.String `tfsdk:"prefix"`
+	Eui64  types.Bool   `tfsdk:"eui_64"`
 }
 
 func (data InterfaceEthernet) getPath() string {
@@ -280,6 +302,29 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	if !data.TrustDevice.IsNull() && !data.TrustDevice.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trust.device", data.TrustDevice.ValueString())
 	}
+	if !data.Ipv6Enable.IsNull() && !data.Ipv6Enable.IsUnknown() {
+		if data.Ipv6Enable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.enable", map[string]string{})
+		}
+	}
+	if !data.Ipv6Mtu.IsNull() && !data.Ipv6Mtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.mtu", strconv.FormatInt(data.Ipv6Mtu.ValueInt64(), 10))
+	}
+	if !data.RaSuppressAll.IsNull() && !data.RaSuppressAll.IsUnknown() {
+		if data.RaSuppressAll.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.nd.Cisco-IOS-XE-nd:ra.suppress.all", map[string]string{})
+		}
+	}
+	if !data.Ipv6AddressAutoconfigDefault.IsNull() && !data.Ipv6AddressAutoconfigDefault.IsUnknown() {
+		if data.Ipv6AddressAutoconfigDefault.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.autoconfig.default", map[string]string{})
+		}
+	}
+	if !data.Ipv6AddressDhcp.IsNull() && !data.Ipv6AddressDhcp.IsUnknown() {
+		if data.Ipv6AddressDhcp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.dhcp", map[string]string{})
+		}
+	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
 		for index, item := range data.HelperAddresses {
@@ -305,6 +350,32 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 			if !item.Merge.IsNull() && !item.Merge.IsUnknown() {
 				if item.Merge.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.template.template-name"+"."+strconv.Itoa(index)+"."+"merge", map[string]string{})
+				}
+			}
+		}
+	}
+	if len(data.Ipv6LinkLocalAddresses) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address", []interface{}{})
+		for index, item := range data.Ipv6LinkLocalAddresses {
+			if !item.Address.IsNull() && !item.Address.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address"+"."+strconv.Itoa(index)+"."+"address", item.Address.ValueString())
+			}
+			if !item.LinkLocal.IsNull() && !item.LinkLocal.IsUnknown() {
+				if item.LinkLocal.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address"+"."+strconv.Itoa(index)+"."+"link-local", map[string]string{})
+				}
+			}
+		}
+	}
+	if len(data.Ipv6AddressPrefixLists) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.prefix-list", []interface{}{})
+		for index, item := range data.Ipv6AddressPrefixLists {
+			if !item.Prefix.IsNull() && !item.Prefix.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.prefix-list"+"."+strconv.Itoa(index)+"."+"prefix", item.Prefix.ValueString())
+			}
+			if !item.Eui64.IsNull() && !item.Eui64.IsUnknown() {
+				if item.Eui64.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.prefix-list"+"."+strconv.Itoa(index)+"."+"eui-64", map[string]string{})
 				}
 			}
 		}
@@ -636,6 +707,123 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 			data.SourceTemplate[i].Merge = types.BoolNull()
 		}
 	}
+	if value := res.Get(prefix + "ipv6.enable"); !data.Ipv6Enable.IsNull() {
+		if value.Exists() {
+			data.Ipv6Enable = types.BoolValue(true)
+		} else {
+			data.Ipv6Enable = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6Enable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6.mtu"); value.Exists() && !data.Ipv6Mtu.IsNull() {
+		data.Ipv6Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Ipv6Mtu = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ipv6.nd.Cisco-IOS-XE-nd:ra.suppress.all"); !data.RaSuppressAll.IsNull() {
+		if value.Exists() {
+			data.RaSuppressAll = types.BoolValue(true)
+		} else {
+			data.RaSuppressAll = types.BoolValue(false)
+		}
+	} else {
+		data.RaSuppressAll = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6.address.autoconfig.default"); !data.Ipv6AddressAutoconfigDefault.IsNull() {
+		if value.Exists() {
+			data.Ipv6AddressAutoconfigDefault = types.BoolValue(true)
+		} else {
+			data.Ipv6AddressAutoconfigDefault = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6AddressAutoconfigDefault = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6.address.dhcp"); !data.Ipv6AddressDhcp.IsNull() {
+		if value.Exists() {
+			data.Ipv6AddressDhcp = types.BoolValue(true)
+		} else {
+			data.Ipv6AddressDhcp = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6AddressDhcp = types.BoolNull()
+	}
+	for i := range data.Ipv6LinkLocalAddresses {
+		keys := [...]string{"address"}
+		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "ipv6.address.link-local-address").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("address"); value.Exists() && !data.Ipv6LinkLocalAddresses[i].Address.IsNull() {
+			data.Ipv6LinkLocalAddresses[i].Address = types.StringValue(value.String())
+		} else {
+			data.Ipv6LinkLocalAddresses[i].Address = types.StringNull()
+		}
+		if value := r.Get("link-local"); !data.Ipv6LinkLocalAddresses[i].LinkLocal.IsNull() {
+			if value.Exists() {
+				data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolValue(true)
+			} else {
+				data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolNull()
+		}
+	}
+	for i := range data.Ipv6AddressPrefixLists {
+		keys := [...]string{"prefix"}
+		keyValues := [...]string{data.Ipv6AddressPrefixLists[i].Prefix.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "ipv6.address.prefix-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("prefix"); value.Exists() && !data.Ipv6AddressPrefixLists[i].Prefix.IsNull() {
+			data.Ipv6AddressPrefixLists[i].Prefix = types.StringValue(value.String())
+		} else {
+			data.Ipv6AddressPrefixLists[i].Prefix = types.StringNull()
+		}
+		if value := r.Get("eui-64"); !data.Ipv6AddressPrefixLists[i].Eui64.IsNull() {
+			if value.Exists() {
+				data.Ipv6AddressPrefixLists[i].Eui64 = types.BoolValue(true)
+			} else {
+				data.Ipv6AddressPrefixLists[i].Eui64 = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6AddressPrefixLists[i].Eui64 = types.BoolNull()
+		}
+	}
 }
 
 func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Result) {
@@ -815,6 +1003,61 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ipv6.enable"); value.Exists() {
+		data.Ipv6Enable = types.BoolValue(true)
+	} else {
+		data.Ipv6Enable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.mtu"); value.Exists() {
+		data.Ipv6Mtu = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ipv6.nd.Cisco-IOS-XE-nd:ra.suppress.all"); value.Exists() {
+		data.RaSuppressAll = types.BoolValue(true)
+	} else {
+		data.RaSuppressAll = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.address.autoconfig.default"); value.Exists() {
+		data.Ipv6AddressAutoconfigDefault = types.BoolValue(true)
+	} else {
+		data.Ipv6AddressAutoconfigDefault = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.address.dhcp"); value.Exists() {
+		data.Ipv6AddressDhcp = types.BoolValue(true)
+	} else {
+		data.Ipv6AddressDhcp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.address.link-local-address"); value.Exists() {
+		data.Ipv6LinkLocalAddresses = make([]InterfaceEthernetIpv6LinkLocalAddresses, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceEthernetIpv6LinkLocalAddresses{}
+			if cValue := v.Get("address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("link-local"); cValue.Exists() {
+				item.LinkLocal = types.BoolValue(true)
+			} else {
+				item.LinkLocal = types.BoolValue(false)
+			}
+			data.Ipv6LinkLocalAddresses = append(data.Ipv6LinkLocalAddresses, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ipv6.address.prefix-list"); value.Exists() {
+		data.Ipv6AddressPrefixLists = make([]InterfaceEthernetIpv6AddressPrefixLists, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceEthernetIpv6AddressPrefixLists{}
+			if cValue := v.Get("prefix"); cValue.Exists() {
+				item.Prefix = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("eui-64"); cValue.Exists() {
+				item.Eui64 = types.BoolValue(true)
+			} else {
+				item.Eui64 = types.BoolValue(false)
+			}
+			data.Ipv6AddressPrefixLists = append(data.Ipv6AddressPrefixLists, item)
+			return true
+		})
+	}
 }
 
 func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state InterfaceEthernet) []string {
@@ -867,6 +1110,56 @@ func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state In
 		}
 		if !found {
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/source/template/template-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Ipv6LinkLocalAddresses {
+		stateKeyValues := [...]string{state.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6LinkLocalAddresses[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6LinkLocalAddresses {
+			found = true
+			if state.Ipv6LinkLocalAddresses[i].Address.ValueString() != data.Ipv6LinkLocalAddresses[j].Address.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Ipv6AddressPrefixLists {
+		stateKeyValues := [...]string{state.Ipv6AddressPrefixLists[i].Prefix.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6AddressPrefixLists[i].Prefix.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6AddressPrefixLists {
+			found = true
+			if state.Ipv6AddressPrefixLists[i].Prefix.ValueString() != data.Ipv6AddressPrefixLists[j].Prefix.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	return deletedListItems
@@ -931,6 +1224,32 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 		keyValues := [...]string{data.SourceTemplate[i].TemplateName.ValueString()}
 		if !data.SourceTemplate[i].Merge.IsNull() && !data.SourceTemplate[i].Merge.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/source/template/template-name=%v/merge", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+	if !data.Ipv6Enable.IsNull() && !data.Ipv6Enable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/enable", data.getPath()))
+	}
+	if !data.RaSuppressAll.IsNull() && !data.RaSuppressAll.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", data.getPath()))
+	}
+	if !data.Ipv6AddressAutoconfigDefault.IsNull() && !data.Ipv6AddressAutoconfigDefault.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/autoconfig/default", data.getPath()))
+	}
+	if !data.Ipv6AddressDhcp.IsNull() && !data.Ipv6AddressDhcp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/dhcp", data.getPath()))
+	}
+
+	for i := range data.Ipv6LinkLocalAddresses {
+		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+		if !data.Ipv6LinkLocalAddresses[i].LinkLocal.IsNull() && !data.Ipv6LinkLocalAddresses[i].LinkLocal.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/link-local-address=%v/link-local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
+	for i := range data.Ipv6AddressPrefixLists {
+		keyValues := [...]string{data.Ipv6AddressPrefixLists[i].Prefix.ValueString()}
+		if !data.Ipv6AddressPrefixLists[i].Eui64.IsNull() && !data.Ipv6AddressPrefixLists[i].Eui64.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/prefix-list=%v/eui-64", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 	return emptyLeafsDelete
@@ -1046,6 +1365,31 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.SourceTemplate[i].TemplateName.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/template/template-name=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.Ipv6Enable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/enable", data.getPath()))
+	}
+	if !data.Ipv6Mtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/mtu", data.getPath()))
+	}
+	if !data.RaSuppressAll.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", data.getPath()))
+	}
+	if !data.Ipv6AddressAutoconfigDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/autoconfig/default", data.getPath()))
+	}
+	if !data.Ipv6AddressDhcp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/dhcp", data.getPath()))
+	}
+	for i := range data.Ipv6LinkLocalAddresses {
+		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv6AddressPrefixLists {
+		keyValues := [...]string{data.Ipv6AddressPrefixLists[i].Prefix.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

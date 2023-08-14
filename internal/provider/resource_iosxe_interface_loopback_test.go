@@ -40,6 +40,14 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_in_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_out", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_out_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_mtu", "1300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ra_suppress_all", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_address_dhcp", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b6"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_link_local_addresses.0.link_local", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_address_prefix_lists.0.prefix", "2001:DB8::/32"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ipv6_address_prefix_lists.0.eui_64", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -95,6 +103,18 @@ func testAccIosxeInterfaceLoopbackConfig_all() string {
 	config += `	ip_access_group_in_enable = true` + "\n"
 	config += `	ip_access_group_out = "1"` + "\n"
 	config += `	ip_access_group_out_enable = true` + "\n"
+	config += `	ipv6_enable = true` + "\n"
+	config += `	ipv6_mtu = 1300` + "\n"
+	config += `	ra_suppress_all = true` + "\n"
+	config += `	ipv6_address_dhcp = true` + "\n"
+	config += `	ipv6_link_local_addresses = [{` + "\n"
+	config += `		address = "fe80::9656:d028:8652:66b6"` + "\n"
+	config += `		link_local = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	ipv6_address_prefix_lists = [{` + "\n"
+	config += `		prefix = "2001:DB8::/32"` + "\n"
+	config += `		eui_64 = true` + "\n"
+	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

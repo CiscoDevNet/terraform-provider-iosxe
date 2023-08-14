@@ -33,26 +33,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &InterfaceOSPFDataSource{}
-	_ datasource.DataSourceWithConfigure = &InterfaceOSPFDataSource{}
+	_ datasource.DataSource              = &BFDTemplateMultiHopDataSource{}
+	_ datasource.DataSourceWithConfigure = &BFDTemplateMultiHopDataSource{}
 )
 
-func NewInterfaceOSPFDataSource() datasource.DataSource {
-	return &InterfaceOSPFDataSource{}
+func NewBFDTemplateMultiHopDataSource() datasource.DataSource {
+	return &BFDTemplateMultiHopDataSource{}
 }
 
-type InterfaceOSPFDataSource struct {
+type BFDTemplateMultiHopDataSource struct {
 	clients map[string]*restconf.Client
 }
 
-func (d *InterfaceOSPFDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_ospf"
+func (d *BFDTemplateMultiHopDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_bfd_template_multi_hop"
 }
 
-func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *BFDTemplateMultiHopDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Interface OSPF configuration.",
+		MarkdownDescription: "This data source can read the BFD Template Multi Hop configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -63,83 +63,75 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"type": schema.StringAttribute{
-				MarkdownDescription: "Interface type",
-				Required:            true,
-			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"cost": schema.Int64Attribute{
-				MarkdownDescription: "Route cost of this interface",
+			"echo": schema.BoolAttribute{
+				MarkdownDescription: "Use echo adjunct as bfd detection mechanism",
 				Computed:            true,
 			},
-			"dead_interval": schema.Int64Attribute{
-				MarkdownDescription: "Interval after which a neighbor is declared dead",
+			"interval_multihop_v2_units_both": schema.Int64Attribute{
+				MarkdownDescription: "Minimum transmit and receive interval capability",
 				Computed:            true,
 			},
-			"hello_interval": schema.Int64Attribute{
-				MarkdownDescription: "Time between HELLO packets",
+			"interval_multihop_v2_units_mill_unit_min_tx": schema.Int64Attribute{
+				MarkdownDescription: "Minimum transmit interval capability",
 				Computed:            true,
 			},
-			"mtu_ignore": schema.BoolAttribute{
-				MarkdownDescription: "Ignores the MTU in DBD packets",
+			"interval_multihop_v2_units_mill_unit_min_rx": schema.Int64Attribute{
+				MarkdownDescription: "Minimum receive interval capability",
 				Computed:            true,
 			},
-			"network_type_broadcast": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF broadcast multi-access network",
+			"interval_multihop_v2_mill_unit_multiplier": schema.Int64Attribute{
+				MarkdownDescription: "Multiplier value used to compute holddown",
 				Computed:            true,
 			},
-			"network_type_non_broadcast": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF NBMA network",
+			"authentication_md5_keychain": schema.StringAttribute{
+				MarkdownDescription: "keychain name",
 				Computed:            true,
 			},
-			"network_type_point_to_multipoint": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF point-to-multipoint network",
+			"authentication_meticulous_md5_keychain": schema.StringAttribute{
+				MarkdownDescription: "keychain name",
 				Computed:            true,
 			},
-			"network_type_point_to_point": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF point-to-point network",
+			"authentication_meticulous_sha_1keychain": schema.StringAttribute{
+				MarkdownDescription: "keychain name",
 				Computed:            true,
 			},
-			"priority": schema.Int64Attribute{
-				MarkdownDescription: "Router priority",
+			"authentication_sha_1_keychain": schema.StringAttribute{
+				MarkdownDescription: "keychain name",
 				Computed:            true,
 			},
-			"ttl_security_hops": schema.Int64Attribute{
-				MarkdownDescription: "IP hops",
+			"dampening_half_time": schema.Int64Attribute{
+				MarkdownDescription: "Half-life time for the penalty",
 				Computed:            true,
 			},
-			"process_ids": schema.ListNestedAttribute{
-				MarkdownDescription: "",
+			"dampening_unsuppress_time": schema.Int64Attribute{
+				MarkdownDescription: "Value to unsuppress a session",
 				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.Int64Attribute{
-							MarkdownDescription: "Process ID",
-							Computed:            true,
-						},
-						"areas": schema.ListNestedAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"area_id": schema.StringAttribute{
-										MarkdownDescription: "Set the OSPF area ID",
-										Computed:            true,
-									},
-								},
-							},
-						},
-					},
-				},
+			},
+			"dampening_suppress_time": schema.Int64Attribute{
+				MarkdownDescription: "Value to start suppressing a session",
+				Computed:            true,
+			},
+			"dampening_max_suppressing_time": schema.Int64Attribute{
+				MarkdownDescription: "Maximum duration to suppress a session",
+				Computed:            true,
+			},
+			"dampening_threshold": schema.Int64Attribute{
+				MarkdownDescription: "Stability threshold to enter dampening in down dampened state(seconds)",
+				Computed:            true,
+			},
+			"dampening_down_monitoring": schema.BoolAttribute{
+				MarkdownDescription: "down monitoring",
+				Computed:            true,
 			},
 		},
 	}
 }
 
-func (d *InterfaceOSPFDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *BFDTemplateMultiHopDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -147,8 +139,8 @@ func (d *InterfaceOSPFDataSource) Configure(_ context.Context, req datasource.Co
 	d.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (d *InterfaceOSPFDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config InterfaceOSPFData
+func (d *BFDTemplateMultiHopDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config BFDTemplateMultiHopData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -166,7 +158,7 @@ func (d *InterfaceOSPFDataSource) Read(ctx context.Context, req datasource.ReadR
 
 	res, err := d.clients[config.Device.ValueString()].GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = InterfaceOSPFData{Device: config.Device}
+		config = BFDTemplateMultiHopData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))

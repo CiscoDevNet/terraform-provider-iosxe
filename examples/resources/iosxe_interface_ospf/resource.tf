@@ -10,4 +10,14 @@ resource "iosxe_interface_ospf" "example" {
   network_type_point_to_multipoint = false
   network_type_point_to_point      = true
   priority                         = 10
+  process_ids = [
+    {
+      id = 10
+      areas = [
+        {
+          area_id = "0"
+        }
+      ]
+    }
+  ]
 }
