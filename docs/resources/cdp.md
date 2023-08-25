@@ -16,9 +16,9 @@ This resource can manage the CDP configuration.
 resource "iosxe_cdp" "example" {
   holdtime        = 15
   timer           = 5
-  run_enable      = true
+  run             = true
   filter_tlv_list = "TLIST"
-  tlv_list = [
+  tlv_lists = [
     {
       name            = "TLIST"
       vtp_mgmt_domain = true
@@ -40,17 +40,17 @@ resource "iosxe_cdp" "example" {
 - `filter_tlv_list` (String) Apply tlv-list globally
 - `holdtime` (Number) Specify the holdtime (in sec) to be sent in packets
   - Range: `10`-`255`
-- `run_enable` (Boolean) Enable CDP
+- `run` (Boolean) Enable CDP
 - `timer` (Number) Specify the rate at which CDP packets are sent (in sec)
   - Range: `5`-`254`
-- `tlv_list` (Attributes List) Configure tlv-list (see [below for nested schema](#nestedatt--tlv_list))
+- `tlv_lists` (Attributes List) Configure tlv-list (see [below for nested schema](#nestedatt--tlv_lists))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--tlv_list"></a>
-### Nested Schema for `tlv_list`
+<a id="nestedatt--tlv_lists"></a>
+### Nested Schema for `tlv_lists`
 
 Required:
 

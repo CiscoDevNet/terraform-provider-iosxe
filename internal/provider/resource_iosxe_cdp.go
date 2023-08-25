@@ -80,7 +80,7 @@ func (r *CDPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					int64validator.Between(5, 254),
 				},
 			},
-			"run_enable": schema.BoolAttribute{
+			"run": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable CDP").String,
 				Optional:            true,
 			},
@@ -91,7 +91,7 @@ func (r *CDPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringvalidator.LengthBetween(1, 40),
 				},
 			},
-			"tlv_list": schema.ListNestedAttribute{
+			"tlv_lists": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure tlv-list").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

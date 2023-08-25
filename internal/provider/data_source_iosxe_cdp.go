@@ -71,7 +71,7 @@ func (d *CDPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Specify the rate at which CDP packets are sent (in sec)",
 				Computed:            true,
 			},
-			"run_enable": schema.BoolAttribute{
+			"run": schema.BoolAttribute{
 				MarkdownDescription: "Enable CDP",
 				Computed:            true,
 			},
@@ -79,7 +79,7 @@ func (d *CDPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Apply tlv-list globally",
 				Computed:            true,
 			},
-			"tlv_list": schema.ListNestedAttribute{
+			"tlv_lists": schema.ListNestedAttribute{
 				MarkdownDescription: "Configure tlv-list",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

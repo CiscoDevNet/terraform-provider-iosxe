@@ -14,6 +14,9 @@ description: |-
 - Make `lists.key` attribute of `iosxe_restconf` resource mandatory
 - Fix issue with nested `lists.items` attributes of `iosxe_restconf` resource
 - Add `iosxe_radius` resource and data source
+- Add `iosxe_bfd_template_single_hop` resource and data source
+- Add `iosxe_cdp` resource and data source
+- Add `cluster_id` ,`fall_over` ,`disable_connected_check`, `local_as`, `log_neighbor_changes`, `password`, `timers`, `ttl_security` attributes to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resources and data sources
 
 ## 0.3.3
 
@@ -29,9 +32,6 @@ description: |-
 - Add `iosxe_crypto_ikev2_proposal` resource and data source
 - Add `iosxe_crypto_ipsec_profile` resource and data source
 - Add `iosxe_radius_server` resource and data source
-- Add `iosxe_bfd_template_single_hop` resource and data source
-- Add `iosxe_cdp` resource and data source
-- Add `cluster-id` ,``fall-over `,`disable-connected-check`,`local-as`,`log-neighbor-changes`,`password`,`timers`,`ttl-security` attributes to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resources and data sources
 
 ## 0.3.2
 

@@ -34,25 +34,25 @@ import (
 )
 
 type CDP struct {
-	Device        types.String `tfsdk:"device"`
-	Id            types.String `tfsdk:"id"`
-	Holdtime      types.Int64  `tfsdk:"holdtime"`
-	Timer         types.Int64  `tfsdk:"timer"`
-	RunEnable     types.Bool   `tfsdk:"run_enable"`
-	FilterTlvList types.String `tfsdk:"filter_tlv_list"`
-	TlvList       []CDPTlvList `tfsdk:"tlv_list"`
+	Device        types.String  `tfsdk:"device"`
+	Id            types.String  `tfsdk:"id"`
+	Holdtime      types.Int64   `tfsdk:"holdtime"`
+	Timer         types.Int64   `tfsdk:"timer"`
+	Run           types.Bool    `tfsdk:"run"`
+	FilterTlvList types.String  `tfsdk:"filter_tlv_list"`
+	TlvLists      []CDPTlvLists `tfsdk:"tlv_lists"`
 }
 
 type CDPData struct {
-	Device        types.String `tfsdk:"device"`
-	Id            types.String `tfsdk:"id"`
-	Holdtime      types.Int64  `tfsdk:"holdtime"`
-	Timer         types.Int64  `tfsdk:"timer"`
-	RunEnable     types.Bool   `tfsdk:"run_enable"`
-	FilterTlvList types.String `tfsdk:"filter_tlv_list"`
-	TlvList       []CDPTlvList `tfsdk:"tlv_list"`
+	Device        types.String  `tfsdk:"device"`
+	Id            types.String  `tfsdk:"id"`
+	Holdtime      types.Int64   `tfsdk:"holdtime"`
+	Timer         types.Int64   `tfsdk:"timer"`
+	Run           types.Bool    `tfsdk:"run"`
+	FilterTlvList types.String  `tfsdk:"filter_tlv_list"`
+	TlvLists      []CDPTlvLists `tfsdk:"tlv_lists"`
 }
-type CDPTlvList struct {
+type CDPTlvLists struct {
 	Name          types.String `tfsdk:"name"`
 	VtpMgmtDomain types.Bool   `tfsdk:"vtp_mgmt_domain"`
 	Cos           types.Bool   `tfsdk:"cos"`
@@ -88,15 +88,15 @@ func (data CDP) toBody(ctx context.Context) string {
 	if !data.Timer.IsNull() && !data.Timer.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:timer", strconv.FormatInt(data.Timer.ValueInt64(), 10))
 	}
-	if !data.RunEnable.IsNull() && !data.RunEnable.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:run-enable", data.RunEnable.ValueBool())
+	if !data.Run.IsNull() && !data.Run.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:run-enable", data.Run.ValueBool())
 	}
 	if !data.FilterTlvList.IsNull() && !data.FilterTlvList.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:filter-tlv-list", data.FilterTlvList.ValueString())
 	}
-	if len(data.TlvList) > 0 {
+	if len(data.TlvLists) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:tlv-list", []interface{}{})
-		for index, item := range data.TlvList {
+		for index, item := range data.TlvLists {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:tlv-list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
@@ -145,21 +145,21 @@ func (data *CDP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Timer = types.Int64Null()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:run-enable"); !data.RunEnable.IsNull() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:run-enable"); !data.Run.IsNull() {
 		if value.Exists() {
-			data.RunEnable = types.BoolValue(value.Bool())
+			data.Run = types.BoolValue(value.Bool())
 		}
 	} else {
-		data.RunEnable = types.BoolNull()
+		data.Run = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() && !data.FilterTlvList.IsNull() {
 		data.FilterTlvList = types.StringValue(value.String())
 	} else {
 		data.FilterTlvList = types.StringNull()
 	}
-	for i := range data.TlvList {
+	for i := range data.TlvLists {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.TlvList[i].Name.ValueString()}
+		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "Cisco-IOS-XE-cdp:tlv-list").ForEach(
@@ -180,55 +180,55 @@ func (data *CDP) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.TlvList[i].Name.IsNull() {
-			data.TlvList[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.TlvLists[i].Name.IsNull() {
+			data.TlvLists[i].Name = types.StringValue(value.String())
 		} else {
-			data.TlvList[i].Name = types.StringNull()
+			data.TlvLists[i].Name = types.StringNull()
 		}
-		if value := r.Get("vtp-mgmt-domain"); !data.TlvList[i].VtpMgmtDomain.IsNull() {
+		if value := r.Get("vtp-mgmt-domain"); !data.TlvLists[i].VtpMgmtDomain.IsNull() {
 			if value.Exists() {
-				data.TlvList[i].VtpMgmtDomain = types.BoolValue(true)
+				data.TlvLists[i].VtpMgmtDomain = types.BoolValue(true)
 			} else {
-				data.TlvList[i].VtpMgmtDomain = types.BoolValue(false)
+				data.TlvLists[i].VtpMgmtDomain = types.BoolValue(false)
 			}
 		} else {
-			data.TlvList[i].VtpMgmtDomain = types.BoolNull()
+			data.TlvLists[i].VtpMgmtDomain = types.BoolNull()
 		}
-		if value := r.Get("cos"); !data.TlvList[i].Cos.IsNull() {
+		if value := r.Get("cos"); !data.TlvLists[i].Cos.IsNull() {
 			if value.Exists() {
-				data.TlvList[i].Cos = types.BoolValue(true)
+				data.TlvLists[i].Cos = types.BoolValue(true)
 			} else {
-				data.TlvList[i].Cos = types.BoolValue(false)
+				data.TlvLists[i].Cos = types.BoolValue(false)
 			}
 		} else {
-			data.TlvList[i].Cos = types.BoolNull()
+			data.TlvLists[i].Cos = types.BoolNull()
 		}
-		if value := r.Get("duplex"); !data.TlvList[i].Duplex.IsNull() {
+		if value := r.Get("duplex"); !data.TlvLists[i].Duplex.IsNull() {
 			if value.Exists() {
-				data.TlvList[i].Duplex = types.BoolValue(true)
+				data.TlvLists[i].Duplex = types.BoolValue(true)
 			} else {
-				data.TlvList[i].Duplex = types.BoolValue(false)
+				data.TlvLists[i].Duplex = types.BoolValue(false)
 			}
 		} else {
-			data.TlvList[i].Duplex = types.BoolNull()
+			data.TlvLists[i].Duplex = types.BoolNull()
 		}
-		if value := r.Get("trust"); !data.TlvList[i].Trust.IsNull() {
+		if value := r.Get("trust"); !data.TlvLists[i].Trust.IsNull() {
 			if value.Exists() {
-				data.TlvList[i].Trust = types.BoolValue(true)
+				data.TlvLists[i].Trust = types.BoolValue(true)
 			} else {
-				data.TlvList[i].Trust = types.BoolValue(false)
+				data.TlvLists[i].Trust = types.BoolValue(false)
 			}
 		} else {
-			data.TlvList[i].Trust = types.BoolNull()
+			data.TlvLists[i].Trust = types.BoolNull()
 		}
-		if value := r.Get("version"); !data.TlvList[i].Version.IsNull() {
+		if value := r.Get("version"); !data.TlvLists[i].Version.IsNull() {
 			if value.Exists() {
-				data.TlvList[i].Version = types.BoolValue(true)
+				data.TlvLists[i].Version = types.BoolValue(true)
 			} else {
-				data.TlvList[i].Version = types.BoolValue(false)
+				data.TlvLists[i].Version = types.BoolValue(false)
 			}
 		} else {
-			data.TlvList[i].Version = types.BoolNull()
+			data.TlvLists[i].Version = types.BoolNull()
 		}
 	}
 }
@@ -245,17 +245,17 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Timer = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
-		data.RunEnable = types.BoolValue(value.Bool())
+		data.Run = types.BoolValue(value.Bool())
 	} else {
-		data.RunEnable = types.BoolValue(false)
+		data.Run = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
 		data.FilterTlvList = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
-		data.TlvList = make([]CDPTlvList, 0)
+		data.TlvLists = make([]CDPTlvLists, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CDPTlvList{}
+			item := CDPTlvLists{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
@@ -284,7 +284,7 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.Version = types.BoolValue(false)
 			}
-			data.TlvList = append(data.TlvList, item)
+			data.TlvLists = append(data.TlvLists, item)
 			return true
 		})
 	}
@@ -292,11 +292,11 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *CDP) getDeletedListItems(ctx context.Context, state CDP) []string {
 	deletedListItems := make([]string, 0)
-	for i := range state.TlvList {
-		stateKeyValues := [...]string{state.TlvList[i].Name.ValueString()}
+	for i := range state.TlvLists {
+		stateKeyValues := [...]string{state.TlvLists[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.TlvList[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.TlvLists[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -304,9 +304,9 @@ func (data *CDP) getDeletedListItems(ctx context.Context, state CDP) []string {
 		}
 
 		found := false
-		for j := range data.TlvList {
+		for j := range data.TlvLists {
 			found = true
-			if state.TlvList[i].Name.ValueString() != data.TlvList[j].Name.ValueString() {
+			if state.TlvLists[i].Name.ValueString() != data.TlvLists[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -323,21 +323,21 @@ func (data *CDP) getDeletedListItems(ctx context.Context, state CDP) []string {
 func (data *CDP) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
-	for i := range data.TlvList {
-		keyValues := [...]string{data.TlvList[i].Name.ValueString()}
-		if !data.TlvList[i].VtpMgmtDomain.IsNull() && !data.TlvList[i].VtpMgmtDomain.ValueBool() {
+	for i := range data.TlvLists {
+		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
+		if !data.TlvLists[i].VtpMgmtDomain.IsNull() && !data.TlvLists[i].VtpMgmtDomain.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/vtp-mgmt-domain", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.TlvList[i].Cos.IsNull() && !data.TlvList[i].Cos.ValueBool() {
+		if !data.TlvLists[i].Cos.IsNull() && !data.TlvLists[i].Cos.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/cos", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.TlvList[i].Duplex.IsNull() && !data.TlvList[i].Duplex.ValueBool() {
+		if !data.TlvLists[i].Duplex.IsNull() && !data.TlvLists[i].Duplex.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/duplex", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.TlvList[i].Trust.IsNull() && !data.TlvList[i].Trust.ValueBool() {
+		if !data.TlvLists[i].Trust.IsNull() && !data.TlvLists[i].Trust.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/trust", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.TlvList[i].Version.IsNull() && !data.TlvList[i].Version.ValueBool() {
+		if !data.TlvLists[i].Version.IsNull() && !data.TlvLists[i].Version.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/version", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
@@ -352,14 +352,14 @@ func (data *CDP) getDeletePaths(ctx context.Context) []string {
 	if !data.Timer.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:timer", data.getPath()))
 	}
-	if !data.RunEnable.IsNull() {
+	if !data.Run.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:run-enable", data.getPath()))
 	}
 	if !data.FilterTlvList.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:filter-tlv-list", data.getPath()))
 	}
-	for i := range data.TlvList {
-		keyValues := [...]string{data.TlvList[i].Name.ValueString()}
+	for i := range data.TlvLists {
+		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

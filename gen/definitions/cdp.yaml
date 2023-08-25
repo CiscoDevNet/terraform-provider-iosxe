@@ -9,10 +9,12 @@ attributes:
   - yang_name: Cisco-IOS-XE-cdp:timer
     example: 5
   - yang_name: Cisco-IOS-XE-cdp:run-enable
+    tf_name: run
     example: true
   - yang_name: Cisco-IOS-XE-cdp:filter-tlv-list
     example: TLIST
   - yang_name: Cisco-IOS-XE-cdp:tlv-list
+    tf_name: tlv_lists
     type: List
     attributes:
       - yang_name: name

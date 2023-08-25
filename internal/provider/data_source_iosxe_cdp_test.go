@@ -29,14 +29,14 @@ func TestAccDataSourceIosxeCDP(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "holdtime", "15"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "timer", "5"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "run_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "run", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "filter_tlv_list", "TLIST"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_list.0.name", "TLIST"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_list.0.vtp_mgmt_domain", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_list.0.cos", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_list.0.duplex", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_list.0.trust", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_list.0.version", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_lists.0.name", "TLIST"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_lists.0.vtp_mgmt_domain", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_lists.0.cos", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_lists.0.duplex", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_lists.0.trust", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cdp.test", "tlv_lists.0.version", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -53,9 +53,9 @@ func testAccDataSourceIosxeCDPConfig() string {
 	config := `resource "iosxe_cdp" "test" {` + "\n"
 	config += `	holdtime = 15` + "\n"
 	config += `	timer = 5` + "\n"
-	config += `	run_enable = true` + "\n"
+	config += `	run = true` + "\n"
 	config += `	filter_tlv_list = "TLIST"` + "\n"
-	config += `	tlv_list = [{` + "\n"
+	config += `	tlv_lists = [{` + "\n"
 	config += `		name = "TLIST"` + "\n"
 	config += `		vtp_mgmt_domain = true` + "\n"
 	config += `		cos = true` + "\n"
