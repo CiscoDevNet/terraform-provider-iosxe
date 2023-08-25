@@ -22,7 +22,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -38,22 +37,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewDHCPResource() resource.Resource {
-	return &DHCPResource{}
+func NewARPResource() resource.Resource {
+	return &ARPResource{}
 }
 
-type DHCPResource struct {
+type ARPResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *DHCPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_dhcp"
+func (r *ARPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_arp"
 }
 
-func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *ARPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the DHCP configuration.",
+		MarkdownDescription: "This resource can manage the ARP configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -74,75 +73,98 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"compatibility_suboption_link_selection": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("cisco", "standard").String,
+			"incomplete_entries": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify the number of IP addresses to resolve").AddIntegerRangeDescription(1, 2147483647).String,
 				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("cisco", "standard"),
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2147483647),
 				},
 			},
-			"compatibility_suboption_server_override": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("cisco", "standard").String,
+			"proxy_disable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Disable proxy ARP on all interfaces").String,
 				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("cisco", "standard"),
+			},
+			"entry_learn": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum learn entry limit").AddIntegerRangeDescription(255, 512000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(255, 512000),
 				},
 			},
-			"relay_information_trust_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Received DHCP packets may contain relay info option with zero giaddr").String,
-				Optional:            true,
-			},
-			"relay_information_option_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Default option, no vpn").String,
-				Optional:            true,
-			},
-			"relay_information_option_vpn": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert VPN sub-options and change the giaddr to the outgoing interface").String,
-				Optional:            true,
-			},
-			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan (Deprecated, use vlan-list)").String,
+			"inspection_filter": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify ARP acl to be applied").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"vlan_id": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
+						"arpacl": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 4094),
+						},
+						"vlan": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Vlans to apply the filter").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"vlan_range": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+									},
+									"static": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Apply the ACL statically").String,
+										Optional:            true,
+									},
+								},
 							},
 						},
 					},
 				},
 			},
-			"snooping": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping").String,
+			"inspection_validate_src_mac": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Validate source MAC address").String,
 				Optional:            true,
 			},
-			"snooping_remoteid_hostname": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use configured hostname for remote id").String,
+			"inspection_validate_dst_mac": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Validate destination MAC address").String,
 				Optional:            true,
 			},
-			"snooping_vlan_list": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan").String,
+			"inspection_validate_ip": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Validate IP addresses").String,
 				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan first number or vlan range,example: 1,3-5,7,9-11").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?)(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)`), ""),
-							},
-						},
-					},
+			},
+			"inspection_validate_allow_zeros": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow 0.0.0.0 sender IP address").String,
+				Optional:            true,
+			},
+			"inspection_log_buffer_entries": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Number of entries for log buffer").AddIntegerRangeDescription(0, 1024).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 1024),
 				},
+			},
+			"inspection_log_buffer_logs_entries": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Number of entries for log buffer").AddIntegerRangeDescription(0, 1024).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 1024),
+				},
+			},
+			"inspection_log_buffer_logs_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Interval for controlling logging rate").AddIntegerRangeDescription(0, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 86400),
+				},
+			},
+			"inspection_vlan": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable ARP Inspection on vlans").String,
+				Optional:            true,
 			},
 		},
 	}
 }
 
-func (r *DHCPResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *ARPResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -150,8 +172,8 @@ func (r *DHCPResource) Configure(_ context.Context, req resource.ConfigureReques
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *DHCPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan DHCP
+func (r *ARPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan ARP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -209,8 +231,8 @@ func (r *DHCPResource) Create(ctx context.Context, req resource.CreateRequest, r
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state DHCP
+func (r *ARPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state ARP
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -228,7 +250,7 @@ func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = DHCP{Device: state.Device, Id: state.Id}
+		state = ARP{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -244,8 +266,8 @@ func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state DHCP
+func (r *ARPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state ARP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -320,8 +342,8 @@ func (r *DHCPResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state DHCP
+func (r *ARPResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state ARP
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -379,6 +401,6 @@ func (r *DHCPResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *DHCPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *ARPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

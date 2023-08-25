@@ -33,26 +33,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &DHCPDataSource{}
-	_ datasource.DataSourceWithConfigure = &DHCPDataSource{}
+	_ datasource.DataSource              = &ARPDataSource{}
+	_ datasource.DataSourceWithConfigure = &ARPDataSource{}
 )
 
-func NewDHCPDataSource() datasource.DataSource {
-	return &DHCPDataSource{}
+func NewARPDataSource() datasource.DataSource {
+	return &ARPDataSource{}
 }
 
-type DHCPDataSource struct {
+type ARPDataSource struct {
 	clients map[string]*restconf.Client
 }
 
-func (d *DHCPDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_dhcp"
+func (d *ARPDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_arp"
 }
 
-func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *ARPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the DHCP configuration.",
+		MarkdownDescription: "This data source can read the ARP configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -63,63 +63,83 @@ func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"compatibility_suboption_link_selection": schema.StringAttribute{
-				MarkdownDescription: "",
+			"incomplete_entries": schema.Int64Attribute{
+				MarkdownDescription: "Specify the number of IP addresses to resolve",
 				Computed:            true,
 			},
-			"compatibility_suboption_server_override": schema.StringAttribute{
-				MarkdownDescription: "",
+			"proxy_disable": schema.BoolAttribute{
+				MarkdownDescription: "Disable proxy ARP on all interfaces",
 				Computed:            true,
 			},
-			"relay_information_trust_all": schema.BoolAttribute{
-				MarkdownDescription: "Received DHCP packets may contain relay info option with zero giaddr",
+			"entry_learn": schema.Int64Attribute{
+				MarkdownDescription: "Maximum learn entry limit",
 				Computed:            true,
 			},
-			"relay_information_option_default": schema.BoolAttribute{
-				MarkdownDescription: "Default option, no vpn",
-				Computed:            true,
-			},
-			"relay_information_option_vpn": schema.BoolAttribute{
-				MarkdownDescription: "Insert VPN sub-options and change the giaddr to the outgoing interface",
-				Computed:            true,
-			},
-			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: "DHCP Snooping vlan (Deprecated, use vlan-list)",
+			"inspection_filter": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify ARP acl to be applied",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"vlan_id": schema.Int64Attribute{
+						"arpacl": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-					},
-				},
-			},
-			"snooping": schema.BoolAttribute{
-				MarkdownDescription: "DHCP Snooping",
-				Computed:            true,
-			},
-			"snooping_remoteid_hostname": schema.BoolAttribute{
-				MarkdownDescription: "Use configured hostname for remote id",
-				Computed:            true,
-			},
-			"snooping_vlan_list": schema.ListNestedAttribute{
-				MarkdownDescription: "DHCP Snooping vlan",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.StringAttribute{
-							MarkdownDescription: "DHCP Snooping vlan first number or vlan range,example: 1,3-5,7,9-11",
+						"vlan": schema.ListNestedAttribute{
+							MarkdownDescription: "Vlans to apply the filter",
 							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"vlan_range": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"static": schema.BoolAttribute{
+										MarkdownDescription: "Apply the ACL statically",
+										Computed:            true,
+									},
+								},
+							},
 						},
 					},
 				},
+			},
+			"inspection_validate_src_mac": schema.BoolAttribute{
+				MarkdownDescription: "Validate source MAC address",
+				Computed:            true,
+			},
+			"inspection_validate_dst_mac": schema.BoolAttribute{
+				MarkdownDescription: "Validate destination MAC address",
+				Computed:            true,
+			},
+			"inspection_validate_ip": schema.BoolAttribute{
+				MarkdownDescription: "Validate IP addresses",
+				Computed:            true,
+			},
+			"inspection_validate_allow_zeros": schema.BoolAttribute{
+				MarkdownDescription: "Allow 0.0.0.0 sender IP address",
+				Computed:            true,
+			},
+			"inspection_log_buffer_entries": schema.Int64Attribute{
+				MarkdownDescription: "Number of entries for log buffer",
+				Computed:            true,
+			},
+			"inspection_log_buffer_logs_entries": schema.Int64Attribute{
+				MarkdownDescription: "Number of entries for log buffer",
+				Computed:            true,
+			},
+			"inspection_log_buffer_logs_interval": schema.Int64Attribute{
+				MarkdownDescription: "Interval for controlling logging rate",
+				Computed:            true,
+			},
+			"inspection_vlan": schema.StringAttribute{
+				MarkdownDescription: "Enable/Disable ARP Inspection on vlans",
+				Computed:            true,
 			},
 		},
 	}
 }
 
-func (d *DHCPDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *ARPDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -127,8 +147,8 @@ func (d *DHCPDataSource) Configure(_ context.Context, req datasource.ConfigureRe
 	d.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (d *DHCPDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config DHCPData
+func (d *ARPDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config ARPData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -146,7 +166,7 @@ func (d *DHCPDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 
 	res, err := d.clients[config.Device.ValueString()].GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = DHCPData{Device: config.Device}
+		config = ARPData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))

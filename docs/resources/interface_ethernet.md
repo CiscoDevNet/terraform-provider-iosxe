@@ -41,6 +41,8 @@ resource "iosxe_interface_ethernet" "example" {
       merge         = false
     }
   ]
+  arp_timeout             = 300
+  spanning_tree_link_type = "point-to-point"
 }
 ```
 
@@ -55,6 +57,8 @@ resource "iosxe_interface_ethernet" "example" {
 
 ### Optional
 
+- `arp_timeout` (Number) Set ARP cache timeout
+  - Range: `0`-`2147483`
 - `auto_qos_classify` (Boolean) Configure classification for untrusted devices
 - `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
 - `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
@@ -89,6 +93,9 @@ resource "iosxe_interface_ethernet" "example" {
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`
+- `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
+  - Choices: `point-to-point`, `shared`
+- `spanning_tree_portfast_trunk` (Boolean) Enable portfast on the interface even in trunk mode
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`

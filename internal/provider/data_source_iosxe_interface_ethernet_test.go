@@ -48,6 +48,8 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "helper_addresses.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.template_name", "TEMP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.merge", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "arp_timeout", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "spanning_tree_link_type", "point-to-point"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -97,6 +99,8 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		template_name = "TEMP1"` + "\n"
 	config += `		merge = false` + "\n"
 	config += `	}]` + "\n"
+	config += `	arp_timeout = 300` + "\n"
+	config += `	spanning_tree_link_type = "point-to-point"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

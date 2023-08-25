@@ -22,7 +22,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -38,22 +37,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewDHCPResource() resource.Resource {
-	return &DHCPResource{}
+func NewDot1xResource() resource.Resource {
+	return &Dot1xResource{}
 }
 
-type DHCPResource struct {
+type Dot1xResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *DHCPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_dhcp"
+func (r *Dot1xResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_dot1x"
 }
 
-func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *Dot1xResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the DHCP configuration.",
+		MarkdownDescription: "This resource can manage the Dot1x configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -74,75 +73,88 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"compatibility_suboption_link_selection": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("cisco", "standard").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("cisco", "standard"),
-				},
-			},
-			"compatibility_suboption_server_override": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("cisco", "standard").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("cisco", "standard"),
-				},
-			},
-			"relay_information_trust_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Received DHCP packets may contain relay info option with zero giaddr").String,
+			"auth_fail_eapol": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Send EAPOL-Success on successful auth-fail Authorization").String,
 				Optional:            true,
 			},
-			"relay_information_option_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Default option, no vpn").String,
-				Optional:            true,
-			},
-			"relay_information_option_vpn": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert VPN sub-options and change the giaddr to the outgoing interface").String,
-				Optional:            true,
-			},
-			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan (Deprecated, use vlan-list)").String,
+			"dot1x_credentials": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure 802.1X credentials profiles").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"vlan_id": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
+						"profile_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a profile name").String,
 							Required:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 4094),
-							},
 						},
-					},
-				},
-			},
-			"snooping": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping").String,
-				Optional:            true,
-			},
-			"snooping_remoteid_hostname": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use configured hostname for remote id").String,
-				Optional:            true,
-			},
-			"snooping_vlan_list": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan first number or vlan range,example: 1,3-5,7,9-11").String,
-							Required:            true,
+						"description": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Provide a description for the credentials profile").String,
+							Optional:            true,
+						},
+						"username": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set the authentication userid").String,
+							Optional:            true,
+						},
+						"password_type": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "7").String,
+							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?)(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)`), ""),
+								stringvalidator.OneOf("0", "7"),
 							},
+						},
+						"password_secret": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"pki_trustpoint": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set the default pki trustpoint").String,
+							Optional:            true,
+						},
+						"anonymous_id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set the anonymous userid").String,
+							Optional:            true,
 						},
 					},
 				},
+			},
+			"critical_eapol_config_block": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Block all EAPoL transaction on Critical Authentication").String,
+				Optional:            true,
+			},
+			"critical_recovery_delay": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set 802.1x Critical Authentication Recovery Delay period").AddIntegerRangeDescription(1, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10000),
+				},
+			},
+			"test_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for device EAPOL capabilities test in seconds").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"logging_verbose": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Show verbose messages in system logs").String,
+				Optional:            true,
+			},
+			"supplicant_controlled_transient": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Controlled access is only applied during authentication").String,
+				Optional:            true,
+			},
+			"supplicant_force_multicast": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Force 802.1X supplicant to send multicast packets").String,
+				Optional:            true,
+			},
+			"system_auth_control": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable or Disable SysAuthControl").String,
+				Optional:            true,
 			},
 		},
 	}
 }
 
-func (r *DHCPResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *Dot1xResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -150,8 +162,8 @@ func (r *DHCPResource) Configure(_ context.Context, req resource.ConfigureReques
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *DHCPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan DHCP
+func (r *Dot1xResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan Dot1x
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -209,8 +221,8 @@ func (r *DHCPResource) Create(ctx context.Context, req resource.CreateRequest, r
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state DHCP
+func (r *Dot1xResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state Dot1x
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -228,7 +240,7 @@ func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = DHCP{Device: state.Device, Id: state.Id}
+		state = Dot1x{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -244,8 +256,8 @@ func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state DHCP
+func (r *Dot1xResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state Dot1x
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -320,8 +332,8 @@ func (r *DHCPResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state DHCP
+func (r *Dot1xResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state Dot1x
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -379,6 +391,6 @@ func (r *DHCPResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *DHCPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *Dot1xResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

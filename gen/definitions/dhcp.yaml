@@ -18,9 +18,9 @@ attributes:
   - yang_name: Cisco-IOS-XE-dhcp:relay/information/option/vpn
     tf_name: relay_information_option_vpn
     example: true
-  - yang_name: Cisco-IOS-XE-dhcp:snooping
-    exclude_test: true
-    example: true
+  # - yang_name: Cisco-IOS-XE-dhcp:snooping
+  #   exclude_test: true
+  #   example: true
   - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan
     tf_name: snooping_vlans
     type: List
@@ -30,3 +30,19 @@ attributes:
         tf_name: vlan_id
         example: 1
         id: true
+  - yang_name: Cisco-IOS-XE-dhcp:snooping
+    example: true
+  - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/remote-id-choice/hostname/hostname
+    xpath: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname
+    tf_name: snooping_remoteid_hostname
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list
+    tf_name: snooping_vlan_list
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: 3-4
+
+

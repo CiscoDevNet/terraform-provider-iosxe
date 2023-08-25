@@ -22,10 +22,8 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
-	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -38,22 +36,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewDHCPResource() resource.Resource {
-	return &DHCPResource{}
+func NewClassMapResource() resource.Resource {
+	return &ClassMapResource{}
 }
 
-type DHCPResource struct {
+type ClassMapResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *DHCPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_dhcp"
+func (r *ClassMapResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_class_map"
 }
 
-func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the DHCP configuration.",
+		MarkdownDescription: "This resource can manage the Class Map configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -74,75 +72,99 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"compatibility_suboption_link_selection": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("cisco", "standard").String,
-				Optional:            true,
+			"name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("name of the class map").String,
+				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("cisco", "standard"),
+					stringvalidator.LengthBetween(1, 205),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"compatibility_suboption_server_override": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("cisco", "standard").String,
+			"type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("type of the class-map").AddStringEnumDescription("access-control", "appnav", "control", "inspect", "multicast-flows", "site-manager", "stack", "traffic").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("cisco", "standard"),
+					stringvalidator.OneOf("access-control", "appnav", "control", "inspect", "multicast-flows", "site-manager", "stack", "traffic"),
 				},
 			},
-			"relay_information_trust_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Received DHCP packets may contain relay info option with zero giaddr").String,
+			"subscriber": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Domain name of the class map").String,
 				Optional:            true,
 			},
-			"relay_information_option_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Default option, no vpn").String,
+			"prematch": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Logical-AND/Logical-OR of all matching statements under this class map").AddStringEnumDescription("match-all", "match-any", "match-none").String,
+				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("match-all", "match-any", "match-none"),
+				},
+			},
+			"match_authorization_status_authorized": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("authorized").String,
 				Optional:            true,
 			},
-			"relay_information_option_vpn": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Insert VPN sub-options and change the giaddr to the outgoing interface").String,
+			"match_result_type_aaa_timeout": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("aaa timeout type").String,
 				Optional:            true,
 			},
-			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan (Deprecated, use vlan-list)").String,
+			"match_authorization_status_unauthorized": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("unauthorized").String,
+				Optional:            true,
+			},
+			"match_activated_service_template": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("match name of service template activated on session").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"vlan_id": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
+						"service_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter service name").String,
 							Required:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 4094),
-							},
 						},
 					},
 				},
 			},
-			"snooping": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping").String,
+			"match_authorizing_method_priority_greater_than": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("greater than").String,
+				ElementType:         types.Int64Type,
 				Optional:            true,
 			},
-			"snooping_remoteid_hostname": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use configured hostname for remote id").String,
+			"match_method_dot1x": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("dot1x").String,
 				Optional:            true,
 			},
-			"snooping_vlan_list": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan").String,
+			"match_result_type_method_dot1x_authoritative": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("failure type").String,
 				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan first number or vlan range,example: 1,3-5,7,9-11").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?)(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)`), ""),
-							},
-						},
-					},
+			},
+			"match_result_type_method_dot1x_agent_not_found": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("agent not found type").String,
+				Optional:            true,
+			},
+			"match_result_type_method_dot1x_method_timeout": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("method_timeout type").String,
+				Optional:            true,
+			},
+			"match_method_mab": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("mab").String,
+				Optional:            true,
+			},
+			"match_result_type_method_mab_authoritative": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("failure type").String,
+				Optional:            true,
+			},
+			"description": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Class-Map description").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 200),
 				},
 			},
 		},
 	}
 }
 
-func (r *DHCPResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *ClassMapResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -150,8 +172,8 @@ func (r *DHCPResource) Configure(_ context.Context, req resource.ConfigureReques
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *DHCPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan DHCP
+func (r *ClassMapResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan ClassMap
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -209,8 +231,8 @@ func (r *DHCPResource) Create(ctx context.Context, req resource.CreateRequest, r
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state DHCP
+func (r *ClassMapResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state ClassMap
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -228,7 +250,7 @@ func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = DHCP{Device: state.Device, Id: state.Id}
+		state = ClassMap{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -244,8 +266,8 @@ func (r *DHCPResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state DHCP
+func (r *ClassMapResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state ClassMap
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -320,8 +342,8 @@ func (r *DHCPResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *DHCPResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state DHCP
+func (r *ClassMapResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state ClassMap
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -379,6 +401,6 @@ func (r *DHCPResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *DHCPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *ClassMapResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

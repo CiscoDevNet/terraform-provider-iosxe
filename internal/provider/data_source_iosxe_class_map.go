@@ -33,26 +33,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &DHCPDataSource{}
-	_ datasource.DataSourceWithConfigure = &DHCPDataSource{}
+	_ datasource.DataSource              = &ClassMapDataSource{}
+	_ datasource.DataSourceWithConfigure = &ClassMapDataSource{}
 )
 
-func NewDHCPDataSource() datasource.DataSource {
-	return &DHCPDataSource{}
+func NewClassMapDataSource() datasource.DataSource {
+	return &ClassMapDataSource{}
 }
 
-type DHCPDataSource struct {
+type ClassMapDataSource struct {
 	clients map[string]*restconf.Client
 }
 
-func (d *DHCPDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_dhcp"
+func (d *ClassMapDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_class_map"
 }
 
-func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the DHCP configuration.",
+		MarkdownDescription: "This data source can read the Class Map configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -63,63 +63,84 @@ func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"compatibility_suboption_link_selection": schema.StringAttribute{
-				MarkdownDescription: "",
+			"name": schema.StringAttribute{
+				MarkdownDescription: "name of the class map",
+				Required:            true,
+			},
+			"type": schema.StringAttribute{
+				MarkdownDescription: "type of the class-map",
 				Computed:            true,
 			},
-			"compatibility_suboption_server_override": schema.StringAttribute{
-				MarkdownDescription: "",
+			"subscriber": schema.BoolAttribute{
+				MarkdownDescription: "Domain name of the class map",
 				Computed:            true,
 			},
-			"relay_information_trust_all": schema.BoolAttribute{
-				MarkdownDescription: "Received DHCP packets may contain relay info option with zero giaddr",
+			"prematch": schema.StringAttribute{
+				MarkdownDescription: "Logical-AND/Logical-OR of all matching statements under this class map",
 				Computed:            true,
 			},
-			"relay_information_option_default": schema.BoolAttribute{
-				MarkdownDescription: "Default option, no vpn",
+			"match_authorization_status_authorized": schema.BoolAttribute{
+				MarkdownDescription: "authorized",
 				Computed:            true,
 			},
-			"relay_information_option_vpn": schema.BoolAttribute{
-				MarkdownDescription: "Insert VPN sub-options and change the giaddr to the outgoing interface",
+			"match_result_type_aaa_timeout": schema.BoolAttribute{
+				MarkdownDescription: "aaa timeout type",
 				Computed:            true,
 			},
-			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: "DHCP Snooping vlan (Deprecated, use vlan-list)",
+			"match_authorization_status_unauthorized": schema.BoolAttribute{
+				MarkdownDescription: "unauthorized",
+				Computed:            true,
+			},
+			"match_activated_service_template": schema.ListNestedAttribute{
+				MarkdownDescription: "match name of service template activated on session",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"vlan_id": schema.Int64Attribute{
-							MarkdownDescription: "",
+						"service_name": schema.StringAttribute{
+							MarkdownDescription: "Enter service name",
 							Computed:            true,
 						},
 					},
 				},
 			},
-			"snooping": schema.BoolAttribute{
-				MarkdownDescription: "DHCP Snooping",
+			"match_authorizing_method_priority_greater_than": schema.ListAttribute{
+				MarkdownDescription: "greater than",
+				ElementType:         types.Int64Type,
 				Computed:            true,
 			},
-			"snooping_remoteid_hostname": schema.BoolAttribute{
-				MarkdownDescription: "Use configured hostname for remote id",
+			"match_method_dot1x": schema.BoolAttribute{
+				MarkdownDescription: "dot1x",
 				Computed:            true,
 			},
-			"snooping_vlan_list": schema.ListNestedAttribute{
-				MarkdownDescription: "DHCP Snooping vlan",
+			"match_result_type_method_dot1x_authoritative": schema.BoolAttribute{
+				MarkdownDescription: "failure type",
 				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.StringAttribute{
-							MarkdownDescription: "DHCP Snooping vlan first number or vlan range,example: 1,3-5,7,9-11",
-							Computed:            true,
-						},
-					},
-				},
+			},
+			"match_result_type_method_dot1x_agent_not_found": schema.BoolAttribute{
+				MarkdownDescription: "agent not found type",
+				Computed:            true,
+			},
+			"match_result_type_method_dot1x_method_timeout": schema.BoolAttribute{
+				MarkdownDescription: "method_timeout type",
+				Computed:            true,
+			},
+			"match_method_mab": schema.BoolAttribute{
+				MarkdownDescription: "mab",
+				Computed:            true,
+			},
+			"match_result_type_method_mab_authoritative": schema.BoolAttribute{
+				MarkdownDescription: "failure type",
+				Computed:            true,
+			},
+			"description": schema.StringAttribute{
+				MarkdownDescription: "Class-Map description",
+				Computed:            true,
 			},
 		},
 	}
 }
 
-func (d *DHCPDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *ClassMapDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -127,8 +148,8 @@ func (d *DHCPDataSource) Configure(_ context.Context, req datasource.ConfigureRe
 	d.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (d *DHCPDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config DHCPData
+func (d *ClassMapDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config ClassMapData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -146,7 +167,7 @@ func (d *DHCPDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 
 	res, err := d.clients[config.Device.ValueString()].GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = DHCPData{Device: config.Device}
+		config = ClassMapData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))

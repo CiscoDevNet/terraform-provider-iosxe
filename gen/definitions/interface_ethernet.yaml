@@ -159,6 +159,13 @@ attributes:
         id: true
       - yang_name: merge
         example: false
+  - yang_name: arp/timeout
+    example: 300
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
+    example: point-to-point
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk
+    example: true
+    exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

@@ -1,0 +1,55 @@
+---
+name: ARP
+path: Cisco-IOS-XE-native:native/ip/arp
+doc_category: System
+attributes:
+  - yang_name: incomplete/entries
+    example: 10
+  - yang_name: proxy/disable
+    example: true
+  - yang_name: entry/learn
+    example: true
+    exclude_test: true
+  - yang_name: inspection/filter
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: arpacl
+        id: true
+        example: arpacl1
+        exclude_test: true
+      - yang_name: vlan
+        type: List
+        exclude_test: true
+        attributes: 
+          - yang_name: vlan-range
+            id: true
+            example: vlan-range1
+            exclude_test: true
+          - yang_name: static
+            example: true
+            exclude_test: true
+  - yang_name: inspection/validate/src-mac
+    example: true
+    exclude_test: true
+  - yang_name: inspection/validate/dst-mac
+    example: true
+    exclude_test: true
+  - yang_name: inspection/validate/ip
+    example: true
+    exclude_test: true
+  - yang_name: inspection/validate/allow/zeros
+    example: true
+    exclude_test: true
+  - yang_name: inspection/log-buffer/entries
+    example: 10
+    exclude_test: true
+  - yang_name: inspection/log-buffer/logs/entries
+    example: 10
+    exclude_test: true
+  - yang_name: inspection/log-buffer/logs/interval
+    example: 1000
+    exclude_test: true
+  - yang_name: inspection/vlan
+    example: inseption_vlan1
+    exclude_test: true

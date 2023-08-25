@@ -239,6 +239,18 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
+			"arp_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Set ARP cache timeout",
+				Computed:            true,
+			},
+			"spanning_tree_link_type": schema.StringAttribute{
+				MarkdownDescription: "Specify a link type for spanning tree tree protocol use",
+				Computed:            true,
+			},
+			"spanning_tree_portfast_trunk": schema.BoolAttribute{
+				MarkdownDescription: "Enable portfast on the interface even in trunk mode",
+				Computed:            true,
+			},
 		},
 	}
 }

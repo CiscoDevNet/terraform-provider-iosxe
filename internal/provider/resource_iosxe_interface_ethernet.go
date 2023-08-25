@@ -286,6 +286,24 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 			},
+			"arp_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set ARP cache timeout").AddIntegerRangeDescription(0, 2147483).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483),
+				},
+			},
+			"spanning_tree_link_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify a link type for spanning tree tree protocol use").AddStringEnumDescription("point-to-point", "shared").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("point-to-point", "shared"),
+				},
+			},
+			"spanning_tree_portfast_trunk": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast on the interface even in trunk mode").String,
+				Optional:            true,
+			},
 		},
 	}
 }

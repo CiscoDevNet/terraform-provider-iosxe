@@ -25,40 +25,32 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestAccDataSourceIosxeDHCP(t *testing.T) {
+func TestAccDataSourceIosxeARP(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "relay_information_trust_all", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "relay_information_option_default", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "relay_information_option_vpn", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "snooping", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "snooping_vlan_list.0.id", "3-4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_arp.test", "incomplete_entries", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_arp.test", "proxy_disable", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeDHCPConfig(),
+				Config: testAccDataSourceIosxeARPConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
 }
 
-func testAccDataSourceIosxeDHCPConfig() string {
-	config := `resource "iosxe_dhcp" "test" {` + "\n"
+func testAccDataSourceIosxeARPConfig() string {
+	config := `resource "iosxe_arp" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	relay_information_trust_all = false` + "\n"
-	config += `	relay_information_option_default = false` + "\n"
-	config += `	relay_information_option_vpn = true` + "\n"
-	config += `	snooping = true` + "\n"
-	config += `	snooping_vlan_list = [{` + "\n"
-	config += `		id = "3-4"` + "\n"
-	config += `	}]` + "\n"
+	config += `	incomplete_entries = 10` + "\n"
+	config += `	proxy_disable = true` + "\n"
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_dhcp" "test" {
-			depends_on = [iosxe_dhcp.test]
+		data "iosxe_arp" "test" {
+			depends_on = [iosxe_arp.test]
 		}
 	`
 	return config
