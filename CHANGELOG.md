@@ -8,6 +8,9 @@
 - Add `iosxe_bfd_template_single_hop` resource and data source
 - Add `iosxe_cdp` resource and data source
 - Add `cluster_id` ,`fall_over` ,`disable_connected_check`, `local_as`, `log_neighbor_changes`, `password`, `timers`, `ttl_security` attributes to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source
+- Add `iosxe_tacacs_server` resource and data source
+- Add `iosxe_bfd` resource and data source
+- Add BFD attributes to `iosxe_interface_ethernet`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, `iosxe_interface_tunnel` and `iosxe_interface_vlan` resources and data sources
 
 ## 0.3.3
 
