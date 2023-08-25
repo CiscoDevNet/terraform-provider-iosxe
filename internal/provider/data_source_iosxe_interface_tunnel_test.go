@@ -20,6 +20,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -53,7 +54,9 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_mode_ipsec_ipv4", "true"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_mode_ipsec_ipv4", "true"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -115,7 +118,9 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 	config += `		global = false` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	tunnel_mode_ipsec_ipv4 = true` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	tunnel_mode_ipsec_ipv4 = true` + "\n"
+	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

@@ -6,6 +6,9 @@
 - Add `iosxe_radius` resource and data source
 - Add `area`, `nssa` attribute to `iosxe_ospf_vrf`  resources and data sources
 - Add `message-digest-key`attribute to `iosxe_interface_ospf`  resources and data sources
+- Add `iosxe_static_route_vrf` resource and data source
+- Make `lists.key` attribute of `iosxe_restconf` resource mandatory
+- Fix issue with nested `lists.items` attributes of `iosxe_restconf` resource
 
 
 ## 0.3.3

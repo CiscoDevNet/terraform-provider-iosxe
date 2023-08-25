@@ -53,7 +53,6 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
-  tunnel_mode_ipsec_ipv4 = true
 }
 ```
 

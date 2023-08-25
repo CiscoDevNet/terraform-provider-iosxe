@@ -117,7 +117,8 @@ attributes:
     xpath: Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4
     tf_name: tunnel_mode_ipsec_ipv4
     example: true
-  
+    test_tags: [C8000V]
+
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
