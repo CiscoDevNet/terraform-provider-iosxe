@@ -87,6 +87,86 @@ func (d *BGPIPv4UnicastVRFNeighborDataSource) Schema(ctx context.Context, req da
 				MarkdownDescription: "Administratively shut down this neighbor",
 				Computed:            true,
 			},
+			"cluster_id": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"log_neighbor_changes_disable": schema.BoolAttribute{
+				MarkdownDescription: "disable",
+				Computed:            true,
+			},
+			"password_type": schema.Int64Attribute{
+				MarkdownDescription: "Encryption type (0 to disable encryption, 7 for proprietary)",
+				Computed:            true,
+			},
+			"password": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"timers_keepalive_interval": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"timers_holdtime": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"timers_minimum_neighbor_hold": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"version": schema.Int64Attribute{
+				MarkdownDescription: "Set the BGP version to match a neighbor",
+				Computed:            true,
+			},
+			"fall_over_default_route_map": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"fall_over_bfd_multi_hop": schema.BoolAttribute{
+				MarkdownDescription: "Force BFD multi-hop to detect failure",
+				Computed:            true,
+			},
+			"fall_over_bfd_single_hop": schema.BoolAttribute{
+				MarkdownDescription: "Force BFD single-hop to detect failure",
+				Computed:            true,
+			},
+			"fall_over_bfd_check_control_plane_failure": schema.BoolAttribute{
+				MarkdownDescription: "Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation",
+				Computed:            true,
+			},
+			"fall_over_bfd_strict_mode": schema.BoolAttribute{
+				MarkdownDescription: "Enable BFD strict-mode",
+				Computed:            true,
+			},
+			"fall_over_maximum_metric_route_map": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"disable_connected_check": schema.BoolAttribute{
+				MarkdownDescription: "one-hop away EBGP peer using loopback address",
+				Computed:            true,
+			},
+			"ttl_security_hops": schema.Int64Attribute{
+				MarkdownDescription: "IP hops",
+				Computed:            true,
+			},
+			"local_as": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"local_as_no_prepend": schema.BoolAttribute{
+				MarkdownDescription: "Do not prepend local-as to updates from ebgp peers",
+				Computed:            true,
+			},
+			"local_as_replace_as": schema.BoolAttribute{
+				MarkdownDescription: "Replace real AS with local AS in the EBGP updates",
+				Computed:            true,
+			},
+			"local_as_dual_as": schema.BoolAttribute{
+				MarkdownDescription: "Accept either real AS or local AS from the ebgp peer",
+				Computed:            true,
+			},
 			"update_source_loopback": schema.StringAttribute{
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,

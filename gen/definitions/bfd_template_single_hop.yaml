@@ -1,0 +1,74 @@
+---
+name: BFD Template Single Hop
+path: Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=%v
+no_delete_attributes: true
+doc_category: BFD
+attributes:
+  - yang_name: name
+    example: SH-TEMPLATE-1
+  - yang_name: authentication/auth-type/md5/md5/keychain
+    xpath: authentication/md5/keychain
+    tf_name: authentication_md5_keychain
+    example: KEYC1
+  - yang_name: authentication/auth-type/meticulous-md5/meticulous-md5/keychain
+    xpath: authentication/meticulous-md5/keychain
+    tf_name: authentication_meticulous_md5_keychain
+    example: MDKEY
+    exclude_test: true
+  - yang_name: authentication/auth-type/meticulous-sha-1/meticulous-sha-1/keychain
+    xpath: authentication/meticulous-sha-1/keychain
+    tf_name: authentication_meticulous_sha_1_keychain
+    example: SHAKEY111
+    exclude_test: true
+  - yang_name: authentication/auth-type/sha-1/sha-1/keychain
+    xpath: authentication/sha-1/keychain
+    tf_name: authentication_sha_1_keychain
+    example: SHA111
+    exclude_test: true
+  - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-tx
+    xpath: interval-singlehop-v2/mill-unit/min-tx
+    tf_name: interval_milliseconds_min_tx
+    example: 200
+    test_tags: [IOSXE179, IOSXE1710]
+  - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-rx
+    xpath: interval-singlehop-v2/mill-unit/min-rx
+    tf_name: interval_milliseconds_min_rx
+    example: 200
+    test_tags: [IOSXE179, IOSXE1710]
+  - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/interval-types/both/both
+    xpath: interval-singlehop-v2/mill-unit/both
+    tf_name: interval_milliseconds_both
+    example: 5
+    exclude_test: true
+    test_tags: [IOSXE179, IOSXE1710]
+  - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/multiplier
+    xpath: interval-singlehop-v2/mill-unit/multiplier
+    tf_name: interval_milliseconds_multiplier
+    example: 4
+    test_tags: [IOSXE179, IOSXE1710]
+  - yang_name: interval-singlehop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-rx
+    xpath: interval-singlehop-v2/ms-unit/min-rx
+    tf_name: interval_microseconds_min_rx
+    example: 200
+    exclude_test: true
+    test_tags: [IOSXE179, IOSXE1710]
+  - yang_name: interval-singlehop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-tx
+    xpath: interval-singlehop-v2/ms-unit/min-tx
+    tf_name: interval_microseconds_min_tx
+    example: 200
+    exclude_test: true
+    test_tags: [IOSXE179, IOSXE1710]
+  - yang_name: echo
+    example: true
+  - yang_name: dampening/half-time
+    tf_name: dampening_half_time
+    example: 30
+  - yang_name: dampening/unsuppress-time
+    tf_name: dampening_unsuppress_time
+    example: 30
+  - yang_name: dampening/suppress-time
+    tf_name: dampening_suppress_time
+    example: 100
+  - yang_name: dampening/max-suppressing-time
+    tf_name: dampening_max_suppressing_time
+    example: 60

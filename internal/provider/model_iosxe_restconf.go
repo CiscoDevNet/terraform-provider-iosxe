@@ -86,6 +86,7 @@ func (data Restconf) toBody(ctx context.Context) string {
 				data.Lists[i].Items[ii].ElementsAs(ctx, &listAttributes, false)
 				attrs := restconf.Body{}
 				for attr, value := range listAttributes {
+					attr = strings.ReplaceAll(attr, "/", ".")
 					attrs = attrs.Set(attr, value)
 				}
 				body, _ = sjson.SetRaw(body, helpers.LastElement(data.Path.ValueString())+"."+listName+".-1", attrs.Str)

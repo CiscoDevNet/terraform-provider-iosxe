@@ -53,10 +53,9 @@ attributes:
     example: GigabitEthernet1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-tunnel:tunnel/destination-config/dest-choice/ipv4/ipv4
-    xpath: tunnel/destination-config/ipv4
+    xpath: Cisco-IOS-XE-tunnel:tunnel/destination-config/ipv4
     tf_name: tunnel_destination_ipv4
     example: 2.2.2.2
-    exclude_test: true
   - yang_name: Cisco-IOS-XE-tunnel:tunnel/protection/Cisco-IOS-XE-crypto:ipsec/profile
     tf_name: tunnel_protection_ipsec_profile
     example: vpn300
@@ -115,10 +114,10 @@ attributes:
         tf_name: vrf
         example: VRF1
   - yang_name: Cisco-IOS-XE-tunnel:tunnel/mode/mode-choice/ipsec/ipsec/ipv4
-    xpath: tunnel/mode/ipsec/ipv4
+    xpath: Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4
     tf_name: tunnel_mode_ipsec_ipv4
     example: true
-    exclude_test: true
+    test_tags: [C8000V]
   - yang_name: bfd/Cisco-IOS-XE-bfd:template
     example: Tunnel_template1
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
@@ -133,6 +132,7 @@ attributes:
     example: 3
   - yang_name: bfd/Cisco-IOS-XE-bfd:echo
     example: true
+
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

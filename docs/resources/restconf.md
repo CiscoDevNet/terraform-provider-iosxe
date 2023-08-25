@@ -60,12 +60,12 @@ resource "iosxe_restconf" "nested_list" {
 
 Required:
 
+- `key` (String) YANG list key attribute. In case of multiple keys, those should be separated by a comma (`,`).
 - `name` (String) YANG list name.
 
 Optional:
 
 - `items` (List of Map of String) List of maps of key-value pairs which represents the YANG leafs and its values.
-- `key` (String) YANG list key attribute. In case of multiple keys, those should be separated by a comma (`,`).
 - `values` (List of String) YANG leaf-list values.
 
 ## Import

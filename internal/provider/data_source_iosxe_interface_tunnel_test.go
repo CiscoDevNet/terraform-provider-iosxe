@@ -20,6 +20,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -41,6 +42,7 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_address_prefix_lists.0.prefix", "2001:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv6_address_prefix_lists.0.eui_64", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_destination_ipv4", "2.2.2.2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "crypto_ipsec_df_bit", "clear"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv4_address", "10.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv4_address_mask", "255.255.255.0"))
@@ -59,6 +61,9 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "interval_interface_min_rx", "50"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "interval_interface_multiplier", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "echo", "true"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_mode_ipsec_ipv4", "true"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -106,6 +111,7 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 	config += `		prefix = "2001:DB8::/32"` + "\n"
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
+	config += `	tunnel_destination_ipv4 = "2.2.2.2"` + "\n"
 	config += `	crypto_ipsec_df_bit = "clear"` + "\n"
 	config += `	ipv4_address = "10.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
@@ -126,6 +132,9 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 	config += `	interval_interface_min_rx = 50` + "\n"
 	config += `	interval_interface_multiplier = 3` + "\n"
 	config += `	echo = true` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	tunnel_mode_ipsec_ipv4 = true` + "\n"
+	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

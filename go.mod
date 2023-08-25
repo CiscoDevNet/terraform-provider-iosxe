@@ -4,16 +4,16 @@ go 1.19
 
 require (
 	github.com/hashicorp/terraform-plugin-docs v0.16.0
-	github.com/hashicorp/terraform-plugin-framework v1.3.3
-	github.com/hashicorp/terraform-plugin-framework-validators v0.10.0
+	github.com/hashicorp/terraform-plugin-framework v1.3.5
+	github.com/hashicorp/terraform-plugin-framework-validators v0.11.0
 	github.com/hashicorp/terraform-plugin-go v0.18.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/hashicorp/terraform-plugin-testing v1.4.0
 	github.com/netascode/go-restconf v0.1.10
-	github.com/openconfig/goyang v1.4.0
-	github.com/tidwall/gjson v1.15.0
+	github.com/openconfig/goyang v1.4.1
+	github.com/tidwall/gjson v1.16.0
 	github.com/tidwall/sjson v1.2.5
-	golang.org/x/tools v0.11.1
+	golang.org/x/tools v0.12.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -71,12 +71,12 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/zclconf/go-cty v1.13.2 // indirect
-	golang.org/x/crypto v0.11.0 // indirect
+	golang.org/x/crypto v0.12.0 // indirect
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
 	golang.org/x/mod v0.12.0 // indirect
-	golang.org/x/net v0.12.0 // indirect
-	golang.org/x/sys v0.10.0 // indirect
-	golang.org/x/text v0.11.0 // indirect
+	golang.org/x/net v0.14.0 // indirect
+	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/text v0.12.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
 	google.golang.org/grpc v1.56.1 // indirect

@@ -36,16 +36,36 @@ data "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 ### Read-Only
 
 - `activate` (Boolean) Enable the address family for this neighbor
+- `cluster_id` (String)
 - `description` (String) Neighbor specific description
+- `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address
 - `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
 - `ebgp_multihop_max_hop` (Number)
+- `fall_over_bfd_check_control_plane_failure` (Boolean) Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation
+- `fall_over_bfd_multi_hop` (Boolean) Force BFD multi-hop to detect failure
+- `fall_over_bfd_single_hop` (Boolean) Force BFD single-hop to detect failure
+- `fall_over_bfd_strict_mode` (Boolean) Enable BFD strict-mode
+- `fall_over_default_route_map` (String)
+- `fall_over_maximum_metric_route_map` (String)
 - `id` (String) The path of the retrieved object.
+- `local_as` (String)
+- `local_as_dual_as` (Boolean) Accept either real AS or local AS from the ebgp peer
+- `local_as_no_prepend` (Boolean) Do not prepend local-as to updates from ebgp peers
+- `local_as_replace_as` (Boolean) Replace real AS with local AS in the EBGP updates
+- `log_neighbor_changes_disable` (Boolean) disable
+- `password` (String)
+- `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String)
 - `shutdown` (Boolean) Administratively shut down this neighbor
+- `timers_holdtime` (Number)
+- `timers_keepalive_interval` (Number)
+- `timers_minimum_neighbor_hold` (Number)
+- `ttl_security_hops` (Number) IP hops
 - `update_source_loopback` (String) Loopback interface
+- `version` (Number) Set the BGP version to match a neighbor
 
 <a id="nestedatt--route_maps"></a>
 ### Nested Schema for `route_maps`
