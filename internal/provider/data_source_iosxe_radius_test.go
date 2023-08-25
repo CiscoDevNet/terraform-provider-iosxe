@@ -27,11 +27,11 @@ import (
 
 func TestAccDataSourceIosxeRadius(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "radius_host_address_ipv4", "10.10.15.12"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "address_auth_port", "1813"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "ipv4_address", "10.10.15.12"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "authentication_port", "1813"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "timeout", "4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "retransmit", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "key_key", "123"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "key", "123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -46,13 +46,12 @@ func TestAccDataSourceIosxeRadius(t *testing.T) {
 
 func testAccDataSourceIosxeRadiusConfig() string {
 	config := `resource "iosxe_radius" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "radius_10.10.15.12"` + "\n"
-	config += `	radius_host_address_ipv4 = "10.10.15.12"` + "\n"
-	config += `	address_auth_port = 1813` + "\n"
+	config += `	ipv4_address = "10.10.15.12"` + "\n"
+	config += `	authentication_port = 1813` + "\n"
 	config += `	timeout = 4` + "\n"
 	config += `	retransmit = 3` + "\n"
-	config += `	key_key = "123"` + "\n"
+	config += `	key = "123"` + "\n"
 	config += `}` + "\n"
 
 	config += `

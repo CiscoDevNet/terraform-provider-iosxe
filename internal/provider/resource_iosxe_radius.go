@@ -67,13 +67,6 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
 			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Name for the radius server configuration").String,
 				Required:            true,
@@ -81,11 +74,11 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"radius_host_address_ipv4": schema.StringAttribute{
+			"ipv4_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IPv4 address or Hostname for radius server").String,
 				Optional:            true,
 			},
-			"address_auth_port": schema.Int64Attribute{
+			"authentication_port": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("UDP port for RADIUS authentication server (default is 1812)").AddIntegerRangeDescription(0, 65534).String,
 				Optional:            true,
 				Validators: []validator.Int64{
@@ -106,7 +99,7 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(0, 100),
 				},
 			},
-			"key_key": schema.StringAttribute{
+			"key": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				Validators: []validator.String{
@@ -312,11 +305,6 @@ func (r *RadiusResource) Delete(ctx context.Context, req resource.DeleteRequest,
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
 	deleteMode := "all"
-	if state.DeleteMode.ValueString() == "all" {
-		deleteMode = "all"
-	} else if state.DeleteMode.ValueString() == "attributes" {
-		deleteMode = "attributes"
-	}
 
 	if deleteMode == "all" {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())

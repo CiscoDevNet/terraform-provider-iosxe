@@ -4,6 +4,7 @@
 - Add `iosxe_static_route_vrf` resource and data source
 - Make `lists.key` attribute of `iosxe_restconf` resource mandatory
 - Fix issue with nested `lists.items` attributes of `iosxe_restconf` resource
+- Add `iosxe_radius` resource and data source
 
 ## 0.3.3
 

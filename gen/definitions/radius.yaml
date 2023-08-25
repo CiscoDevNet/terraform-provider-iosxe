@@ -1,6 +1,7 @@
 ---
 name: Radius
 path: Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v
+no_delete_attributes: true
 doc_category: AAA
 attributes:
   - yang_name: id
@@ -9,13 +10,15 @@ attributes:
     example: radius_10.10.15.12
   - yang_name: address/radius-host-address/ipv4/ipv4
     xpath: address/ipv4
-    tf_name: radius_host_address_ipv4
+    tf_name: ipv4_address
     example: 10.10.15.12
   - yang_name: address/auth-port
+    tf_name: authentication_port
     example: 1813
   - yang_name: timeout
     example: 4
   - yang_name: retransmit
     example: 3
   - yang_name: key/key
+    tf_name: key
     example: 123

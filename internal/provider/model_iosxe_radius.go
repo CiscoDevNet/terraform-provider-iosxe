@@ -33,26 +33,25 @@ import (
 )
 
 type Radius struct {
-	Device                types.String `tfsdk:"device"`
-	Id                    types.String `tfsdk:"id"`
-	DeleteMode            types.String `tfsdk:"delete_mode"`
-	Name                  types.String `tfsdk:"name"`
-	RadiusHostAddressIpv4 types.String `tfsdk:"radius_host_address_ipv4"`
-	AddressAuthPort       types.Int64  `tfsdk:"address_auth_port"`
-	Timeout               types.Int64  `tfsdk:"timeout"`
-	Retransmit            types.Int64  `tfsdk:"retransmit"`
-	KeyKey                types.String `tfsdk:"key_key"`
+	Device             types.String `tfsdk:"device"`
+	Id                 types.String `tfsdk:"id"`
+	Name               types.String `tfsdk:"name"`
+	Ipv4Address        types.String `tfsdk:"ipv4_address"`
+	AuthenticationPort types.Int64  `tfsdk:"authentication_port"`
+	Timeout            types.Int64  `tfsdk:"timeout"`
+	Retransmit         types.Int64  `tfsdk:"retransmit"`
+	Key                types.String `tfsdk:"key"`
 }
 
 type RadiusData struct {
-	Device                types.String `tfsdk:"device"`
-	Id                    types.String `tfsdk:"id"`
-	Name                  types.String `tfsdk:"name"`
-	RadiusHostAddressIpv4 types.String `tfsdk:"radius_host_address_ipv4"`
-	AddressAuthPort       types.Int64  `tfsdk:"address_auth_port"`
-	Timeout               types.Int64  `tfsdk:"timeout"`
-	Retransmit            types.Int64  `tfsdk:"retransmit"`
-	KeyKey                types.String `tfsdk:"key_key"`
+	Device             types.String `tfsdk:"device"`
+	Id                 types.String `tfsdk:"id"`
+	Name               types.String `tfsdk:"name"`
+	Ipv4Address        types.String `tfsdk:"ipv4_address"`
+	AuthenticationPort types.Int64  `tfsdk:"authentication_port"`
+	Timeout            types.Int64  `tfsdk:"timeout"`
+	Retransmit         types.Int64  `tfsdk:"retransmit"`
+	Key                types.String `tfsdk:"key"`
 }
 
 func (data Radius) getPath() string {
@@ -79,11 +78,11 @@ func (data Radius) toBody(ctx context.Context) string {
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"id", data.Name.ValueString())
 	}
-	if !data.RadiusHostAddressIpv4.IsNull() && !data.RadiusHostAddressIpv4.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address.ipv4", data.RadiusHostAddressIpv4.ValueString())
+	if !data.Ipv4Address.IsNull() && !data.Ipv4Address.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address.ipv4", data.Ipv4Address.ValueString())
 	}
-	if !data.AddressAuthPort.IsNull() && !data.AddressAuthPort.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address.auth-port", strconv.FormatInt(data.AddressAuthPort.ValueInt64(), 10))
+	if !data.AuthenticationPort.IsNull() && !data.AuthenticationPort.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address.auth-port", strconv.FormatInt(data.AuthenticationPort.ValueInt64(), 10))
 	}
 	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
@@ -91,8 +90,8 @@ func (data Radius) toBody(ctx context.Context) string {
 	if !data.Retransmit.IsNull() && !data.Retransmit.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"retransmit", strconv.FormatInt(data.Retransmit.ValueInt64(), 10))
 	}
-	if !data.KeyKey.IsNull() && !data.KeyKey.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.KeyKey.ValueString())
+	if !data.Key.IsNull() && !data.Key.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
 	}
 	return body
 }
@@ -107,15 +106,15 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := res.Get(prefix + "address.ipv4"); value.Exists() && !data.RadiusHostAddressIpv4.IsNull() {
-		data.RadiusHostAddressIpv4 = types.StringValue(value.String())
+	if value := res.Get(prefix + "address.ipv4"); value.Exists() && !data.Ipv4Address.IsNull() {
+		data.Ipv4Address = types.StringValue(value.String())
 	} else {
-		data.RadiusHostAddressIpv4 = types.StringNull()
+		data.Ipv4Address = types.StringNull()
 	}
-	if value := res.Get(prefix + "address.auth-port"); value.Exists() && !data.AddressAuthPort.IsNull() {
-		data.AddressAuthPort = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "address.auth-port"); value.Exists() && !data.AuthenticationPort.IsNull() {
+		data.AuthenticationPort = types.Int64Value(value.Int())
 	} else {
-		data.AddressAuthPort = types.Int64Null()
+		data.AuthenticationPort = types.Int64Null()
 	}
 	if value := res.Get(prefix + "timeout"); value.Exists() && !data.Timeout.IsNull() {
 		data.Timeout = types.Int64Value(value.Int())
@@ -127,10 +126,10 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Retransmit = types.Int64Null()
 	}
-	if value := res.Get(prefix + "key.key"); value.Exists() && !data.KeyKey.IsNull() {
-		data.KeyKey = types.StringValue(value.String())
+	if value := res.Get(prefix + "key.key"); value.Exists() && !data.Key.IsNull() {
+		data.Key = types.StringValue(value.String())
 	} else {
-		data.KeyKey = types.StringNull()
+		data.Key = types.StringNull()
 	}
 }
 
@@ -140,10 +139,10 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "address.ipv4"); value.Exists() {
-		data.RadiusHostAddressIpv4 = types.StringValue(value.String())
+		data.Ipv4Address = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "address.auth-port"); value.Exists() {
-		data.AddressAuthPort = types.Int64Value(value.Int())
+		data.AuthenticationPort = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "timeout"); value.Exists() {
 		data.Timeout = types.Int64Value(value.Int())
@@ -152,7 +151,7 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Retransmit = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "key.key"); value.Exists() {
-		data.KeyKey = types.StringValue(value.String())
+		data.Key = types.StringValue(value.String())
 	}
 }
 
@@ -168,10 +167,10 @@ func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.RadiusHostAddressIpv4.IsNull() {
+	if !data.Ipv4Address.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/ipv4", data.getPath()))
 	}
-	if !data.AddressAuthPort.IsNull() {
+	if !data.AuthenticationPort.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/auth-port", data.getPath()))
 	}
 	if !data.Timeout.IsNull() {
@@ -180,7 +179,7 @@ func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	if !data.Retransmit.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/retransmit", data.getPath()))
 	}
-	if !data.KeyKey.IsNull() {
+	if !data.Key.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
 	}
 	return deletePaths

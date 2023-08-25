@@ -14,12 +14,12 @@ This resource can manage the Radius configuration.
 
 ```terraform
 resource "iosxe_radius" "example" {
-  name                     = "radius_10.10.15.12"
-  radius_host_address_ipv4 = "10.10.15.12"
-  address_auth_port        = 1813
-  timeout                  = 4
-  retransmit               = 3
-  key_key                  = "123"
+  name                = "radius_10.10.15.12"
+  ipv4_address        = "10.10.15.12"
+  authentication_port = 1813
+  timeout             = 4
+  retransmit          = 3
+  key                 = "123"
 }
 ```
 
@@ -32,13 +32,11 @@ resource "iosxe_radius" "example" {
 
 ### Optional
 
-- `address_auth_port` (Number) UDP port for RADIUS authentication server (default is 1812)
+- `authentication_port` (Number) UDP port for RADIUS authentication server (default is 1812)
   - Range: `0`-`65534`
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
-- `key_key` (String)
-- `radius_host_address_ipv4` (String) IPv4 address or Hostname for radius server
+- `ipv4_address` (String) IPv4 address or Hostname for radius server
+- `key` (String)
 - `retransmit` (Number) Number of retries to active server (overrides default)
   - Range: `0`-`100`
 - `timeout` (Number) Time to wait for a RADIUS server to reply (overrides default)

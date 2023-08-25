@@ -31,9 +31,9 @@ data "iosxe_radius" "example" {
 
 ### Read-Only
 
-- `address_auth_port` (Number) UDP port for RADIUS authentication server (default is 1812)
+- `authentication_port` (Number) UDP port for RADIUS authentication server (default is 1812)
 - `id` (String) The path of the retrieved object.
-- `key_key` (String)
-- `radius_host_address_ipv4` (String) IPv4 address or Hostname for radius server
+- `ipv4_address` (String) IPv4 address or Hostname for radius server
+- `key` (String)
 - `retransmit` (Number) Number of retries to active server (overrides default)
 - `timeout` (Number) Time to wait for a RADIUS server to reply (overrides default)

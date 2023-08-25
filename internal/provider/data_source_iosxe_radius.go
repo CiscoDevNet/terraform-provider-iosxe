@@ -67,11 +67,11 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Name for the radius server configuration",
 				Required:            true,
 			},
-			"radius_host_address_ipv4": schema.StringAttribute{
+			"ipv4_address": schema.StringAttribute{
 				MarkdownDescription: "IPv4 address or Hostname for radius server",
 				Computed:            true,
 			},
-			"address_auth_port": schema.Int64Attribute{
+			"authentication_port": schema.Int64Attribute{
 				MarkdownDescription: "UDP port for RADIUS authentication server (default is 1812)",
 				Computed:            true,
 			},
@@ -83,7 +83,7 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Number of retries to active server (overrides default)",
 				Computed:            true,
 			},
-			"key_key": schema.StringAttribute{
+			"key": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
