@@ -37,9 +37,19 @@ data "iosxe_interface_ospf" "example" {
 - `dead_interval` (Number) Interval after which a neighbor is declared dead
 - `hello_interval` (Number) Time between HELLO packets
 - `id` (String) The path of the retrieved object.
+- `message_digest_key` (Attributes List) Message digest authentication password (key) (see [below for nested schema](#nestedatt--message_digest_key))
 - `mtu_ignore` (Boolean) Ignores the MTU in DBD packets
 - `network_type_broadcast` (Boolean) Specify OSPF broadcast multi-access network
 - `network_type_non_broadcast` (Boolean) Specify OSPF NBMA network
 - `network_type_point_to_multipoint` (Boolean) Specify OSPF point-to-multipoint network
 - `network_type_point_to_point` (Boolean) Specify OSPF point-to-point network
 - `priority` (Number) Router priority
+
+<a id="nestedatt--message_digest_key"></a>
+### Nested Schema for `message_digest_key`
+
+Read-Only:
+
+- `id` (Number) Key ID
+- `md5_auth_key` (String) The OSPF password (key) (only the first 16 characters are used)
+- `md5_auth_type` (Number) Encryption type (0 for not yet encrypted, 7 for proprietary)

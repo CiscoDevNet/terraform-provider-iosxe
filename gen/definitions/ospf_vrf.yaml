@@ -61,6 +61,29 @@ attributes:
         id: true
       - yang_name: mask
         example: 255.255.255.0
+  - yang_name: area
+    type: List
+    attributes:
+      - yang_name: area-id
+        id:  true
+        example: 5
+      - yang_name: authentication/message-digest
+        example: true
+      - yang_name: nssa
+        example: true
+      # - yang_name: nssa/nssa-options/default-information-originate/metric
+      #   example: 1
+      #   exclude_test: true
+      # - yang_name: nssa/nssa-options/default-information-originate/metric-type
+      #   example: 1
+      #   exclude_test: true
+      - yang_name: nssa/nssa-options/no-summary
+        example: true
+      - yang_name: nssa/nssa-options/no-redistribution
+        example: true
+  - yang_name: 	passive-interface/passive-interface-choice/default/default
+    xpath: passive-interface/default
+    example: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

@@ -33,26 +33,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &InterfaceOSPFDataSource{}
-	_ datasource.DataSourceWithConfigure = &InterfaceOSPFDataSource{}
+	_ datasource.DataSource              = &RadiusDataSource{}
+	_ datasource.DataSourceWithConfigure = &RadiusDataSource{}
 )
 
-func NewInterfaceOSPFDataSource() datasource.DataSource {
-	return &InterfaceOSPFDataSource{}
+func NewRadiusDataSource() datasource.DataSource {
+	return &RadiusDataSource{}
 }
 
-type InterfaceOSPFDataSource struct {
+type RadiusDataSource struct {
 	clients map[string]*restconf.Client
 }
 
-func (d *InterfaceOSPFDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_ospf"
+func (d *RadiusDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_radius"
 }
 
-func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Interface OSPF configuration.",
+		MarkdownDescription: "This data source can read the Radius configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -63,75 +63,59 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"type": schema.StringAttribute{
-				MarkdownDescription: "Interface type",
-				Required:            true,
-			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Name for the radius server configuration",
 				Required:            true,
 			},
-			"cost": schema.Int64Attribute{
-				MarkdownDescription: "Route cost of this interface",
+			"radius_host_address_ipv4": schema.StringAttribute{
+				MarkdownDescription: "IPv4 address or Hostname for radius server",
 				Computed:            true,
 			},
-			"dead_interval": schema.Int64Attribute{
-				MarkdownDescription: "Interval after which a neighbor is declared dead",
+			"address_auth_port": schema.Int64Attribute{
+				MarkdownDescription: "UDP port for RADIUS authentication server (default is 1812)",
 				Computed:            true,
 			},
-			"hello_interval": schema.Int64Attribute{
-				MarkdownDescription: "Time between HELLO packets",
+			"address_acct_port": schema.Int64Attribute{
+				MarkdownDescription: "UDP port for RADIUS accounting server (default is 1813)",
 				Computed:            true,
 			},
-			"mtu_ignore": schema.BoolAttribute{
-				MarkdownDescription: "Ignores the MTU in DBD packets",
+			"timeout": schema.Int64Attribute{
+				MarkdownDescription: "Time to wait for a RADIUS server to reply (overrides default)",
 				Computed:            true,
 			},
-			"network_type_broadcast": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF broadcast multi-access network",
+			"retransmit": schema.Int64Attribute{
+				MarkdownDescription: "Number of retries to active server (overrides default)",
 				Computed:            true,
 			},
-			"network_type_non_broadcast": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF NBMA network",
+			"key_key": schema.StringAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"network_type_point_to_multipoint": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF point-to-multipoint network",
+			"automate_tester_username": schema.StringAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"network_type_point_to_point": schema.BoolAttribute{
-				MarkdownDescription: "Specify OSPF point-to-point network",
+			"automate_tester_ignore_acct_port": schema.BoolAttribute{
+				MarkdownDescription: "Do not test accounting ports of the servers.",
 				Computed:            true,
 			},
-			"priority": schema.Int64Attribute{
-				MarkdownDescription: "Router priority",
+			"automate_tester_type_of_testing_probe_on_config_probe_on_config": schema.BoolAttribute{
+				MarkdownDescription: "Send a packet to verify the server status",
 				Computed:            true,
 			},
-			"message_digest_key": schema.ListNestedAttribute{
-				MarkdownDescription: "Message digest authentication password (key)",
+			"pac_key_key": schema.StringAttribute{
+				MarkdownDescription: "The UNENCRYPTED (cleartext) server key",
 				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.Int64Attribute{
-							MarkdownDescription: "Key ID",
-							Computed:            true,
-						},
-						"md5_auth_key": schema.StringAttribute{
-							MarkdownDescription: "The OSPF password (key) (only the first 16 characters are used)",
-							Computed:            true,
-						},
-						"md5_auth_type": schema.Int64Attribute{
-							MarkdownDescription: "Encryption type (0 for not yet encrypted, 7 for proprietary)",
-							Computed:            true,
-						},
-					},
-				},
+			},
+			"pac_key_encryption": schema.StringAttribute{
+				MarkdownDescription: "0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow",
+				Computed:            true,
 			},
 		},
 	}
 }
 
-func (d *InterfaceOSPFDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *RadiusDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -139,8 +123,8 @@ func (d *InterfaceOSPFDataSource) Configure(_ context.Context, req datasource.Co
 	d.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (d *InterfaceOSPFDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config InterfaceOSPFData
+func (d *RadiusDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config RadiusData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -158,7 +142,7 @@ func (d *InterfaceOSPFDataSource) Read(ctx context.Context, req datasource.ReadR
 
 	res, err := d.clients[config.Device.ValueString()].GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = InterfaceOSPFData{Device: config.Device}
+		config = RadiusData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))

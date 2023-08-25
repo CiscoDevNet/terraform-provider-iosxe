@@ -45,6 +45,16 @@ resource "iosxe_ospf_vrf" "example" {
       mask = "255.255.255.0"
     }
   ]
+  area = [
+    {
+      area_id                             = "5"
+      authentication_message_digest       = true
+      nssa                                = true
+      nssa_nssa_options_no_summary        = true
+      nssa_nssa_options_no_redistribution = true
+    }
+  ]
+  passive_interface_passive_interface_choice_default_default = true
 }
 ```
 
@@ -59,6 +69,7 @@ resource "iosxe_ospf_vrf" "example" {
 
 ### Optional
 
+- `area` (Attributes List) OSPF area parameters (see [below for nested schema](#nestedatt--area))
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
@@ -75,6 +86,7 @@ resource "iosxe_ospf_vrf" "example" {
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
 - `neighbor` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbor))
 - `network` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--network))
+- `passive_interface_passive_interface_choice_default_default` (Boolean) Suppress routing updates on all interfaces
 - `priority` (Number) OSPF topology priority
   - Range: `0`-`127`
 - `router_id` (String) Override configured router identifier (peers will reset)
@@ -84,6 +96,21 @@ resource "iosxe_ospf_vrf" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--area"></a>
+### Nested Schema for `area`
+
+Required:
+
+- `area_id` (String) OSPF area ID
+
+Optional:
+
+- `authentication_message_digest` (Boolean) Use message-digest authentication
+- `nssa` (Boolean) Specify a NSSA area
+- `nssa_nssa_options_no_redistribution` (Boolean) No redistribution into this NSSA area
+- `nssa_nssa_options_no_summary` (Boolean) Do not send summary LSA into NSSA
+
 
 <a id="nestedatt--neighbor"></a>
 ### Nested Schema for `neighbor`

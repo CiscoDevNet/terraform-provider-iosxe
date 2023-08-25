@@ -22,7 +22,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -38,22 +37,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewInterfaceOSPFResource() resource.Resource {
-	return &InterfaceOSPFResource{}
+func NewPolicyMapEventsResource() resource.Resource {
+	return &PolicyMapEventsResource{}
 }
 
-type InterfaceOSPFResource struct {
+type PolicyMapEventsResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *InterfaceOSPFResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_ospf"
+func (r *PolicyMapEventsResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_policy_map_events"
 }
 
-func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *PolicyMapEventsResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface OSPF configuration.",
+		MarkdownDescription: "This resource can manage the Policy Map Events configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -67,105 +66,119 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
-			"type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface type").AddStringEnumDescription("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "TwoHundredGigE", "FourHundredGigE", "Loopback", "Vlan").String,
-				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "TwoHundredGigE", "FourHundredGigE", "Loopback", "Vlan"),
-				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Name of the policy map").String,
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(0|[1-9][0-9]*)(/(0|[1-9][0-9]*))*(\.[0-9]*)?`), ""),
+					stringvalidator.LengthBetween(1, 203),
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"cost": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Route cost of this interface").AddIntegerRangeDescription(1, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
+			"event_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("aaa-available", "absolute-timeout", "agent-found", "authentication-failure", "authentication-success", "authorization-failure", "authorization-success", "identity-update", "inactivity-timeout", "remote-authentication-failure", "remote-authentication-success", "remote-update", "session-disconnected", "session-started", "tag-added", "tag-removed", "template-activated", "template-activation-failed", "template-deactivated", "template-deactivation-failed", "timer-expiry", "violation").String,
+				Required:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("aaa-available", "absolute-timeout", "agent-found", "authentication-failure", "authentication-success", "authorization-failure", "authorization-success", "identity-update", "inactivity-timeout", "remote-authentication-failure", "remote-authentication-success", "remote-update", "session-disconnected", "session-started", "tag-added", "tag-removed", "template-activated", "template-activation-failed", "template-deactivated", "template-deactivation-failed", "timer-expiry", "violation"),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"dead_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interval after which a neighbor is declared dead").AddIntegerRangeDescription(1, 65535).String,
+			"match_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("match-all", "match-first").String,
 				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
+				Validators: []validator.String{
+					stringvalidator.OneOf("match-all", "match-first"),
 				},
 			},
-			"hello_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Time between HELLO packets").AddIntegerRangeDescription(1, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
-				},
-			},
-			"mtu_ignore": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ignores the MTU in DBD packets").String,
-				Optional:            true,
-			},
-			"network_type_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF broadcast multi-access network").String,
-				Optional:            true,
-			},
-			"network_type_non_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF NBMA network").String,
-				Optional:            true,
-			},
-			"network_type_point_to_multipoint": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-multipoint network").String,
-				Optional:            true,
-			},
-			"network_type_point_to_point": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-point network").String,
-				Optional:            true,
-			},
-			"priority": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Router priority").AddIntegerRangeDescription(0, 255).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 255),
-				},
-			},
-			"message_digest_key": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Message digest authentication password (key)").String,
+			"class_numbers": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("class number, 1 for 1st class, 2 for 2nd...").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"id": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Key ID").AddIntegerRangeDescription(1, 255).String,
+						"number": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 254).String,
 							Required:            true,
 							Validators: []validator.Int64{
-								int64validator.Between(1, 255),
+								int64validator.Between(1, 254),
 							},
 						},
-						"md5_auth_key": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("The OSPF password (key) (only the first 16 characters are used)").String,
+						"class": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("The class type this control policy-map triggers upon").String,
+							Optional:            true,
+						},
+						"execution_type": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("do-all", "do-until-failure", "do-until-success").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+								stringvalidator.OneOf("do-all", "do-until-failure", "do-until-success"),
 							},
 						},
-						"md5_auth_type": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 for not yet encrypted, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
+						"action_numbers": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("action number, 1 for 1st class, 2 for 2nd...").String,
 							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(0, 7),
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"number": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 254).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 254),
+										},
+									},
+									"pause_reauthentication": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("pause reauthentication").String,
+										Optional:            true,
+									},
+									"authorize": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("authorize session").String,
+										Optional:            true,
+									},
+									"terminate_config": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("terminate auth method").AddStringEnumDescription("dot1x", "mab", "webauth").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("dot1x", "mab", "webauth"),
+										},
+									},
+									"activate_service_template_config_service_template": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("activate service template").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.LengthBetween(1, 48),
+										},
+									},
+									"authenticate_using_method": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("dot1x", "mab", "webauth").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("dot1x", "mab", "webauth"),
+										},
+									},
+									"authenticate_using_retries": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Number of times to retry failed authentications").AddIntegerRangeDescription(1, 5).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 5),
+										},
+									},
+									"authenticate_using_retry_time": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Time interval between retries").AddIntegerRangeDescription(0, 65535).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 65535),
+										},
+									},
+									"authenticate_using_priority": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Method priority").AddIntegerRangeDescription(1, 254).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 254),
+										},
+									},
+								},
 							},
 						},
 					},
@@ -175,7 +188,7 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 	}
 }
 
-func (r *InterfaceOSPFResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *PolicyMapEventsResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -183,8 +196,8 @@ func (r *InterfaceOSPFResource) Configure(_ context.Context, req resource.Config
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *InterfaceOSPFResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan InterfaceOSPF
+func (r *PolicyMapEventsResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan PolicyMapEvents
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -242,8 +255,8 @@ func (r *InterfaceOSPFResource) Create(ctx context.Context, req resource.CreateR
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state InterfaceOSPF
+func (r *PolicyMapEventsResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state PolicyMapEvents
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -261,7 +274,7 @@ func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadReque
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = InterfaceOSPF{Device: state.Device, Id: state.Id}
+		state = PolicyMapEvents{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -277,8 +290,8 @@ func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadReque
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceOSPFResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state InterfaceOSPF
+func (r *PolicyMapEventsResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state PolicyMapEvents
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -353,8 +366,8 @@ func (r *InterfaceOSPFResource) Update(ctx context.Context, req resource.UpdateR
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceOSPFResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state InterfaceOSPF
+func (r *PolicyMapEventsResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state PolicyMapEvents
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -370,11 +383,6 @@ func (r *InterfaceOSPFResource) Delete(ctx context.Context, req resource.DeleteR
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
 	deleteMode := "all"
-	if state.DeleteMode.ValueString() == "all" {
-		deleteMode = "all"
-	} else if state.DeleteMode.ValueString() == "attributes" {
-		deleteMode = "attributes"
-	}
 
 	if deleteMode == "all" {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())
@@ -412,6 +420,6 @@ func (r *InterfaceOSPFResource) Delete(ctx context.Context, req resource.DeleteR
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *InterfaceOSPFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *PolicyMapEventsResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

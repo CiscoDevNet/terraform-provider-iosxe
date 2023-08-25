@@ -10,4 +10,11 @@ resource "iosxe_interface_ospf" "example" {
   network_type_point_to_multipoint = false
   network_type_point_to_point      = true
   priority                         = 10
+  message_digest_key = [
+    {
+      id            = 1
+      md5_auth_key  = "anyname"
+      md5_auth_type = 0
+    }
+  ]
 }

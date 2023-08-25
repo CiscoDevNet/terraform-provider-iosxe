@@ -30,4 +30,14 @@ resource "iosxe_ospf_vrf" "example" {
       mask = "255.255.255.0"
     }
   ]
+  area = [
+    {
+      area_id                             = "5"
+      authentication_message_digest       = true
+      nssa                                = true
+      nssa_nssa_options_no_summary        = true
+      nssa_nssa_options_no_redistribution = true
+    }
+  ]
+  passive_interface_passive_interface_choice_default_default = true
 }

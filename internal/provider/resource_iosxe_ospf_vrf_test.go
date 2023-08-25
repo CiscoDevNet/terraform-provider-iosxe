@@ -46,6 +46,12 @@ func TestAccIosxeOSPFVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "summary_address.0.ip", "3.3.3.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "summary_address.0.mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "area.0.area_id", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "area.0.authentication_message_digest", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "area.0.nssa", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "area.0.nssa_nssa_options_no_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "area.0.nssa_nssa_options_no_redistribution", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "passive_interface_passive_interface_choice_default_default", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -114,6 +120,14 @@ func testAccIosxeOSPFVRFConfig_all() string {
 	config += `		ip = "3.3.3.0"` + "\n"
 	config += `		mask = "255.255.255.0"` + "\n"
 	config += `	}]` + "\n"
+	config += `	area = [{` + "\n"
+	config += `		area_id = "5"` + "\n"
+	config += `		authentication_message_digest = true` + "\n"
+	config += `		nssa = true` + "\n"
+	config += `		nssa_nssa_options_no_summary = true` + "\n"
+	config += `		nssa_nssa_options_no_redistribution = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	passive_interface_passive_interface_choice_default_default = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

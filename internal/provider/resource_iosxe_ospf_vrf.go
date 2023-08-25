@@ -228,6 +228,38 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 					},
 				},
 			},
+			"area": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF area parameters").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"area_id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("OSPF area ID").String,
+							Required:            true,
+						},
+						"authentication_message_digest": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").String,
+							Optional:            true,
+						},
+						"nssa": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a NSSA area").String,
+							Optional:            true,
+						},
+						"nssa_nssa_options_no_summary": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Do not send summary LSA into NSSA").String,
+							Optional:            true,
+						},
+						"nssa_nssa_options_no_redistribution": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No redistribution into this NSSA area").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_passive_interface_choice_default_default": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").String,
+				Optional:            true,
+			},
 		},
 	}
 }

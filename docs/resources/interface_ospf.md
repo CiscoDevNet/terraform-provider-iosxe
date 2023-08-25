@@ -25,6 +25,13 @@ resource "iosxe_interface_ospf" "example" {
   network_type_point_to_multipoint = false
   network_type_point_to_point      = true
   priority                         = 10
+  message_digest_key = [
+    {
+      id            = 1
+      md5_auth_key  = "anyname"
+      md5_auth_type = 0
+    }
+  ]
 }
 ```
 
@@ -48,6 +55,7 @@ resource "iosxe_interface_ospf" "example" {
 - `device` (String) A device name from the provider configuration.
 - `hello_interval` (Number) Time between HELLO packets
   - Range: `1`-`65535`
+- `message_digest_key` (Attributes List) Message digest authentication password (key) (see [below for nested schema](#nestedatt--message_digest_key))
 - `mtu_ignore` (Boolean) Ignores the MTU in DBD packets
 - `network_type_broadcast` (Boolean) Specify OSPF broadcast multi-access network
 - `network_type_non_broadcast` (Boolean) Specify OSPF NBMA network
@@ -59,6 +67,20 @@ resource "iosxe_interface_ospf" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--message_digest_key"></a>
+### Nested Schema for `message_digest_key`
+
+Required:
+
+- `id` (Number) Key ID
+  - Range: `1`-`255`
+
+Optional:
+
+- `md5_auth_key` (String) The OSPF password (key) (only the first 16 characters are used)
+- `md5_auth_type` (Number) Encryption type (0 for not yet encrypted, 7 for proprietary)
+  - Range: `0`-`7`
 
 ## Import
 

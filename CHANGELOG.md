@@ -1,7 +1,12 @@
 ## 0.3.4 (unreleased)
 
 - Fix issue when using `tunnel_destination_ipv4` or `tunnel_mode_ipsec_ipv4` attributes of `iosxe_interface_tunnel` resource
-- Add `iosxe_static_route_vrf` resource and data source
+- Add `iosxe_policy_map` resource and data source
+- Add `iosxe_policy_map_events` resource and data source
+- Add `iosxe_radius` resource and data source
+- Add `area`, `nssa` attribute to `iosxe_ospf_vrf`  resources and data sources
+- Add `message-digest-key`attribute to `iosxe_interface_ospf`  resources and data sources
+
 
 ## 0.3.3
 

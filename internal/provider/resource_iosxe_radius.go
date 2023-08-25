@@ -38,22 +38,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewInterfaceOSPFResource() resource.Resource {
-	return &InterfaceOSPFResource{}
+func NewRadiusResource() resource.Resource {
+	return &RadiusResource{}
 }
 
-type InterfaceOSPFResource struct {
+type RadiusResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *InterfaceOSPFResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_interface_ospf"
+func (r *RadiusResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_radius"
 }
 
-func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Interface OSPF configuration.",
+		MarkdownDescription: "This resource can manage the Radius configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -74,108 +74,83 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface type").AddStringEnumDescription("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "TwoHundredGigE", "FourHundredGigE", "Loopback", "Vlan").String,
-				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "TwoHundredGigE", "FourHundredGigE", "Loopback", "Vlan"),
-				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
 			"name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Name for the radius server configuration").String,
 				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(0|[1-9][0-9]*)(/(0|[1-9][0-9]*))*(\.[0-9]*)?`), ""),
-				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"cost": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Route cost of this interface").AddIntegerRangeDescription(1, 65535).String,
+			"radius_host_address_ipv4": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv4 address or Hostname for radius server").String,
+				Optional:            true,
+			},
+			"address_auth_port": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("UDP port for RADIUS authentication server (default is 1812)").AddIntegerRangeDescription(0, 65534).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
+					int64validator.Between(0, 65534),
 				},
 			},
-			"dead_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interval after which a neighbor is declared dead").AddIntegerRangeDescription(1, 65535).String,
+			"address_acct_port": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("UDP port for RADIUS accounting server (default is 1813)").AddIntegerRangeDescription(0, 65534).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
+					int64validator.Between(0, 65534),
 				},
 			},
-			"hello_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Time between HELLO packets").AddIntegerRangeDescription(1, 65535).String,
+			"timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Time to wait for a RADIUS server to reply (overrides default)").AddIntegerRangeDescription(1, 1000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
+					int64validator.Between(1, 1000),
 				},
 			},
-			"mtu_ignore": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Ignores the MTU in DBD packets").String,
-				Optional:            true,
-			},
-			"network_type_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF broadcast multi-access network").String,
-				Optional:            true,
-			},
-			"network_type_non_broadcast": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF NBMA network").String,
-				Optional:            true,
-			},
-			"network_type_point_to_multipoint": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-multipoint network").String,
-				Optional:            true,
-			},
-			"network_type_point_to_point": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify OSPF point-to-point network").String,
-				Optional:            true,
-			},
-			"priority": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Router priority").AddIntegerRangeDescription(0, 255).String,
+			"retransmit": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Number of retries to active server (overrides default)").AddIntegerRangeDescription(0, 100).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(0, 255),
+					int64validator.Between(0, 100),
 				},
 			},
-			"message_digest_key": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Message digest authentication password (key)").String,
+			"key_key": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"id": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Key ID").AddIntegerRangeDescription(1, 255).String,
-							Required:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 255),
-							},
-						},
-						"md5_auth_key": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("The OSPF password (key) (only the first 16 characters are used)").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-							},
-						},
-						"md5_auth_type": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 for not yet encrypted, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(0, 7),
-							},
-						},
-					},
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
+			},
+			"automate_tester_username": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"automate_tester_ignore_acct_port": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Do not test accounting ports of the servers.").String,
+				Optional:            true,
+			},
+			"automate_tester_type_of_testing_probe_on_config_probe_on_config": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Send a packet to verify the server status").String,
+				Optional:            true,
+			},
+			"pac_key_key": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) server key").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
+			},
+			"pac_key_encryption": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow").AddStringEnumDescription("0", "6", "7").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("0", "6", "7"),
 				},
 			},
 		},
 	}
 }
 
-func (r *InterfaceOSPFResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *RadiusResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -183,8 +158,8 @@ func (r *InterfaceOSPFResource) Configure(_ context.Context, req resource.Config
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *InterfaceOSPFResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan InterfaceOSPF
+func (r *RadiusResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan Radius
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -242,8 +217,8 @@ func (r *InterfaceOSPFResource) Create(ctx context.Context, req resource.CreateR
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state InterfaceOSPF
+func (r *RadiusResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state Radius
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -261,7 +236,7 @@ func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadReque
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = InterfaceOSPF{Device: state.Device, Id: state.Id}
+		state = Radius{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -277,8 +252,8 @@ func (r *InterfaceOSPFResource) Read(ctx context.Context, req resource.ReadReque
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceOSPFResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state InterfaceOSPF
+func (r *RadiusResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state Radius
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -353,8 +328,8 @@ func (r *InterfaceOSPFResource) Update(ctx context.Context, req resource.UpdateR
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *InterfaceOSPFResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state InterfaceOSPF
+func (r *RadiusResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state Radius
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -412,6 +387,6 @@ func (r *InterfaceOSPFResource) Delete(ctx context.Context, req resource.DeleteR
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *InterfaceOSPFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *RadiusResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

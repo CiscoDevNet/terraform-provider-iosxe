@@ -35,46 +35,50 @@ import (
 )
 
 type OSPFVRF struct {
-	Device                            types.String            `tfsdk:"device"`
-	Id                                types.String            `tfsdk:"id"`
-	DeleteMode                        types.String            `tfsdk:"delete_mode"`
-	ProcessId                         types.Int64             `tfsdk:"process_id"`
-	Vrf                               types.String            `tfsdk:"vrf"`
-	BfdAllInterfaces                  types.Bool              `tfsdk:"bfd_all_interfaces"`
-	DefaultInformationOriginate       types.Bool              `tfsdk:"default_information_originate"`
-	DefaultInformationOriginateAlways types.Bool              `tfsdk:"default_information_originate_always"`
-	DefaultMetric                     types.Int64             `tfsdk:"default_metric"`
-	Distance                          types.Int64             `tfsdk:"distance"`
-	DomainTag                         types.Int64             `tfsdk:"domain_tag"`
-	MplsLdpAutoconfig                 types.Bool              `tfsdk:"mpls_ldp_autoconfig"`
-	MplsLdpSync                       types.Bool              `tfsdk:"mpls_ldp_sync"`
-	Neighbor                          []OSPFVRFNeighbor       `tfsdk:"neighbor"`
-	Network                           []OSPFVRFNetwork        `tfsdk:"network"`
-	Priority                          types.Int64             `tfsdk:"priority"`
-	RouterId                          types.String            `tfsdk:"router_id"`
-	Shutdown                          types.Bool              `tfsdk:"shutdown"`
-	SummaryAddress                    []OSPFVRFSummaryAddress `tfsdk:"summary_address"`
+	Device                                               types.String            `tfsdk:"device"`
+	Id                                                   types.String            `tfsdk:"id"`
+	DeleteMode                                           types.String            `tfsdk:"delete_mode"`
+	ProcessId                                            types.Int64             `tfsdk:"process_id"`
+	Vrf                                                  types.String            `tfsdk:"vrf"`
+	BfdAllInterfaces                                     types.Bool              `tfsdk:"bfd_all_interfaces"`
+	DefaultInformationOriginate                          types.Bool              `tfsdk:"default_information_originate"`
+	DefaultInformationOriginateAlways                    types.Bool              `tfsdk:"default_information_originate_always"`
+	DefaultMetric                                        types.Int64             `tfsdk:"default_metric"`
+	Distance                                             types.Int64             `tfsdk:"distance"`
+	DomainTag                                            types.Int64             `tfsdk:"domain_tag"`
+	MplsLdpAutoconfig                                    types.Bool              `tfsdk:"mpls_ldp_autoconfig"`
+	MplsLdpSync                                          types.Bool              `tfsdk:"mpls_ldp_sync"`
+	Neighbor                                             []OSPFVRFNeighbor       `tfsdk:"neighbor"`
+	Network                                              []OSPFVRFNetwork        `tfsdk:"network"`
+	Priority                                             types.Int64             `tfsdk:"priority"`
+	RouterId                                             types.String            `tfsdk:"router_id"`
+	Shutdown                                             types.Bool              `tfsdk:"shutdown"`
+	SummaryAddress                                       []OSPFVRFSummaryAddress `tfsdk:"summary_address"`
+	Area                                                 []OSPFVRFArea           `tfsdk:"area"`
+	PassiveInterfacePassiveInterfaceChoiceDefaultDefault types.Bool              `tfsdk:"passive_interface_passive_interface_choice_default_default"`
 }
 
 type OSPFVRFData struct {
-	Device                            types.String            `tfsdk:"device"`
-	Id                                types.String            `tfsdk:"id"`
-	ProcessId                         types.Int64             `tfsdk:"process_id"`
-	Vrf                               types.String            `tfsdk:"vrf"`
-	BfdAllInterfaces                  types.Bool              `tfsdk:"bfd_all_interfaces"`
-	DefaultInformationOriginate       types.Bool              `tfsdk:"default_information_originate"`
-	DefaultInformationOriginateAlways types.Bool              `tfsdk:"default_information_originate_always"`
-	DefaultMetric                     types.Int64             `tfsdk:"default_metric"`
-	Distance                          types.Int64             `tfsdk:"distance"`
-	DomainTag                         types.Int64             `tfsdk:"domain_tag"`
-	MplsLdpAutoconfig                 types.Bool              `tfsdk:"mpls_ldp_autoconfig"`
-	MplsLdpSync                       types.Bool              `tfsdk:"mpls_ldp_sync"`
-	Neighbor                          []OSPFVRFNeighbor       `tfsdk:"neighbor"`
-	Network                           []OSPFVRFNetwork        `tfsdk:"network"`
-	Priority                          types.Int64             `tfsdk:"priority"`
-	RouterId                          types.String            `tfsdk:"router_id"`
-	Shutdown                          types.Bool              `tfsdk:"shutdown"`
-	SummaryAddress                    []OSPFVRFSummaryAddress `tfsdk:"summary_address"`
+	Device                                               types.String            `tfsdk:"device"`
+	Id                                                   types.String            `tfsdk:"id"`
+	ProcessId                                            types.Int64             `tfsdk:"process_id"`
+	Vrf                                                  types.String            `tfsdk:"vrf"`
+	BfdAllInterfaces                                     types.Bool              `tfsdk:"bfd_all_interfaces"`
+	DefaultInformationOriginate                          types.Bool              `tfsdk:"default_information_originate"`
+	DefaultInformationOriginateAlways                    types.Bool              `tfsdk:"default_information_originate_always"`
+	DefaultMetric                                        types.Int64             `tfsdk:"default_metric"`
+	Distance                                             types.Int64             `tfsdk:"distance"`
+	DomainTag                                            types.Int64             `tfsdk:"domain_tag"`
+	MplsLdpAutoconfig                                    types.Bool              `tfsdk:"mpls_ldp_autoconfig"`
+	MplsLdpSync                                          types.Bool              `tfsdk:"mpls_ldp_sync"`
+	Neighbor                                             []OSPFVRFNeighbor       `tfsdk:"neighbor"`
+	Network                                              []OSPFVRFNetwork        `tfsdk:"network"`
+	Priority                                             types.Int64             `tfsdk:"priority"`
+	RouterId                                             types.String            `tfsdk:"router_id"`
+	Shutdown                                             types.Bool              `tfsdk:"shutdown"`
+	SummaryAddress                                       []OSPFVRFSummaryAddress `tfsdk:"summary_address"`
+	Area                                                 []OSPFVRFArea           `tfsdk:"area"`
+	PassiveInterfacePassiveInterfaceChoiceDefaultDefault types.Bool              `tfsdk:"passive_interface_passive_interface_choice_default_default"`
 }
 type OSPFVRFNeighbor struct {
 	Ip       types.String `tfsdk:"ip"`
@@ -89,6 +93,13 @@ type OSPFVRFNetwork struct {
 type OSPFVRFSummaryAddress struct {
 	Ip   types.String `tfsdk:"ip"`
 	Mask types.String `tfsdk:"mask"`
+}
+type OSPFVRFArea struct {
+	AreaId                          types.String `tfsdk:"area_id"`
+	AuthenticationMessageDigest     types.Bool   `tfsdk:"authentication_message_digest"`
+	Nssa                            types.Bool   `tfsdk:"nssa"`
+	NssaNssaOptionsNoSummary        types.Bool   `tfsdk:"nssa_nssa_options_no_summary"`
+	NssaNssaOptionsNoRedistribution types.Bool   `tfsdk:"nssa_nssa_options_no_redistribution"`
 }
 
 func (data OSPFVRF) getPath() string {
@@ -161,6 +172,9 @@ func (data OSPFVRF) toBody(ctx context.Context) string {
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", data.Shutdown.ValueBool())
 	}
+	if !data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault.IsNull() && !data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.default", data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault.ValueBool())
+	}
 	if len(data.Neighbor) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor", []interface{}{})
 		for index, item := range data.Neighbor {
@@ -197,6 +211,34 @@ func (data OSPFVRF) toBody(ctx context.Context) string {
 			}
 			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summary-address"+"."+strconv.Itoa(index)+"."+"mask", item.Mask.ValueString())
+			}
+		}
+	}
+	if len(data.Area) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area", []interface{}{})
+		for index, item := range data.Area {
+			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"area-id", item.AreaId.ValueString())
+			}
+			if !item.AuthenticationMessageDigest.IsNull() && !item.AuthenticationMessageDigest.IsUnknown() {
+				if item.AuthenticationMessageDigest.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"authentication.message-digest", map[string]string{})
+				}
+			}
+			if !item.Nssa.IsNull() && !item.Nssa.IsUnknown() {
+				if item.Nssa.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa", map[string]string{})
+				}
+			}
+			if !item.NssaNssaOptionsNoSummary.IsNull() && !item.NssaNssaOptionsNoSummary.IsUnknown() {
+				if item.NssaNssaOptionsNoSummary.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-summary", map[string]string{})
+				}
+			}
+			if !item.NssaNssaOptionsNoRedistribution.IsNull() && !item.NssaNssaOptionsNoRedistribution.IsUnknown() {
+				if item.NssaNssaOptionsNoRedistribution.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-redistribution", map[string]string{})
+				}
 			}
 		}
 	}
@@ -407,6 +449,78 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.SummaryAddress[i].Mask = types.StringNull()
 		}
 	}
+	for i := range data.Area {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.Area[i].AreaId.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "area").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("area-id"); value.Exists() && !data.Area[i].AreaId.IsNull() {
+			data.Area[i].AreaId = types.StringValue(value.String())
+		} else {
+			data.Area[i].AreaId = types.StringNull()
+		}
+		if value := r.Get("authentication.message-digest"); !data.Area[i].AuthenticationMessageDigest.IsNull() {
+			if value.Exists() {
+				data.Area[i].AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				data.Area[i].AuthenticationMessageDigest = types.BoolValue(false)
+			}
+		} else {
+			data.Area[i].AuthenticationMessageDigest = types.BoolNull()
+		}
+		if value := r.Get("nssa"); !data.Area[i].Nssa.IsNull() {
+			if value.Exists() {
+				data.Area[i].Nssa = types.BoolValue(true)
+			} else {
+				data.Area[i].Nssa = types.BoolValue(false)
+			}
+		} else {
+			data.Area[i].Nssa = types.BoolNull()
+		}
+		if value := r.Get("nssa.nssa-options.no-summary"); !data.Area[i].NssaNssaOptionsNoSummary.IsNull() {
+			if value.Exists() {
+				data.Area[i].NssaNssaOptionsNoSummary = types.BoolValue(true)
+			} else {
+				data.Area[i].NssaNssaOptionsNoSummary = types.BoolValue(false)
+			}
+		} else {
+			data.Area[i].NssaNssaOptionsNoSummary = types.BoolNull()
+		}
+		if value := r.Get("nssa.nssa-options.no-redistribution"); !data.Area[i].NssaNssaOptionsNoRedistribution.IsNull() {
+			if value.Exists() {
+				data.Area[i].NssaNssaOptionsNoRedistribution = types.BoolValue(true)
+			} else {
+				data.Area[i].NssaNssaOptionsNoRedistribution = types.BoolValue(false)
+			}
+		} else {
+			data.Area[i].NssaNssaOptionsNoRedistribution = types.BoolNull()
+		}
+	}
+	if value := res.Get(prefix + "passive-interface.default"); !data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault.IsNull() {
+		if value.Exists() {
+			data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault = types.BoolNull()
+	}
 }
 
 func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
@@ -507,6 +621,42 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "area"); value.Exists() {
+		data.Area = make([]OSPFVRFArea, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFVRFArea{}
+			if cValue := v.Get("area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("authentication.message-digest"); cValue.Exists() {
+				item.AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				item.AuthenticationMessageDigest = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa"); cValue.Exists() {
+				item.Nssa = types.BoolValue(true)
+			} else {
+				item.Nssa = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.no-summary"); cValue.Exists() {
+				item.NssaNssaOptionsNoSummary = types.BoolValue(true)
+			} else {
+				item.NssaNssaOptionsNoSummary = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.no-redistribution"); cValue.Exists() {
+				item.NssaNssaOptionsNoRedistribution = types.BoolValue(true)
+			} else {
+				item.NssaNssaOptionsNoRedistribution = types.BoolValue(false)
+			}
+			data.Area = append(data.Area, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
+		data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault = types.BoolValue(value.Bool())
+	} else {
+		data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault = types.BoolValue(false)
+	}
 }
 
 func (data *OSPFVRF) getDeletedListItems(ctx context.Context, state OSPFVRF) []string {
@@ -586,6 +736,31 @@ func (data *OSPFVRF) getDeletedListItems(ctx context.Context, state OSPFVRF) []s
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/summary-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Area {
+		stateKeyValues := [...]string{state.Area[i].AreaId.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Area[i].AreaId.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Area {
+			found = true
+			if state.Area[i].AreaId.ValueString() != data.Area[j].AreaId.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedListItems
 }
 
@@ -607,6 +782,21 @@ func (data *OSPFVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
 	}
 
+	for i := range data.Area {
+		keyValues := [...]string{data.Area[i].AreaId.ValueString()}
+		if !data.Area[i].AuthenticationMessageDigest.IsNull() && !data.Area[i].AuthenticationMessageDigest.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/authentication/message-digest", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Area[i].Nssa.IsNull() && !data.Area[i].Nssa.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Area[i].NssaNssaOptionsNoSummary.IsNull() && !data.Area[i].NssaNssaOptionsNoSummary.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Area[i].NssaNssaOptionsNoRedistribution.IsNull() && !data.Area[i].NssaNssaOptionsNoRedistribution.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
 	return emptyLeafsDelete
 }
 
@@ -659,6 +849,14 @@ func (data *OSPFVRF) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/summary-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Area {
+		keyValues := [...]string{data.Area[i].AreaId.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/area=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.PassiveInterfacePassiveInterfaceChoiceDefaultDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
 	}
 	return deletePaths
 }

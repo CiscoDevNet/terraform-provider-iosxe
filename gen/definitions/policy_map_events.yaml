@@ -1,0 +1,54 @@
+---
+name: Policy Map Events
+path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=%s/event=%v
+doc_category: QoS
+no_delete_attributes: true
+attributes:
+  - yang_name: name
+    example: dot1x_policy
+  - yang_name: event-type
+    #example: session-started
+    example: authentication-success
+  - yang_name: match-type
+    example: match-all
+  - yang_name: class-number
+    tf_name: class_numbers
+    type: List
+    attributes:
+      - yang_name: number
+        id: true
+        example: 10
+      - yang_name: class
+        example: always
+        #example: AAA_SVR_DOWN_AUTHD_HOST
+      - yang_name: execution-type
+        example: do-until-failure
+      - yang_name: action-number
+        tf_name: action_numbers
+        type: List
+        attributes:
+          - yang_name: number
+            id: true
+            example: 10
+          - yang_name: pause/reauthentication
+            example: true
+            exclude_test: true
+          - yang_name: authorize
+            example: true
+            exclude_test: true
+          - yang_name: terminate-config
+            example: dot1x
+            exclude_test: true
+          - yang_name: activate/service-template-config/service-template
+            example: DEFAULT_LINK_POLICY
+            exclude_test: true
+          - yang_name: authenticate/using/method
+            example: dot1x
+          - yang_name: authenticate/using/retries
+            example: 2
+          - yang_name: authenticate/using/retry-time
+            example: 0
+          - yang_name: authenticate/using/priority
+            example: 10
+
+  

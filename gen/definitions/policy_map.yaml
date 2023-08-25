@@ -1,0 +1,13 @@
+---
+name: Policy Map
+path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=%v
+doc_category: QoS
+no_delete_attributes: true
+attributes:
+  - yang_name: name 
+    id: true
+    example: dot1x_policy
+  - yang_name: type
+    example: control
+  - yang_name: subscriber
+    example: true

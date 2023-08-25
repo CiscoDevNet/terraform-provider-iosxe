@@ -50,6 +50,18 @@ attributes:
     example: true
   - yang_name: priority
     example: 10
+  - yang_name: message-digest-key
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: 1
+      - yang_name: md5/auth-key
+        example: anyname
+      - yang_name: md5/auth-type
+        example: 0
+        no_delete: true
+        
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/interface/Loopback=1

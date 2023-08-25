@@ -36,6 +36,9 @@ func TestAccDataSourceIosxeInterfaceOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "network_type_point_to_multipoint", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "network_type_point_to_point", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "message_digest_key.0.id", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "message_digest_key.0.md5_auth_key", "anyname"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "message_digest_key.0.md5_auth_type", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -72,6 +75,11 @@ func testAccDataSourceIosxeInterfaceOSPFConfig() string {
 	config += `	network_type_point_to_multipoint = false` + "\n"
 	config += `	network_type_point_to_point = true` + "\n"
 	config += `	priority = 10` + "\n"
+	config += `	message_digest_key = [{` + "\n"
+	config += `		id = 1` + "\n"
+	config += `		md5_auth_key = "anyname"` + "\n"
+	config += `		md5_auth_type = 0` + "\n"
+	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

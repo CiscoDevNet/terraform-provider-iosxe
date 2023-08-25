@@ -171,6 +171,38 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
+			"area": schema.ListNestedAttribute{
+				MarkdownDescription: "OSPF area parameters",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"area_id": schema.StringAttribute{
+							MarkdownDescription: "OSPF area ID",
+							Computed:            true,
+						},
+						"authentication_message_digest": schema.BoolAttribute{
+							MarkdownDescription: "Use message-digest authentication",
+							Computed:            true,
+						},
+						"nssa": schema.BoolAttribute{
+							MarkdownDescription: "Specify a NSSA area",
+							Computed:            true,
+						},
+						"nssa_nssa_options_no_summary": schema.BoolAttribute{
+							MarkdownDescription: "Do not send summary LSA into NSSA",
+							Computed:            true,
+						},
+						"nssa_nssa_options_no_redistribution": schema.BoolAttribute{
+							MarkdownDescription: "No redistribution into this NSSA area",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_passive_interface_choice_default_default": schema.BoolAttribute{
+				MarkdownDescription: "Suppress routing updates on all interfaces",
+				Computed:            true,
+			},
 		},
 	}
 }

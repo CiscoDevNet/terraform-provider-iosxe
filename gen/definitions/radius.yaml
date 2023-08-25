@@ -1,0 +1,34 @@
+---
+name: Radius
+path: Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v
+doc_category: AAA
+attributes:
+  - yang_name: id
+    tf_name: name
+    id: true
+    example: radius_10.10.15.12
+  - yang_name: address/radius-host-address/ipv4/ipv4
+    xpath: address/ipv4
+    tf_name: radius_host_address_ipv4
+    example: 10.10.15.12
+  - yang_name: address/auth-port
+    example: 1813
+  - yang_name: address/acct-port
+    example: 1812
+  - yang_name: timeout
+    example: 4
+  - yang_name: retransmit
+    example: 3
+  - yang_name: key/key
+    example: 123
+  - yang_name: automate-tester/username
+    example: dummy
+  - yang_name: automate-tester/ignore-acct-port
+    example: true
+  - yang_name: automate-tester/type-of-testing/probe-on-config/probe-on-config
+    xpath: automate-tester/probe-on-config
+    example: true
+  - yang_name: pac/key/key
+    example: testtest1
+  - yang_name: pac/key/encryption
+    example: 0
