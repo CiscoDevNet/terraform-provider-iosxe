@@ -14,17 +14,17 @@ This resource can manage the Interface Tunnel configuration.
 
 ```terraform
 resource "iosxe_interface_tunnel" "example" {
-  name              = 90
-  description       = "My Interface Description"
-  shutdown          = false
-  ip_proxy_arp      = false
-  ip_redirects      = false
-  unreachables      = false
-  vrf_forwarding    = "VRF1"
-  ipv6_enable       = true
-  ipv6_mtu          = 1300
-  ra_suppress_all   = true
-  ipv6_address_dhcp = true
+  name                    = 90
+  description             = "My Interface Description"
+  shutdown                = false
+  ip_proxy_arp            = false
+  ip_redirects            = false
+  ip_unreachables         = false
+  vrf_forwarding          = "VRF1"
+  ipv6_enable             = true
+  ipv6_mtu                = 1300
+  ipv6_nd_ra_suppress_all = true
+  ipv6_address_dhcp       = true
   ipv6_link_local_addresses = [
     {
       address    = "fe80::9656:d028:8652:66b6"
@@ -53,13 +53,11 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
-  template                      = "Tunnel_template1"
-  enable                        = true
-  local_address                 = "1.2.3.4"
-  interval_interface_msecs      = 50
-  interval_interface_min_rx     = 50
-  interval_interface_multiplier = 3
-  echo                          = true
+  bfd_enable              = true
+  bfd_local_address       = "1.2.3.4"
+  bfd_interval            = 50
+  bfd_interval_min_rx     = 50
+  bfd_interval_multiplier = 3
 }
 ```
 
@@ -68,23 +66,25 @@ resource "iosxe_interface_tunnel" "example" {
 
 ### Required
 
-- `interval_interface_min_rx` (Number) Minimum receive interval capability
-  - Range: `50`-`9999`
-- `interval_interface_msecs` (Number) - Range: `50`-`9999`
-- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
-  - Range: `3`-`50`
 - `name` (Number) - Range: `0`-`4294967295`
 
 ### Optional
 
+- `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `bfd_enable` (Boolean) Enable BFD under the interface
+- `bfd_interval` (Number) - Range: `50`-`9999`
+- `bfd_interval_min_rx` (Number) Minimum receive interval capability
+  - Range: `50`-`9999`
+- `bfd_interval_multiplier` (Number) Multiplier value used to compute holddown
+  - Range: `3`-`50`
+- `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
+- `bfd_template` (String) BFD template
 - `crypto_ipsec_df_bit` (String) Handling of encapsulated DF bit.
   - Choices: `clear`, `copy`, `set`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
-- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
-- `enable` (Boolean) Enable BFD under the interface
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -93,6 +93,7 @@ resource "iosxe_interface_tunnel" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
@@ -102,16 +103,13 @@ resource "iosxe_interface_tunnel" "example" {
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
-- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
-- `ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `shutdown` (Boolean) Shutdown the selected interface
-- `template` (String) BFD template
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) Determine the ipsec policy profile to use.
 - `tunnel_source` (String) source of tunnel packets
 - `unnumbered` (String) Enable IP processing without an explicit address
-- `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table
 
 ### Read-Only

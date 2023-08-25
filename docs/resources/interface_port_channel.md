@@ -31,13 +31,11 @@ resource "iosxe_interface_port_channel" "example" {
       global  = false
     }
   ]
-  template                      = "portchannel_template1"
-  enable                        = true
-  local_address                 = "1.2.3.4"
-  interval_interface_msecs      = 750
-  interval_interface_min_rx     = 750
-  interval_interface_multiplier = 3
-  echo                          = true
+  bfd_enable              = true
+  bfd_local_address       = "1.2.3.4"
+  bfd_interval            = 50
+  bfd_interval_min_rx     = 50
+  bfd_interval_multiplier = 3
 }
 ```
 
@@ -46,11 +44,6 @@ resource "iosxe_interface_port_channel" "example" {
 
 ### Required
 
-- `interval_interface_min_rx` (Number) Minimum receive interval capability
-  - Range: `50`-`9999`
-- `interval_interface_msecs` (Number) - Range: `50`-`9999`
-- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
-  - Range: `3`-`50`
 - `name` (Number) - Range: `1`-`512`
 
 ### Optional
@@ -67,12 +60,19 @@ resource "iosxe_interface_port_channel" "example" {
 - `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
 - `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
 - `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
+- `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `bfd_enable` (Boolean) Enable BFD under the interface
+- `bfd_interval` (Number) - Range: `50`-`9999`
+- `bfd_interval_min_rx` (Number) Minimum receive interval capability
+  - Range: `50`-`9999`
+- `bfd_interval_multiplier` (Number) Multiplier value used to compute holddown
+  - Range: `3`-`50`
+- `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
+- `bfd_template` (String) BFD template
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
-- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
-- `enable` (Boolean) Enable BFD under the interface
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -81,17 +81,15 @@ resource "iosxe_interface_port_channel" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
-- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `shutdown` (Boolean) Shutdown the selected interface
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`
 - `switchport` (Boolean)
-- `template` (String) BFD template
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
-- `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table
 
 ### Read-Only

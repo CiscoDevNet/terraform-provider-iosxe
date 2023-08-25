@@ -1,15 +1,15 @@
 resource "iosxe_interface_tunnel" "example" {
-  name              = 90
-  description       = "My Interface Description"
-  shutdown          = false
-  ip_proxy_arp      = false
-  ip_redirects      = false
-  unreachables      = false
-  vrf_forwarding    = "VRF1"
-  ipv6_enable       = true
-  ipv6_mtu          = 1300
-  ra_suppress_all   = true
-  ipv6_address_dhcp = true
+  name                    = 90
+  description             = "My Interface Description"
+  shutdown                = false
+  ip_proxy_arp            = false
+  ip_redirects            = false
+  ip_unreachables         = false
+  vrf_forwarding          = "VRF1"
+  ipv6_enable             = true
+  ipv6_mtu                = 1300
+  ipv6_nd_ra_suppress_all = true
+  ipv6_address_dhcp       = true
   ipv6_link_local_addresses = [
     {
       address    = "fe80::9656:d028:8652:66b6"
@@ -38,11 +38,9 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
-  template                      = "Tunnel_template1"
-  enable                        = true
-  local_address                 = "1.2.3.4"
-  interval_interface_msecs      = 50
-  interval_interface_min_rx     = 50
-  interval_interface_multiplier = 3
-  echo                          = true
+  bfd_enable              = true
+  bfd_local_address       = "1.2.3.4"
+  bfd_interval            = 50
+  bfd_interval_min_rx     = 50
+  bfd_interval_multiplier = 3
 }

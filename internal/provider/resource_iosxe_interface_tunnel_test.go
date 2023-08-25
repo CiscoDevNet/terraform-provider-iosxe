@@ -33,11 +33,11 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_redirects", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "unreachables", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_unreachables", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "vrf_forwarding", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_mtu", "1300"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ra_suppress_all", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_nd_ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_address_dhcp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b6"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.link_local", "true"))
@@ -58,13 +58,11 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_mode_ipsec_ipv4", "true"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "template", "Tunnel_template1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "local_address", "1.2.3.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "interval_interface_msecs", "50"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "interval_interface_min_rx", "50"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "interval_interface_multiplier", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "echo", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "bfd_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "bfd_local_address", "1.2.3.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "bfd_interval", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "bfd_interval_min_rx", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "bfd_interval_multiplier", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -101,9 +99,6 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeInterfaceTunnelConfig_minimum() string {
 	config := `resource "iosxe_interface_tunnel" "test" {` + "\n"
 	config += `	name = 90` + "\n"
-	config += `	interval_interface_msecs = 50` + "\n"
-	config += `	interval_interface_min_rx = 50` + "\n"
-	config += `	interval_interface_multiplier = 3` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
@@ -116,11 +111,11 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	shutdown = false` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
-	config += `	unreachables = false` + "\n"
+	config += `	ip_unreachables = false` + "\n"
 	config += `	vrf_forwarding = "VRF1"` + "\n"
 	config += `	ipv6_enable = true` + "\n"
 	config += `	ipv6_mtu = 1300` + "\n"
-	config += `	ra_suppress_all = true` + "\n"
+	config += `	ipv6_nd_ra_suppress_all = true` + "\n"
 	config += `	ipv6_address_dhcp = true` + "\n"
 	config += `	ipv6_link_local_addresses = [{` + "\n"
 	config += `		address = "fe80::9656:d028:8652:66b6"` + "\n"
@@ -147,13 +142,11 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	tunnel_mode_ipsec_ipv4 = true` + "\n"
 	}
-	config += `	template = "Tunnel_template1"` + "\n"
-	config += `	enable = true` + "\n"
-	config += `	local_address = "1.2.3.4"` + "\n"
-	config += `	interval_interface_msecs = 50` + "\n"
-	config += `	interval_interface_min_rx = 50` + "\n"
-	config += `	interval_interface_multiplier = 3` + "\n"
-	config += `	echo = true` + "\n"
+	config += `	bfd_enable = true` + "\n"
+	config += `	bfd_local_address = "1.2.3.4"` + "\n"
+	config += `	bfd_interval = 50` + "\n"
+	config += `	bfd_interval_min_rx = 50` + "\n"
+	config += `	bfd_interval_multiplier = 3` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

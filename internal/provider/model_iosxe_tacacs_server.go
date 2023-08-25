@@ -33,22 +33,22 @@ import (
 )
 
 type TACACSServer struct {
-	Device            types.String `tfsdk:"device"`
-	Id                types.String `tfsdk:"id"`
-	DeleteMode        types.String `tfsdk:"delete_mode"`
-	Name              types.String `tfsdk:"name"`
-	TacacsAddressIpv4 types.String `tfsdk:"tacacs_address_ipv4"`
-	Timeout           types.Int64  `tfsdk:"timeout"`
-	KeyKey            types.String `tfsdk:"key_key"`
+	Device      types.String `tfsdk:"device"`
+	Id          types.String `tfsdk:"id"`
+	DeleteMode  types.String `tfsdk:"delete_mode"`
+	Name        types.String `tfsdk:"name"`
+	AddressIpv4 types.String `tfsdk:"address_ipv4"`
+	Timeout     types.Int64  `tfsdk:"timeout"`
+	Key         types.String `tfsdk:"key"`
 }
 
 type TACACSServerData struct {
-	Device            types.String `tfsdk:"device"`
-	Id                types.String `tfsdk:"id"`
-	Name              types.String `tfsdk:"name"`
-	TacacsAddressIpv4 types.String `tfsdk:"tacacs_address_ipv4"`
-	Timeout           types.Int64  `tfsdk:"timeout"`
-	KeyKey            types.String `tfsdk:"key_key"`
+	Device      types.String `tfsdk:"device"`
+	Id          types.String `tfsdk:"id"`
+	Name        types.String `tfsdk:"name"`
+	AddressIpv4 types.String `tfsdk:"address_ipv4"`
+	Timeout     types.Int64  `tfsdk:"timeout"`
+	Key         types.String `tfsdk:"key"`
 }
 
 func (data TACACSServer) getPath() string {
@@ -75,14 +75,14 @@ func (data TACACSServer) toBody(ctx context.Context) string {
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
 	}
-	if !data.TacacsAddressIpv4.IsNull() && !data.TacacsAddressIpv4.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address.ipv4", data.TacacsAddressIpv4.ValueString())
+	if !data.AddressIpv4.IsNull() && !data.AddressIpv4.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address.ipv4", data.AddressIpv4.ValueString())
 	}
 	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
 	}
-	if !data.KeyKey.IsNull() && !data.KeyKey.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.KeyKey.ValueString())
+	if !data.Key.IsNull() && !data.Key.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
 	}
 	return body
 }
@@ -97,20 +97,20 @@ func (data *TACACSServer) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := res.Get(prefix + "address.ipv4"); value.Exists() && !data.TacacsAddressIpv4.IsNull() {
-		data.TacacsAddressIpv4 = types.StringValue(value.String())
+	if value := res.Get(prefix + "address.ipv4"); value.Exists() && !data.AddressIpv4.IsNull() {
+		data.AddressIpv4 = types.StringValue(value.String())
 	} else {
-		data.TacacsAddressIpv4 = types.StringNull()
+		data.AddressIpv4 = types.StringNull()
 	}
 	if value := res.Get(prefix + "timeout"); value.Exists() && !data.Timeout.IsNull() {
 		data.Timeout = types.Int64Value(value.Int())
 	} else {
 		data.Timeout = types.Int64Null()
 	}
-	if value := res.Get(prefix + "key.key"); value.Exists() && !data.KeyKey.IsNull() {
-		data.KeyKey = types.StringValue(value.String())
+	if value := res.Get(prefix + "key.key"); value.Exists() && !data.Key.IsNull() {
+		data.Key = types.StringValue(value.String())
 	} else {
-		data.KeyKey = types.StringNull()
+		data.Key = types.StringNull()
 	}
 }
 
@@ -120,13 +120,13 @@ func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "address.ipv4"); value.Exists() {
-		data.TacacsAddressIpv4 = types.StringValue(value.String())
+		data.AddressIpv4 = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "timeout"); value.Exists() {
 		data.Timeout = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "key.key"); value.Exists() {
-		data.KeyKey = types.StringValue(value.String())
+		data.Key = types.StringValue(value.String())
 	}
 }
 
@@ -142,13 +142,13 @@ func (data *TACACSServer) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *TACACSServer) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.TacacsAddressIpv4.IsNull() {
+	if !data.AddressIpv4.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/ipv4", data.getPath()))
 	}
 	if !data.Timeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/timeout", data.getPath()))
 	}
-	if !data.KeyKey.IsNull() {
+	if !data.Key.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
 	}
 	return deletePaths

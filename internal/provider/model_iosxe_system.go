@@ -34,45 +34,45 @@ import (
 )
 
 type System struct {
-	Device                      types.String                 `tfsdk:"device"`
-	Id                          types.String                 `tfsdk:"id"`
-	Hostname                    types.String                 `tfsdk:"hostname"`
-	IpRouting                   types.Bool                   `tfsdk:"ip_routing"`
-	Ipv6UnicastRouting          types.Bool                   `tfsdk:"ipv6_unicast_routing"`
-	Mtu                         types.Int64                  `tfsdk:"mtu"`
-	IpSourceRoute               types.Bool                   `tfsdk:"ip_source_route"`
-	IpDomainLookup              types.Bool                   `tfsdk:"ip_domain_lookup"`
-	IpDomainName                types.String                 `tfsdk:"ip_domain_name"`
-	LoginDelay                  types.Int64                  `tfsdk:"login_delay"`
-	LoginOnFailure              types.Bool                   `tfsdk:"login_on_failure"`
-	LoginOnFailureLog           types.Bool                   `tfsdk:"login_on_failure_log"`
-	LoginOnSuccess              types.Bool                   `tfsdk:"login_on_success"`
-	LoginOnSuccessLog           types.Bool                   `tfsdk:"login_on_success_log"`
-	MulticastRouting            types.Bool                   `tfsdk:"multicast_routing"`
-	MulticastRoutingSwitch      types.Bool                   `tfsdk:"multicast_routing_switch"`
-	MulticastRoutingDistributed types.Bool                   `tfsdk:"multicast_routing_distributed"`
-	MulticastRoutingVrfs        []SystemMulticastRoutingVrfs `tfsdk:"multicast_routing_vrfs"`
+	Device                        types.String                 `tfsdk:"device"`
+	Id                            types.String                 `tfsdk:"id"`
+	Hostname                      types.String                 `tfsdk:"hostname"`
+	IpRouting                     types.Bool                   `tfsdk:"ip_routing"`
+	Ipv6UnicastRouting            types.Bool                   `tfsdk:"ipv6_unicast_routing"`
+	Mtu                           types.Int64                  `tfsdk:"mtu"`
+	IpSourceRoute                 types.Bool                   `tfsdk:"ip_source_route"`
+	IpDomainLookup                types.Bool                   `tfsdk:"ip_domain_lookup"`
+	IpDomainName                  types.String                 `tfsdk:"ip_domain_name"`
+	LoginDelay                    types.Int64                  `tfsdk:"login_delay"`
+	LoginOnFailure                types.Bool                   `tfsdk:"login_on_failure"`
+	LoginOnFailureLog             types.Bool                   `tfsdk:"login_on_failure_log"`
+	LoginOnSuccess                types.Bool                   `tfsdk:"login_on_success"`
+	LoginOnSuccessLog             types.Bool                   `tfsdk:"login_on_success_log"`
+	IpMulticastRouting            types.Bool                   `tfsdk:"ip_multicast_routing"`
+	MulticastRoutingSwitch        types.Bool                   `tfsdk:"multicast_routing_switch"`
+	IpMulticastRoutingDistributed types.Bool                   `tfsdk:"ip_multicast_routing_distributed"`
+	MulticastRoutingVrfs          []SystemMulticastRoutingVrfs `tfsdk:"multicast_routing_vrfs"`
 }
 
 type SystemData struct {
-	Device                      types.String                 `tfsdk:"device"`
-	Id                          types.String                 `tfsdk:"id"`
-	Hostname                    types.String                 `tfsdk:"hostname"`
-	IpRouting                   types.Bool                   `tfsdk:"ip_routing"`
-	Ipv6UnicastRouting          types.Bool                   `tfsdk:"ipv6_unicast_routing"`
-	Mtu                         types.Int64                  `tfsdk:"mtu"`
-	IpSourceRoute               types.Bool                   `tfsdk:"ip_source_route"`
-	IpDomainLookup              types.Bool                   `tfsdk:"ip_domain_lookup"`
-	IpDomainName                types.String                 `tfsdk:"ip_domain_name"`
-	LoginDelay                  types.Int64                  `tfsdk:"login_delay"`
-	LoginOnFailure              types.Bool                   `tfsdk:"login_on_failure"`
-	LoginOnFailureLog           types.Bool                   `tfsdk:"login_on_failure_log"`
-	LoginOnSuccess              types.Bool                   `tfsdk:"login_on_success"`
-	LoginOnSuccessLog           types.Bool                   `tfsdk:"login_on_success_log"`
-	MulticastRouting            types.Bool                   `tfsdk:"multicast_routing"`
-	MulticastRoutingSwitch      types.Bool                   `tfsdk:"multicast_routing_switch"`
-	MulticastRoutingDistributed types.Bool                   `tfsdk:"multicast_routing_distributed"`
-	MulticastRoutingVrfs        []SystemMulticastRoutingVrfs `tfsdk:"multicast_routing_vrfs"`
+	Device                        types.String                 `tfsdk:"device"`
+	Id                            types.String                 `tfsdk:"id"`
+	Hostname                      types.String                 `tfsdk:"hostname"`
+	IpRouting                     types.Bool                   `tfsdk:"ip_routing"`
+	Ipv6UnicastRouting            types.Bool                   `tfsdk:"ipv6_unicast_routing"`
+	Mtu                           types.Int64                  `tfsdk:"mtu"`
+	IpSourceRoute                 types.Bool                   `tfsdk:"ip_source_route"`
+	IpDomainLookup                types.Bool                   `tfsdk:"ip_domain_lookup"`
+	IpDomainName                  types.String                 `tfsdk:"ip_domain_name"`
+	LoginDelay                    types.Int64                  `tfsdk:"login_delay"`
+	LoginOnFailure                types.Bool                   `tfsdk:"login_on_failure"`
+	LoginOnFailureLog             types.Bool                   `tfsdk:"login_on_failure_log"`
+	LoginOnSuccess                types.Bool                   `tfsdk:"login_on_success"`
+	LoginOnSuccessLog             types.Bool                   `tfsdk:"login_on_success_log"`
+	IpMulticastRouting            types.Bool                   `tfsdk:"ip_multicast_routing"`
+	MulticastRoutingSwitch        types.Bool                   `tfsdk:"multicast_routing_switch"`
+	IpMulticastRoutingDistributed types.Bool                   `tfsdk:"ip_multicast_routing_distributed"`
+	MulticastRoutingVrfs          []SystemMulticastRoutingVrfs `tfsdk:"multicast_routing_vrfs"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -146,8 +146,8 @@ func (data System) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login.on-success.log", map[string]string{})
 		}
 	}
-	if !data.MulticastRouting.IsNull() && !data.MulticastRouting.IsUnknown() {
-		if data.MulticastRouting.ValueBool() {
+	if !data.IpMulticastRouting.IsNull() && !data.IpMulticastRouting.IsUnknown() {
+		if data.IpMulticastRouting.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing", map[string]string{})
 		}
 	}
@@ -156,8 +156,8 @@ func (data System) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:mcr-conf.multicast-routing", map[string]string{})
 		}
 	}
-	if !data.MulticastRoutingDistributed.IsNull() && !data.MulticastRoutingDistributed.IsUnknown() {
-		if data.MulticastRoutingDistributed.ValueBool() {
+	if !data.IpMulticastRoutingDistributed.IsNull() && !data.IpMulticastRoutingDistributed.IsUnknown() {
+		if data.IpMulticastRoutingDistributed.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.distributed", map[string]string{})
 		}
 	}
@@ -268,14 +268,14 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.LoginOnSuccessLog = types.BoolNull()
 	}
-	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing"); !data.MulticastRouting.IsNull() {
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing"); !data.IpMulticastRouting.IsNull() {
 		if value.Exists() {
-			data.MulticastRouting = types.BoolValue(true)
+			data.IpMulticastRouting = types.BoolValue(true)
 		} else {
-			data.MulticastRouting = types.BoolValue(false)
+			data.IpMulticastRouting = types.BoolValue(false)
 		}
 	} else {
-		data.MulticastRouting = types.BoolNull()
+		data.IpMulticastRouting = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:mcr-conf.multicast-routing"); !data.MulticastRoutingSwitch.IsNull() {
 		if value.Exists() {
@@ -286,14 +286,14 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MulticastRoutingSwitch = types.BoolNull()
 	}
-	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing.distributed"); !data.MulticastRoutingDistributed.IsNull() {
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing.distributed"); !data.IpMulticastRoutingDistributed.IsNull() {
 		if value.Exists() {
-			data.MulticastRoutingDistributed = types.BoolValue(true)
+			data.IpMulticastRoutingDistributed = types.BoolValue(true)
 		} else {
-			data.MulticastRoutingDistributed = types.BoolValue(false)
+			data.IpMulticastRoutingDistributed = types.BoolValue(false)
 		}
 	} else {
-		data.MulticastRoutingDistributed = types.BoolNull()
+		data.IpMulticastRoutingDistributed = types.BoolNull()
 	}
 	for i := range data.MulticastRoutingVrfs {
 		keys := [...]string{"name"}
@@ -393,9 +393,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.LoginOnSuccessLog = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing"); value.Exists() {
-		data.MulticastRouting = types.BoolValue(true)
+		data.IpMulticastRouting = types.BoolValue(true)
 	} else {
-		data.MulticastRouting = types.BoolValue(false)
+		data.IpMulticastRouting = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:mcr-conf.multicast-routing"); value.Exists() {
 		data.MulticastRoutingSwitch = types.BoolValue(true)
@@ -403,9 +403,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.MulticastRoutingSwitch = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing.distributed"); value.Exists() {
-		data.MulticastRoutingDistributed = types.BoolValue(true)
+		data.IpMulticastRoutingDistributed = types.BoolValue(true)
 	} else {
-		data.MulticastRoutingDistributed = types.BoolValue(false)
+		data.IpMulticastRoutingDistributed = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing.vrf"); value.Exists() {
 		data.MulticastRoutingVrfs = make([]SystemMulticastRoutingVrfs, 0)
@@ -472,13 +472,13 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.LoginOnSuccessLog.IsNull() && !data.LoginOnSuccessLog.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-success/log", data.getPath()))
 	}
-	if !data.MulticastRouting.IsNull() && !data.MulticastRouting.ValueBool() {
+	if !data.IpMulticastRouting.IsNull() && !data.IpMulticastRouting.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", data.getPath()))
 	}
 	if !data.MulticastRoutingSwitch.IsNull() && !data.MulticastRoutingSwitch.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", data.getPath()))
 	}
-	if !data.MulticastRoutingDistributed.IsNull() && !data.MulticastRoutingDistributed.ValueBool() {
+	if !data.IpMulticastRoutingDistributed.IsNull() && !data.IpMulticastRoutingDistributed.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", data.getPath()))
 	}
 
@@ -529,13 +529,13 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	if !data.LoginOnSuccessLog.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-success/log", data.getPath()))
 	}
-	if !data.MulticastRouting.IsNull() {
+	if !data.IpMulticastRouting.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", data.getPath()))
 	}
 	if !data.MulticastRoutingSwitch.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", data.getPath()))
 	}
-	if !data.MulticastRoutingDistributed.IsNull() {
+	if !data.IpMulticastRoutingDistributed.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", data.getPath()))
 	}
 	for i := range data.MulticastRoutingVrfs {

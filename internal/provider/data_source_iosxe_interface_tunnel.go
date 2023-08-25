@@ -83,7 +83,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Enable sending ICMP Redirect messages",
 				Computed:            true,
 			},
-			"unreachables": schema.BoolAttribute{
+			"ip_unreachables": schema.BoolAttribute{
 				MarkdownDescription: "Enable sending ICMP Unreachable messages",
 				Computed:            true,
 			},
@@ -99,7 +99,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Set IPv6 Maximum Transmission Unit",
 				Computed:            true,
 			},
-			"ra_suppress_all": schema.BoolAttribute{
+			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
 				MarkdownDescription: "Suppress all IPv6 RA",
 				Computed:            true,
 			},
@@ -215,31 +215,31 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "over IPv4",
 				Computed:            true,
 			},
-			"template": schema.StringAttribute{
+			"bfd_template": schema.StringAttribute{
 				MarkdownDescription: "BFD template",
 				Computed:            true,
 			},
-			"enable": schema.BoolAttribute{
+			"bfd_enable": schema.BoolAttribute{
 				MarkdownDescription: "Enable BFD under the interface",
 				Computed:            true,
 			},
-			"local_address": schema.StringAttribute{
+			"bfd_local_address": schema.StringAttribute{
 				MarkdownDescription: "The Source IP address to be used for BFD sessions over this interface.",
 				Computed:            true,
 			},
-			"interval_interface_msecs": schema.Int64Attribute{
+			"bfd_interval": schema.Int64Attribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"interval_interface_min_rx": schema.Int64Attribute{
+			"bfd_interval_min_rx": schema.Int64Attribute{
 				MarkdownDescription: "Minimum receive interval capability",
 				Computed:            true,
 			},
-			"interval_interface_multiplier": schema.Int64Attribute{
+			"bfd_interval_multiplier": schema.Int64Attribute{
 				MarkdownDescription: "Multiplier value used to compute holddown",
 				Computed:            true,
 			},
-			"echo": schema.BoolAttribute{
+			"bfd_echo": schema.BoolAttribute{
 				MarkdownDescription: "Use echo adjunct as bfd detection mechanism",
 				Computed:            true,
 			},

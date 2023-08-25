@@ -16,11 +16,9 @@ resource "iosxe_interface_port_channel" "example" {
       global  = false
     }
   ]
-  template                      = "portchannel_template1"
-  enable                        = true
-  local_address                 = "1.2.3.4"
-  interval_interface_msecs      = 750
-  interval_interface_min_rx     = 750
-  interval_interface_multiplier = 3
-  echo                          = true
+  bfd_enable              = true
+  bfd_local_address       = "1.2.3.4"
+  bfd_interval            = 50
+  bfd_interval_min_rx     = 50
+  bfd_interval_multiplier = 3
 }

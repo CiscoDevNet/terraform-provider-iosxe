@@ -31,15 +31,17 @@ data "iosxe_interface_tunnel" "example" {
 
 ### Read-Only
 
+- `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `bfd_enable` (Boolean) Enable BFD under the interface
+- `bfd_interval` (Number)
+- `bfd_interval_min_rx` (Number) Minimum receive interval capability
+- `bfd_interval_multiplier` (Number) Multiplier value used to compute holddown
+- `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
+- `bfd_template` (String) BFD template
 - `crypto_ipsec_df_bit` (String) Handling of encapsulated DF bit.
 - `description` (String) Interface specific description
-- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
-- `enable` (Boolean) Enable BFD under the interface
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.
-- `interval_interface_min_rx` (Number) Minimum receive interval capability
-- `interval_interface_msecs` (Number)
-- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
@@ -47,6 +49,7 @@ data "iosxe_interface_tunnel" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
@@ -55,16 +58,13 @@ data "iosxe_interface_tunnel" "example" {
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
-- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
-- `ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `shutdown` (Boolean) Shutdown the selected interface
-- `template` (String) BFD template
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) Determine the ipsec policy profile to use.
 - `tunnel_source` (String) source of tunnel packets
 - `unnumbered` (String) Enable IP processing without an explicit address
-- `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table
 
 <a id="nestedatt--helper_addresses"></a>

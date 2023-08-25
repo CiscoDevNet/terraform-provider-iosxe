@@ -111,7 +111,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Generate syslogs on successful logins",
 				Computed:            true,
 			},
-			"multicast_routing": schema.BoolAttribute{
+			"ip_multicast_routing": schema.BoolAttribute{
 				MarkdownDescription: "Enable IP multicast forwarding",
 				Computed:            true,
 			},
@@ -119,7 +119,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.",
 				Computed:            true,
 			},
-			"multicast_routing_distributed": schema.BoolAttribute{
+			"ip_multicast_routing_distributed": schema.BoolAttribute{
 				MarkdownDescription: "Distributed multicast switching",
 				Computed:            true,
 			},

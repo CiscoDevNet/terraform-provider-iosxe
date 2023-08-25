@@ -41,7 +41,7 @@ type InterfaceLoopback struct {
 	Shutdown               types.Bool   `tfsdk:"shutdown"`
 	IpProxyArp             types.Bool   `tfsdk:"ip_proxy_arp"`
 	IpRedirects            types.Bool   `tfsdk:"ip_redirects"`
-	Unreachables           types.Bool   `tfsdk:"unreachables"`
+	IpUnreachables         types.Bool   `tfsdk:"ip_unreachables"`
 	VrfForwarding          types.String `tfsdk:"vrf_forwarding"`
 	Ipv4Address            types.String `tfsdk:"ipv4_address"`
 	Ipv4AddressMask        types.String `tfsdk:"ipv4_address_mask"`
@@ -59,7 +59,7 @@ type InterfaceLoopbackData struct {
 	Shutdown               types.Bool   `tfsdk:"shutdown"`
 	IpProxyArp             types.Bool   `tfsdk:"ip_proxy_arp"`
 	IpRedirects            types.Bool   `tfsdk:"ip_redirects"`
-	Unreachables           types.Bool   `tfsdk:"unreachables"`
+	IpUnreachables         types.Bool   `tfsdk:"ip_unreachables"`
 	VrfForwarding          types.String `tfsdk:"vrf_forwarding"`
 	Ipv4Address            types.String `tfsdk:"ipv4_address"`
 	Ipv4AddressMask        types.String `tfsdk:"ipv4_address_mask"`
@@ -107,8 +107,8 @@ func (data InterfaceLoopback) toBody(ctx context.Context) string {
 	if !data.IpRedirects.IsNull() && !data.IpRedirects.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.redirects", data.IpRedirects.ValueBool())
 	}
-	if !data.Unreachables.IsNull() && !data.Unreachables.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-icmp:unreachables", data.Unreachables.ValueBool())
+	if !data.IpUnreachables.IsNull() && !data.IpUnreachables.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-icmp:unreachables", data.IpUnreachables.ValueBool())
 	}
 	if !data.VrfForwarding.IsNull() && !data.VrfForwarding.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf.forwarding", data.VrfForwarding.ValueString())
@@ -176,12 +176,12 @@ func (data *InterfaceLoopback) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpRedirects = types.BoolNull()
 	}
-	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); !data.Unreachables.IsNull() {
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); !data.IpUnreachables.IsNull() {
 		if value.Exists() {
-			data.Unreachables = types.BoolValue(value.Bool())
+			data.IpUnreachables = types.BoolValue(value.Bool())
 		}
 	} else {
-		data.Unreachables = types.BoolNull()
+		data.IpUnreachables = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() && !data.VrfForwarding.IsNull() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -252,9 +252,9 @@ func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Resul
 		data.IpRedirects = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
-		data.Unreachables = types.BoolValue(value.Bool())
+		data.IpUnreachables = types.BoolValue(value.Bool())
 	} else {
-		data.Unreachables = types.BoolValue(false)
+		data.IpUnreachables = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -316,7 +316,7 @@ func (data *InterfaceLoopback) getDeletePaths(ctx context.Context) []string {
 	if !data.IpRedirects.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/redirects", data.getPath()))
 	}
-	if !data.Unreachables.IsNull() {
+	if !data.IpUnreachables.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-icmp:unreachables", data.getPath()))
 	}
 	if !data.VrfForwarding.IsNull() {

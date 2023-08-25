@@ -28,9 +28,9 @@ import (
 func TestAccIosxeTACACSServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_tacacs_server.test", "name", "tacacs_10.10.15.13"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_tacacs_server.test", "tacacs_address_ipv4", "10.10.15.13"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_tacacs_server.test", "address_ipv4", "10.10.15.13"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_tacacs_server.test", "timeout", "4"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_tacacs_server.test", "key_key", "123"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_tacacs_server.test", "key", "123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -61,9 +61,9 @@ func testAccIosxeTACACSServerConfig_minimum() string {
 func testAccIosxeTACACSServerConfig_all() string {
 	config := `resource "iosxe_tacacs_server" "test" {` + "\n"
 	config += `	name = "tacacs_10.10.15.13"` + "\n"
-	config += `	tacacs_address_ipv4 = "10.10.15.13"` + "\n"
+	config += `	address_ipv4 = "10.10.15.13"` + "\n"
 	config += `	timeout = 4` + "\n"
-	config += `	key_key = "123"` + "\n"
+	config += `	key = "123"` + "\n"
 	config += `}` + "\n"
 	return config
 }

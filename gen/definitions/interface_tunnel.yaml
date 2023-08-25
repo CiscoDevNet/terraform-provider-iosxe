@@ -119,19 +119,30 @@ attributes:
     example: true
     test_tags: [C8000V]
   - yang_name: bfd/Cisco-IOS-XE-bfd:template
-    example: Tunnel_template1
+    example: bfd_template1
+    exclude_test: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
-    example: true 
+    example: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
     example: 1.2.3.4
   - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/msecs
+    tf_name: bfd_interval
+    optional: true
     example: 50
+    delete_parent: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx
+    tf_name: bfd_interval_min_rx
+    optional: true
     example: 50
+    delete_parent: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier
+    tf_name: bfd_interval_multiplier
+    optional: true
     example: 3
+    delete_parent: true
   - yang_name: bfd/Cisco-IOS-XE-bfd:echo
     example: true
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

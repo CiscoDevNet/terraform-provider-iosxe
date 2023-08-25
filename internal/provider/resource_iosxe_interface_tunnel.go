@@ -105,7 +105,7 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
 				Optional:            true,
 			},
-			"unreachables": schema.BoolAttribute{
+			"ip_unreachables": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
 				Optional:            true,
 			},
@@ -124,7 +124,7 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					int64validator.Between(1280, 9976),
 				},
 			},
-			"ra_suppress_all": schema.BoolAttribute{
+			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
 				Optional:            true,
 			},
@@ -263,40 +263,40 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("over IPv4").String,
 				Optional:            true,
 			},
-			"template": schema.StringAttribute{
+			"bfd_template": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("BFD template").String,
 				Optional:            true,
 			},
-			"enable": schema.BoolAttribute{
+			"bfd_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD under the interface").String,
 				Optional:            true,
 			},
-			"local_address": schema.StringAttribute{
+			"bfd_local_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The Source IP address to be used for BFD sessions over this interface.").String,
 				Optional:            true,
 			},
-			"interval_interface_msecs": schema.Int64Attribute{
+			"bfd_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(50, 9999).String,
-				Required:            true,
+				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(50, 9999),
 				},
 			},
-			"interval_interface_min_rx": schema.Int64Attribute{
+			"bfd_interval_min_rx": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(50, 9999).String,
-				Required:            true,
+				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(50, 9999),
 				},
 			},
-			"interval_interface_multiplier": schema.Int64Attribute{
+			"bfd_interval_multiplier": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Multiplier value used to compute holddown").AddIntegerRangeDescription(3, 50).String,
-				Required:            true,
+				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(3, 50),
 				},
 			},
-			"echo": schema.BoolAttribute{
+			"bfd_echo": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 				Optional:            true,
 			},

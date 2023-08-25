@@ -170,12 +170,15 @@ type YamlTestListItem struct {
 	Attributes []YamlTestAttribute `yaml:"attributes"`
 }
 
-// Templating helper function to get short YAMG name without prefix (xxx:abc -> abc)
+// Templating helper function to get short YANG name without prefix (xxx:abc -> abc)
 func ToYangShortName(s string) string {
-	if strings.Contains(s, ":") {
-		s = strings.Split(s, ":")[1]
+	elements := strings.Split(s, "/")
+	for i := range elements {
+		if strings.Contains(elements[i], ":") {
+			elements[i] = strings.Split(elements[i], ":")[1]
+		}
 	}
-	return s
+	return strings.Join(elements, "/")
 }
 
 // Templating helper function to convert TF name to GO name

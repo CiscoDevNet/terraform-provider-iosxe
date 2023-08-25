@@ -43,11 +43,11 @@ type InterfaceTunnel struct {
 	Shutdown                     types.Bool                              `tfsdk:"shutdown"`
 	IpProxyArp                   types.Bool                              `tfsdk:"ip_proxy_arp"`
 	IpRedirects                  types.Bool                              `tfsdk:"ip_redirects"`
-	Unreachables                 types.Bool                              `tfsdk:"unreachables"`
+	IpUnreachables               types.Bool                              `tfsdk:"ip_unreachables"`
 	VrfForwarding                types.String                            `tfsdk:"vrf_forwarding"`
 	Ipv6Enable                   types.Bool                              `tfsdk:"ipv6_enable"`
 	Ipv6Mtu                      types.Int64                             `tfsdk:"ipv6_mtu"`
-	RaSuppressAll                types.Bool                              `tfsdk:"ra_suppress_all"`
+	Ipv6NdRaSuppressAll          types.Bool                              `tfsdk:"ipv6_nd_ra_suppress_all"`
 	Ipv6AddressAutoconfigDefault types.Bool                              `tfsdk:"ipv6_address_autoconfig_default"`
 	Ipv6AddressDhcp              types.Bool                              `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfaceTunnelIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
@@ -66,13 +66,13 @@ type InterfaceTunnel struct {
 	IpAccessGroupOutEnable       types.Bool                              `tfsdk:"ip_access_group_out_enable"`
 	HelperAddresses              []InterfaceTunnelHelperAddresses        `tfsdk:"helper_addresses"`
 	TunnelModeIpsecIpv4          types.Bool                              `tfsdk:"tunnel_mode_ipsec_ipv4"`
-	Template                     types.String                            `tfsdk:"template"`
-	Enable                       types.Bool                              `tfsdk:"enable"`
-	LocalAddress                 types.String                            `tfsdk:"local_address"`
-	IntervalInterfaceMsecs       types.Int64                             `tfsdk:"interval_interface_msecs"`
-	IntervalInterfaceMinRx       types.Int64                             `tfsdk:"interval_interface_min_rx"`
-	IntervalInterfaceMultiplier  types.Int64                             `tfsdk:"interval_interface_multiplier"`
-	Echo                         types.Bool                              `tfsdk:"echo"`
+	BfdTemplate                  types.String                            `tfsdk:"bfd_template"`
+	BfdEnable                    types.Bool                              `tfsdk:"bfd_enable"`
+	BfdLocalAddress              types.String                            `tfsdk:"bfd_local_address"`
+	BfdInterval                  types.Int64                             `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx             types.Int64                             `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier        types.Int64                             `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                      types.Bool                              `tfsdk:"bfd_echo"`
 }
 
 type InterfaceTunnelData struct {
@@ -83,11 +83,11 @@ type InterfaceTunnelData struct {
 	Shutdown                     types.Bool                              `tfsdk:"shutdown"`
 	IpProxyArp                   types.Bool                              `tfsdk:"ip_proxy_arp"`
 	IpRedirects                  types.Bool                              `tfsdk:"ip_redirects"`
-	Unreachables                 types.Bool                              `tfsdk:"unreachables"`
+	IpUnreachables               types.Bool                              `tfsdk:"ip_unreachables"`
 	VrfForwarding                types.String                            `tfsdk:"vrf_forwarding"`
 	Ipv6Enable                   types.Bool                              `tfsdk:"ipv6_enable"`
 	Ipv6Mtu                      types.Int64                             `tfsdk:"ipv6_mtu"`
-	RaSuppressAll                types.Bool                              `tfsdk:"ra_suppress_all"`
+	Ipv6NdRaSuppressAll          types.Bool                              `tfsdk:"ipv6_nd_ra_suppress_all"`
 	Ipv6AddressAutoconfigDefault types.Bool                              `tfsdk:"ipv6_address_autoconfig_default"`
 	Ipv6AddressDhcp              types.Bool                              `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfaceTunnelIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
@@ -106,13 +106,13 @@ type InterfaceTunnelData struct {
 	IpAccessGroupOutEnable       types.Bool                              `tfsdk:"ip_access_group_out_enable"`
 	HelperAddresses              []InterfaceTunnelHelperAddresses        `tfsdk:"helper_addresses"`
 	TunnelModeIpsecIpv4          types.Bool                              `tfsdk:"tunnel_mode_ipsec_ipv4"`
-	Template                     types.String                            `tfsdk:"template"`
-	Enable                       types.Bool                              `tfsdk:"enable"`
-	LocalAddress                 types.String                            `tfsdk:"local_address"`
-	IntervalInterfaceMsecs       types.Int64                             `tfsdk:"interval_interface_msecs"`
-	IntervalInterfaceMinRx       types.Int64                             `tfsdk:"interval_interface_min_rx"`
-	IntervalInterfaceMultiplier  types.Int64                             `tfsdk:"interval_interface_multiplier"`
-	Echo                         types.Bool                              `tfsdk:"echo"`
+	BfdTemplate                  types.String                            `tfsdk:"bfd_template"`
+	BfdEnable                    types.Bool                              `tfsdk:"bfd_enable"`
+	BfdLocalAddress              types.String                            `tfsdk:"bfd_local_address"`
+	BfdInterval                  types.Int64                             `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx             types.Int64                             `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier        types.Int64                             `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                      types.Bool                              `tfsdk:"bfd_echo"`
 }
 type InterfaceTunnelIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -166,8 +166,8 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	if !data.IpRedirects.IsNull() && !data.IpRedirects.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.redirects", data.IpRedirects.ValueBool())
 	}
-	if !data.Unreachables.IsNull() && !data.Unreachables.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-icmp:unreachables", data.Unreachables.ValueBool())
+	if !data.IpUnreachables.IsNull() && !data.IpUnreachables.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-icmp:unreachables", data.IpUnreachables.ValueBool())
 	}
 	if !data.VrfForwarding.IsNull() && !data.VrfForwarding.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf.forwarding", data.VrfForwarding.ValueString())
@@ -180,8 +180,8 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	if !data.Ipv6Mtu.IsNull() && !data.Ipv6Mtu.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.mtu", strconv.FormatInt(data.Ipv6Mtu.ValueInt64(), 10))
 	}
-	if !data.RaSuppressAll.IsNull() && !data.RaSuppressAll.IsUnknown() {
-		if data.RaSuppressAll.ValueBool() {
+	if !data.Ipv6NdRaSuppressAll.IsNull() && !data.Ipv6NdRaSuppressAll.IsUnknown() {
+		if data.Ipv6NdRaSuppressAll.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.nd.Cisco-IOS-XE-nd:ra.suppress.all", map[string]string{})
 		}
 	}
@@ -240,26 +240,26 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-tunnel:tunnel.mode.ipsec.ipv4", map[string]string{})
 		}
 	}
-	if !data.Template.IsNull() && !data.Template.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:template", data.Template.ValueString())
+	if !data.BfdTemplate.IsNull() && !data.BfdTemplate.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:template", data.BfdTemplate.ValueString())
 	}
-	if !data.Enable.IsNull() && !data.Enable.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:enable", data.Enable.ValueBool())
+	if !data.BfdEnable.IsNull() && !data.BfdEnable.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:enable", data.BfdEnable.ValueBool())
 	}
-	if !data.LocalAddress.IsNull() && !data.LocalAddress.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:local-address", data.LocalAddress.ValueString())
+	if !data.BfdLocalAddress.IsNull() && !data.BfdLocalAddress.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:local-address", data.BfdLocalAddress.ValueString())
 	}
-	if !data.IntervalInterfaceMsecs.IsNull() && !data.IntervalInterfaceMsecs.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.msecs", strconv.FormatInt(data.IntervalInterfaceMsecs.ValueInt64(), 10))
+	if !data.BfdInterval.IsNull() && !data.BfdInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.msecs", strconv.FormatInt(data.BfdInterval.ValueInt64(), 10))
 	}
-	if !data.IntervalInterfaceMinRx.IsNull() && !data.IntervalInterfaceMinRx.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.min_rx", strconv.FormatInt(data.IntervalInterfaceMinRx.ValueInt64(), 10))
+	if !data.BfdIntervalMinRx.IsNull() && !data.BfdIntervalMinRx.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.min_rx", strconv.FormatInt(data.BfdIntervalMinRx.ValueInt64(), 10))
 	}
-	if !data.IntervalInterfaceMultiplier.IsNull() && !data.IntervalInterfaceMultiplier.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.multiplier", strconv.FormatInt(data.IntervalInterfaceMultiplier.ValueInt64(), 10))
+	if !data.BfdIntervalMultiplier.IsNull() && !data.BfdIntervalMultiplier.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.multiplier", strconv.FormatInt(data.BfdIntervalMultiplier.ValueInt64(), 10))
 	}
-	if !data.Echo.IsNull() && !data.Echo.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:echo", data.Echo.ValueBool())
+	if !data.BfdEcho.IsNull() && !data.BfdEcho.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:echo", data.BfdEcho.ValueBool())
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address", []interface{}{})
@@ -344,12 +344,12 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.IpRedirects = types.BoolNull()
 	}
-	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); !data.Unreachables.IsNull() {
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); !data.IpUnreachables.IsNull() {
 		if value.Exists() {
-			data.Unreachables = types.BoolValue(value.Bool())
+			data.IpUnreachables = types.BoolValue(value.Bool())
 		}
 	} else {
-		data.Unreachables = types.BoolNull()
+		data.IpUnreachables = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() && !data.VrfForwarding.IsNull() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -370,14 +370,14 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.Ipv6Mtu = types.Int64Null()
 	}
-	if value := res.Get(prefix + "ipv6.nd.Cisco-IOS-XE-nd:ra.suppress.all"); !data.RaSuppressAll.IsNull() {
+	if value := res.Get(prefix + "ipv6.nd.Cisco-IOS-XE-nd:ra.suppress.all"); !data.Ipv6NdRaSuppressAll.IsNull() {
 		if value.Exists() {
-			data.RaSuppressAll = types.BoolValue(true)
+			data.Ipv6NdRaSuppressAll = types.BoolValue(true)
 		} else {
-			data.RaSuppressAll = types.BoolValue(false)
+			data.Ipv6NdRaSuppressAll = types.BoolValue(false)
 		}
 	} else {
-		data.RaSuppressAll = types.BoolNull()
+		data.Ipv6NdRaSuppressAll = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ipv6.address.autoconfig.default"); !data.Ipv6AddressAutoconfigDefault.IsNull() {
 		if value.Exists() {
@@ -593,44 +593,44 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.TunnelModeIpsecIpv4 = types.BoolNull()
 	}
-	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:template"); value.Exists() && !data.Template.IsNull() {
-		data.Template = types.StringValue(value.String())
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:template"); value.Exists() && !data.BfdTemplate.IsNull() {
+		data.BfdTemplate = types.StringValue(value.String())
 	} else {
-		data.Template = types.StringNull()
+		data.BfdTemplate = types.StringNull()
 	}
-	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); !data.Enable.IsNull() {
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); !data.BfdEnable.IsNull() {
 		if value.Exists() {
-			data.Enable = types.BoolValue(value.Bool())
+			data.BfdEnable = types.BoolValue(value.Bool())
 		}
 	} else {
-		data.Enable = types.BoolNull()
+		data.BfdEnable = types.BoolNull()
 	}
-	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() && !data.LocalAddress.IsNull() {
-		data.LocalAddress = types.StringValue(value.String())
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() && !data.BfdLocalAddress.IsNull() {
+		data.BfdLocalAddress = types.StringValue(value.String())
 	} else {
-		data.LocalAddress = types.StringNull()
+		data.BfdLocalAddress = types.StringNull()
 	}
-	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.msecs"); value.Exists() && !data.IntervalInterfaceMsecs.IsNull() {
-		data.IntervalInterfaceMsecs = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.msecs"); value.Exists() && !data.BfdInterval.IsNull() {
+		data.BfdInterval = types.Int64Value(value.Int())
 	} else {
-		data.IntervalInterfaceMsecs = types.Int64Null()
+		data.BfdInterval = types.Int64Null()
 	}
-	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.min_rx"); value.Exists() && !data.IntervalInterfaceMinRx.IsNull() {
-		data.IntervalInterfaceMinRx = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.min_rx"); value.Exists() && !data.BfdIntervalMinRx.IsNull() {
+		data.BfdIntervalMinRx = types.Int64Value(value.Int())
 	} else {
-		data.IntervalInterfaceMinRx = types.Int64Null()
+		data.BfdIntervalMinRx = types.Int64Null()
 	}
-	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.multiplier"); value.Exists() && !data.IntervalInterfaceMultiplier.IsNull() {
-		data.IntervalInterfaceMultiplier = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.multiplier"); value.Exists() && !data.BfdIntervalMultiplier.IsNull() {
+		data.BfdIntervalMultiplier = types.Int64Value(value.Int())
 	} else {
-		data.IntervalInterfaceMultiplier = types.Int64Null()
+		data.BfdIntervalMultiplier = types.Int64Null()
 	}
-	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); !data.Echo.IsNull() {
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); !data.BfdEcho.IsNull() {
 		if value.Exists() {
-			data.Echo = types.BoolValue(value.Bool())
+			data.BfdEcho = types.BoolValue(value.Bool())
 		}
 	} else {
-		data.Echo = types.BoolNull()
+		data.BfdEcho = types.BoolNull()
 	}
 }
 
@@ -658,9 +658,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.IpRedirects = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
-		data.Unreachables = types.BoolValue(value.Bool())
+		data.IpUnreachables = types.BoolValue(value.Bool())
 	} else {
-		data.Unreachables = types.BoolValue(false)
+		data.IpUnreachables = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -674,9 +674,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.Ipv6Mtu = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ipv6.nd.Cisco-IOS-XE-nd:ra.suppress.all"); value.Exists() {
-		data.RaSuppressAll = types.BoolValue(true)
+		data.Ipv6NdRaSuppressAll = types.BoolValue(true)
 	} else {
-		data.RaSuppressAll = types.BoolValue(false)
+		data.Ipv6NdRaSuppressAll = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ipv6.address.autoconfig.default"); value.Exists() {
 		data.Ipv6AddressAutoconfigDefault = types.BoolValue(true)
@@ -785,29 +785,29 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.TunnelModeIpsecIpv4 = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:template"); value.Exists() {
-		data.Template = types.StringValue(value.String())
+		data.BfdTemplate = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); value.Exists() {
-		data.Enable = types.BoolValue(value.Bool())
+		data.BfdEnable = types.BoolValue(value.Bool())
 	} else {
-		data.Enable = types.BoolValue(false)
+		data.BfdEnable = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() {
-		data.LocalAddress = types.StringValue(value.String())
+		data.BfdLocalAddress = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.msecs"); value.Exists() {
-		data.IntervalInterfaceMsecs = types.Int64Value(value.Int())
+		data.BfdInterval = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.min_rx"); value.Exists() {
-		data.IntervalInterfaceMinRx = types.Int64Value(value.Int())
+		data.BfdIntervalMinRx = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.multiplier"); value.Exists() {
-		data.IntervalInterfaceMultiplier = types.Int64Value(value.Int())
+		data.BfdIntervalMultiplier = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); value.Exists() {
-		data.Echo = types.BoolValue(value.Bool())
+		data.BfdEcho = types.BoolValue(value.Bool())
 	} else {
-		data.Echo = types.BoolValue(false)
+		data.BfdEcho = types.BoolValue(false)
 	}
 }
 
@@ -899,7 +899,7 @@ func (data *InterfaceTunnel) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.Ipv6Enable.IsNull() && !data.Ipv6Enable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/enable", data.getPath()))
 	}
-	if !data.RaSuppressAll.IsNull() && !data.RaSuppressAll.ValueBool() {
+	if !data.Ipv6NdRaSuppressAll.IsNull() && !data.Ipv6NdRaSuppressAll.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", data.getPath()))
 	}
 	if !data.Ipv6AddressAutoconfigDefault.IsNull() && !data.Ipv6AddressAutoconfigDefault.ValueBool() {
@@ -955,7 +955,7 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	if !data.IpRedirects.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/redirects", data.getPath()))
 	}
-	if !data.Unreachables.IsNull() {
+	if !data.IpUnreachables.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-icmp:unreachables", data.getPath()))
 	}
 	if !data.VrfForwarding.IsNull() {
@@ -967,7 +967,7 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	if !data.Ipv6Mtu.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/mtu", data.getPath()))
 	}
-	if !data.RaSuppressAll.IsNull() {
+	if !data.Ipv6NdRaSuppressAll.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", data.getPath()))
 	}
 	if !data.Ipv6AddressAutoconfigDefault.IsNull() {
@@ -1030,25 +1030,25 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	if !data.TunnelModeIpsecIpv4.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/mode/ipsec/ipv4", data.getPath()))
 	}
-	if !data.Template.IsNull() {
+	if !data.BfdTemplate.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", data.getPath()))
 	}
-	if !data.Enable.IsNull() {
+	if !data.BfdEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", data.getPath()))
 	}
-	if !data.LocalAddress.IsNull() {
+	if !data.BfdLocalAddress.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:local-address", data.getPath()))
 	}
-	if !data.IntervalInterfaceMsecs.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface/msecs", data.getPath()))
+	if !data.BfdInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
 	}
-	if !data.IntervalInterfaceMinRx.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx", data.getPath()))
+	if !data.BfdIntervalMinRx.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
 	}
-	if !data.IntervalInterfaceMultiplier.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier", data.getPath()))
+	if !data.BfdIntervalMultiplier.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
 	}
-	if !data.Echo.IsNull() {
+	if !data.BfdEcho.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", data.getPath()))
 	}
 	return deletePaths

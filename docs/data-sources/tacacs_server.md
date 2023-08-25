@@ -31,7 +31,7 @@ data "iosxe_tacacs_server" "example" {
 
 ### Read-Only
 
+- `address_ipv4` (String) IPv4 address or Hostname for tacacs server
 - `id` (String) The path of the retrieved object.
-- `key_key` (String) The UNENCRYPTED (cleartext) server key
-- `tacacs_address_ipv4` (String) IPv4 address or Hostname for tacacs server
+- `key` (String) The UNENCRYPTED (cleartext) server key
 - `timeout` (Number) Time to wait for this TACACS server to reply (overrides default)

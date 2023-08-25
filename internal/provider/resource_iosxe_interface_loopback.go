@@ -105,7 +105,7 @@ func (r *InterfaceLoopbackResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Redirect messages").String,
 				Optional:            true,
 			},
-			"unreachables": schema.BoolAttribute{
+			"ip_unreachables": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable sending ICMP Unreachable messages").String,
 				Optional:            true,
 			},

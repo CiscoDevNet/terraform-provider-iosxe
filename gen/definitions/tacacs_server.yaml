@@ -8,9 +8,10 @@ attributes:
     example: tacacs_10.10.15.13
   - yang_name: address/tacacs-host-address/ipv4/ipv4
     xpath: address/ipv4
-    tf_name: tacacs_address_ipv4
+    tf_name: address_ipv4
     example: 10.10.15.13
   - yang_name: timeout
     example: 4
   - yang_name: key/key
+    tf_name: key
     example: 123

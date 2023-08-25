@@ -4,7 +4,7 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
   shutdown                    = false
   ip_proxy_arp                = false
   ip_redirects                = false
-  unreachables                = false
+  ip_unreachables             = false
   vrf_forwarding              = "VRF1"
   ipv4_address                = "192.0.2.2"
   ipv4_address_mask           = "255.255.255.0"
@@ -19,8 +19,9 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
       global  = false
     }
   ]
-  interval_interface_msecs      = 50
-  interval_interface_min_rx     = 50
-  interval_interface_multiplier = 3
-  echo                          = true
+  bfd_enable              = true
+  bfd_local_address       = "1.2.3.4"
+  bfd_interval            = 50
+  bfd_interval_min_rx     = 50
+  bfd_interval_multiplier = 3
 }

@@ -45,17 +45,19 @@ data "iosxe_interface_ethernet" "example" {
 - `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
 - `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
 - `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
+- `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `bfd_enable` (Boolean) Enable BFD under the interface
+- `bfd_interval` (Number)
+- `bfd_interval_min_rx` (Number) Minimum receive interval capability
+- `bfd_interval_multiplier` (Number) Multiplier value used to compute holddown
+- `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
+- `bfd_template` (String) BFD template
 - `channel_group_mode` (String) Etherchannel Mode of the interface
 - `channel_group_number` (Number)
 - `description` (String) Interface specific description
-- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
-- `enable` (Boolean) Enable BFD under the interface
 - `encapsulation_dot1q_vlan_id` (Number)
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.
-- `interval_interface_min_rx` (Number) Minimum receive interval capability
-- `interval_interface_msecs` (Number)
-- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
@@ -63,18 +65,16 @@ data "iosxe_interface_ethernet" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
+- `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
-- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `media_type` (String) Media type
 - `shutdown` (Boolean) Shutdown the selected interface
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
 - `switchport` (Boolean)
-- `template` (String) BFD template
 - `trust_device` (String) trusted device class
 - `unnumbered` (String) Enable IP processing without an explicit address
-- `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table
 
 <a id="nestedatt--helper_addresses"></a>

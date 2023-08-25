@@ -35,7 +35,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_redirects", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "unreachables", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_unreachables", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ipv4_address", "15.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ipv4_address_mask", "255.255.255.252"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_relay_source_interface", "Loopback100"))
@@ -48,13 +48,11 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "helper_addresses.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.template_name", "TEMP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.merge", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "template", "bfd_template1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "local_address", "1.2.3.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "interval_interface_msecs", "50"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "interval_interface_min_rx", "50"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "interval_interface_multiplier", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "echo", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_local_address", "1.2.3.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval_min_rx", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval_multiplier", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -87,7 +85,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	shutdown = false` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
-	config += `	unreachables = false` + "\n"
+	config += `	ip_unreachables = false` + "\n"
 	config += `	ipv4_address = "15.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.252"` + "\n"
 	config += `	ip_dhcp_relay_source_interface = "Loopback100"` + "\n"
@@ -104,13 +102,11 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		template_name = "TEMP1"` + "\n"
 	config += `		merge = false` + "\n"
 	config += `	}]` + "\n"
-	config += `	template = "bfd_template1"` + "\n"
-	config += `	enable = true` + "\n"
-	config += `	local_address = "1.2.3.4"` + "\n"
-	config += `	interval_interface_msecs = 50` + "\n"
-	config += `	interval_interface_min_rx = 50` + "\n"
-	config += `	interval_interface_multiplier = 3` + "\n"
-	config += `	echo = true` + "\n"
+	config += `	bfd_enable = true` + "\n"
+	config += `	bfd_local_address = "1.2.3.4"` + "\n"
+	config += `	bfd_interval = 50` + "\n"
+	config += `	bfd_interval_min_rx = 50` + "\n"
+	config += `	bfd_interval_multiplier = 3` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

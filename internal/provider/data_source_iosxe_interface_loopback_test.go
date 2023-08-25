@@ -31,7 +31,7 @@ func TestAccDataSourceIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ip_redirects", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "unreachables", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ip_unreachables", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "vrf_forwarding", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ipv4_address", "200.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_loopback.test", "ipv4_address_mask", "255.255.255.255"))
@@ -71,7 +71,7 @@ func testAccDataSourceIosxeInterfaceLoopbackConfig() string {
 	config += `	shutdown = false` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
-	config += `	unreachables = false` + "\n"
+	config += `	ip_unreachables = false` + "\n"
 	config += `	vrf_forwarding = "VRF1"` + "\n"
 	config += `	ipv4_address = "200.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.255"` + "\n"

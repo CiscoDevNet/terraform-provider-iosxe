@@ -37,7 +37,7 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_proxy_arp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_redirects", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "unreachables", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ip_unreachables", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "vrf_forwarding", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv4_address", "10.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "ipv4_address_mask", "255.255.255.0"))
@@ -49,13 +49,11 @@ func TestAccIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "helper_addresses.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "template", "vlan_template1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "local_address", "1.2.3.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "interval_interface_msecs", "999"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "interval_interface_min_rx", "999"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "interval_interface_multiplier", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "echo", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "bfd_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "bfd_local_address", "1.2.3.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "bfd_interval", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "bfd_interval_min_rx", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_vlan.test", "bfd_interval_multiplier", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -91,9 +89,6 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeInterfaceVLANConfig_minimum() string {
 	config := `resource "iosxe_interface_vlan" "test" {` + "\n"
 	config += `	name = 10` + "\n"
-	config += `	interval_interface_msecs = 999` + "\n"
-	config += `	interval_interface_min_rx = 999` + "\n"
-	config += `	interval_interface_multiplier = 3` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
@@ -107,7 +102,7 @@ func testAccIosxeInterfaceVLANConfig_all() string {
 	config += `	shutdown = false` + "\n"
 	config += `	ip_proxy_arp = false` + "\n"
 	config += `	ip_redirects = false` + "\n"
-	config += `	unreachables = false` + "\n"
+	config += `	ip_unreachables = false` + "\n"
 	config += `	vrf_forwarding = "VRF1"` + "\n"
 	config += `	ipv4_address = "10.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
@@ -121,13 +116,11 @@ func testAccIosxeInterfaceVLANConfig_all() string {
 	config += `		global = false` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	template = "vlan_template1"` + "\n"
-	config += `	enable = true` + "\n"
-	config += `	local_address = "1.2.3.4"` + "\n"
-	config += `	interval_interface_msecs = 999` + "\n"
-	config += `	interval_interface_min_rx = 999` + "\n"
-	config += `	interval_interface_multiplier = 3` + "\n"
-	config += `	echo = true` + "\n"
+	config += `	bfd_enable = true` + "\n"
+	config += `	bfd_local_address = "1.2.3.4"` + "\n"
+	config += `	bfd_interval = 50` + "\n"
+	config += `	bfd_interval_min_rx = 50` + "\n"
+	config += `	bfd_interval_multiplier = 3` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

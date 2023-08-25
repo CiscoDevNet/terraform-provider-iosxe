@@ -81,7 +81,7 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"tacacs_address_ipv4": schema.StringAttribute{
+			"address_ipv4": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("IPv4 address or Hostname for tacacs server").String,
 				Optional:            true,
 			},
@@ -92,7 +92,7 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 					int64validator.Between(1, 1000),
 				},
 			},
-			"key_key": schema.StringAttribute{
+			"key": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) server key").String,
 				Optional:            true,
 				Validators: []validator.String{

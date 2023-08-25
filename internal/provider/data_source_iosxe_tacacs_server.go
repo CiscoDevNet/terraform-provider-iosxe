@@ -67,7 +67,7 @@ func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Name for the tacacs server configuration",
 				Required:            true,
 			},
-			"tacacs_address_ipv4": schema.StringAttribute{
+			"address_ipv4": schema.StringAttribute{
 				MarkdownDescription: "IPv4 address or Hostname for tacacs server",
 				Computed:            true,
 			},
@@ -75,7 +75,7 @@ func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Time to wait for this TACACS server to reply (overrides default)",
 				Computed:            true,
 			},
-			"key_key": schema.StringAttribute{
+			"key": schema.StringAttribute{
 				MarkdownDescription: "The UNENCRYPTED (cleartext) server key",
 				Computed:            true,
 			},
