@@ -22,8 +22,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   shutdown                                  = false
   cluster_id                                = "2.2.2.2"
   log_neighbor_changes_disable              = true
-  password_enctype                          = 1
-  password_text                             = "LINE"
+  password_type                             = 1
+  password                                  = "LINE"
   timers_keepalive_interval                 = 30
   timers_holdtime                           = 40
   timers_minimum_neighbor_hold              = 30
@@ -73,14 +73,14 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `fall_over_bfd_strict_mode` (Boolean) Enable BFD strict-mode
 - `fall_over_default_route_map` (String)
 - `fall_over_maximum_metric_route_map` (String)
-- `local_as_as_no` (String)
+- `local_as` (String)
 - `local_as_dual_as` (Boolean) Accept either real AS or local AS from the ebgp peer
 - `local_as_no_prepend` (Boolean) Do not prepend local-as to updates from ebgp peers
 - `local_as_replace_as` (Boolean) Replace real AS with local AS in the EBGP updates
 - `log_neighbor_changes_disable` (Boolean) disable
-- `password_enctype` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
+- `password` (String)
+- `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
   - Range: `0`-`7`
-- `password_text` (String)
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client

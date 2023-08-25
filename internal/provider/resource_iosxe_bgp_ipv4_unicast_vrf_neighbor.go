@@ -116,14 +116,14 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				MarkdownDescription: helpers.NewAttributeDescription("disable").String,
 				Optional:            true,
 			},
-			"password_enctype": schema.Int64Attribute{
+			"password_type": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 to disable encryption, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 7),
 				},
 			},
-			"password_text": schema.StringAttribute{
+			"password": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				Validators: []validator.String{
@@ -194,7 +194,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 					int64validator.Between(1, 254),
 				},
 			},
-			"local_as_as_no": schema.StringAttribute{
+			"local_as": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},

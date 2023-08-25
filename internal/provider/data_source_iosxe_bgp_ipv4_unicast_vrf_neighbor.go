@@ -95,11 +95,11 @@ func (d *BGPIPv4UnicastVRFNeighborDataSource) Schema(ctx context.Context, req da
 				MarkdownDescription: "disable",
 				Computed:            true,
 			},
-			"password_enctype": schema.Int64Attribute{
+			"password_type": schema.Int64Attribute{
 				MarkdownDescription: "Encryption type (0 to disable encryption, 7 for proprietary)",
 				Computed:            true,
 			},
-			"password_text": schema.StringAttribute{
+			"password": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
@@ -151,7 +151,7 @@ func (d *BGPIPv4UnicastVRFNeighborDataSource) Schema(ctx context.Context, req da
 				MarkdownDescription: "IP hops",
 				Computed:            true,
 			},
-			"local_as_as_no": schema.StringAttribute{
+			"local_as": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},

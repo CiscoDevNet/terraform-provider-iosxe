@@ -7,8 +7,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   shutdown                                  = false
   cluster_id                                = "2.2.2.2"
   log_neighbor_changes_disable              = true
-  password_enctype                          = 1
-  password_text                             = "LINE"
+  password_type                             = 1
+  password                                  = "LINE"
   timers_keepalive_interval                 = 30
   timers_holdtime                           = 40
   timers_minimum_neighbor_hold              = 30

@@ -32,8 +32,8 @@ func TestAccDataSourceIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "cluster_id", "2.2.2.2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "log_neighbor_changes_disable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "password_enctype", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "password_text", "LINE"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "password_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "password", "LINE"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "timers_keepalive_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "timers_holdtime", "40"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "timers_minimum_neighbor_hold", "30"))
@@ -118,8 +118,8 @@ func testAccDataSourceIosxeBGPIPv4UnicastVRFNeighborConfig() string {
 	config += `	shutdown = false` + "\n"
 	config += `	cluster_id = "2.2.2.2"` + "\n"
 	config += `	log_neighbor_changes_disable = true` + "\n"
-	config += `	password_enctype = 1` + "\n"
-	config += `	password_text = "LINE"` + "\n"
+	config += `	password_type = 1` + "\n"
+	config += `	password = "LINE"` + "\n"
 	config += `	timers_keepalive_interval = 30` + "\n"
 	config += `	timers_holdtime = 40` + "\n"
 	config += `	timers_minimum_neighbor_hold = 30` + "\n"

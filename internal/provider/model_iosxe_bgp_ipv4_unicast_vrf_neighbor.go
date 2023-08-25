@@ -46,8 +46,8 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	Shutdown                            types.Bool                           `tfsdk:"shutdown"`
 	ClusterId                           types.String                         `tfsdk:"cluster_id"`
 	LogNeighborChangesDisable           types.Bool                           `tfsdk:"log_neighbor_changes_disable"`
-	PasswordEnctype                     types.Int64                          `tfsdk:"password_enctype"`
-	PasswordText                        types.String                         `tfsdk:"password_text"`
+	PasswordType                        types.Int64                          `tfsdk:"password_type"`
+	Password                            types.String                         `tfsdk:"password"`
 	TimersKeepaliveInterval             types.Int64                          `tfsdk:"timers_keepalive_interval"`
 	TimersHoldtime                      types.Int64                          `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64                          `tfsdk:"timers_minimum_neighbor_hold"`
@@ -60,7 +60,7 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	FallOverMaximumMetricRouteMap       types.String                         `tfsdk:"fall_over_maximum_metric_route_map"`
 	DisableConnectedCheck               types.Bool                           `tfsdk:"disable_connected_check"`
 	TtlSecurityHops                     types.Int64                          `tfsdk:"ttl_security_hops"`
-	LocalAsAsNo                         types.String                         `tfsdk:"local_as_as_no"`
+	LocalAs                             types.String                         `tfsdk:"local_as"`
 	LocalAsNoPrepend                    types.Bool                           `tfsdk:"local_as_no_prepend"`
 	LocalAsReplaceAs                    types.Bool                           `tfsdk:"local_as_replace_as"`
 	LocalAsDualAs                       types.Bool                           `tfsdk:"local_as_dual_as"`
@@ -84,8 +84,8 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	Shutdown                            types.Bool                           `tfsdk:"shutdown"`
 	ClusterId                           types.String                         `tfsdk:"cluster_id"`
 	LogNeighborChangesDisable           types.Bool                           `tfsdk:"log_neighbor_changes_disable"`
-	PasswordEnctype                     types.Int64                          `tfsdk:"password_enctype"`
-	PasswordText                        types.String                         `tfsdk:"password_text"`
+	PasswordType                        types.Int64                          `tfsdk:"password_type"`
+	Password                            types.String                         `tfsdk:"password"`
 	TimersKeepaliveInterval             types.Int64                          `tfsdk:"timers_keepalive_interval"`
 	TimersHoldtime                      types.Int64                          `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64                          `tfsdk:"timers_minimum_neighbor_hold"`
@@ -98,7 +98,7 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	FallOverMaximumMetricRouteMap       types.String                         `tfsdk:"fall_over_maximum_metric_route_map"`
 	DisableConnectedCheck               types.Bool                           `tfsdk:"disable_connected_check"`
 	TtlSecurityHops                     types.Int64                          `tfsdk:"ttl_security_hops"`
-	LocalAsAsNo                         types.String                         `tfsdk:"local_as_as_no"`
+	LocalAs                             types.String                         `tfsdk:"local_as"`
 	LocalAsNoPrepend                    types.Bool                           `tfsdk:"local_as_no_prepend"`
 	LocalAsReplaceAs                    types.Bool                           `tfsdk:"local_as_replace_as"`
 	LocalAsDualAs                       types.Bool                           `tfsdk:"local_as_dual_as"`
@@ -158,11 +158,11 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-neighbor-changes.disable", map[string]string{})
 		}
 	}
-	if !data.PasswordEnctype.IsNull() && !data.PasswordEnctype.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.enctype", strconv.FormatInt(data.PasswordEnctype.ValueInt64(), 10))
+	if !data.PasswordType.IsNull() && !data.PasswordType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.enctype", strconv.FormatInt(data.PasswordType.ValueInt64(), 10))
 	}
-	if !data.PasswordText.IsNull() && !data.PasswordText.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", data.PasswordText.ValueString())
+	if !data.Password.IsNull() && !data.Password.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", data.Password.ValueString())
 	}
 	if !data.TimersKeepaliveInterval.IsNull() && !data.TimersKeepaliveInterval.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timers.keepalive-interval", strconv.FormatInt(data.TimersKeepaliveInterval.ValueInt64(), 10))
@@ -210,8 +210,8 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 	if !data.TtlSecurityHops.IsNull() && !data.TtlSecurityHops.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ttl-security.hops", strconv.FormatInt(data.TtlSecurityHops.ValueInt64(), 10))
 	}
-	if !data.LocalAsAsNo.IsNull() && !data.LocalAsAsNo.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"local-as.as-no", data.LocalAsAsNo.ValueString())
+	if !data.LocalAs.IsNull() && !data.LocalAs.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"local-as.as-no", data.LocalAs.ValueString())
 	}
 	if !data.LocalAsNoPrepend.IsNull() && !data.LocalAsNoPrepend.IsUnknown() {
 		if data.LocalAsNoPrepend.ValueBool() {
@@ -309,15 +309,15 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 	} else {
 		data.LogNeighborChangesDisable = types.BoolNull()
 	}
-	if value := res.Get(prefix + "password.enctype"); value.Exists() && !data.PasswordEnctype.IsNull() {
-		data.PasswordEnctype = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "password.enctype"); value.Exists() && !data.PasswordType.IsNull() {
+		data.PasswordType = types.Int64Value(value.Int())
 	} else {
-		data.PasswordEnctype = types.Int64Null()
+		data.PasswordType = types.Int64Null()
 	}
-	if value := res.Get(prefix + "password.text"); value.Exists() && !data.PasswordText.IsNull() {
-		data.PasswordText = types.StringValue(value.String())
+	if value := res.Get(prefix + "password.text"); value.Exists() && !data.Password.IsNull() {
+		data.Password = types.StringValue(value.String())
 	} else {
-		data.PasswordText = types.StringNull()
+		data.Password = types.StringNull()
 	}
 	if value := res.Get(prefix + "timers.keepalive-interval"); value.Exists() && !data.TimersKeepaliveInterval.IsNull() {
 		data.TimersKeepaliveInterval = types.Int64Value(value.Int())
@@ -399,10 +399,10 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 	} else {
 		data.TtlSecurityHops = types.Int64Null()
 	}
-	if value := res.Get(prefix + "local-as.as-no"); value.Exists() && !data.LocalAsAsNo.IsNull() {
-		data.LocalAsAsNo = types.StringValue(value.String())
+	if value := res.Get(prefix + "local-as.as-no"); value.Exists() && !data.LocalAs.IsNull() {
+		data.LocalAs = types.StringValue(value.String())
 	} else {
-		data.LocalAsAsNo = types.StringNull()
+		data.LocalAs = types.StringNull()
 	}
 	if value := res.Get(prefix + "local-as.no-prepend"); !data.LocalAsNoPrepend.IsNull() {
 		if value.Exists() {
@@ -534,10 +534,10 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 		data.LogNeighborChangesDisable = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "password.enctype"); value.Exists() {
-		data.PasswordEnctype = types.Int64Value(value.Int())
+		data.PasswordType = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "password.text"); value.Exists() {
-		data.PasswordText = types.StringValue(value.String())
+		data.Password = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "timers.keepalive-interval"); value.Exists() {
 		data.TimersKeepaliveInterval = types.Int64Value(value.Int())
@@ -586,7 +586,7 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "local-as.as-no"); value.Exists() {
-		data.LocalAsAsNo = types.StringValue(value.String())
+		data.LocalAs = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "local-as.no-prepend"); value.Exists() {
 		data.LocalAsNoPrepend = types.BoolValue(true)
@@ -732,20 +732,20 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []str
 	if !data.LogNeighborChangesDisable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-neighbor-changes/disable", data.getPath()))
 	}
-	if !data.PasswordEnctype.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/enctype", data.getPath()))
+	if !data.PasswordType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/password", data.getPath()))
 	}
-	if !data.PasswordText.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/text", data.getPath()))
+	if !data.Password.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/password", data.getPath()))
 	}
 	if !data.TimersKeepaliveInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers/keepalive-interval", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
 	}
 	if !data.TimersHoldtime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers/holdtime", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
 	}
 	if !data.TimersMinimumNeighborHold.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers/minimum-neighbor-hold", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
 	}
 	if !data.Version.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))
@@ -774,7 +774,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []str
 	if !data.TtlSecurityHops.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ttl-security/hops", data.getPath()))
 	}
-	if !data.LocalAsAsNo.IsNull() {
+	if !data.LocalAs.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/as-no", data.getPath()))
 	}
 	if !data.LocalAsNoPrepend.IsNull() {

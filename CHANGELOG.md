@@ -7,7 +7,7 @@
 - Add `iosxe_radius` resource and data source
 - Add `iosxe_bfd_template_single_hop` resource and data source
 - Add `iosxe_cdp` resource and data source
-- Add `cluster_id` ,`fall_over` ,`disable_connected_check`, `local_as`, `log_neighbor_changes`, `password`, `timers`, `ttl_security` attributes to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resources and data sources
+- Add `cluster_id` ,`fall_over` ,`disable_connected_check`, `local_as`, `log_neighbor_changes`, `password`, `timers`, `ttl_security` attributes to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source
 
 ## 0.3.3
 
