@@ -22,7 +22,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -30,7 +29,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -39,22 +37,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewBGPIPv4UnicastVRFNeighborResource() resource.Resource {
-	return &BGPIPv4UnicastVRFNeighborResource{}
+func NewCDPResource() resource.Resource {
+	return &CDPResource{}
 }
 
-type BGPIPv4UnicastVRFNeighborResource struct {
+type CDPResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_bgp_ipv4_unicast_vrf_neighbor"
+func (r *CDPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_cdp"
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *CDPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the BGP IPv4 Unicast VRF Neighbor configuration.",
+		MarkdownDescription: "This resource can manage the CDP configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -68,204 +66,71 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
+			"holdtime": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify the holdtime (in sec) to be sent in packets").AddIntegerRangeDescription(10, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(10, 255),
+				},
+			},
+			"timer": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify the rate at which CDP packets are sent (in sec)").AddIntegerRangeDescription(5, 254).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(5, 254),
+				},
+			},
+			"run_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable CDP").String,
+				Optional:            true,
+			},
+			"filter_tlv_list": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Apply tlv-list globally").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
+					stringvalidator.LengthBetween(1, 40),
 				},
 			},
-			"asn": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"vrf": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"ip": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"remote_as": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP peer-group remote-as").String,
-				Optional:            true,
-			},
-			"description": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Neighbor specific description").String,
-				Optional:            true,
-			},
-			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Administratively shut down this neighbor").String,
-				Optional:            true,
-			},
-			"cluster_id": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"log_neighbor_changes_disable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("disable").String,
-				Optional:            true,
-			},
-			"password_enctype": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 to disable encryption, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 7),
-				},
-			},
-			"password_text": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 52),
-					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-				},
-			},
-			"timers_keepalive_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
-				},
-			},
-			"timers_holdtime": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
-				},
-			},
-			"timers_minimum_neighbor_hold": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
-				},
-			},
-			"version": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the BGP version to match a neighbor").AddIntegerRangeDescription(4, 4).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(4, 4),
-				},
-			},
-			"fall_over_default_route_map": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_multi_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_single_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD single-hop to detect failure").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_check_control_plane_failure": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_strict_mode": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD strict-mode").String,
-				Optional:            true,
-			},
-			"fall_over_maximum_metric_route_map": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"disable_connected_check": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").String,
-				Optional:            true,
-			},
-			"ttl_security_hops": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IP hops").AddIntegerRangeDescription(1, 254).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 254),
-				},
-			},
-			"local_as_as_no": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"local_as_no_prepend": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not prepend local-as to updates from ebgp peers").String,
-				Optional:            true,
-			},
-			"local_as_replace_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Replace real AS with local AS in the EBGP updates").String,
-				Optional:            true,
-			},
-			"local_as_dual_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").String,
-				Optional:            true,
-			},
-			"update_source_loopback": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
-				Optional:            true,
-			},
-			"activate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable the address family for this neighbor").AddDefaultValueDescription("true").String,
-				Optional:            true,
-				Computed:            true,
-				Default:             booldefault.StaticBool(true),
-			},
-			"send_community": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("both", "extended", "standard").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("both", "extended", "standard"),
-				},
-			},
-			"route_reflector_client": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure a neighbor as Route Reflector client").String,
-				Optional:            true,
-			},
-			"route_maps": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Apply route map to neighbor").String,
+			"tlv_list": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure tlv-list").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"in_out": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("in", "out").String,
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Tlv-list").String,
 							Required:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("in", "out"),
+								stringvalidator.LengthBetween(1, 40),
 							},
 						},
-						"route_map_name": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
+						"vtp_mgmt_domain": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Select vtp mgmt domain TLV").String,
+							Optional:            true,
+						},
+						"cos": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Select cos TLV").String,
+							Optional:            true,
+						},
+						"duplex": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Select duplex TLV").String,
+							Optional:            true,
+						},
+						"trust": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Select trust TLV").String,
+							Optional:            true,
+						},
+						"version": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Select version TLV").String,
+							Optional:            true,
 						},
 					},
-				},
-			},
-			"ebgp_multihop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.").String,
-				Optional:            true,
-			},
-			"ebgp_multihop_max_hop": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(2, 255).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(2, 255),
 				},
 			},
 		},
 	}
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *CDPResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -273,8 +138,8 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Configure(_ context.Context, req res
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan BGPIPv4UnicastVRFNeighbor
+func (r *CDPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan CDP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -332,8 +197,8 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Create(ctx context.Context, req reso
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state BGPIPv4UnicastVRFNeighbor
+func (r *CDPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state CDP
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -351,7 +216,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Read(ctx context.Context, req resour
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = BGPIPv4UnicastVRFNeighbor{Device: state.Device, Id: state.Id}
+		state = CDP{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -367,8 +232,8 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Read(ctx context.Context, req resour
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state BGPIPv4UnicastVRFNeighbor
+func (r *CDPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state CDP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -443,8 +308,8 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Update(ctx context.Context, req reso
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state BGPIPv4UnicastVRFNeighbor
+func (r *CDPResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state CDP
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -460,11 +325,6 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Delete(ctx context.Context, req reso
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
 	deleteMode := "all"
-	if state.DeleteMode.ValueString() == "all" {
-		deleteMode = "all"
-	} else if state.DeleteMode.ValueString() == "attributes" {
-		deleteMode = "attributes"
-	}
 
 	if deleteMode == "all" {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())
@@ -502,6 +362,6 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Delete(ctx context.Context, req reso
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *BGPIPv4UnicastVRFNeighborResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *CDPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

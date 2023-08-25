@@ -1,14 +1,27 @@
 resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
-  asn                    = "65000"
-  vrf                    = "VRF1"
-  ip                     = "3.3.3.3"
-  remote_as              = "65000"
-  description            = "BGP Neighbor Description"
-  shutdown               = false
-  update_source_loopback = "100"
-  activate               = true
-  send_community         = "both"
-  route_reflector_client = false
+  asn                                       = "65000"
+  vrf                                       = "VRF1"
+  ip                                        = "3.3.3.3"
+  remote_as                                 = "65000"
+  description                               = "BGP Neighbor Description"
+  shutdown                                  = false
+  cluster_id                                = "2.2.2.2"
+  log_neighbor_changes_disable              = true
+  password_enctype                          = 1
+  password_text                             = "LINE"
+  timers_keepalive_interval                 = 30
+  timers_holdtime                           = 40
+  timers_minimum_neighbor_hold              = 30
+  version                                   = 4
+  fall_over_default_route_map               = "RMAP"
+  fall_over_bfd_single_hop                  = true
+  fall_over_bfd_check_control_plane_failure = true
+  fall_over_bfd_strict_mode                 = true
+  fall_over_maximum_metric_route_map        = "ROUTEMAP"
+  update_source_loopback                    = "100"
+  activate                                  = true
+  send_community                            = "both"
+  route_reflector_client                    = false
   route_maps = [
     {
       in_out         = "in"
