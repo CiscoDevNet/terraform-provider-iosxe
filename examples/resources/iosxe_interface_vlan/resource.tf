@@ -21,4 +21,11 @@ resource "iosxe_interface_vlan" "example" {
       vrf     = "VRF1"
     }
   ]
+  template                      = "vlan_template1"
+  enable                        = true
+  local_address                 = "1.2.3.4"
+  interval_interface_msecs      = 999
+  interval_interface_min_rx     = 999
+  interval_interface_multiplier = 3
+  echo                          = true
 }

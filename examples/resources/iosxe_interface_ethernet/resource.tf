@@ -26,4 +26,11 @@ resource "iosxe_interface_ethernet" "example" {
       merge         = false
     }
   ]
+  template                      = "bfd_template1"
+  enable                        = true
+  local_address                 = "1.2.3.4"
+  interval_interface_msecs      = 50
+  interval_interface_min_rx     = 50
+  interval_interface_multiplier = 3
+  echo                          = true
 }

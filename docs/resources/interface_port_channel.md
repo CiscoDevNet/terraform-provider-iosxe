@@ -31,6 +31,13 @@ resource "iosxe_interface_port_channel" "example" {
       global  = false
     }
   ]
+  template                      = "portchannel_template1"
+  enable                        = true
+  local_address                 = "1.2.3.4"
+  interval_interface_msecs      = 750
+  interval_interface_min_rx     = 750
+  interval_interface_multiplier = 3
+  echo                          = true
 }
 ```
 
@@ -39,6 +46,11 @@ resource "iosxe_interface_port_channel" "example" {
 
 ### Required
 
+- `interval_interface_min_rx` (Number) Minimum receive interval capability
+  - Range: `50`-`9999`
+- `interval_interface_msecs` (Number) - Range: `50`-`9999`
+- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
+  - Range: `3`-`50`
 - `name` (Number) - Range: `1`-`512`
 
 ### Optional
@@ -59,6 +71,8 @@ resource "iosxe_interface_port_channel" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
+- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `enable` (Boolean) Enable BFD under the interface
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -69,10 +83,12 @@ resource "iosxe_interface_port_channel" "example" {
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
+- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `shutdown` (Boolean) Shutdown the selected interface
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`
 - `switchport` (Boolean)
+- `template` (String) BFD template
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
 - `unreachables` (Boolean) Enable sending ICMP Unreachable messages

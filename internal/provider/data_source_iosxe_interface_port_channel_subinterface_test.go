@@ -46,6 +46,10 @@ func TestAccDataSourceIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_access_group_out_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "helper_addresses.0.global", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "interval_interface_msecs", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "interval_interface_min_rx", "50"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "interval_interface_multiplier", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "echo", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -106,6 +110,10 @@ func testAccDataSourceIosxeInterfacePortChannelSubinterfaceConfig() string {
 	config += `		address = "10.10.10.10"` + "\n"
 	config += `		global = false` + "\n"
 	config += `	}]` + "\n"
+	config += `	interval_interface_msecs = 50` + "\n"
+	config += `	interval_interface_min_rx = 50` + "\n"
+	config += `	interval_interface_multiplier = 3` + "\n"
+	config += `	echo = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 

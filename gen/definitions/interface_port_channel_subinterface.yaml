@@ -105,6 +105,23 @@ attributes:
         tf_name: vrf
         exclude_test: true
         example: VRF1
+  - yang_name: bfd/Cisco-IOS-XE-bfd:template
+    exclude_test: true
+    example: portchannel_template1
+  - yang_name: bfd/Cisco-IOS-XE-bfd:enable
+    exclude_test: true
+    example: true 
+  - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
+    exclude_test: true
+    example: 1.2.3.4
+  - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/msecs
+    example: 50
+  - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx
+    example: 50
+  - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier
+    example: 3
+  - yang_name: bfd/Cisco-IOS-XE-bfd:echo
+    example: true 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

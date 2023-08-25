@@ -33,8 +33,13 @@ data "iosxe_interface_tunnel" "example" {
 
 - `crypto_ipsec_df_bit` (String) Handling of encapsulated DF bit.
 - `description` (String) Interface specific description
+- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `enable` (Boolean) Enable BFD under the interface
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.
+- `interval_interface_min_rx` (Number) Minimum receive interval capability
+- `interval_interface_msecs` (Number)
+- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
@@ -50,8 +55,10 @@ data "iosxe_interface_tunnel" "example" {
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
+- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `shutdown` (Boolean) Shutdown the selected interface
+- `template` (String) BFD template
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) Determine the ipsec policy profile to use.

@@ -1,0 +1,16 @@
+---
+name: TACACS Server
+path: Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=%v
+doc_category: AAA
+attributes:
+  - yang_name: name
+    id: true
+    example: tacacs_10.10.15.13
+  - yang_name: address/tacacs-host-address/ipv4/ipv4
+    xpath: address/ipv4
+    tf_name: tacacs_address_ipv4
+    example: 10.10.15.13
+  - yang_name: timeout
+    example: 4
+  - yang_name: key/key
+    example: 123

@@ -44,8 +44,13 @@ data "iosxe_interface_port_channel" "example" {
 - `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
 - `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
 - `description` (String) Interface specific description
+- `echo` (Boolean) Use echo adjunct as bfd detection mechanism
+- `enable` (Boolean) Enable BFD under the interface
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.
+- `interval_interface_min_rx` (Number) Minimum receive interval capability
+- `interval_interface_msecs` (Number)
+- `interval_interface_multiplier` (Number) Multiplier value used to compute holddown
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
@@ -55,9 +60,11 @@ data "iosxe_interface_port_channel" "example" {
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
+- `local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `shutdown` (Boolean) Shutdown the selected interface
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
 - `switchport` (Boolean)
+- `template` (String) BFD template
 - `trust_device` (String) trusted device class
 - `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table

@@ -35,70 +35,84 @@ import (
 )
 
 type InterfacePortChannelSubinterface struct {
-	Device                    types.String                                      `tfsdk:"device"`
-	Id                        types.String                                      `tfsdk:"id"`
-	DeleteMode                types.String                                      `tfsdk:"delete_mode"`
-	Name                      types.String                                      `tfsdk:"name"`
-	Description               types.String                                      `tfsdk:"description"`
-	Shutdown                  types.Bool                                        `tfsdk:"shutdown"`
-	IpProxyArp                types.Bool                                        `tfsdk:"ip_proxy_arp"`
-	IpRedirects               types.Bool                                        `tfsdk:"ip_redirects"`
-	Unreachables              types.Bool                                        `tfsdk:"unreachables"`
-	VrfForwarding             types.String                                      `tfsdk:"vrf_forwarding"`
-	Ipv4Address               types.String                                      `tfsdk:"ipv4_address"`
-	Ipv4AddressMask           types.String                                      `tfsdk:"ipv4_address_mask"`
-	EncapsulationDot1qVlanId  types.Int64                                       `tfsdk:"encapsulation_dot1q_vlan_id"`
-	IpAccessGroupIn           types.String                                      `tfsdk:"ip_access_group_in"`
-	IpAccessGroupInEnable     types.Bool                                        `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut          types.String                                      `tfsdk:"ip_access_group_out"`
-	IpAccessGroupOutEnable    types.Bool                                        `tfsdk:"ip_access_group_out_enable"`
-	AutoQosClassify           types.Bool                                        `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice     types.Bool                                        `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust              types.Bool                                        `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos           types.Bool                                        `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp          types.Bool                                        `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts           types.Bool                                        `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera      types.Bool                                        `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer   types.Bool                                        `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip               types.Bool                                        `tfsdk:"auto_qos_voip"`
-	AutoQosVoipCiscoPhone     types.Bool                                        `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone types.Bool                                        `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust          types.Bool                                        `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice               types.String                                      `tfsdk:"trust_device"`
-	HelperAddresses           []InterfacePortChannelSubinterfaceHelperAddresses `tfsdk:"helper_addresses"`
+	Device                      types.String                                      `tfsdk:"device"`
+	Id                          types.String                                      `tfsdk:"id"`
+	DeleteMode                  types.String                                      `tfsdk:"delete_mode"`
+	Name                        types.String                                      `tfsdk:"name"`
+	Description                 types.String                                      `tfsdk:"description"`
+	Shutdown                    types.Bool                                        `tfsdk:"shutdown"`
+	IpProxyArp                  types.Bool                                        `tfsdk:"ip_proxy_arp"`
+	IpRedirects                 types.Bool                                        `tfsdk:"ip_redirects"`
+	Unreachables                types.Bool                                        `tfsdk:"unreachables"`
+	VrfForwarding               types.String                                      `tfsdk:"vrf_forwarding"`
+	Ipv4Address                 types.String                                      `tfsdk:"ipv4_address"`
+	Ipv4AddressMask             types.String                                      `tfsdk:"ipv4_address_mask"`
+	EncapsulationDot1qVlanId    types.Int64                                       `tfsdk:"encapsulation_dot1q_vlan_id"`
+	IpAccessGroupIn             types.String                                      `tfsdk:"ip_access_group_in"`
+	IpAccessGroupInEnable       types.Bool                                        `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupOut            types.String                                      `tfsdk:"ip_access_group_out"`
+	IpAccessGroupOutEnable      types.Bool                                        `tfsdk:"ip_access_group_out_enable"`
+	AutoQosClassify             types.Bool                                        `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice       types.Bool                                        `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                types.Bool                                        `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos             types.Bool                                        `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp            types.Bool                                        `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts             types.Bool                                        `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera        types.Bool                                        `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer     types.Bool                                        `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                 types.Bool                                        `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone       types.Bool                                        `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone   types.Bool                                        `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust            types.Bool                                        `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                 types.String                                      `tfsdk:"trust_device"`
+	HelperAddresses             []InterfacePortChannelSubinterfaceHelperAddresses `tfsdk:"helper_addresses"`
+	Template                    types.String                                      `tfsdk:"template"`
+	Enable                      types.Bool                                        `tfsdk:"enable"`
+	LocalAddress                types.String                                      `tfsdk:"local_address"`
+	IntervalInterfaceMsecs      types.Int64                                       `tfsdk:"interval_interface_msecs"`
+	IntervalInterfaceMinRx      types.Int64                                       `tfsdk:"interval_interface_min_rx"`
+	IntervalInterfaceMultiplier types.Int64                                       `tfsdk:"interval_interface_multiplier"`
+	Echo                        types.Bool                                        `tfsdk:"echo"`
 }
 
 type InterfacePortChannelSubinterfaceData struct {
-	Device                    types.String                                      `tfsdk:"device"`
-	Id                        types.String                                      `tfsdk:"id"`
-	Name                      types.String                                      `tfsdk:"name"`
-	Description               types.String                                      `tfsdk:"description"`
-	Shutdown                  types.Bool                                        `tfsdk:"shutdown"`
-	IpProxyArp                types.Bool                                        `tfsdk:"ip_proxy_arp"`
-	IpRedirects               types.Bool                                        `tfsdk:"ip_redirects"`
-	Unreachables              types.Bool                                        `tfsdk:"unreachables"`
-	VrfForwarding             types.String                                      `tfsdk:"vrf_forwarding"`
-	Ipv4Address               types.String                                      `tfsdk:"ipv4_address"`
-	Ipv4AddressMask           types.String                                      `tfsdk:"ipv4_address_mask"`
-	EncapsulationDot1qVlanId  types.Int64                                       `tfsdk:"encapsulation_dot1q_vlan_id"`
-	IpAccessGroupIn           types.String                                      `tfsdk:"ip_access_group_in"`
-	IpAccessGroupInEnable     types.Bool                                        `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut          types.String                                      `tfsdk:"ip_access_group_out"`
-	IpAccessGroupOutEnable    types.Bool                                        `tfsdk:"ip_access_group_out_enable"`
-	AutoQosClassify           types.Bool                                        `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice     types.Bool                                        `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust              types.Bool                                        `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos           types.Bool                                        `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp          types.Bool                                        `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts           types.Bool                                        `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera      types.Bool                                        `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer   types.Bool                                        `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip               types.Bool                                        `tfsdk:"auto_qos_voip"`
-	AutoQosVoipCiscoPhone     types.Bool                                        `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone types.Bool                                        `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust          types.Bool                                        `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice               types.String                                      `tfsdk:"trust_device"`
-	HelperAddresses           []InterfacePortChannelSubinterfaceHelperAddresses `tfsdk:"helper_addresses"`
+	Device                      types.String                                      `tfsdk:"device"`
+	Id                          types.String                                      `tfsdk:"id"`
+	Name                        types.String                                      `tfsdk:"name"`
+	Description                 types.String                                      `tfsdk:"description"`
+	Shutdown                    types.Bool                                        `tfsdk:"shutdown"`
+	IpProxyArp                  types.Bool                                        `tfsdk:"ip_proxy_arp"`
+	IpRedirects                 types.Bool                                        `tfsdk:"ip_redirects"`
+	Unreachables                types.Bool                                        `tfsdk:"unreachables"`
+	VrfForwarding               types.String                                      `tfsdk:"vrf_forwarding"`
+	Ipv4Address                 types.String                                      `tfsdk:"ipv4_address"`
+	Ipv4AddressMask             types.String                                      `tfsdk:"ipv4_address_mask"`
+	EncapsulationDot1qVlanId    types.Int64                                       `tfsdk:"encapsulation_dot1q_vlan_id"`
+	IpAccessGroupIn             types.String                                      `tfsdk:"ip_access_group_in"`
+	IpAccessGroupInEnable       types.Bool                                        `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupOut            types.String                                      `tfsdk:"ip_access_group_out"`
+	IpAccessGroupOutEnable      types.Bool                                        `tfsdk:"ip_access_group_out_enable"`
+	AutoQosClassify             types.Bool                                        `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice       types.Bool                                        `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                types.Bool                                        `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos             types.Bool                                        `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp            types.Bool                                        `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts             types.Bool                                        `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera        types.Bool                                        `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer     types.Bool                                        `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                 types.Bool                                        `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone       types.Bool                                        `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone   types.Bool                                        `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust            types.Bool                                        `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                 types.String                                      `tfsdk:"trust_device"`
+	HelperAddresses             []InterfacePortChannelSubinterfaceHelperAddresses `tfsdk:"helper_addresses"`
+	Template                    types.String                                      `tfsdk:"template"`
+	Enable                      types.Bool                                        `tfsdk:"enable"`
+	LocalAddress                types.String                                      `tfsdk:"local_address"`
+	IntervalInterfaceMsecs      types.Int64                                       `tfsdk:"interval_interface_msecs"`
+	IntervalInterfaceMinRx      types.Int64                                       `tfsdk:"interval_interface_min_rx"`
+	IntervalInterfaceMultiplier types.Int64                                       `tfsdk:"interval_interface_multiplier"`
+	Echo                        types.Bool                                        `tfsdk:"echo"`
 }
 type InterfacePortChannelSubinterfaceHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -237,6 +251,27 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string 
 	}
 	if !data.TrustDevice.IsNull() && !data.TrustDevice.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trust.device", data.TrustDevice.ValueString())
+	}
+	if !data.Template.IsNull() && !data.Template.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:template", data.Template.ValueString())
+	}
+	if !data.Enable.IsNull() && !data.Enable.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:enable", data.Enable.ValueBool())
+	}
+	if !data.LocalAddress.IsNull() && !data.LocalAddress.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:local-address", data.LocalAddress.ValueString())
+	}
+	if !data.IntervalInterfaceMsecs.IsNull() && !data.IntervalInterfaceMsecs.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.msecs", strconv.FormatInt(data.IntervalInterfaceMsecs.ValueInt64(), 10))
+	}
+	if !data.IntervalInterfaceMinRx.IsNull() && !data.IntervalInterfaceMinRx.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.min_rx", strconv.FormatInt(data.IntervalInterfaceMinRx.ValueInt64(), 10))
+	}
+	if !data.IntervalInterfaceMultiplier.IsNull() && !data.IntervalInterfaceMultiplier.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:interval-interface.multiplier", strconv.FormatInt(data.IntervalInterfaceMultiplier.ValueInt64(), 10))
+	}
+	if !data.Echo.IsNull() && !data.Echo.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:echo", data.Echo.ValueBool())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -506,6 +541,45 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 			data.HelperAddresses[i].Vrf = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:template"); value.Exists() && !data.Template.IsNull() {
+		data.Template = types.StringValue(value.String())
+	} else {
+		data.Template = types.StringNull()
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); !data.Enable.IsNull() {
+		if value.Exists() {
+			data.Enable = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Enable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() && !data.LocalAddress.IsNull() {
+		data.LocalAddress = types.StringValue(value.String())
+	} else {
+		data.LocalAddress = types.StringNull()
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.msecs"); value.Exists() && !data.IntervalInterfaceMsecs.IsNull() {
+		data.IntervalInterfaceMsecs = types.Int64Value(value.Int())
+	} else {
+		data.IntervalInterfaceMsecs = types.Int64Null()
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.min_rx"); value.Exists() && !data.IntervalInterfaceMinRx.IsNull() {
+		data.IntervalInterfaceMinRx = types.Int64Value(value.Int())
+	} else {
+		data.IntervalInterfaceMinRx = types.Int64Null()
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.multiplier"); value.Exists() && !data.IntervalInterfaceMultiplier.IsNull() {
+		data.IntervalInterfaceMultiplier = types.Int64Value(value.Int())
+	} else {
+		data.IntervalInterfaceMultiplier = types.Int64Null()
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); !data.Echo.IsNull() {
+		if value.Exists() {
+			data.Echo = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Echo = types.BoolNull()
+	}
 }
 
 func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, res gjson.Result) {
@@ -645,6 +719,31 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 			data.HelperAddresses = append(data.HelperAddresses, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:template"); value.Exists() {
+		data.Template = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); value.Exists() {
+		data.Enable = types.BoolValue(value.Bool())
+	} else {
+		data.Enable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() {
+		data.LocalAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.msecs"); value.Exists() {
+		data.IntervalInterfaceMsecs = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.min_rx"); value.Exists() {
+		data.IntervalInterfaceMinRx = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:interval-interface.multiplier"); value.Exists() {
+		data.IntervalInterfaceMultiplier = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); value.Exists() {
+		data.Echo = types.BoolValue(value.Bool())
+	} else {
+		data.Echo = types.BoolValue(false)
 	}
 }
 
@@ -819,6 +918,27 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/helper-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.Template.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", data.getPath()))
+	}
+	if !data.Enable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", data.getPath()))
+	}
+	if !data.LocalAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:local-address", data.getPath()))
+	}
+	if !data.IntervalInterfaceMsecs.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface/msecs", data.getPath()))
+	}
+	if !data.IntervalInterfaceMinRx.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx", data.getPath()))
+	}
+	if !data.IntervalInterfaceMultiplier.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier", data.getPath()))
+	}
+	if !data.Echo.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", data.getPath()))
 	}
 	return deletePaths
 }
