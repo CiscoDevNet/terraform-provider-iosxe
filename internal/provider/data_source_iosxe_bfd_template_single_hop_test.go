@@ -20,6 +20,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -28,9 +29,15 @@ import (
 func TestAccDataSourceIosxeBFDTemplateSingleHop(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "authentication_md5_keychain", "KEYC1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_min_tx", "200"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_min_rx", "200"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_multiplier", "4"))
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_min_tx", "200"))
+	}
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_min_rx", "200"))
+	}
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_multiplier", "4"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "echo", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "dampening_half_time", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "dampening_unsuppress_time", "30"))
@@ -52,9 +59,15 @@ func testAccDataSourceIosxeBFDTemplateSingleHopConfig() string {
 	config := `resource "iosxe_bfd_template_single_hop" "test" {` + "\n"
 	config += `	name = "SH-TEMPLATE-1"` + "\n"
 	config += `	authentication_md5_keychain = "KEYC1"` + "\n"
-	config += `	interval_milliseconds_min_tx = 200` + "\n"
-	config += `	interval_milliseconds_min_rx = 200` + "\n"
-	config += `	interval_milliseconds_multiplier = 4` + "\n"
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		config += `	interval_milliseconds_min_tx = 200` + "\n"
+	}
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		config += `	interval_milliseconds_min_rx = 200` + "\n"
+	}
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		config += `	interval_milliseconds_multiplier = 4` + "\n"
+	}
 	config += `	echo = true` + "\n"
 	config += `	dampening_half_time = 30` + "\n"
 	config += `	dampening_unsuppress_time = 30` + "\n"
