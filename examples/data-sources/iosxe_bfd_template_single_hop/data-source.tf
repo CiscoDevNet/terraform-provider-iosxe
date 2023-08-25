@@ -1,3 +1,3 @@
 data "iosxe_bfd_template_single_hop" "example" {
-  name = "singelHop"
+  name = "SH-TEMPLATE-1"
 }

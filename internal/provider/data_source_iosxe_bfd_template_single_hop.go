@@ -83,27 +83,27 @@ func (d *BFDTemplateSingleHopDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "keychain name",
 				Computed:            true,
 			},
-			"interval_singlehop_v2_mill_unit_min_tx": schema.Int64Attribute{
+			"interval_milliseconds_min_tx": schema.Int64Attribute{
 				MarkdownDescription: "Minimum transmit interval capability",
 				Computed:            true,
 			},
-			"interval_singlehop_v2_mill_unit_min_rx": schema.Int64Attribute{
+			"interval_milliseconds_min_rx": schema.Int64Attribute{
 				MarkdownDescription: "Minimum receive interval capability",
 				Computed:            true,
 			},
-			"interval_singlehop_v2_mill_unit_both": schema.Int64Attribute{
+			"interval_milliseconds_both": schema.Int64Attribute{
 				MarkdownDescription: "Minimum transmit and receive interval capability",
 				Computed:            true,
 			},
-			"interval_singlehop_v2_mill_unit_multiplier": schema.Int64Attribute{
+			"interval_milliseconds_multiplier": schema.Int64Attribute{
 				MarkdownDescription: "Multiplier value used to compute holddown",
 				Computed:            true,
 			},
-			"interval_singlehop_v2_ms_unit_min_rx": schema.Int64Attribute{
+			"interval_microseconds_min_rx": schema.Int64Attribute{
 				MarkdownDescription: "Minimum receive interval capability",
 				Computed:            true,
 			},
-			"interval_singlehop_v2_ms_unit_min_tx": schema.Int64Attribute{
+			"interval_microseconds_min_tx": schema.Int64Attribute{
 				MarkdownDescription: "Minimum transmit interval capability",
 				Computed:            true,
 			},

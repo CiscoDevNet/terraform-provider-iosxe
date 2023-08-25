@@ -33,45 +33,45 @@ import (
 )
 
 type BFDTemplateSingleHop struct {
-	Device                                types.String `tfsdk:"device"`
-	Id                                    types.String `tfsdk:"id"`
-	Name                                  types.String `tfsdk:"name"`
-	AuthenticationMd5Keychain             types.String `tfsdk:"authentication_md5_keychain"`
-	AuthenticationMeticulousMd5Keychain   types.String `tfsdk:"authentication_meticulous_md5_keychain"`
-	AuthenticationMeticulousSha1Keychain  types.String `tfsdk:"authentication_meticulous_sha_1_keychain"`
-	AuthenticationSha1Keychain            types.String `tfsdk:"authentication_sha_1_keychain"`
-	IntervalSinglehopV2MillUnitMinTx      types.Int64  `tfsdk:"interval_singlehop_v2_mill_unit_min_tx"`
-	IntervalSinglehopV2MillUnitMinRx      types.Int64  `tfsdk:"interval_singlehop_v2_mill_unit_min_rx"`
-	IntervalSinglehopV2MillUnitBoth       types.Int64  `tfsdk:"interval_singlehop_v2_mill_unit_both"`
-	IntervalSinglehopV2MillUnitMultiplier types.Int64  `tfsdk:"interval_singlehop_v2_mill_unit_multiplier"`
-	IntervalSinglehopV2MsUnitMinRx        types.Int64  `tfsdk:"interval_singlehop_v2_ms_unit_min_rx"`
-	IntervalSinglehopV2MsUnitMinTx        types.Int64  `tfsdk:"interval_singlehop_v2_ms_unit_min_tx"`
-	Echo                                  types.Bool   `tfsdk:"echo"`
-	DampeningHalfTime                     types.Int64  `tfsdk:"dampening_half_time"`
-	DampeningUnsuppressTime               types.Int64  `tfsdk:"dampening_unsuppress_time"`
-	DampeningSuppressTime                 types.Int64  `tfsdk:"dampening_suppress_time"`
-	DampeningMaxSuppressingTime           types.Int64  `tfsdk:"dampening_max_suppressing_time"`
+	Device                               types.String `tfsdk:"device"`
+	Id                                   types.String `tfsdk:"id"`
+	Name                                 types.String `tfsdk:"name"`
+	AuthenticationMd5Keychain            types.String `tfsdk:"authentication_md5_keychain"`
+	AuthenticationMeticulousMd5Keychain  types.String `tfsdk:"authentication_meticulous_md5_keychain"`
+	AuthenticationMeticulousSha1Keychain types.String `tfsdk:"authentication_meticulous_sha_1_keychain"`
+	AuthenticationSha1Keychain           types.String `tfsdk:"authentication_sha_1_keychain"`
+	IntervalMillisecondsMinTx            types.Int64  `tfsdk:"interval_milliseconds_min_tx"`
+	IntervalMillisecondsMinRx            types.Int64  `tfsdk:"interval_milliseconds_min_rx"`
+	IntervalMillisecondsBoth             types.Int64  `tfsdk:"interval_milliseconds_both"`
+	IntervalMillisecondsMultiplier       types.Int64  `tfsdk:"interval_milliseconds_multiplier"`
+	IntervalMicrosecondsMinRx            types.Int64  `tfsdk:"interval_microseconds_min_rx"`
+	IntervalMicrosecondsMinTx            types.Int64  `tfsdk:"interval_microseconds_min_tx"`
+	Echo                                 types.Bool   `tfsdk:"echo"`
+	DampeningHalfTime                    types.Int64  `tfsdk:"dampening_half_time"`
+	DampeningUnsuppressTime              types.Int64  `tfsdk:"dampening_unsuppress_time"`
+	DampeningSuppressTime                types.Int64  `tfsdk:"dampening_suppress_time"`
+	DampeningMaxSuppressingTime          types.Int64  `tfsdk:"dampening_max_suppressing_time"`
 }
 
 type BFDTemplateSingleHopData struct {
-	Device                                types.String `tfsdk:"device"`
-	Id                                    types.String `tfsdk:"id"`
-	Name                                  types.String `tfsdk:"name"`
-	AuthenticationMd5Keychain             types.String `tfsdk:"authentication_md5_keychain"`
-	AuthenticationMeticulousMd5Keychain   types.String `tfsdk:"authentication_meticulous_md5_keychain"`
-	AuthenticationMeticulousSha1Keychain  types.String `tfsdk:"authentication_meticulous_sha_1_keychain"`
-	AuthenticationSha1Keychain            types.String `tfsdk:"authentication_sha_1_keychain"`
-	IntervalSinglehopV2MillUnitMinTx      types.Int64  `tfsdk:"interval_singlehop_v2_mill_unit_min_tx"`
-	IntervalSinglehopV2MillUnitMinRx      types.Int64  `tfsdk:"interval_singlehop_v2_mill_unit_min_rx"`
-	IntervalSinglehopV2MillUnitBoth       types.Int64  `tfsdk:"interval_singlehop_v2_mill_unit_both"`
-	IntervalSinglehopV2MillUnitMultiplier types.Int64  `tfsdk:"interval_singlehop_v2_mill_unit_multiplier"`
-	IntervalSinglehopV2MsUnitMinRx        types.Int64  `tfsdk:"interval_singlehop_v2_ms_unit_min_rx"`
-	IntervalSinglehopV2MsUnitMinTx        types.Int64  `tfsdk:"interval_singlehop_v2_ms_unit_min_tx"`
-	Echo                                  types.Bool   `tfsdk:"echo"`
-	DampeningHalfTime                     types.Int64  `tfsdk:"dampening_half_time"`
-	DampeningUnsuppressTime               types.Int64  `tfsdk:"dampening_unsuppress_time"`
-	DampeningSuppressTime                 types.Int64  `tfsdk:"dampening_suppress_time"`
-	DampeningMaxSuppressingTime           types.Int64  `tfsdk:"dampening_max_suppressing_time"`
+	Device                               types.String `tfsdk:"device"`
+	Id                                   types.String `tfsdk:"id"`
+	Name                                 types.String `tfsdk:"name"`
+	AuthenticationMd5Keychain            types.String `tfsdk:"authentication_md5_keychain"`
+	AuthenticationMeticulousMd5Keychain  types.String `tfsdk:"authentication_meticulous_md5_keychain"`
+	AuthenticationMeticulousSha1Keychain types.String `tfsdk:"authentication_meticulous_sha_1_keychain"`
+	AuthenticationSha1Keychain           types.String `tfsdk:"authentication_sha_1_keychain"`
+	IntervalMillisecondsMinTx            types.Int64  `tfsdk:"interval_milliseconds_min_tx"`
+	IntervalMillisecondsMinRx            types.Int64  `tfsdk:"interval_milliseconds_min_rx"`
+	IntervalMillisecondsBoth             types.Int64  `tfsdk:"interval_milliseconds_both"`
+	IntervalMillisecondsMultiplier       types.Int64  `tfsdk:"interval_milliseconds_multiplier"`
+	IntervalMicrosecondsMinRx            types.Int64  `tfsdk:"interval_microseconds_min_rx"`
+	IntervalMicrosecondsMinTx            types.Int64  `tfsdk:"interval_microseconds_min_tx"`
+	Echo                                 types.Bool   `tfsdk:"echo"`
+	DampeningHalfTime                    types.Int64  `tfsdk:"dampening_half_time"`
+	DampeningUnsuppressTime              types.Int64  `tfsdk:"dampening_unsuppress_time"`
+	DampeningSuppressTime                types.Int64  `tfsdk:"dampening_suppress_time"`
+	DampeningMaxSuppressingTime          types.Int64  `tfsdk:"dampening_max_suppressing_time"`
 }
 
 func (data BFDTemplateSingleHop) getPath() string {
@@ -110,23 +110,23 @@ func (data BFDTemplateSingleHop) toBody(ctx context.Context) string {
 	if !data.AuthenticationSha1Keychain.IsNull() && !data.AuthenticationSha1Keychain.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"authentication.sha-1.keychain", data.AuthenticationSha1Keychain.ValueString())
 	}
-	if !data.IntervalSinglehopV2MillUnitMinTx.IsNull() && !data.IntervalSinglehopV2MillUnitMinTx.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.mill-unit.min-tx", strconv.FormatInt(data.IntervalSinglehopV2MillUnitMinTx.ValueInt64(), 10))
+	if !data.IntervalMillisecondsMinTx.IsNull() && !data.IntervalMillisecondsMinTx.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.mill-unit.min-tx", strconv.FormatInt(data.IntervalMillisecondsMinTx.ValueInt64(), 10))
 	}
-	if !data.IntervalSinglehopV2MillUnitMinRx.IsNull() && !data.IntervalSinglehopV2MillUnitMinRx.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.mill-unit.min-rx", strconv.FormatInt(data.IntervalSinglehopV2MillUnitMinRx.ValueInt64(), 10))
+	if !data.IntervalMillisecondsMinRx.IsNull() && !data.IntervalMillisecondsMinRx.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.mill-unit.min-rx", strconv.FormatInt(data.IntervalMillisecondsMinRx.ValueInt64(), 10))
 	}
-	if !data.IntervalSinglehopV2MillUnitBoth.IsNull() && !data.IntervalSinglehopV2MillUnitBoth.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.mill-unit.both", strconv.FormatInt(data.IntervalSinglehopV2MillUnitBoth.ValueInt64(), 10))
+	if !data.IntervalMillisecondsBoth.IsNull() && !data.IntervalMillisecondsBoth.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.mill-unit.both", strconv.FormatInt(data.IntervalMillisecondsBoth.ValueInt64(), 10))
 	}
-	if !data.IntervalSinglehopV2MillUnitMultiplier.IsNull() && !data.IntervalSinglehopV2MillUnitMultiplier.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.mill-unit.multiplier", strconv.FormatInt(data.IntervalSinglehopV2MillUnitMultiplier.ValueInt64(), 10))
+	if !data.IntervalMillisecondsMultiplier.IsNull() && !data.IntervalMillisecondsMultiplier.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.mill-unit.multiplier", strconv.FormatInt(data.IntervalMillisecondsMultiplier.ValueInt64(), 10))
 	}
-	if !data.IntervalSinglehopV2MsUnitMinRx.IsNull() && !data.IntervalSinglehopV2MsUnitMinRx.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.ms-unit.min-rx", strconv.FormatInt(data.IntervalSinglehopV2MsUnitMinRx.ValueInt64(), 10))
+	if !data.IntervalMicrosecondsMinRx.IsNull() && !data.IntervalMicrosecondsMinRx.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.ms-unit.min-rx", strconv.FormatInt(data.IntervalMicrosecondsMinRx.ValueInt64(), 10))
 	}
-	if !data.IntervalSinglehopV2MsUnitMinTx.IsNull() && !data.IntervalSinglehopV2MsUnitMinTx.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.ms-unit.min-tx", strconv.FormatInt(data.IntervalSinglehopV2MsUnitMinTx.ValueInt64(), 10))
+	if !data.IntervalMicrosecondsMinTx.IsNull() && !data.IntervalMicrosecondsMinTx.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interval-singlehop-v2.ms-unit.min-tx", strconv.FormatInt(data.IntervalMicrosecondsMinTx.ValueInt64(), 10))
 	}
 	if !data.Echo.IsNull() && !data.Echo.IsUnknown() {
 		if data.Echo.ValueBool() {
@@ -178,35 +178,35 @@ func (data *BFDTemplateSingleHop) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.AuthenticationSha1Keychain = types.StringNull()
 	}
-	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.min-tx"); value.Exists() && !data.IntervalSinglehopV2MillUnitMinTx.IsNull() {
-		data.IntervalSinglehopV2MillUnitMinTx = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.min-tx"); value.Exists() && !data.IntervalMillisecondsMinTx.IsNull() {
+		data.IntervalMillisecondsMinTx = types.Int64Value(value.Int())
 	} else {
-		data.IntervalSinglehopV2MillUnitMinTx = types.Int64Null()
+		data.IntervalMillisecondsMinTx = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.min-rx"); value.Exists() && !data.IntervalSinglehopV2MillUnitMinRx.IsNull() {
-		data.IntervalSinglehopV2MillUnitMinRx = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.min-rx"); value.Exists() && !data.IntervalMillisecondsMinRx.IsNull() {
+		data.IntervalMillisecondsMinRx = types.Int64Value(value.Int())
 	} else {
-		data.IntervalSinglehopV2MillUnitMinRx = types.Int64Null()
+		data.IntervalMillisecondsMinRx = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.both"); value.Exists() && !data.IntervalSinglehopV2MillUnitBoth.IsNull() {
-		data.IntervalSinglehopV2MillUnitBoth = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.both"); value.Exists() && !data.IntervalMillisecondsBoth.IsNull() {
+		data.IntervalMillisecondsBoth = types.Int64Value(value.Int())
 	} else {
-		data.IntervalSinglehopV2MillUnitBoth = types.Int64Null()
+		data.IntervalMillisecondsBoth = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.multiplier"); value.Exists() && !data.IntervalSinglehopV2MillUnitMultiplier.IsNull() {
-		data.IntervalSinglehopV2MillUnitMultiplier = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.multiplier"); value.Exists() && !data.IntervalMillisecondsMultiplier.IsNull() {
+		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
 	} else {
-		data.IntervalSinglehopV2MillUnitMultiplier = types.Int64Null()
+		data.IntervalMillisecondsMultiplier = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-singlehop-v2.ms-unit.min-rx"); value.Exists() && !data.IntervalSinglehopV2MsUnitMinRx.IsNull() {
-		data.IntervalSinglehopV2MsUnitMinRx = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "interval-singlehop-v2.ms-unit.min-rx"); value.Exists() && !data.IntervalMicrosecondsMinRx.IsNull() {
+		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
 	} else {
-		data.IntervalSinglehopV2MsUnitMinRx = types.Int64Null()
+		data.IntervalMicrosecondsMinRx = types.Int64Null()
 	}
-	if value := res.Get(prefix + "interval-singlehop-v2.ms-unit.min-tx"); value.Exists() && !data.IntervalSinglehopV2MsUnitMinTx.IsNull() {
-		data.IntervalSinglehopV2MsUnitMinTx = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "interval-singlehop-v2.ms-unit.min-tx"); value.Exists() && !data.IntervalMicrosecondsMinTx.IsNull() {
+		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
 	} else {
-		data.IntervalSinglehopV2MsUnitMinTx = types.Int64Null()
+		data.IntervalMicrosecondsMinTx = types.Int64Null()
 	}
 	if value := res.Get(prefix + "echo"); !data.Echo.IsNull() {
 		if value.Exists() {
@@ -257,22 +257,22 @@ func (data *BFDTemplateSingleHopData) fromBody(ctx context.Context, res gjson.Re
 		data.AuthenticationSha1Keychain = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.min-tx"); value.Exists() {
-		data.IntervalSinglehopV2MillUnitMinTx = types.Int64Value(value.Int())
+		data.IntervalMillisecondsMinTx = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.min-rx"); value.Exists() {
-		data.IntervalSinglehopV2MillUnitMinRx = types.Int64Value(value.Int())
+		data.IntervalMillisecondsMinRx = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.both"); value.Exists() {
-		data.IntervalSinglehopV2MillUnitBoth = types.Int64Value(value.Int())
+		data.IntervalMillisecondsBoth = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "interval-singlehop-v2.mill-unit.multiplier"); value.Exists() {
-		data.IntervalSinglehopV2MillUnitMultiplier = types.Int64Value(value.Int())
+		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "interval-singlehop-v2.ms-unit.min-rx"); value.Exists() {
-		data.IntervalSinglehopV2MsUnitMinRx = types.Int64Value(value.Int())
+		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "interval-singlehop-v2.ms-unit.min-tx"); value.Exists() {
-		data.IntervalSinglehopV2MsUnitMinTx = types.Int64Value(value.Int())
+		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "echo"); value.Exists() {
 		data.Echo = types.BoolValue(true)
@@ -320,22 +320,22 @@ func (data *BFDTemplateSingleHop) getDeletePaths(ctx context.Context) []string {
 	if !data.AuthenticationSha1Keychain.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/sha-1/keychain", data.getPath()))
 	}
-	if !data.IntervalSinglehopV2MillUnitMinTx.IsNull() {
+	if !data.IntervalMillisecondsMinTx.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-singlehop-v2/mill-unit/min-tx", data.getPath()))
 	}
-	if !data.IntervalSinglehopV2MillUnitMinRx.IsNull() {
+	if !data.IntervalMillisecondsMinRx.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-singlehop-v2/mill-unit/min-rx", data.getPath()))
 	}
-	if !data.IntervalSinglehopV2MillUnitBoth.IsNull() {
+	if !data.IntervalMillisecondsBoth.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-singlehop-v2/mill-unit/both", data.getPath()))
 	}
-	if !data.IntervalSinglehopV2MillUnitMultiplier.IsNull() {
+	if !data.IntervalMillisecondsMultiplier.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-singlehop-v2/mill-unit/multiplier", data.getPath()))
 	}
-	if !data.IntervalSinglehopV2MsUnitMinRx.IsNull() {
+	if !data.IntervalMicrosecondsMinRx.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-singlehop-v2/ms-unit/min-rx", data.getPath()))
 	}
-	if !data.IntervalSinglehopV2MsUnitMinTx.IsNull() {
+	if !data.IntervalMicrosecondsMinTx.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-singlehop-v2/ms-unit/min-tx", data.getPath()))
 	}
 	if !data.Echo.IsNull() {

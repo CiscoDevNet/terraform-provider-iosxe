@@ -88,42 +88,42 @@ func (r *BFDTemplateSingleHopResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: helpers.NewAttributeDescription("keychain name").String,
 				Optional:            true,
 			},
-			"interval_singlehop_v2_mill_unit_min_tx": schema.Int64Attribute{
+			"interval_milliseconds_min_tx": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(4, 9999),
 				},
 			},
-			"interval_singlehop_v2_mill_unit_min_rx": schema.Int64Attribute{
+			"interval_milliseconds_min_rx": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(4, 9999),
 				},
 			},
-			"interval_singlehop_v2_mill_unit_both": schema.Int64Attribute{
+			"interval_milliseconds_both": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit and receive interval capability").AddIntegerRangeDescription(4, 9999).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(4, 9999),
 				},
 			},
-			"interval_singlehop_v2_mill_unit_multiplier": schema.Int64Attribute{
+			"interval_milliseconds_multiplier": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Multiplier value used to compute holddown").AddIntegerRangeDescription(3, 50).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(3, 50),
 				},
 			},
-			"interval_singlehop_v2_ms_unit_min_rx": schema.Int64Attribute{
+			"interval_microseconds_min_rx": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum receive interval capability").AddIntegerRangeDescription(3300, 9999000).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(3300, 9999000),
 				},
 			},
-			"interval_singlehop_v2_ms_unit_min_tx": schema.Int64Attribute{
+			"interval_microseconds_min_tx": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Minimum transmit interval capability").AddIntegerRangeDescription(3300, 9999000).String,
 				Optional:            true,
 				Validators: []validator.Int64{

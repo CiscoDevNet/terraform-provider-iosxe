@@ -14,7 +14,7 @@ This data source can read the BFD Template Single Hop configuration.
 
 ```terraform
 data "iosxe_bfd_template_single_hop" "example" {
-  name = "singelHop"
+  name = "SH-TEMPLATE-1"
 }
 ```
 
@@ -41,9 +41,9 @@ data "iosxe_bfd_template_single_hop" "example" {
 - `dampening_unsuppress_time` (Number) Value to unsuppress a session
 - `echo` (Boolean) Use echo adjunct as bfd detection mechanism
 - `id` (String) The path of the retrieved object.
-- `interval_singlehop_v2_mill_unit_both` (Number) Minimum transmit and receive interval capability
-- `interval_singlehop_v2_mill_unit_min_rx` (Number) Minimum receive interval capability
-- `interval_singlehop_v2_mill_unit_min_tx` (Number) Minimum transmit interval capability
-- `interval_singlehop_v2_mill_unit_multiplier` (Number) Multiplier value used to compute holddown
-- `interval_singlehop_v2_ms_unit_min_rx` (Number) Minimum receive interval capability
-- `interval_singlehop_v2_ms_unit_min_tx` (Number) Minimum transmit interval capability
+- `interval_microseconds_min_rx` (Number) Minimum receive interval capability
+- `interval_microseconds_min_tx` (Number) Minimum transmit interval capability
+- `interval_milliseconds_both` (Number) Minimum transmit and receive interval capability
+- `interval_milliseconds_min_rx` (Number) Minimum receive interval capability
+- `interval_milliseconds_min_tx` (Number) Minimum transmit interval capability
+- `interval_milliseconds_multiplier` (Number) Multiplier value used to compute holddown

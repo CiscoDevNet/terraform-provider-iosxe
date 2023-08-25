@@ -1,11 +1,11 @@
---- 
+---
 name: BFD Template Single Hop
 path: Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=%v
 no_delete_attributes: true
 doc_category: BFD
 attributes:
   - yang_name: name
-    example: singelHop
+    example: SH-TEMPLATE-1
   - yang_name: authentication/auth-type/md5/md5/keychain
     xpath: authentication/md5/keychain
     tf_name: authentication_md5_keychain
@@ -27,30 +27,29 @@ attributes:
     exclude_test: true
   - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-tx
     xpath: interval-singlehop-v2/mill-unit/min-tx
-    tf_name: interval_singlehop_v2_mill_unit_min_tx
+    tf_name: interval_milliseconds_min_tx
     example: 200
   - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-rx
     xpath: interval-singlehop-v2/mill-unit/min-rx
-    tf_name: interval_singlehop_v2_mill_unit_min_rx
+    tf_name: interval_milliseconds_min_rx
     example: 200
   - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/interval-types/both/both
     xpath: interval-singlehop-v2/mill-unit/both
-    tf_name: interval_singlehop_v2_mill_unit_both
+    tf_name: interval_milliseconds_both
     example: 5
     exclude_test: true
   - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/multiplier
     xpath: interval-singlehop-v2/mill-unit/multiplier
-    tf_name: interval_singlehop_v2_mill_unit_multiplier
+    tf_name: interval_milliseconds_multiplier
     example: 4
-  # alternative
   - yang_name: interval-singlehop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-rx
     xpath: interval-singlehop-v2/ms-unit/min-rx
-    tf_name: interval_singlehop_v2_ms_unit_min_rx
+    tf_name: interval_microseconds_min_rx
     example: 200
     exclude_test: true
   - yang_name: interval-singlehop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-tx
     xpath: interval-singlehop-v2/ms-unit/min-tx
-    tf_name: interval_singlehop_v2_ms_unit_min_tx
+    tf_name: interval_microseconds_min_tx
     example: 200
     exclude_test: true
   - yang_name: echo
@@ -67,4 +66,3 @@ attributes:
   - yang_name: dampening/max-suppressing-time
     tf_name: dampening_max_suppressing_time
     example: 60
-

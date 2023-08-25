@@ -14,16 +14,16 @@ This resource can manage the BFD Template Single Hop configuration.
 
 ```terraform
 resource "iosxe_bfd_template_single_hop" "example" {
-  name                                       = "singelHop"
-  authentication_md5_keychain                = "KEYC1"
-  interval_singlehop_v2_mill_unit_min_tx     = 200
-  interval_singlehop_v2_mill_unit_min_rx     = 200
-  interval_singlehop_v2_mill_unit_multiplier = 4
-  echo                                       = true
-  dampening_half_time                        = 30
-  dampening_unsuppress_time                  = 30
-  dampening_suppress_time                    = 100
-  dampening_max_suppressing_time             = 60
+  name                             = "SH-TEMPLATE-1"
+  authentication_md5_keychain      = "KEYC1"
+  interval_milliseconds_min_tx     = 200
+  interval_milliseconds_min_rx     = 200
+  interval_milliseconds_multiplier = 4
+  echo                             = true
+  dampening_half_time              = 30
+  dampening_unsuppress_time        = 30
+  dampening_suppress_time          = 100
+  dampening_max_suppressing_time   = 60
 }
 ```
 
@@ -50,18 +50,18 @@ resource "iosxe_bfd_template_single_hop" "example" {
   - Range: `1`-`18000`
 - `device` (String) A device name from the provider configuration.
 - `echo` (Boolean) Use echo adjunct as bfd detection mechanism
-- `interval_singlehop_v2_mill_unit_both` (Number) Minimum transmit and receive interval capability
+- `interval_microseconds_min_rx` (Number) Minimum receive interval capability
+  - Range: `3300`-`9999000`
+- `interval_microseconds_min_tx` (Number) Minimum transmit interval capability
+  - Range: `3300`-`9999000`
+- `interval_milliseconds_both` (Number) Minimum transmit and receive interval capability
   - Range: `4`-`9999`
-- `interval_singlehop_v2_mill_unit_min_rx` (Number) Minimum receive interval capability
+- `interval_milliseconds_min_rx` (Number) Minimum receive interval capability
   - Range: `4`-`9999`
-- `interval_singlehop_v2_mill_unit_min_tx` (Number) Minimum transmit interval capability
+- `interval_milliseconds_min_tx` (Number) Minimum transmit interval capability
   - Range: `4`-`9999`
-- `interval_singlehop_v2_mill_unit_multiplier` (Number) Multiplier value used to compute holddown
+- `interval_milliseconds_multiplier` (Number) Multiplier value used to compute holddown
   - Range: `3`-`50`
-- `interval_singlehop_v2_ms_unit_min_rx` (Number) Minimum receive interval capability
-  - Range: `3300`-`9999000`
-- `interval_singlehop_v2_ms_unit_min_tx` (Number) Minimum transmit interval capability
-  - Range: `3300`-`9999000`
 
 ### Read-Only
 
@@ -72,5 +72,5 @@ resource "iosxe_bfd_template_single_hop" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxe_bfd_template_single_hop.example "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=singelHop"
+terraform import iosxe_bfd_template_single_hop.example "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=SH-TEMPLATE-1"
 ```

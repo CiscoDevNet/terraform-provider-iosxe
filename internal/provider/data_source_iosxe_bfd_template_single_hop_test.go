@@ -28,9 +28,9 @@ import (
 func TestAccDataSourceIosxeBFDTemplateSingleHop(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "authentication_md5_keychain", "KEYC1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_singlehop_v2_mill_unit_min_tx", "200"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_singlehop_v2_mill_unit_min_rx", "200"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_singlehop_v2_mill_unit_multiplier", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_min_tx", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_min_rx", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "interval_milliseconds_multiplier", "4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "echo", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "dampening_half_time", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bfd_template_single_hop.test", "dampening_unsuppress_time", "30"))
@@ -50,11 +50,11 @@ func TestAccDataSourceIosxeBFDTemplateSingleHop(t *testing.T) {
 
 func testAccDataSourceIosxeBFDTemplateSingleHopConfig() string {
 	config := `resource "iosxe_bfd_template_single_hop" "test" {` + "\n"
-	config += `	name = "singelHop"` + "\n"
+	config += `	name = "SH-TEMPLATE-1"` + "\n"
 	config += `	authentication_md5_keychain = "KEYC1"` + "\n"
-	config += `	interval_singlehop_v2_mill_unit_min_tx = 200` + "\n"
-	config += `	interval_singlehop_v2_mill_unit_min_rx = 200` + "\n"
-	config += `	interval_singlehop_v2_mill_unit_multiplier = 4` + "\n"
+	config += `	interval_milliseconds_min_tx = 200` + "\n"
+	config += `	interval_milliseconds_min_rx = 200` + "\n"
+	config += `	interval_milliseconds_multiplier = 4` + "\n"
 	config += `	echo = true` + "\n"
 	config += `	dampening_half_time = 30` + "\n"
 	config += `	dampening_unsuppress_time = 30` + "\n"
@@ -64,7 +64,7 @@ func testAccDataSourceIosxeBFDTemplateSingleHopConfig() string {
 
 	config += `
 		data "iosxe_bfd_template_single_hop" "test" {
-			name = "singelHop"
+			name = "SH-TEMPLATE-1"
 			depends_on = [iosxe_bfd_template_single_hop.test]
 		}
 	`

@@ -27,11 +27,11 @@ import (
 
 func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "name", "singelHop"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "name", "SH-TEMPLATE-1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "authentication_md5_keychain", "KEYC1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "interval_singlehop_v2_mill_unit_min_tx", "200"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "interval_singlehop_v2_mill_unit_min_rx", "200"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "interval_singlehop_v2_mill_unit_multiplier", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "interval_milliseconds_min_tx", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "interval_milliseconds_min_rx", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "interval_milliseconds_multiplier", "4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "echo", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "dampening_half_time", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_single_hop.test", "dampening_unsuppress_time", "30"))
@@ -51,7 +51,7 @@ func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
 			{
 				ResourceName:  "iosxe_bfd_template_single_hop.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=singelHop",
+				ImportStateId: "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=SH-TEMPLATE-1",
 			},
 		},
 	})
@@ -59,18 +59,18 @@ func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
 
 func testAccIosxeBFDTemplateSingleHopConfig_minimum() string {
 	config := `resource "iosxe_bfd_template_single_hop" "test" {` + "\n"
-	config += `	name = "singelHop"` + "\n"
+	config += `	name = "SH-TEMPLATE-1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
 
 func testAccIosxeBFDTemplateSingleHopConfig_all() string {
 	config := `resource "iosxe_bfd_template_single_hop" "test" {` + "\n"
-	config += `	name = "singelHop"` + "\n"
+	config += `	name = "SH-TEMPLATE-1"` + "\n"
 	config += `	authentication_md5_keychain = "KEYC1"` + "\n"
-	config += `	interval_singlehop_v2_mill_unit_min_tx = 200` + "\n"
-	config += `	interval_singlehop_v2_mill_unit_min_rx = 200` + "\n"
-	config += `	interval_singlehop_v2_mill_unit_multiplier = 4` + "\n"
+	config += `	interval_milliseconds_min_tx = 200` + "\n"
+	config += `	interval_milliseconds_min_rx = 200` + "\n"
+	config += `	interval_milliseconds_multiplier = 4` + "\n"
 	config += `	echo = true` + "\n"
 	config += `	dampening_half_time = 30` + "\n"
 	config += `	dampening_unsuppress_time = 30` + "\n"
