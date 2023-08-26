@@ -7,7 +7,7 @@ resource "iosxe_bgp_neighbor" "example" {
   cluster_id                                = "1234"
   version                                   = 4
   disable_connected_check                   = false
-  fall_over_default_enable                  = true
+  fall_over_default_enable                  = false
   fall_over_default_route_map               = "RMAP"
   fall_over_bfd_single_hop                  = true
   fall_over_bfd_check_control_plane_failure = true

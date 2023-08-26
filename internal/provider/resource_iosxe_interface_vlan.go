@@ -258,7 +258,7 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 					},
 				},
 			},
-			"ipv6_address_prefix_lists": schema.ListNestedAttribute{
+			"ipv6_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

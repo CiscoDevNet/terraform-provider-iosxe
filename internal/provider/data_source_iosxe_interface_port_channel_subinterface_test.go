@@ -59,10 +59,10 @@ func TestAccDataSourceIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_mtu", "1300"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_nd_ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_address_dhcp", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b6"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b8"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_link_local_addresses.0.link_local", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_address_prefix_lists.0.prefix", "2001:DB8::/32"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_address_prefix_lists.0.eui_64", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.prefix", "2003:DB8::/32"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.eui_64", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -137,11 +137,11 @@ func testAccDataSourceIosxeInterfacePortChannelSubinterfaceConfig() string {
 	config += `	ipv6_nd_ra_suppress_all = true` + "\n"
 	config += `	ipv6_address_dhcp = true` + "\n"
 	config += `	ipv6_link_local_addresses = [{` + "\n"
-	config += `		address = "fe80::9656:d028:8652:66b6"` + "\n"
+	config += `		address = "fe80::9656:d028:8652:66b8"` + "\n"
 	config += `		link_local = true` + "\n"
 	config += `	}]` + "\n"
-	config += `	ipv6_address_prefix_lists = [{` + "\n"
-	config += `		prefix = "2001:DB8::/32"` + "\n"
+	config += `	ipv6_addresses = [{` + "\n"
+	config += `		prefix = "2003:DB8::/32"` + "\n"
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"

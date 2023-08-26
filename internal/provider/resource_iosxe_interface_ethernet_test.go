@@ -64,8 +64,8 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_address_dhcp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b6"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_link_local_addresses.0.link_local", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_address_prefix_lists.0.prefix", "2001:DB8::/32"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_address_prefix_lists.0.eui_64", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_addresses.0.prefix", "2001:DB8::/32"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_addresses.0.eui_64", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -149,7 +149,7 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `		address = "fe80::9656:d028:8652:66b6"` + "\n"
 	config += `		link_local = true` + "\n"
 	config += `	}]` + "\n"
-	config += `	ipv6_address_prefix_lists = [{` + "\n"
+	config += `	ipv6_addresses = [{` + "\n"
 	config += `		prefix = "2001:DB8::/32"` + "\n"
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"

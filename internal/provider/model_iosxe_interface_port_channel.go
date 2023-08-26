@@ -81,7 +81,7 @@ type InterfacePortChannel struct {
 	Ipv6AddressAutoconfigDefault types.Bool                                   `tfsdk:"ipv6_address_autoconfig_default"`
 	Ipv6AddressDhcp              types.Bool                                   `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfacePortChannelIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6AddressPrefixLists       []InterfacePortChannelIpv6AddressPrefixLists `tfsdk:"ipv6_address_prefix_lists"`
+	Ipv6Addresses                []InterfacePortChannelIpv6Addresses          `tfsdk:"ipv6_addresses"`
 }
 
 type InterfacePortChannelData struct {
@@ -130,7 +130,7 @@ type InterfacePortChannelData struct {
 	Ipv6AddressAutoconfigDefault types.Bool                                   `tfsdk:"ipv6_address_autoconfig_default"`
 	Ipv6AddressDhcp              types.Bool                                   `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfacePortChannelIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6AddressPrefixLists       []InterfacePortChannelIpv6AddressPrefixLists `tfsdk:"ipv6_address_prefix_lists"`
+	Ipv6Addresses                []InterfacePortChannelIpv6Addresses          `tfsdk:"ipv6_addresses"`
 }
 type InterfacePortChannelHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -141,7 +141,7 @@ type InterfacePortChannelIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
 	LinkLocal types.Bool   `tfsdk:"link_local"`
 }
-type InterfacePortChannelIpv6AddressPrefixLists struct {
+type InterfacePortChannelIpv6Addresses struct {
 	Prefix types.String `tfsdk:"prefix"`
 	Eui64  types.Bool   `tfsdk:"eui_64"`
 }
@@ -357,9 +357,9 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.Ipv6AddressPrefixLists) > 0 {
+	if len(data.Ipv6Addresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.prefix-list", []interface{}{})
-		for index, item := range data.Ipv6AddressPrefixLists {
+		for index, item := range data.Ipv6Addresses {
 			if !item.Prefix.IsNull() && !item.Prefix.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.prefix-list"+"."+strconv.Itoa(index)+"."+"prefix", item.Prefix.ValueString())
 			}
@@ -752,9 +752,9 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 			data.Ipv6LinkLocalAddresses[i].LinkLocal = types.BoolNull()
 		}
 	}
-	for i := range data.Ipv6AddressPrefixLists {
+	for i := range data.Ipv6Addresses {
 		keys := [...]string{"prefix"}
-		keyValues := [...]string{data.Ipv6AddressPrefixLists[i].Prefix.ValueString()}
+		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "ipv6.address.prefix-list").ForEach(
@@ -775,19 +775,19 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 				return true
 			},
 		)
-		if value := r.Get("prefix"); value.Exists() && !data.Ipv6AddressPrefixLists[i].Prefix.IsNull() {
-			data.Ipv6AddressPrefixLists[i].Prefix = types.StringValue(value.String())
+		if value := r.Get("prefix"); value.Exists() && !data.Ipv6Addresses[i].Prefix.IsNull() {
+			data.Ipv6Addresses[i].Prefix = types.StringValue(value.String())
 		} else {
-			data.Ipv6AddressPrefixLists[i].Prefix = types.StringNull()
+			data.Ipv6Addresses[i].Prefix = types.StringNull()
 		}
-		if value := r.Get("eui-64"); !data.Ipv6AddressPrefixLists[i].Eui64.IsNull() {
+		if value := r.Get("eui-64"); !data.Ipv6Addresses[i].Eui64.IsNull() {
 			if value.Exists() {
-				data.Ipv6AddressPrefixLists[i].Eui64 = types.BoolValue(true)
+				data.Ipv6Addresses[i].Eui64 = types.BoolValue(true)
 			} else {
-				data.Ipv6AddressPrefixLists[i].Eui64 = types.BoolValue(false)
+				data.Ipv6Addresses[i].Eui64 = types.BoolValue(false)
 			}
 		} else {
-			data.Ipv6AddressPrefixLists[i].Eui64 = types.BoolNull()
+			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
 }
@@ -1003,9 +1003,9 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 		})
 	}
 	if value := res.Get(prefix + "ipv6.address.prefix-list"); value.Exists() {
-		data.Ipv6AddressPrefixLists = make([]InterfacePortChannelIpv6AddressPrefixLists, 0)
+		data.Ipv6Addresses = make([]InterfacePortChannelIpv6Addresses, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfacePortChannelIpv6AddressPrefixLists{}
+			item := InterfacePortChannelIpv6Addresses{}
 			if cValue := v.Get("prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -1014,7 +1014,7 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 			} else {
 				item.Eui64 = types.BoolValue(false)
 			}
-			data.Ipv6AddressPrefixLists = append(data.Ipv6AddressPrefixLists, item)
+			data.Ipv6Addresses = append(data.Ipv6Addresses, item)
 			return true
 		})
 	}
@@ -1072,11 +1072,11 @@ func (data *InterfacePortChannel) getDeletedListItems(ctx context.Context, state
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Ipv6AddressPrefixLists {
-		stateKeyValues := [...]string{state.Ipv6AddressPrefixLists[i].Prefix.ValueString()}
+	for i := range state.Ipv6Addresses {
+		stateKeyValues := [...]string{state.Ipv6Addresses[i].Prefix.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv6AddressPrefixLists[i].Prefix.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6Addresses[i].Prefix.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1084,9 +1084,9 @@ func (data *InterfacePortChannel) getDeletedListItems(ctx context.Context, state
 		}
 
 		found := false
-		for j := range data.Ipv6AddressPrefixLists {
+		for j := range data.Ipv6Addresses {
 			found = true
-			if state.Ipv6AddressPrefixLists[i].Prefix.ValueString() != data.Ipv6AddressPrefixLists[j].Prefix.ValueString() {
+			if state.Ipv6Addresses[i].Prefix.ValueString() != data.Ipv6Addresses[j].Prefix.ValueString() {
 				found = false
 			}
 			if found {
@@ -1174,9 +1174,9 @@ func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []str
 		}
 	}
 
-	for i := range data.Ipv6AddressPrefixLists {
-		keyValues := [...]string{data.Ipv6AddressPrefixLists[i].Prefix.ValueString()}
-		if !data.Ipv6AddressPrefixLists[i].Eui64.IsNull() && !data.Ipv6AddressPrefixLists[i].Eui64.ValueBool() {
+	for i := range data.Ipv6Addresses {
+		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
+		if !data.Ipv6Addresses[i].Eui64.IsNull() && !data.Ipv6Addresses[i].Eui64.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/prefix-list=%v/eui-64", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
@@ -1315,8 +1315,8 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.Ipv6AddressPrefixLists {
-		keyValues := [...]string{data.Ipv6AddressPrefixLists[i].Prefix.ValueString()}
+	for i := range data.Ipv6Addresses {
+		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

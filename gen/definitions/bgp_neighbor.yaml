@@ -26,7 +26,7 @@ attributes:
   - yang_name: disable-connected-check
     example: false
   - yang_name: fall-over/default/enable
-    example: true
+    example: false
   - yang_name: fall-over/default/route-map
     example: RMAP
   - yang_name: fall-over/bfd/hop-choice/multi-hop/multi-hop

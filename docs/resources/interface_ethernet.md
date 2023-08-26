@@ -51,7 +51,7 @@ resource "iosxe_interface_ethernet" "example" {
       link_local = true
     }
   ]
-  ipv6_address_prefix_lists = [
+  ipv6_addresses = [
     {
       prefix = "2001:DB8::/32"
       eui_64 = true
@@ -111,7 +111,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `ipv4_address_mask` (String)
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
-- `ipv6_address_prefix_lists` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_address_prefix_lists))
+- `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
@@ -146,8 +146,8 @@ Optional:
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
 
-<a id="nestedatt--ipv6_address_prefix_lists"></a>
-### Nested Schema for `ipv6_address_prefix_lists`
+<a id="nestedatt--ipv6_addresses"></a>
+### Nested Schema for `ipv6_addresses`
 
 Required:
 

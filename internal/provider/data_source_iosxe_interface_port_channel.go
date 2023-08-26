@@ -263,7 +263,7 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 			},
-			"ipv6_address_prefix_lists": schema.ListNestedAttribute{
+			"ipv6_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

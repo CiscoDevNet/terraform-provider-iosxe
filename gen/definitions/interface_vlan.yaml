@@ -117,16 +117,16 @@ attributes:
     attributes:
       - yang_name: address
         id: true
-        example: fe80::9656:d028:8652:66b6
+        example: fe80::9656:d028:8652:66bb
       - yang_name: link-local
         example: true
   - yang_name: ipv6/address/prefix-list
-    tf_name: ipv6_address_prefix_lists
+    tf_name: ipv6_addresses
     type: List
     attributes:
       - yang_name: prefix
         id: true
-        example: 2001:DB8::/32
+        example: 2006:DB8::/32
       - yang_name: eui-64
         example: true
 test_prerequisites:

@@ -214,7 +214,7 @@ attributes:
       - yang_name: link-local
         example: true
   - yang_name: ipv6/address/prefix-list
-    tf_name: ipv6_address_prefix_lists
+    tf_name: ipv6_addresses
     type: List
     attributes:
       - yang_name: prefix

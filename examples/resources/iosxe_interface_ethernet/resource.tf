@@ -36,7 +36,7 @@ resource "iosxe_interface_ethernet" "example" {
       link_local = true
     }
   ]
-  ipv6_address_prefix_lists = [
+  ipv6_addresses = [
     {
       prefix = "2001:DB8::/32"
       eui_64 = true

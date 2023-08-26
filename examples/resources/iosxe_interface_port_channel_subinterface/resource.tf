@@ -25,13 +25,13 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
   ipv6_address_dhcp       = true
   ipv6_link_local_addresses = [
     {
-      address    = "fe80::9656:d028:8652:66b6"
+      address    = "fe80::9656:d028:8652:66b8"
       link_local = true
     }
   ]
-  ipv6_address_prefix_lists = [
+  ipv6_addresses = [
     {
-      prefix = "2001:DB8::/32"
+      prefix = "2003:DB8::/32"
       eui_64 = true
     }
   ]

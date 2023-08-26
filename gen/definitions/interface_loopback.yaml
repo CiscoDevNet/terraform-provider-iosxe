@@ -51,6 +51,7 @@ attributes:
     example: 1300
   - yang_name: ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all
     example: true
+    exclude_test: true
   - yang_name: ipv6/address/autoconfig/default
     example: true
     exclude_test: true
@@ -62,16 +63,16 @@ attributes:
     attributes:
       - yang_name: address
         id: true
-        example: fe80::9656:d028:8652:66b6
+        example: fe80::9656:d028:8652:66b7
       - yang_name: link-local
         example: true
   - yang_name: ipv6/address/prefix-list
-    tf_name: ipv6_address_prefix_lists
+    tf_name: ipv6_addresses
     type: List
     attributes:
       - yang_name: prefix
         id: true
-        example: 2001:DB8::/32
+        example: 2002:DB8::/32
       - yang_name: eui-64
         example: true
 test_prerequisites:

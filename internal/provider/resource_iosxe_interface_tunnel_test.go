@@ -39,10 +39,10 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_mtu", "1300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_nd_ra_suppress_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_address_dhcp", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66b6"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.address", "fe80::9656:d028:8652:66ba"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_link_local_addresses.0.link_local", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_address_prefix_lists.0.prefix", "2001:DB8::/32"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_address_prefix_lists.0.eui_64", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_addresses.0.prefix", "2005:DB8::/32"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_destination_ipv4", "2.2.2.2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "crypto_ipsec_df_bit", "clear"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address", "10.1.1.1"))
@@ -122,11 +122,11 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	ipv6_nd_ra_suppress_all = true` + "\n"
 	config += `	ipv6_address_dhcp = true` + "\n"
 	config += `	ipv6_link_local_addresses = [{` + "\n"
-	config += `		address = "fe80::9656:d028:8652:66b6"` + "\n"
+	config += `		address = "fe80::9656:d028:8652:66ba"` + "\n"
 	config += `		link_local = true` + "\n"
 	config += `	}]` + "\n"
-	config += `	ipv6_address_prefix_lists = [{` + "\n"
-	config += `		prefix = "2001:DB8::/32"` + "\n"
+	config += `	ipv6_addresses = [{` + "\n"
+	config += `		prefix = "2005:DB8::/32"` + "\n"
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	tunnel_destination_ipv4 = "2.2.2.2"` + "\n"
