@@ -45,6 +45,19 @@ resource "iosxe_ospf_vrf" "example" {
       mask = "255.255.255.0"
     }
   ]
+  areas = [
+    {
+      area_id                                        = "5"
+      authentication_message_digest                  = true
+      nssa                                           = true
+      nssa_default_information_originate             = true
+      nssa_default_information_originate_metric      = 100
+      nssa_default_information_originate_metric_type = 1
+      nssa_no_summary                                = true
+      nssa_no_redistribution                         = true
+    }
+  ]
+  passive_interface_default = true
 }
 ```
 
@@ -59,6 +72,7 @@ resource "iosxe_ospf_vrf" "example" {
 
 ### Optional
 
+- `areas` (Attributes List) OSPF area parameters (see [below for nested schema](#nestedatt--areas))
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
@@ -75,6 +89,7 @@ resource "iosxe_ospf_vrf" "example" {
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
 - `neighbor` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbor))
 - `network` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--network))
+- `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
 - `priority` (Number) OSPF topology priority
   - Range: `0`-`127`
 - `router_id` (String) Override configured router identifier (peers will reset)
@@ -84,6 +99,26 @@ resource "iosxe_ospf_vrf" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--areas"></a>
+### Nested Schema for `areas`
+
+Required:
+
+- `area_id` (String) OSPF area ID
+
+Optional:
+
+- `authentication_message_digest` (Boolean) Use message-digest authentication
+- `nssa` (Boolean) Specify a NSSA area
+- `nssa_default_information_originate` (Boolean) Originate Type 7 default into NSSA area
+- `nssa_default_information_originate_metric` (Number) OSPF default metric
+  - Range: `0`-`16777214`
+- `nssa_default_information_originate_metric_type` (Number) OSPF metric type for default routes
+  - Range: `1`-`2`
+- `nssa_no_redistribution` (Boolean) No redistribution into this NSSA area
+- `nssa_no_summary` (Boolean) Do not send summary LSA into NSSA
+
 
 <a id="nestedatt--neighbor"></a>
 ### Nested Schema for `neighbor`

@@ -228,6 +228,56 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 					},
 				},
 			},
+			"areas": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("OSPF area parameters").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"area_id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("OSPF area ID").String,
+							Required:            true,
+						},
+						"authentication_message_digest": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").String,
+							Optional:            true,
+						},
+						"nssa": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a NSSA area").String,
+							Optional:            true,
+						},
+						"nssa_default_information_originate": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Originate Type 7 default into NSSA area").String,
+							Optional:            true,
+						},
+						"nssa_default_information_originate_metric": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("OSPF default metric").AddIntegerRangeDescription(0, 16777214).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 16777214),
+							},
+						},
+						"nssa_default_information_originate_metric_type": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("OSPF metric type for default routes").AddIntegerRangeDescription(1, 2).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2),
+							},
+						},
+						"nssa_no_summary": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Do not send summary LSA into NSSA").String,
+							Optional:            true,
+						},
+						"nssa_no_redistribution": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No redistribution into this NSSA area").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_default": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").String,
+				Optional:            true,
+			},
 		},
 	}
 }

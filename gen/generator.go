@@ -379,7 +379,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 			if len(leaf.Type.Pattern) > 0 {
 				attr.StringPatterns = leaf.Type.Pattern
 			}
-		} else if contains([]string{"uint8", "uint16", "uint32", "uint64"}, leaf.Type.Kind.String()) {
+		} else if contains([]string{"uint8", "uint16", "uint32", "uint64", "int8", "int16", "int32", "int64"}, leaf.Type.Kind.String()) {
 			attr.Type = "Int64"
 			if leaf.Type.Range != nil {
 				attr.MinInt = int64(leaf.Type.Range[0].Min.Value)

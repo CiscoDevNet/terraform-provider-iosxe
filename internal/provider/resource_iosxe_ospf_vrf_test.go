@@ -46,6 +46,15 @@ func TestAccIosxeOSPFVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "summary_address.0.ip", "3.3.3.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "summary_address.0.mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "areas.0.area_id", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "areas.0.authentication_message_digest", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "areas.0.nssa", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "areas.0.nssa_default_information_originate", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "areas.0.nssa_default_information_originate_metric", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "areas.0.nssa_default_information_originate_metric_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "areas.0.nssa_no_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "areas.0.nssa_no_redistribution", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf_vrf.test", "passive_interface_default", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -114,6 +123,17 @@ func testAccIosxeOSPFVRFConfig_all() string {
 	config += `		ip = "3.3.3.0"` + "\n"
 	config += `		mask = "255.255.255.0"` + "\n"
 	config += `	}]` + "\n"
+	config += `	areas = [{` + "\n"
+	config += `		area_id = "5"` + "\n"
+	config += `		authentication_message_digest = true` + "\n"
+	config += `		nssa = true` + "\n"
+	config += `		nssa_default_information_originate = true` + "\n"
+	config += `		nssa_default_information_originate_metric = 100` + "\n"
+	config += `		nssa_default_information_originate_metric_type = 1` + "\n"
+	config += `		nssa_no_summary = true` + "\n"
+	config += `		nssa_no_redistribution = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	passive_interface_default = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

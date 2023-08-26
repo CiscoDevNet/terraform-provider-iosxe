@@ -54,6 +54,8 @@ type OSPFVRF struct {
 	RouterId                          types.String            `tfsdk:"router_id"`
 	Shutdown                          types.Bool              `tfsdk:"shutdown"`
 	SummaryAddress                    []OSPFVRFSummaryAddress `tfsdk:"summary_address"`
+	Areas                             []OSPFVRFAreas          `tfsdk:"areas"`
+	PassiveInterfaceDefault           types.Bool              `tfsdk:"passive_interface_default"`
 }
 
 type OSPFVRFData struct {
@@ -75,6 +77,8 @@ type OSPFVRFData struct {
 	RouterId                          types.String            `tfsdk:"router_id"`
 	Shutdown                          types.Bool              `tfsdk:"shutdown"`
 	SummaryAddress                    []OSPFVRFSummaryAddress `tfsdk:"summary_address"`
+	Areas                             []OSPFVRFAreas          `tfsdk:"areas"`
+	PassiveInterfaceDefault           types.Bool              `tfsdk:"passive_interface_default"`
 }
 type OSPFVRFNeighbor struct {
 	Ip       types.String `tfsdk:"ip"`
@@ -89,6 +93,16 @@ type OSPFVRFNetwork struct {
 type OSPFVRFSummaryAddress struct {
 	Ip   types.String `tfsdk:"ip"`
 	Mask types.String `tfsdk:"mask"`
+}
+type OSPFVRFAreas struct {
+	AreaId                                    types.String `tfsdk:"area_id"`
+	AuthenticationMessageDigest               types.Bool   `tfsdk:"authentication_message_digest"`
+	Nssa                                      types.Bool   `tfsdk:"nssa"`
+	NssaDefaultInformationOriginate           types.Bool   `tfsdk:"nssa_default_information_originate"`
+	NssaDefaultInformationOriginateMetric     types.Int64  `tfsdk:"nssa_default_information_originate_metric"`
+	NssaDefaultInformationOriginateMetricType types.Int64  `tfsdk:"nssa_default_information_originate_metric_type"`
+	NssaNoSummary                             types.Bool   `tfsdk:"nssa_no_summary"`
+	NssaNoRedistribution                      types.Bool   `tfsdk:"nssa_no_redistribution"`
 }
 
 func (data OSPFVRF) getPath() string {
@@ -161,6 +175,9 @@ func (data OSPFVRF) toBody(ctx context.Context) string {
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", data.Shutdown.ValueBool())
 	}
+	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.default", data.PassiveInterfaceDefault.ValueBool())
+	}
 	if len(data.Neighbor) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor", []interface{}{})
 		for index, item := range data.Neighbor {
@@ -197,6 +214,45 @@ func (data OSPFVRF) toBody(ctx context.Context) string {
 			}
 			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summary-address"+"."+strconv.Itoa(index)+"."+"mask", item.Mask.ValueString())
+			}
+		}
+	}
+	if len(data.Areas) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area", []interface{}{})
+		for index, item := range data.Areas {
+			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"area-id", item.AreaId.ValueString())
+			}
+			if !item.AuthenticationMessageDigest.IsNull() && !item.AuthenticationMessageDigest.IsUnknown() {
+				if item.AuthenticationMessageDigest.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"authentication.message-digest", map[string]string{})
+				}
+			}
+			if !item.Nssa.IsNull() && !item.Nssa.IsUnknown() {
+				if item.Nssa.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa", map[string]string{})
+				}
+			}
+			if !item.NssaDefaultInformationOriginate.IsNull() && !item.NssaDefaultInformationOriginate.IsUnknown() {
+				if item.NssaDefaultInformationOriginate.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate", map[string]string{})
+				}
+			}
+			if !item.NssaDefaultInformationOriginateMetric.IsNull() && !item.NssaDefaultInformationOriginateMetric.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate.metric", strconv.FormatInt(item.NssaDefaultInformationOriginateMetric.ValueInt64(), 10))
+			}
+			if !item.NssaDefaultInformationOriginateMetricType.IsNull() && !item.NssaDefaultInformationOriginateMetricType.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate.metric-type", strconv.FormatInt(item.NssaDefaultInformationOriginateMetricType.ValueInt64(), 10))
+			}
+			if !item.NssaNoSummary.IsNull() && !item.NssaNoSummary.IsUnknown() {
+				if item.NssaNoSummary.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-summary", map[string]string{})
+				}
+			}
+			if !item.NssaNoRedistribution.IsNull() && !item.NssaNoRedistribution.IsUnknown() {
+				if item.NssaNoRedistribution.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-redistribution", map[string]string{})
+				}
 			}
 		}
 	}
@@ -407,6 +463,97 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.SummaryAddress[i].Mask = types.StringNull()
 		}
 	}
+	for i := range data.Areas {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "area").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("area-id"); value.Exists() && !data.Areas[i].AreaId.IsNull() {
+			data.Areas[i].AreaId = types.StringValue(value.String())
+		} else {
+			data.Areas[i].AreaId = types.StringNull()
+		}
+		if value := r.Get("authentication.message-digest"); !data.Areas[i].AuthenticationMessageDigest.IsNull() {
+			if value.Exists() {
+				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].AuthenticationMessageDigest = types.BoolNull()
+		}
+		if value := r.Get("nssa"); !data.Areas[i].Nssa.IsNull() {
+			if value.Exists() {
+				data.Areas[i].Nssa = types.BoolValue(true)
+			} else {
+				data.Areas[i].Nssa = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].Nssa = types.BoolNull()
+		}
+		if value := r.Get("nssa.nssa-options.default-information-originate"); !data.Areas[i].NssaDefaultInformationOriginate.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginate = types.BoolNull()
+		}
+		if value := r.Get("nssa.nssa-options.default-information-originate.metric"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() {
+			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Value(value.Int())
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Null()
+		}
+		if value := r.Get("nssa.nssa-options.default-information-originate.metric-type"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() {
+			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Null()
+		}
+		if value := r.Get("nssa.nssa-options.no-summary"); !data.Areas[i].NssaNoSummary.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaNoSummary = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaNoSummary = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaNoSummary = types.BoolNull()
+		}
+		if value := r.Get("nssa.nssa-options.no-redistribution"); !data.Areas[i].NssaNoRedistribution.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaNoRedistribution = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaNoRedistribution = types.BoolNull()
+		}
+	}
+	if value := res.Get(prefix + "passive-interface.default"); !data.PassiveInterfaceDefault.IsNull() {
+		if value.Exists() {
+			data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.PassiveInterfaceDefault = types.BoolNull()
+	}
 }
 
 func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
@@ -507,6 +654,53 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "area"); value.Exists() {
+		data.Areas = make([]OSPFVRFAreas, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFVRFAreas{}
+			if cValue := v.Get("area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("authentication.message-digest"); cValue.Exists() {
+				item.AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				item.AuthenticationMessageDigest = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa"); cValue.Exists() {
+				item.Nssa = types.BoolValue(true)
+			} else {
+				item.Nssa = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate"); cValue.Exists() {
+				item.NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				item.NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric-type"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("nssa.nssa-options.no-summary"); cValue.Exists() {
+				item.NssaNoSummary = types.BoolValue(true)
+			} else {
+				item.NssaNoSummary = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.no-redistribution"); cValue.Exists() {
+				item.NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				item.NssaNoRedistribution = types.BoolValue(false)
+			}
+			data.Areas = append(data.Areas, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
+		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+	} else {
+		data.PassiveInterfaceDefault = types.BoolValue(false)
+	}
 }
 
 func (data *OSPFVRF) getDeletedListItems(ctx context.Context, state OSPFVRF) []string {
@@ -586,6 +780,31 @@ func (data *OSPFVRF) getDeletedListItems(ctx context.Context, state OSPFVRF) []s
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/summary-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Areas {
+		stateKeyValues := [...]string{state.Areas[i].AreaId.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Areas[i].AreaId.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Areas {
+			found = true
+			if state.Areas[i].AreaId.ValueString() != data.Areas[j].AreaId.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedListItems
 }
 
@@ -607,6 +826,24 @@ func (data *OSPFVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
 	}
 
+	for i := range data.Areas {
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+		if !data.Areas[i].AuthenticationMessageDigest.IsNull() && !data.Areas[i].AuthenticationMessageDigest.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/authentication/message-digest", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].Nssa.IsNull() && !data.Areas[i].Nssa.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].NssaDefaultInformationOriginate.IsNull() && !data.Areas[i].NssaDefaultInformationOriginate.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].NssaNoSummary.IsNull() && !data.Areas[i].NssaNoSummary.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].NssaNoRedistribution.IsNull() && !data.Areas[i].NssaNoRedistribution.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
 	return emptyLeafsDelete
 }
 
@@ -659,6 +896,14 @@ func (data *OSPFVRF) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/summary-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Areas {
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/area=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.PassiveInterfaceDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
 	}
 	return deletePaths
 }
