@@ -1,0 +1,14 @@
+---
+name: UDLD
+path: Cisco-IOS-XE-native:native/udld
+doc_category: System
+test_tags: [C9000V]
+attributes:
+  - yang_name: Cisco-IOS-XE-udld:aggressive
+    example: true
+  - yang_name: Cisco-IOS-XE-udld:enable
+    example: true
+  - yang_name: Cisco-IOS-XE-udld:message/time
+    example: 77
+  - yang_name: Cisco-IOS-XE-udld:recovery/interval
+    example: 8640
