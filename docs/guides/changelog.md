@@ -29,6 +29,7 @@ description: |-
 - Add `ttl_security` and `process_ids` attributes to `iosxe_interface_ospf` resource and data source
 - BREAKING CHANGE: Remove `iosxe_interface_ospf_process` resource and data source, functionality moved to `iosxe_interface_ospf` resource and data source
 - Add `iosxe_arp` resource and data source
+- Add `iosxe_class_map` resource and data source
 
 ## 0.3.3
 

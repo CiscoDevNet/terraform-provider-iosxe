@@ -1,0 +1,46 @@
+---
+name: Class Map
+path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=%v
+no_delete_attributes: true
+doc_category: QoS
+attributes:
+  - yang_name: name
+    id: true
+    example: CM1
+  - yang_name: type
+    example: control
+  - yang_name: subscriber
+    example: true
+  - yang_name: prematch
+    example: match-all
+  - yang_name: match/authorization-status/authorized
+    example: true
+  - yang_name: match/result-type/aaa-timeout
+    example: true
+  - yang_name: match/authorization-status/unauthorized
+    exclude_test: true
+    example: true
+  - yang_name: match/activated-service-template
+    type: List
+    tf_name: match_activated_service_templates
+    attributes:
+      - yang_name: service-name
+        id: true
+        example: CRITICAL_AUTH_ACCESS
+  - yang_name: match/authorizing-method-priority/greater-than
+    example: 20
+  - yang_name: match/method/dot1x
+    example: true
+  - yang_name: match/result-type/method/dot1x/authoritative
+    example: true
+  - yang_name: match/result-type/method/dot1x/agent-not-found
+    example: true
+  - yang_name: match/result-type/method/dot1x/method-timeout
+    example: true
+  - yang_name: match/method/mab
+    example: true
+  - yang_name: match/result-type/method/mab/authoritative
+    example: true
+  - yang_name: description
+    example: My description
+    exclude_test: true
