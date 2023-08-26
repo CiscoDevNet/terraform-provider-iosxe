@@ -35,7 +35,8 @@ description: |-
 - Add `iosxe_dot1x` resource and data source
 - Add `arp_timeout`, `spanning_tree_link_type` and `spanning_tree_portfast_trunk` attribute to `iosxe_interface_ethernet` resource and data source
 - Add `message_digest_keys` attribute to `iosxe_interface_ospf` resource and data source
-- Add `areas` and `passive_interface_default` attribute to `iosxe_ospf_vrf`  resources and data sources
+- Add `areas` and `passive_interface_default` attributes to `iosxe_ospf_vrf` resource and data source
+- Add `iosxe_policy_map` resource and data source
 
 ## 0.3.3
 
