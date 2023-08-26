@@ -49,7 +49,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.template_name", "TEMP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.merge", "false"))
 	if os.Getenv("IOSXE179") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_enable", "true"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_enable", "false"))
 	}
 	if os.Getenv("IOSXE179") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_local_address", "1.2.3.4"))
@@ -113,7 +113,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		merge = false` + "\n"
 	config += `	}]` + "\n"
 	if os.Getenv("IOSXE179") != "" {
-		config += `	bfd_enable = true` + "\n"
+		config += `	bfd_enable = false` + "\n"
 	}
 	if os.Getenv("IOSXE179") != "" {
 		config += `	bfd_local_address = "1.2.3.4"` + "\n"
