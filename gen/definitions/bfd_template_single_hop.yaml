@@ -61,14 +61,10 @@ attributes:
   - yang_name: echo
     example: true
   - yang_name: dampening/half-time
-    tf_name: dampening_half_time
     example: 30
   - yang_name: dampening/unsuppress-time
-    tf_name: dampening_unsuppress_time
     example: 30
   - yang_name: dampening/suppress-time
-    tf_name: dampening_suppress_time
     example: 100
   - yang_name: dampening/max-suppressing-time
-    tf_name: dampening_max_suppressing_time
     example: 60
