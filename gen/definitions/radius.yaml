@@ -15,6 +15,9 @@ attributes:
   - yang_name: address/auth-port
     tf_name: authentication_port
     example: 1813
+  - yang_name: address/acct-port
+    tf_name: accounting_port
+    example: 1812
   - yang_name: timeout
     example: 4
   - yang_name: retransmit
@@ -22,3 +25,16 @@ attributes:
   - yang_name: key/key
     tf_name: key
     example: 123
+  - yang_name: automate-tester/username
+    example: dummy
+  - yang_name: automate-tester/ignore-acct-port
+    example: true
+  - yang_name: automate-tester/type-of-testing/probe-on-config/probe-on-config
+    xpath: automate-tester/probe-on-config
+    tf_name: automate_tester_probe_on_config
+    example: true
+  - yang_name: pac/key/key
+    tf_name: pac_key
+    example: 123
+  - yang_name: pac/key/encryption
+    example: 0

@@ -14,12 +14,18 @@ This resource can manage the Radius configuration.
 
 ```terraform
 resource "iosxe_radius" "example" {
-  name                = "radius_10.10.15.12"
-  ipv4_address        = "10.10.15.12"
-  authentication_port = 1813
-  timeout             = 4
-  retransmit          = 3
-  key                 = "123"
+  name                             = "radius_10.10.15.12"
+  ipv4_address                     = "10.10.15.12"
+  authentication_port              = 1813
+  accounting_port                  = 1812
+  timeout                          = 4
+  retransmit                       = 3
+  key                              = "123"
+  automate_tester_username         = "dummy"
+  automate_tester_ignore_acct_port = true
+  automate_tester_probe_on_config  = true
+  pac_key                          = "123"
+  pac_key_encryption               = "0"
 }
 ```
 
@@ -32,11 +38,19 @@ resource "iosxe_radius" "example" {
 
 ### Optional
 
+- `accounting_port` (Number) UDP port for RADIUS accounting server (default is 1813)
+  - Range: `0`-`65534`
 - `authentication_port` (Number) UDP port for RADIUS authentication server (default is 1812)
   - Range: `0`-`65534`
+- `automate_tester_ignore_acct_port` (Boolean) Do not test accounting ports of the servers.
+- `automate_tester_probe_on_config` (Boolean) Send a packet to verify the server status
+- `automate_tester_username` (String)
 - `device` (String) A device name from the provider configuration.
 - `ipv4_address` (String) IPv4 address or Hostname for radius server
 - `key` (String)
+- `pac_key` (String) The UNENCRYPTED (cleartext) server key
+- `pac_key_encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
+  - Choices: `0`, `6`, `7`
 - `retransmit` (Number) Number of retries to active server (overrides default)
   - Range: `0`-`100`
 - `timeout` (Number) Time to wait for a RADIUS server to reply (overrides default)

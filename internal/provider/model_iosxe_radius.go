@@ -33,25 +33,37 @@ import (
 )
 
 type Radius struct {
-	Device             types.String `tfsdk:"device"`
-	Id                 types.String `tfsdk:"id"`
-	Name               types.String `tfsdk:"name"`
-	Ipv4Address        types.String `tfsdk:"ipv4_address"`
-	AuthenticationPort types.Int64  `tfsdk:"authentication_port"`
-	Timeout            types.Int64  `tfsdk:"timeout"`
-	Retransmit         types.Int64  `tfsdk:"retransmit"`
-	Key                types.String `tfsdk:"key"`
+	Device                       types.String `tfsdk:"device"`
+	Id                           types.String `tfsdk:"id"`
+	Name                         types.String `tfsdk:"name"`
+	Ipv4Address                  types.String `tfsdk:"ipv4_address"`
+	AuthenticationPort           types.Int64  `tfsdk:"authentication_port"`
+	AccountingPort               types.Int64  `tfsdk:"accounting_port"`
+	Timeout                      types.Int64  `tfsdk:"timeout"`
+	Retransmit                   types.Int64  `tfsdk:"retransmit"`
+	Key                          types.String `tfsdk:"key"`
+	AutomateTesterUsername       types.String `tfsdk:"automate_tester_username"`
+	AutomateTesterIgnoreAcctPort types.Bool   `tfsdk:"automate_tester_ignore_acct_port"`
+	AutomateTesterProbeOnConfig  types.Bool   `tfsdk:"automate_tester_probe_on_config"`
+	PacKey                       types.String `tfsdk:"pac_key"`
+	PacKeyEncryption             types.String `tfsdk:"pac_key_encryption"`
 }
 
 type RadiusData struct {
-	Device             types.String `tfsdk:"device"`
-	Id                 types.String `tfsdk:"id"`
-	Name               types.String `tfsdk:"name"`
-	Ipv4Address        types.String `tfsdk:"ipv4_address"`
-	AuthenticationPort types.Int64  `tfsdk:"authentication_port"`
-	Timeout            types.Int64  `tfsdk:"timeout"`
-	Retransmit         types.Int64  `tfsdk:"retransmit"`
-	Key                types.String `tfsdk:"key"`
+	Device                       types.String `tfsdk:"device"`
+	Id                           types.String `tfsdk:"id"`
+	Name                         types.String `tfsdk:"name"`
+	Ipv4Address                  types.String `tfsdk:"ipv4_address"`
+	AuthenticationPort           types.Int64  `tfsdk:"authentication_port"`
+	AccountingPort               types.Int64  `tfsdk:"accounting_port"`
+	Timeout                      types.Int64  `tfsdk:"timeout"`
+	Retransmit                   types.Int64  `tfsdk:"retransmit"`
+	Key                          types.String `tfsdk:"key"`
+	AutomateTesterUsername       types.String `tfsdk:"automate_tester_username"`
+	AutomateTesterIgnoreAcctPort types.Bool   `tfsdk:"automate_tester_ignore_acct_port"`
+	AutomateTesterProbeOnConfig  types.Bool   `tfsdk:"automate_tester_probe_on_config"`
+	PacKey                       types.String `tfsdk:"pac_key"`
+	PacKeyEncryption             types.String `tfsdk:"pac_key_encryption"`
 }
 
 func (data Radius) getPath() string {
@@ -84,6 +96,9 @@ func (data Radius) toBody(ctx context.Context) string {
 	if !data.AuthenticationPort.IsNull() && !data.AuthenticationPort.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address.auth-port", strconv.FormatInt(data.AuthenticationPort.ValueInt64(), 10))
 	}
+	if !data.AccountingPort.IsNull() && !data.AccountingPort.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"address.acct-port", strconv.FormatInt(data.AccountingPort.ValueInt64(), 10))
+	}
 	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
 	}
@@ -92,6 +107,25 @@ func (data Radius) toBody(ctx context.Context) string {
 	}
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
+	}
+	if !data.AutomateTesterUsername.IsNull() && !data.AutomateTesterUsername.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.username", data.AutomateTesterUsername.ValueString())
+	}
+	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.IsUnknown() {
+		if data.AutomateTesterIgnoreAcctPort.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.ignore-acct-port", map[string]string{})
+		}
+	}
+	if !data.AutomateTesterProbeOnConfig.IsNull() && !data.AutomateTesterProbeOnConfig.IsUnknown() {
+		if data.AutomateTesterProbeOnConfig.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.probe-on-config", map[string]string{})
+		}
+	}
+	if !data.PacKey.IsNull() && !data.PacKey.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"pac.key.key", data.PacKey.ValueString())
+	}
+	if !data.PacKeyEncryption.IsNull() && !data.PacKeyEncryption.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"pac.key.encryption", data.PacKeyEncryption.ValueString())
 	}
 	return body
 }
@@ -116,6 +150,11 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AuthenticationPort = types.Int64Null()
 	}
+	if value := res.Get(prefix + "address.acct-port"); value.Exists() && !data.AccountingPort.IsNull() {
+		data.AccountingPort = types.Int64Value(value.Int())
+	} else {
+		data.AccountingPort = types.Int64Null()
+	}
 	if value := res.Get(prefix + "timeout"); value.Exists() && !data.Timeout.IsNull() {
 		data.Timeout = types.Int64Value(value.Int())
 	} else {
@@ -131,6 +170,39 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Key = types.StringNull()
 	}
+	if value := res.Get(prefix + "automate-tester.username"); value.Exists() && !data.AutomateTesterUsername.IsNull() {
+		data.AutomateTesterUsername = types.StringValue(value.String())
+	} else {
+		data.AutomateTesterUsername = types.StringNull()
+	}
+	if value := res.Get(prefix + "automate-tester.ignore-acct-port"); !data.AutomateTesterIgnoreAcctPort.IsNull() {
+		if value.Exists() {
+			data.AutomateTesterIgnoreAcctPort = types.BoolValue(true)
+		} else {
+			data.AutomateTesterIgnoreAcctPort = types.BoolValue(false)
+		}
+	} else {
+		data.AutomateTesterIgnoreAcctPort = types.BoolNull()
+	}
+	if value := res.Get(prefix + "automate-tester.probe-on-config"); !data.AutomateTesterProbeOnConfig.IsNull() {
+		if value.Exists() {
+			data.AutomateTesterProbeOnConfig = types.BoolValue(true)
+		} else {
+			data.AutomateTesterProbeOnConfig = types.BoolValue(false)
+		}
+	} else {
+		data.AutomateTesterProbeOnConfig = types.BoolNull()
+	}
+	if value := res.Get(prefix + "pac.key.key"); value.Exists() && !data.PacKey.IsNull() {
+		data.PacKey = types.StringValue(value.String())
+	} else {
+		data.PacKey = types.StringNull()
+	}
+	if value := res.Get(prefix + "pac.key.encryption"); value.Exists() && !data.PacKeyEncryption.IsNull() {
+		data.PacKeyEncryption = types.StringValue(value.String())
+	} else {
+		data.PacKeyEncryption = types.StringNull()
+	}
 }
 
 func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
@@ -144,6 +216,9 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "address.auth-port"); value.Exists() {
 		data.AuthenticationPort = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "address.acct-port"); value.Exists() {
+		data.AccountingPort = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "timeout"); value.Exists() {
 		data.Timeout = types.Int64Value(value.Int())
 	}
@@ -152,6 +227,25 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "key.key"); value.Exists() {
 		data.Key = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "automate-tester.username"); value.Exists() {
+		data.AutomateTesterUsername = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "automate-tester.ignore-acct-port"); value.Exists() {
+		data.AutomateTesterIgnoreAcctPort = types.BoolValue(true)
+	} else {
+		data.AutomateTesterIgnoreAcctPort = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "automate-tester.probe-on-config"); value.Exists() {
+		data.AutomateTesterProbeOnConfig = types.BoolValue(true)
+	} else {
+		data.AutomateTesterProbeOnConfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "pac.key.key"); value.Exists() {
+		data.PacKey = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "pac.key.encryption"); value.Exists() {
+		data.PacKeyEncryption = types.StringValue(value.String())
 	}
 }
 
@@ -162,6 +256,12 @@ func (data *Radius) getDeletedListItems(ctx context.Context, state Radius) []str
 
 func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/automate-tester/ignore-acct-port", data.getPath()))
+	}
+	if !data.AutomateTesterProbeOnConfig.IsNull() && !data.AutomateTesterProbeOnConfig.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/automate-tester/probe-on-config", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -173,6 +273,9 @@ func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	if !data.AuthenticationPort.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/auth-port", data.getPath()))
 	}
+	if !data.AccountingPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/acct-port", data.getPath()))
+	}
 	if !data.Timeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/timeout", data.getPath()))
 	}
@@ -181,6 +284,21 @@ func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Key.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
+	}
+	if !data.AutomateTesterUsername.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/username", data.getPath()))
+	}
+	if !data.AutomateTesterIgnoreAcctPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/ignore-acct-port", data.getPath()))
+	}
+	if !data.AutomateTesterProbeOnConfig.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/probe-on-config", data.getPath()))
+	}
+	if !data.PacKey.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key/key", data.getPath()))
+	}
+	if !data.PacKeyEncryption.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key/encryption", data.getPath()))
 	}
 	return deletePaths
 }

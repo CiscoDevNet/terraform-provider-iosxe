@@ -30,9 +30,15 @@ func TestAccIosxeRadius(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "name", "radius_10.10.15.12"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "ipv4_address", "10.10.15.12"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "authentication_port", "1813"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "accounting_port", "1812"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "timeout", "4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "retransmit", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "key", "123"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_username", "dummy"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_ignore_acct_port", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_probe_on_config", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "pac_key", "123"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "pac_key_encryption", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -65,9 +71,15 @@ func testAccIosxeRadiusConfig_all() string {
 	config += `	name = "radius_10.10.15.12"` + "\n"
 	config += `	ipv4_address = "10.10.15.12"` + "\n"
 	config += `	authentication_port = 1813` + "\n"
+	config += `	accounting_port = 1812` + "\n"
 	config += `	timeout = 4` + "\n"
 	config += `	retransmit = 3` + "\n"
 	config += `	key = "123"` + "\n"
+	config += `	automate_tester_username = "dummy"` + "\n"
+	config += `	automate_tester_ignore_acct_port = true` + "\n"
+	config += `	automate_tester_probe_on_config = true` + "\n"
+	config += `	pac_key = "123"` + "\n"
+	config += `	pac_key_encryption = "0"` + "\n"
 	config += `}` + "\n"
 	return config
 }

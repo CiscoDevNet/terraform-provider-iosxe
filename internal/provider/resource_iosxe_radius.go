@@ -85,6 +85,13 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(0, 65534),
 				},
 			},
+			"accounting_port": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("UDP port for RADIUS accounting server (default is 1813)").AddIntegerRangeDescription(0, 65534).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65534),
+				},
+			},
 			"timeout": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Time to wait for a RADIUS server to reply (overrides default)").AddIntegerRangeDescription(1, 1000).String,
 				Optional:            true,
@@ -104,6 +111,32 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
+			},
+			"automate_tester_username": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"automate_tester_ignore_acct_port": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Do not test accounting ports of the servers.").String,
+				Optional:            true,
+			},
+			"automate_tester_probe_on_config": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Send a packet to verify the server status").String,
+				Optional:            true,
+			},
+			"pac_key": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) server key").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
+			},
+			"pac_key_encryption": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow").AddStringEnumDescription("0", "6", "7").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("0", "6", "7"),
 				},
 			},
 		},

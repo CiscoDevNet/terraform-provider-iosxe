@@ -38,6 +38,7 @@ description: |-
 - Add `areas` and `passive_interface_default` attributes to `iosxe_ospf_vrf` resource and data source
 - Add `iosxe_policy_map` resource and data source
 - Add `iosxe_policy_map_event` resource and data source
+- Add `accounting_port`, `pac_key` and `automate_tester` attributes to `iosxe_radius` resource and data source
 
 ## 0.3.3
 

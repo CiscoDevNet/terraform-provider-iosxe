@@ -75,6 +75,10 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "UDP port for RADIUS authentication server (default is 1812)",
 				Computed:            true,
 			},
+			"accounting_port": schema.Int64Attribute{
+				MarkdownDescription: "UDP port for RADIUS accounting server (default is 1813)",
+				Computed:            true,
+			},
 			"timeout": schema.Int64Attribute{
 				MarkdownDescription: "Time to wait for a RADIUS server to reply (overrides default)",
 				Computed:            true,
@@ -85,6 +89,26 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			},
 			"key": schema.StringAttribute{
 				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"automate_tester_username": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"automate_tester_ignore_acct_port": schema.BoolAttribute{
+				MarkdownDescription: "Do not test accounting ports of the servers.",
+				Computed:            true,
+			},
+			"automate_tester_probe_on_config": schema.BoolAttribute{
+				MarkdownDescription: "Send a packet to verify the server status",
+				Computed:            true,
+			},
+			"pac_key": schema.StringAttribute{
+				MarkdownDescription: "The UNENCRYPTED (cleartext) server key",
+				Computed:            true,
+			},
+			"pac_key_encryption": schema.StringAttribute{
+				MarkdownDescription: "0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow",
 				Computed:            true,
 			},
 		},
