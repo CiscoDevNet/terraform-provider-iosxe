@@ -21,14 +21,14 @@ resource "iosxe_ospf" "example" {
   default_metric                       = 21
   distance                             = 120
   domain_tag                           = 10
-  neighbor = [
+  neighbors = [
     {
       ip       = "2.2.2.2"
       priority = 10
       cost     = 100
     }
   ]
-  network = [
+  networks = [
     {
       ip       = "3.3.3.0"
       wildcard = "0.0.0.255"
@@ -38,12 +38,25 @@ resource "iosxe_ospf" "example" {
   priority  = 100
   router_id = "1.2.3.4"
   shutdown  = false
-  summary_address = [
+  summary_addresses = [
     {
       ip   = "3.3.3.0"
       mask = "255.255.255.0"
     }
   ]
+  areas = [
+    {
+      area_id                                        = "5"
+      authentication_message_digest                  = true
+      nssa                                           = true
+      nssa_default_information_originate             = true
+      nssa_default_information_originate_metric      = 100
+      nssa_default_information_originate_metric_type = 1
+      nssa_no_summary                                = true
+      nssa_no_redistribution                         = true
+    }
+  ]
+  passive_interface_default = true
 }
 ```
 
@@ -57,6 +70,7 @@ resource "iosxe_ospf" "example" {
 
 ### Optional
 
+- `areas` (Attributes List) OSPF area parameters (see [below for nested schema](#nestedatt--areas))
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
@@ -71,20 +85,41 @@ resource "iosxe_ospf" "example" {
   - Range: `1`-`4294967295`
 - `mpls_ldp_autoconfig` (Boolean) Configure LDP automatic configuration
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
-- `neighbor` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbor))
-- `network` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--network))
+- `neighbors` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbors))
+- `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
+- `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
 - `priority` (Number) OSPF topology priority
   - Range: `0`-`127`
 - `router_id` (String) Override configured router identifier (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
-- `summary_address` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_address))
+- `summary_addresses` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_addresses))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--neighbor"></a>
-### Nested Schema for `neighbor`
+<a id="nestedatt--areas"></a>
+### Nested Schema for `areas`
+
+Required:
+
+- `area_id` (String) OSPF area ID
+
+Optional:
+
+- `authentication_message_digest` (Boolean) Use message-digest authentication
+- `nssa` (Boolean) Specify a NSSA area
+- `nssa_default_information_originate` (Boolean) Originate Type 7 default into NSSA area
+- `nssa_default_information_originate_metric` (Number) OSPF default metric
+  - Range: `0`-`16777214`
+- `nssa_default_information_originate_metric_type` (Number) OSPF metric type for default routes
+  - Range: `1`-`2`
+- `nssa_no_redistribution` (Boolean) No redistribution into this NSSA area
+- `nssa_no_summary` (Boolean) Do not send summary LSA into NSSA
+
+
+<a id="nestedatt--neighbors"></a>
+### Nested Schema for `neighbors`
 
 Required:
 
@@ -98,8 +133,8 @@ Optional:
   - Range: `0`-`255`
 
 
-<a id="nestedatt--network"></a>
-### Nested Schema for `network`
+<a id="nestedatt--networks"></a>
+### Nested Schema for `networks`
 
 Required:
 
@@ -111,8 +146,8 @@ Optional:
 - `wildcard` (String) OSPF wild card bits
 
 
-<a id="nestedatt--summary_address"></a>
-### Nested Schema for `summary_address`
+<a id="nestedatt--summary_addresses"></a>
+### Nested Schema for `summary_addresses`
 
 Required:
 

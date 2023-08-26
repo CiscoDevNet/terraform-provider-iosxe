@@ -26,6 +26,7 @@ attributes:
     exclude_test: true
     example: true
   - yang_name: neighbor
+    tf_name: neighbors
     type: List
     attributes:
       - yang_name: ip
@@ -36,6 +37,7 @@ attributes:
       - yang_name: cost
         example: 100
   - yang_name: network
+    tf_name: networks
     type: List
     attributes:
       - yang_name: ip
@@ -52,6 +54,7 @@ attributes:
   - yang_name: shutdown
     example: false
   - yang_name: summary-address
+    tf_name: summary_addresses
     type: List
     attributes:
       - yang_name: ip
@@ -59,3 +62,33 @@ attributes:
         id: true
       - yang_name: mask
         example: 255.255.255.0
+  - yang_name: area
+    tf_name: areas
+    type: List
+    attributes:
+      - yang_name: area-id
+        id: true
+        example: 5
+      - yang_name: authentication/message-digest
+        example: true
+      - yang_name: nssa
+        example: true
+      - yang_name: nssa/nssa-options/default-information-originate
+        tf_name: nssa_default_information_originate
+        example: true
+      - yang_name: nssa/nssa-options/default-information-originate/metric
+        tf_name: nssa_default_information_originate_metric
+        example: 100
+      - yang_name: nssa/nssa-options/default-information-originate/metric-type
+        tf_name: nssa_default_information_originate_metric_type
+        example: 1
+      - yang_name: nssa/nssa-options/no-summary
+        tf_name: nssa_no_summary
+        example: true
+      - yang_name: nssa/nssa-options/no-redistribution
+        tf_name: nssa_no_redistribution
+        example: true
+  - yang_name: passive-interface/passive-interface-choice/default/default
+    xpath: passive-interface/default
+    tf_name: passive_interface_default
+    example: true

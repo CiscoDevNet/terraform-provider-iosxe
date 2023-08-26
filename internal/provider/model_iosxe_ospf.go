@@ -35,58 +35,72 @@ import (
 )
 
 type OSPF struct {
-	Device                            types.String         `tfsdk:"device"`
-	Id                                types.String         `tfsdk:"id"`
-	DeleteMode                        types.String         `tfsdk:"delete_mode"`
-	ProcessId                         types.Int64          `tfsdk:"process_id"`
-	BfdAllInterfaces                  types.Bool           `tfsdk:"bfd_all_interfaces"`
-	DefaultInformationOriginate       types.Bool           `tfsdk:"default_information_originate"`
-	DefaultInformationOriginateAlways types.Bool           `tfsdk:"default_information_originate_always"`
-	DefaultMetric                     types.Int64          `tfsdk:"default_metric"`
-	Distance                          types.Int64          `tfsdk:"distance"`
-	DomainTag                         types.Int64          `tfsdk:"domain_tag"`
-	MplsLdpAutoconfig                 types.Bool           `tfsdk:"mpls_ldp_autoconfig"`
-	MplsLdpSync                       types.Bool           `tfsdk:"mpls_ldp_sync"`
-	Neighbor                          []OSPFNeighbor       `tfsdk:"neighbor"`
-	Network                           []OSPFNetwork        `tfsdk:"network"`
-	Priority                          types.Int64          `tfsdk:"priority"`
-	RouterId                          types.String         `tfsdk:"router_id"`
-	Shutdown                          types.Bool           `tfsdk:"shutdown"`
-	SummaryAddress                    []OSPFSummaryAddress `tfsdk:"summary_address"`
+	Device                            types.String           `tfsdk:"device"`
+	Id                                types.String           `tfsdk:"id"`
+	DeleteMode                        types.String           `tfsdk:"delete_mode"`
+	ProcessId                         types.Int64            `tfsdk:"process_id"`
+	BfdAllInterfaces                  types.Bool             `tfsdk:"bfd_all_interfaces"`
+	DefaultInformationOriginate       types.Bool             `tfsdk:"default_information_originate"`
+	DefaultInformationOriginateAlways types.Bool             `tfsdk:"default_information_originate_always"`
+	DefaultMetric                     types.Int64            `tfsdk:"default_metric"`
+	Distance                          types.Int64            `tfsdk:"distance"`
+	DomainTag                         types.Int64            `tfsdk:"domain_tag"`
+	MplsLdpAutoconfig                 types.Bool             `tfsdk:"mpls_ldp_autoconfig"`
+	MplsLdpSync                       types.Bool             `tfsdk:"mpls_ldp_sync"`
+	Neighbors                         []OSPFNeighbors        `tfsdk:"neighbors"`
+	Networks                          []OSPFNetworks         `tfsdk:"networks"`
+	Priority                          types.Int64            `tfsdk:"priority"`
+	RouterId                          types.String           `tfsdk:"router_id"`
+	Shutdown                          types.Bool             `tfsdk:"shutdown"`
+	SummaryAddresses                  []OSPFSummaryAddresses `tfsdk:"summary_addresses"`
+	Areas                             []OSPFAreas            `tfsdk:"areas"`
+	PassiveInterfaceDefault           types.Bool             `tfsdk:"passive_interface_default"`
 }
 
 type OSPFData struct {
-	Device                            types.String         `tfsdk:"device"`
-	Id                                types.String         `tfsdk:"id"`
-	ProcessId                         types.Int64          `tfsdk:"process_id"`
-	BfdAllInterfaces                  types.Bool           `tfsdk:"bfd_all_interfaces"`
-	DefaultInformationOriginate       types.Bool           `tfsdk:"default_information_originate"`
-	DefaultInformationOriginateAlways types.Bool           `tfsdk:"default_information_originate_always"`
-	DefaultMetric                     types.Int64          `tfsdk:"default_metric"`
-	Distance                          types.Int64          `tfsdk:"distance"`
-	DomainTag                         types.Int64          `tfsdk:"domain_tag"`
-	MplsLdpAutoconfig                 types.Bool           `tfsdk:"mpls_ldp_autoconfig"`
-	MplsLdpSync                       types.Bool           `tfsdk:"mpls_ldp_sync"`
-	Neighbor                          []OSPFNeighbor       `tfsdk:"neighbor"`
-	Network                           []OSPFNetwork        `tfsdk:"network"`
-	Priority                          types.Int64          `tfsdk:"priority"`
-	RouterId                          types.String         `tfsdk:"router_id"`
-	Shutdown                          types.Bool           `tfsdk:"shutdown"`
-	SummaryAddress                    []OSPFSummaryAddress `tfsdk:"summary_address"`
+	Device                            types.String           `tfsdk:"device"`
+	Id                                types.String           `tfsdk:"id"`
+	ProcessId                         types.Int64            `tfsdk:"process_id"`
+	BfdAllInterfaces                  types.Bool             `tfsdk:"bfd_all_interfaces"`
+	DefaultInformationOriginate       types.Bool             `tfsdk:"default_information_originate"`
+	DefaultInformationOriginateAlways types.Bool             `tfsdk:"default_information_originate_always"`
+	DefaultMetric                     types.Int64            `tfsdk:"default_metric"`
+	Distance                          types.Int64            `tfsdk:"distance"`
+	DomainTag                         types.Int64            `tfsdk:"domain_tag"`
+	MplsLdpAutoconfig                 types.Bool             `tfsdk:"mpls_ldp_autoconfig"`
+	MplsLdpSync                       types.Bool             `tfsdk:"mpls_ldp_sync"`
+	Neighbors                         []OSPFNeighbors        `tfsdk:"neighbors"`
+	Networks                          []OSPFNetworks         `tfsdk:"networks"`
+	Priority                          types.Int64            `tfsdk:"priority"`
+	RouterId                          types.String           `tfsdk:"router_id"`
+	Shutdown                          types.Bool             `tfsdk:"shutdown"`
+	SummaryAddresses                  []OSPFSummaryAddresses `tfsdk:"summary_addresses"`
+	Areas                             []OSPFAreas            `tfsdk:"areas"`
+	PassiveInterfaceDefault           types.Bool             `tfsdk:"passive_interface_default"`
 }
-type OSPFNeighbor struct {
+type OSPFNeighbors struct {
 	Ip       types.String `tfsdk:"ip"`
 	Priority types.Int64  `tfsdk:"priority"`
 	Cost     types.Int64  `tfsdk:"cost"`
 }
-type OSPFNetwork struct {
+type OSPFNetworks struct {
 	Ip       types.String `tfsdk:"ip"`
 	Wildcard types.String `tfsdk:"wildcard"`
 	Area     types.String `tfsdk:"area"`
 }
-type OSPFSummaryAddress struct {
+type OSPFSummaryAddresses struct {
 	Ip   types.String `tfsdk:"ip"`
 	Mask types.String `tfsdk:"mask"`
+}
+type OSPFAreas struct {
+	AreaId                                    types.String `tfsdk:"area_id"`
+	AuthenticationMessageDigest               types.Bool   `tfsdk:"authentication_message_digest"`
+	Nssa                                      types.Bool   `tfsdk:"nssa"`
+	NssaDefaultInformationOriginate           types.Bool   `tfsdk:"nssa_default_information_originate"`
+	NssaDefaultInformationOriginateMetric     types.Int64  `tfsdk:"nssa_default_information_originate_metric"`
+	NssaDefaultInformationOriginateMetricType types.Int64  `tfsdk:"nssa_default_information_originate_metric_type"`
+	NssaNoSummary                             types.Bool   `tfsdk:"nssa_no_summary"`
+	NssaNoRedistribution                      types.Bool   `tfsdk:"nssa_no_redistribution"`
 }
 
 func (data OSPF) getPath() string {
@@ -156,9 +170,12 @@ func (data OSPF) toBody(ctx context.Context) string {
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", data.Shutdown.ValueBool())
 	}
-	if len(data.Neighbor) > 0 {
+	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.default", data.PassiveInterfaceDefault.ValueBool())
+	}
+	if len(data.Neighbors) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor", []interface{}{})
-		for index, item := range data.Neighbor {
+		for index, item := range data.Neighbors {
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor"+"."+strconv.Itoa(index)+"."+"ip", item.Ip.ValueString())
 			}
@@ -170,9 +187,9 @@ func (data OSPF) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.Network) > 0 {
+	if len(data.Networks) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network", []interface{}{})
-		for index, item := range data.Network {
+		for index, item := range data.Networks {
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"ip", item.Ip.ValueString())
 			}
@@ -184,14 +201,53 @@ func (data OSPF) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.SummaryAddress) > 0 {
+	if len(data.SummaryAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summary-address", []interface{}{})
-		for index, item := range data.SummaryAddress {
+		for index, item := range data.SummaryAddresses {
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summary-address"+"."+strconv.Itoa(index)+"."+"ip", item.Ip.ValueString())
 			}
 			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summary-address"+"."+strconv.Itoa(index)+"."+"mask", item.Mask.ValueString())
+			}
+		}
+	}
+	if len(data.Areas) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area", []interface{}{})
+		for index, item := range data.Areas {
+			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"area-id", item.AreaId.ValueString())
+			}
+			if !item.AuthenticationMessageDigest.IsNull() && !item.AuthenticationMessageDigest.IsUnknown() {
+				if item.AuthenticationMessageDigest.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"authentication.message-digest", map[string]string{})
+				}
+			}
+			if !item.Nssa.IsNull() && !item.Nssa.IsUnknown() {
+				if item.Nssa.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa", map[string]string{})
+				}
+			}
+			if !item.NssaDefaultInformationOriginate.IsNull() && !item.NssaDefaultInformationOriginate.IsUnknown() {
+				if item.NssaDefaultInformationOriginate.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate", map[string]string{})
+				}
+			}
+			if !item.NssaDefaultInformationOriginateMetric.IsNull() && !item.NssaDefaultInformationOriginateMetric.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate.metric", strconv.FormatInt(item.NssaDefaultInformationOriginateMetric.ValueInt64(), 10))
+			}
+			if !item.NssaDefaultInformationOriginateMetricType.IsNull() && !item.NssaDefaultInformationOriginateMetricType.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.default-information-originate.metric-type", strconv.FormatInt(item.NssaDefaultInformationOriginateMetricType.ValueInt64(), 10))
+			}
+			if !item.NssaNoSummary.IsNull() && !item.NssaNoSummary.IsUnknown() {
+				if item.NssaNoSummary.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-summary", map[string]string{})
+				}
+			}
+			if !item.NssaNoRedistribution.IsNull() && !item.NssaNoRedistribution.IsUnknown() {
+				if item.NssaNoRedistribution.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-redistribution", map[string]string{})
+				}
 			}
 		}
 	}
@@ -268,9 +324,9 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MplsLdpSync = types.BoolNull()
 	}
-	for i := range data.Neighbor {
+	for i := range data.Neighbors {
 		keys := [...]string{"ip"}
-		keyValues := [...]string{data.Neighbor[i].Ip.ValueString()}
+		keyValues := [...]string{data.Neighbors[i].Ip.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "neighbor").ForEach(
@@ -291,25 +347,25 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("ip"); value.Exists() && !data.Neighbor[i].Ip.IsNull() {
-			data.Neighbor[i].Ip = types.StringValue(value.String())
+		if value := r.Get("ip"); value.Exists() && !data.Neighbors[i].Ip.IsNull() {
+			data.Neighbors[i].Ip = types.StringValue(value.String())
 		} else {
-			data.Neighbor[i].Ip = types.StringNull()
+			data.Neighbors[i].Ip = types.StringNull()
 		}
-		if value := r.Get("priority"); value.Exists() && !data.Neighbor[i].Priority.IsNull() {
-			data.Neighbor[i].Priority = types.Int64Value(value.Int())
+		if value := r.Get("priority"); value.Exists() && !data.Neighbors[i].Priority.IsNull() {
+			data.Neighbors[i].Priority = types.Int64Value(value.Int())
 		} else {
-			data.Neighbor[i].Priority = types.Int64Null()
+			data.Neighbors[i].Priority = types.Int64Null()
 		}
-		if value := r.Get("cost"); value.Exists() && !data.Neighbor[i].Cost.IsNull() {
-			data.Neighbor[i].Cost = types.Int64Value(value.Int())
+		if value := r.Get("cost"); value.Exists() && !data.Neighbors[i].Cost.IsNull() {
+			data.Neighbors[i].Cost = types.Int64Value(value.Int())
 		} else {
-			data.Neighbor[i].Cost = types.Int64Null()
+			data.Neighbors[i].Cost = types.Int64Null()
 		}
 	}
-	for i := range data.Network {
+	for i := range data.Networks {
 		keys := [...]string{"ip"}
-		keyValues := [...]string{data.Network[i].Ip.ValueString()}
+		keyValues := [...]string{data.Networks[i].Ip.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "network").ForEach(
@@ -330,20 +386,20 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("ip"); value.Exists() && !data.Network[i].Ip.IsNull() {
-			data.Network[i].Ip = types.StringValue(value.String())
+		if value := r.Get("ip"); value.Exists() && !data.Networks[i].Ip.IsNull() {
+			data.Networks[i].Ip = types.StringValue(value.String())
 		} else {
-			data.Network[i].Ip = types.StringNull()
+			data.Networks[i].Ip = types.StringNull()
 		}
-		if value := r.Get("wildcard"); value.Exists() && !data.Network[i].Wildcard.IsNull() {
-			data.Network[i].Wildcard = types.StringValue(value.String())
+		if value := r.Get("wildcard"); value.Exists() && !data.Networks[i].Wildcard.IsNull() {
+			data.Networks[i].Wildcard = types.StringValue(value.String())
 		} else {
-			data.Network[i].Wildcard = types.StringNull()
+			data.Networks[i].Wildcard = types.StringNull()
 		}
-		if value := r.Get("area"); value.Exists() && !data.Network[i].Area.IsNull() {
-			data.Network[i].Area = types.StringValue(value.String())
+		if value := r.Get("area"); value.Exists() && !data.Networks[i].Area.IsNull() {
+			data.Networks[i].Area = types.StringValue(value.String())
 		} else {
-			data.Network[i].Area = types.StringNull()
+			data.Networks[i].Area = types.StringNull()
 		}
 	}
 	if value := res.Get(prefix + "priority"); value.Exists() && !data.Priority.IsNull() {
@@ -363,9 +419,9 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
-	for i := range data.SummaryAddress {
+	for i := range data.SummaryAddresses {
 		keys := [...]string{"ip"}
-		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString()}
+		keyValues := [...]string{data.SummaryAddresses[i].Ip.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "summary-address").ForEach(
@@ -386,16 +442,107 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("ip"); value.Exists() && !data.SummaryAddress[i].Ip.IsNull() {
-			data.SummaryAddress[i].Ip = types.StringValue(value.String())
+		if value := r.Get("ip"); value.Exists() && !data.SummaryAddresses[i].Ip.IsNull() {
+			data.SummaryAddresses[i].Ip = types.StringValue(value.String())
 		} else {
-			data.SummaryAddress[i].Ip = types.StringNull()
+			data.SummaryAddresses[i].Ip = types.StringNull()
 		}
-		if value := r.Get("mask"); value.Exists() && !data.SummaryAddress[i].Mask.IsNull() {
-			data.SummaryAddress[i].Mask = types.StringValue(value.String())
+		if value := r.Get("mask"); value.Exists() && !data.SummaryAddresses[i].Mask.IsNull() {
+			data.SummaryAddresses[i].Mask = types.StringValue(value.String())
 		} else {
-			data.SummaryAddress[i].Mask = types.StringNull()
+			data.SummaryAddresses[i].Mask = types.StringNull()
 		}
+	}
+	for i := range data.Areas {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "area").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("area-id"); value.Exists() && !data.Areas[i].AreaId.IsNull() {
+			data.Areas[i].AreaId = types.StringValue(value.String())
+		} else {
+			data.Areas[i].AreaId = types.StringNull()
+		}
+		if value := r.Get("authentication.message-digest"); !data.Areas[i].AuthenticationMessageDigest.IsNull() {
+			if value.Exists() {
+				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].AuthenticationMessageDigest = types.BoolNull()
+		}
+		if value := r.Get("nssa"); !data.Areas[i].Nssa.IsNull() {
+			if value.Exists() {
+				data.Areas[i].Nssa = types.BoolValue(true)
+			} else {
+				data.Areas[i].Nssa = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].Nssa = types.BoolNull()
+		}
+		if value := r.Get("nssa.nssa-options.default-information-originate"); !data.Areas[i].NssaDefaultInformationOriginate.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginate = types.BoolNull()
+		}
+		if value := r.Get("nssa.nssa-options.default-information-originate.metric"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() {
+			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Value(value.Int())
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Null()
+		}
+		if value := r.Get("nssa.nssa-options.default-information-originate.metric-type"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() {
+			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Null()
+		}
+		if value := r.Get("nssa.nssa-options.no-summary"); !data.Areas[i].NssaNoSummary.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaNoSummary = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaNoSummary = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaNoSummary = types.BoolNull()
+		}
+		if value := r.Get("nssa.nssa-options.no-redistribution"); !data.Areas[i].NssaNoRedistribution.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaNoRedistribution = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaNoRedistribution = types.BoolNull()
+		}
+	}
+	if value := res.Get(prefix + "passive-interface.default"); !data.PassiveInterfaceDefault.IsNull() {
+		if value.Exists() {
+			data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.PassiveInterfaceDefault = types.BoolNull()
 	}
 }
 
@@ -439,9 +586,9 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.MplsLdpSync = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "neighbor"); value.Exists() {
-		data.Neighbor = make([]OSPFNeighbor, 0)
+		data.Neighbors = make([]OSPFNeighbors, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFNeighbor{}
+			item := OSPFNeighbors{}
 			if cValue := v.Get("ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -451,14 +598,14 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("cost"); cValue.Exists() {
 				item.Cost = types.Int64Value(cValue.Int())
 			}
-			data.Neighbor = append(data.Neighbor, item)
+			data.Neighbors = append(data.Neighbors, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "network"); value.Exists() {
-		data.Network = make([]OSPFNetwork, 0)
+		data.Networks = make([]OSPFNetworks, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFNetwork{}
+			item := OSPFNetworks{}
 			if cValue := v.Get("ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -468,7 +615,7 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("area"); cValue.Exists() {
 				item.Area = types.StringValue(cValue.String())
 			}
-			data.Network = append(data.Network, item)
+			data.Networks = append(data.Networks, item)
 			return true
 		})
 	}
@@ -484,28 +631,75 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Shutdown = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "summary-address"); value.Exists() {
-		data.SummaryAddress = make([]OSPFSummaryAddress, 0)
+		data.SummaryAddresses = make([]OSPFSummaryAddresses, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := OSPFSummaryAddress{}
+			item := OSPFSummaryAddresses{}
 			if cValue := v.Get("ip"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("mask"); cValue.Exists() {
 				item.Mask = types.StringValue(cValue.String())
 			}
-			data.SummaryAddress = append(data.SummaryAddress, item)
+			data.SummaryAddresses = append(data.SummaryAddresses, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "area"); value.Exists() {
+		data.Areas = make([]OSPFAreas, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFAreas{}
+			if cValue := v.Get("area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("authentication.message-digest"); cValue.Exists() {
+				item.AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				item.AuthenticationMessageDigest = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa"); cValue.Exists() {
+				item.Nssa = types.BoolValue(true)
+			} else {
+				item.Nssa = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate"); cValue.Exists() {
+				item.NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				item.NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric-type"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("nssa.nssa-options.no-summary"); cValue.Exists() {
+				item.NssaNoSummary = types.BoolValue(true)
+			} else {
+				item.NssaNoSummary = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.no-redistribution"); cValue.Exists() {
+				item.NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				item.NssaNoRedistribution = types.BoolValue(false)
+			}
+			data.Areas = append(data.Areas, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
+		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+	} else {
+		data.PassiveInterfaceDefault = types.BoolValue(false)
 	}
 }
 
 func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string {
 	deletedListItems := make([]string, 0)
-	for i := range state.Neighbor {
-		stateKeyValues := [...]string{state.Neighbor[i].Ip.ValueString()}
+	for i := range state.Neighbors {
+		stateKeyValues := [...]string{state.Neighbors[i].Ip.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Neighbor[i].Ip.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Neighbors[i].Ip.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -513,9 +707,9 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 		}
 
 		found := false
-		for j := range data.Neighbor {
+		for j := range data.Neighbors {
 			found = true
-			if state.Neighbor[i].Ip.ValueString() != data.Neighbor[j].Ip.ValueString() {
+			if state.Neighbors[i].Ip.ValueString() != data.Neighbors[j].Ip.ValueString() {
 				found = false
 			}
 			if found {
@@ -526,11 +720,11 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/neighbor=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Network {
-		stateKeyValues := [...]string{state.Network[i].Ip.ValueString()}
+	for i := range state.Networks {
+		stateKeyValues := [...]string{state.Networks[i].Ip.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Network[i].Ip.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Networks[i].Ip.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -538,9 +732,9 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 		}
 
 		found := false
-		for j := range data.Network {
+		for j := range data.Networks {
 			found = true
-			if state.Network[i].Ip.ValueString() != data.Network[j].Ip.ValueString() {
+			if state.Networks[i].Ip.ValueString() != data.Networks[j].Ip.ValueString() {
 				found = false
 			}
 			if found {
@@ -551,11 +745,11 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.SummaryAddress {
-		stateKeyValues := [...]string{state.SummaryAddress[i].Ip.ValueString()}
+	for i := range state.SummaryAddresses {
+		stateKeyValues := [...]string{state.SummaryAddresses[i].Ip.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.SummaryAddress[i].Ip.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.SummaryAddresses[i].Ip.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -563,9 +757,9 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 		}
 
 		found := false
-		for j := range data.SummaryAddress {
+		for j := range data.SummaryAddresses {
 			found = true
-			if state.SummaryAddress[i].Ip.ValueString() != data.SummaryAddress[j].Ip.ValueString() {
+			if state.SummaryAddresses[i].Ip.ValueString() != data.SummaryAddresses[j].Ip.ValueString() {
 				found = false
 			}
 			if found {
@@ -574,6 +768,31 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 		}
 		if !found {
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/summary-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Areas {
+		stateKeyValues := [...]string{state.Areas[i].AreaId.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Areas[i].AreaId.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Areas {
+			found = true
+			if state.Areas[i].AreaId.ValueString() != data.Areas[j].AreaId.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	return deletedListItems
@@ -597,6 +816,24 @@ func (data *OSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
 	}
 
+	for i := range data.Areas {
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+		if !data.Areas[i].AuthenticationMessageDigest.IsNull() && !data.Areas[i].AuthenticationMessageDigest.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/authentication/message-digest", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].Nssa.IsNull() && !data.Areas[i].Nssa.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].NssaDefaultInformationOriginate.IsNull() && !data.Areas[i].NssaDefaultInformationOriginate.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].NssaNoSummary.IsNull() && !data.Areas[i].NssaNoSummary.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].NssaNoRedistribution.IsNull() && !data.Areas[i].NssaNoRedistribution.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
 	return emptyLeafsDelete
 }
 
@@ -626,13 +863,13 @@ func (data *OSPF) getDeletePaths(ctx context.Context) []string {
 	if !data.MplsLdpSync.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
 	}
-	for i := range data.Neighbor {
-		keyValues := [...]string{data.Neighbor[i].Ip.ValueString()}
+	for i := range data.Neighbors {
+		keyValues := [...]string{data.Neighbors[i].Ip.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/neighbor=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.Network {
-		keyValues := [...]string{data.Network[i].Ip.ValueString()}
+	for i := range data.Networks {
+		keyValues := [...]string{data.Networks[i].Ip.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
@@ -645,10 +882,18 @@ func (data *OSPF) getDeletePaths(ctx context.Context) []string {
 	if !data.Shutdown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
-	for i := range data.SummaryAddress {
-		keyValues := [...]string{data.SummaryAddress[i].Ip.ValueString()}
+	for i := range data.SummaryAddresses {
+		keyValues := [...]string{data.SummaryAddresses[i].Ip.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/summary-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Areas {
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/area=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.PassiveInterfaceDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
 	}
 	return deletePaths
 }

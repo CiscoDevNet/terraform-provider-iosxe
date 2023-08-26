@@ -33,17 +33,26 @@ func TestAccDataSourceIosxeOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "default_metric", "21"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "distance", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "domain_tag", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "neighbor.0.ip", "2.2.2.2"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "neighbor.0.priority", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "neighbor.0.cost", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "network.0.ip", "3.3.3.0"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "network.0.wildcard", "0.0.0.255"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "network.0.area", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "neighbors.0.ip", "2.2.2.2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "neighbors.0.priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "neighbors.0.cost", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "networks.0.ip", "3.3.3.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "networks.0.wildcard", "0.0.0.255"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "networks.0.area", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "priority", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "router_id", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "shutdown", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "summary_address.0.ip", "3.3.3.0"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "summary_address.0.mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "summary_addresses.0.ip", "3.3.3.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "summary_addresses.0.mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "areas.0.area_id", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "areas.0.authentication_message_digest", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "areas.0.nssa", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "areas.0.nssa_default_information_originate", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "areas.0.nssa_default_information_originate_metric", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "areas.0.nssa_default_information_originate_metric_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "areas.0.nssa_no_summary", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "areas.0.nssa_no_redistribution", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf.test", "passive_interface_default", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -66,12 +75,12 @@ func testAccDataSourceIosxeOSPFConfig() string {
 	config += `	default_metric = 21` + "\n"
 	config += `	distance = 120` + "\n"
 	config += `	domain_tag = 10` + "\n"
-	config += `	neighbor = [{` + "\n"
+	config += `	neighbors = [{` + "\n"
 	config += `		ip = "2.2.2.2"` + "\n"
 	config += `		priority = 10` + "\n"
 	config += `		cost = 100` + "\n"
 	config += `	}]` + "\n"
-	config += `	network = [{` + "\n"
+	config += `	networks = [{` + "\n"
 	config += `		ip = "3.3.3.0"` + "\n"
 	config += `		wildcard = "0.0.0.255"` + "\n"
 	config += `		area = "0"` + "\n"
@@ -79,10 +88,21 @@ func testAccDataSourceIosxeOSPFConfig() string {
 	config += `	priority = 100` + "\n"
 	config += `	router_id = "1.2.3.4"` + "\n"
 	config += `	shutdown = false` + "\n"
-	config += `	summary_address = [{` + "\n"
+	config += `	summary_addresses = [{` + "\n"
 	config += `		ip = "3.3.3.0"` + "\n"
 	config += `		mask = "255.255.255.0"` + "\n"
 	config += `	}]` + "\n"
+	config += `	areas = [{` + "\n"
+	config += `		area_id = "5"` + "\n"
+	config += `		authentication_message_digest = true` + "\n"
+	config += `		nssa = true` + "\n"
+	config += `		nssa_default_information_originate = true` + "\n"
+	config += `		nssa_default_information_originate_metric = 100` + "\n"
+	config += `		nssa_default_information_originate_metric_type = 1` + "\n"
+	config += `		nssa_no_summary = true` + "\n"
+	config += `		nssa_no_redistribution = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	passive_interface_default = true` + "\n"
 	config += `}` + "\n"
 
 	config += `

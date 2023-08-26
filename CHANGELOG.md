@@ -33,9 +33,12 @@
 - Add `arp_timeout` attribute to `iosxe_interface_loopback` resource and data source
 - Add `ip_arp_inspection` and `ip_dhcp_snooping` attributes to `iosxe_interface_ethernet` resource and data source
 - Add `arp_timeout` and `ip_arp_inspection` attributes to `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
-- Add `area_id` and `networks` attributes to `iosxe_ospf` resource and data source
+- Add `areas` attribute to `iosxe_ospf` resource and data source
 - Add `iosxe_udld` resource and data source
 - Add `iosxe_vtp` resource and data source
+- BREAKING CHANGE: Rename `neighbor` attribute to `neighbors` of `iosxe_ospf` resource and data source
+- BREAKING CHANGE: Rename `network` attribute to `networks` of `iosxe_ospf` resource and data source
+- BREAKING CHANGE: Rename `summary_address` attribute to `summary_addresses` of `iosxe_ospf` resource and data source
 
 ## 0.3.3
 

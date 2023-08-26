@@ -99,7 +99,7 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Configure LDP-IGP Synchronization",
 				Computed:            true,
 			},
-			"neighbor": schema.ListNestedAttribute{
+			"neighbors": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify a neighbor router",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -119,7 +119,7 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 					},
 				},
 			},
-			"network": schema.ListNestedAttribute{
+			"networks": schema.ListNestedAttribute{
 				MarkdownDescription: "Enable routing on an IP network",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -151,7 +151,7 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Shutdown the OSPF protocol under the current instance",
 				Computed:            true,
 			},
-			"summary_address": schema.ListNestedAttribute{
+			"summary_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: "Configure IP address summaries",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -166,6 +166,50 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						},
 					},
 				},
+			},
+			"areas": schema.ListNestedAttribute{
+				MarkdownDescription: "OSPF area parameters",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"area_id": schema.StringAttribute{
+							MarkdownDescription: "OSPF area ID",
+							Computed:            true,
+						},
+						"authentication_message_digest": schema.BoolAttribute{
+							MarkdownDescription: "Use message-digest authentication",
+							Computed:            true,
+						},
+						"nssa": schema.BoolAttribute{
+							MarkdownDescription: "Specify a NSSA area",
+							Computed:            true,
+						},
+						"nssa_default_information_originate": schema.BoolAttribute{
+							MarkdownDescription: "Originate Type 7 default into NSSA area",
+							Computed:            true,
+						},
+						"nssa_default_information_originate_metric": schema.Int64Attribute{
+							MarkdownDescription: "OSPF default metric",
+							Computed:            true,
+						},
+						"nssa_default_information_originate_metric_type": schema.Int64Attribute{
+							MarkdownDescription: "OSPF metric type for default routes",
+							Computed:            true,
+						},
+						"nssa_no_summary": schema.BoolAttribute{
+							MarkdownDescription: "Do not send summary LSA into NSSA",
+							Computed:            true,
+						},
+						"nssa_no_redistribution": schema.BoolAttribute{
+							MarkdownDescription: "No redistribution into this NSSA area",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_default": schema.BoolAttribute{
+				MarkdownDescription: "Suppress routing updates on all interfaces",
+				Computed:            true,
 			},
 		},
 	}

@@ -31,6 +31,7 @@ data "iosxe_ospf" "example" {
 
 ### Read-Only
 
+- `areas` (Attributes List) OSPF area parameters (see [below for nested schema](#nestedatt--areas))
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
@@ -40,15 +41,31 @@ data "iosxe_ospf" "example" {
 - `id` (String) The path of the retrieved object.
 - `mpls_ldp_autoconfig` (Boolean) Configure LDP automatic configuration
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
-- `neighbor` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbor))
-- `network` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--network))
+- `neighbors` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbors))
+- `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
+- `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
 - `priority` (Number) OSPF topology priority
 - `router_id` (String) Override configured router identifier (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
-- `summary_address` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_address))
+- `summary_addresses` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_addresses))
 
-<a id="nestedatt--neighbor"></a>
-### Nested Schema for `neighbor`
+<a id="nestedatt--areas"></a>
+### Nested Schema for `areas`
+
+Read-Only:
+
+- `area_id` (String) OSPF area ID
+- `authentication_message_digest` (Boolean) Use message-digest authentication
+- `nssa` (Boolean) Specify a NSSA area
+- `nssa_default_information_originate` (Boolean) Originate Type 7 default into NSSA area
+- `nssa_default_information_originate_metric` (Number) OSPF default metric
+- `nssa_default_information_originate_metric_type` (Number) OSPF metric type for default routes
+- `nssa_no_redistribution` (Boolean) No redistribution into this NSSA area
+- `nssa_no_summary` (Boolean) Do not send summary LSA into NSSA
+
+
+<a id="nestedatt--neighbors"></a>
+### Nested Schema for `neighbors`
 
 Read-Only:
 
@@ -57,8 +74,8 @@ Read-Only:
 - `priority` (Number) OSPF priority of non-broadcast neighbor
 
 
-<a id="nestedatt--network"></a>
-### Nested Schema for `network`
+<a id="nestedatt--networks"></a>
+### Nested Schema for `networks`
 
 Read-Only:
 
@@ -67,8 +84,8 @@ Read-Only:
 - `wildcard` (String) OSPF wild card bits
 
 
-<a id="nestedatt--summary_address"></a>
-### Nested Schema for `summary_address`
+<a id="nestedatt--summary_addresses"></a>
+### Nested Schema for `summary_addresses`
 
 Read-Only:
 
