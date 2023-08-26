@@ -1,0 +1,42 @@
+---
+name: Dot1x
+path: Cisco-IOS-XE-native:native/dot1x
+doc_category: System
+attributes:
+  - yang_name: Cisco-IOS-XE-dot1x:auth-fail/eapol
+    example: true
+  - yang_name: Cisco-IOS-XE-dot1x:credentials
+    tf_name: credentials
+    type: List
+    attributes:
+      - yang_name: profile-name
+        id: true
+        example: profile1
+      - yang_name: description
+        example: credential_profile_name
+      - yang_name: username
+        example: username1
+      - yang_name: password/type
+        example: 0
+      - yang_name: password/secret
+        tf_name: password
+        example: password123
+      - yang_name: pki-trustpoint
+        example: trustpoint1
+      - yang_name: anonymous-id
+        example: 1
+  - yang_name: Cisco-IOS-XE-dot1x:critical/eapol-config/block
+    example: true
+  - yang_name: Cisco-IOS-XE-dot1x:critical/recovery/delay
+    exclude_test: true
+    example: 100
+  - yang_name: Cisco-IOS-XE-dot1x:test/timeout
+    example: 1000
+  - yang_name: Cisco-IOS-XE-dot1x:logging/verbose
+    example: true
+  - yang_name: Cisco-IOS-XE-dot1x:supplicant/controlled/transient
+    example: true
+  - yang_name: Cisco-IOS-XE-dot1x:supplicant/force-multicast
+    example: true
+  - yang_name: Cisco-IOS-XE-dot1x:system-auth-control
+    example: true
