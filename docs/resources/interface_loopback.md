@@ -27,6 +27,7 @@ resource "iosxe_interface_loopback" "example" {
   ip_access_group_in_enable  = true
   ip_access_group_out        = "1"
   ip_access_group_out_enable = true
+  arp_timeout                = 2147
 }
 ```
 
@@ -39,6 +40,8 @@ resource "iosxe_interface_loopback" "example" {
 
 ### Optional
 
+- `arp_timeout` (Number) Set ARP cache timeout
+  - Range: `0`-`2147483`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description
@@ -47,11 +50,15 @@ resource "iosxe_interface_loopback" "example" {
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_arp_inspection_limit_rate` (Number) Rate Limit
+  - Range: `0`-`4294967295`
+- `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
 - `shutdown` (Boolean) Shutdown the selected interface
+- `snooping_trust` (Boolean) DHCP Snooping trust config
 - `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table
 

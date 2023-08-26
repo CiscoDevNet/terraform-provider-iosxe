@@ -33,40 +33,48 @@ import (
 )
 
 type InterfaceLoopback struct {
-	Device                 types.String `tfsdk:"device"`
-	Id                     types.String `tfsdk:"id"`
-	DeleteMode             types.String `tfsdk:"delete_mode"`
-	Name                   types.Int64  `tfsdk:"name"`
-	Description            types.String `tfsdk:"description"`
-	Shutdown               types.Bool   `tfsdk:"shutdown"`
-	IpProxyArp             types.Bool   `tfsdk:"ip_proxy_arp"`
-	IpRedirects            types.Bool   `tfsdk:"ip_redirects"`
-	Unreachables           types.Bool   `tfsdk:"unreachables"`
-	VrfForwarding          types.String `tfsdk:"vrf_forwarding"`
-	Ipv4Address            types.String `tfsdk:"ipv4_address"`
-	Ipv4AddressMask        types.String `tfsdk:"ipv4_address_mask"`
-	IpAccessGroupIn        types.String `tfsdk:"ip_access_group_in"`
-	IpAccessGroupInEnable  types.Bool   `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut       types.String `tfsdk:"ip_access_group_out"`
-	IpAccessGroupOutEnable types.Bool   `tfsdk:"ip_access_group_out_enable"`
+	Device                   types.String `tfsdk:"device"`
+	Id                       types.String `tfsdk:"id"`
+	DeleteMode               types.String `tfsdk:"delete_mode"`
+	Name                     types.Int64  `tfsdk:"name"`
+	Description              types.String `tfsdk:"description"`
+	Shutdown                 types.Bool   `tfsdk:"shutdown"`
+	IpProxyArp               types.Bool   `tfsdk:"ip_proxy_arp"`
+	IpRedirects              types.Bool   `tfsdk:"ip_redirects"`
+	Unreachables             types.Bool   `tfsdk:"unreachables"`
+	VrfForwarding            types.String `tfsdk:"vrf_forwarding"`
+	Ipv4Address              types.String `tfsdk:"ipv4_address"`
+	Ipv4AddressMask          types.String `tfsdk:"ipv4_address_mask"`
+	IpAccessGroupIn          types.String `tfsdk:"ip_access_group_in"`
+	IpAccessGroupInEnable    types.Bool   `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupOut         types.String `tfsdk:"ip_access_group_out"`
+	IpAccessGroupOutEnable   types.Bool   `tfsdk:"ip_access_group_out_enable"`
+	ArpTimeout               types.Int64  `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust     types.Bool   `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate types.Int64  `tfsdk:"ip_arp_inspection_limit_rate"`
+	SnoopingTrust            types.Bool   `tfsdk:"snooping_trust"`
 }
 
 type InterfaceLoopbackData struct {
-	Device                 types.String `tfsdk:"device"`
-	Id                     types.String `tfsdk:"id"`
-	Name                   types.Int64  `tfsdk:"name"`
-	Description            types.String `tfsdk:"description"`
-	Shutdown               types.Bool   `tfsdk:"shutdown"`
-	IpProxyArp             types.Bool   `tfsdk:"ip_proxy_arp"`
-	IpRedirects            types.Bool   `tfsdk:"ip_redirects"`
-	Unreachables           types.Bool   `tfsdk:"unreachables"`
-	VrfForwarding          types.String `tfsdk:"vrf_forwarding"`
-	Ipv4Address            types.String `tfsdk:"ipv4_address"`
-	Ipv4AddressMask        types.String `tfsdk:"ipv4_address_mask"`
-	IpAccessGroupIn        types.String `tfsdk:"ip_access_group_in"`
-	IpAccessGroupInEnable  types.Bool   `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut       types.String `tfsdk:"ip_access_group_out"`
-	IpAccessGroupOutEnable types.Bool   `tfsdk:"ip_access_group_out_enable"`
+	Device                   types.String `tfsdk:"device"`
+	Id                       types.String `tfsdk:"id"`
+	Name                     types.Int64  `tfsdk:"name"`
+	Description              types.String `tfsdk:"description"`
+	Shutdown                 types.Bool   `tfsdk:"shutdown"`
+	IpProxyArp               types.Bool   `tfsdk:"ip_proxy_arp"`
+	IpRedirects              types.Bool   `tfsdk:"ip_redirects"`
+	Unreachables             types.Bool   `tfsdk:"unreachables"`
+	VrfForwarding            types.String `tfsdk:"vrf_forwarding"`
+	Ipv4Address              types.String `tfsdk:"ipv4_address"`
+	Ipv4AddressMask          types.String `tfsdk:"ipv4_address_mask"`
+	IpAccessGroupIn          types.String `tfsdk:"ip_access_group_in"`
+	IpAccessGroupInEnable    types.Bool   `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupOut         types.String `tfsdk:"ip_access_group_out"`
+	IpAccessGroupOutEnable   types.Bool   `tfsdk:"ip_access_group_out_enable"`
+	ArpTimeout               types.Int64  `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust     types.Bool   `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate types.Int64  `tfsdk:"ip_arp_inspection_limit_rate"`
+	SnoopingTrust            types.Bool   `tfsdk:"snooping_trust"`
 }
 
 func (data InterfaceLoopback) getPath() string {
@@ -133,6 +141,22 @@ func (data InterfaceLoopback) toBody(ctx context.Context) string {
 	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.IsUnknown() {
 		if data.IpAccessGroupOutEnable.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.out", map[string]string{})
+		}
+	}
+	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"arp.timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
+	}
+	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.IsUnknown() {
+		if data.IpArpInspectionTrust.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.trust", map[string]string{})
+		}
+	}
+	if !data.IpArpInspectionLimitRate.IsNull() && !data.IpArpInspectionLimitRate.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.limit.rate", strconv.FormatInt(data.IpArpInspectionLimitRate.ValueInt64(), 10))
+	}
+	if !data.SnoopingTrust.IsNull() && !data.SnoopingTrust.IsUnknown() {
+		if data.SnoopingTrust.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust", map[string]string{})
 		}
 	}
 	return body
@@ -226,6 +250,34 @@ func (data *InterfaceLoopback) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolNull()
 	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
+		data.ArpTimeout = types.Int64Value(value.Int())
+	} else {
+		data.ArpTimeout = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.trust"); !data.IpArpInspectionTrust.IsNull() {
+		if value.Exists() {
+			data.IpArpInspectionTrust = types.BoolValue(true)
+		} else {
+			data.IpArpInspectionTrust = types.BoolValue(false)
+		}
+	} else {
+		data.IpArpInspectionTrust = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() && !data.IpArpInspectionLimitRate.IsNull() {
+		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	} else {
+		data.IpArpInspectionLimitRate = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); !data.SnoopingTrust.IsNull() {
+		if value.Exists() {
+			data.SnoopingTrust = types.BoolValue(true)
+		} else {
+			data.SnoopingTrust = types.BoolValue(false)
+		}
+	} else {
+		data.SnoopingTrust = types.BoolNull()
+	}
 }
 
 func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Result) {
@@ -281,6 +333,22 @@ func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() {
+		data.ArpTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.trust"); value.Exists() {
+		data.IpArpInspectionTrust = types.BoolValue(true)
+	} else {
+		data.IpArpInspectionTrust = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() {
+		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); value.Exists() {
+		data.SnoopingTrust = types.BoolValue(true)
+	} else {
+		data.SnoopingTrust = types.BoolValue(false)
+	}
 }
 
 func (data *InterfaceLoopback) getDeletedListItems(ctx context.Context, state InterfaceLoopback) []string {
@@ -298,6 +366,12 @@ func (data *InterfaceLoopback) getEmptyLeafsDelete(ctx context.Context) []string
 	}
 	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
+	}
+	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
+	}
+	if !data.SnoopingTrust.IsNull() && !data.SnoopingTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -339,6 +413,18 @@ func (data *InterfaceLoopback) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpAccessGroupOutEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
+	}
+	if !data.ArpTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
+	}
+	if !data.IpArpInspectionTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
+	}
+	if !data.IpArpInspectionLimitRate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", data.getPath()))
+	}
+	if !data.SnoopingTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
 	}
 	return deletePaths
 }

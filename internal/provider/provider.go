@@ -342,10 +342,12 @@ func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resourc
 		NewStaticRouteVRFResource,
 		NewSystemResource,
 		NewTemplateResource,
+		NewUDLDResource,
 		NewUsernameResource,
 		NewVLANResource,
 		NewVLANConfigurationResource,
 		NewVRFResource,
+		NewVTPResource,
 	}
 }
 
@@ -419,10 +421,12 @@ func (p *IosxeProvider) DataSources(ctx context.Context) []func() datasource.Dat
 		NewStaticRouteVRFDataSource,
 		NewSystemDataSource,
 		NewTemplateDataSource,
+		NewUDLDDataSource,
 		NewUsernameDataSource,
 		NewVLANDataSource,
 		NewVLANConfigurationDataSource,
 		NewVRFDataSource,
+		NewVTPDataSource,
 	}
 }
 

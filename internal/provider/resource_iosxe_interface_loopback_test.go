@@ -40,6 +40,7 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_in_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_out", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "ip_access_group_out_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_loopback.test", "arp_timeout", "2147"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -95,6 +96,7 @@ func testAccIosxeInterfaceLoopbackConfig_all() string {
 	config += `	ip_access_group_in_enable = true` + "\n"
 	config += `	ip_access_group_out = "1"` + "\n"
 	config += `	ip_access_group_out_enable = true` + "\n"
+	config += `	arp_timeout = 2147` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

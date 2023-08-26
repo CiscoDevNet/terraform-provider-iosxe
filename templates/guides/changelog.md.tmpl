@@ -13,6 +13,11 @@ description: |-
 - Add `iosxe_static_route_vrf` resource and data source
 - Make `lists.key` attribute of `iosxe_restconf` resource mandatory
 - Fix issue with nested `lists.items` attributes of `iosxe_restconf` resource
+- Add `arp_timeout`, `ip_inspection_limit_rate` and `ip_dhcp_snooping`attributes to `iosxe_interface_loopback` resource and data source
+- Add `arp_timeout` and `ip_inspection_limit_rate` attributes to `iosxe_interface_port_channel_subinterface` resource and data source
+- Add `area_id` and `networks` attributes to `iosxe_ospf` resource and data source
+- Add `iosxe_udld` resource and data source
+- Add `iosxe_vtp` resource and data source
 
 ## 0.3.3
 

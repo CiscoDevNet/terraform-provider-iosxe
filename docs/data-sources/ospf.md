@@ -31,6 +31,7 @@ data "iosxe_ospf" "example" {
 
 ### Read-Only
 
+- `area_id` (Attributes List) OSPF area parameters (see [below for nested schema](#nestedatt--area_id))
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
@@ -42,10 +43,22 @@ data "iosxe_ospf" "example" {
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
 - `neighbor` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbor))
 - `network` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--network))
+- `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
+- `passive_interface_passive_interface_choice_default_default` (Boolean) Suppress routing updates on all interfaces
 - `priority` (Number) OSPF topology priority
 - `router_id` (String) Override configured router identifier (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
 - `summary_address` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_address))
+
+<a id="nestedatt--area_id"></a>
+### Nested Schema for `area_id`
+
+Read-Only:
+
+- `area_id` (String) OSPF area ID
+- `authentication_message_digest` (Boolean) Use message-digest authentication
+- `nssa` (Boolean) Specify a NSSA area
+
 
 <a id="nestedatt--neighbor"></a>
 ### Nested Schema for `neighbor`
@@ -59,6 +72,16 @@ Read-Only:
 
 <a id="nestedatt--network"></a>
 ### Nested Schema for `network`
+
+Read-Only:
+
+- `area` (String) Set the OSPF area ID
+- `ip` (String) Network number
+- `wildcard` (String) OSPF wild card bits
+
+
+<a id="nestedatt--networks"></a>
+### Nested Schema for `networks`
 
 Read-Only:
 

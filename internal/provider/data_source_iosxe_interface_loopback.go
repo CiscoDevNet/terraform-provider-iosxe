@@ -115,6 +115,22 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "outbound packets",
 				Computed:            true,
 			},
+			"arp_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Set ARP cache timeout",
+				Computed:            true,
+			},
+			"ip_arp_inspection_trust": schema.BoolAttribute{
+				MarkdownDescription: "Configure Trust state",
+				Computed:            true,
+			},
+			"ip_arp_inspection_limit_rate": schema.Int64Attribute{
+				MarkdownDescription: "Rate Limit",
+				Computed:            true,
+			},
+			"snooping_trust": schema.BoolAttribute{
+				MarkdownDescription: "DHCP Snooping trust config",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -12,4 +12,5 @@ resource "iosxe_interface_loopback" "example" {
   ip_access_group_in_enable  = true
   ip_access_group_out        = "1"
   ip_access_group_out_enable = true
+  arp_timeout                = 2147
 }

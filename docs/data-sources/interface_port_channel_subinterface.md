@@ -31,6 +31,7 @@ data "iosxe_interface_port_channel_subinterface" "example" {
 
 ### Read-Only
 
+- `arp_timeout` (Number) Set ARP cache timeout
 - `auto_qos_classify` (Boolean) Configure classification for untrusted devices
 - `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
 - `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
@@ -51,6 +52,8 @@ data "iosxe_interface_port_channel_subinterface" "example" {
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_arp_inspection_limit_rate` (Number) Rate Limit
+- `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ipv4_address` (String)

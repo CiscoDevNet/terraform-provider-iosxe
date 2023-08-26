@@ -167,6 +167,50 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 					},
 				},
 			},
+			"area_id": schema.ListNestedAttribute{
+				MarkdownDescription: "OSPF area parameters",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"area_id": schema.StringAttribute{
+							MarkdownDescription: "OSPF area ID",
+							Computed:            true,
+						},
+						"authentication_message_digest": schema.BoolAttribute{
+							MarkdownDescription: "Use message-digest authentication",
+							Computed:            true,
+						},
+						"nssa": schema.BoolAttribute{
+							MarkdownDescription: "Specify a NSSA area",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_passive_interface_choice_default_default": schema.BoolAttribute{
+				MarkdownDescription: "Suppress routing updates on all interfaces",
+				Computed:            true,
+			},
+			"networks": schema.ListNestedAttribute{
+				MarkdownDescription: "Enable routing on an IP network",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ip": schema.StringAttribute{
+							MarkdownDescription: "Network number",
+							Computed:            true,
+						},
+						"wildcard": schema.StringAttribute{
+							MarkdownDescription: "OSPF wild card bits",
+							Computed:            true,
+						},
+						"area": schema.StringAttribute{
+							MarkdownDescription: "Set the OSPF area ID",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

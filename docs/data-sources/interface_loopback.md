@@ -31,16 +31,20 @@ data "iosxe_interface_loopback" "example" {
 
 ### Read-Only
 
+- `arp_timeout` (Number) Set ARP cache timeout
 - `description` (String) Interface specific description
 - `id` (String) The path of the retrieved object.
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_arp_inspection_limit_rate` (Number) Rate Limit
+- `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
 - `shutdown` (Boolean) Shutdown the selected interface
+- `snooping_trust` (Boolean) DHCP Snooping trust config
 - `unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `vrf_forwarding` (String) Configure forwarding table

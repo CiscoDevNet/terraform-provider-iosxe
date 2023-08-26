@@ -1,0 +1,55 @@
+---
+name: VTP
+path: Cisco-IOS-XE-native:native/vtp
+doc_category: Switching
+attributes:
+  - yang_name: Cisco-IOS-XE-vtp:file
+    example: TEST
+  - yang_name: Cisco-IOS-XE-vtp:version
+    example: 3
+  - yang_name: Cisco-IOS-XE-vtp:interface/interface-name
+    example: Gi1/0/1
+  - yang_name: Cisco-IOS-XE-vtp:interface/only
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-vtp:password/password
+    example: test123
+  - yang_name: Cisco-IOS-XE-vtp:password/hidden
+    example: true
+  - yang_name: Cisco-IOS-XE-vtp:password/secret
+    example: PASSWD123456789
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-vtp:pruning
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-vtp:domain
+    example: TESTDOMAIN
+
+  - yang_name: Cisco-IOS-XE-vtp:mode/client/mst
+    example: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/client/unknown
+    example: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/client/vlan
+    example: true
+
+  - yang_name: Cisco-IOS-XE-vtp:mode/off/mst
+    example: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/off/unknown
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/off/vlan
+    example: true
+
+  - yang_name: Cisco-IOS-XE-vtp:mode/server/mst
+    example: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/server/unknown
+    example: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/server/vlan
+    example: true
+
+  - yang_name: Cisco-IOS-XE-vtp:mode/transparent/mst
+    example: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/transparent/unknown
+    example: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/transparent/vlan
+    example: true

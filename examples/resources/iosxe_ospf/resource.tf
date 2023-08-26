@@ -13,13 +13,6 @@ resource "iosxe_ospf" "example" {
       cost     = 100
     }
   ]
-  network = [
-    {
-      ip       = "3.3.3.0"
-      wildcard = "0.0.0.255"
-      area     = "0"
-    }
-  ]
   priority  = 100
   router_id = "1.2.3.4"
   shutdown  = false
@@ -27,6 +20,21 @@ resource "iosxe_ospf" "example" {
     {
       ip   = "3.3.3.0"
       mask = "255.255.255.0"
+    }
+  ]
+  area_id = [
+    {
+      area_id                       = "233"
+      authentication_message_digest = true
+      nssa                          = true
+    }
+  ]
+  passive_interface_passive_interface_choice_default_default = false
+  networks = [
+    {
+      ip       = "10.1.1.1"
+      wildcard = "255.255.255.248"
+      area     = "3"
     }
   ]
 }

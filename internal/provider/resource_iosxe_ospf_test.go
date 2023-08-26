@@ -37,14 +37,18 @@ func TestAccIosxeOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "neighbor.0.ip", "2.2.2.2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "neighbor.0.priority", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "neighbor.0.cost", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "network.0.ip", "3.3.3.0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "network.0.wildcard", "0.0.0.255"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "network.0.area", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "priority", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "router_id", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "shutdown", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "summary_address.0.ip", "3.3.3.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "summary_address.0.mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "area_id.0.area_id", "233"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "area_id.0.authentication_message_digest", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "area_id.0.nssa", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "passive_interface_passive_interface_choice_default_default", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "networks.0.ip", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "networks.0.wildcard", "255.255.255.248"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "networks.0.area", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -86,17 +90,23 @@ func testAccIosxeOSPFConfig_all() string {
 	config += `		priority = 10` + "\n"
 	config += `		cost = 100` + "\n"
 	config += `	}]` + "\n"
-	config += `	network = [{` + "\n"
-	config += `		ip = "3.3.3.0"` + "\n"
-	config += `		wildcard = "0.0.0.255"` + "\n"
-	config += `		area = "0"` + "\n"
-	config += `	}]` + "\n"
 	config += `	priority = 100` + "\n"
 	config += `	router_id = "1.2.3.4"` + "\n"
 	config += `	shutdown = false` + "\n"
 	config += `	summary_address = [{` + "\n"
 	config += `		ip = "3.3.3.0"` + "\n"
 	config += `		mask = "255.255.255.0"` + "\n"
+	config += `	}]` + "\n"
+	config += `	area_id = [{` + "\n"
+	config += `		area_id = "233"` + "\n"
+	config += `		authentication_message_digest = true` + "\n"
+	config += `		nssa = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	passive_interface_passive_interface_choice_default_default = false` + "\n"
+	config += `	networks = [{` + "\n"
+	config += `		ip = "10.1.1.1"` + "\n"
+	config += `		wildcard = "255.255.255.248"` + "\n"
+	config += `		area = "3"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config

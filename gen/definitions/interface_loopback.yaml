@@ -45,6 +45,18 @@ attributes:
     xpath: ip/access-group/out/acl/out
     tf_name: ip_access_group_out_enable
     example: true
+  - yang_name: arp/timeout
+    example: 2147
+  - yang_name: ip/arp/inspection/trust
+    example: true
+    exclude_test: true   
+  - yang_name: ip/arp/inspection/limit/rate
+    example: 4294
+    exclude_test: true
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
+    example: true
+    exclude_test: true
+    
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

@@ -22,7 +22,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -30,7 +29,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -39,22 +37,22 @@ import (
 	"github.com/netascode/go-restconf"
 )
 
-func NewOSPFResource() resource.Resource {
-	return &OSPFResource{}
+func NewVTPResource() resource.Resource {
+	return &VTPResource{}
 }
 
-type OSPFResource struct {
+type VTPResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *OSPFResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_ospf"
+func (r *VTPResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_vtp"
 }
 
-func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the OSPF configuration.",
+		MarkdownDescription: "This resource can manage the VTP configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -75,207 +73,98 @@ func (r *OSPFResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"process_id": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Process ID").AddIntegerRangeDescription(1, 65535).String,
-				Required:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
-				},
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplace(),
-				},
-			},
-			"bfd_all_interfaces": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD on all interfaces").String,
+			"file": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure IFS filesystem file where VTP configuration is stored.").String,
 				Optional:            true,
 			},
-			"default_information_originate": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Distribute a default route").String,
-				Optional:            true,
-			},
-			"default_information_originate_always": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Always advertise default route").String,
-				Optional:            true,
-			},
-			"default_metric": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set metric of redistributed routes").AddIntegerRangeDescription(1, 16777214).String,
+			"version": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the administrative domain to VTP version").AddIntegerRangeDescription(1, 3).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1, 16777214),
+					int64validator.Between(1, 3),
 				},
 			},
-			"distance": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Administrative distance").AddIntegerRangeDescription(1, 255).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 255),
-				},
-			},
-			"domain_tag": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("OSPF domain-tag").AddIntegerRangeDescription(1, 4294967295).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 4294967295),
-				},
-			},
-			"mpls_ldp_autoconfig": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP automatic configuration").String,
+			"interface_interface_name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The name of the interface providing the VTP updater ID for this device").String,
 				Optional:            true,
 			},
-			"mpls_ldp_sync": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP-IGP Synchronization").String,
+			"interface_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use only this interface's IP address as the VTP IP updater address").String,
 				Optional:            true,
 			},
-			"neighbor": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify a neighbor router").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"ip": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Neighbor address").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"priority": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("OSPF priority of non-broadcast neighbor").AddIntegerRangeDescription(0, 255).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(0, 255),
-							},
-						},
-						"cost": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("OSPF cost for point-to-multipoint neighbor").AddIntegerRangeDescription(1, 65535).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 65535),
-							},
-						},
-					},
-				},
-			},
-			"network": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable routing on an IP network").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"ip": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Network number").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"wildcard": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("OSPF wild card bits").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"area": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Set the OSPF area ID").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"priority": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("OSPF topology priority").AddIntegerRangeDescription(0, 127).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 127),
-				},
-			},
-			"router_id": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Override configured router identifier (peers will reset)").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Shutdown the OSPF protocol under the current instance").String,
+			"password_password": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The ascii password for the VTP administrative domain").String,
 				Optional:            true,
 			},
-			"summary_address": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure IP address summaries").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"ip": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IP summary address").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"mask": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Summary mask").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-					},
-				},
-			},
-			"area_id": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("OSPF area parameters").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"area_id": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("OSPF area ID").String,
-							Required:            true,
-						},
-						"authentication_message_digest": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Use message-digest authentication").String,
-							Optional:            true,
-						},
-						"nssa": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify a NSSA area").String,
-							Optional:            true,
-						},
-					},
-				},
-			},
-			"passive_interface_passive_interface_choice_default_default": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").String,
+			"password_hidden": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the VTP password hidden option").String,
 				Optional:            true,
 			},
-			"networks": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable routing on an IP network").String,
+			"password_secret": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify the vtp password in encrypted form").String,
 				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"ip": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Network number").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"wildcard": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("OSPF wild card bits").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-							},
-						},
-						"area": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Set the OSPF area ID").String,
-							Optional:            true,
-						},
-					},
-				},
+			},
+			"pruning": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the administrative domain to permit pruning").String,
+				Optional:            true,
+			},
+			"domain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the name of the VTP administrative domain.").String,
+				Optional:            true,
+			},
+			"mode_client_mst": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
+				Optional:            true,
+			},
+			"mode_client_unknown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").String,
+				Optional:            true,
+			},
+			"mode_client_vlan": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				Optional:            true,
+			},
+			"mode_off_mst": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
+				Optional:            true,
+			},
+			"mode_off_unknown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").String,
+				Optional:            true,
+			},
+			"mode_off_vlan": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				Optional:            true,
+			},
+			"mode_server_mst": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
+				Optional:            true,
+			},
+			"mode_server_unknown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").String,
+				Optional:            true,
+			},
+			"mode_server_vlan": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				Optional:            true,
+			},
+			"mode_transparent_mst": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
+				Optional:            true,
+			},
+			"mode_transparent_unknown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for unknown VTP instances").String,
+				Optional:            true,
+			},
+			"mode_transparent_vlan": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				Optional:            true,
 			},
 		},
 	}
 }
 
-func (r *OSPFResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *VTPResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -283,8 +172,8 @@ func (r *OSPFResource) Configure(_ context.Context, req resource.ConfigureReques
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *OSPFResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan OSPF
+func (r *VTPResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan VTP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -342,8 +231,8 @@ func (r *OSPFResource) Create(ctx context.Context, req resource.CreateRequest, r
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *OSPFResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state OSPF
+func (r *VTPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state VTP
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -361,7 +250,7 @@ func (r *OSPFResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = OSPF{Device: state.Device, Id: state.Id}
+		state = VTP{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -377,8 +266,8 @@ func (r *OSPFResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *OSPFResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state OSPF
+func (r *VTPResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state VTP
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -453,8 +342,8 @@ func (r *OSPFResource) Update(ctx context.Context, req resource.UpdateRequest, r
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *OSPFResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state OSPF
+func (r *VTPResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state VTP
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -512,6 +401,6 @@ func (r *OSPFResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *OSPFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *VTPResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
