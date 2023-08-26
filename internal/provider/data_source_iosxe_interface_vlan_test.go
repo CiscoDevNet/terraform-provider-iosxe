@@ -48,11 +48,9 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "helper_addresses.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "bfd_template", "bfd_template1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "bfd_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "bfd_local_address", "1.2.3.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "bfd_interval", "50"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "bfd_interval_min_rx", "50"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_vlan.test", "bfd_interval_multiplier", "3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -100,11 +98,9 @@ func testAccDataSourceIosxeInterfaceVLANConfig() string {
 	config += `		global = false` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
+	config += `	bfd_template = "bfd_template1"` + "\n"
 	config += `	bfd_enable = true` + "\n"
 	config += `	bfd_local_address = "1.2.3.4"` + "\n"
-	config += `	bfd_interval = 50` + "\n"
-	config += `	bfd_interval_min_rx = 50` + "\n"
-	config += `	bfd_interval_multiplier = 3` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

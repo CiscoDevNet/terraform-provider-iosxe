@@ -41,11 +41,6 @@ resource "iosxe_interface_ethernet" "example" {
       merge         = false
     }
   ]
-  bfd_enable              = true
-  bfd_local_address       = "1.2.3.4"
-  bfd_interval            = 50
-  bfd_interval_min_rx     = 50
-  bfd_interval_multiplier = 3
 }
 ```
 

@@ -48,11 +48,21 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "helper_addresses.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.template_name", "TEMP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.merge", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_local_address", "1.2.3.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval", "50"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval_min_rx", "50"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval_multiplier", "3"))
+	if os.Getenv("IOSXE179") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_enable", "true"))
+	}
+	if os.Getenv("IOSXE179") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_local_address", "1.2.3.4"))
+	}
+	if os.Getenv("IOSXE179") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval", "50"))
+	}
+	if os.Getenv("IOSXE179") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval_min_rx", "50"))
+	}
+	if os.Getenv("IOSXE179") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_interval_multiplier", "3"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -102,11 +112,21 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		template_name = "TEMP1"` + "\n"
 	config += `		merge = false` + "\n"
 	config += `	}]` + "\n"
-	config += `	bfd_enable = true` + "\n"
-	config += `	bfd_local_address = "1.2.3.4"` + "\n"
-	config += `	bfd_interval = 50` + "\n"
-	config += `	bfd_interval_min_rx = 50` + "\n"
-	config += `	bfd_interval_multiplier = 3` + "\n"
+	if os.Getenv("IOSXE179") != "" {
+		config += `	bfd_enable = true` + "\n"
+	}
+	if os.Getenv("IOSXE179") != "" {
+		config += `	bfd_local_address = "1.2.3.4"` + "\n"
+	}
+	if os.Getenv("IOSXE179") != "" {
+		config += `	bfd_interval = 50` + "\n"
+	}
+	if os.Getenv("IOSXE179") != "" {
+		config += `	bfd_interval_min_rx = 50` + "\n"
+	}
+	if os.Getenv("IOSXE179") != "" {
+		config += `	bfd_interval_multiplier = 3` + "\n"
+	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
