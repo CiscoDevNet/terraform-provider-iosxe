@@ -135,6 +135,26 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 					},
 				},
 			},
+			"message_digest_keys": schema.ListNestedAttribute{
+				MarkdownDescription: "Message digest authentication password (key)",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.Int64Attribute{
+							MarkdownDescription: "Key ID",
+							Computed:            true,
+						},
+						"md5_auth_key": schema.StringAttribute{
+							MarkdownDescription: "The OSPF password (key) (only the first 16 characters are used)",
+							Computed:            true,
+						},
+						"md5_auth_type": schema.Int64Attribute{
+							MarkdownDescription: "Encryption type (0 for not yet encrypted, 7 for proprietary)",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

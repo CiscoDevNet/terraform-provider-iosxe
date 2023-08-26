@@ -21,4 +21,11 @@ resource "iosxe_interface_ospf" "example" {
       ]
     }
   ]
+  message_digest_keys = [
+    {
+      id            = 1
+      md5_auth_key  = "mykey"
+      md5_auth_type = 0
+    }
+  ]
 }

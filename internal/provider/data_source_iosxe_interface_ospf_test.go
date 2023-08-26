@@ -39,6 +39,9 @@ func TestAccDataSourceIosxeInterfaceOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "ttl_security_hops", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "process_ids.0.id", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "process_ids.0.areas.0.area_id", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "message_digest_keys.0.id", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "message_digest_keys.0.md5_auth_key", "mykey"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "message_digest_keys.0.md5_auth_type", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -88,6 +91,11 @@ func testAccDataSourceIosxeInterfaceOSPFConfig() string {
 	config += `		areas = [{` + "\n"
 	config += `			area_id = "0"` + "\n"
 	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	message_digest_keys = [{` + "\n"
+	config += `		id = 1` + "\n"
+	config += `		md5_auth_key = "mykey"` + "\n"
+	config += `		md5_auth_type = 0` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"

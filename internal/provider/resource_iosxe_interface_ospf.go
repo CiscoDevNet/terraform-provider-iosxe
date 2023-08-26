@@ -176,6 +176,35 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 					},
 				},
 			},
+			"message_digest_keys": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Message digest authentication password (key)").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Key ID").AddIntegerRangeDescription(1, 255).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 255),
+							},
+						},
+						"md5_auth_key": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("The OSPF password (key) (only the first 16 characters are used)").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+							},
+						},
+						"md5_auth_type": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 for not yet encrypted, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 7),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

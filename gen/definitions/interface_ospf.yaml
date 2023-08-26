@@ -68,6 +68,18 @@ attributes:
           - yang_name: area-id
             id: true
             example: 0
+  - yang_name: message-digest-key
+    tf_name: message_digest_keys
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: 1
+      - yang_name: md5/auth-key
+        example: mykey
+      - yang_name: md5/auth-type
+        example: 0
+        no_delete: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=1

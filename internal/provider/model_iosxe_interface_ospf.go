@@ -35,44 +35,51 @@ import (
 )
 
 type InterfaceOSPF struct {
-	Device                       types.String              `tfsdk:"device"`
-	Id                           types.String              `tfsdk:"id"`
-	DeleteMode                   types.String              `tfsdk:"delete_mode"`
-	Type                         types.String              `tfsdk:"type"`
-	Name                         types.String              `tfsdk:"name"`
-	Cost                         types.Int64               `tfsdk:"cost"`
-	DeadInterval                 types.Int64               `tfsdk:"dead_interval"`
-	HelloInterval                types.Int64               `tfsdk:"hello_interval"`
-	MtuIgnore                    types.Bool                `tfsdk:"mtu_ignore"`
-	NetworkTypeBroadcast         types.Bool                `tfsdk:"network_type_broadcast"`
-	NetworkTypeNonBroadcast      types.Bool                `tfsdk:"network_type_non_broadcast"`
-	NetworkTypePointToMultipoint types.Bool                `tfsdk:"network_type_point_to_multipoint"`
-	NetworkTypePointToPoint      types.Bool                `tfsdk:"network_type_point_to_point"`
-	Priority                     types.Int64               `tfsdk:"priority"`
-	TtlSecurityHops              types.Int64               `tfsdk:"ttl_security_hops"`
-	ProcessIds                   []InterfaceOSPFProcessIds `tfsdk:"process_ids"`
+	Device                       types.String                     `tfsdk:"device"`
+	Id                           types.String                     `tfsdk:"id"`
+	DeleteMode                   types.String                     `tfsdk:"delete_mode"`
+	Type                         types.String                     `tfsdk:"type"`
+	Name                         types.String                     `tfsdk:"name"`
+	Cost                         types.Int64                      `tfsdk:"cost"`
+	DeadInterval                 types.Int64                      `tfsdk:"dead_interval"`
+	HelloInterval                types.Int64                      `tfsdk:"hello_interval"`
+	MtuIgnore                    types.Bool                       `tfsdk:"mtu_ignore"`
+	NetworkTypeBroadcast         types.Bool                       `tfsdk:"network_type_broadcast"`
+	NetworkTypeNonBroadcast      types.Bool                       `tfsdk:"network_type_non_broadcast"`
+	NetworkTypePointToMultipoint types.Bool                       `tfsdk:"network_type_point_to_multipoint"`
+	NetworkTypePointToPoint      types.Bool                       `tfsdk:"network_type_point_to_point"`
+	Priority                     types.Int64                      `tfsdk:"priority"`
+	TtlSecurityHops              types.Int64                      `tfsdk:"ttl_security_hops"`
+	ProcessIds                   []InterfaceOSPFProcessIds        `tfsdk:"process_ids"`
+	MessageDigestKeys            []InterfaceOSPFMessageDigestKeys `tfsdk:"message_digest_keys"`
 }
 
 type InterfaceOSPFData struct {
-	Device                       types.String              `tfsdk:"device"`
-	Id                           types.String              `tfsdk:"id"`
-	Type                         types.String              `tfsdk:"type"`
-	Name                         types.String              `tfsdk:"name"`
-	Cost                         types.Int64               `tfsdk:"cost"`
-	DeadInterval                 types.Int64               `tfsdk:"dead_interval"`
-	HelloInterval                types.Int64               `tfsdk:"hello_interval"`
-	MtuIgnore                    types.Bool                `tfsdk:"mtu_ignore"`
-	NetworkTypeBroadcast         types.Bool                `tfsdk:"network_type_broadcast"`
-	NetworkTypeNonBroadcast      types.Bool                `tfsdk:"network_type_non_broadcast"`
-	NetworkTypePointToMultipoint types.Bool                `tfsdk:"network_type_point_to_multipoint"`
-	NetworkTypePointToPoint      types.Bool                `tfsdk:"network_type_point_to_point"`
-	Priority                     types.Int64               `tfsdk:"priority"`
-	TtlSecurityHops              types.Int64               `tfsdk:"ttl_security_hops"`
-	ProcessIds                   []InterfaceOSPFProcessIds `tfsdk:"process_ids"`
+	Device                       types.String                     `tfsdk:"device"`
+	Id                           types.String                     `tfsdk:"id"`
+	Type                         types.String                     `tfsdk:"type"`
+	Name                         types.String                     `tfsdk:"name"`
+	Cost                         types.Int64                      `tfsdk:"cost"`
+	DeadInterval                 types.Int64                      `tfsdk:"dead_interval"`
+	HelloInterval                types.Int64                      `tfsdk:"hello_interval"`
+	MtuIgnore                    types.Bool                       `tfsdk:"mtu_ignore"`
+	NetworkTypeBroadcast         types.Bool                       `tfsdk:"network_type_broadcast"`
+	NetworkTypeNonBroadcast      types.Bool                       `tfsdk:"network_type_non_broadcast"`
+	NetworkTypePointToMultipoint types.Bool                       `tfsdk:"network_type_point_to_multipoint"`
+	NetworkTypePointToPoint      types.Bool                       `tfsdk:"network_type_point_to_point"`
+	Priority                     types.Int64                      `tfsdk:"priority"`
+	TtlSecurityHops              types.Int64                      `tfsdk:"ttl_security_hops"`
+	ProcessIds                   []InterfaceOSPFProcessIds        `tfsdk:"process_ids"`
+	MessageDigestKeys            []InterfaceOSPFMessageDigestKeys `tfsdk:"message_digest_keys"`
 }
 type InterfaceOSPFProcessIds struct {
 	Id    types.Int64                    `tfsdk:"id"`
 	Areas []InterfaceOSPFProcessIdsAreas `tfsdk:"areas"`
+}
+type InterfaceOSPFMessageDigestKeys struct {
+	Id          types.Int64  `tfsdk:"id"`
+	Md5AuthKey  types.String `tfsdk:"md5_auth_key"`
+	Md5AuthType types.Int64  `tfsdk:"md5_auth_type"`
 }
 type InterfaceOSPFProcessIdsAreas struct {
 	AreaId types.String `tfsdk:"area_id"`
@@ -150,6 +157,20 @@ func (data InterfaceOSPF) toBody(ctx context.Context) string {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"process-id"+"."+strconv.Itoa(index)+"."+"area"+"."+strconv.Itoa(cindex)+"."+"area-id", citem.AreaId.ValueString())
 					}
 				}
+			}
+		}
+	}
+	if len(data.MessageDigestKeys) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key", []interface{}{})
+		for index, item := range data.MessageDigestKeys {
+			if !item.Id.IsNull() && !item.Id.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key"+"."+strconv.Itoa(index)+"."+"id", strconv.FormatInt(item.Id.ValueInt64(), 10))
+			}
+			if !item.Md5AuthKey.IsNull() && !item.Md5AuthKey.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key"+"."+strconv.Itoa(index)+"."+"md5.auth-key", item.Md5AuthKey.ValueString())
+			}
+			if !item.Md5AuthType.IsNull() && !item.Md5AuthType.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key"+"."+strconv.Itoa(index)+"."+"md5.auth-type", strconv.FormatInt(item.Md5AuthType.ValueInt64(), 10))
 			}
 		}
 	}
@@ -287,6 +308,45 @@ func (data *InterfaceOSPF) updateFromBody(ctx context.Context, res gjson.Result)
 			}
 		}
 	}
+	for i := range data.MessageDigestKeys {
+		keys := [...]string{"id"}
+		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
+
+		var r gjson.Result
+		res.Get(prefix + "message-digest-key").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("id"); value.Exists() && !data.MessageDigestKeys[i].Id.IsNull() {
+			data.MessageDigestKeys[i].Id = types.Int64Value(value.Int())
+		} else {
+			data.MessageDigestKeys[i].Id = types.Int64Null()
+		}
+		if value := r.Get("md5.auth-key"); value.Exists() && !data.MessageDigestKeys[i].Md5AuthKey.IsNull() {
+			data.MessageDigestKeys[i].Md5AuthKey = types.StringValue(value.String())
+		} else {
+			data.MessageDigestKeys[i].Md5AuthKey = types.StringNull()
+		}
+		if value := r.Get("md5.auth-type"); value.Exists() && !data.MessageDigestKeys[i].Md5AuthType.IsNull() {
+			data.MessageDigestKeys[i].Md5AuthType = types.Int64Value(value.Int())
+		} else {
+			data.MessageDigestKeys[i].Md5AuthType = types.Int64Null()
+		}
+	}
 }
 
 func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
@@ -356,6 +416,23 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "message-digest-key"); value.Exists() {
+		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceOSPFMessageDigestKeys{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Id = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("md5.auth-key"); cValue.Exists() {
+				item.Md5AuthKey = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("md5.auth-type"); cValue.Exists() {
+				item.Md5AuthType = types.Int64Value(cValue.Int())
+			}
+			data.MessageDigestKeys = append(data.MessageDigestKeys, item)
+			return true
+		})
+	}
 }
 
 func (data *InterfaceOSPF) getDeletedListItems(ctx context.Context, state InterfaceOSPF) []string {
@@ -408,6 +485,31 @@ func (data *InterfaceOSPF) getDeletedListItems(ctx context.Context, state Interf
 		}
 		if !found {
 			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/process-id=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.MessageDigestKeys {
+		stateKeyValues := [...]string{strconv.FormatInt(state.MessageDigestKeys[i].Id.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.MessageDigestKeys[i].Id.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.MessageDigestKeys {
+			found = true
+			if state.MessageDigestKeys[i].Id.ValueInt64() != data.MessageDigestKeys[j].Id.ValueInt64() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/message-digest-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	return deletedListItems
@@ -467,6 +569,11 @@ func (data *InterfaceOSPF) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/process-id=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.MessageDigestKeys {
+		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/message-digest-key=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }
