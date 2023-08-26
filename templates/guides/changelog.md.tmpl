@@ -31,6 +31,7 @@ description: |-
 - Add `iosxe_arp` resource and data source
 - Add `iosxe_class_map` resource and data source
 - BREAKING CHANGE: Rename `ipv6_address_prefix_list` attribute to `ipv6_addresses` of `iosxe_interface_tunnel` resource and data source
+- Add `snooping_information_option_format_remote_id_hostname` attribute to `iosxe_dhcp` resource and data source
 
 ## 0.3.3
 

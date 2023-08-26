@@ -34,31 +34,33 @@ import (
 )
 
 type DHCP struct {
-	Device                               types.String        `tfsdk:"device"`
-	Id                                   types.String        `tfsdk:"id"`
-	DeleteMode                           types.String        `tfsdk:"delete_mode"`
-	CompatibilitySuboptionLinkSelection  types.String        `tfsdk:"compatibility_suboption_link_selection"`
-	CompatibilitySuboptionServerOverride types.String        `tfsdk:"compatibility_suboption_server_override"`
-	RelayInformationTrustAll             types.Bool          `tfsdk:"relay_information_trust_all"`
-	RelayInformationOptionDefault        types.Bool          `tfsdk:"relay_information_option_default"`
-	RelayInformationOptionVpn            types.Bool          `tfsdk:"relay_information_option_vpn"`
-	Snooping                             types.Bool          `tfsdk:"snooping"`
-	SnoopingVlans                        []DHCPSnoopingVlans `tfsdk:"snooping_vlans"`
+	Device                                          types.String        `tfsdk:"device"`
+	Id                                              types.String        `tfsdk:"id"`
+	DeleteMode                                      types.String        `tfsdk:"delete_mode"`
+	CompatibilitySuboptionLinkSelection             types.String        `tfsdk:"compatibility_suboption_link_selection"`
+	CompatibilitySuboptionServerOverride            types.String        `tfsdk:"compatibility_suboption_server_override"`
+	RelayInformationTrustAll                        types.Bool          `tfsdk:"relay_information_trust_all"`
+	RelayInformationOptionDefault                   types.Bool          `tfsdk:"relay_information_option_default"`
+	RelayInformationOptionVpn                       types.Bool          `tfsdk:"relay_information_option_vpn"`
+	Snooping                                        types.Bool          `tfsdk:"snooping"`
+	SnoopingInformationOptionFormatRemoteIdHostname types.Bool          `tfsdk:"snooping_information_option_format_remote_id_hostname"`
+	SnoopingVlans                                   []DHCPSnoopingVlans `tfsdk:"snooping_vlans"`
 }
 
 type DHCPData struct {
-	Device                               types.String        `tfsdk:"device"`
-	Id                                   types.String        `tfsdk:"id"`
-	CompatibilitySuboptionLinkSelection  types.String        `tfsdk:"compatibility_suboption_link_selection"`
-	CompatibilitySuboptionServerOverride types.String        `tfsdk:"compatibility_suboption_server_override"`
-	RelayInformationTrustAll             types.Bool          `tfsdk:"relay_information_trust_all"`
-	RelayInformationOptionDefault        types.Bool          `tfsdk:"relay_information_option_default"`
-	RelayInformationOptionVpn            types.Bool          `tfsdk:"relay_information_option_vpn"`
-	Snooping                             types.Bool          `tfsdk:"snooping"`
-	SnoopingVlans                        []DHCPSnoopingVlans `tfsdk:"snooping_vlans"`
+	Device                                          types.String        `tfsdk:"device"`
+	Id                                              types.String        `tfsdk:"id"`
+	CompatibilitySuboptionLinkSelection             types.String        `tfsdk:"compatibility_suboption_link_selection"`
+	CompatibilitySuboptionServerOverride            types.String        `tfsdk:"compatibility_suboption_server_override"`
+	RelayInformationTrustAll                        types.Bool          `tfsdk:"relay_information_trust_all"`
+	RelayInformationOptionDefault                   types.Bool          `tfsdk:"relay_information_option_default"`
+	RelayInformationOptionVpn                       types.Bool          `tfsdk:"relay_information_option_vpn"`
+	Snooping                                        types.Bool          `tfsdk:"snooping"`
+	SnoopingInformationOptionFormatRemoteIdHostname types.Bool          `tfsdk:"snooping_information_option_format_remote_id_hostname"`
+	SnoopingVlans                                   []DHCPSnoopingVlans `tfsdk:"snooping_vlans"`
 }
 type DHCPSnoopingVlans struct {
-	VlanId types.Int64 `tfsdk:"vlan_id"`
+	VlanId types.String `tfsdk:"vlan_id"`
 }
 
 func (data DHCP) getPath() string {
@@ -108,11 +110,16 @@ func (data DHCP) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dhcp:snooping", map[string]string{})
 		}
 	}
+	if !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && !data.SnoopingInformationOptionFormatRemoteIdHostname.IsUnknown() {
+		if data.SnoopingInformationOptionFormatRemoteIdHostname.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dhcp:snooping-conf.snooping.information.options.option.format.remote-id.hostname", map[string]string{})
+		}
+	}
 	if len(data.SnoopingVlans) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan", []interface{}{})
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan-list", []interface{}{})
 		for index, item := range data.SnoopingVlans {
 			if !item.VlanId.IsNull() && !item.VlanId.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan"+"."+strconv.Itoa(index)+"."+"id", strconv.FormatInt(item.VlanId.ValueInt64(), 10))
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan-list"+"."+strconv.Itoa(index)+"."+"id", item.VlanId.ValueString())
 			}
 		}
 	}
@@ -170,12 +177,21 @@ func (data *DHCP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Snooping = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping-conf.snooping.information.options.option.format.remote-id.hostname"); !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() {
+		if value.Exists() {
+			data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(true)
+		} else {
+			data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(false)
+		}
+	} else {
+		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolNull()
+	}
 	for i := range data.SnoopingVlans {
 		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.SnoopingVlans[i].VlanId.ValueInt64(), 10)}
+		keyValues := [...]string{data.SnoopingVlans[i].VlanId.ValueString()}
 
 		var r gjson.Result
-		res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan").ForEach(
+		res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan-list").ForEach(
 			func(_, v gjson.Result) bool {
 				found := false
 				for ik := range keys {
@@ -194,9 +210,9 @@ func (data *DHCP) updateFromBody(ctx context.Context, res gjson.Result) {
 			},
 		)
 		if value := r.Get("id"); value.Exists() && !data.SnoopingVlans[i].VlanId.IsNull() {
-			data.SnoopingVlans[i].VlanId = types.Int64Value(value.Int())
+			data.SnoopingVlans[i].VlanId = types.StringValue(value.String())
 		} else {
-			data.SnoopingVlans[i].VlanId = types.Int64Null()
+			data.SnoopingVlans[i].VlanId = types.StringNull()
 		}
 	}
 }
@@ -232,12 +248,17 @@ func (data *DHCPData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Snooping = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan"); value.Exists() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping-conf.snooping.information.options.option.format.remote-id.hostname"); value.Exists() {
+		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(true)
+	} else {
+		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan-list"); value.Exists() {
 		data.SnoopingVlans = make([]DHCPSnoopingVlans, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := DHCPSnoopingVlans{}
 			if cValue := v.Get("id"); cValue.Exists() {
-				item.VlanId = types.Int64Value(cValue.Int())
+				item.VlanId = types.StringValue(cValue.String())
 			}
 			data.SnoopingVlans = append(data.SnoopingVlans, item)
 			return true
@@ -248,10 +269,10 @@ func (data *DHCPData) fromBody(ctx context.Context, res gjson.Result) {
 func (data *DHCP) getDeletedListItems(ctx context.Context, state DHCP) []string {
 	deletedListItems := make([]string, 0)
 	for i := range state.SnoopingVlans {
-		stateKeyValues := [...]string{strconv.FormatInt(state.SnoopingVlans[i].VlanId.ValueInt64(), 10)}
+		stateKeyValues := [...]string{state.SnoopingVlans[i].VlanId.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.SnoopingVlans[i].VlanId.ValueInt64()).IsZero() {
+		if !reflect.ValueOf(state.SnoopingVlans[i].VlanId.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -261,7 +282,7 @@ func (data *DHCP) getDeletedListItems(ctx context.Context, state DHCP) []string 
 		found := false
 		for j := range data.SnoopingVlans {
 			found = true
-			if state.SnoopingVlans[i].VlanId.ValueInt64() != data.SnoopingVlans[j].VlanId.ValueInt64() {
+			if state.SnoopingVlans[i].VlanId.ValueString() != data.SnoopingVlans[j].VlanId.ValueString() {
 				found = false
 			}
 			if found {
@@ -269,7 +290,7 @@ func (data *DHCP) getDeletedListItems(ctx context.Context, state DHCP) []string 
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	return deletedListItems
@@ -288,6 +309,9 @@ func (data *DHCP) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.Snooping.IsNull() && !data.Snooping.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping", data.getPath()))
+	}
+	if !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && !data.SnoopingInformationOptionFormatRemoteIdHostname.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -313,10 +337,13 @@ func (data *DHCP) getDeletePaths(ctx context.Context) []string {
 	if !data.Snooping.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping", data.getPath()))
 	}
+	if !data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname", data.getPath()))
+	}
 	for i := range data.SnoopingVlans {
-		keyValues := [...]string{strconv.FormatInt(data.SnoopingVlans[i].VlanId.ValueInt64(), 10)}
+		keyValues := [...]string{data.SnoopingVlans[i].VlanId.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

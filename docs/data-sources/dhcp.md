@@ -33,11 +33,12 @@ data "iosxe_dhcp" "example" {
 - `relay_information_option_vpn` (Boolean) Insert VPN sub-options and change the giaddr to the outgoing interface
 - `relay_information_trust_all` (Boolean) Received DHCP packets may contain relay info option with zero giaddr
 - `snooping` (Boolean) DHCP Snooping
-- `snooping_vlans` (Attributes List) DHCP Snooping vlan (Deprecated, use vlan-list) (see [below for nested schema](#nestedatt--snooping_vlans))
+- `snooping_information_option_format_remote_id_hostname` (Boolean) Use configured hostname for remote id
+- `snooping_vlans` (Attributes List) DHCP Snooping vlan (see [below for nested schema](#nestedatt--snooping_vlans))
 
 <a id="nestedatt--snooping_vlans"></a>
 ### Nested Schema for `snooping_vlans`
 
 Read-Only:
 
-- `vlan_id` (Number)
+- `vlan_id` (String) DHCP Snooping vlan first number or vlan range,example: 1,3-5,7,9-11

@@ -30,6 +30,8 @@ func TestAccIosxeDHCP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_information_trust_all", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_information_option_default", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_information_option_vpn", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping_vlans.0.vlan_id", "3-4"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -61,6 +63,10 @@ func testAccIosxeDHCPConfig_all() string {
 	config += `	relay_information_trust_all = false` + "\n"
 	config += `	relay_information_option_default = false` + "\n"
 	config += `	relay_information_option_vpn = true` + "\n"
+	config += `	snooping = true` + "\n"
+	config += `	snooping_vlans = [{` + "\n"
+	config += `		vlan_id = "3-4"` + "\n"
+	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config
 }

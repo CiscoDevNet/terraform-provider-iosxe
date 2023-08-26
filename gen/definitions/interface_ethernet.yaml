@@ -163,7 +163,7 @@ attributes:
     example: bfd_template1
     test_tags: [IOSXE179]
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
-    example: true
+    example: false
     test_tags: [IOSXE179]
   - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
     example: 1.2.3.4
