@@ -22,6 +22,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -98,6 +99,112 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 			"shutdown": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Administratively shut down this neighbor").String,
 				Optional:            true,
+			},
+			"cluster_id": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"version": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the BGP version to match a neighbor").AddIntegerRangeDescription(4, 4).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(4, 4),
+				},
+			},
+			"disable_connected_check": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").String,
+				Optional:            true,
+			},
+			"fall_over_default_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"fall_over_default_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"fall_over_bfd_multi_hop": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").String,
+				Optional:            true,
+			},
+			"fall_over_bfd_single_hop": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Force BFD single-hop to detect failure").String,
+				Optional:            true,
+			},
+			"fall_over_bfd_check_control_plane_failure": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation").String,
+				Optional:            true,
+			},
+			"fall_over_bfd_strict_mode": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD strict-mode").String,
+				Optional:            true,
+			},
+			"fall_over_maximum_metric_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"local_as": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"local_as_no_prepend": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Do not prepend local-as to updates from ebgp peers").String,
+				Optional:            true,
+			},
+			"local_as_replace_as": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Replace real AS with local AS in the EBGP updates").String,
+				Optional:            true,
+			},
+			"local_as_dual_as": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").String,
+				Optional:            true,
+			},
+			"log_neighbor_changes": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Log neighbor up/down and reset reason").String,
+				Optional:            true,
+			},
+			"password_type": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 to disable encryption, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 7),
+				},
+			},
+			"password": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 52),
+					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
+			},
+			"timers_keepalive_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"timers_holdtime": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"timers_minimum_neighbor_hold": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"ttl_security_hops": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IP hops").AddIntegerRangeDescription(1, 254).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 254),
+				},
 			},
 			"update_source_loopback": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,

@@ -14,12 +14,27 @@ This resource can manage the BGP Neighbor configuration.
 
 ```terraform
 resource "iosxe_bgp_neighbor" "example" {
-  asn                    = "65000"
-  ip                     = "3.3.3.3"
-  remote_as              = "65000"
-  description            = "BGP Neighbor Description"
-  shutdown               = false
-  update_source_loopback = "100"
+  asn                                       = "65000"
+  ip                                        = "3.3.3.3"
+  remote_as                                 = "65000"
+  description                               = "BGP Neighbor Description"
+  shutdown                                  = false
+  cluster_id                                = "1234"
+  version                                   = 4
+  disable_connected_check                   = false
+  fall_over_default_enable                  = true
+  fall_over_default_route_map               = "RMAP"
+  fall_over_bfd_single_hop                  = true
+  fall_over_bfd_check_control_plane_failure = true
+  fall_over_bfd_strict_mode                 = true
+  fall_over_maximum_metric_route_map        = "RMAP"
+  log_neighbor_changes                      = true
+  password_type                             = 1
+  password                                  = "test1234"
+  timers_keepalive_interval                 = 655
+  timers_holdtime                           = 866
+  timers_minimum_neighbor_hold              = 222
+  update_source_loopback                    = "100"
 }
 ```
 
@@ -33,15 +48,39 @@ resource "iosxe_bgp_neighbor" "example" {
 
 ### Optional
 
+- `cluster_id` (String)
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Neighbor specific description
 - `device` (String) A device name from the provider configuration.
+- `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address
 - `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
 - `ebgp_multihop_max_hop` (Number) - Range: `2`-`255`
+- `fall_over_bfd_check_control_plane_failure` (Boolean) Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation
+- `fall_over_bfd_multi_hop` (Boolean) Force BFD multi-hop to detect failure
+- `fall_over_bfd_single_hop` (Boolean) Force BFD single-hop to detect failure
+- `fall_over_bfd_strict_mode` (Boolean) Enable BFD strict-mode
+- `fall_over_default_enable` (Boolean)
+- `fall_over_default_route_map` (String)
+- `fall_over_maximum_metric_route_map` (String)
+- `local_as` (String)
+- `local_as_dual_as` (Boolean) Accept either real AS or local AS from the ebgp peer
+- `local_as_no_prepend` (Boolean) Do not prepend local-as to updates from ebgp peers
+- `local_as_replace_as` (Boolean) Replace real AS with local AS in the EBGP updates
+- `log_neighbor_changes` (Boolean) Log neighbor up/down and reset reason
+- `password` (String)
+- `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
+  - Range: `0`-`7`
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `shutdown` (Boolean) Administratively shut down this neighbor
+- `timers_holdtime` (Number) - Range: `0`-`65535`
+- `timers_keepalive_interval` (Number) - Range: `0`-`65535`
+- `timers_minimum_neighbor_hold` (Number) - Range: `0`-`65535`
+- `ttl_security_hops` (Number) IP hops
+  - Range: `1`-`254`
 - `update_source_loopback` (String) Loopback interface
+- `version` (Number) Set the BGP version to match a neighbor
+  - Range: `4`-`4`
 
 ### Read-Only
 

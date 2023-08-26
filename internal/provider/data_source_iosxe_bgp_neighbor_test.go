@@ -30,6 +30,21 @@ func TestAccDataSourceIosxeBGPNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "remote_as", "65000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "description", "BGP Neighbor Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "shutdown", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "cluster_id", "1234"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "version", "4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "disable_connected_check", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_default_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_default_route_map", "RMAP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_bfd_single_hop", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_bfd_check_control_plane_failure", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_bfd_strict_mode", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_maximum_metric_route_map", "RMAP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "log_neighbor_changes", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "password_type", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "password", "test1234"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "timers_keepalive_interval", "655"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "timers_holdtime", "866"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "timers_minimum_neighbor_hold", "222"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "update_source_loopback", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -68,6 +83,21 @@ func testAccDataSourceIosxeBGPNeighborConfig() string {
 	config += `	remote_as = "65000"` + "\n"
 	config += `	description = "BGP Neighbor Description"` + "\n"
 	config += `	shutdown = false` + "\n"
+	config += `	cluster_id = "1234"` + "\n"
+	config += `	version = 4` + "\n"
+	config += `	disable_connected_check = false` + "\n"
+	config += `	fall_over_default_enable = true` + "\n"
+	config += `	fall_over_default_route_map = "RMAP"` + "\n"
+	config += `	fall_over_bfd_single_hop = true` + "\n"
+	config += `	fall_over_bfd_check_control_plane_failure = true` + "\n"
+	config += `	fall_over_bfd_strict_mode = true` + "\n"
+	config += `	fall_over_maximum_metric_route_map = "RMAP"` + "\n"
+	config += `	log_neighbor_changes = true` + "\n"
+	config += `	password_type = 1` + "\n"
+	config += `	password = "test1234"` + "\n"
+	config += `	timers_keepalive_interval = 655` + "\n"
+	config += `	timers_holdtime = 866` + "\n"
+	config += `	timers_minimum_neighbor_hold = 222` + "\n"
 	config += `	update_source_loopback = "100"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"

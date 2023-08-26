@@ -19,6 +19,66 @@ attributes:
     example: BGP Neighbor Description
   - yang_name: shutdown
     example: false
+  - yang_name: cluster-id
+    example: 1234
+  - yang_name: version
+    example: 4
+  - yang_name: disable-connected-check
+    example: false
+  - yang_name: fall-over/default/enable
+    example: true
+  - yang_name: fall-over/default/route-map
+    example: RMAP
+  - yang_name: fall-over/bfd/hop-choice/multi-hop/multi-hop
+    xpath: fall-over/bfd/multi-hop
+    tf_name: fall_over_bfd_multi_hop
+    example: true
+    exclude_test: true
+  - yang_name: fall-over/bfd/hop-choice/single-hop/single-hop
+    xpath: fall-over/bfd/single-hop
+    tf_name: fall_over_bfd_single_hop
+    example: true
+  - yang_name: fall-over/bfd/check-control-plane-failure
+    example: true
+  - yang_name: fall-over/bfd/strict-mode
+    example: true
+  - yang_name: fall-over/maximum-metric/route-map
+    example: RMAP
+  - yang_name: local-as/as-no
+    tf_name: local_as
+    example: 65000
+    exclude_test: true
+  - yang_name: local-as/no-prepend
+    example: false
+    exclude_test: true
+  - yang_name: local-as/replace-as
+    example: false
+    exclude_test: true
+  - yang_name: local-as/dual-as
+    example: false
+    exclude_test: true
+  - yang_name: log-neighbor-changes
+    example: true
+  - yang_name: password/enctype
+    tf_name: password_type
+    delete_parent: true
+    example: 1
+  - yang_name: password/text
+    tf_name: password
+    delete_parent: true
+    example: test1234
+  - yang_name: timers/keepalive-interval
+    delete_parent: true
+    example: 655
+  - yang_name: timers/holdtime
+    delete_parent: true
+    example: 866
+  - yang_name: timers/minimum-neighbor-hold
+    delete_parent: true
+    example: 222
+  - yang_name: ttl-security/hops
+    example: 222
+    exclude_test: true
   - yang_name: update-source/interface/interface-choice/Loopback/Loopback
     xpath: update-source/interface/Loopback
     tf_name: update_source_loopback

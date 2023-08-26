@@ -23,11 +23,10 @@ description: |-
 - BREAKING CHANGE: Rename `unreachables` attribute to `ip_unreachables` of `iosxe_interface_ethernet`, `iosxe_interface_port_channel`, `iosxe_interface_port_channel_subinterface`, `iosxe_interface_tunnel`, `iosxe_interface_loopback` and `iosxe_interface_vlan` resources and data sources
 - BREAKING CHANGE: Rename `multicast_routing` attribute to `ip_multicast_routing` of `iosxe_system` resource and data source
 - BREAKING CHANGE: Rename `multicast_routing_distributed` attribute to `ip_multicast_routing_distributed` of `iosxe_system` resource and data source
-- Add `ipv6` attributes to `iosxe_interface_ethernet`, `iosxe_interface_port_channel` `iosxe_vlan` `iosxe_interface_loopback` and `iosxe_interface_port_channel_subinterface` resources and data sources
+- Add `ipv6` attributes to `iosxe_interface_ethernet`, `iosxe_interface_port_channel` `iosxe_interface_vlan` `iosxe_interface_loopback` and `iosxe_interface_port_channel_subinterface` resources and data sources
 - Add `iosxe_bfd_template_multi_hop` resource and data source
-- Add `disable-connected-check`, `fall-over`, `local-as`, `log-neighbor-changes`, `password`, `timers` and `ttl-security` attributes to `iosxe_bgp_neighbor` resource and data source
-- Add `iosxe_bfd_template_multi_hop` resource and data source
-- Add `ttl-security` and `process-id` attributes to `iosxe_interface_ospf` resources and data sources
+- Add `disable_connected_check`, `fall_over`, `local_as`, `log_neighbor_changes`, `password`, `timers` and `ttl_security` attributes to `iosxe_bgp_neighbor` resource and data source
+- Add `ttl_security` and `process_id` attributes to `iosxe_interface_ospf` resources and data sources
 
 ## 0.3.3
 
