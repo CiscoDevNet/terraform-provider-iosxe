@@ -22,6 +22,7 @@ attributes:
       - FourHundredGigE
       - Loopback
       - Vlan
+      - Port-channel
     example: Loopback
   - yang_name: name
     example: 100

@@ -20,6 +20,7 @@ attributes:
       - HundredGigE
       - TwoHundredGigE
       - FourHundredGigE
+      - Port-channel
     example: GigabitEthernet
   - yang_name: name
     example: 1/0/3
