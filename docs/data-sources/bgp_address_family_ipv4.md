@@ -34,3 +34,25 @@ data "iosxe_bgp_address_family_ipv4" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
+- `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
+- `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
+
+<a id="nestedatt--ipv4_unicast_networks"></a>
+### Nested Schema for `ipv4_unicast_networks`
+
+Read-Only:
+
+- `backdoor` (Boolean) Specify a BGP backdoor route
+- `network` (String)
+- `route_map` (String) Route-map to modify the attributes
+
+
+<a id="nestedatt--ipv4_unicast_networks_mask"></a>
+### Nested Schema for `ipv4_unicast_networks_mask`
+
+Read-Only:
+
+- `backdoor` (Boolean) Specify a BGP backdoor route
+- `mask` (String) Network mask
+- `network` (String)
+- `route_map` (String) Route-map to modify the attributes

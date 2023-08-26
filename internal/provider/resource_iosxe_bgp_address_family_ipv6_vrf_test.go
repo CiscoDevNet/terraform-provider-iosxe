@@ -32,6 +32,10 @@ func TestAccIosxeBGPAddressFamilyIPv6VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.advertise_l2vpn_evpn", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.redistribute_connected", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.redistribute_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.network", "2001:1234::0/64"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.route_map", "RM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.backdoor", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.evpn", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -96,6 +100,12 @@ func testAccIosxeBGPAddressFamilyIPv6VRFConfig_all() string {
 	config += `		advertise_l2vpn_evpn = true` + "\n"
 	config += `		redistribute_connected = true` + "\n"
 	config += `		redistribute_static = true` + "\n"
+	config += `		ipv6_unicast_networks = [{` + "\n"
+	config += `			network = "2001:1234::0/64"` + "\n"
+	config += `			route_map = "RM1"` + "\n"
+	config += `			backdoor = true` + "\n"
+	config += `			evpn = false` + "\n"
+	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"

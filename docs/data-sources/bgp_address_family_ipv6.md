@@ -34,3 +34,13 @@ data "iosxe_bgp_address_family_ipv6" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
+- `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv6_unicast_networks))
+
+<a id="nestedatt--ipv6_unicast_networks"></a>
+### Nested Schema for `ipv6_unicast_networks`
+
+Read-Only:
+
+- `backdoor` (Boolean) Specify a BGP backdoor route
+- `network` (String)
+- `route_map` (String) Route-map to modify the attributes

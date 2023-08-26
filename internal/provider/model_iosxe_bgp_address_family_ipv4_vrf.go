@@ -51,10 +51,25 @@ type BGPAddressFamilyIPv4VRFData struct {
 	Vrfs   []BGPAddressFamilyIPv4VRFVrfs `tfsdk:"vrfs"`
 }
 type BGPAddressFamilyIPv4VRFVrfs struct {
-	Name                  types.String `tfsdk:"name"`
-	AdvertiseL2vpnEvpn    types.Bool   `tfsdk:"advertise_l2vpn_evpn"`
-	RedistributeConnected types.Bool   `tfsdk:"redistribute_connected"`
-	RedistributeStatic    types.Bool   `tfsdk:"redistribute_static"`
+	Name                    types.String                                         `tfsdk:"name"`
+	AdvertiseL2vpnEvpn      types.Bool                                           `tfsdk:"advertise_l2vpn_evpn"`
+	RedistributeConnected   types.Bool                                           `tfsdk:"redistribute_connected"`
+	RedistributeStatic      types.Bool                                           `tfsdk:"redistribute_static"`
+	Ipv4UnicastNetworksMask []BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask `tfsdk:"ipv4_unicast_networks_mask"`
+	Ipv4UnicastNetworks     []BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworks     `tfsdk:"ipv4_unicast_networks"`
+}
+type BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask struct {
+	Network  types.String `tfsdk:"network"`
+	Mask     types.String `tfsdk:"mask"`
+	RouteMap types.String `tfsdk:"route_map"`
+	Backdoor types.Bool   `tfsdk:"backdoor"`
+	Evpn     types.Bool   `tfsdk:"evpn"`
+}
+type BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworks struct {
+	Network  types.String `tfsdk:"network"`
+	RouteMap types.String `tfsdk:"route_map"`
+	Backdoor types.Bool   `tfsdk:"backdoor"`
+	Evpn     types.Bool   `tfsdk:"evpn"`
 }
 
 func (data BGPAddressFamilyIPv4VRF) getPath() string {
@@ -100,6 +115,51 @@ func (data BGPAddressFamilyIPv4VRF) toBody(ctx context.Context) string {
 			if !item.RedistributeStatic.IsNull() && !item.RedistributeStatic.IsUnknown() {
 				if item.RedistributeStatic.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.redistribute-vrf.static", map[string]string{})
+				}
+			}
+			if len(item.Ipv4UnicastNetworksMask) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.with-mask", []interface{}{})
+				for cindex, citem := range item.Ipv4UnicastNetworksMask {
+					if !citem.Network.IsNull() && !citem.Network.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.with-mask"+"."+strconv.Itoa(cindex)+"."+"number", citem.Network.ValueString())
+					}
+					if !citem.Mask.IsNull() && !citem.Mask.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.with-mask"+"."+strconv.Itoa(cindex)+"."+"mask", citem.Mask.ValueString())
+					}
+					if !citem.RouteMap.IsNull() && !citem.RouteMap.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.with-mask"+"."+strconv.Itoa(cindex)+"."+"route-map", citem.RouteMap.ValueString())
+					}
+					if !citem.Backdoor.IsNull() && !citem.Backdoor.IsUnknown() {
+						if citem.Backdoor.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.with-mask"+"."+strconv.Itoa(cindex)+"."+"backdoor", map[string]string{})
+						}
+					}
+					if !citem.Evpn.IsNull() && !citem.Evpn.IsUnknown() {
+						if citem.Evpn.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.with-mask"+"."+strconv.Itoa(cindex)+"."+"evpn", map[string]string{})
+						}
+					}
+				}
+			}
+			if len(item.Ipv4UnicastNetworks) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.no-mask", []interface{}{})
+				for cindex, citem := range item.Ipv4UnicastNetworks {
+					if !citem.Network.IsNull() && !citem.Network.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.no-mask"+"."+strconv.Itoa(cindex)+"."+"number", citem.Network.ValueString())
+					}
+					if !citem.RouteMap.IsNull() && !citem.RouteMap.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.no-mask"+"."+strconv.Itoa(cindex)+"."+"route-map", citem.RouteMap.ValueString())
+					}
+					if !citem.Backdoor.IsNull() && !citem.Backdoor.IsUnknown() {
+						if citem.Backdoor.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.no-mask"+"."+strconv.Itoa(cindex)+"."+"backdoor", map[string]string{})
+						}
+					}
+					if !citem.Evpn.IsNull() && !citem.Evpn.IsUnknown() {
+						if citem.Evpn.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.network.no-mask"+"."+strconv.Itoa(cindex)+"."+"evpn", map[string]string{})
+						}
+					}
 				}
 			}
 		}
@@ -172,6 +232,115 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBody(ctx context.Context, res gjs
 		} else {
 			data.Vrfs[i].RedistributeStatic = types.BoolNull()
 		}
+		for ci := range data.Vrfs[i].Ipv4UnicastNetworksMask {
+			keys := [...]string{"number", "mask"}
+			keyValues := [...]string{data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString(), data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()}
+
+			var cr gjson.Result
+			r.Get("ipv4-unicast.network.with-mask").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("number"); value.Exists() && !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.IsNull() {
+				data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network = types.StringNull()
+			}
+			if value := cr.Get("mask"); value.Exists() && !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.IsNull() {
+				data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask = types.StringNull()
+			}
+			if value := cr.Get("route-map"); value.Exists() && !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].RouteMap.IsNull() {
+				data.Vrfs[i].Ipv4UnicastNetworksMask[ci].RouteMap = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworksMask[ci].RouteMap = types.StringNull()
+			}
+			if value := cr.Get("backdoor"); !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor = types.BoolNull()
+			}
+			if value := cr.Get("evpn"); !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn = types.BoolNull()
+			}
+		}
+		for ci := range data.Vrfs[i].Ipv4UnicastNetworks {
+			keys := [...]string{"number"}
+			keyValues := [...]string{data.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString()}
+
+			var cr gjson.Result
+			r.Get("ipv4-unicast.network.no-mask").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("number"); value.Exists() && !data.Vrfs[i].Ipv4UnicastNetworks[ci].Network.IsNull() {
+				data.Vrfs[i].Ipv4UnicastNetworks[ci].Network = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworks[ci].Network = types.StringNull()
+			}
+			if value := cr.Get("route-map"); value.Exists() && !data.Vrfs[i].Ipv4UnicastNetworks[ci].RouteMap.IsNull() {
+				data.Vrfs[i].Ipv4UnicastNetworks[ci].RouteMap = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworks[ci].RouteMap = types.StringNull()
+			}
+			if value := cr.Get("backdoor"); !data.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor = types.BoolNull()
+			}
+			if value := cr.Get("evpn"); !data.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn = types.BoolNull()
+			}
+		}
 	}
 }
 
@@ -202,6 +371,57 @@ func (data *BGPAddressFamilyIPv4VRFData) fromBody(ctx context.Context, res gjson
 			} else {
 				item.RedistributeStatic = types.BoolValue(false)
 			}
+			if cValue := v.Get("ipv4-unicast.network.with-mask"); cValue.Exists() {
+				item.Ipv4UnicastNetworksMask = make([]BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask{}
+					if ccValue := cv.Get("number"); ccValue.Exists() {
+						cItem.Network = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("mask"); ccValue.Exists() {
+						cItem.Mask = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("route-map"); ccValue.Exists() {
+						cItem.RouteMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("backdoor"); ccValue.Exists() {
+						cItem.Backdoor = types.BoolValue(true)
+					} else {
+						cItem.Backdoor = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("evpn"); ccValue.Exists() {
+						cItem.Evpn = types.BoolValue(true)
+					} else {
+						cItem.Evpn = types.BoolValue(false)
+					}
+					item.Ipv4UnicastNetworksMask = append(item.Ipv4UnicastNetworksMask, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ipv4-unicast.network.no-mask"); cValue.Exists() {
+				item.Ipv4UnicastNetworks = make([]BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworks, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworks{}
+					if ccValue := cv.Get("number"); ccValue.Exists() {
+						cItem.Network = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("route-map"); ccValue.Exists() {
+						cItem.RouteMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("backdoor"); ccValue.Exists() {
+						cItem.Backdoor = types.BoolValue(true)
+					} else {
+						cItem.Backdoor = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("evpn"); ccValue.Exists() {
+						cItem.Evpn = types.BoolValue(true)
+					} else {
+						cItem.Evpn = types.BoolValue(false)
+					}
+					item.Ipv4UnicastNetworks = append(item.Ipv4UnicastNetworks, cItem)
+					return true
+				})
+			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
 		})
@@ -228,6 +448,62 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedListItems(ctx context.Context, st
 				found = false
 			}
 			if found {
+				for ci := range state.Vrfs[i].Ipv4UnicastNetworksMask {
+					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString(), state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv4UnicastNetworksMask {
+						found = true
+						if state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString() != data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Network.ValueString() {
+							found = false
+						}
+						if state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString() != data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Mask.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/with-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Vrfs[i].Ipv4UnicastNetworks {
+					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv4UnicastNetworks {
+						found = true
+						if state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString() != data.Vrfs[j].Ipv4UnicastNetworks[cj].Network.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/no-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
 				break
 			}
 		}
@@ -251,6 +527,26 @@ func (data *BGPAddressFamilyIPv4VRF) getEmptyLeafsDelete(ctx context.Context) []
 		}
 		if !data.Vrfs[i].RedistributeStatic.IsNull() && !data.Vrfs[i].RedistributeStatic.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/redistribute-vrf/static", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+
+		for ci := range data.Vrfs[i].Ipv4UnicastNetworksMask {
+			ckeyValues := [...]string{data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString(), data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()}
+			if !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor.IsNull() && !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/with-mask=%v/backdoor", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn.IsNull() && !data.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/with-mask=%v/evpn", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+		}
+
+		for ci := range data.Vrfs[i].Ipv4UnicastNetworks {
+			ckeyValues := [...]string{data.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString()}
+			if !data.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor.IsNull() && !data.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/no-mask=%v/backdoor", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn.IsNull() && !data.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/no-mask=%v/evpn", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
 		}
 	}
 	return emptyLeafsDelete

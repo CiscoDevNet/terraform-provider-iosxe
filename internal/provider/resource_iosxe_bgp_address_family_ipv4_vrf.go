@@ -22,6 +22,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -109,6 +110,67 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 						"redistribute_static": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
 							Optional:            true,
+						},
+						"ipv4_unicast_networks_mask": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"network": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"mask": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Network mask").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"route_map": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Route-map to modify the attributes").String,
+										Optional:            true,
+									},
+									"backdoor": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").String,
+										Optional:            true,
+									},
+									"evpn": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Advertise or export to EVPN address-family").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+						"ipv4_unicast_networks": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"network": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"route_map": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Route-map to modify the attributes").String,
+										Optional:            true,
+									},
+									"backdoor": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").String,
+										Optional:            true,
+									},
+									"evpn": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Advertise or export to EVPN address-family").String,
+										Optional:            true,
+									},
+								},
+							},
 						},
 					},
 				},

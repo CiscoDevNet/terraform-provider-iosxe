@@ -25,6 +25,20 @@ attributes:
       - yang_name: ipv6-unicast/redistribute-v6/static
         tf_name: redistribute_static
         example: true
+      - yang_name: ipv6-unicast/network
+        tf_name: ipv6_unicast_networks
+        type: List
+        attributes:
+          - yang_name: number
+            tf_name: network
+            id: true
+            example: 2001:1234::0/64
+          - yang_name: route-map
+            example: RM1
+          - yang_name: backdoor
+            example: true
+          - yang_name: evpn
+            example: false
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/ipv6
     attributes:

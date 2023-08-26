@@ -23,7 +23,10 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -32,18 +35,25 @@ import (
 )
 
 type BGPAddressFamilyIPv6 struct {
-	Device     types.String `tfsdk:"device"`
-	Id         types.String `tfsdk:"id"`
-	DeleteMode types.String `tfsdk:"delete_mode"`
-	Asn        types.String `tfsdk:"asn"`
-	AfName     types.String `tfsdk:"af_name"`
+	Device              types.String                              `tfsdk:"device"`
+	Id                  types.String                              `tfsdk:"id"`
+	DeleteMode          types.String                              `tfsdk:"delete_mode"`
+	Asn                 types.String                              `tfsdk:"asn"`
+	AfName              types.String                              `tfsdk:"af_name"`
+	Ipv6UnicastNetworks []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
 }
 
 type BGPAddressFamilyIPv6Data struct {
-	Device types.String `tfsdk:"device"`
-	Id     types.String `tfsdk:"id"`
-	Asn    types.String `tfsdk:"asn"`
-	AfName types.String `tfsdk:"af_name"`
+	Device              types.String                              `tfsdk:"device"`
+	Id                  types.String                              `tfsdk:"id"`
+	Asn                 types.String                              `tfsdk:"asn"`
+	AfName              types.String                              `tfsdk:"af_name"`
+	Ipv6UnicastNetworks []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
+}
+type BGPAddressFamilyIPv6Ipv6UnicastNetworks struct {
+	Network  types.String `tfsdk:"network"`
+	RouteMap types.String `tfsdk:"route_map"`
+	Backdoor types.Bool   `tfsdk:"backdoor"`
 }
 
 func (data BGPAddressFamilyIPv6) getPath() string {
@@ -70,6 +80,22 @@ func (data BGPAddressFamilyIPv6) toBody(ctx context.Context) string {
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
 	}
+	if len(data.Ipv6UnicastNetworks) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.network", []interface{}{})
+		for index, item := range data.Ipv6UnicastNetworks {
+			if !item.Network.IsNull() && !item.Network.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.network"+"."+strconv.Itoa(index)+"."+"number", item.Network.ValueString())
+			}
+			if !item.RouteMap.IsNull() && !item.RouteMap.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.network"+"."+strconv.Itoa(index)+"."+"route-map", item.RouteMap.ValueString())
+			}
+			if !item.Backdoor.IsNull() && !item.Backdoor.IsUnknown() {
+				if item.Backdoor.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.network"+"."+strconv.Itoa(index)+"."+"backdoor", map[string]string{})
+				}
+			}
+		}
+	}
 	return body
 }
 
@@ -83,6 +109,49 @@ func (data *BGPAddressFamilyIPv6) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.AfName = types.StringNull()
 	}
+	for i := range data.Ipv6UnicastNetworks {
+		keys := [...]string{"number"}
+		keyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "ipv6-unicast.network").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("number"); value.Exists() && !data.Ipv6UnicastNetworks[i].Network.IsNull() {
+			data.Ipv6UnicastNetworks[i].Network = types.StringValue(value.String())
+		} else {
+			data.Ipv6UnicastNetworks[i].Network = types.StringNull()
+		}
+		if value := r.Get("route-map"); value.Exists() && !data.Ipv6UnicastNetworks[i].RouteMap.IsNull() {
+			data.Ipv6UnicastNetworks[i].RouteMap = types.StringValue(value.String())
+		} else {
+			data.Ipv6UnicastNetworks[i].RouteMap = types.StringNull()
+		}
+		if value := r.Get("backdoor"); !data.Ipv6UnicastNetworks[i].Backdoor.IsNull() {
+			if value.Exists() {
+				data.Ipv6UnicastNetworks[i].Backdoor = types.BoolValue(true)
+			} else {
+				data.Ipv6UnicastNetworks[i].Backdoor = types.BoolValue(false)
+			}
+		} else {
+			data.Ipv6UnicastNetworks[i].Backdoor = types.BoolNull()
+		}
+	}
 }
 
 func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Result) {
@@ -90,19 +159,75 @@ func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Re
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
+	if value := res.Get(prefix + "ipv6-unicast.network"); value.Exists() {
+		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworks, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPAddressFamilyIPv6Ipv6UnicastNetworks{}
+			if cValue := v.Get("number"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("backdoor"); cValue.Exists() {
+				item.Backdoor = types.BoolValue(true)
+			} else {
+				item.Backdoor = types.BoolValue(false)
+			}
+			data.Ipv6UnicastNetworks = append(data.Ipv6UnicastNetworks, item)
+			return true
+		})
+	}
 }
 
 func (data *BGPAddressFamilyIPv6) getDeletedListItems(ctx context.Context, state BGPAddressFamilyIPv6) []string {
 	deletedListItems := make([]string, 0)
+	for i := range state.Ipv6UnicastNetworks {
+		stateKeyValues := [...]string{state.Ipv6UnicastNetworks[i].Network.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6UnicastNetworks[i].Network.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6UnicastNetworks {
+			found = true
+			if state.Ipv6UnicastNetworks[i].Network.ValueString() != data.Ipv6UnicastNetworks[j].Network.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedListItems
 }
 
 func (data *BGPAddressFamilyIPv6) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
+	for i := range data.Ipv6UnicastNetworks {
+		keyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
+		if !data.Ipv6UnicastNetworks[i].Backdoor.IsNull() && !data.Ipv6UnicastNetworks[i].Backdoor.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6-unicast/network=%v/backdoor", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
 	return emptyLeafsDelete
 }
 
 func (data *BGPAddressFamilyIPv6) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Ipv6UnicastNetworks {
+		keyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	return deletePaths
 }

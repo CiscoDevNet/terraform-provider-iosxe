@@ -22,6 +22,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -87,6 +88,30 @@ func (r *BGPAddressFamilyIPv6Resource) Schema(ctx context.Context, req resource.
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"ipv6_unicast_networks": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"network": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+							},
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Route-map to modify the attributes").String,
+							Optional:            true,
+						},
+						"backdoor": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").String,
+							Optional:            true,
+						},
+					},
 				},
 			},
 		},

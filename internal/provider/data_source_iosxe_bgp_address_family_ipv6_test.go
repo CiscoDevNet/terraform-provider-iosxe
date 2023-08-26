@@ -27,6 +27,9 @@ import (
 
 func TestAccDataSourceIosxeBGPAddressFamilyIPv6(t *testing.T) {
 	var checks []resource.TestCheckFunc
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.network", "2001:1234::0/64"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.route_map", "RM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.backdoor", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -61,6 +64,11 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv6Config() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
+	config += `	ipv6_unicast_networks = [{` + "\n"
+	config += `		network = "2001:1234::0/64"` + "\n"
+	config += `		route_map = "RM1"` + "\n"
+	config += `		backdoor = true` + "\n"
+	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 

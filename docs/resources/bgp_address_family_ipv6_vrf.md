@@ -22,6 +22,14 @@ resource "iosxe_bgp_address_family_ipv6_vrf" "example" {
       advertise_l2vpn_evpn   = true
       redistribute_connected = true
       redistribute_static    = true
+      ipv6_unicast_networks = [
+        {
+          network   = "2001:1234::0/64"
+          route_map = "RM1"
+          backdoor  = true
+          evpn      = false
+        }
+      ]
     }
   ]
 }
@@ -56,8 +64,22 @@ Required:
 Optional:
 
 - `advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
+- `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv6_unicast_networks))
 - `redistribute_connected` (Boolean) Connected
 - `redistribute_static` (Boolean) Static routes
+
+<a id="nestedatt--vrfs--ipv6_unicast_networks"></a>
+### Nested Schema for `vrfs.ipv6_unicast_networks`
+
+Required:
+
+- `network` (String)
+
+Optional:
+
+- `backdoor` (Boolean) Specify a BGP backdoor route
+- `evpn` (Boolean) Advertise or export to EVPN address-family
+- `route_map` (String) Route-map to modify the attributes
 
 ## Import
 

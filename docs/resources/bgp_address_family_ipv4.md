@@ -16,6 +16,21 @@ This resource can manage the BGP Address Family IPv4 configuration.
 resource "iosxe_bgp_address_family_ipv4" "example" {
   asn     = "65000"
   af_name = "unicast"
+  ipv4_unicast_networks_mask = [
+    {
+      network   = "12.0.0.0"
+      mask      = "255.255.0.0"
+      route_map = "RM1"
+      backdoor  = true
+    }
+  ]
+  ipv4_unicast_networks = [
+    {
+      network   = "13.0.0.0"
+      route_map = "RM1"
+      backdoor  = true
+    }
+  ]
 }
 ```
 
@@ -32,10 +47,38 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
+- `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--ipv4_unicast_networks"></a>
+### Nested Schema for `ipv4_unicast_networks`
+
+Required:
+
+- `network` (String)
+
+Optional:
+
+- `backdoor` (Boolean) Specify a BGP backdoor route
+- `route_map` (String) Route-map to modify the attributes
+
+
+<a id="nestedatt--ipv4_unicast_networks_mask"></a>
+### Nested Schema for `ipv4_unicast_networks_mask`
+
+Required:
+
+- `mask` (String) Network mask
+- `network` (String)
+
+Optional:
+
+- `backdoor` (Boolean) Specify a BGP backdoor route
+- `route_map` (String) Route-map to modify the attributes
 
 ## Import
 

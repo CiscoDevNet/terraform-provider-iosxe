@@ -71,6 +71,50 @@ func (d *BGPAddressFamilyIPv4DataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "",
 				Required:            true,
 			},
+			"ipv4_unicast_networks_mask": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify a network to announce via BGP",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"network": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"mask": schema.StringAttribute{
+							MarkdownDescription: "Network mask",
+							Computed:            true,
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: "Route-map to modify the attributes",
+							Computed:            true,
+						},
+						"backdoor": schema.BoolAttribute{
+							MarkdownDescription: "Specify a BGP backdoor route",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv4_unicast_networks": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify a network to announce via BGP",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"network": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: "Route-map to modify the attributes",
+							Computed:            true,
+						},
+						"backdoor": schema.BoolAttribute{
+							MarkdownDescription: "Specify a BGP backdoor route",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

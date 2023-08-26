@@ -16,6 +16,13 @@ This resource can manage the BGP Address Family IPv6 configuration.
 resource "iosxe_bgp_address_family_ipv6" "example" {
   asn     = "65000"
   af_name = "unicast"
+  ipv6_unicast_networks = [
+    {
+      network   = "2001:1234::0/64"
+      route_map = "RM1"
+      backdoor  = true
+    }
+  ]
 }
 ```
 
@@ -32,10 +39,23 @@ resource "iosxe_bgp_address_family_ipv6" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv6_unicast_networks))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--ipv6_unicast_networks"></a>
+### Nested Schema for `ipv6_unicast_networks`
+
+Required:
+
+- `network` (String)
+
+Optional:
+
+- `backdoor` (Boolean) Specify a BGP backdoor route
+- `route_map` (String) Route-map to modify the attributes
 
 ## Import
 

@@ -28,6 +28,13 @@ import (
 func TestAccIosxeBGPAddressFamilyIPv4(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4.test", "af_name", "unicast"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_networks_mask.0.network", "12.0.0.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_networks_mask.0.mask", "255.255.0.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_networks_mask.0.route_map", "RM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_networks_mask.0.backdoor", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_networks.0.network", "13.0.0.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_networks.0.route_map", "RM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv4.test", "ipv4_unicast_networks.0.backdoor", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -71,6 +78,17 @@ func testAccIosxeBGPAddressFamilyIPv4Config_all() string {
 	config := `resource "iosxe_bgp_address_family_ipv4" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
+	config += `	ipv4_unicast_networks_mask = [{` + "\n"
+	config += `		network = "12.0.0.0"` + "\n"
+	config += `		mask = "255.255.0.0"` + "\n"
+	config += `		route_map = "RM1"` + "\n"
+	config += `		backdoor = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	ipv4_unicast_networks = [{` + "\n"
+	config += `		network = "13.0.0.0"` + "\n"
+	config += `		route_map = "RM1"` + "\n"
+	config += `		backdoor = true` + "\n"
+	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

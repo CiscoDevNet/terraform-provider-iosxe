@@ -25,6 +25,47 @@ attributes:
       - yang_name: ipv4-unicast/redistribute-vrf/static
         tf_name: redistribute_static
         example: true
+      - yang_name: ipv4-unicast/network/with-mask
+        tf_name: ipv4_unicast_networks_mask
+        type: List
+        attributes:
+          - yang_name: number
+            tf_name: network
+            id: true
+            example: 12.0.0.0
+          - yang_name: mask
+            id: true
+            example: 255.255.0.0
+          - yang_name: route-map
+            example: RM1
+          - yang_name: network-option/backdoor/backdoor
+            xpath: backdoor
+            tf_name: backdoor
+            example: true
+          - yang_name: network-option/evpn/evpn
+            xpath: evpn
+            tf_name: evpn
+            example: true
+            exclude_test: true
+      - yang_name: ipv4-unicast/network/no-mask
+        tf_name: ipv4_unicast_networks
+        type: List
+        attributes:
+          - yang_name: number
+            tf_name: network
+            id: true
+            example: 13.0.0.0
+          - yang_name: route-map
+            example: RM1
+          - yang_name: network-option/backdoor/backdoor
+            xpath: backdoor
+            tf_name: backdoor
+            example: true
+          - yang_name: network-option/evpn/evpn
+            xpath: evpn
+            tf_name: evpn
+            example: true
+            exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true
