@@ -143,6 +143,69 @@ func (r *InterfaceLoopbackResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
 				Optional:            true,
 			},
+			"ipv6_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable IPv6 on interface").String,
+				Optional:            true,
+			},
+			"ipv6_mtu": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set IPv6 Maximum Transmission Unit").AddIntegerRangeDescription(1280, 9976).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1280, 9976),
+				},
+			},
+			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Suppress all IPv6 RA").String,
+				Optional:            true,
+			},
+			"ipv6_address_autoconfig_default": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Insert default route").String,
+				Optional:            true,
+			},
+			"ipv6_address_dhcp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Obtain IPv6 address from DHCP server").String,
+				Optional:            true,
+			},
+			"ipv6_link_local_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(%[\p{N}\p{L}]+)?`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(%.+)?`), ""),
+							},
+						},
+						"link_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use link-local address").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"ipv6_address_prefix_lists": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"prefix": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`((:|[0-9a-fA-F]{0,4}):)([0-9a-fA-F]{0,4}:){0,5}((([0-9a-fA-F]{0,4}:)?(:|[0-9a-fA-F]{0,4}))|(((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])))(/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([^:]+:){6}(([^:]+:[^:]+)|(.*\..*)))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?)(/.+)`), ""),
+							},
+						},
+						"eui_64": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

@@ -267,6 +267,58 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Use echo adjunct as bfd detection mechanism",
 				Computed:            true,
 			},
+			"ipv6_enable": schema.BoolAttribute{
+				MarkdownDescription: "Enable IPv6 on interface",
+				Computed:            true,
+			},
+			"ipv6_mtu": schema.Int64Attribute{
+				MarkdownDescription: "Set IPv6 Maximum Transmission Unit",
+				Computed:            true,
+			},
+			"ipv6_nd_ra_suppress_all": schema.BoolAttribute{
+				MarkdownDescription: "Suppress all IPv6 RA",
+				Computed:            true,
+			},
+			"ipv6_address_autoconfig_default": schema.BoolAttribute{
+				MarkdownDescription: "Insert default route",
+				Computed:            true,
+			},
+			"ipv6_address_dhcp": schema.BoolAttribute{
+				MarkdownDescription: "Obtain IPv6 address from DHCP server",
+				Computed:            true,
+			},
+			"ipv6_link_local_addresses": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"address": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"link_local": schema.BoolAttribute{
+							MarkdownDescription: "Use link-local address",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_address_prefix_lists": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"prefix": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"eui_64": schema.BoolAttribute{
+							MarkdownDescription: "Use eui-64 interface identifier",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

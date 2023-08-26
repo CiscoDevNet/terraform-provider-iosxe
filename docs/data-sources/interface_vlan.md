@@ -52,6 +52,13 @@ data "iosxe_interface_vlan" "example" {
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
 - `ipv4_address` (String)
 - `ipv4_address_mask` (String)
+- `ipv6_address_autoconfig_default` (Boolean) Insert default route
+- `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
+- `ipv6_address_prefix_lists` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_address_prefix_lists))
+- `ipv6_enable` (Boolean) Enable IPv6 on interface
+- `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
+- `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
+- `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `shutdown` (Boolean) Shutdown the selected interface
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table
@@ -64,3 +71,21 @@ Read-Only:
 - `address` (String)
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
+
+
+<a id="nestedatt--ipv6_address_prefix_lists"></a>
+### Nested Schema for `ipv6_address_prefix_lists`
+
+Read-Only:
+
+- `eui_64` (Boolean) Use eui-64 interface identifier
+- `prefix` (String)
+
+
+<a id="nestedatt--ipv6_link_local_addresses"></a>
+### Nested Schema for `ipv6_link_local_addresses`
+
+Read-Only:
+
+- `address` (String)
+- `link_local` (Boolean) Use link-local address
