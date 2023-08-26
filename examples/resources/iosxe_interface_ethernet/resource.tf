@@ -42,4 +42,6 @@ resource "iosxe_interface_ethernet" "example" {
       eui_64 = true
     }
   ]
+  arp_timeout             = 300
+  spanning_tree_link_type = "point-to-point"
 }

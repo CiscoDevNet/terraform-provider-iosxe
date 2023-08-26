@@ -33,6 +33,7 @@ description: |-
 - BREAKING CHANGE: Rename `ipv6_address_prefix_list` attribute to `ipv6_addresses` of `iosxe_interface_tunnel` resource and data source
 - Add `snooping_information_option_format_remote_id_hostname` attribute to `iosxe_dhcp` resource and data source
 - Add `iosxe_dot1x` resource and data source
+- Add `arp_timeout`, `spanning_tree_link_type` and `spanning_tree_portfast_trunk` attribute to `iosxe_interface_ethernet` resource and data source
 
 ## 0.3.3
 

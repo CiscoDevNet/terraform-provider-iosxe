@@ -88,6 +88,9 @@ type InterfaceEthernet struct {
 	Ipv6AddressDhcp              types.Bool                                `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfaceEthernetIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfaceEthernetIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
+	SpanningTreeLinkType         types.String                              `tfsdk:"spanning_tree_link_type"`
+	SpanningTreePortfastTrunk    types.Bool                                `tfsdk:"spanning_tree_portfast_trunk"`
 }
 
 type InterfaceEthernetData struct {
@@ -144,6 +147,9 @@ type InterfaceEthernetData struct {
 	Ipv6AddressDhcp              types.Bool                                `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfaceEthernetIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfaceEthernetIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
+	SpanningTreeLinkType         types.String                              `tfsdk:"spanning_tree_link_type"`
+	SpanningTreePortfastTrunk    types.Bool                                `tfsdk:"spanning_tree_portfast_trunk"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -358,6 +364,17 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	if !data.Ipv6AddressDhcp.IsNull() && !data.Ipv6AddressDhcp.IsUnknown() {
 		if data.Ipv6AddressDhcp.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.dhcp", map[string]string{})
+		}
+	}
+	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"arp.timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
+	}
+	if !data.SpanningTreeLinkType.IsNull() && !data.SpanningTreeLinkType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.link-type", data.SpanningTreeLinkType.ValueString())
+	}
+	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.IsUnknown() {
+		if data.SpanningTreePortfastTrunk.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.trunk", map[string]string{})
 		}
 	}
 	if len(data.HelperAddresses) > 0 {
@@ -898,6 +915,25 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
+		data.ArpTimeout = types.Int64Value(value.Int())
+	} else {
+		data.ArpTimeout = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.link-type"); value.Exists() && !data.SpanningTreeLinkType.IsNull() {
+		data.SpanningTreeLinkType = types.StringValue(value.String())
+	} else {
+		data.SpanningTreeLinkType = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.trunk"); !data.SpanningTreePortfastTrunk.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastTrunk = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastTrunk = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastTrunk = types.BoolNull()
+	}
 }
 
 func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Result) {
@@ -1157,6 +1193,17 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 			return true
 		})
 	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() {
+		data.ArpTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.link-type"); value.Exists() {
+		data.SpanningTreeLinkType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.trunk"); value.Exists() {
+		data.SpanningTreePortfastTrunk = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastTrunk = types.BoolValue(false)
+	}
 }
 
 func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state InterfaceEthernet) []string {
@@ -1351,6 +1398,9 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/prefix-list=%v/eui-64", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -1510,6 +1560,15 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.ArpTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
+	}
+	if !data.SpanningTreeLinkType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", data.getPath()))
+	}
+	if !data.SpanningTreePortfastTrunk.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
 	}
 	return deletePaths
 }
