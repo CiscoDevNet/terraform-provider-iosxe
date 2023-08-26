@@ -80,6 +80,9 @@ type InterfacePortChannelSubinterface struct {
 	Ipv6AddressDhcp              types.Bool                                               `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfacePortChannelSubinterfaceIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                   types.Int64                                              `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust         types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate     types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
 }
 
 type InterfacePortChannelSubinterfaceData struct {
@@ -127,6 +130,9 @@ type InterfacePortChannelSubinterfaceData struct {
 	Ipv6AddressDhcp              types.Bool                                               `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfacePortChannelSubinterfaceIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfacePortChannelSubinterfaceIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                   types.Int64                                              `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust         types.Bool                                               `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate     types.Int64                                              `tfsdk:"ip_arp_inspection_limit_rate"`
 }
 type InterfacePortChannelSubinterfaceHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -317,6 +323,17 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string 
 		if data.Ipv6AddressDhcp.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.dhcp", map[string]string{})
 		}
+	}
+	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"arp.timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
+	}
+	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.IsUnknown() {
+		if data.IpArpInspectionTrust.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.trust", map[string]string{})
+		}
+	}
+	if !data.IpArpInspectionLimitRate.IsNull() && !data.IpArpInspectionLimitRate.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.limit.rate", strconv.FormatInt(data.IpArpInspectionLimitRate.ValueInt64(), 10))
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -768,6 +785,25 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
+		data.ArpTimeout = types.Int64Value(value.Int())
+	} else {
+		data.ArpTimeout = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.trust"); !data.IpArpInspectionTrust.IsNull() {
+		if value.Exists() {
+			data.IpArpInspectionTrust = types.BoolValue(true)
+		} else {
+			data.IpArpInspectionTrust = types.BoolValue(false)
+		}
+	} else {
+		data.IpArpInspectionTrust = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() && !data.IpArpInspectionLimitRate.IsNull() {
+		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	} else {
+		data.IpArpInspectionLimitRate = types.Int64Null()
+	}
 }
 
 func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, res gjson.Result) {
@@ -988,6 +1024,17 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 			return true
 		})
 	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() {
+		data.ArpTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.trust"); value.Exists() {
+		data.IpArpInspectionTrust = types.BoolValue(true)
+	} else {
+		data.IpArpInspectionTrust = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() {
+		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	}
 }
 
 func (data *InterfacePortChannelSubinterface) getDeletedListItems(ctx context.Context, state InterfacePortChannelSubinterface) []string {
@@ -1150,6 +1197,9 @@ func (data *InterfacePortChannelSubinterface) getEmptyLeafsDelete(ctx context.Co
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/prefix-list=%v/eui-64", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -1283,6 +1333,15 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.ArpTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
+	}
+	if !data.IpArpInspectionTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
+	}
+	if !data.IpArpInspectionLimitRate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", data.getPath()))
 	}
 	return deletePaths
 }

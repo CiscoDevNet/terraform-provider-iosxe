@@ -327,6 +327,24 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 					},
 				},
 			},
+			"arp_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set ARP cache timeout").AddIntegerRangeDescription(0, 2147483).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483),
+				},
+			},
+			"ip_arp_inspection_trust": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Trust state").String,
+				Optional:            true,
+			},
+			"ip_arp_inspection_limit_rate": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Rate Limit").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
 		},
 	}
 }

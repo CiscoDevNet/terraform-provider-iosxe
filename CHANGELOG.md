@@ -30,6 +30,12 @@
 - Add `iosxe_policy_map` resource and data source
 - Add `iosxe_policy_map_event` resource and data source
 - Add `accounting_port`, `pac_key` and `automate_tester` attributes to `iosxe_radius` resource and data source
+- Add `arp_timeout` attribute to `iosxe_interface_loopback` resource and data source
+- Add `ip_arp_inspection` and `ip_dhcp_snooping` attributes to `iosxe_interface_ethernet` resource and data source
+- Add `arp_timeout` and `ip_arp_inspection` attributes to `iosxe_interface_port_channel` and `iosxe_interface_port_channel_subinterface` resources and data sources
+- Add `area_id` and `networks` attributes to `iosxe_ospf` resource and data source
+- Add `iosxe_udld` resource and data source
+- Add `iosxe_vtp` resource and data source
 
 ## 0.3.3
 

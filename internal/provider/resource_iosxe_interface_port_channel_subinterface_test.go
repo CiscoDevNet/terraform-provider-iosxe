@@ -64,6 +64,13 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv6_link_local_addresses.0.link_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.prefix", "2003:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ipv6_addresses.0.eui_64", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "arp_timeout", "2147"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_arp_inspection_trust", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel_subinterface.test", "ip_arp_inspection_limit_rate", "1000"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -160,6 +167,13 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config += `		prefix = "2003:DB8::/32"` + "\n"
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
+	config += `	arp_timeout = 2147` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	ip_arp_inspection_trust = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
+	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config

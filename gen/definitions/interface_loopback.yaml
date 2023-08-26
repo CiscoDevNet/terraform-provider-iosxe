@@ -75,6 +75,9 @@ attributes:
         example: 2002:DB8::/32
       - yang_name: eui-64
         example: true
+  - yang_name: arp/timeout
+    example: 2147
+
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

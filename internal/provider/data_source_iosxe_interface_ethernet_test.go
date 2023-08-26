@@ -67,6 +67,15 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "arp_timeout", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "spanning_tree_link_type", "point-to-point"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_arp_inspection_trust", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_arp_inspection_limit_rate", "1000"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_snooping_trust", "true"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -139,6 +148,15 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 300` + "\n"
 	config += `	spanning_tree_link_type = "point-to-point"` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	ip_arp_inspection_trust = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	ip_dhcp_snooping_trust = true` + "\n"
+	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

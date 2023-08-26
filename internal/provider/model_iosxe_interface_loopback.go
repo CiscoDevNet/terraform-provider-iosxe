@@ -58,6 +58,7 @@ type InterfaceLoopback struct {
 	Ipv6AddressDhcp              types.Bool                                `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfaceLoopbackIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfaceLoopbackIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
 }
 
 type InterfaceLoopbackData struct {
@@ -83,6 +84,7 @@ type InterfaceLoopbackData struct {
 	Ipv6AddressDhcp              types.Bool                                `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses       []InterfaceLoopbackIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfaceLoopbackIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
 }
 type InterfaceLoopbackIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -181,6 +183,9 @@ func (data InterfaceLoopback) toBody(ctx context.Context) string {
 		if data.Ipv6AddressDhcp.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.dhcp", map[string]string{})
 		}
+	}
+	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"arp.timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address", []interface{}{})
@@ -416,6 +421,11 @@ func (data *InterfaceLoopback) updateFromBody(ctx context.Context, res gjson.Res
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
 		}
 	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
+		data.ArpTimeout = types.Int64Value(value.Int())
+	} else {
+		data.ArpTimeout = types.Int64Null()
+	}
 }
 
 func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Result) {
@@ -525,6 +535,9 @@ func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Resul
 			data.Ipv6Addresses = append(data.Ipv6Addresses, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() {
+		data.ArpTimeout = types.Int64Value(value.Int())
 	}
 }
 
@@ -685,6 +698,9 @@ func (data *InterfaceLoopback) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.ArpTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
 	}
 	return deletePaths
 }

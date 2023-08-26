@@ -331,6 +331,18 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Enable portfast on the interface even in trunk mode",
 				Computed:            true,
 			},
+			"ip_arp_inspection_trust": schema.BoolAttribute{
+				MarkdownDescription: "Configure Trust state",
+				Computed:            true,
+			},
+			"ip_arp_inspection_limit_rate": schema.Int64Attribute{
+				MarkdownDescription: "Rate Limit",
+				Computed:            true,
+			},
+			"ip_dhcp_snooping_trust": schema.BoolAttribute{
+				MarkdownDescription: "DHCP Snooping trust config",
+				Computed:            true,
+			},
 		},
 	}
 }

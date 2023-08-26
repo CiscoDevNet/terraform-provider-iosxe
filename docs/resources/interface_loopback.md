@@ -42,6 +42,7 @@ resource "iosxe_interface_loopback" "example" {
       eui_64 = true
     }
   ]
+  arp_timeout = 2147
 }
 ```
 
@@ -54,6 +55,8 @@ resource "iosxe_interface_loopback" "example" {
 
 ### Optional
 
+- `arp_timeout` (Number) Set ARP cache timeout
+  - Range: `0`-`2147483`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Interface specific description

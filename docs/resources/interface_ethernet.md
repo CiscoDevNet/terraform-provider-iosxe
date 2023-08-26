@@ -107,7 +107,11 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_arp_inspection_limit_rate` (Number) Rate Limit
+  - Range: `0`-`4294967295`
+- `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
+- `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages

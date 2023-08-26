@@ -91,6 +91,9 @@ type InterfaceEthernet struct {
 	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType         types.String                              `tfsdk:"spanning_tree_link_type"`
 	SpanningTreePortfastTrunk    types.Bool                                `tfsdk:"spanning_tree_portfast_trunk"`
+	IpArpInspectionTrust         types.Bool                                `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate     types.Int64                               `tfsdk:"ip_arp_inspection_limit_rate"`
+	IpDhcpSnoopingTrust          types.Bool                                `tfsdk:"ip_dhcp_snooping_trust"`
 }
 
 type InterfaceEthernetData struct {
@@ -150,6 +153,9 @@ type InterfaceEthernetData struct {
 	ArpTimeout                   types.Int64                               `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType         types.String                              `tfsdk:"spanning_tree_link_type"`
 	SpanningTreePortfastTrunk    types.Bool                                `tfsdk:"spanning_tree_portfast_trunk"`
+	IpArpInspectionTrust         types.Bool                                `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate     types.Int64                               `tfsdk:"ip_arp_inspection_limit_rate"`
+	IpDhcpSnoopingTrust          types.Bool                                `tfsdk:"ip_dhcp_snooping_trust"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -375,6 +381,19 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.IsUnknown() {
 		if data.SpanningTreePortfastTrunk.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.trunk", map[string]string{})
+		}
+	}
+	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.IsUnknown() {
+		if data.IpArpInspectionTrust.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.trust", map[string]string{})
+		}
+	}
+	if !data.IpArpInspectionLimitRate.IsNull() && !data.IpArpInspectionLimitRate.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.limit.rate", strconv.FormatInt(data.IpArpInspectionLimitRate.ValueInt64(), 10))
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.IsUnknown() {
+		if data.IpDhcpSnoopingTrust.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust", map[string]string{})
 		}
 	}
 	if len(data.HelperAddresses) > 0 {
@@ -934,6 +953,29 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.SpanningTreePortfastTrunk = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.arp.inspection.trust"); !data.IpArpInspectionTrust.IsNull() {
+		if value.Exists() {
+			data.IpArpInspectionTrust = types.BoolValue(true)
+		} else {
+			data.IpArpInspectionTrust = types.BoolValue(false)
+		}
+	} else {
+		data.IpArpInspectionTrust = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() && !data.IpArpInspectionLimitRate.IsNull() {
+		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	} else {
+		data.IpArpInspectionLimitRate = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); !data.IpDhcpSnoopingTrust.IsNull() {
+		if value.Exists() {
+			data.IpDhcpSnoopingTrust = types.BoolValue(true)
+		} else {
+			data.IpDhcpSnoopingTrust = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpSnoopingTrust = types.BoolNull()
+	}
 }
 
 func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Result) {
@@ -1204,6 +1246,19 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.SpanningTreePortfastTrunk = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "ip.arp.inspection.trust"); value.Exists() {
+		data.IpArpInspectionTrust = types.BoolValue(true)
+	} else {
+		data.IpArpInspectionTrust = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() {
+		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); value.Exists() {
+		data.IpDhcpSnoopingTrust = types.BoolValue(true)
+	} else {
+		data.IpDhcpSnoopingTrust = types.BoolValue(false)
+	}
 }
 
 func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state InterfaceEthernet) []string {
@@ -1401,6 +1456,12 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
 	}
+	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -1569,6 +1630,15 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.SpanningTreePortfastTrunk.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
+	}
+	if !data.IpArpInspectionTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
+	}
+	if !data.IpArpInspectionLimitRate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", data.getPath()))
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
 	}
 	return deletePaths
 }

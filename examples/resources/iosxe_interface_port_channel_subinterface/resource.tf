@@ -35,4 +35,5 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
       eui_64 = true
     }
   ]
+  arp_timeout = 2147
 }

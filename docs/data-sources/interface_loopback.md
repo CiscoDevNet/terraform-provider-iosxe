@@ -31,6 +31,7 @@ data "iosxe_interface_loopback" "example" {
 
 ### Read-Only
 
+- `arp_timeout` (Number) Set ARP cache timeout
 - `description` (String) Interface specific description
 - `id` (String) The path of the retrieved object.
 - `ip_access_group_in` (String)

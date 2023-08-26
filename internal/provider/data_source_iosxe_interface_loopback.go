@@ -167,6 +167,10 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
+			"arp_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Set ARP cache timeout",
+				Computed:            true,
+			},
 		},
 	}
 }

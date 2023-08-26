@@ -27,4 +27,5 @@ resource "iosxe_interface_loopback" "example" {
       eui_64 = true
     }
   ]
+  arp_timeout = 2147
 }
