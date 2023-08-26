@@ -107,6 +107,34 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Router priority",
 				Computed:            true,
 			},
+			"ttl_security_hops": schema.Int64Attribute{
+				MarkdownDescription: "IP hops",
+				Computed:            true,
+			},
+			"process_ids": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.Int64Attribute{
+							MarkdownDescription: "Process ID",
+							Computed:            true,
+						},
+						"areas": schema.ListNestedAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"area_id": schema.StringAttribute{
+										MarkdownDescription: "Set the OSPF area ID",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

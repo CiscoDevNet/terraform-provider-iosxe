@@ -17,7 +17,8 @@
 - Add `ipv6` attributes to `iosxe_interface_ethernet`, `iosxe_interface_port_channel` `iosxe_interface_vlan` `iosxe_interface_loopback` and `iosxe_interface_port_channel_subinterface` resources and data sources
 - Add `iosxe_bfd_template_multi_hop` resource and data source
 - Add `disable_connected_check`, `fall_over`, `local_as`, `log_neighbor_changes`, `password`, `timers` and `ttl_security` attributes to `iosxe_bgp_neighbor` resource and data source
-- Add `ttl_security` and `process_id` attributes to `iosxe_interface_ospf` resources and data sources
+- Add `ttl_security` and `process_ids` attributes to `iosxe_interface_ospf` resource and data source
+- BREAKING CHANGE: Remove `iosxe_interface_ospf_process` resource and data source, functionality moved to `iosxe_interface_ospf` resource and data source
 
 ## 0.3.3
 

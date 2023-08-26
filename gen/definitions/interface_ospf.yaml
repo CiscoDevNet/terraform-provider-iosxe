@@ -50,8 +50,30 @@ attributes:
     example: true
   - yang_name: priority
     example: 10
+  - yang_name: ttl-security/ttl-security-choice/hops/hops
+    xpath: ttl-security/hops
+    tf_name: ttl_security_hops
+    example: 2
+  - yang_name: process-id
+    tf_name: process_ids
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: 1
+      - yang_name: area
+        tf_name: areas
+        type: List
+        attributes:
+          - yang_name: area-id
+            id: true
+            example: 0
 
 test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=1
+    attributes:
+      - name: id
+        value: 1
   - path: Cisco-IOS-XE-native:native/interface/Loopback=1
     attributes:
       - name: name

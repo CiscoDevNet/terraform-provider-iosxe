@@ -36,6 +36,9 @@ func TestAccDataSourceIosxeInterfaceOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "network_type_point_to_multipoint", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "network_type_point_to_point", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "ttl_security_hops", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "process_ids.0.id", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ospf.test", "process_ids.0.areas.0.area_id", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -50,6 +53,13 @@ func TestAccDataSourceIosxeInterfaceOSPF(t *testing.T) {
 
 const testAccDataSourceIosxeInterfaceOSPFPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=1"
+	attributes = {
+		"id" = "1"
+	}
+}
+
+resource "iosxe_restconf" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
 	attributes = {
 		"name" = "1"
@@ -72,7 +82,14 @@ func testAccDataSourceIosxeInterfaceOSPFConfig() string {
 	config += `	network_type_point_to_multipoint = false` + "\n"
 	config += `	network_type_point_to_point = true` + "\n"
 	config += `	priority = 10` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	ttl_security_hops = 2` + "\n"
+	config += `	process_ids = [{` + "\n"
+	config += `		id = 1` + "\n"
+	config += `		areas = [{` + "\n"
+	config += `			area_id = "0"` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
