@@ -8,7 +8,7 @@ description: |-
 
 # IOSXE Provider
 
-The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. All resources and data sources have been tested with IOS-XE 17.9.1 release. There are a few [Terraform Modules](https://registry.terraform.io/browse/modules?provider=iosxe) for specific use cases available (e.g., managing a Catalyst 9000 EVPN fabric).
+The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. There are a few [Terraform Modules](https://registry.terraform.io/browse/modules?provider=iosxe) for specific use cases available (e.g., managing a Catalyst 9000 EVPN fabric).
 
 The following example repositories exist to demonstrate the use of the provider:
 
