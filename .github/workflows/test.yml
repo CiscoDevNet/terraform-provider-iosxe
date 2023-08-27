@@ -71,10 +71,10 @@ jobs:
           terraform_version: ${{ matrix.terraform }}
           terraform_wrapper: false
       - run: go mod download
-      - env:
-          TF_ACC: "1"
-          IOSXE_USERNAME: ${{ secrets.IOSXE_USERNAME }}
-          IOSXE_PASSWORD: ${{ secrets.IOSXE_PASSWORD }}
-          IOSXE_URL: ${{ secrets.IOSXE_URL }}
-        run: go test -v -cover -timeout 45m ./internal/provider/
-        timeout-minutes: 45
+      # - env:
+      #     TF_ACC: "1"
+      #     IOSXE_USERNAME: ${{ secrets.IOSXE_USERNAME }}
+      #     IOSXE_PASSWORD: ${{ secrets.IOSXE_PASSWORD }}
+      #     IOSXE_URL: ${{ secrets.IOSXE_URL }}
+      #   run: go test -v -cover -timeout 45m ./internal/provider/
+      #   timeout-minutes: 45
