@@ -1,0 +1,72 @@
+---
+name: Line
+path: Cisco-IOS-XE-native:native/line
+doc_category: System
+attributes:
+  - yang_name: console
+    tf_name: console
+    type: List
+    attributes:
+      - yang_name: first
+        id: true
+        example: 0
+      - yang_name: exec-timeout/minutes
+        example: 45
+      - yang_name: exec-timeout/seconds
+        example: 25
+      - yang_name: login/local
+        example: true
+        exclude_test: true
+      - yang_name: login/authentication
+        example: localonly
+        exclude_test: true
+      - yang_name: privilege/level/number
+        example: 15
+      - yang_name: stopbits
+        example: 1
+      - yang_name: password/level
+        example: 7
+        exclude_test: true
+      - yang_name: password/type
+        example: 0
+      - yang_name: password/secret
+        example: testpasswd
+
+  - yang_name: vty
+    tf_name: vty
+    type: List
+    attributes:
+      - yang_name: first
+        id: true
+        example: 10
+      - yang_name: last
+        example: 27
+      - yang_name: access-class/acccess-list
+        tf_name: access_class
+        type: List
+        attributes:
+          - yang_name: direction
+            id: true
+            example: in
+          - yang_name: access-list
+            example: 2
+          - yang_name: vrf-also
+            example: true
+      - yang_name: exec-timeout/minutes
+        example: 45
+      - yang_name: exec-timeout/seconds
+        example: 25
+      - yang_name: password/level
+        example: 7
+        exclude_test: true
+      - yang_name: password/type
+        example: 0
+      - yang_name: password/secret
+        example: testpasswd
+      - yang_name: login/authentication
+        example: LOGINAUTH
+        exclude_test: true
+      - yang_name: transport/preferred/protocol
+        example: none
+      - yang_name: escape-character/char
+        example: 27
