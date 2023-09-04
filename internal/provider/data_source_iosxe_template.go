@@ -79,6 +79,14 @@ func (d *TemplateDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "Max No. of Retries",
 				Computed:            true,
 			},
+			"dot1x_timeout_tx_period": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for supplicant retries",
+				Computed:            true,
+			},
+			"service_policy_subscriber": schema.StringAttribute{
+				MarkdownDescription: "Apply a subscriber control policy to the interface",
+				Computed:            true,
+			},
 			"service_policy_input": schema.StringAttribute{
 				MarkdownDescription: "policy-map name",
 				Computed:            true,

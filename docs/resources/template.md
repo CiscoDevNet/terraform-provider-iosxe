@@ -18,6 +18,8 @@ resource "iosxe_template" "example" {
   dot1x_pae                                      = "both"
   dot1x_max_reauth_req                           = 3
   dot1x_max_req                                  = 3
+  dot1x_timeout_tx_period                        = 2
+  service_policy_subscriber                      = "dot1x_policy"
   service_policy_input                           = "SP1"
   service_policy_output                          = "SP2"
   switchport_mode_trunk                          = true
@@ -78,14 +80,10 @@ resource "iosxe_template" "example" {
       access_list = "ACL1"
     }
   ]
-  subscriber_aging_probe           = true
-  device_tracking                  = true
-  device_tracking_vlan_range       = "100-199"
-  cts_manual                       = true
-  cts_manual_policy_static_sgt     = 100
-  cts_manual_policy_static_trusted = false
-  cts_manual_propagate_sgt         = false
-  cts_role_based_enforcement       = false
+  subscriber_aging_probe     = true
+  device_tracking            = true
+  device_tracking_vlan_range = "100-199"
+  cts_manual                 = true
 }
 ```
 
@@ -131,6 +129,8 @@ resource "iosxe_template" "example" {
   - Range: `1`-`10`
 - `dot1x_pae` (String) Set 802.1x interface pae type
   - Choices: `authenticator`, `both`, `supplicant`
+- `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
+  - Range: `1`-`65535`
 - `ip_access_group` (Attributes List) Access control list for IP packets (see [below for nested schema](#nestedatt--ip_access_group))
 - `ip_dhcp_snooping_limit_rate` (Number) DHCP snooping rate limit
   - Range: `1`-`2048`
@@ -141,6 +141,7 @@ resource "iosxe_template" "example" {
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `service_policy_input` (String) policy-map name
 - `service_policy_output` (String) policy-map name
+- `service_policy_subscriber` (String) Apply a subscriber control policy to the interface
 - `source_template` (String) Get config from a template
 - `spanning_tree_bpduguard_enable` (Boolean) Enable BPDU guard for this interface
 - `spanning_tree_portfast` (Boolean) Portfast options for the interface

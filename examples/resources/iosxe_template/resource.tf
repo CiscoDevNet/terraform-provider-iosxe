@@ -3,6 +3,8 @@ resource "iosxe_template" "example" {
   dot1x_pae                                      = "both"
   dot1x_max_reauth_req                           = 3
   dot1x_max_req                                  = 3
+  dot1x_timeout_tx_period                        = 2
+  service_policy_subscriber                      = "dot1x_policy"
   service_policy_input                           = "SP1"
   service_policy_output                          = "SP2"
   switchport_mode_trunk                          = true
@@ -63,12 +65,8 @@ resource "iosxe_template" "example" {
       access_list = "ACL1"
     }
   ]
-  subscriber_aging_probe           = true
-  device_tracking                  = true
-  device_tracking_vlan_range       = "100-199"
-  cts_manual                       = true
-  cts_manual_policy_static_sgt     = 100
-  cts_manual_policy_static_trusted = false
-  cts_manual_propagate_sgt         = false
-  cts_role_based_enforcement       = false
+  subscriber_aging_probe     = true
+  device_tracking            = true
+  device_tracking_vlan_range = "100-199"
+  cts_manual                 = true
 }
