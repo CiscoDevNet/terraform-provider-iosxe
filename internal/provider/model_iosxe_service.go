@@ -54,6 +54,9 @@ type Service struct {
 	Dhcp                                types.Bool   `tfsdk:"dhcp"`
 	TcpKeepalivesIn                     types.Bool   `tfsdk:"tcp_keepalives_in"`
 	TcpKeepalivesOut                    types.Bool   `tfsdk:"tcp_keepalives_out"`
+	CompressConfig                      types.Bool   `tfsdk:"compress_config"`
+	SequenceNumbers                     types.Bool   `tfsdk:"sequence_numbers"`
+	CallHome                            types.Bool   `tfsdk:"call_home"`
 }
 
 type ServiceData struct {
@@ -80,6 +83,9 @@ type ServiceData struct {
 	Dhcp                                types.Bool   `tfsdk:"dhcp"`
 	TcpKeepalivesIn                     types.Bool   `tfsdk:"tcp_keepalives_in"`
 	TcpKeepalivesOut                    types.Bool   `tfsdk:"tcp_keepalives_out"`
+	CompressConfig                      types.Bool   `tfsdk:"compress_config"`
+	SequenceNumbers                     types.Bool   `tfsdk:"sequence_numbers"`
+	CallHome                            types.Bool   `tfsdk:"call_home"`
 }
 
 func (data Service) getPath() string {
@@ -202,6 +208,21 @@ func (data Service) toBody(ctx context.Context) string {
 	if !data.TcpKeepalivesOut.IsNull() && !data.TcpKeepalivesOut.IsUnknown() {
 		if data.TcpKeepalivesOut.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"tcp-keepalives-out", map[string]string{})
+		}
+	}
+	if !data.CompressConfig.IsNull() && !data.CompressConfig.IsUnknown() {
+		if data.CompressConfig.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"compress-config", map[string]string{})
+		}
+	}
+	if !data.SequenceNumbers.IsNull() && !data.SequenceNumbers.IsUnknown() {
+		if data.SequenceNumbers.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"sequence-numbers", map[string]string{})
+		}
+	}
+	if !data.CallHome.IsNull() && !data.CallHome.IsUnknown() {
+		if data.CallHome.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"call-home", map[string]string{})
 		}
 	}
 	return body
@@ -397,6 +418,33 @@ func (data *Service) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.TcpKeepalivesOut = types.BoolNull()
 	}
+	if value := res.Get(prefix + "compress-config"); !data.CompressConfig.IsNull() {
+		if value.Exists() {
+			data.CompressConfig = types.BoolValue(true)
+		} else {
+			data.CompressConfig = types.BoolValue(false)
+		}
+	} else {
+		data.CompressConfig = types.BoolNull()
+	}
+	if value := res.Get(prefix + "sequence-numbers"); !data.SequenceNumbers.IsNull() {
+		if value.Exists() {
+			data.SequenceNumbers = types.BoolValue(true)
+		} else {
+			data.SequenceNumbers = types.BoolValue(false)
+		}
+	} else {
+		data.SequenceNumbers = types.BoolNull()
+	}
+	if value := res.Get(prefix + "call-home"); !data.CallHome.IsNull() {
+		if value.Exists() {
+			data.CallHome = types.BoolValue(true)
+		} else {
+			data.CallHome = types.BoolValue(false)
+		}
+	} else {
+		data.CallHome = types.BoolNull()
+	}
 }
 
 func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
@@ -509,6 +557,21 @@ func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.TcpKeepalivesOut = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "compress-config"); value.Exists() {
+		data.CompressConfig = types.BoolValue(true)
+	} else {
+		data.CompressConfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "sequence-numbers"); value.Exists() {
+		data.SequenceNumbers = types.BoolValue(true)
+	} else {
+		data.SequenceNumbers = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "call-home"); value.Exists() {
+		data.CallHome = types.BoolValue(true)
+	} else {
+		data.CallHome = types.BoolValue(false)
+	}
 }
 
 func (data *Service) getDeletedListItems(ctx context.Context, state Service) []string {
@@ -575,6 +638,15 @@ func (data *Service) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.TcpKeepalivesOut.IsNull() && !data.TcpKeepalivesOut.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/tcp-keepalives-out", data.getPath()))
 	}
+	if !data.CompressConfig.IsNull() && !data.CompressConfig.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/compress-config", data.getPath()))
+	}
+	if !data.SequenceNumbers.IsNull() && !data.SequenceNumbers.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/sequence-numbers", data.getPath()))
+	}
+	if !data.CallHome.IsNull() && !data.CallHome.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/call-home", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -639,6 +711,15 @@ func (data *Service) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.TcpKeepalivesOut.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/tcp-keepalives-out", data.getPath()))
+	}
+	if !data.CompressConfig.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/compress-config", data.getPath()))
+	}
+	if !data.SequenceNumbers.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/sequence-numbers", data.getPath()))
+	}
+	if !data.CallHome.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/call-home", data.getPath()))
 	}
 	return deletePaths
 }

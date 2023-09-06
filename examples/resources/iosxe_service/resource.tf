@@ -20,4 +20,7 @@ resource "iosxe_service" "example" {
   dhcp                                    = true
   tcp_keepalives_in                       = true
   tcp_keepalives_out                      = true
+  compress_config                         = true
+  sequence_numbers                        = true
+  call_home                               = true
 }

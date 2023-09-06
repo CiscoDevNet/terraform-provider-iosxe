@@ -147,6 +147,18 @@ func (d *ServiceDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				MarkdownDescription: "Generate keepalives on idle outgoing network connections",
 				Computed:            true,
 			},
+			"compress_config": schema.BoolAttribute{
+				MarkdownDescription: "Compress the configuration file",
+				Computed:            true,
+			},
+			"sequence_numbers": schema.BoolAttribute{
+				MarkdownDescription: "Stamp logger messages with a sequence number",
+				Computed:            true,
+			},
+			"call_home": schema.BoolAttribute{
+				MarkdownDescription: "Enable call-home service",
+				Computed:            true,
+			},
 		},
 	}
 }

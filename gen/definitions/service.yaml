@@ -62,3 +62,9 @@ attributes:
     example: true
   - yang_name: tcp-keepalives-out
     example: true
+  - yang_name: compress-config
+    example: true
+  - yang_name: sequence-numbers
+    example: true
+  - yang_name: call-home
+    example: true

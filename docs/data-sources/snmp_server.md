@@ -33,11 +33,112 @@ data "iosxe_snmp_server" "example" {
 - `enable_logging_getop` (Boolean) Enable SNMP GET Operation logging
 - `enable_logging_setop` (Boolean) Enable SNMP SET Operation logging
 - `enable_traps` (Boolean) Enable SNMP Traps
+- `enable_traps_auth_framework_sec_violation` (Boolean)
+- `enable_traps_bfd` (Boolean)
+- `enable_traps_bridge_newroot` (Boolean)
+- `enable_traps_bridge_topologychange` (Boolean)
+- `enable_traps_bulkstat_collection` (Boolean) Enable Data-Collection-MIB Collection notifications
+- `enable_traps_bulkstat_transfer` (Boolean) Enable Data-Collection-MIB Transfer notifications
+- `enable_traps_call_home` (Boolean)
+- `enable_traps_call_home_server_fail` (Boolean)
+- `enable_traps_cef_inconsistency` (Boolean)
+- `enable_traps_cef_peer_fib_state_change` (Boolean)
+- `enable_traps_cef_peer_state_change` (Boolean)
+- `enable_traps_cef_resource_failure` (Boolean)
+- `enable_traps_config` (Boolean) Enable SNMP config traps
+- `enable_traps_config_copy` (Boolean) Enable SNMP config-copy traps
+- `enable_traps_config_ctid` (Boolean)
+- `enable_traps_cpu_threshold` (Boolean) Allow CPU utilization threshold violation traps
+- `enable_traps_dhcp` (Boolean) Enable SNMP dhcp traps
+- `enable_traps_eigrp` (Boolean) Enable SNMP EIGRP traps
+- `enable_traps_energywise` (Boolean)
+- `enable_traps_entity` (Boolean) Enable SNMP entity traps
+- `enable_traps_entity_diag_boot_up_fail` (Boolean) Enable SNMP ceDiagBootUpFailedNotif traps
+- `enable_traps_entity_diag_hm_test_recover` (Boolean) Enable SNMP ceDiagHMTestRecoverNotif traps
+- `enable_traps_entity_diag_hm_thresh_reached` (Boolean) Enable SNMP ceDiagHMThresholdReachedNotif traps
+- `enable_traps_entity_diag_scheduled_test_fail` (Boolean) Enable SNMP ceDiagScheduledTestFailedNotif traps
+- `enable_traps_entity_perf_throughput_notif` (Boolean) Enable ENTITY PERFORMANCE MIB throughput traps
+- `enable_traps_envmon` (Boolean) Enable SNMP environmental monitor traps
+- `enable_traps_errdisable` (Boolean) Enable SNMP errdisable notifications
+- `enable_traps_event_manager` (Boolean) Enable SNMP Embedded Event Manager traps
+- `enable_traps_fast_reroute_protected` (Boolean)
+- `enable_traps_flash_insertion` (Boolean) Enable SNMP Flash Insertion notifications
+- `enable_traps_flash_lowspace` (Boolean) Enable SNMP Flash Lowspace notifications
+- `enable_traps_flash_removal` (Boolean) Enable SNMP Flash Removal notifications
+- `enable_traps_fru_ctrl` (Boolean) Enable SNMP entity FRU control traps
+- `enable_traps_hsrp` (Boolean) Enable SNMP HSRP traps
+- `enable_traps_ike_policy_add` (Boolean) Enable IKE Policy add trap
+- `enable_traps_ike_policy_delete` (Boolean) Enable IKE Policy delete trap
+- `enable_traps_ike_tunnel_start` (Boolean) Enable IKE Tunnel start trap
+- `enable_traps_ike_tunnel_stop` (Boolean) Enable IKE Tunnel stop trap
+- `enable_traps_ipmulticast` (Boolean) Enable SNMP ipmulticast traps
+- `enable_traps_ipsec_cryptomap_add` (Boolean) Enable IPsec Cryptomap add trap
+- `enable_traps_ipsec_cryptomap_attach` (Boolean) Enable IPsec Cryptomap Attach trap
+- `enable_traps_ipsec_cryptomap_delete` (Boolean) Enable IPsec Cryptomap delete trap
+- `enable_traps_ipsec_cryptomap_detach` (Boolean) Enable IPsec Cryptomap Detach trap
+- `enable_traps_ipsec_too_many_sas` (Boolean) Enable IPsec Tunnel Start trap
+- `enable_traps_ipsec_tunnel_start` (Boolean) Enable IPsec Tunnel Start trap
+- `enable_traps_ipsec_tunnel_stop` (Boolean) Enable IPsec Tunnel Stop trap
+- `enable_traps_ipsla` (Boolean) Enable IPSLA traps traps
+- `enable_traps_isis` (Boolean) Enable ISIS traps traps
+- `enable_traps_license` (Boolean) Enable license traps
+- `enable_traps_link_fail_rpt` (Boolean) Enable SNMP cudldpFastHelloLinkFailRptNotification traps
+- `enable_traps_mac_notification_change` (Boolean) Enable SNMP Change traps
+- `enable_traps_mac_notification_move` (Boolean) Enable SNMP Move traps
+- `enable_traps_mac_notification_threshold` (Boolean) Enable SNMP Threshold traps
+- `enable_traps_memory_bufferpeak` (Boolean) Enable SNMP Memory Bufferpeak traps
+- `enable_traps_mpls_ldp` (Boolean) SNMP MPLS label distribution protocol traps
+- `enable_traps_mpls_rfc_ldp` (Boolean)
+- `enable_traps_mpls_traffic_eng` (Boolean)
+- `enable_traps_mpls_vpn` (Boolean)
+- `enable_traps_msdp` (Boolean) Enable SNMP MSDP traps
+- `enable_traps_nhrp_nhc` (Boolean)
+- `enable_traps_nhrp_nhp` (Boolean)
+- `enable_traps_nhrp_nhs` (Boolean)
+- `enable_traps_nhrp_quota_exceeded` (Boolean)
+- `enable_traps_ospf_config_errors` (Boolean) Enable all traps of errors
+- `enable_traps_ospf_config_lsa` (Boolean) Enable all traps of lsa
+- `enable_traps_ospf_config_retransmit` (Boolean) Enable all traps of retransmit
+- `enable_traps_ospf_config_state` (Boolean) Enable all traps of state-change
+- `enable_traps_ospf_errors_enable` (Boolean) Enable all traps of errors
+- `enable_traps_ospf_lsa_enable` (Boolean) Enable all traps of lsa
+- `enable_traps_ospf_nssa_trans_change` (Boolean) Nssa translator state changes
+- `enable_traps_ospf_retransmit_enable` (Boolean) Enable all traps of retransmit
+- `enable_traps_ospf_shamlink_interface` (Boolean) Sham link interface state changes
+- `enable_traps_ospf_shamlink_neighbor` (Boolean) Sham link neighbor state changes
+- `enable_traps_ospfv3_config_state_change` (Boolean) Enable all traps of state-change
+- `enable_traps_ospfv3_errors_change` (Boolean) Enable all traps of errors
+- `enable_traps_pim_invalid_neighbor_change` (Boolean) Enable neighbor change trap
+- `enable_traps_pim_invalid_pim_message` (Boolean) Enable invalid pim message trap
+- `enable_traps_pim_rp_mapping_change` (Boolean) Enable rp mapping change trap
+- `enable_traps_port_security` (Boolean) Enable SNMP port security traps
+- `enable_traps_pw_vc` (Boolean)
+- `enable_traps_rep` (Boolean)
+- `enable_traps_rf` (Boolean) Enable all SNMP traps defined in CISCO-RF-MIB
+- `enable_traps_smart_license` (Boolean) Enable smart license traps
 - `enable_traps_snmp_authentication` (Boolean) Enable authentication trap
 - `enable_traps_snmp_coldstart` (Boolean) Enable coldStart trap
+- `enable_traps_snmp_flowmon` (Boolean) Enable SNMP flowmon notifications
 - `enable_traps_snmp_linkdown` (Boolean) Enable linkDown trap
 - `enable_traps_snmp_linkup` (Boolean) Enable linkUp trap
 - `enable_traps_snmp_warmstart` (Boolean) Enable warmStart trap
+- `enable_traps_stackwise` (Boolean) Enable SNMP stackwise traps
+- `enable_traps_status_change` (Boolean) Enable SNMP cudldpFastHelloStatusChangeNotification traps
+- `enable_traps_stpx_inconsistency` (Boolean)
+- `enable_traps_stpx_loop_inconsistency` (Boolean)
+- `enable_traps_stpx_root_inconsistency` (Boolean)
+- `enable_traps_syslog` (Boolean) Enable SNMP syslog traps
+- `enable_traps_transceiver_all` (Boolean)
+- `enable_traps_tty` (Boolean) Enable TCP connection traps
+- `enable_traps_vlan_membership` (Boolean)
+- `enable_traps_vlancreate` (Boolean)
+- `enable_traps_vlandelete` (Boolean)
+- `enable_traps_vnet_trunk_down` (Boolean)
+- `enable_traps_vnet_trunk_up` (Boolean)
+- `enable_traps_vrfmib_vrf_down` (Boolean)
+- `enable_traps_vrfmib_vrf_up` (Boolean)
+- `enable_traps_vtp` (Boolean)
+- `host_config_ip_community` (Attributes List) Specify hosts keyed by (ip-address, community-or-user) (see [below for nested schema](#nestedatt--host_config_ip_community))
 - `id` (String) The path of the retrieved object.
 - `ifindex_persist` (Boolean) Persist interface indices
 - `location` (String) Text for mib object sysLocation
@@ -60,6 +161,7 @@ data "iosxe_snmp_server" "example" {
 - `source_interface_traps_port_channel_subinterface` (String)
 - `source_interface_traps_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
 - `source_interface_traps_vlan` (Number) Iosxr Vlans
+- `system_shutdown` (Boolean) Enable use of the SNMP reload command
 - `trap_source_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `trap_source_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
 - `trap_source_hundred_gig_e` (String) Hundred GigabitEthernet
@@ -76,6 +178,17 @@ data "iosxe_snmp_server" "example" {
 Read-Only:
 
 - `name` (String)
+
+
+<a id="nestedatt--host_config_ip_community"></a>
+### Nested Schema for `host_config_ip_community`
+
+Read-Only:
+
+- `community_or_user` (String) SNMPv1/v2c community string or SNMPv3 user name
+- `encryption` (String) Specifies an encryption type for community string
+- `ip_address` (String)
+- `version` (String) SNMP version to use for notification messages
 
 
 <a id="nestedatt--snmp_communities"></a>
