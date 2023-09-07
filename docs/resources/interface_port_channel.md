@@ -37,13 +37,13 @@ resource "iosxe_interface_port_channel" "example" {
   ipv6_address_dhcp       = true
   ipv6_link_local_addresses = [
     {
-      address    = "fe80::9656:d028:8652:66b9"
+      address    = "fe80::64"
       link_local = true
     }
   ]
   ipv6_addresses = [
     {
-      prefix = "2004:DB8::/32"
+      prefix = "2224:DB8::/32"
       eui_64 = true
     }
   ]
@@ -96,6 +96,7 @@ resource "iosxe_interface_port_channel" "example" {
   - Range: `0`-`4294967295`
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
+- `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
@@ -112,6 +113,8 @@ resource "iosxe_interface_port_channel" "example" {
 - `shutdown` (Boolean) Shutdown the selected interface
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`
+- `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
+  - Choices: `point-to-point`, `shared`
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`

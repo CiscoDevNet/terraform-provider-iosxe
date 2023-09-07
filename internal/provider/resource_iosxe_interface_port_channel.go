@@ -354,6 +354,17 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 					int64validator.Between(0, 4294967295),
 				},
 			},
+			"spanning_tree_link_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify a link type for spanning tree tree protocol use").AddStringEnumDescription("point-to-point", "shared").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("point-to-point", "shared"),
+				},
+			},
+			"ip_dhcp_snooping_trust": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping trust config").String,
+				Optional:            true,
+			},
 		},
 	}
 }
