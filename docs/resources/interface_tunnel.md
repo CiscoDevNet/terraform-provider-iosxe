@@ -39,6 +39,7 @@ resource "iosxe_interface_tunnel" "example" {
   ]
   tunnel_destination_ipv4        = "2.2.2.2"
   crypto_ipsec_df_bit            = "clear"
+  arp_timeout                    = 300
   ipv4_address                   = "10.1.1.1"
   ipv4_address_mask              = "255.255.255.0"
   ip_dhcp_relay_source_interface = "Loopback100"
@@ -65,6 +66,8 @@ resource "iosxe_interface_tunnel" "example" {
 
 ### Optional
 
+- `arp_timeout` (Number) Set ARP cache timeout
+  - Range: `0`-`2147483`
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
 - `bfd_enable` (Boolean) Enable BFD under the interface
 - `bfd_interval` (Number) - Range: `50`-`9999`

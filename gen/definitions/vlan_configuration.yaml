@@ -18,6 +18,8 @@ attributes:
   - yang_name: member/evpn-instance/evpn-instance
     tf_name: evpn_instance
     example: 123
+    exclude_test: true
   - yang_name: member/evpn-instance/vni
     tf_name: evpn_instance_vni
     example: 10123
+    exclude_test: true

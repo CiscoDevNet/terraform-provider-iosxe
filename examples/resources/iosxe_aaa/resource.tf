@@ -17,6 +17,7 @@ resource "iosxe_aaa" "example" {
           name = "TESTRADIUS"
         }
       ]
+      ip_radius_source_interface_loopback = 0
     }
   ]
   group_tacacsplus = [

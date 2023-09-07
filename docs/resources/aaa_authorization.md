@@ -18,6 +18,7 @@ resource "iosxe_aaa_authorization" "example" {
     {
       name                = "TEST"
       a1_local            = false
+      a1_group            = "false"
       a1_if_authenticated = true
     }
   ]
@@ -48,8 +49,10 @@ Required:
 
 Optional:
 
+- `a1_group` (String) Use Server-group
 - `a1_if_authenticated` (Boolean) Succeed if user has authenticated.
 - `a1_local` (Boolean) Use local database
+- `a2_local` (Boolean)
 
 
 <a id="nestedatt--networks"></a>

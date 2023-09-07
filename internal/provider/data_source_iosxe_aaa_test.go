@@ -39,6 +39,7 @@ func TestAccDataSourceIosxeAAA(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "server_radius_dynamic_author_clients.0.server_key", "abcd123"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_server_radius.0.name", "T-Group"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_server_radius.0.server_names.0.name", "TESTRADIUS"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_server_radius.0.ip_radius_source_interface_loopback", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_tacacsplus.0.name", "tacacs-group"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_tacacsplus.0.servers.0.name", "tacacs_10.10.15.12"))
 	resource.Test(t, resource.TestCase{
@@ -68,6 +69,7 @@ func testAccDataSourceIosxeAAAConfig() string {
 	config += `		server_names = [{` + "\n"
 	config += `			name = "TESTRADIUS"` + "\n"
 	config += `		}]` + "\n"
+	config += `		ip_radius_source_interface_loopback = 0` + "\n"
 	config += `	}]` + "\n"
 	config += `	group_tacacsplus = [{` + "\n"
 	config += `		name = "tacacs-group"` + "\n"

@@ -38,6 +38,11 @@ attributes:
           - yang_name: name
             example: TESTRADIUS
             id: true
+        # SP 11
+      - yang_name: ip/radius/source-interface/interface-choice/Loopback/Loopback
+        xpath: ip/radius/source-interface/Loopback
+        tf_name: ip_radius_source_interface_loopback
+        example: 0
   - yang_name: Cisco-IOS-XE-aaa:group/server/tacacsplus
     tf_name: group_tacacsplus
     type: List

@@ -50,6 +50,8 @@ type AAAAuthorizationData struct {
 type AAAAuthorizationExecs struct {
 	Name              types.String `tfsdk:"name"`
 	A1Local           types.Bool   `tfsdk:"a1_local"`
+	A1Group           types.String `tfsdk:"a1_group"`
+	A2Local           types.Bool   `tfsdk:"a2_local"`
 	A1IfAuthenticated types.Bool   `tfsdk:"a1_if_authenticated"`
 }
 type AAAAuthorizationNetworks struct {
@@ -87,6 +89,14 @@ func (data AAAAuthorization) toBody(ctx context.Context) string {
 			if !item.A1Local.IsNull() && !item.A1Local.IsUnknown() {
 				if item.A1Local.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"a1.local", map[string]string{})
+				}
+			}
+			if !item.A1Group.IsNull() && !item.A1Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"a1.group", item.A1Group.ValueString())
+			}
+			if !item.A2Local.IsNull() && !item.A2Local.IsUnknown() {
+				if item.A2Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"a2.local", map[string]string{})
 				}
 			}
 			if !item.A1IfAuthenticated.IsNull() && !item.A1IfAuthenticated.IsUnknown() {
@@ -152,6 +162,20 @@ func (data *AAAAuthorization) updateFromBody(ctx context.Context, res gjson.Resu
 		} else {
 			data.Execs[i].A1Local = types.BoolNull()
 		}
+		if value := r.Get("a1.group"); value.Exists() && !data.Execs[i].A1Group.IsNull() {
+			data.Execs[i].A1Group = types.StringValue(value.String())
+		} else {
+			data.Execs[i].A1Group = types.StringNull()
+		}
+		if value := r.Get("a2.local"); !data.Execs[i].A2Local.IsNull() {
+			if value.Exists() {
+				data.Execs[i].A2Local = types.BoolValue(true)
+			} else {
+				data.Execs[i].A2Local = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].A2Local = types.BoolNull()
+		}
 		if value := r.Get("a1.if-authenticated"); !data.Execs[i].A1IfAuthenticated.IsNull() {
 			if value.Exists() {
 				data.Execs[i].A1IfAuthenticated = types.BoolValue(true)
@@ -214,6 +238,14 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 				item.A1Local = types.BoolValue(true)
 			} else {
 				item.A1Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.group"); cValue.Exists() {
+				item.A1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2.local"); cValue.Exists() {
+				item.A2Local = types.BoolValue(true)
+			} else {
+				item.A2Local = types.BoolValue(false)
 			}
 			if cValue := v.Get("a1.if-authenticated"); cValue.Exists() {
 				item.A1IfAuthenticated = types.BoolValue(true)
@@ -302,6 +334,9 @@ func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string 
 		keyValues := [...]string{data.Execs[i].Name.ValueString()}
 		if !data.Execs[i].A1Local.IsNull() && !data.Execs[i].A1Local.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A2Local.IsNull() && !data.Execs[i].A2Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.Execs[i].A1IfAuthenticated.IsNull() && !data.Execs[i].A1IfAuthenticated.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))

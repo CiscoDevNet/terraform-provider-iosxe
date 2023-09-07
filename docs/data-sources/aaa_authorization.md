@@ -35,8 +35,10 @@ data "iosxe_aaa_authorization" "example" {
 
 Read-Only:
 
+- `a1_group` (String) Use Server-group
 - `a1_if_authenticated` (Boolean) Succeed if user has authenticated.
 - `a1_local` (Boolean) Use local database
+- `a2_local` (Boolean)
 - `name` (String)
 
 
