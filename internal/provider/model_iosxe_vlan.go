@@ -221,9 +221,9 @@ func (data *VLANData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *VLAN) getDeletedListItems(ctx context.Context, state VLAN) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *VLAN) getDeletedItems(ctx context.Context, state VLAN) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *VLAN) getEmptyLeafsDelete(ctx context.Context) []string {

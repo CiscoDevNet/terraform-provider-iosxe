@@ -475,8 +475,8 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *PIM) getDeletedListItems(ctx context.Context, state PIM) []string {
-	deletedListItems := make([]string, 0)
+func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.RpAddresses {
 		stateKeyValues := [...]string{state.RpAddresses[i].AccessList.ValueString()}
 
@@ -499,7 +499,7 @@ func (data *PIM) getDeletedListItems(ctx context.Context, state PIM) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.RpCandidates {
@@ -524,10 +524,10 @@ func (data *PIM) getDeletedListItems(ctx context.Context, state PIM) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-candidate=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-candidate=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *PIM) getEmptyLeafsDelete(ctx context.Context) []string {

@@ -374,9 +374,9 @@ func (data *BFDTemplateMultiHopData) fromBody(ctx context.Context, res gjson.Res
 	}
 }
 
-func (data *BFDTemplateMultiHop) getDeletedListItems(ctx context.Context, state BFDTemplateMultiHop) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *BFDTemplateMultiHop) getDeletedItems(ctx context.Context, state BFDTemplateMultiHop) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *BFDTemplateMultiHop) getEmptyLeafsDelete(ctx context.Context) []string {

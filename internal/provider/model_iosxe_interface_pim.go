@@ -244,9 +244,9 @@ func (data *InterfacePIMData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *InterfacePIM) getDeletedListItems(ctx context.Context, state InterfacePIM) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *InterfacePIM) getDeletedItems(ctx context.Context, state InterfacePIM) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *InterfacePIM) getEmptyLeafsDelete(ctx context.Context) []string {

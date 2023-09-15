@@ -807,8 +807,8 @@ func (data *BFDData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
-	deletedListItems := make([]string, 0)
+func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Ipv4BothVrfs {
 		stateKeyValues := [...]string{state.Ipv4BothVrfs[i].DstVrf.ValueString(), state.Ipv4BothVrfs[i].DestIp.ValueString(), state.Ipv4BothVrfs[i].SrcVrf.ValueString(), state.Ipv4BothVrfs[i].SrcIp.ValueString()}
 
@@ -849,7 +849,7 @@ func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4WithoutVrfs {
@@ -880,7 +880,7 @@ func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4WithSrcVrfs {
@@ -917,7 +917,7 @@ func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4WithDstVrfs {
@@ -954,7 +954,7 @@ func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6WithBothVrfs {
@@ -997,7 +997,7 @@ func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6WithoutVrfs {
@@ -1028,7 +1028,7 @@ func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6WithSrcVrfs {
@@ -1065,7 +1065,7 @@ func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6WithDstVrfs {
@@ -1102,10 +1102,10 @@ func (data *BFD) getDeletedListItems(ctx context.Context, state BFD) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *BFD) getEmptyLeafsDelete(ctx context.Context) []string {

@@ -1101,8 +1101,8 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	}
 }
 
-func (data *InterfacePortChannel) getDeletedListItems(ctx context.Context, state InterfacePortChannel) []string {
-	deletedListItems := make([]string, 0)
+func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state InterfacePortChannel) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.HelperAddresses {
 		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
 
@@ -1125,7 +1125,7 @@ func (data *InterfacePortChannel) getDeletedListItems(ctx context.Context, state
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6LinkLocalAddresses {
@@ -1150,7 +1150,7 @@ func (data *InterfacePortChannel) getDeletedListItems(ctx context.Context, state
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6Addresses {
@@ -1175,10 +1175,10 @@ func (data *InterfacePortChannel) getDeletedListItems(ctx context.Context, state
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []string {

@@ -481,9 +481,9 @@ func (data *VTPData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *VTP) getDeletedListItems(ctx context.Context, state VTP) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *VTP) getDeletedItems(ctx context.Context, state VTP) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *VTP) getEmptyLeafsDelete(ctx context.Context) []string {

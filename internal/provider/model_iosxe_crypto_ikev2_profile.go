@@ -410,8 +410,8 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 	}
 }
 
-func (data *CryptoIKEv2Profile) getDeletedListItems(ctx context.Context, state CryptoIKEv2Profile) []string {
-	deletedListItems := make([]string, 0)
+func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state CryptoIKEv2Profile) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.MatchIdentityRemoteIpv4Addresses {
 		stateKeyValues := [...]string{state.MatchIdentityRemoteIpv4Addresses[i].Address.ValueString()}
 
@@ -434,10 +434,10 @@ func (data *CryptoIKEv2Profile) getDeletedListItems(ctx context.Context, state C
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/match/identity/remote/address/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *CryptoIKEv2Profile) getEmptyLeafsDelete(ctx context.Context) []string {

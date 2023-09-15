@@ -231,8 +231,8 @@ func (data *StaticRouteData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *StaticRoute) getDeletedListItems(ctx context.Context, state StaticRoute) []string {
-	deletedListItems := make([]string, 0)
+func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.NextHops {
 		stateKeyValues := [...]string{state.NextHops[i].NextHop.ValueString()}
 
@@ -255,10 +255,10 @@ func (data *StaticRoute) getDeletedListItems(ctx context.Context, state StaticRo
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/fwd-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *StaticRoute) getEmptyLeafsDelete(ctx context.Context) []string {

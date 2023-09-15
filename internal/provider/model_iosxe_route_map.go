@@ -1657,8 +1657,8 @@ func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *RouteMap) getDeletedListItems(ctx context.Context, state RouteMap) []string {
-	deletedListItems := make([]string, 0)
+func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Entries {
 		stateKeyValues := [...]string{strconv.FormatInt(state.Entries[i].Seq.ValueInt64(), 10)}
 
@@ -1681,10 +1681,10 @@ func (data *RouteMap) getDeletedListItems(ctx context.Context, state RouteMap) [
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *RouteMap) getEmptyLeafsDelete(ctx context.Context) []string {

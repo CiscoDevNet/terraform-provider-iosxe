@@ -428,8 +428,8 @@ func (data *BGPAddressFamilyIPv4VRFData) fromBody(ctx context.Context, res gjson
 	}
 }
 
-func (data *BGPAddressFamilyIPv4VRF) getDeletedListItems(ctx context.Context, state BGPAddressFamilyIPv4VRF) []string {
-	deletedListItems := make([]string, 0)
+func (data *BGPAddressFamilyIPv4VRF) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv4VRF) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Vrfs {
 		stateKeyValues := [...]string{state.Vrfs[i].Name.ValueString()}
 
@@ -476,7 +476,7 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedListItems(ctx context.Context, st
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/with-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/with-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				for ci := range state.Vrfs[i].Ipv4UnicastNetworks {
@@ -501,17 +501,17 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedListItems(ctx context.Context, st
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/no-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/no-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *BGPAddressFamilyIPv4VRF) getEmptyLeafsDelete(ctx context.Context) []string {

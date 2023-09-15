@@ -507,8 +507,8 @@ func (data *PIMVRFData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *PIMVRF) getDeletedListItems(ctx context.Context, state PIMVRF) []string {
-	deletedListItems := make([]string, 0)
+func (data *PIMVRF) getDeletedItems(ctx context.Context, state PIMVRF) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.RpAddresses {
 		stateKeyValues := [...]string{state.RpAddresses[i].AccessList.ValueString()}
 
@@ -531,7 +531,7 @@ func (data *PIMVRF) getDeletedListItems(ctx context.Context, state PIMVRF) []str
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/rp-address-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.RpCandidates {
@@ -556,10 +556,10 @@ func (data *PIMVRF) getDeletedListItems(ctx context.Context, state PIMVRF) []str
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/rp-candidate=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *PIMVRF) getEmptyLeafsDelete(ctx context.Context) []string {

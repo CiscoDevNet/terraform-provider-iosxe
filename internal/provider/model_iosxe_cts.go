@@ -92,9 +92,9 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *CTS) getDeletedListItems(ctx context.Context, state CTS) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *CTS) getEmptyLeafsDelete(ctx context.Context) []string {

@@ -811,8 +811,8 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
-func (data *InterfaceTunnel) getDeletedListItems(ctx context.Context, state InterfaceTunnel) []string {
-	deletedListItems := make([]string, 0)
+func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state InterfaceTunnel) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Ipv6LinkLocalAddresses {
 		stateKeyValues := [...]string{state.Ipv6LinkLocalAddresses[i].Address.ValueString()}
 
@@ -835,7 +835,7 @@ func (data *InterfaceTunnel) getDeletedListItems(ctx context.Context, state Inte
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6Addresses {
@@ -860,7 +860,7 @@ func (data *InterfaceTunnel) getDeletedListItems(ctx context.Context, state Inte
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.HelperAddresses {
@@ -885,10 +885,10 @@ func (data *InterfaceTunnel) getDeletedListItems(ctx context.Context, state Inte
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *InterfaceTunnel) getEmptyLeafsDelete(ctx context.Context) []string {

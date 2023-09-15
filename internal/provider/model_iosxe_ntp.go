@@ -1022,8 +1022,8 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *NTP) getDeletedListItems(ctx context.Context, state NTP) []string {
-	deletedListItems := make([]string, 0)
+func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.AuthenticationKeys {
 		stateKeyValues := [...]string{strconv.FormatInt(state.AuthenticationKeys[i].Number.ValueInt64(), 10)}
 
@@ -1046,7 +1046,7 @@ func (data *NTP) getDeletedListItems(ctx context.Context, state NTP) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Servers {
@@ -1071,7 +1071,7 @@ func (data *NTP) getDeletedListItems(ctx context.Context, state NTP) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.ServerVrfs {
@@ -1114,14 +1114,14 @@ func (data *NTP) getDeletedListItems(ctx context.Context, state NTP) []string {
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Peers {
@@ -1146,7 +1146,7 @@ func (data *NTP) getDeletedListItems(ctx context.Context, state NTP) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.PeerVrfs {
@@ -1189,17 +1189,17 @@ func (data *NTP) getDeletedListItems(ctx context.Context, state NTP) []string {
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *NTP) getEmptyLeafsDelete(ctx context.Context) []string {

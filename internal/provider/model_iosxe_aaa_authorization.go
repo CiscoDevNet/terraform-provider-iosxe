@@ -240,8 +240,8 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 	}
 }
 
-func (data *AAAAuthorization) getDeletedListItems(ctx context.Context, state AAAAuthorization) []string {
-	deletedListItems := make([]string, 0)
+func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuthorization) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Execs {
 		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
 
@@ -264,7 +264,7 @@ func (data *AAAAuthorization) getDeletedListItems(ctx context.Context, state AAA
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Networks {
@@ -289,10 +289,10 @@ func (data *AAAAuthorization) getDeletedListItems(ctx context.Context, state AAA
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string {

@@ -231,10 +231,10 @@ func (r *RestconfResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	deletedListItems := plan.getDeletedListItems(ctx, state)
-	tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedListItems))
+	deletedItems := plan.getDeletedItems(ctx, state)
+	tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedItems))
 
-	for _, i := range deletedListItems {
+	for _, i := range deletedItems {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(i)
 		if err != nil && res.StatusCode != 404 {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))

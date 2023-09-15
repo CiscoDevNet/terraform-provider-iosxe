@@ -349,8 +349,8 @@ func (data *CryptoIKEv2KeyringData) fromBody(ctx context.Context, res gjson.Resu
 	}
 }
 
-func (data *CryptoIKEv2Keyring) getDeletedListItems(ctx context.Context, state CryptoIKEv2Keyring) []string {
-	deletedListItems := make([]string, 0)
+func (data *CryptoIKEv2Keyring) getDeletedItems(ctx context.Context, state CryptoIKEv2Keyring) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Peers {
 		stateKeyValues := [...]string{state.Peers[i].Name.ValueString()}
 
@@ -373,10 +373,10 @@ func (data *CryptoIKEv2Keyring) getDeletedListItems(ctx context.Context, state C
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/peer=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *CryptoIKEv2Keyring) getEmptyLeafsDelete(ctx context.Context) []string {

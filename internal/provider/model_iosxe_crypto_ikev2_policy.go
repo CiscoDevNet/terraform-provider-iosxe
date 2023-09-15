@@ -217,8 +217,8 @@ func (data *CryptoIKEv2PolicyData) fromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
-func (data *CryptoIKEv2Policy) getDeletedListItems(ctx context.Context, state CryptoIKEv2Policy) []string {
-	deletedListItems := make([]string, 0)
+func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state CryptoIKEv2Policy) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Proposals {
 		stateKeyValues := [...]string{state.Proposals[i].Proposals.ValueString()}
 
@@ -241,10 +241,10 @@ func (data *CryptoIKEv2Policy) getDeletedListItems(ctx context.Context, state Cr
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/proposal=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/proposal=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *CryptoIKEv2Policy) getEmptyLeafsDelete(ctx context.Context) []string {

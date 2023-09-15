@@ -215,8 +215,8 @@ func (data *BGPIPv6UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 	}
 }
 
-func (data *BGPIPv6UnicastNeighbor) getDeletedListItems(ctx context.Context, state BGPIPv6UnicastNeighbor) []string {
-	deletedListItems := make([]string, 0)
+func (data *BGPIPv6UnicastNeighbor) getDeletedItems(ctx context.Context, state BGPIPv6UnicastNeighbor) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.RouteMaps {
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
 
@@ -239,10 +239,10 @@ func (data *BGPIPv6UnicastNeighbor) getDeletedListItems(ctx context.Context, sta
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/route-map=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *BGPIPv6UnicastNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {

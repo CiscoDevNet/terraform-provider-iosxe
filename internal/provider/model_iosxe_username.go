@@ -168,9 +168,9 @@ func (data *UsernameData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Username) getDeletedListItems(ctx context.Context, state Username) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *Username) getDeletedItems(ctx context.Context, state Username) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *Username) getEmptyLeafsDelete(ctx context.Context) []string {

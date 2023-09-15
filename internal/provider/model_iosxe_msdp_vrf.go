@@ -260,8 +260,8 @@ func (data *MSDPVRFData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *MSDPVRF) getDeletedListItems(ctx context.Context, state MSDPVRF) []string {
-	deletedListItems := make([]string, 0)
+func (data *MSDPVRF) getDeletedItems(ctx context.Context, state MSDPVRF) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Passwords {
 		stateKeyValues := [...]string{state.Passwords[i].Addr.ValueString()}
 
@@ -284,7 +284,7 @@ func (data *MSDPVRF) getDeletedListItems(ctx context.Context, state MSDPVRF) []s
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/password/peer-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/password/peer-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Peers {
@@ -309,10 +309,10 @@ func (data *MSDPVRF) getDeletedListItems(ctx context.Context, state MSDPVRF) []s
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/peer=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *MSDPVRF) getEmptyLeafsDelete(ctx context.Context) []string {

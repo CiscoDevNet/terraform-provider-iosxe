@@ -179,8 +179,8 @@ func (data *Restconf) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Restconf) getDeletedListItems(ctx context.Context, state Restconf) []string {
-	deletedListItems := make([]string, 0)
+func (data *Restconf) getDeletedItems(ctx context.Context, state Restconf) []string {
+	deletedItems := make([]string, 0)
 	for l := range state.Lists {
 		name := state.Lists[l].Name.ValueString()
 		namePath := strings.ReplaceAll(name, "/", ".")
@@ -233,7 +233,7 @@ func (data *Restconf) getDeletedListItems(ctx context.Context, state Restconf) [
 					for k, key := range keys {
 						keyValues[k] = slia[key]
 					}
-					deletedListItems = append(deletedListItems, state.getPath()+"/"+namePath+"="+strings.Join(keyValues, ","))
+					deletedItems = append(deletedItems, state.getPath()+"/"+namePath+"="+strings.Join(keyValues, ","))
 				}
 			}
 		} else if len(state.Lists[l].Values.Elements()) > 0 {
@@ -251,10 +251,10 @@ func (data *Restconf) getDeletedListItems(ctx context.Context, state Restconf) [
 					}
 				}
 				if !found {
-					deletedListItems = append(deletedListItems, state.getPath()+"/"+namePath+"="+stateValue)
+					deletedItems = append(deletedItems, state.getPath()+"/"+namePath+"="+stateValue)
 				}
 			}
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }

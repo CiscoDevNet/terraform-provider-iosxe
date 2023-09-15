@@ -147,9 +147,9 @@ func (data *BGPL2VPNEVPNNeighborData) fromBody(ctx context.Context, res gjson.Re
 	}
 }
 
-func (data *BGPL2VPNEVPNNeighbor) getDeletedListItems(ctx context.Context, state BGPL2VPNEVPNNeighbor) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *BGPL2VPNEVPNNeighbor) getDeletedItems(ctx context.Context, state BGPL2VPNEVPNNeighbor) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *BGPL2VPNEVPNNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {

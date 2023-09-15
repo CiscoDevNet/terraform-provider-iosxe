@@ -274,8 +274,8 @@ func (data *LoggingIPv4HostVRFTransportData) fromBody(ctx context.Context, res g
 	}
 }
 
-func (data *LoggingIPv4HostVRFTransport) getDeletedListItems(ctx context.Context, state LoggingIPv4HostVRFTransport) []string {
-	deletedListItems := make([]string, 0)
+func (data *LoggingIPv4HostVRFTransport) getDeletedItems(ctx context.Context, state LoggingIPv4HostVRFTransport) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.TransportUdpPorts {
 		stateKeyValues := [...]string{strconv.FormatInt(state.TransportUdpPorts[i].PortNumber.ValueInt64(), 10)}
 
@@ -298,7 +298,7 @@ func (data *LoggingIPv4HostVRFTransport) getDeletedListItems(ctx context.Context
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/transport/udp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/transport/udp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.TransportTcpPorts {
@@ -323,7 +323,7 @@ func (data *LoggingIPv4HostVRFTransport) getDeletedListItems(ctx context.Context
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/transport/tcp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/transport/tcp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.TransportTlsPorts {
@@ -348,10 +348,10 @@ func (data *LoggingIPv4HostVRFTransport) getDeletedListItems(ctx context.Context
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/transport/tls/port=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/transport/tls/port=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *LoggingIPv4HostVRFTransport) getEmptyLeafsDelete(ctx context.Context) []string {

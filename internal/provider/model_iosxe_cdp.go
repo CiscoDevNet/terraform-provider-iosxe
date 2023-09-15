@@ -290,8 +290,8 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *CDP) getDeletedListItems(ctx context.Context, state CDP) []string {
-	deletedListItems := make([]string, 0)
+func (data *CDP) getDeletedItems(ctx context.Context, state CDP) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.TlvLists {
 		stateKeyValues := [...]string{state.TlvLists[i].Name.ValueString()}
 
@@ -314,10 +314,10 @@ func (data *CDP) getDeletedListItems(ctx context.Context, state CDP) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *CDP) getEmptyLeafsDelete(ctx context.Context) []string {

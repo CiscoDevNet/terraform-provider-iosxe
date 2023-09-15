@@ -824,8 +824,8 @@ func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
-	deletedListItems := make([]string, 0)
+func (data *VRF) getDeletedItems(ctx context.Context, state VRF) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.RouteTargetImport {
 		stateKeyValues := [...]string{state.RouteTargetImport[i].Value.ValueString()}
 
@@ -848,7 +848,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/route-target/import=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/route-target/import=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.RouteTargetExport {
@@ -873,7 +873,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/route-target/export=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/route-target/export=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4RouteTargetImport {
@@ -898,7 +898,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/address-family/ipv4/route-target/import-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/route-target/import-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4RouteTargetImportStitching {
@@ -923,7 +923,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/address-family/ipv4/route-target/import-route-target/with-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/route-target/import-route-target/with-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4RouteTargetExport {
@@ -948,7 +948,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/address-family/ipv4/route-target/export-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/route-target/export-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4RouteTargetExportStitching {
@@ -973,7 +973,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/address-family/ipv4/route-target/export-route-target/with-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv4/route-target/export-route-target/with-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6RouteTargetImport {
@@ -998,7 +998,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/address-family/ipv6/route-target/import-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/route-target/import-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6RouteTargetImportStitching {
@@ -1023,7 +1023,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/address-family/ipv6/route-target/import-route-target/with-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/route-target/import-route-target/with-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6RouteTargetExport {
@@ -1048,7 +1048,7 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/address-family/ipv6/route-target/export-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/route-target/export-route-target/without-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6RouteTargetExportStitching {
@@ -1073,10 +1073,10 @@ func (data *VRF) getDeletedListItems(ctx context.Context, state VRF) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/address-family/ipv6/route-target/export-route-target/with-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/address-family/ipv6/route-target/export-route-target/with-stitching=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *VRF) getEmptyLeafsDelete(ctx context.Context) []string {

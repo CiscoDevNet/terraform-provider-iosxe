@@ -264,8 +264,8 @@ func (data *MDTSubscriptionData) fromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
-func (data *MDTSubscription) getDeletedListItems(ctx context.Context, state MDTSubscription) []string {
-	deletedListItems := make([]string, 0)
+func (data *MDTSubscription) getDeletedItems(ctx context.Context, state MDTSubscription) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Receivers {
 		stateKeyValues := [...]string{state.Receivers[i].Address.ValueString(), strconv.FormatInt(state.Receivers[i].Port.ValueInt64(), 10)}
 
@@ -294,10 +294,10 @@ func (data *MDTSubscription) getDeletedListItems(ctx context.Context, state MDTS
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/mdt-receivers=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/mdt-receivers=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *MDTSubscription) getEmptyLeafsDelete(ctx context.Context) []string {

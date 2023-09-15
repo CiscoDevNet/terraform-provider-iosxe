@@ -285,8 +285,8 @@ func (data *StaticRouteVRFData) fromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
-func (data *StaticRouteVRF) getDeletedListItems(ctx context.Context, state StaticRouteVRF) []string {
-	deletedListItems := make([]string, 0)
+func (data *StaticRouteVRF) getDeletedItems(ctx context.Context, state StaticRouteVRF) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Routes {
 		stateKeyValues := [...]string{state.Routes[i].Prefix.ValueString(), state.Routes[i].Mask.ValueString()}
 
@@ -333,17 +333,17 @@ func (data *StaticRouteVRF) getDeletedListItems(ctx context.Context, state Stati
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip-route-interface-forwarding-list=%v/fwd-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/ip-route-interface-forwarding-list=%v/fwd-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip-route-interface-forwarding-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip-route-interface-forwarding-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *StaticRouteVRF) getEmptyLeafsDelete(ctx context.Context) []string {

@@ -540,9 +540,9 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *BGPNeighbor) getDeletedListItems(ctx context.Context, state BGPNeighbor) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *BGPNeighbor) getDeletedItems(ctx context.Context, state BGPNeighbor) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *BGPNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {

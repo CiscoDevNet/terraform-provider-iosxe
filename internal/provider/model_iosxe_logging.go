@@ -598,8 +598,8 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Logging) getDeletedListItems(ctx context.Context, state Logging) []string {
-	deletedListItems := make([]string, 0)
+func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.SourceInterfacesVrf {
 		stateKeyValues := [...]string{state.SourceInterfacesVrf[i].Vrf.ValueString()}
 
@@ -622,7 +622,7 @@ func (data *Logging) getDeletedListItems(ctx context.Context, state Logging) []s
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/source-interface-conf/source-interface-vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface-conf/source-interface-vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4Hosts {
@@ -647,7 +647,7 @@ func (data *Logging) getDeletedListItems(ctx context.Context, state Logging) []s
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/host/ipv4-host-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4VrfHosts {
@@ -678,7 +678,7 @@ func (data *Logging) getDeletedListItems(ctx context.Context, state Logging) []s
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/host/ipv4-host-vrf-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-vrf-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6Hosts {
@@ -703,7 +703,7 @@ func (data *Logging) getDeletedListItems(ctx context.Context, state Logging) []s
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6VrfHosts {
@@ -734,10 +734,10 @@ func (data *Logging) getDeletedListItems(ctx context.Context, state Logging) []s
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-vrf-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-vrf-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *Logging) getEmptyLeafsDelete(ctx context.Context) []string {

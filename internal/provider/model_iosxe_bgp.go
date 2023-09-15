@@ -138,9 +138,9 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *BGP) getDeletedListItems(ctx context.Context, state BGP) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *BGP) getDeletedItems(ctx context.Context, state BGP) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *BGP) getEmptyLeafsDelete(ctx context.Context) []string {

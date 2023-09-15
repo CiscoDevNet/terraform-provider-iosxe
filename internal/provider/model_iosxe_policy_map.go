@@ -123,9 +123,9 @@ func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *PolicyMap) getDeletedListItems(ctx context.Context, state PolicyMap) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *PolicyMap) getEmptyLeafsDelete(ctx context.Context) []string {

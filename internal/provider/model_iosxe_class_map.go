@@ -411,8 +411,8 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *ClassMap) getDeletedListItems(ctx context.Context, state ClassMap) []string {
-	deletedListItems := make([]string, 0)
+func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.MatchActivatedServiceTemplates {
 		stateKeyValues := [...]string{state.MatchActivatedServiceTemplates[i].ServiceName.ValueString()}
 
@@ -435,10 +435,10 @@ func (data *ClassMap) getDeletedListItems(ctx context.Context, state ClassMap) [
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/match/activated-service-template=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/activated-service-template=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *ClassMap) getEmptyLeafsDelete(ctx context.Context) []string {

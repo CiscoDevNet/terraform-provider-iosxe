@@ -614,9 +614,9 @@ func (data *CryptoIKEv2ProposalData) fromBody(ctx context.Context, res gjson.Res
 	}
 }
 
-func (data *CryptoIKEv2Proposal) getDeletedListItems(ctx context.Context, state CryptoIKEv2Proposal) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *CryptoIKEv2Proposal) getDeletedItems(ctx context.Context, state CryptoIKEv2Proposal) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *CryptoIKEv2Proposal) getEmptyLeafsDelete(ctx context.Context) []string {

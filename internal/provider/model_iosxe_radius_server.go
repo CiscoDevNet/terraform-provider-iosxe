@@ -325,8 +325,8 @@ func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *RadiusServer) getDeletedListItems(ctx context.Context, state RadiusServer) []string {
-	deletedListItems := make([]string, 0)
+func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServer) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Attributes {
 		stateKeyValues := [...]string{state.Attributes[i].Number.ValueString()}
 
@@ -367,17 +367,17 @@ func (data *RadiusServer) getDeletedListItems(ctx context.Context, state RadiusS
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *RadiusServer) getEmptyLeafsDelete(ctx context.Context) []string {

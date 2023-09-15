@@ -639,8 +639,8 @@ func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
-func (data *AAAAuthentication) getDeletedListItems(ctx context.Context, state AAAAuthentication) []string {
-	deletedListItems := make([]string, 0)
+func (data *AAAAuthentication) getDeletedItems(ctx context.Context, state AAAAuthentication) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Logins {
 		stateKeyValues := [...]string{state.Logins[i].Name.ValueString()}
 
@@ -663,10 +663,10 @@ func (data *AAAAuthentication) getDeletedListItems(ctx context.Context, state AA
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/login=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *AAAAuthentication) getEmptyLeafsDelete(ctx context.Context) []string {

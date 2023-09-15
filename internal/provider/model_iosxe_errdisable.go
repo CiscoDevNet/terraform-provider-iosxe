@@ -1091,9 +1091,9 @@ func (data *ErrdisableData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Errdisable) getDeletedListItems(ctx context.Context, state Errdisable) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *Errdisable) getDeletedItems(ctx context.Context, state Errdisable) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *Errdisable) getEmptyLeafsDelete(ctx context.Context) []string {

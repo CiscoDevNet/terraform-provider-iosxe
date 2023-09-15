@@ -425,8 +425,8 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *System) getDeletedListItems(ctx context.Context, state System) []string {
-	deletedListItems := make([]string, 0)
+func (data *System) getDeletedItems(ctx context.Context, state System) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.MulticastRoutingVrfs {
 		stateKeyValues := [...]string{state.MulticastRoutingVrfs[i].Vrf.ValueString()}
 
@@ -449,10 +449,10 @@ func (data *System) getDeletedListItems(ctx context.Context, state System) []str
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {

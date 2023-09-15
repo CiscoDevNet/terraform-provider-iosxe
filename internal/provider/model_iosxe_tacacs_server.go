@@ -130,9 +130,9 @@ func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *TACACSServer) getDeletedListItems(ctx context.Context, state TACACSServer) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServer) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *TACACSServer) getEmptyLeafsDelete(ctx context.Context) []string {

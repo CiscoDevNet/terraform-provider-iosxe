@@ -194,8 +194,8 @@ func (data *PrefixListData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *PrefixList) getDeletedListItems(ctx context.Context, state PrefixList) []string {
-	deletedListItems := make([]string, 0)
+func (data *PrefixList) getDeletedItems(ctx context.Context, state PrefixList) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Prefixes {
 		stateKeyValues := [...]string{state.Prefixes[i].Name.ValueString(), strconv.FormatInt(state.Prefixes[i].Seq.ValueInt64(), 10)}
 
@@ -224,10 +224,10 @@ func (data *PrefixList) getDeletedListItems(ctx context.Context, state PrefixLis
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/prefixes=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *PrefixList) getEmptyLeafsDelete(ctx context.Context) []string {

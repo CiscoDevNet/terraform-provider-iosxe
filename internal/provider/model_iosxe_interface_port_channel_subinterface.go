@@ -1037,8 +1037,8 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 	}
 }
 
-func (data *InterfacePortChannelSubinterface) getDeletedListItems(ctx context.Context, state InterfacePortChannelSubinterface) []string {
-	deletedListItems := make([]string, 0)
+func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Context, state InterfacePortChannelSubinterface) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.HelperAddresses {
 		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
 
@@ -1061,7 +1061,7 @@ func (data *InterfacePortChannelSubinterface) getDeletedListItems(ctx context.Co
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6LinkLocalAddresses {
@@ -1086,7 +1086,7 @@ func (data *InterfacePortChannelSubinterface) getDeletedListItems(ctx context.Co
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6Addresses {
@@ -1111,10 +1111,10 @@ func (data *InterfacePortChannelSubinterface) getDeletedListItems(ctx context.Co
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *InterfacePortChannelSubinterface) getEmptyLeafsDelete(ctx context.Context) []string {

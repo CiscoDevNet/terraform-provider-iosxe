@@ -330,9 +330,9 @@ func (data *InterfaceSwitchportData) fromBody(ctx context.Context, res gjson.Res
 	}
 }
 
-func (data *InterfaceSwitchport) getDeletedListItems(ctx context.Context, state InterfaceSwitchport) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *InterfaceSwitchport) getDeletedItems(ctx context.Context, state InterfaceSwitchport) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *InterfaceSwitchport) getEmptyLeafsDelete(ctx context.Context) []string {

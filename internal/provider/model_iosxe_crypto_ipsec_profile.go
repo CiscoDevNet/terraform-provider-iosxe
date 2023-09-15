@@ -132,9 +132,9 @@ func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Resu
 	}
 }
 
-func (data *CryptoIPSecProfile) getDeletedListItems(ctx context.Context, state CryptoIPSecProfile) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state CryptoIPSecProfile) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *CryptoIPSecProfile) getEmptyLeafsDelete(ctx context.Context) []string {

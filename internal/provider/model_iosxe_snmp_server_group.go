@@ -241,8 +241,8 @@ func (data *SNMPServerGroupData) fromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
-func (data *SNMPServerGroup) getDeletedListItems(ctx context.Context, state SNMPServerGroup) []string {
-	deletedListItems := make([]string, 0)
+func (data *SNMPServerGroup) getDeletedItems(ctx context.Context, state SNMPServerGroup) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.V3Security {
 		stateKeyValues := [...]string{state.V3Security[i].SecurityLevel.ValueString()}
 
@@ -265,10 +265,10 @@ func (data *SNMPServerGroup) getDeletedListItems(ctx context.Context, state SNMP
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/v3/security-level-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *SNMPServerGroup) getEmptyLeafsDelete(ctx context.Context) []string {

@@ -593,8 +593,8 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 	{{- end}}
 }
 
-func (data *{{camelCase .Name}}) getDeletedListItems(ctx context.Context, state {{camelCase .Name}}) []string {
-	deletedListItems := make([]string, 0)
+func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{camelCase .Name}}) []string {
+	deletedItems := make([]string, 0)
 	{{- range .Attributes}}
 	{{- if eq .Type "List"}}
 	{{- $xpath := getXPath .YangName .XPath}}
@@ -658,7 +658,7 @@ func (data *{{camelCase .Name}}) getDeletedListItems(ctx context.Context, state 
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				{{- end}}
@@ -667,12 +667,12 @@ func (data *{{camelCase .Name}}) getDeletedListItems(ctx context.Context, state 
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	{{- end}}
 	{{- end}}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []string {

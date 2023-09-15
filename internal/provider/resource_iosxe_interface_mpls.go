@@ -233,15 +233,15 @@ func (r *InterfaceMPLSResource) Update(ctx context.Context, req resource.UpdateR
 
 	body := plan.toBody(ctx)
 
-	deletedListItems := plan.getDeletedListItems(ctx, state)
-	tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedListItems))
+	deletedItems := plan.getDeletedItems(ctx, state)
+	tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedItems))
 
 	emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 	tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
 	if YangPatch {
 		edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
-		for _, i := range deletedListItems {
+		for _, i := range deletedItems {
 			edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 		}
 		for _, i := range emptyLeafsDelete {
@@ -261,7 +261,7 @@ func (r *InterfaceMPLSResource) Update(ctx context.Context, req resource.UpdateR
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
 			return
 		}
-		for _, i := range deletedListItems {
+		for _, i := range deletedItems {
 			res, err := r.clients[state.Device.ValueString()].DeleteData(i)
 			if err != nil && res.StatusCode != 404 {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))

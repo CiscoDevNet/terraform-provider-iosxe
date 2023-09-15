@@ -182,9 +182,9 @@ func (data *InterfaceOSPFv3Data) fromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
-func (data *InterfaceOSPFv3) getDeletedListItems(ctx context.Context, state InterfaceOSPFv3) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *InterfaceOSPFv3) getDeletedItems(ctx context.Context, state InterfaceOSPFv3) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *InterfaceOSPFv3) getEmptyLeafsDelete(ctx context.Context) []string {

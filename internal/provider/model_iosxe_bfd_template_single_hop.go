@@ -293,9 +293,9 @@ func (data *BFDTemplateSingleHopData) fromBody(ctx context.Context, res gjson.Re
 	}
 }
 
-func (data *BFDTemplateSingleHop) getDeletedListItems(ctx context.Context, state BFDTemplateSingleHop) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *BFDTemplateSingleHop) getDeletedItems(ctx context.Context, state BFDTemplateSingleHop) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *BFDTemplateSingleHop) getEmptyLeafsDelete(ctx context.Context) []string {

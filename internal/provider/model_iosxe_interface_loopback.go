@@ -541,8 +541,8 @@ func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
-func (data *InterfaceLoopback) getDeletedListItems(ctx context.Context, state InterfaceLoopback) []string {
-	deletedListItems := make([]string, 0)
+func (data *InterfaceLoopback) getDeletedItems(ctx context.Context, state InterfaceLoopback) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Ipv6LinkLocalAddresses {
 		stateKeyValues := [...]string{state.Ipv6LinkLocalAddresses[i].Address.ValueString()}
 
@@ -565,7 +565,7 @@ func (data *InterfaceLoopback) getDeletedListItems(ctx context.Context, state In
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6Addresses {
@@ -590,10 +590,10 @@ func (data *InterfaceLoopback) getDeletedListItems(ctx context.Context, state In
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *InterfaceLoopback) getEmptyLeafsDelete(ctx context.Context) []string {

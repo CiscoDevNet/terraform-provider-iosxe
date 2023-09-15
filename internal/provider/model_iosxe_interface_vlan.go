@@ -755,8 +755,8 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *InterfaceVLAN) getDeletedListItems(ctx context.Context, state InterfaceVLAN) []string {
-	deletedListItems := make([]string, 0)
+func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceVLAN) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.HelperAddresses {
 		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
 
@@ -779,7 +779,7 @@ func (data *InterfaceVLAN) getDeletedListItems(ctx context.Context, state Interf
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6LinkLocalAddresses {
@@ -804,7 +804,7 @@ func (data *InterfaceVLAN) getDeletedListItems(ctx context.Context, state Interf
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6Addresses {
@@ -829,10 +829,10 @@ func (data *InterfaceVLAN) getDeletedListItems(ctx context.Context, state Interf
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {

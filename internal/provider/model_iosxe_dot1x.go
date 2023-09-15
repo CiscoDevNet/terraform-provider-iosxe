@@ -359,8 +359,8 @@ func (data *Dot1xData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Dot1x) getDeletedListItems(ctx context.Context, state Dot1x) []string {
-	deletedListItems := make([]string, 0)
+func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Credentials {
 		stateKeyValues := [...]string{state.Credentials[i].ProfileName.ValueString()}
 
@@ -383,10 +383,10 @@ func (data *Dot1x) getDeletedListItems(ctx context.Context, state Dot1x) []strin
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *Dot1x) getEmptyLeafsDelete(ctx context.Context) []string {

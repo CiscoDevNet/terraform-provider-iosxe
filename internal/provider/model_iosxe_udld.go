@@ -148,9 +148,9 @@ func (data *UDLDData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *UDLD) getDeletedListItems(ctx context.Context, state UDLD) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *UDLD) getDeletedItems(ctx context.Context, state UDLD) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *UDLD) getEmptyLeafsDelete(ctx context.Context) []string {

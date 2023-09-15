@@ -266,8 +266,8 @@ func (data *DHCPData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *DHCP) getDeletedListItems(ctx context.Context, state DHCP) []string {
-	deletedListItems := make([]string, 0)
+func (data *DHCP) getDeletedItems(ctx context.Context, state DHCP) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.SnoopingVlans {
 		stateKeyValues := [...]string{state.SnoopingVlans[i].VlanId.ValueString()}
 
@@ -290,10 +290,10 @@ func (data *DHCP) getDeletedListItems(ctx context.Context, state DHCP) []string 
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *DHCP) getEmptyLeafsDelete(ctx context.Context) []string {

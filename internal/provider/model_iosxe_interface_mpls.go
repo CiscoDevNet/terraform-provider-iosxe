@@ -118,9 +118,9 @@ func (data *InterfaceMPLSData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *InterfaceMPLS) getDeletedListItems(ctx context.Context, state InterfaceMPLS) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *InterfaceMPLS) getDeletedItems(ctx context.Context, state InterfaceMPLS) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *InterfaceMPLS) getEmptyLeafsDelete(ctx context.Context) []string {

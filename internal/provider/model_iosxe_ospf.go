@@ -693,8 +693,8 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string {
-	deletedListItems := make([]string, 0)
+func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Neighbors {
 		stateKeyValues := [...]string{state.Neighbors[i].Ip.ValueString()}
 
@@ -717,7 +717,7 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/neighbor=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Networks {
@@ -742,7 +742,7 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.SummaryAddresses {
@@ -767,7 +767,7 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/summary-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/summary-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Areas {
@@ -792,10 +792,10 @@ func (data *OSPF) getDeletedListItems(ctx context.Context, state OSPF) []string 
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *OSPF) getEmptyLeafsDelete(ctx context.Context) []string {

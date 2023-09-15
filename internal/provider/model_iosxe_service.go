@@ -574,9 +574,9 @@ func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Service) getDeletedListItems(ctx context.Context, state Service) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *Service) getDeletedItems(ctx context.Context, state Service) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *Service) getEmptyLeafsDelete(ctx context.Context) []string {

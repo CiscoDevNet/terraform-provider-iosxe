@@ -306,8 +306,8 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *AAAAccounting) getDeletedListItems(ctx context.Context, state AAAAccounting) []string {
-	deletedListItems := make([]string, 0)
+func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccounting) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Execs {
 		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
 
@@ -330,7 +330,7 @@ func (data *AAAAccounting) getDeletedListItems(ctx context.Context, state AAAAcc
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Networks {
@@ -355,10 +355,10 @@ func (data *AAAAccounting) getDeletedListItems(ctx context.Context, state AAAAcc
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {

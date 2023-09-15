@@ -496,8 +496,8 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Line) getDeletedListItems(ctx context.Context, state Line) []string {
-	deletedListItems := make([]string, 0)
+func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Console {
 		stateKeyValues := [...]string{state.Console[i].First.ValueString()}
 
@@ -520,7 +520,7 @@ func (data *Line) getDeletedListItems(ctx context.Context, state Line) []string 
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/console=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Vty {
@@ -563,17 +563,17 @@ func (data *Line) getDeletedListItems(ctx context.Context, state Line) []string 
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vty=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {

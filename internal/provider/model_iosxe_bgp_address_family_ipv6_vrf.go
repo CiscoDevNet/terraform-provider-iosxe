@@ -312,8 +312,8 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gjson
 	}
 }
 
-func (data *BGPAddressFamilyIPv6VRF) getDeletedListItems(ctx context.Context, state BGPAddressFamilyIPv6VRF) []string {
-	deletedListItems := make([]string, 0)
+func (data *BGPAddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv6VRF) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Vrfs {
 		stateKeyValues := [...]string{state.Vrfs[i].Name.ValueString()}
 
@@ -354,17 +354,17 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletedListItems(ctx context.Context, st
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *BGPAddressFamilyIPv6VRF) getEmptyLeafsDelete(ctx context.Context) []string {

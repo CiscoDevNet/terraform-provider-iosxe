@@ -390,9 +390,9 @@ func (data *ClockData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Clock) getDeletedListItems(ctx context.Context, state Clock) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *Clock) getDeletedItems(ctx context.Context, state Clock) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *Clock) getEmptyLeafsDelete(ctx context.Context) []string {

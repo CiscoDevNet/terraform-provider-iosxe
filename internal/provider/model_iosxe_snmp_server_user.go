@@ -335,9 +335,9 @@ func (data *SNMPServerUserData) fromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
-func (data *SNMPServerUser) getDeletedListItems(ctx context.Context, state SNMPServerUser) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *SNMPServerUser) getDeletedItems(ctx context.Context, state SNMPServerUser) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *SNMPServerUser) getEmptyLeafsDelete(ctx context.Context) []string {

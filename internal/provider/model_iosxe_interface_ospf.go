@@ -435,8 +435,8 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *InterfaceOSPF) getDeletedListItems(ctx context.Context, state InterfaceOSPF) []string {
-	deletedListItems := make([]string, 0)
+func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceOSPF) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.ProcessIds {
 		stateKeyValues := [...]string{strconv.FormatInt(state.ProcessIds[i].Id.ValueInt64(), 10)}
 
@@ -477,14 +477,14 @@ func (data *InterfaceOSPF) getDeletedListItems(ctx context.Context, state Interf
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/process-id=%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/process-id=%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/process-id=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/process-id=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.MessageDigestKeys {
@@ -509,10 +509,10 @@ func (data *InterfaceOSPF) getDeletedListItems(ctx context.Context, state Interf
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/message-digest-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/message-digest-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *InterfaceOSPF) getEmptyLeafsDelete(ctx context.Context) []string {

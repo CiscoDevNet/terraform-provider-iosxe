@@ -222,8 +222,8 @@ func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Re
 	}
 }
 
-func (data *BGPAddressFamilyIPv6) getDeletedListItems(ctx context.Context, state BGPAddressFamilyIPv6) []string {
-	deletedListItems := make([]string, 0)
+func (data *BGPAddressFamilyIPv6) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv6) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Ipv6UnicastNetworks {
 		stateKeyValues := [...]string{state.Ipv6UnicastNetworks[i].Network.ValueString()}
 
@@ -246,10 +246,10 @@ func (data *BGPAddressFamilyIPv6) getDeletedListItems(ctx context.Context, state
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *BGPAddressFamilyIPv6) getEmptyLeafsDelete(ctx context.Context) []string {

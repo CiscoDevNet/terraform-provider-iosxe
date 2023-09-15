@@ -92,9 +92,9 @@ func (data *BGPAddressFamilyL2VPNData) fromBody(ctx context.Context, res gjson.R
 	}
 }
 
-func (data *BGPAddressFamilyL2VPN) getDeletedListItems(ctx context.Context, state BGPAddressFamilyL2VPN) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *BGPAddressFamilyL2VPN) getDeletedItems(ctx context.Context, state BGPAddressFamilyL2VPN) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *BGPAddressFamilyL2VPN) getEmptyLeafsDelete(ctx context.Context) []string {

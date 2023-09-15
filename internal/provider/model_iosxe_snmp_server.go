@@ -3178,8 +3178,8 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *SNMPServer) getDeletedListItems(ctx context.Context, state SNMPServer) []string {
-	deletedListItems := make([]string, 0)
+func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Hosts {
 		stateKeyValues := [...]string{state.Hosts[i].IpAddress.ValueString()}
 
@@ -3202,7 +3202,7 @@ func (data *SNMPServer) getDeletedListItems(ctx context.Context, state SNMPServe
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.SnmpCommunities {
@@ -3227,7 +3227,7 @@ func (data *SNMPServer) getDeletedListItems(ctx context.Context, state SNMPServe
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:community-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:community-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Contexts {
@@ -3252,7 +3252,7 @@ func (data *SNMPServer) getDeletedListItems(ctx context.Context, state SNMPServe
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:context=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:context=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Views {
@@ -3283,10 +3283,10 @@ func (data *SNMPServer) getDeletedListItems(ctx context.Context, state SNMPServe
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:view=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:view=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *SNMPServer) getEmptyLeafsDelete(ctx context.Context) []string {

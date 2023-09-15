@@ -249,9 +249,9 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Radius) getDeletedListItems(ctx context.Context, state Radius) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {

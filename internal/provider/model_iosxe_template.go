@@ -1454,8 +1454,8 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *Template) getDeletedListItems(ctx context.Context, state Template) []string {
-	deletedListItems := make([]string, 0)
+func (data *Template) getDeletedItems(ctx context.Context, state Template) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.SwitchportPortSecurityMaximumRange {
 		stateKeyValues := [...]string{strconv.FormatInt(state.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64(), 10)}
 
@@ -1478,7 +1478,7 @@ func (data *Template) getDeletedListItems(ctx context.Context, state Template) [
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/switchport/port-security/maximum/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/maximum/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.IpAccessGroup {
@@ -1503,7 +1503,7 @@ func (data *Template) getDeletedListItems(ctx context.Context, state Template) [
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip/access-group=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.DeviceTrackingAttachPolicy {
@@ -1528,10 +1528,10 @@ func (data *Template) getDeletedListItems(ctx context.Context, state Template) [
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/device-tracking/attach-policy/policy-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/device-tracking/attach-policy/policy-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *Template) getEmptyLeafsDelete(ctx context.Context) []string {

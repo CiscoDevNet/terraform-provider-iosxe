@@ -309,8 +309,8 @@ func (data *AccessListStandardData) fromBody(ctx context.Context, res gjson.Resu
 	}
 }
 
-func (data *AccessListStandard) getDeletedListItems(ctx context.Context, state AccessListStandard) []string {
-	deletedListItems := make([]string, 0)
+func (data *AccessListStandard) getDeletedItems(ctx context.Context, state AccessListStandard) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Entries {
 		stateKeyValues := [...]string{strconv.FormatInt(state.Entries[i].Sequence.ValueInt64(), 10)}
 
@@ -333,10 +333,10 @@ func (data *AccessListStandard) getDeletedListItems(ctx context.Context, state A
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/access-list-seq-rule=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *AccessListStandard) getEmptyLeafsDelete(ctx context.Context) []string {

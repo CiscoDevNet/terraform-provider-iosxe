@@ -1261,8 +1261,8 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
-func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state InterfaceEthernet) []string {
-	deletedListItems := make([]string, 0)
+func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.HelperAddresses {
 		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
 
@@ -1285,7 +1285,7 @@ func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state In
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.SourceTemplate {
@@ -1310,7 +1310,7 @@ func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state In
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/source/template/template-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/source/template/template-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6LinkLocalAddresses {
@@ -1335,7 +1335,7 @@ func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state In
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6Addresses {
@@ -1360,10 +1360,10 @@ func (data *InterfaceEthernet) getDeletedListItems(ctx context.Context, state In
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string {

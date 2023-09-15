@@ -349,9 +349,9 @@ func (data *EVPNInstanceData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *EVPNInstance) getDeletedListItems(ctx context.Context, state EVPNInstance) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *EVPNInstance) getDeletedItems(ctx context.Context, state EVPNInstance) []string {
+	deletedItems := make([]string, 0)
+	return deletedItems
 }
 
 func (data *EVPNInstance) getEmptyLeafsDelete(ctx context.Context) []string {

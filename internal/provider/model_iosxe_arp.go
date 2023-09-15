@@ -390,8 +390,8 @@ func (data *ARPData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *ARP) getDeletedListItems(ctx context.Context, state ARP) []string {
-	deletedListItems := make([]string, 0)
+func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.InspectionFilters {
 		stateKeyValues := [...]string{state.InspectionFilters[i].Name.ValueString()}
 
@@ -432,17 +432,17 @@ func (data *ARP) getDeletedListItems(ctx context.Context, state ARP) []string {
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/inspection/filter=%v/vlan=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/filter=%v/vlan=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/inspection/filter=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/filter=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *ARP) getEmptyLeafsDelete(ctx context.Context) []string {

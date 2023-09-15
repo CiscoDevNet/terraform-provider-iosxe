@@ -319,8 +319,8 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 	}
 }
 
-func (data *BGPAddressFamilyIPv4) getDeletedListItems(ctx context.Context, state BGPAddressFamilyIPv4) []string {
-	deletedListItems := make([]string, 0)
+func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv4) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.Ipv4UnicastNetworksMask {
 		stateKeyValues := [...]string{state.Ipv4UnicastNetworksMask[i].Network.ValueString(), state.Ipv4UnicastNetworksMask[i].Mask.ValueString()}
 
@@ -349,7 +349,7 @@ func (data *BGPAddressFamilyIPv4) getDeletedListItems(ctx context.Context, state
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4UnicastNetworks {
@@ -374,10 +374,10 @@ func (data *BGPAddressFamilyIPv4) getDeletedListItems(ctx context.Context, state
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *BGPAddressFamilyIPv4) getEmptyLeafsDelete(ctx context.Context) []string {

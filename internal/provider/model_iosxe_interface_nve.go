@@ -311,8 +311,8 @@ func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *InterfaceNVE) getDeletedListItems(ctx context.Context, state InterfaceNVE) []string {
-	deletedListItems := make([]string, 0)
+func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNVE) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.VniVrfs {
 		stateKeyValues := [...]string{state.VniVrfs[i].VniRange.ValueString()}
 
@@ -335,7 +335,7 @@ func (data *InterfaceNVE) getDeletedListItems(ctx context.Context, state Interfa
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/member-in-one-line/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/member-in-one-line/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Vnis {
@@ -360,10 +360,10 @@ func (data *InterfaceNVE) getDeletedListItems(ctx context.Context, state Interfa
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *InterfaceNVE) getEmptyLeafsDelete(ctx context.Context) []string {

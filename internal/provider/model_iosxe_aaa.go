@@ -423,8 +423,8 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *AAA) getDeletedListItems(ctx context.Context, state AAA) []string {
-	deletedListItems := make([]string, 0)
+func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.ServerRadiusDynamicAuthorClients {
 		stateKeyValues := [...]string{state.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()}
 
@@ -447,7 +447,7 @@ func (data *AAA) getDeletedListItems(ctx context.Context, state AAA) []string {
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.GroupServerRadius {
@@ -490,14 +490,14 @@ func (data *AAA) getDeletedListItems(ctx context.Context, state AAA) []string {
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.GroupTacacsplus {
@@ -540,17 +540,17 @@ func (data *AAA) getDeletedListItems(ctx context.Context, state AAA) []string {
 						}
 					}
 					if !found {
-						deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				break
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	return deletedItems
 }
 
 func (data *AAA) getEmptyLeafsDelete(ctx context.Context) []string {
