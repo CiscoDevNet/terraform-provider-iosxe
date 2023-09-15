@@ -14,11 +14,13 @@ This resource can manage the BGP Address Family IPv6 configuration.
 
 ```terraform
 resource "iosxe_bgp_address_family_ipv6" "example" {
-  asn     = "65000"
-  af_name = "unicast"
+  asn                                 = "65000"
+  af_name                             = "unicast"
+  ipv6_unicast_redistribute_connected = true
+  ipv6_unicast_redistribute_static    = true
   ipv6_unicast_networks = [
     {
-      network   = "2001:1234::0/64"
+      network   = "2001:1234::/64"
       route_map = "RM1"
       backdoor  = true
     }
@@ -40,6 +42,8 @@ resource "iosxe_bgp_address_family_ipv6" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv6_unicast_networks))
+- `ipv6_unicast_redistribute_connected` (Boolean) Connected
+- `ipv6_unicast_redistribute_static` (Boolean) Static routes
 
 ### Read-Only
 

@@ -35,20 +35,24 @@ import (
 )
 
 type BGPAddressFamilyIPv6 struct {
-	Device              types.String                              `tfsdk:"device"`
-	Id                  types.String                              `tfsdk:"id"`
-	DeleteMode          types.String                              `tfsdk:"delete_mode"`
-	Asn                 types.String                              `tfsdk:"asn"`
-	AfName              types.String                              `tfsdk:"af_name"`
-	Ipv6UnicastNetworks []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
+	Device                           types.String                              `tfsdk:"device"`
+	Id                               types.String                              `tfsdk:"id"`
+	DeleteMode                       types.String                              `tfsdk:"delete_mode"`
+	Asn                              types.String                              `tfsdk:"asn"`
+	AfName                           types.String                              `tfsdk:"af_name"`
+	Ipv6UnicastRedistributeConnected types.Bool                                `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeStatic    types.Bool                                `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
 }
 
 type BGPAddressFamilyIPv6Data struct {
-	Device              types.String                              `tfsdk:"device"`
-	Id                  types.String                              `tfsdk:"id"`
-	Asn                 types.String                              `tfsdk:"asn"`
-	AfName              types.String                              `tfsdk:"af_name"`
-	Ipv6UnicastNetworks []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
+	Device                           types.String                              `tfsdk:"device"`
+	Id                               types.String                              `tfsdk:"id"`
+	Asn                              types.String                              `tfsdk:"asn"`
+	AfName                           types.String                              `tfsdk:"af_name"`
+	Ipv6UnicastRedistributeConnected types.Bool                                `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeStatic    types.Bool                                `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6Ipv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
 }
 type BGPAddressFamilyIPv6Ipv6UnicastNetworks struct {
 	Network  types.String `tfsdk:"network"`
@@ -80,6 +84,16 @@ func (data BGPAddressFamilyIPv6) toBody(ctx context.Context) string {
 	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"af-name", data.AfName.ValueString())
 	}
+	if !data.Ipv6UnicastRedistributeConnected.IsNull() && !data.Ipv6UnicastRedistributeConnected.IsUnknown() {
+		if data.Ipv6UnicastRedistributeConnected.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.redistribute-v6.connected", map[string]string{})
+		}
+	}
+	if !data.Ipv6UnicastRedistributeStatic.IsNull() && !data.Ipv6UnicastRedistributeStatic.IsUnknown() {
+		if data.Ipv6UnicastRedistributeStatic.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.redistribute-v6.static", map[string]string{})
+		}
+	}
 	if len(data.Ipv6UnicastNetworks) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6-unicast.network", []interface{}{})
 		for index, item := range data.Ipv6UnicastNetworks {
@@ -108,6 +122,24 @@ func (data *BGPAddressFamilyIPv6) updateFromBody(ctx context.Context, res gjson.
 		data.AfName = types.StringValue(value.String())
 	} else {
 		data.AfName = types.StringNull()
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected"); !data.Ipv6UnicastRedistributeConnected.IsNull() {
+		if value.Exists() {
+			data.Ipv6UnicastRedistributeConnected = types.BoolValue(true)
+		} else {
+			data.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6UnicastRedistributeConnected = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static"); !data.Ipv6UnicastRedistributeStatic.IsNull() {
+		if value.Exists() {
+			data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
+		} else {
+			data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+		}
+	} else {
+		data.Ipv6UnicastRedistributeStatic = types.BoolNull()
 	}
 	for i := range data.Ipv6UnicastNetworks {
 		keys := [...]string{"number"}
@@ -158,6 +190,16 @@ func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Re
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnected = types.BoolValue(true)
+	} else {
+		data.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static"); value.Exists() {
+		data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
+	} else {
+		data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ipv6-unicast.network"); value.Exists() {
 		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworks, 0)
@@ -212,6 +254,12 @@ func (data *BGPAddressFamilyIPv6) getDeletedListItems(ctx context.Context, state
 
 func (data *BGPAddressFamilyIPv6) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.Ipv6UnicastRedistributeConnected.IsNull() && !data.Ipv6UnicastRedistributeConnected.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", data.getPath()))
+	}
+	if !data.Ipv6UnicastRedistributeStatic.IsNull() && !data.Ipv6UnicastRedistributeStatic.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", data.getPath()))
+	}
 
 	for i := range data.Ipv6UnicastNetworks {
 		keyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
@@ -224,6 +272,12 @@ func (data *BGPAddressFamilyIPv6) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *BGPAddressFamilyIPv6) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.Ipv6UnicastRedistributeConnected.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", data.getPath()))
+	}
+	if !data.Ipv6UnicastRedistributeStatic.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", data.getPath()))
+	}
 	for i := range data.Ipv6UnicastNetworks {
 		keyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
 

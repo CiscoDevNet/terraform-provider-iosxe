@@ -14,6 +14,16 @@ description: |-
 - Add `spanning_tree_link_type` and `ip_dhcp_snooping_trust` attributes to `iosxe_interface_port_channel` resource and data source
 - Add `compress_config`, `sequence_numbers` and `call_home` attributes to `iosxe_service` resource and data source
 - Add `hosts`, `system_shutdown` and `enable_traps_*` attributes to `iosxe_snmp_server` resource and data source
+- BREAKING CHANGE: Rename `advertise_l2vpn_evpn` attribute to `ipv4_unicast_advertise_l2vpn_evpn` of `iosxe_bgp_address_family_ipv4_vrf` resource and data source
+- BREAKING CHANGE: Rename `redistribute_connected` attribute to `ipv4_unicast_redistribute_connected` of `iosxe_bgp_address_family_ipv4_vrf` resource and data source
+- BREAKING CHANGE: Rename `redistribute_static` attribute to `ipv4_unicast_redistribute_static` of `iosxe_bgp_address_family_ipv4_vrf` resource and data source
+- Add `ipv4_unicast_redistribute_connected` attribute to `iosxe_bgp_address_family_ipv4` resource and data source
+- Add `ipv4_unicast_redistribute_static` attribute to `iosxe_bgp_address_family_ipv4` resource and data source
+- BREAKING CHANGE: Rename `advertise_l2vpn_evpn` attribute to `ipv6_unicast_advertise_l2vpn_evpn` of `iosxe_bgp_address_family_ipv6_vrf` resource and data source
+- BREAKING CHANGE: Rename `redistribute_connected` attribute to `ipv6_unicast_redistribute_connected` of `iosxe_bgp_address_family_ipv6_vrf` resource and data source
+- BREAKING CHANGE: Rename `redistribute_static` attribute to `ipv6_unicast_redistribute_static` of `iosxe_bgp_address_family_ipv6_vrf` resource and data source
+- Add `ipv6_unicast_redistribute_connected` attribute to `iosxe_bgp_address_family_ipv6` resource and data source
+- Add `ipv6_unicast_redistribute_static` attribute to `iosxe_bgp_address_family_ipv6` resource and data source
 
 ## 0.4.0
 

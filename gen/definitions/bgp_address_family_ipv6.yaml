@@ -8,6 +8,12 @@ attributes:
     example: 65000
   - yang_name: af-name
     example: unicast
+  - yang_name: ipv6-unicast/redistribute-v6/connected
+    tf_name: ipv6_unicast_redistribute_connected
+    example: true
+  - yang_name: ipv6-unicast/redistribute-v6/static
+    tf_name: ipv6_unicast_redistribute_static
+    example: true
   - yang_name: ipv6-unicast/network
     tf_name: ipv6_unicast_networks
     type: List
@@ -15,7 +21,7 @@ attributes:
       - yang_name: number
         tf_name: network
         id: true
-        example: 2001:1234::0/64
+        example: 2001:1234::/64
       - yang_name: route-map
         example: RM1
       - yang_name: backdoor

@@ -90,6 +90,14 @@ func (r *BGPAddressFamilyIPv4Resource) Schema(ctx context.Context, req resource.
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
+			"ipv4_unicast_redistribute_connected": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
+				Optional:            true,
+			},
+			"ipv4_unicast_redistribute_static": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
+				Optional:            true,
+			},
 			"ipv4_unicast_networks_mask": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,
 				Optional:            true,

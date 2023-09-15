@@ -99,15 +99,15 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"advertise_l2vpn_evpn": schema.BoolAttribute{
+						"ipv4_unicast_advertise_l2vpn_evpn": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Advertise/export prefixes to l2vpn evpn table").String,
 							Optional:            true,
 						},
-						"redistribute_connected": schema.BoolAttribute{
+						"ipv4_unicast_redistribute_connected": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
 							Optional:            true,
 						},
-						"redistribute_static": schema.BoolAttribute{
+						"ipv4_unicast_redistribute_static": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
 							Optional:            true,
 						},

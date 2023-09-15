@@ -35,6 +35,8 @@ data "iosxe_bgp_address_family_ipv6" "example" {
 
 - `id` (String) The path of the retrieved object.
 - `ipv6_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv6_unicast_networks))
+- `ipv6_unicast_redistribute_connected` (Boolean) Connected
+- `ipv6_unicast_redistribute_static` (Boolean) Static routes
 
 <a id="nestedatt--ipv6_unicast_networks"></a>
 ### Nested Schema for `ipv6_unicast_networks`

@@ -29,10 +29,10 @@ func TestAccIosxeBGPAddressFamilyIPv6VRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "af_name", "unicast"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.name", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.advertise_l2vpn_evpn", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.redistribute_connected", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.redistribute_static", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.network", "2001:1234::0/64"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_advertise_l2vpn_evpn", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_redistribute_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_redistribute_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.network", "2001:1234::/64"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.route_map", "RM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.backdoor", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_address_family_ipv6_vrf.test", "vrfs.0.ipv6_unicast_networks.0.evpn", "false"))
@@ -97,11 +97,11 @@ func testAccIosxeBGPAddressFamilyIPv6VRFConfig_all() string {
 	config += `	af_name = "unicast"` + "\n"
 	config += `	vrfs = [{` + "\n"
 	config += `		name = "VRF1"` + "\n"
-	config += `		advertise_l2vpn_evpn = true` + "\n"
-	config += `		redistribute_connected = true` + "\n"
-	config += `		redistribute_static = true` + "\n"
+	config += `		ipv6_unicast_advertise_l2vpn_evpn = true` + "\n"
+	config += `		ipv6_unicast_redistribute_connected = true` + "\n"
+	config += `		ipv6_unicast_redistribute_static = true` + "\n"
 	config += `		ipv6_unicast_networks = [{` + "\n"
-	config += `			network = "2001:1234::0/64"` + "\n"
+	config += `			network = "2001:1234::/64"` + "\n"
 	config += `			route_map = "RM1"` + "\n"
 	config += `			backdoor = true` + "\n"
 	config += `			evpn = false` + "\n"

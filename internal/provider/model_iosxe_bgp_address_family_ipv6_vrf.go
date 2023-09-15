@@ -51,11 +51,11 @@ type BGPAddressFamilyIPv6VRFData struct {
 	Vrfs   []BGPAddressFamilyIPv6VRFVrfs `tfsdk:"vrfs"`
 }
 type BGPAddressFamilyIPv6VRFVrfs struct {
-	Name                  types.String                                     `tfsdk:"name"`
-	AdvertiseL2vpnEvpn    types.Bool                                       `tfsdk:"advertise_l2vpn_evpn"`
-	RedistributeConnected types.Bool                                       `tfsdk:"redistribute_connected"`
-	RedistributeStatic    types.Bool                                       `tfsdk:"redistribute_static"`
-	Ipv6UnicastNetworks   []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
+	Name                             types.String                                     `tfsdk:"name"`
+	Ipv6UnicastAdvertiseL2vpnEvpn    types.Bool                                       `tfsdk:"ipv6_unicast_advertise_l2vpn_evpn"`
+	Ipv6UnicastRedistributeConnected types.Bool                                       `tfsdk:"ipv6_unicast_redistribute_connected"`
+	Ipv6UnicastRedistributeStatic    types.Bool                                       `tfsdk:"ipv6_unicast_redistribute_static"`
+	Ipv6UnicastNetworks              []BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks `tfsdk:"ipv6_unicast_networks"`
 }
 type BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks struct {
 	Network  types.String `tfsdk:"network"`
@@ -94,18 +94,18 @@ func (data BGPAddressFamilyIPv6VRF) toBody(ctx context.Context) string {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
-			if !item.AdvertiseL2vpnEvpn.IsNull() && !item.AdvertiseL2vpnEvpn.IsUnknown() {
-				if item.AdvertiseL2vpnEvpn.ValueBool() {
+			if !item.Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() && !item.Ipv6UnicastAdvertiseL2vpnEvpn.IsUnknown() {
+				if item.Ipv6UnicastAdvertiseL2vpnEvpn.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.advertise.l2vpn.evpn", map[string]string{})
 				}
 			}
-			if !item.RedistributeConnected.IsNull() && !item.RedistributeConnected.IsUnknown() {
-				if item.RedistributeConnected.ValueBool() {
+			if !item.Ipv6UnicastRedistributeConnected.IsNull() && !item.Ipv6UnicastRedistributeConnected.IsUnknown() {
+				if item.Ipv6UnicastRedistributeConnected.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.connected", map[string]string{})
 				}
 			}
-			if !item.RedistributeStatic.IsNull() && !item.RedistributeStatic.IsUnknown() {
-				if item.RedistributeStatic.ValueBool() {
+			if !item.Ipv6UnicastRedistributeStatic.IsNull() && !item.Ipv6UnicastRedistributeStatic.IsUnknown() {
+				if item.Ipv6UnicastRedistributeStatic.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv6-unicast.redistribute-v6.static", map[string]string{})
 				}
 			}
@@ -173,32 +173,32 @@ func (data *BGPAddressFamilyIPv6VRF) updateFromBody(ctx context.Context, res gjs
 		} else {
 			data.Vrfs[i].Name = types.StringNull()
 		}
-		if value := r.Get("ipv6-unicast.advertise.l2vpn.evpn"); !data.Vrfs[i].AdvertiseL2vpnEvpn.IsNull() {
+		if value := r.Get("ipv6-unicast.advertise.l2vpn.evpn"); !data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() {
 			if value.Exists() {
-				data.Vrfs[i].AdvertiseL2vpnEvpn = types.BoolValue(true)
+				data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(true)
 			} else {
-				data.Vrfs[i].AdvertiseL2vpnEvpn = types.BoolValue(false)
+				data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(false)
 			}
 		} else {
-			data.Vrfs[i].AdvertiseL2vpnEvpn = types.BoolNull()
+			data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolNull()
 		}
-		if value := r.Get("ipv6-unicast.redistribute-v6.connected"); !data.Vrfs[i].RedistributeConnected.IsNull() {
+		if value := r.Get("ipv6-unicast.redistribute-v6.connected"); !data.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() {
 			if value.Exists() {
-				data.Vrfs[i].RedistributeConnected = types.BoolValue(true)
+				data.Vrfs[i].Ipv6UnicastRedistributeConnected = types.BoolValue(true)
 			} else {
-				data.Vrfs[i].RedistributeConnected = types.BoolValue(false)
+				data.Vrfs[i].Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 			}
 		} else {
-			data.Vrfs[i].RedistributeConnected = types.BoolNull()
+			data.Vrfs[i].Ipv6UnicastRedistributeConnected = types.BoolNull()
 		}
-		if value := r.Get("ipv6-unicast.redistribute-v6.static"); !data.Vrfs[i].RedistributeStatic.IsNull() {
+		if value := r.Get("ipv6-unicast.redistribute-v6.static"); !data.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() {
 			if value.Exists() {
-				data.Vrfs[i].RedistributeStatic = types.BoolValue(true)
+				data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 			} else {
-				data.Vrfs[i].RedistributeStatic = types.BoolValue(false)
+				data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolValue(false)
 			}
 		} else {
-			data.Vrfs[i].RedistributeStatic = types.BoolNull()
+			data.Vrfs[i].Ipv6UnicastRedistributeStatic = types.BoolNull()
 		}
 		for ci := range data.Vrfs[i].Ipv6UnicastNetworks {
 			keys := [...]string{"number"}
@@ -268,19 +268,19 @@ func (data *BGPAddressFamilyIPv6VRFData) fromBody(ctx context.Context, res gjson
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ipv6-unicast.advertise.l2vpn.evpn"); cValue.Exists() {
-				item.AdvertiseL2vpnEvpn = types.BoolValue(true)
+				item.Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(true)
 			} else {
-				item.AdvertiseL2vpnEvpn = types.BoolValue(false)
+				item.Ipv6UnicastAdvertiseL2vpnEvpn = types.BoolValue(false)
 			}
 			if cValue := v.Get("ipv6-unicast.redistribute-v6.connected"); cValue.Exists() {
-				item.RedistributeConnected = types.BoolValue(true)
+				item.Ipv6UnicastRedistributeConnected = types.BoolValue(true)
 			} else {
-				item.RedistributeConnected = types.BoolValue(false)
+				item.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
 			}
 			if cValue := v.Get("ipv6-unicast.redistribute-v6.static"); cValue.Exists() {
-				item.RedistributeStatic = types.BoolValue(true)
+				item.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
 			} else {
-				item.RedistributeStatic = types.BoolValue(false)
+				item.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
 			}
 			if cValue := v.Get("ipv6-unicast.network"); cValue.Exists() {
 				item.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6VRFVrfsIpv6UnicastNetworks, 0)
@@ -372,13 +372,13 @@ func (data *BGPAddressFamilyIPv6VRF) getEmptyLeafsDelete(ctx context.Context) []
 
 	for i := range data.Vrfs {
 		keyValues := [...]string{data.Vrfs[i].Name.ValueString()}
-		if !data.Vrfs[i].AdvertiseL2vpnEvpn.IsNull() && !data.Vrfs[i].AdvertiseL2vpnEvpn.ValueBool() {
+		if !data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() && !data.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/advertise/l2vpn/evpn", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Vrfs[i].RedistributeConnected.IsNull() && !data.Vrfs[i].RedistributeConnected.ValueBool() {
+		if !data.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() && !data.Vrfs[i].Ipv6UnicastRedistributeConnected.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/connected", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Vrfs[i].RedistributeStatic.IsNull() && !data.Vrfs[i].RedistributeStatic.ValueBool() {
+		if !data.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() && !data.Vrfs[i].Ipv6UnicastRedistributeStatic.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/static", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 

@@ -8,6 +8,12 @@ attributes:
     example: 65000
   - yang_name: af-name
     example: unicast
+  - yang_name: ipv4-unicast/redistribute/connected
+    tf_name: ipv4_unicast_redistribute_connected
+    example: true
+  - yang_name: ipv4-unicast/redistribute/static
+    tf_name: ipv4_unicast_redistribute_static
+    example: true
   - yang_name: ipv4-unicast/network/with-mask
     tf_name: ipv4_unicast_networks_mask
     type: List

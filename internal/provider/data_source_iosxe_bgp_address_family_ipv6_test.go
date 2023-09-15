@@ -27,7 +27,9 @@ import (
 
 func TestAccDataSourceIosxeBGPAddressFamilyIPv6(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.network", "2001:1234::0/64"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_redistribute_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_redistribute_static", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.network", "2001:1234::/64"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.route_map", "RM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv6.test", "ipv6_unicast_networks.0.backdoor", "true"))
 	resource.Test(t, resource.TestCase{
@@ -64,8 +66,10 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv6Config() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
+	config += `	ipv6_unicast_redistribute_connected = true` + "\n"
+	config += `	ipv6_unicast_redistribute_static = true` + "\n"
 	config += `	ipv6_unicast_networks = [{` + "\n"
-	config += `		network = "2001:1234::0/64"` + "\n"
+	config += `		network = "2001:1234::/64"` + "\n"
 	config += `		route_map = "RM1"` + "\n"
 	config += `		backdoor = true` + "\n"
 	config += `	}]` + "\n"

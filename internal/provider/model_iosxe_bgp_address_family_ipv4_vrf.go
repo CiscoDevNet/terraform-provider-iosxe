@@ -51,12 +51,12 @@ type BGPAddressFamilyIPv4VRFData struct {
 	Vrfs   []BGPAddressFamilyIPv4VRFVrfs `tfsdk:"vrfs"`
 }
 type BGPAddressFamilyIPv4VRFVrfs struct {
-	Name                    types.String                                         `tfsdk:"name"`
-	AdvertiseL2vpnEvpn      types.Bool                                           `tfsdk:"advertise_l2vpn_evpn"`
-	RedistributeConnected   types.Bool                                           `tfsdk:"redistribute_connected"`
-	RedistributeStatic      types.Bool                                           `tfsdk:"redistribute_static"`
-	Ipv4UnicastNetworksMask []BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask `tfsdk:"ipv4_unicast_networks_mask"`
-	Ipv4UnicastNetworks     []BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworks     `tfsdk:"ipv4_unicast_networks"`
+	Name                             types.String                                         `tfsdk:"name"`
+	Ipv4UnicastAdvertiseL2vpnEvpn    types.Bool                                           `tfsdk:"ipv4_unicast_advertise_l2vpn_evpn"`
+	Ipv4UnicastRedistributeConnected types.Bool                                           `tfsdk:"ipv4_unicast_redistribute_connected"`
+	Ipv4UnicastRedistributeStatic    types.Bool                                           `tfsdk:"ipv4_unicast_redistribute_static"`
+	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask `tfsdk:"ipv4_unicast_networks_mask"`
+	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworks     `tfsdk:"ipv4_unicast_networks"`
 }
 type BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask struct {
 	Network  types.String `tfsdk:"network"`
@@ -102,18 +102,18 @@ func (data BGPAddressFamilyIPv4VRF) toBody(ctx context.Context) string {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
-			if !item.AdvertiseL2vpnEvpn.IsNull() && !item.AdvertiseL2vpnEvpn.IsUnknown() {
-				if item.AdvertiseL2vpnEvpn.ValueBool() {
+			if !item.Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() && !item.Ipv4UnicastAdvertiseL2vpnEvpn.IsUnknown() {
+				if item.Ipv4UnicastAdvertiseL2vpnEvpn.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.advertise.l2vpn.evpn", map[string]string{})
 				}
 			}
-			if !item.RedistributeConnected.IsNull() && !item.RedistributeConnected.IsUnknown() {
-				if item.RedistributeConnected.ValueBool() {
+			if !item.Ipv4UnicastRedistributeConnected.IsNull() && !item.Ipv4UnicastRedistributeConnected.IsUnknown() {
+				if item.Ipv4UnicastRedistributeConnected.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.redistribute-vrf.connected", map[string]string{})
 				}
 			}
-			if !item.RedistributeStatic.IsNull() && !item.RedistributeStatic.IsUnknown() {
-				if item.RedistributeStatic.ValueBool() {
+			if !item.Ipv4UnicastRedistributeStatic.IsNull() && !item.Ipv4UnicastRedistributeStatic.IsUnknown() {
+				if item.Ipv4UnicastRedistributeStatic.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.redistribute-vrf.static", map[string]string{})
 				}
 			}
@@ -205,32 +205,32 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBody(ctx context.Context, res gjs
 		} else {
 			data.Vrfs[i].Name = types.StringNull()
 		}
-		if value := r.Get("ipv4-unicast.advertise.l2vpn.evpn"); !data.Vrfs[i].AdvertiseL2vpnEvpn.IsNull() {
+		if value := r.Get("ipv4-unicast.advertise.l2vpn.evpn"); !data.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() {
 			if value.Exists() {
-				data.Vrfs[i].AdvertiseL2vpnEvpn = types.BoolValue(true)
+				data.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn = types.BoolValue(true)
 			} else {
-				data.Vrfs[i].AdvertiseL2vpnEvpn = types.BoolValue(false)
+				data.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn = types.BoolValue(false)
 			}
 		} else {
-			data.Vrfs[i].AdvertiseL2vpnEvpn = types.BoolNull()
+			data.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn = types.BoolNull()
 		}
-		if value := r.Get("ipv4-unicast.redistribute-vrf.connected"); !data.Vrfs[i].RedistributeConnected.IsNull() {
+		if value := r.Get("ipv4-unicast.redistribute-vrf.connected"); !data.Vrfs[i].Ipv4UnicastRedistributeConnected.IsNull() {
 			if value.Exists() {
-				data.Vrfs[i].RedistributeConnected = types.BoolValue(true)
+				data.Vrfs[i].Ipv4UnicastRedistributeConnected = types.BoolValue(true)
 			} else {
-				data.Vrfs[i].RedistributeConnected = types.BoolValue(false)
+				data.Vrfs[i].Ipv4UnicastRedistributeConnected = types.BoolValue(false)
 			}
 		} else {
-			data.Vrfs[i].RedistributeConnected = types.BoolNull()
+			data.Vrfs[i].Ipv4UnicastRedistributeConnected = types.BoolNull()
 		}
-		if value := r.Get("ipv4-unicast.redistribute-vrf.static"); !data.Vrfs[i].RedistributeStatic.IsNull() {
+		if value := r.Get("ipv4-unicast.redistribute-vrf.static"); !data.Vrfs[i].Ipv4UnicastRedistributeStatic.IsNull() {
 			if value.Exists() {
-				data.Vrfs[i].RedistributeStatic = types.BoolValue(true)
+				data.Vrfs[i].Ipv4UnicastRedistributeStatic = types.BoolValue(true)
 			} else {
-				data.Vrfs[i].RedistributeStatic = types.BoolValue(false)
+				data.Vrfs[i].Ipv4UnicastRedistributeStatic = types.BoolValue(false)
 			}
 		} else {
-			data.Vrfs[i].RedistributeStatic = types.BoolNull()
+			data.Vrfs[i].Ipv4UnicastRedistributeStatic = types.BoolNull()
 		}
 		for ci := range data.Vrfs[i].Ipv4UnicastNetworksMask {
 			keys := [...]string{"number", "mask"}
@@ -357,19 +357,19 @@ func (data *BGPAddressFamilyIPv4VRFData) fromBody(ctx context.Context, res gjson
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ipv4-unicast.advertise.l2vpn.evpn"); cValue.Exists() {
-				item.AdvertiseL2vpnEvpn = types.BoolValue(true)
+				item.Ipv4UnicastAdvertiseL2vpnEvpn = types.BoolValue(true)
 			} else {
-				item.AdvertiseL2vpnEvpn = types.BoolValue(false)
+				item.Ipv4UnicastAdvertiseL2vpnEvpn = types.BoolValue(false)
 			}
 			if cValue := v.Get("ipv4-unicast.redistribute-vrf.connected"); cValue.Exists() {
-				item.RedistributeConnected = types.BoolValue(true)
+				item.Ipv4UnicastRedistributeConnected = types.BoolValue(true)
 			} else {
-				item.RedistributeConnected = types.BoolValue(false)
+				item.Ipv4UnicastRedistributeConnected = types.BoolValue(false)
 			}
 			if cValue := v.Get("ipv4-unicast.redistribute-vrf.static"); cValue.Exists() {
-				item.RedistributeStatic = types.BoolValue(true)
+				item.Ipv4UnicastRedistributeStatic = types.BoolValue(true)
 			} else {
-				item.RedistributeStatic = types.BoolValue(false)
+				item.Ipv4UnicastRedistributeStatic = types.BoolValue(false)
 			}
 			if cValue := v.Get("ipv4-unicast.network.with-mask"); cValue.Exists() {
 				item.Ipv4UnicastNetworksMask = make([]BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask, 0)
@@ -519,13 +519,13 @@ func (data *BGPAddressFamilyIPv4VRF) getEmptyLeafsDelete(ctx context.Context) []
 
 	for i := range data.Vrfs {
 		keyValues := [...]string{data.Vrfs[i].Name.ValueString()}
-		if !data.Vrfs[i].AdvertiseL2vpnEvpn.IsNull() && !data.Vrfs[i].AdvertiseL2vpnEvpn.ValueBool() {
+		if !data.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() && !data.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/advertise/l2vpn/evpn", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Vrfs[i].RedistributeConnected.IsNull() && !data.Vrfs[i].RedistributeConnected.ValueBool() {
+		if !data.Vrfs[i].Ipv4UnicastRedistributeConnected.IsNull() && !data.Vrfs[i].Ipv4UnicastRedistributeConnected.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/redistribute-vrf/connected", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Vrfs[i].RedistributeStatic.IsNull() && !data.Vrfs[i].RedistributeStatic.ValueBool() {
+		if !data.Vrfs[i].Ipv4UnicastRedistributeStatic.IsNull() && !data.Vrfs[i].Ipv4UnicastRedistributeStatic.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/redistribute-vrf/static", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 

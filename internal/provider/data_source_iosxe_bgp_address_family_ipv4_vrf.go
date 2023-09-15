@@ -80,15 +80,15 @@ func (d *BGPAddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req data
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"advertise_l2vpn_evpn": schema.BoolAttribute{
+						"ipv4_unicast_advertise_l2vpn_evpn": schema.BoolAttribute{
 							MarkdownDescription: "Advertise/export prefixes to l2vpn evpn table",
 							Computed:            true,
 						},
-						"redistribute_connected": schema.BoolAttribute{
+						"ipv4_unicast_redistribute_connected": schema.BoolAttribute{
 							MarkdownDescription: "Connected",
 							Computed:            true,
 						},
-						"redistribute_static": schema.BoolAttribute{
+						"ipv4_unicast_redistribute_static": schema.BoolAttribute{
 							MarkdownDescription: "Static routes",
 							Computed:            true,
 						},

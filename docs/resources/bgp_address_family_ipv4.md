@@ -14,8 +14,10 @@ This resource can manage the BGP Address Family IPv4 configuration.
 
 ```terraform
 resource "iosxe_bgp_address_family_ipv4" "example" {
-  asn     = "65000"
-  af_name = "unicast"
+  asn                                 = "65000"
+  af_name                             = "unicast"
+  ipv4_unicast_redistribute_connected = true
+  ipv4_unicast_redistribute_static    = true
   ipv4_unicast_networks_mask = [
     {
       network   = "12.0.0.0"
@@ -49,6 +51,8 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
 - `device` (String) A device name from the provider configuration.
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
+- `ipv4_unicast_redistribute_connected` (Boolean) Connected
+- `ipv4_unicast_redistribute_static` (Boolean) Static routes
 
 ### Read-Only
 

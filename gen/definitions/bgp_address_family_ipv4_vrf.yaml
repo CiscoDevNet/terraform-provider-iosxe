@@ -17,13 +17,13 @@ attributes:
         example: VRF1
         id: true
       - yang_name: ipv4-unicast/advertise/l2vpn/evpn
-        tf_name: advertise_l2vpn_evpn
+        tf_name: ipv4_unicast_advertise_l2vpn_evpn
         example: true
       - yang_name: ipv4-unicast/redistribute-vrf/connected
-        tf_name: redistribute_connected
+        tf_name: ipv4_unicast_redistribute_connected
         example: true
       - yang_name: ipv4-unicast/redistribute-vrf/static
-        tf_name: redistribute_static
+        tf_name: ipv4_unicast_redistribute_static
         example: true
       - yang_name: ipv4-unicast/network/with-mask
         tf_name: ipv4_unicast_networks_mask

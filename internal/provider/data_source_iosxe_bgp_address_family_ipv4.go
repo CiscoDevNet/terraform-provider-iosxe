@@ -71,6 +71,14 @@ func (d *BGPAddressFamilyIPv4DataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "",
 				Required:            true,
 			},
+			"ipv4_unicast_redistribute_connected": schema.BoolAttribute{
+				MarkdownDescription: "Connected",
+				Computed:            true,
+			},
+			"ipv4_unicast_redistribute_static": schema.BoolAttribute{
+				MarkdownDescription: "Static routes",
+				Computed:            true,
+			},
 			"ipv4_unicast_networks_mask": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify a network to announce via BGP",
 				Computed:            true,
