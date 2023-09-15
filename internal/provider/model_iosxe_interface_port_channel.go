@@ -85,6 +85,8 @@ type InterfacePortChannel struct {
 	ArpTimeout                   types.Int64                                  `tfsdk:"arp_timeout"`
 	IpArpInspectionTrust         types.Bool                                   `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                                  `tfsdk:"ip_arp_inspection_limit_rate"`
+	SpanningTreeLinkType         types.String                                 `tfsdk:"spanning_tree_link_type"`
+	IpDhcpSnoopingTrust          types.Bool                                   `tfsdk:"ip_dhcp_snooping_trust"`
 }
 
 type InterfacePortChannelData struct {
@@ -137,6 +139,8 @@ type InterfacePortChannelData struct {
 	ArpTimeout                   types.Int64                                  `tfsdk:"arp_timeout"`
 	IpArpInspectionTrust         types.Bool                                   `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                                  `tfsdk:"ip_arp_inspection_limit_rate"`
+	SpanningTreeLinkType         types.String                                 `tfsdk:"spanning_tree_link_type"`
+	IpDhcpSnoopingTrust          types.Bool                                   `tfsdk:"ip_dhcp_snooping_trust"`
 }
 type InterfacePortChannelHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -344,6 +348,14 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 	}
 	if !data.IpArpInspectionLimitRate.IsNull() && !data.IpArpInspectionLimitRate.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.limit.rate", strconv.FormatInt(data.IpArpInspectionLimitRate.ValueInt64(), 10))
+	}
+	if !data.SpanningTreeLinkType.IsNull() && !data.SpanningTreeLinkType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.link-type", data.SpanningTreeLinkType.ValueString())
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.IsUnknown() {
+		if data.IpDhcpSnoopingTrust.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust", map[string]string{})
+		}
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -826,6 +838,20 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.IpArpInspectionLimitRate = types.Int64Null()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.link-type"); value.Exists() && !data.SpanningTreeLinkType.IsNull() {
+		data.SpanningTreeLinkType = types.StringValue(value.String())
+	} else {
+		data.SpanningTreeLinkType = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); !data.IpDhcpSnoopingTrust.IsNull() {
+		if value.Exists() {
+			data.IpDhcpSnoopingTrust = types.BoolValue(true)
+		} else {
+			data.IpDhcpSnoopingTrust = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpSnoopingTrust = types.BoolNull()
+	}
 }
 
 func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Result) {
@@ -1065,6 +1091,14 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.link-type"); value.Exists() {
+		data.SpanningTreeLinkType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); value.Exists() {
+		data.IpDhcpSnoopingTrust = types.BoolValue(true)
+	} else {
+		data.IpDhcpSnoopingTrust = types.BoolValue(false)
+	}
 }
 
 func (data *InterfacePortChannel) getDeletedListItems(ctx context.Context, state InterfacePortChannel) []string {
@@ -1230,6 +1264,9 @@ func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []str
 	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
 	}
+	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -1378,6 +1415,12 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpArpInspectionLimitRate.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", data.getPath()))
+	}
+	if !data.SpanningTreeLinkType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", data.getPath()))
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
 	}
 	return deletePaths
 }

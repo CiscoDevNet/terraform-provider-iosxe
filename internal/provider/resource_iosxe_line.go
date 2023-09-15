@@ -22,34 +22,38 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
 )
 
-func NewServiceResource() resource.Resource {
-	return &ServiceResource{}
+func NewLineResource() resource.Resource {
+	return &LineResource{}
 }
 
-type ServiceResource struct {
+type LineResource struct {
 	clients map[string]*restconf.Client
 }
 
-func (r *ServiceResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_service"
+func (r *LineResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_line"
 }
 
-func (r *ServiceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Service configuration.",
+		MarkdownDescription: "This resource can manage the Line configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -63,107 +67,185 @@ func (r *ServiceResource) Schema(ctx context.Context, req resource.SchemaRequest
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"pad": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable PAD commands").String,
+			"delete_mode": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
 				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("all", "attributes"),
+				},
 			},
-			"password_encryption": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Encrypt system passwords").String,
+			"console": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Primary terminal line").String,
 				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"first": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("0"),
+							},
+						},
+						"exec_timeout_minutes": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("<0-35791>;;Timeout in minutes").AddIntegerRangeDescription(0, 35791).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 35791),
+							},
+						},
+						"exec_timeout_seconds": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("<0-2147483>;;Timeout in seconds").AddIntegerRangeDescription(0, 2147483).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 2147483),
+							},
+						},
+						"login_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"login_authentication": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"privilege_level_number": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 15).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 15),
+							},
+						},
+						"stopbits": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set async line stop bits").AddStringEnumDescription("1", "1.5", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "1.5", "2"),
+							},
+						},
+						"password_level": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set exec level password").AddIntegerRangeDescription(0, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 255),
+							},
+						},
+						"password_type": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "7").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("0", "7"),
+							},
+						},
+						"password_secret": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+							},
+						},
+					},
+				},
 			},
-			"password_recovery": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable password recovery").String,
+			"vty": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Virtual terminal").String,
 				Optional:            true,
-			},
-			"timestamps": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp debug/log messages").String,
-				Optional:            true,
-			},
-			"timestamps_debug": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp debug messages").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp with date and time").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime_msec": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include milliseconds in timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime_localtime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use local time zone for timestamps").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime_show_timezone": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Add time zone information to timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime_year": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include year in timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_debug_uptime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp with system uptime").String,
-				Optional:            true,
-			},
-			"timestamps_log": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp log messages").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp with date and time").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime_msec": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include milliseconds in timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime_localtime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use local time zone for timestamps").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime_show_timezone": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Add time zone information to timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime_year": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include year in timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_log_uptime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp with system uptime").String,
-				Optional:            true,
-			},
-			"dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable DHCP server and relay agent").String,
-				Optional:            true,
-			},
-			"tcp_keepalives_in": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Generate keepalives on idle incoming network connections").String,
-				Optional:            true,
-			},
-			"tcp_keepalives_out": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Generate keepalives on idle outgoing network connections").String,
-				Optional:            true,
-			},
-			"compress_config": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Compress the configuration file").String,
-				Optional:            true,
-			},
-			"sequence_numbers": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Stamp logger messages with a sequence number").String,
-				Optional:            true,
-			},
-			"call_home": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable call-home service").String,
-				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"first": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 1869).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 1869),
+							},
+						},
+						"last": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 1869).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 1869),
+							},
+						},
+						"access_class": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"direction": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("in", "out").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("in", "out"),
+										},
+									},
+									"access_list": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+									},
+									"vrf_also": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Same access list is applied for all VRFs").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+						"exec_timeout_minutes": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("<0-35791>;;Timeout in minutes").AddIntegerRangeDescription(0, 35791).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 35791),
+							},
+						},
+						"exec_timeout_seconds": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("<0-2147483>;;Timeout in seconds").AddIntegerRangeDescription(0, 2147483).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 2147483),
+							},
+						},
+						"password_level": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set exec level password").AddIntegerRangeDescription(0, 255).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 255),
+							},
+						},
+						"password_type": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "7").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("0", "7"),
+							},
+						},
+						"password_secret": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+							},
+						},
+						"login_authentication": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"transport_preferred_protocol": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("acercon", "lat", "mop", "nasi", "none", "pad", "rlogin", "ssh", "telnet", "udptn").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("acercon", "lat", "mop", "nasi", "none", "pad", "rlogin", "ssh", "telnet", "udptn"),
+							},
+						},
+						"escape_character_char": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+					},
+				},
 			},
 		},
 	}
 }
 
-func (r *ServiceResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *LineResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -171,8 +253,8 @@ func (r *ServiceResource) Configure(_ context.Context, req resource.ConfigureReq
 	r.clients = req.ProviderData.(map[string]*restconf.Client)
 }
 
-func (r *ServiceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan Service
+func (r *LineResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan Line
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -230,8 +312,8 @@ func (r *ServiceResource) Create(ctx context.Context, req resource.CreateRequest
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *ServiceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state Service
+func (r *LineResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state Line
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -249,7 +331,7 @@ func (r *ServiceResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
 	if res.StatusCode == 404 {
-		state = Service{Device: state.Device, Id: state.Id}
+		state = Line{Device: state.Device, Id: state.Id}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
@@ -265,8 +347,8 @@ func (r *ServiceResource) Read(ctx context.Context, req resource.ReadRequest, re
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *ServiceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state Service
+func (r *LineResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state Line
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -341,8 +423,8 @@ func (r *ServiceResource) Update(ctx context.Context, req resource.UpdateRequest
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r *ServiceResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state Service
+func (r *LineResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state Line
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -357,7 +439,12 @@ func (r *ServiceResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
-	deleteMode := "attributes"
+	deleteMode := "all"
+	if state.DeleteMode.ValueString() == "all" {
+		deleteMode = "all"
+	} else if state.DeleteMode.ValueString() == "attributes" {
+		deleteMode = "attributes"
+	}
 
 	if deleteMode == "all" {
 		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())
@@ -395,6 +482,6 @@ func (r *ServiceResource) Delete(ctx context.Context, req resource.DeleteRequest
 	resp.State.RemoveResource(ctx)
 }
 
-func (r *ServiceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *LineResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

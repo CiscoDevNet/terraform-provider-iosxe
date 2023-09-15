@@ -26,11 +26,14 @@ data "iosxe_service" "example" {
 
 ### Read-Only
 
+- `call_home` (Boolean) Enable call-home service
+- `compress_config` (Boolean) Compress the configuration file
 - `dhcp` (Boolean) Enable DHCP server and relay agent
 - `id` (String) The path of the retrieved object.
 - `pad` (Boolean) Enable PAD commands
 - `password_encryption` (Boolean) Encrypt system passwords
 - `password_recovery` (Boolean) Enable password recovery
+- `sequence_numbers` (Boolean) Stamp logger messages with a sequence number
 - `tcp_keepalives_in` (Boolean) Generate keepalives on idle incoming network connections
 - `tcp_keepalives_out` (Boolean) Generate keepalives on idle outgoing network connections
 - `timestamps` (Boolean) Timestamp debug/log messages

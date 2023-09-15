@@ -61,6 +61,7 @@ data "iosxe_interface_port_channel" "example" {
 - `ip_arp_inspection_limit_rate` (Number) Rate Limit
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
+- `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
@@ -75,6 +76,7 @@ data "iosxe_interface_port_channel" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `shutdown` (Boolean) Shutdown the selected interface
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
+- `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
 - `vrf_forwarding` (String) Configure forwarding table

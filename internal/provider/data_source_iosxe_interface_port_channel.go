@@ -291,6 +291,14 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Rate Limit",
 				Computed:            true,
 			},
+			"spanning_tree_link_type": schema.StringAttribute{
+				MarkdownDescription: "Specify a link type for spanning tree tree protocol use",
+				Computed:            true,
+			},
+			"ip_dhcp_snooping_trust": schema.BoolAttribute{
+				MarkdownDescription: "DHCP Snooping trust config",
+				Computed:            true,
+			},
 		},
 	}
 }

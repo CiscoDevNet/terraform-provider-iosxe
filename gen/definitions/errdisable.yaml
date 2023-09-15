@@ -1,0 +1,141 @@
+---
+name: Errdisable
+path: Cisco-IOS-XE-native:native/errdisable
+doc_category: System
+test_tags: [C9000V]
+attributes:
+  - yang_name: detect/cause/all
+    example: true
+  - yang_name: detect/cause/arp-inspection
+    example: true
+  - yang_name: detect/cause/bpduguard
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/dhcp-rate-limit
+    example: true
+  - yang_name: detect/cause/dtp-flap
+    example: true
+  - yang_name: detect/cause/gbic-invalid
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/inline-power
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/l2ptguard
+    example: true
+  - yang_name: detect/cause/link-flap
+    example: true
+  - yang_name: detect/cause/loopback
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/mlacp-minlink
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/pagp-flap
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/pppoe-ia-rate-limit
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/security-violation/shutdown/vlan
+    example: true
+  - yang_name: detect/cause/sfp-config-mismatch
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/small-frame
+    example: true
+    exclude_test: true
+  - yang_name: detect/cause/loopdetect
+    example: true
+    exclude_test: true
+  - yang_name: flap-setting/cause/dtp-flap/max-flaps
+    example: 80 
+  - yang_name: flap-setting/cause/dtp-flap/time
+    example: 90
+  - yang_name: flap-setting/cause/link-flap/max-flaps
+    example: 80 
+  - yang_name: flap-setting/cause/link-flap/time
+    example: 90
+  - yang_name: flap-setting/cause/pagp-flap/max-flaps
+    example: 80 
+  - yang_name: flap-setting/cause/pagp-flap/time
+    example: 90
+
+  - yang_name: recovery/interval
+    example: 855
+  - yang_name: recovery/cause/all
+    example: true
+  - yang_name: recovery/cause/arp-inspection
+    example: true
+  - yang_name: recovery/cause/bpduguard
+    example: true
+  - yang_name: recovery/cause/channel-misconfig
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/dhcp-rate-limit
+    example: true
+  - yang_name: recovery/cause/dtp-flap
+    example: true
+  - yang_name: recovery/cause/gbic-invalid
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/inline-power
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/l2ptguard
+    example: true
+  - yang_name: recovery/cause/link-flap
+    example: true
+  - yang_name: recovery/cause/link-monitor-failure
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/loopback
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/mac-limit
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/mlacp-minlink
+    example: true
+    exclude_test: true
+
+  # - yang_name: recovery/cause/oam-remote-failure/critical-event
+  #   example: true
+  # - yang_name: recovery/cause/oam-remote-failure/dying-gasp
+  #   example: true
+  # - yang_name: recovery/cause/oam-remote-failure/link-fault
+  #   example: true
+
+  - yang_name: recovery/cause/pagp-flap
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/port-mode-failure
+    example: true
+  - yang_name: recovery/cause/pppoe-ia-rate-limit
+    example: true
+  - yang_name: recovery/cause/psp
+    example: true
+  - yang_name: recovery/cause/psecure-violation
+    example: true
+  - yang_name: recovery/cause/security-violation
+    example: true
+  - yang_name: recovery/cause/sfp-config-mismatch
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/small-frame
+    example: true
+    exclude_test: true
+  - yang_name: recovery/cause/storm-control
+    example: true
+    # exclude_test: true
+  - yang_name: recovery/cause/udld
+    example: true
+  - yang_name: recovery/cause/unicast-flood
+    example: true
+    exclude_test: true
+  - yang_name: recovery/cause/vmps
+    example: true
+    exclude_test: true
+  - yang_name: recovery/cause/loopdetect
+    example: true
+    # exclude_test: true

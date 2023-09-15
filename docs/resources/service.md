@@ -35,6 +35,9 @@ resource "iosxe_service" "example" {
   dhcp                                    = true
   tcp_keepalives_in                       = true
   tcp_keepalives_out                      = true
+  compress_config                         = true
+  sequence_numbers                        = true
+  call_home                               = true
 }
 ```
 
@@ -43,11 +46,14 @@ resource "iosxe_service" "example" {
 
 ### Optional
 
+- `call_home` (Boolean) Enable call-home service
+- `compress_config` (Boolean) Compress the configuration file
 - `device` (String) A device name from the provider configuration.
 - `dhcp` (Boolean) Enable DHCP server and relay agent
 - `pad` (Boolean) Enable PAD commands
 - `password_encryption` (Boolean) Encrypt system passwords
 - `password_recovery` (Boolean) Enable password recovery
+- `sequence_numbers` (Boolean) Stamp logger messages with a sequence number
 - `tcp_keepalives_in` (Boolean) Generate keepalives on idle incoming network connections
 - `tcp_keepalives_out` (Boolean) Generate keepalives on idle outgoing network connections
 - `timestamps` (Boolean) Timestamp debug/log messages
