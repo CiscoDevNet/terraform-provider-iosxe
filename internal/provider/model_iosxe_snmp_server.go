@@ -1039,19 +1039,19 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:trap-source.Vlan", strconv.FormatInt(data.TrapSourceVlan.ValueInt64(), 10))
 	}
 	if len(data.Hosts) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host-config.ip-community", []interface{}{})
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community", []interface{}{})
 		for index, item := range data.Hosts {
 			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host-config.ip-community"+"."+strconv.Itoa(index)+"."+"ip-address", item.IpAddress.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"ip-address", item.IpAddress.ValueString())
 			}
 			if !item.CommunityOrUser.IsNull() && !item.CommunityOrUser.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host-config.ip-community"+"."+strconv.Itoa(index)+"."+"community-or-user", item.CommunityOrUser.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"community-or-user", item.CommunityOrUser.ValueString())
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host-config.ip-community"+"."+strconv.Itoa(index)+"."+"version", item.Version.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"version", item.Version.ValueString())
 			}
 			if !item.Encryption.IsNull() && !item.Encryption.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host-config.ip-community"+"."+strconv.Itoa(index)+"."+"encryption", item.Encryption.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"encryption", item.Encryption.ValueString())
 			}
 		}
 	}
@@ -1221,7 +1221,7 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 		keyValues := [...]string{data.Hosts[i].IpAddress.ValueString()}
 
 		var r gjson.Result
-		res.Get(prefix + "host-config.ip-community").ForEach(
+		res.Get(prefix + "Cisco-IOS-XE-snmp:host-config.ip-community").ForEach(
 			func(_, v gjson.Result) bool {
 				found := false
 				for ik := range keys {
@@ -2510,7 +2510,7 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsSnmpWarmstart = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "host-config.ip-community"); value.Exists() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:host-config.ip-community"); value.Exists() {
 		data.Hosts = make([]SNMPServerHosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SNMPServerHosts{}
@@ -3202,7 +3202,7 @@ func (data *SNMPServer) getDeletedListItems(ctx context.Context, state SNMPServe
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/host-config/ip-community=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.SnmpCommunities {
@@ -3682,7 +3682,7 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 	for i := range data.Hosts {
 		keyValues := [...]string{data.Hosts[i].IpAddress.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/host-config/ip-community=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.SystemShutdown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:system-shutdown", data.getPath()))

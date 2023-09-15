@@ -42,6 +42,10 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_snmp_linkdown", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_snmp_linkup", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_snmp_warmstart", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "hosts.0.ip_address", "11.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "hosts.0.community_or_user", "08116C5D1A0E550518"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "hosts.0.version", "2c"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "hosts.0.encryption", "7"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "system_shutdown", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flowmon", "true"))
 	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
@@ -85,7 +89,9 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_fru_ctrl", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flash_insertion", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flash_removal", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flash_lowspace", "true"))
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flash_lowspace", "true"))
+	}
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_energywise", "true"))
 	}
@@ -223,6 +229,12 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `	enable_traps_snmp_linkdown = true` + "\n"
 	config += `	enable_traps_snmp_linkup = true` + "\n"
 	config += `	enable_traps_snmp_warmstart = true` + "\n"
+	config += `	hosts = [{` + "\n"
+	config += `		ip_address = "11.1.1.1"` + "\n"
+	config += `		community_or_user = "08116C5D1A0E550518"` + "\n"
+	config += `		version = "2c"` + "\n"
+	config += `		encryption = "7"` + "\n"
+	config += `	}]` + "\n"
 	config += `	system_shutdown = true` + "\n"
 	config += `	enable_traps_flowmon = true` + "\n"
 	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
@@ -266,7 +278,9 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `	enable_traps_fru_ctrl = true` + "\n"
 	config += `	enable_traps_flash_insertion = true` + "\n"
 	config += `	enable_traps_flash_removal = true` + "\n"
-	config += `	enable_traps_flash_lowspace = true` + "\n"
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		config += `	enable_traps_flash_lowspace = true` + "\n"
+	}
 	if os.Getenv("C9000V") != "" {
 		config += `	enable_traps_energywise = true` + "\n"
 	}

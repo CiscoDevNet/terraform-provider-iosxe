@@ -43,10 +43,9 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/warmstart
     tf_name: enable_traps_snmp_warmstart
     example: true
-  - yang_name: host-config/ip-community
+  - yang_name: Cisco-IOS-XE-snmp:host-config/ip-community
     tf_name: hosts
     type: List
-    exclude_test: true
     attributes:
       - yang_name: ip-address
         id: true
@@ -163,6 +162,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/flash/lowspace
     tf_name: enable_traps_flash_lowspace
     example: true
+    test_tags: [IOSXE179, IOSXE1710]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/energywise
     tf_name: enable_traps_energywise
     example: true

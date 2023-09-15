@@ -1,18 +1,26 @@
 resource "iosxe_snmp_server" "example" {
-  chassis_id                                = "R1"
-  contact                                   = "Contact1"
-  ifindex_persist                           = true
-  location                                  = "Location1"
-  packetsize                                = 2000
-  queue_length                              = 100
-  enable_logging_getop                      = true
-  enable_logging_setop                      = true
-  enable_traps                              = true
-  enable_traps_snmp_authentication          = true
-  enable_traps_snmp_coldstart               = true
-  enable_traps_snmp_linkdown                = true
-  enable_traps_snmp_linkup                  = true
-  enable_traps_snmp_warmstart               = true
+  chassis_id                       = "R1"
+  contact                          = "Contact1"
+  ifindex_persist                  = true
+  location                         = "Location1"
+  packetsize                       = 2000
+  queue_length                     = 100
+  enable_logging_getop             = true
+  enable_logging_setop             = true
+  enable_traps                     = true
+  enable_traps_snmp_authentication = true
+  enable_traps_snmp_coldstart      = true
+  enable_traps_snmp_linkdown       = true
+  enable_traps_snmp_linkup         = true
+  enable_traps_snmp_warmstart      = true
+  hosts = [
+    {
+      ip_address        = "11.1.1.1"
+      community_or_user = "08116C5D1A0E550518"
+      version           = "2c"
+      encryption        = "7"
+    }
+  ]
   system_shutdown                           = true
   enable_traps_flowmon                      = true
   enable_traps_call_home_message_send_fail  = true
@@ -41,7 +49,6 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_fru_ctrl                     = true
   enable_traps_flash_insertion              = true
   enable_traps_flash_removal                = true
-  enable_traps_flash_lowspace               = true
   enable_traps_entity                       = true
   enable_traps_pw_vc                        = true
   enable_traps_ipsla                        = true
