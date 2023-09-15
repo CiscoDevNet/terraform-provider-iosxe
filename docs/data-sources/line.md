@@ -40,10 +40,10 @@ Read-Only:
 - `first` (String)
 - `login_authentication` (String)
 - `login_local` (Boolean)
+- `password` (String)
 - `password_level` (Number) Set exec level password
-- `password_secret` (String)
 - `password_type` (String)
-- `privilege_level_number` (Number)
+- `privilege_level` (Number)
 - `stopbits` (String) Set async line stop bits
 
 
@@ -52,20 +52,20 @@ Read-Only:
 
 Read-Only:
 
-- `access_class` (Attributes List) (see [below for nested schema](#nestedatt--vty--access_class))
-- `escape_character_char` (String)
+- `access_classes` (Attributes List) (see [below for nested schema](#nestedatt--vty--access_classes))
+- `escape_character` (String)
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
 - `first` (Number)
 - `last` (Number)
 - `login_authentication` (String)
+- `password` (String)
 - `password_level` (Number) Set exec level password
-- `password_secret` (String)
 - `password_type` (String)
 - `transport_preferred_protocol` (String)
 
-<a id="nestedatt--vty--access_class"></a>
-### Nested Schema for `vty.access_class`
+<a id="nestedatt--vty--access_classes"></a>
+### Nested Schema for `vty.access_classes`
 
 Read-Only:
 

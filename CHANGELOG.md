@@ -1,3 +1,8 @@
+## 0.4.1 (unreleased)
+
+- Add `iosxe_errdisable` resource and data source
+- Add `iosxe_line` resource and data source
+
 ## 0.4.0
 
 - Fix issue when using `tunnel_destination_ipv4` or `tunnel_mode_ipsec_ipv4` attributes of `iosxe_interface_tunnel` resource
@@ -41,8 +46,6 @@
 - BREAKING CHANGE: Rename `summary_address` attribute to `summary_addresses` of `iosxe_ospf` resource and data source
 - Add `ipv4_unicast_networks_mask` and `ipv4_unicast_networks` attribute to `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources and data sources
 - Add `ipv6_unicast_networks` attribute to `iosxe_bgp_address_family_ipv6` and `iosxe_bgp_address_family_ipv6_vrf` resources and data sources
-- Add `iosxe_errdisable` resource and data source
-- Add `iosxe_line` resource and data source
 
 ## 0.3.3
 

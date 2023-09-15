@@ -48,31 +48,31 @@ type LineData struct {
 	Vty     []LineVty     `tfsdk:"vty"`
 }
 type LineConsole struct {
-	First                types.String `tfsdk:"first"`
-	ExecTimeoutMinutes   types.Int64  `tfsdk:"exec_timeout_minutes"`
-	ExecTimeoutSeconds   types.Int64  `tfsdk:"exec_timeout_seconds"`
-	LoginLocal           types.Bool   `tfsdk:"login_local"`
-	LoginAuthentication  types.String `tfsdk:"login_authentication"`
-	PrivilegeLevelNumber types.Int64  `tfsdk:"privilege_level_number"`
-	Stopbits             types.String `tfsdk:"stopbits"`
-	PasswordLevel        types.Int64  `tfsdk:"password_level"`
-	PasswordType         types.String `tfsdk:"password_type"`
-	PasswordSecret       types.String `tfsdk:"password_secret"`
+	First               types.String `tfsdk:"first"`
+	ExecTimeoutMinutes  types.Int64  `tfsdk:"exec_timeout_minutes"`
+	ExecTimeoutSeconds  types.Int64  `tfsdk:"exec_timeout_seconds"`
+	LoginLocal          types.Bool   `tfsdk:"login_local"`
+	LoginAuthentication types.String `tfsdk:"login_authentication"`
+	PrivilegeLevel      types.Int64  `tfsdk:"privilege_level"`
+	Stopbits            types.String `tfsdk:"stopbits"`
+	PasswordLevel       types.Int64  `tfsdk:"password_level"`
+	PasswordType        types.String `tfsdk:"password_type"`
+	Password            types.String `tfsdk:"password"`
 }
 type LineVty struct {
-	First                      types.Int64          `tfsdk:"first"`
-	Last                       types.Int64          `tfsdk:"last"`
-	AccessClass                []LineVtyAccessClass `tfsdk:"access_class"`
-	ExecTimeoutMinutes         types.Int64          `tfsdk:"exec_timeout_minutes"`
-	ExecTimeoutSeconds         types.Int64          `tfsdk:"exec_timeout_seconds"`
-	PasswordLevel              types.Int64          `tfsdk:"password_level"`
-	PasswordType               types.String         `tfsdk:"password_type"`
-	PasswordSecret             types.String         `tfsdk:"password_secret"`
-	LoginAuthentication        types.String         `tfsdk:"login_authentication"`
-	TransportPreferredProtocol types.String         `tfsdk:"transport_preferred_protocol"`
-	EscapeCharacterChar        types.String         `tfsdk:"escape_character_char"`
+	First                      types.Int64            `tfsdk:"first"`
+	Last                       types.Int64            `tfsdk:"last"`
+	AccessClasses              []LineVtyAccessClasses `tfsdk:"access_classes"`
+	ExecTimeoutMinutes         types.Int64            `tfsdk:"exec_timeout_minutes"`
+	ExecTimeoutSeconds         types.Int64            `tfsdk:"exec_timeout_seconds"`
+	PasswordLevel              types.Int64            `tfsdk:"password_level"`
+	PasswordType               types.String           `tfsdk:"password_type"`
+	Password                   types.String           `tfsdk:"password"`
+	LoginAuthentication        types.String           `tfsdk:"login_authentication"`
+	TransportPreferredProtocol types.String           `tfsdk:"transport_preferred_protocol"`
+	EscapeCharacter            types.String           `tfsdk:"escape_character"`
 }
-type LineVtyAccessClass struct {
+type LineVtyAccessClasses struct {
 	Direction  types.String `tfsdk:"direction"`
 	AccessList types.String `tfsdk:"access_list"`
 	VrfAlso    types.Bool   `tfsdk:"vrf_also"`
@@ -119,8 +119,8 @@ func (data Line) toBody(ctx context.Context) string {
 			if !item.LoginAuthentication.IsNull() && !item.LoginAuthentication.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"login.authentication", item.LoginAuthentication.ValueString())
 			}
-			if !item.PrivilegeLevelNumber.IsNull() && !item.PrivilegeLevelNumber.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"privilege.level.number", strconv.FormatInt(item.PrivilegeLevelNumber.ValueInt64(), 10))
+			if !item.PrivilegeLevel.IsNull() && !item.PrivilegeLevel.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"privilege.level.number", strconv.FormatInt(item.PrivilegeLevel.ValueInt64(), 10))
 			}
 			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"stopbits", item.Stopbits.ValueString())
@@ -131,8 +131,8 @@ func (data Line) toBody(ctx context.Context) string {
 			if !item.PasswordType.IsNull() && !item.PasswordType.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"password.type", item.PasswordType.ValueString())
 			}
-			if !item.PasswordSecret.IsNull() && !item.PasswordSecret.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"password.secret", item.PasswordSecret.ValueString())
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
 			}
 		}
 	}
@@ -157,8 +157,8 @@ func (data Line) toBody(ctx context.Context) string {
 			if !item.PasswordType.IsNull() && !item.PasswordType.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"password.type", item.PasswordType.ValueString())
 			}
-			if !item.PasswordSecret.IsNull() && !item.PasswordSecret.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"password.secret", item.PasswordSecret.ValueString())
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
 			}
 			if !item.LoginAuthentication.IsNull() && !item.LoginAuthentication.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"login.authentication", item.LoginAuthentication.ValueString())
@@ -166,12 +166,12 @@ func (data Line) toBody(ctx context.Context) string {
 			if !item.TransportPreferredProtocol.IsNull() && !item.TransportPreferredProtocol.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.preferred.protocol", item.TransportPreferredProtocol.ValueString())
 			}
-			if !item.EscapeCharacterChar.IsNull() && !item.EscapeCharacterChar.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"escape-character.char", item.EscapeCharacterChar.ValueString())
+			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"escape-character.char", item.EscapeCharacter.ValueString())
 			}
-			if len(item.AccessClass) > 0 {
+			if len(item.AccessClasses) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"access-class.acccess-list", []interface{}{})
-				for cindex, citem := range item.AccessClass {
+				for cindex, citem := range item.AccessClasses {
 					if !citem.Direction.IsNull() && !citem.Direction.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"access-class.acccess-list"+"."+strconv.Itoa(cindex)+"."+"direction", citem.Direction.ValueString())
 					}
@@ -247,10 +247,10 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Console[i].LoginAuthentication = types.StringNull()
 		}
-		if value := r.Get("privilege.level.number"); value.Exists() && !data.Console[i].PrivilegeLevelNumber.IsNull() {
-			data.Console[i].PrivilegeLevelNumber = types.Int64Value(value.Int())
+		if value := r.Get("privilege.level.number"); value.Exists() && !data.Console[i].PrivilegeLevel.IsNull() {
+			data.Console[i].PrivilegeLevel = types.Int64Value(value.Int())
 		} else {
-			data.Console[i].PrivilegeLevelNumber = types.Int64Null()
+			data.Console[i].PrivilegeLevel = types.Int64Null()
 		}
 		if value := r.Get("stopbits"); value.Exists() && !data.Console[i].Stopbits.IsNull() {
 			data.Console[i].Stopbits = types.StringValue(value.String())
@@ -267,10 +267,10 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Console[i].PasswordType = types.StringNull()
 		}
-		if value := r.Get("password.secret"); value.Exists() && !data.Console[i].PasswordSecret.IsNull() {
-			data.Console[i].PasswordSecret = types.StringValue(value.String())
+		if value := r.Get("password.secret"); value.Exists() && !data.Console[i].Password.IsNull() {
+			data.Console[i].Password = types.StringValue(value.String())
 		} else {
-			data.Console[i].PasswordSecret = types.StringNull()
+			data.Console[i].Password = types.StringNull()
 		}
 	}
 	for i := range data.Vty {
@@ -306,9 +306,9 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Vty[i].Last = types.Int64Null()
 		}
-		for ci := range data.Vty[i].AccessClass {
+		for ci := range data.Vty[i].AccessClasses {
 			keys := [...]string{"direction"}
-			keyValues := [...]string{data.Vty[i].AccessClass[ci].Direction.ValueString()}
+			keyValues := [...]string{data.Vty[i].AccessClasses[ci].Direction.ValueString()}
 
 			var cr gjson.Result
 			r.Get("access-class.acccess-list").ForEach(
@@ -329,24 +329,24 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 					return true
 				},
 			)
-			if value := cr.Get("direction"); value.Exists() && !data.Vty[i].AccessClass[ci].Direction.IsNull() {
-				data.Vty[i].AccessClass[ci].Direction = types.StringValue(value.String())
+			if value := cr.Get("direction"); value.Exists() && !data.Vty[i].AccessClasses[ci].Direction.IsNull() {
+				data.Vty[i].AccessClasses[ci].Direction = types.StringValue(value.String())
 			} else {
-				data.Vty[i].AccessClass[ci].Direction = types.StringNull()
+				data.Vty[i].AccessClasses[ci].Direction = types.StringNull()
 			}
-			if value := cr.Get("access-list"); value.Exists() && !data.Vty[i].AccessClass[ci].AccessList.IsNull() {
-				data.Vty[i].AccessClass[ci].AccessList = types.StringValue(value.String())
+			if value := cr.Get("access-list"); value.Exists() && !data.Vty[i].AccessClasses[ci].AccessList.IsNull() {
+				data.Vty[i].AccessClasses[ci].AccessList = types.StringValue(value.String())
 			} else {
-				data.Vty[i].AccessClass[ci].AccessList = types.StringNull()
+				data.Vty[i].AccessClasses[ci].AccessList = types.StringNull()
 			}
-			if value := cr.Get("vrf-also"); !data.Vty[i].AccessClass[ci].VrfAlso.IsNull() {
+			if value := cr.Get("vrf-also"); !data.Vty[i].AccessClasses[ci].VrfAlso.IsNull() {
 				if value.Exists() {
-					data.Vty[i].AccessClass[ci].VrfAlso = types.BoolValue(true)
+					data.Vty[i].AccessClasses[ci].VrfAlso = types.BoolValue(true)
 				} else {
-					data.Vty[i].AccessClass[ci].VrfAlso = types.BoolValue(false)
+					data.Vty[i].AccessClasses[ci].VrfAlso = types.BoolValue(false)
 				}
 			} else {
-				data.Vty[i].AccessClass[ci].VrfAlso = types.BoolNull()
+				data.Vty[i].AccessClasses[ci].VrfAlso = types.BoolNull()
 			}
 		}
 		if value := r.Get("exec-timeout.minutes"); value.Exists() && !data.Vty[i].ExecTimeoutMinutes.IsNull() {
@@ -369,10 +369,10 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Vty[i].PasswordType = types.StringNull()
 		}
-		if value := r.Get("password.secret"); value.Exists() && !data.Vty[i].PasswordSecret.IsNull() {
-			data.Vty[i].PasswordSecret = types.StringValue(value.String())
+		if value := r.Get("password.secret"); value.Exists() && !data.Vty[i].Password.IsNull() {
+			data.Vty[i].Password = types.StringValue(value.String())
 		} else {
-			data.Vty[i].PasswordSecret = types.StringNull()
+			data.Vty[i].Password = types.StringNull()
 		}
 		if value := r.Get("login.authentication"); value.Exists() && !data.Vty[i].LoginAuthentication.IsNull() {
 			data.Vty[i].LoginAuthentication = types.StringValue(value.String())
@@ -384,10 +384,10 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Vty[i].TransportPreferredProtocol = types.StringNull()
 		}
-		if value := r.Get("escape-character.char"); value.Exists() && !data.Vty[i].EscapeCharacterChar.IsNull() {
-			data.Vty[i].EscapeCharacterChar = types.StringValue(value.String())
+		if value := r.Get("escape-character.char"); value.Exists() && !data.Vty[i].EscapeCharacter.IsNull() {
+			data.Vty[i].EscapeCharacter = types.StringValue(value.String())
 		} else {
-			data.Vty[i].EscapeCharacterChar = types.StringNull()
+			data.Vty[i].EscapeCharacter = types.StringNull()
 		}
 	}
 }
@@ -419,7 +419,7 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 				item.LoginAuthentication = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("privilege.level.number"); cValue.Exists() {
-				item.PrivilegeLevelNumber = types.Int64Value(cValue.Int())
+				item.PrivilegeLevel = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("stopbits"); cValue.Exists() {
 				item.Stopbits = types.StringValue(cValue.String())
@@ -431,7 +431,7 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 				item.PasswordType = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("password.secret"); cValue.Exists() {
-				item.PasswordSecret = types.StringValue(cValue.String())
+				item.Password = types.StringValue(cValue.String())
 			}
 			data.Console = append(data.Console, item)
 			return true
@@ -448,9 +448,9 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Last = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("access-class.acccess-list"); cValue.Exists() {
-				item.AccessClass = make([]LineVtyAccessClass, 0)
+				item.AccessClasses = make([]LineVtyAccessClasses, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := LineVtyAccessClass{}
+					cItem := LineVtyAccessClasses{}
 					if ccValue := cv.Get("direction"); ccValue.Exists() {
 						cItem.Direction = types.StringValue(ccValue.String())
 					}
@@ -462,7 +462,7 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 					} else {
 						cItem.VrfAlso = types.BoolValue(false)
 					}
-					item.AccessClass = append(item.AccessClass, cItem)
+					item.AccessClasses = append(item.AccessClasses, cItem)
 					return true
 				})
 			}
@@ -479,7 +479,7 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 				item.PasswordType = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("password.secret"); cValue.Exists() {
-				item.PasswordSecret = types.StringValue(cValue.String())
+				item.Password = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("login.authentication"); cValue.Exists() {
 				item.LoginAuthentication = types.StringValue(cValue.String())
@@ -488,7 +488,7 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 				item.TransportPreferredProtocol = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("escape-character.char"); cValue.Exists() {
-				item.EscapeCharacterChar = types.StringValue(cValue.String())
+				item.EscapeCharacter = types.StringValue(cValue.String())
 			}
 			data.Vty = append(data.Vty, item)
 			return true
@@ -541,11 +541,11 @@ func (data *Line) getDeletedListItems(ctx context.Context, state Line) []string 
 				found = false
 			}
 			if found {
-				for ci := range state.Vty[i].AccessClass {
-					cstateKeyValues := [...]string{state.Vty[i].AccessClass[ci].Direction.ValueString()}
+				for ci := range state.Vty[i].AccessClasses {
+					cstateKeyValues := [...]string{state.Vty[i].AccessClasses[ci].Direction.ValueString()}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.Vty[i].AccessClass[ci].Direction.ValueString()).IsZero() {
+					if !reflect.ValueOf(state.Vty[i].AccessClasses[ci].Direction.ValueString()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -553,9 +553,9 @@ func (data *Line) getDeletedListItems(ctx context.Context, state Line) []string 
 					}
 
 					found := false
-					for cj := range data.Vty[j].AccessClass {
+					for cj := range data.Vty[j].AccessClasses {
 						found = true
-						if state.Vty[i].AccessClass[ci].Direction.ValueString() != data.Vty[j].AccessClass[cj].Direction.ValueString() {
+						if state.Vty[i].AccessClasses[ci].Direction.ValueString() != data.Vty[j].AccessClasses[cj].Direction.ValueString() {
 							found = false
 						}
 						if found {
@@ -589,9 +589,9 @@ func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 	for i := range data.Vty {
 		keyValues := [...]string{strconv.FormatInt(data.Vty[i].First.ValueInt64(), 10)}
 
-		for ci := range data.Vty[i].AccessClass {
-			ckeyValues := [...]string{data.Vty[i].AccessClass[ci].Direction.ValueString()}
-			if !data.Vty[i].AccessClass[ci].VrfAlso.IsNull() && !data.Vty[i].AccessClass[ci].VrfAlso.ValueBool() {
+		for ci := range data.Vty[i].AccessClasses {
+			ckeyValues := [...]string{data.Vty[i].AccessClasses[ci].Direction.ValueString()}
+			if !data.Vty[i].AccessClasses[ci].VrfAlso.IsNull() && !data.Vty[i].AccessClasses[ci].VrfAlso.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v/vrf-also", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 		}
@@ -601,15 +601,5 @@ func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Line) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Console {
-		keyValues := [...]string{data.Console[i].First.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/console=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Vty {
-		keyValues := [...]string{strconv.FormatInt(data.Vty[i].First.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/vty=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
 	return deletePaths
 }

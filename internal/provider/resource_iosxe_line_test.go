@@ -30,21 +30,21 @@ func TestAccIosxeLine(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.first", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.exec_timeout_minutes", "45"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.exec_timeout_seconds", "25"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.privilege_level_number", "15"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.privilege_level", "15"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.stopbits", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.password_type", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.password_secret", "testpasswd"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.password", "testpasswd"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.first", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.last", "27"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.access_class.0.direction", "in"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.access_class.0.access_list", "2"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.access_class.0.vrf_also", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.access_classes.0.direction", "in"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.access_classes.0.access_list", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.access_classes.0.vrf_also", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.exec_timeout_minutes", "45"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.exec_timeout_seconds", "25"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.password_type", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.password_secret", "testpasswd"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.password", "testpasswd"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.transport_preferred_protocol", "none"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.escape_character_char", "27"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "vty.0.escape_character", "27"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -77,15 +77,15 @@ func testAccIosxeLineConfig_all() string {
 	config += `		first = "0"` + "\n"
 	config += `		exec_timeout_minutes = 45` + "\n"
 	config += `		exec_timeout_seconds = 25` + "\n"
-	config += `		privilege_level_number = 15` + "\n"
+	config += `		privilege_level = 15` + "\n"
 	config += `		stopbits = "1"` + "\n"
 	config += `		password_type = "0"` + "\n"
-	config += `		password_secret = "testpasswd"` + "\n"
+	config += `		password = "testpasswd"` + "\n"
 	config += `	}]` + "\n"
 	config += `	vty = [{` + "\n"
 	config += `		first = 10` + "\n"
 	config += `		last = 27` + "\n"
-	config += `		access_class = [{` + "\n"
+	config += `		access_classes = [{` + "\n"
 	config += `			direction = "in"` + "\n"
 	config += `			access_list = "2"` + "\n"
 	config += `			vrf_also = true` + "\n"
@@ -93,9 +93,9 @@ func testAccIosxeLineConfig_all() string {
 	config += `		exec_timeout_minutes = 45` + "\n"
 	config += `		exec_timeout_seconds = 25` + "\n"
 	config += `		password_type = "0"` + "\n"
-	config += `		password_secret = "testpasswd"` + "\n"
+	config += `		password = "testpasswd"` + "\n"
 	config += `		transport_preferred_protocol = "none"` + "\n"
-	config += `		escape_character_char = "27"` + "\n"
+	config += `		escape_character = "27"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config

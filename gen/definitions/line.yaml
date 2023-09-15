@@ -2,10 +2,12 @@
 name: Line
 path: Cisco-IOS-XE-native:native/line
 doc_category: System
+test_tags: [LINE]
 attributes:
   - yang_name: console
     tf_name: console
     type: List
+    no_delete: true
     attributes:
       - yang_name: first
         id: true
@@ -21,6 +23,7 @@ attributes:
         example: localonly
         exclude_test: true
       - yang_name: privilege/level/number
+        tf_name: privilege_level
         example: 15
       - yang_name: stopbits
         example: 1
@@ -30,11 +33,12 @@ attributes:
       - yang_name: password/type
         example: 0
       - yang_name: password/secret
+        tf_name: password
         example: testpasswd
-
   - yang_name: vty
     tf_name: vty
     type: List
+    no_delete: true
     attributes:
       - yang_name: first
         id: true
@@ -42,7 +46,7 @@ attributes:
       - yang_name: last
         example: 27
       - yang_name: access-class/acccess-list
-        tf_name: access_class
+        tf_name: access_classes
         type: List
         attributes:
           - yang_name: direction
@@ -62,6 +66,7 @@ attributes:
       - yang_name: password/type
         example: 0
       - yang_name: password/secret
+        tf_name: password
         example: testpasswd
       - yang_name: login/authentication
         example: LOGINAUTH
@@ -69,4 +74,5 @@ attributes:
       - yang_name: transport/preferred/protocol
         example: none
       - yang_name: escape-character/char
+        tf_name: escape_character
         example: 27

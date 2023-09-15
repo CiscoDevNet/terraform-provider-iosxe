@@ -16,20 +16,20 @@ This resource can manage the Line configuration.
 resource "iosxe_line" "example" {
   console = [
     {
-      first                  = "0"
-      exec_timeout_minutes   = 45
-      exec_timeout_seconds   = 25
-      privilege_level_number = 15
-      stopbits               = "1"
-      password_type          = "0"
-      password_secret        = "testpasswd"
+      first                = "0"
+      exec_timeout_minutes = 45
+      exec_timeout_seconds = 25
+      privilege_level      = 15
+      stopbits             = "1"
+      password_type        = "0"
+      password             = "testpasswd"
     }
   ]
   vty = [
     {
       first = 10
       last  = 27
-      access_class = [
+      access_classes = [
         {
           direction   = "in"
           access_list = "2"
@@ -39,9 +39,9 @@ resource "iosxe_line" "example" {
       exec_timeout_minutes         = 45
       exec_timeout_seconds         = 25
       password_type                = "0"
-      password_secret              = "testpasswd"
+      password                     = "testpasswd"
       transport_preferred_protocol = "none"
-      escape_character_char        = "27"
+      escape_character             = "27"
     }
   ]
 }
@@ -77,11 +77,11 @@ Optional:
   - Range: `0`-`2147483`
 - `login_authentication` (String)
 - `login_local` (Boolean)
+- `password` (String)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
-- `password_secret` (String)
 - `password_type` (String) - Choices: `0`, `7`
-- `privilege_level_number` (Number) - Range: `0`-`15`
+- `privilege_level` (Number) - Range: `0`-`15`
 - `stopbits` (String) Set async line stop bits
   - Choices: `1`, `1.5`, `2`
 
@@ -95,22 +95,22 @@ Required:
 
 Optional:
 
-- `access_class` (Attributes List) (see [below for nested schema](#nestedatt--vty--access_class))
-- `escape_character_char` (String)
+- `access_classes` (Attributes List) (see [below for nested schema](#nestedatt--vty--access_classes))
+- `escape_character` (String)
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
   - Range: `0`-`35791`
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
   - Range: `0`-`2147483`
 - `last` (Number) - Range: `1`-`1869`
 - `login_authentication` (String)
+- `password` (String)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
-- `password_secret` (String)
 - `password_type` (String) - Choices: `0`, `7`
 - `transport_preferred_protocol` (String) - Choices: `acercon`, `lat`, `mop`, `nasi`, `none`, `pad`, `rlogin`, `ssh`, `telnet`, `udptn`
 
-<a id="nestedatt--vty--access_class"></a>
-### Nested Schema for `vty.access_class`
+<a id="nestedatt--vty--access_classes"></a>
+### Nested Schema for `vty.access_classes`
 
 Required:
 

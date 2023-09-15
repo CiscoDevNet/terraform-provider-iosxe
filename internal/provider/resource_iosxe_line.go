@@ -108,7 +108,7 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 						},
-						"privilege_level_number": schema.Int64Attribute{
+						"privilege_level": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 15).String,
 							Optional:            true,
 							Validators: []validator.Int64{
@@ -136,7 +136,7 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								stringvalidator.OneOf("0", "7"),
 							},
 						},
-						"password_secret": schema.StringAttribute{
+						"password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 							Validators: []validator.String{
@@ -165,7 +165,7 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								int64validator.Between(1, 1869),
 							},
 						},
-						"access_class": schema.ListNestedAttribute{
+						"access_classes": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{
@@ -216,7 +216,7 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								stringvalidator.OneOf("0", "7"),
 							},
 						},
-						"password_secret": schema.StringAttribute{
+						"password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 							Validators: []validator.String{
@@ -234,7 +234,7 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								stringvalidator.OneOf("acercon", "lat", "mop", "nasi", "none", "pad", "rlogin", "ssh", "telnet", "udptn"),
 							},
 						},
-						"escape_character_char": schema.StringAttribute{
+						"escape_character": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 						},

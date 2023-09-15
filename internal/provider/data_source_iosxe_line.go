@@ -88,7 +88,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"privilege_level_number": schema.Int64Attribute{
+						"privilege_level": schema.Int64Attribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
@@ -104,7 +104,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"password_secret": schema.StringAttribute{
+						"password": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
@@ -124,7 +124,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"access_class": schema.ListNestedAttribute{
+						"access_classes": schema.ListNestedAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
@@ -160,7 +160,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"password_secret": schema.StringAttribute{
+						"password": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
@@ -172,7 +172,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"escape_character_char": schema.StringAttribute{
+						"escape_character": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},

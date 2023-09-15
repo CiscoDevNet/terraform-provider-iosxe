@@ -27,17 +27,20 @@ import (
 )
 
 func TestAccDataSourceIosxeErrdisable(t *testing.T) {
-	if os.Getenv("C9000V") == "" {
-		t.Skip("skipping test, set environment variable C9000V")
-	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_all", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_arp_inspection", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_arp_inspection", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_dhcp_rate_limit", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_dtp_flap", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_l2ptguard", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_link_flap", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_security_violation_shutdown_vlan", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_pppoe_ia_rate_limit", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_security_violation_shutdown_vlan", "true"))
+	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_loopdetect", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "flap_setting_cause_dtp_flap_max_flaps", "80"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "flap_setting_cause_dtp_flap_time", "90"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "flap_setting_cause_link_flap_max_flaps", "80"))
@@ -48,24 +51,42 @@ func TestAccDataSourceIosxeErrdisable(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_all", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_arp_inspection", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_bpduguard", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_channel_misconfig", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_channel_misconfig", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_dhcp_rate_limit", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_dtp_flap", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_gbic_invalid", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_inline_power", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_gbic_invalid", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_inline_power", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_l2ptguard", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_link_flap", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_link_monitor_failure", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_loopback", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_mac_limit", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_pagp_flap", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_link_monitor_failure", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_loopback", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_mac_limit", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_pagp_flap", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_port_mode_failure", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_pppoe_ia_rate_limit", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_psp", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_psecure_violation", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_security_violation", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_sfp_config_mismatch", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_storm_control", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_sfp_config_mismatch", "true"))
+	}
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_storm_control", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_udld", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_loopdetect", "true"))
 	resource.Test(t, resource.TestCase{
@@ -84,12 +105,18 @@ func testAccDataSourceIosxeErrdisableConfig() string {
 	config := `resource "iosxe_errdisable" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	detect_cause_all = true` + "\n"
-	config += `	detect_cause_arp_inspection = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	detect_cause_arp_inspection = true` + "\n"
+	}
 	config += `	detect_cause_dhcp_rate_limit = true` + "\n"
 	config += `	detect_cause_dtp_flap = true` + "\n"
 	config += `	detect_cause_l2ptguard = true` + "\n"
 	config += `	detect_cause_link_flap = true` + "\n"
-	config += `	detect_cause_security_violation_shutdown_vlan = true` + "\n"
+	config += `	detect_cause_pppoe_ia_rate_limit = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	detect_cause_security_violation_shutdown_vlan = true` + "\n"
+	}
+	config += `	detect_cause_loopdetect = true` + "\n"
 	config += `	flap_setting_cause_dtp_flap_max_flaps = 80` + "\n"
 	config += `	flap_setting_cause_dtp_flap_time = 90` + "\n"
 	config += `	flap_setting_cause_link_flap_max_flaps = 80` + "\n"
@@ -100,24 +127,42 @@ func testAccDataSourceIosxeErrdisableConfig() string {
 	config += `	recovery_cause_all = true` + "\n"
 	config += `	recovery_cause_arp_inspection = true` + "\n"
 	config += `	recovery_cause_bpduguard = true` + "\n"
-	config += `	recovery_cause_channel_misconfig = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_channel_misconfig = true` + "\n"
+	}
 	config += `	recovery_cause_dhcp_rate_limit = true` + "\n"
 	config += `	recovery_cause_dtp_flap = true` + "\n"
-	config += `	recovery_cause_gbic_invalid = true` + "\n"
-	config += `	recovery_cause_inline_power = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_gbic_invalid = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_inline_power = true` + "\n"
+	}
 	config += `	recovery_cause_l2ptguard = true` + "\n"
 	config += `	recovery_cause_link_flap = true` + "\n"
-	config += `	recovery_cause_link_monitor_failure = true` + "\n"
-	config += `	recovery_cause_loopback = true` + "\n"
-	config += `	recovery_cause_mac_limit = true` + "\n"
-	config += `	recovery_cause_pagp_flap = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_link_monitor_failure = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_loopback = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_mac_limit = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_pagp_flap = true` + "\n"
+	}
 	config += `	recovery_cause_port_mode_failure = true` + "\n"
 	config += `	recovery_cause_pppoe_ia_rate_limit = true` + "\n"
 	config += `	recovery_cause_psp = true` + "\n"
 	config += `	recovery_cause_psecure_violation = true` + "\n"
 	config += `	recovery_cause_security_violation = true` + "\n"
-	config += `	recovery_cause_sfp_config_mismatch = true` + "\n"
-	config += `	recovery_cause_storm_control = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_sfp_config_mismatch = true` + "\n"
+	}
+	if os.Getenv("C9000V") != "" {
+		config += `	recovery_cause_storm_control = true` + "\n"
+	}
 	config += `	recovery_cause_udld = true` + "\n"
 	config += `	recovery_cause_loopdetect = true` + "\n"
 	config += `}` + "\n"

@@ -1284,22 +1284,22 @@ func (data *Errdisable) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/detect/cause/loopdetect", data.getPath()))
 	}
 	if !data.FlapSettingCauseDtpFlapMaxFlaps.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/dtp-flap/max-flaps", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/dtp-flap", data.getPath()))
 	}
 	if !data.FlapSettingCauseDtpFlapTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/dtp-flap/time", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/dtp-flap", data.getPath()))
 	}
 	if !data.FlapSettingCauseLinkFlapMaxFlaps.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/link-flap/max-flaps", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/link-flap", data.getPath()))
 	}
 	if !data.FlapSettingCauseLinkFlapTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/link-flap/time", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/link-flap", data.getPath()))
 	}
 	if !data.FlapSettingCausePagpFlapMaxFlaps.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/pagp-flap/max-flaps", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/pagp-flap", data.getPath()))
 	}
 	if !data.FlapSettingCausePagpFlapTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/pagp-flap/time", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/flap-setting/cause/pagp-flap", data.getPath()))
 	}
 	if !data.RecoveryInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/recovery/interval", data.getPath()))

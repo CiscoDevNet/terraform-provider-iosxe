@@ -2,12 +2,12 @@
 name: Errdisable
 path: Cisco-IOS-XE-native:native/errdisable
 doc_category: System
-test_tags: [C9000V]
 attributes:
   - yang_name: detect/cause/all
     example: true
   - yang_name: detect/cause/arp-inspection
     example: true
+    test_tags: [C9000V]
   - yang_name: detect/cause/bpduguard
     example: true
     exclude_test: true
@@ -36,9 +36,9 @@ attributes:
     exclude_test: true
   - yang_name: detect/cause/pppoe-ia-rate-limit
     example: true
-    exclude_test: true
   - yang_name: detect/cause/security-violation/shutdown/vlan
     example: true
+    test_tags: [C9000V]
   - yang_name: detect/cause/sfp-config-mismatch
     example: true
     exclude_test: true
@@ -47,20 +47,24 @@ attributes:
     exclude_test: true
   - yang_name: detect/cause/loopdetect
     example: true
-    exclude_test: true
   - yang_name: flap-setting/cause/dtp-flap/max-flaps
-    example: 80 
+    example: 80
+    delete_parent: true
   - yang_name: flap-setting/cause/dtp-flap/time
     example: 90
+    delete_parent: true
   - yang_name: flap-setting/cause/link-flap/max-flaps
-    example: 80 
+    example: 80
+    delete_parent: true
   - yang_name: flap-setting/cause/link-flap/time
     example: 90
+    delete_parent: true
   - yang_name: flap-setting/cause/pagp-flap/max-flaps
-    example: 80 
+    example: 80
+    delete_parent: true
   - yang_name: flap-setting/cause/pagp-flap/time
     example: 90
-
+    delete_parent: true
   - yang_name: recovery/interval
     example: 855
   - yang_name: recovery/cause/all
@@ -71,44 +75,36 @@ attributes:
     example: true
   - yang_name: recovery/cause/channel-misconfig
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/dhcp-rate-limit
     example: true
   - yang_name: recovery/cause/dtp-flap
     example: true
   - yang_name: recovery/cause/gbic-invalid
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/inline-power
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/l2ptguard
     example: true
   - yang_name: recovery/cause/link-flap
     example: true
   - yang_name: recovery/cause/link-monitor-failure
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/loopback
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/mac-limit
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/mlacp-minlink
     example: true
     exclude_test: true
-
-  # - yang_name: recovery/cause/oam-remote-failure/critical-event
-  #   example: true
-  # - yang_name: recovery/cause/oam-remote-failure/dying-gasp
-  #   example: true
-  # - yang_name: recovery/cause/oam-remote-failure/link-fault
-  #   example: true
-
   - yang_name: recovery/cause/pagp-flap
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/port-mode-failure
     example: true
   - yang_name: recovery/cause/pppoe-ia-rate-limit
@@ -121,13 +117,13 @@ attributes:
     example: true
   - yang_name: recovery/cause/sfp-config-mismatch
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/small-frame
     example: true
     exclude_test: true
   - yang_name: recovery/cause/storm-control
     example: true
-    # exclude_test: true
+    test_tags: [C9000V]
   - yang_name: recovery/cause/udld
     example: true
   - yang_name: recovery/cause/unicast-flood
@@ -138,4 +134,3 @@ attributes:
     exclude_test: true
   - yang_name: recovery/cause/loopdetect
     example: true
-    # exclude_test: true
