@@ -217,6 +217,12 @@ func (data *BGPIPv6UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 
 func (data *BGPIPv6UnicastNeighbor) getDeletedItems(ctx context.Context, state BGPIPv6UnicastNeighbor) []string {
 	deletedItems := make([]string, 0)
+	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
+	}
+	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
+	}
 	for i := range state.RouteMaps {
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
 
@@ -235,6 +241,9 @@ func (data *BGPIPv6UnicastNeighbor) getDeletedItems(ctx context.Context, state B
 				found = false
 			}
 			if found {
+				if !state.RouteMaps[i].RouteMapName.IsNull() && data.RouteMaps[j].RouteMapName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v/route-map-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

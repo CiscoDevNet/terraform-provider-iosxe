@@ -332,6 +332,15 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, state 
 				found = false
 			}
 			if found {
+				if !state.Vrfs[i].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() && data.Vrfs[j].Ipv6UnicastAdvertiseL2vpnEvpn.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/advertise/l2vpn/evpn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeConnected.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/connected", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv6UnicastRedistributeStatic.IsNull() && data.Vrfs[j].Ipv6UnicastRedistributeStatic.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/redistribute-v6/static", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				for ci := range state.Vrfs[i].Ipv6UnicastNetworks {
 					cstateKeyValues := [...]string{state.Vrfs[i].Ipv6UnicastNetworks[ci].Network.ValueString()}
 
@@ -350,6 +359,15 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletedItems(ctx context.Context, state 
 							found = false
 						}
 						if found {
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].RouteMap.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/network=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].Backdoor.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/network=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].Ipv6UnicastNetworks[ci].Evpn.IsNull() && data.Vrfs[j].Ipv6UnicastNetworks[cj].Evpn.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv6-unicast/network=%v/evpn", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							break
 						}
 					}

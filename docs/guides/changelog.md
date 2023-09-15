@@ -24,6 +24,7 @@ description: |-
 - BREAKING CHANGE: Rename `redistribute_static` attribute to `ipv6_unicast_redistribute_static` of `iosxe_bgp_address_family_ipv6_vrf` resource and data source
 - Add `ipv6_unicast_redistribute_connected` attribute to `iosxe_bgp_address_family_ipv6` resource and data source
 - Add `ipv6_unicast_redistribute_static` attribute to `iosxe_bgp_address_family_ipv6` resource and data source
+- When removing attributes from a resource (or setting them to `null`) which were previously set, the corresponding configuration will be removed from the device
 
 ## 0.4.0
 

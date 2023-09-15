@@ -224,6 +224,12 @@ func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Re
 
 func (data *BGPAddressFamilyIPv6) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv6) []string {
 	deletedItems := make([]string, 0)
+	if !state.Ipv6UnicastRedistributeConnected.IsNull() && data.Ipv6UnicastRedistributeConnected.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", state.getPath()))
+	}
+	if !state.Ipv6UnicastRedistributeStatic.IsNull() && data.Ipv6UnicastRedistributeStatic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", state.getPath()))
+	}
 	for i := range state.Ipv6UnicastNetworks {
 		stateKeyValues := [...]string{state.Ipv6UnicastNetworks[i].Network.ValueString()}
 
@@ -242,6 +248,12 @@ func (data *BGPAddressFamilyIPv6) getDeletedItems(ctx context.Context, state BGP
 				found = false
 			}
 			if found {
+				if !state.Ipv6UnicastNetworks[i].RouteMap.IsNull() && data.Ipv6UnicastNetworks[j].RouteMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/network=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Ipv6UnicastNetworks[i].Backdoor.IsNull() && data.Ipv6UnicastNetworks[j].Backdoor.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/network=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

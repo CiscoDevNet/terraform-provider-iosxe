@@ -313,6 +313,15 @@ func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNVE) []string {
 	deletedItems := make([]string, 0)
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
+	}
+	if !state.SourceInterfaceLoopback.IsNull() && data.SourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface/Loopback", state.getPath()))
+	}
 	for i := range state.VniVrfs {
 		stateKeyValues := [...]string{state.VniVrfs[i].VniRange.ValueString()}
 
@@ -331,6 +340,9 @@ func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNV
 				found = false
 			}
 			if found {
+				if !state.VniVrfs[i].Vrf.IsNull() && data.VniVrfs[j].Vrf.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/member-in-one-line/member/vni=%v/vrf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -356,6 +368,12 @@ func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNV
 				found = false
 			}
 			if found {
+				if !state.Vnis[i].Ipv4MulticastGroup.IsNull() && data.Vnis[j].Ipv4MulticastGroup.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/mcast-group/multicast-group-min", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vnis[i].IngressReplication.IsNull() && data.Vnis[j].IngressReplication.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/ingress-replication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

@@ -170,6 +170,24 @@ func (data *UsernameData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Username) getDeletedItems(ctx context.Context, state Username) []string {
 	deletedItems := make([]string, 0)
+	if !state.Privilege.IsNull() && data.Privilege.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/privilege", state.getPath()))
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/password/encryption", state.getPath()))
+	}
+	if !state.Password.IsNull() && data.Password.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/password/password", state.getPath()))
+	}
+	if !state.SecretEncryption.IsNull() && data.SecretEncryption.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/secret/encryption", state.getPath()))
+	}
+	if !state.Secret.IsNull() && data.Secret.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/secret/secret", state.getPath()))
+	}
 	return deletedItems
 }
 

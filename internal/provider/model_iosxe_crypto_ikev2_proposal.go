@@ -616,6 +616,81 @@ func (data *CryptoIKEv2ProposalData) fromBody(ctx context.Context, res gjson.Res
 
 func (data *CryptoIKEv2Proposal) getDeletedItems(ctx context.Context, state CryptoIKEv2Proposal) []string {
 	deletedItems := make([]string, 0)
+	if !state.EncryptionEn3des.IsNull() && data.EncryptionEn3des.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/encryption/en-3des", state.getPath()))
+	}
+	if !state.EncryptionAesCbc128.IsNull() && data.EncryptionAesCbc128.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/encryption/aes-cbc-128", state.getPath()))
+	}
+	if !state.EncryptionAesCbc192.IsNull() && data.EncryptionAesCbc192.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/encryption/aes-cbc-192", state.getPath()))
+	}
+	if !state.EncryptionAesCbc256.IsNull() && data.EncryptionAesCbc256.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/encryption/aes-cbc-256", state.getPath()))
+	}
+	if !state.EncryptionAesGcm128.IsNull() && data.EncryptionAesGcm128.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/encryption/aes-gcm-128", state.getPath()))
+	}
+	if !state.EncryptionAesGcm256.IsNull() && data.EncryptionAesGcm256.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/encryption/aes-gcm-256", state.getPath()))
+	}
+	if !state.GroupOne.IsNull() && data.GroupOne.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/one", state.getPath()))
+	}
+	if !state.GroupTwo.IsNull() && data.GroupTwo.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/two", state.getPath()))
+	}
+	if !state.GroupFourteen.IsNull() && data.GroupFourteen.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/fourteen", state.getPath()))
+	}
+	if !state.GroupFifteen.IsNull() && data.GroupFifteen.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/fifteen", state.getPath()))
+	}
+	if !state.GroupSixteen.IsNull() && data.GroupSixteen.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/sixteen", state.getPath()))
+	}
+	if !state.GroupNineteen.IsNull() && data.GroupNineteen.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/nineteen", state.getPath()))
+	}
+	if !state.GroupTwenty.IsNull() && data.GroupTwenty.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/twenty", state.getPath()))
+	}
+	if !state.GroupTwentyOne.IsNull() && data.GroupTwentyOne.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/twenty-one", state.getPath()))
+	}
+	if !state.GroupTwentyFour.IsNull() && data.GroupTwentyFour.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/group/twenty-four", state.getPath()))
+	}
+	if !state.IntegrityMd5.IsNull() && data.IntegrityMd5.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/integrity/md5", state.getPath()))
+	}
+	if !state.IntegritySha1.IsNull() && data.IntegritySha1.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/integrity/sha1", state.getPath()))
+	}
+	if !state.IntegritySha256.IsNull() && data.IntegritySha256.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/integrity/sha256", state.getPath()))
+	}
+	if !state.IntegritySha384.IsNull() && data.IntegritySha384.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/integrity/sha384", state.getPath()))
+	}
+	if !state.IntegritySha512.IsNull() && data.IntegritySha512.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/integrity/sha512", state.getPath()))
+	}
+	if !state.PrfMd5.IsNull() && data.PrfMd5.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/prf/md5", state.getPath()))
+	}
+	if !state.PrfSha1.IsNull() && data.PrfSha1.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/prf/sha1", state.getPath()))
+	}
+	if !state.PrfSha256.IsNull() && data.PrfSha256.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/prf/sha256", state.getPath()))
+	}
+	if !state.PrfSha384.IsNull() && data.PrfSha384.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/prf/sha384", state.getPath()))
+	}
+	if !state.PrfSha512.IsNull() && data.PrfSha512.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/prf/sha512", state.getPath()))
+	}
 	return deletedItems
 }
 

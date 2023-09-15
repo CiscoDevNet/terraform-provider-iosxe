@@ -344,6 +344,9 @@ func (data *LoggingIPv6HostVRFTransport) getDeletedItems(ctx context.Context, st
 				found = false
 			}
 			if found {
+				if !state.TransportTlsPorts[i].Profile.IsNull() && data.TransportTlsPorts[j].Profile.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/transport/tls/port=%v/profile", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

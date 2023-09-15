@@ -134,6 +134,18 @@ func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2) []string {
 	deletedItems := make([]string, 0)
+	if !state.NatKeepalive.IsNull() && data.NatKeepalive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nat/keepalive", state.getPath()))
+	}
+	if !state.Dpd.IsNull() && data.Dpd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd-container", state.getPath()))
+	}
+	if !state.DpdRetryInterval.IsNull() && data.DpdRetryInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd-container", state.getPath()))
+	}
+	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd-container", state.getPath()))
+	}
 	return deletedItems
 }
 

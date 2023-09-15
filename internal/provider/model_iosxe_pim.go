@@ -477,6 +477,39 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
 	deletedItems := make([]string, 0)
+	if !state.Autorp.IsNull() && data.Autorp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:autorp-container/autorp", state.getPath()))
+	}
+	if !state.AutorpListener.IsNull() && data.AutorpListener.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:autorp-container/listener", state.getPath()))
+	}
+	if !state.BsrCandidateLoopback.IsNull() && data.BsrCandidateLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:bsr-candidate", state.getPath()))
+	}
+	if !state.BsrCandidateMask.IsNull() && data.BsrCandidateMask.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:bsr-candidate", state.getPath()))
+	}
+	if !state.BsrCandidatePriority.IsNull() && data.BsrCandidatePriority.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:bsr-candidate", state.getPath()))
+	}
+	if !state.BsrCandidateAcceptRpCandidate.IsNull() && data.BsrCandidateAcceptRpCandidate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:bsr-candidate", state.getPath()))
+	}
+	if !state.SsmRange.IsNull() && data.SsmRange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:ssm/range", state.getPath()))
+	}
+	if !state.SsmDefault.IsNull() && data.SsmDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:ssm/default", state.getPath()))
+	}
+	if !state.RpAddress.IsNull() && data.RpAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address-conf/address", state.getPath()))
+	}
+	if !state.RpAddressOverride.IsNull() && data.RpAddressOverride.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address-conf/override", state.getPath()))
+	}
+	if !state.RpAddressBidir.IsNull() && data.RpAddressBidir.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address-conf/bidir", state.getPath()))
+	}
 	for i := range state.RpAddresses {
 		stateKeyValues := [...]string{state.RpAddresses[i].AccessList.ValueString()}
 
@@ -495,6 +528,15 @@ func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
 				found = false
 			}
 			if found {
+				if !state.RpAddresses[i].RpAddress.IsNull() && data.RpAddresses[j].RpAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address-list=%v/rp-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.RpAddresses[i].Override.IsNull() && data.RpAddresses[j].Override.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address-list=%v/override", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.RpAddresses[i].Bidir.IsNull() && data.RpAddresses[j].Bidir.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-address-list=%v/bidir", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -520,6 +562,18 @@ func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
 				found = false
 			}
 			if found {
+				if !state.RpCandidates[i].GroupList.IsNull() && data.RpCandidates[j].GroupList.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-candidate=%v/group-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.RpCandidates[i].Interval.IsNull() && data.RpCandidates[j].Interval.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-candidate=%v/interval", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.RpCandidates[i].Priority.IsNull() && data.RpCandidates[j].Priority.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-candidate=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.RpCandidates[i].Bidir.IsNull() && data.RpCandidates[j].Bidir.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:rp-candidate=%v/bidir", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

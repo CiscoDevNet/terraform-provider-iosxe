@@ -1024,6 +1024,24 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 	deletedItems := make([]string, 0)
+	if !state.Authenticate.IsNull() && data.Authenticate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authenticate", state.getPath()))
+	}
+	if !state.Logging.IsNull() && data.Logging.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:logging", state.getPath()))
+	}
+	if !state.AccessGroupPeerAcl.IsNull() && data.AccessGroupPeerAcl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:access-group/peer/acl", state.getPath()))
+	}
+	if !state.AccessGroupQueryOnlyAcl.IsNull() && data.AccessGroupQueryOnlyAcl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:access-group/query-only/acl", state.getPath()))
+	}
+	if !state.AccessGroupServeAcl.IsNull() && data.AccessGroupServeAcl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:access-group/serve/acl", state.getPath()))
+	}
+	if !state.AccessGroupServeOnlyAcl.IsNull() && data.AccessGroupServeOnlyAcl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:access-group/serve-only/acl", state.getPath()))
+	}
 	for i := range state.AuthenticationKeys {
 		stateKeyValues := [...]string{strconv.FormatInt(state.AuthenticationKeys[i].Number.ValueInt64(), 10)}
 
@@ -1042,12 +1060,72 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 				found = false
 			}
 			if found {
+				if !state.AuthenticationKeys[i].Md5.IsNull() && data.AuthenticationKeys[j].Md5.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v/md5-cfg", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.AuthenticationKeys[i].CmacAes128.IsNull() && data.AuthenticationKeys[j].CmacAes128.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v/cmac-aes-128", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.AuthenticationKeys[i].HmacSha1.IsNull() && data.AuthenticationKeys[j].HmacSha1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v/hmac-sha1", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.AuthenticationKeys[i].HmacSha2256.IsNull() && data.AuthenticationKeys[j].HmacSha2256.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v/hmac-sha2-256", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.AuthenticationKeys[i].Sha1.IsNull() && data.AuthenticationKeys[j].Sha1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v/sha1", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.AuthenticationKeys[i].Sha2.IsNull() && data.AuthenticationKeys[j].Sha2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v/sha2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.AuthenticationKeys[i].EncryptionType.IsNull() && data.AuthenticationKeys[j].EncryptionType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v/encryption-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:authentication-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.ClockPeriod.IsNull() && data.ClockPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:clock-period", state.getPath()))
+	}
+	if !state.Master.IsNull() && data.Master.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:master", state.getPath()))
+	}
+	if !state.MasterStratum.IsNull() && data.MasterStratum.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:master/stratum-number", state.getPath()))
+	}
+	if !state.Passive.IsNull() && data.Passive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:passive", state.getPath()))
+	}
+	if !state.UpdateCalendar.IsNull() && data.UpdateCalendar.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:update-calendar", state.getPath()))
+	}
+	if !state.TrapSourceGigabitEthernet.IsNull() && data.TrapSourceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/GigabitEthernet", state.getPath()))
+	}
+	if !state.TrapSourceTenGigabitEthernet.IsNull() && data.TrapSourceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.TrapSourceFortyGigabitEthernet.IsNull() && data.TrapSourceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.TrapSourceHundredGigE.IsNull() && data.TrapSourceHundredGigE.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/HundredGigE", state.getPath()))
+	}
+	if !state.TrapSourceLoopback.IsNull() && data.TrapSourceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Loopback", state.getPath()))
+	}
+	if !state.TrapSourcePortChannel.IsNull() && data.TrapSourcePortChannel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Port-channel", state.getPath()))
+	}
+	if !state.TrapSourcePortChannelSubinterface.IsNull() && data.TrapSourcePortChannelSubinterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Port-channel-subinterface/Port-channel", state.getPath()))
+	}
+	if !state.TrapSourceVlan.IsNull() && data.TrapSourceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Vlan", state.getPath()))
 	}
 	for i := range state.Servers {
 		stateKeyValues := [...]string{state.Servers[i].IpAddress.ValueString()}
@@ -1067,6 +1145,18 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 				found = false
 			}
 			if found {
+				if !state.Servers[i].Source.IsNull() && data.Servers[j].Source.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/source", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Servers[i].Key.IsNull() && data.Servers[j].Key.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Servers[i].Prefer.IsNull() && data.Servers[j].Prefer.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/prefer", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Servers[i].Version.IsNull() && data.Servers[j].Version.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -1110,6 +1200,15 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 							found = false
 						}
 						if found {
+							if !state.ServerVrfs[i].Servers[ci].Key.IsNull() && data.ServerVrfs[j].Servers[cj].Key.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/key", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ServerVrfs[i].Servers[ci].Prefer.IsNull() && data.ServerVrfs[j].Servers[cj].Prefer.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/prefer", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ServerVrfs[i].Servers[ci].Version.IsNull() && data.ServerVrfs[j].Servers[cj].Version.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							break
 						}
 					}
@@ -1142,6 +1241,18 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 				found = false
 			}
 			if found {
+				if !state.Peers[i].Source.IsNull() && data.Peers[j].Source.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/server-list=%v/source", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].Key.IsNull() && data.Peers[j].Key.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/server-list=%v/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].Prefer.IsNull() && data.Peers[j].Prefer.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/server-list=%v/prefer", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].Version.IsNull() && data.Peers[j].Version.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/server-list=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -1185,6 +1296,15 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 							found = false
 						}
 						if found {
+							if !state.PeerVrfs[i].Peers[ci].Key.IsNull() && data.PeerVrfs[j].Peers[cj].Key.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v/server-list=%v/key", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.PeerVrfs[i].Peers[ci].Prefer.IsNull() && data.PeerVrfs[j].Peers[cj].Prefer.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v/server-list=%v/prefer", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.PeerVrfs[i].Peers[ci].Version.IsNull() && data.PeerVrfs[j].Peers[cj].Version.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v/server-list=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							break
 						}
 					}

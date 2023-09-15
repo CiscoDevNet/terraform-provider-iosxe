@@ -219,6 +219,18 @@ func (data *CryptoIKEv2PolicyData) fromBody(ctx context.Context, res gjson.Resul
 
 func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state CryptoIKEv2Policy) []string {
 	deletedItems := make([]string, 0)
+	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/inbound-only", state.getPath()))
+	}
+	if !state.MatchAddressLocalIp.IsNull() && data.MatchAddressLocalIp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip", state.getPath()))
+	}
+	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/name", state.getPath()))
+	}
+	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/any", state.getPath()))
+	}
 	for i := range state.Proposals {
 		stateKeyValues := [...]string{state.Proposals[i].Proposals.ValueString()}
 

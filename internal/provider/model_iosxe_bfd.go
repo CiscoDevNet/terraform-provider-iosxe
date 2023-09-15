@@ -845,6 +845,9 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 				found = false
 			}
 			if found {
+				if !state.Ipv4BothVrfs[i].TemplateName.IsNull() && data.Ipv4BothVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -876,6 +879,9 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 				found = false
 			}
 			if found {
+				if !state.Ipv4WithoutVrfs[i].TemplateName.IsNull() && data.Ipv4WithoutVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -913,6 +919,9 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 				found = false
 			}
 			if found {
+				if !state.Ipv4WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv4WithSrcVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -950,6 +959,9 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 				found = false
 			}
 			if found {
+				if !state.Ipv4WithDstVrfs[i].TemplateName.IsNull() && data.Ipv4WithDstVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -993,6 +1005,9 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 				found = false
 			}
 			if found {
+				if !state.Ipv6WithBothVrfs[i].TemplateName.IsNull() && data.Ipv6WithBothVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -1024,6 +1039,9 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 				found = false
 			}
 			if found {
+				if !state.Ipv6WithoutVrfs[i].TemplateName.IsNull() && data.Ipv6WithoutVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -1061,6 +1079,9 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 				found = false
 			}
 			if found {
+				if !state.Ipv6WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv6WithSrcVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -1098,12 +1119,18 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 				found = false
 			}
 			if found {
+				if !state.Ipv6WithDstVrfs[i].TemplateName.IsNull() && data.Ipv6WithDstVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.SlowTimers.IsNull() && data.SlowTimers.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:slow-timers", state.getPath()))
 	}
 	return deletedItems
 }

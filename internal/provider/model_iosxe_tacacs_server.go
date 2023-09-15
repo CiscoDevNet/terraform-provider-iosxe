@@ -132,6 +132,15 @@ func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServer) []string {
 	deletedItems := make([]string, 0)
+	if !state.AddressIpv4.IsNull() && data.AddressIpv4.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/ipv4", state.getPath()))
+	}
+	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timeout", state.getPath()))
+	}
+	if !state.Key.IsNull() && data.Key.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/key", state.getPath()))
+	}
 	return deletedItems
 }
 

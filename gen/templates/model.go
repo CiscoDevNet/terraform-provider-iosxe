@@ -596,7 +596,15 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{camelCase .Name}}) []string {
 	deletedItems := make([]string, 0)
 	{{- range .Attributes}}
-	{{- if eq .Type "List"}}
+	{{- if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
+	if !state.{{toGoName .TfName}}.IsNull() && data.{{toGoName .TfName}}.IsNull() {
+		{{- if .DeleteParent}}
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath()))
+		{{- else}}
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}", state.getPath()))
+		{{- end}}
+	}
+	{{- else if eq .Type "List"}}
 	{{- $xpath := getXPath .YangName .XPath}}
 	for i := range state.{{toGoName .TfName}} {
 		{{- $list := (toGoName .TfName)}}
@@ -626,7 +634,16 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 			{{- end}}
 			if found {
 				{{- range .Attributes}}
-				{{- if eq .Type "List"}}
+				{{- if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
+				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
+					{{- if .DeleteParent}}
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					{{- else}}
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					{{- end}}
+				}
+				{{- else if eq .Type "List"}}
+				{{- $cXpath := getXPath .YangName .XPath}}
 				for ci := range state.{{$list}}[i].{{toGoName .TfName}} {
 					{{- $clist := (toGoName .TfName)}}
 					cstateKeyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -654,6 +671,17 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 						{{- end}}
 						{{- end}}
 						if found {
+							{{- range .Attributes}}
+							{{- if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
+							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
+								{{- if .DeleteParent}}
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+								{{- else}}
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+								{{- end}}
+							}
+							{{- end}}
+							{{- end}}
 							break
 						}
 					}

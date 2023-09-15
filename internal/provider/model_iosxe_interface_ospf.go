@@ -437,6 +437,36 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceOSPF) []string {
 	deletedItems := make([]string, 0)
+	if !state.Cost.IsNull() && data.Cost.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cost", state.getPath()))
+	}
+	if !state.DeadInterval.IsNull() && data.DeadInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dead-interval", state.getPath()))
+	}
+	if !state.HelloInterval.IsNull() && data.HelloInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/hello-interval", state.getPath()))
+	}
+	if !state.MtuIgnore.IsNull() && data.MtuIgnore.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu-ignore", state.getPath()))
+	}
+	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/broadcast", state.getPath()))
+	}
+	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/non-broadcast", state.getPath()))
+	}
+	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/point-to-multipoint", state.getPath()))
+	}
+	if !state.NetworkTypePointToPoint.IsNull() && data.NetworkTypePointToPoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/point-to-point", state.getPath()))
+	}
+	if !state.Priority.IsNull() && data.Priority.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
+	}
+	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ttl-security/hops", state.getPath()))
+	}
 	for i := range state.ProcessIds {
 		stateKeyValues := [...]string{strconv.FormatInt(state.ProcessIds[i].Id.ValueInt64(), 10)}
 
@@ -505,6 +535,9 @@ func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceO
 				found = false
 			}
 			if found {
+				if !state.MessageDigestKeys[i].Md5AuthKey.IsNull() && data.MessageDigestKeys[j].Md5AuthKey.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/message-digest-key=%v/md5/auth-key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

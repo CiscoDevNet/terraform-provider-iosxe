@@ -138,6 +138,15 @@ func (data *CryptoIPSecTransformSetData) fromBody(ctx context.Context, res gjson
 
 func (data *CryptoIPSecTransformSet) getDeletedItems(ctx context.Context, state CryptoIPSecTransformSet) []string {
 	deletedItems := make([]string, 0)
+	if !state.Esp.IsNull() && data.Esp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/esp", state.getPath()))
+	}
+	if !state.EspHmac.IsNull() && data.EspHmac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/esp-hmac", state.getPath()))
+	}
+	if !state.ModeTunnel.IsNull() && data.ModeTunnel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mode/tunnel-choice", state.getPath()))
+	}
 	return deletedItems
 }
 

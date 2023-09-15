@@ -576,6 +576,75 @@ func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Service) getDeletedItems(ctx context.Context, state Service) []string {
 	deletedItems := make([]string, 0)
+	if !state.Pad.IsNull() && data.Pad.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/pad-conf/pad", state.getPath()))
+	}
+	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/password-encryption", state.getPath()))
+	}
+	if !state.Timestamps.IsNull() && data.Timestamps.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps", state.getPath()))
+	}
+	if !state.TimestampsDebug.IsNull() && data.TimestampsDebug.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/debug-config", state.getPath()))
+	}
+	if !state.TimestampsDebugDatetime.IsNull() && data.TimestampsDebugDatetime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/debug-config/datetime", state.getPath()))
+	}
+	if !state.TimestampsDebugDatetimeMsec.IsNull() && data.TimestampsDebugDatetimeMsec.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/debug-config/datetime/msec", state.getPath()))
+	}
+	if !state.TimestampsDebugDatetimeLocaltime.IsNull() && data.TimestampsDebugDatetimeLocaltime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/debug-config/datetime/localtime", state.getPath()))
+	}
+	if !state.TimestampsDebugDatetimeShowTimezone.IsNull() && data.TimestampsDebugDatetimeShowTimezone.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/debug-config/datetime/show-timezone", state.getPath()))
+	}
+	if !state.TimestampsDebugDatetimeYear.IsNull() && data.TimestampsDebugDatetimeYear.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/debug-config/datetime/year", state.getPath()))
+	}
+	if !state.TimestampsDebugUptime.IsNull() && data.TimestampsDebugUptime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/debug-config/uptime", state.getPath()))
+	}
+	if !state.TimestampsLog.IsNull() && data.TimestampsLog.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/log-config", state.getPath()))
+	}
+	if !state.TimestampsLogDatetime.IsNull() && data.TimestampsLogDatetime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/log-config/datetime", state.getPath()))
+	}
+	if !state.TimestampsLogDatetimeMsec.IsNull() && data.TimestampsLogDatetimeMsec.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/log-config/datetime/msec", state.getPath()))
+	}
+	if !state.TimestampsLogDatetimeLocaltime.IsNull() && data.TimestampsLogDatetimeLocaltime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/log-config/datetime/localtime", state.getPath()))
+	}
+	if !state.TimestampsLogDatetimeShowTimezone.IsNull() && data.TimestampsLogDatetimeShowTimezone.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/log-config/datetime/show-timezone", state.getPath()))
+	}
+	if !state.TimestampsLogDatetimeYear.IsNull() && data.TimestampsLogDatetimeYear.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/log-config/datetime/year", state.getPath()))
+	}
+	if !state.TimestampsLogUptime.IsNull() && data.TimestampsLogUptime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timestamps/log-config/uptime", state.getPath()))
+	}
+	if !state.Dhcp.IsNull() && data.Dhcp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dhcp", state.getPath()))
+	}
+	if !state.TcpKeepalivesIn.IsNull() && data.TcpKeepalivesIn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/tcp-keepalives-in", state.getPath()))
+	}
+	if !state.TcpKeepalivesOut.IsNull() && data.TcpKeepalivesOut.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/tcp-keepalives-out", state.getPath()))
+	}
+	if !state.CompressConfig.IsNull() && data.CompressConfig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/compress-config", state.getPath()))
+	}
+	if !state.SequenceNumbers.IsNull() && data.SequenceNumbers.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/sequence-numbers", state.getPath()))
+	}
+	if !state.CallHome.IsNull() && data.CallHome.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/call-home", state.getPath()))
+	}
 	return deletedItems
 }
 

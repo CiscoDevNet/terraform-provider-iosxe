@@ -140,6 +140,15 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *BGP) getDeletedItems(ctx context.Context, state BGP) []string {
 	deletedItems := make([]string, 0)
+	if !state.DefaultIpv4Unicast.IsNull() && data.DefaultIpv4Unicast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/default/ipv4-unicast", state.getPath()))
+	}
+	if !state.LogNeighborChanges.IsNull() && data.LogNeighborChanges.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/log-neighbor-changes", state.getPath()))
+	}
+	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/router-id/interface/Loopback", state.getPath()))
+	}
 	return deletedItems
 }
 

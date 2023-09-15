@@ -659,12 +659,96 @@ func (data *AAAAuthentication) getDeletedItems(ctx context.Context, state AAAAut
 				found = false
 			}
 			if found {
+				if !state.Logins[i].A1None.IsNull() && data.Logins[j].A1None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a1/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A1Line.IsNull() && data.Logins[j].A1Line.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a1/line", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A1Enable.IsNull() && data.Logins[j].A1Enable.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a1/enable", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A1Local.IsNull() && data.Logins[j].A1Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a1/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A1Group.IsNull() && data.Logins[j].A1Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A2None.IsNull() && data.Logins[j].A2None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a2/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A2Line.IsNull() && data.Logins[j].A2Line.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a2/line", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A2Enable.IsNull() && data.Logins[j].A2Enable.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a2/enable", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A2Local.IsNull() && data.Logins[j].A2Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a2/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A2Group.IsNull() && data.Logins[j].A2Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A3None.IsNull() && data.Logins[j].A3None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a3/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A3Line.IsNull() && data.Logins[j].A3Line.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a3/line", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A3Enable.IsNull() && data.Logins[j].A3Enable.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a3/enable", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A3Local.IsNull() && data.Logins[j].A3Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a3/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A3Group.IsNull() && data.Logins[j].A3Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A4None.IsNull() && data.Logins[j].A4None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a4/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A4Line.IsNull() && data.Logins[j].A4Line.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a4/line", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A4Enable.IsNull() && data.Logins[j].A4Enable.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a4/enable", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A4Local.IsNull() && data.Logins[j].A4Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a4/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Logins[i].A4Group.IsNull() && data.Logins[j].A4Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v/a4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.Dot1xDefaultA1Group.IsNull() && data.Dot1xDefaultA1Group.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a1-config/group", state.getPath()))
+	}
+	if !state.Dot1xDefaultA1Local.IsNull() && data.Dot1xDefaultA1Local.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a1-config/local", state.getPath()))
+	}
+	if !state.Dot1xDefaultA2Group.IsNull() && data.Dot1xDefaultA2Group.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a2-config/group", state.getPath()))
+	}
+	if !state.Dot1xDefaultA2Local.IsNull() && data.Dot1xDefaultA2Local.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a2-config/local", state.getPath()))
+	}
+	if !state.Dot1xDefaultA3Group.IsNull() && data.Dot1xDefaultA3Group.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a3-config/group", state.getPath()))
+	}
+	if !state.Dot1xDefaultA3Local.IsNull() && data.Dot1xDefaultA3Local.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a3-config/local", state.getPath()))
+	}
+	if !state.Dot1xDefaultA4Group.IsNull() && data.Dot1xDefaultA4Group.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a4-config/group", state.getPath()))
+	}
+	if !state.Dot1xDefaultA4Local.IsNull() && data.Dot1xDefaultA4Local.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a4-config/local", state.getPath()))
 	}
 	return deletedItems
 }

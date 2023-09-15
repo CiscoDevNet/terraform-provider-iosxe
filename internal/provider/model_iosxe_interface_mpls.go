@@ -120,6 +120,12 @@ func (data *InterfaceMPLSData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *InterfaceMPLS) getDeletedItems(ctx context.Context, state InterfaceMPLS) []string {
 	deletedItems := make([]string, 0)
+	if !state.Ip.IsNull() && data.Ip.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", state.getPath()))
+	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:mtu", state.getPath()))
+	}
 	return deletedItems
 }
 

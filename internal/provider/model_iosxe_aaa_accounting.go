@@ -308,6 +308,21 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccounting) []string {
 	deletedItems := make([]string, 0)
+	if !state.UpdateNewinfoPeriodic.IsNull() && data.UpdateNewinfoPeriodic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/update/newinfo/periodic", state.getPath()))
+	}
+	if !state.IdentityDefaultStartStopGroup1.IsNull() && data.IdentityDefaultStartStopGroup1.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/default/start-stop/group-config/group1/group", state.getPath()))
+	}
+	if !state.IdentityDefaultStartStopGroup2.IsNull() && data.IdentityDefaultStartStopGroup2.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/default/start-stop/group-config/group2/group", state.getPath()))
+	}
+	if !state.IdentityDefaultStartStopGroup3.IsNull() && data.IdentityDefaultStartStopGroup3.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/default/start-stop/group-config/group3/group", state.getPath()))
+	}
+	if !state.IdentityDefaultStartStopGroup4.IsNull() && data.IdentityDefaultStartStopGroup4.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/default/start-stop/group-config/group4/group", state.getPath()))
+	}
 	for i := range state.Execs {
 		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
 
@@ -326,6 +341,9 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 				found = false
 			}
 			if found {
+				if !state.Execs[i].StartStopGroup1.IsNull() && data.Execs[j].StartStopGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/start-stop/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -351,12 +369,21 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 				found = false
 			}
 			if found {
+				if !state.Networks[i].StartStopGroup1.IsNull() && data.Networks[j].StartStopGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/start-stop/group-config/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Networks[i].StartStopGroup2.IsNull() && data.Networks[j].StartStopGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/start-stop/group-config/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.SystemGuaranteeFirst.IsNull() && data.SystemGuaranteeFirst.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/system/guarantee-first", state.getPath()))
 	}
 	return deletedItems
 }

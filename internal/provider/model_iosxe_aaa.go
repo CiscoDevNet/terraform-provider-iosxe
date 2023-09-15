@@ -425,6 +425,15 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 	deletedItems := make([]string, 0)
+	if !state.NewModel.IsNull() && data.NewModel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", state.getPath()))
+	}
+	if !state.ServerRadiusDynamicAuthor.IsNull() && data.ServerRadiusDynamicAuthor.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author", state.getPath()))
+	}
+	if !state.SessionId.IsNull() && data.SessionId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:session-id", state.getPath()))
+	}
 	for i := range state.ServerRadiusDynamicAuthorClients {
 		stateKeyValues := [...]string{state.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()}
 
@@ -443,6 +452,12 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 				found = false
 			}
 			if found {
+				if !state.ServerRadiusDynamicAuthorClients[i].ServerKeyType.IsNull() && data.ServerRadiusDynamicAuthorClients[j].ServerKeyType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v/server-key/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.ServerRadiusDynamicAuthorClients[i].ServerKey.IsNull() && data.ServerRadiusDynamicAuthorClients[j].ServerKey.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v/server-key/string", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

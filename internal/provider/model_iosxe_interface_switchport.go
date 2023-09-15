@@ -332,6 +332,45 @@ func (data *InterfaceSwitchportData) fromBody(ctx context.Context, res gjson.Res
 
 func (data *InterfaceSwitchport) getDeletedItems(ctx context.Context, state InterfaceSwitchport) []string {
 	deletedItems := make([]string, 0)
+	if !state.ModeAccess.IsNull() && data.ModeAccess.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:mode/access", state.getPath()))
+	}
+	if !state.ModeDot1qTunnel.IsNull() && data.ModeDot1qTunnel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:mode/dot1q-tunnel", state.getPath()))
+	}
+	if !state.ModePrivateVlanTrunk.IsNull() && data.ModePrivateVlanTrunk.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:mode/private-vlan/trunk", state.getPath()))
+	}
+	if !state.ModePrivateVlanHost.IsNull() && data.ModePrivateVlanHost.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:mode/private-vlan/host", state.getPath()))
+	}
+	if !state.ModePrivateVlanPromiscuous.IsNull() && data.ModePrivateVlanPromiscuous.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:mode/private-vlan/promiscuous", state.getPath()))
+	}
+	if !state.ModeTrunk.IsNull() && data.ModeTrunk.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:mode/trunk", state.getPath()))
+	}
+	if !state.Nonegotiate.IsNull() && data.Nonegotiate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:nonegotiate", state.getPath()))
+	}
+	if !state.AccessVlan.IsNull() && data.AccessVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:access/vlan/vlan", state.getPath()))
+	}
+	if !state.TrunkAllowedVlans.IsNull() && data.TrunkAllowedVlans.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:trunk/allowed/vlan/vlans", state.getPath()))
+	}
+	if !state.TrunkAllowedVlansNone.IsNull() && data.TrunkAllowedVlansNone.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:trunk/allowed/vlan/none", state.getPath()))
+	}
+	if !state.TrunkNativeVlanTag.IsNull() && data.TrunkNativeVlanTag.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:trunk/native/vlan/tag", state.getPath()))
+	}
+	if !state.TrunkNativeVlan.IsNull() && data.TrunkNativeVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:trunk/native/vlan/vlan-id", state.getPath()))
+	}
+	if !state.Host.IsNull() && data.Host.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/host", state.getPath()))
+	}
 	return deletedItems
 }
 

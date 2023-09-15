@@ -600,6 +600,54 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []string {
 	deletedItems := make([]string, 0)
+	if !state.MonitorSeverity.IsNull() && data.MonitorSeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/monitor-config/common-config/monitor/severity", state.getPath()))
+	}
+	if !state.BufferedSize.IsNull() && data.BufferedSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/buffered/size-value", state.getPath()))
+	}
+	if !state.BufferedSeverity.IsNull() && data.BufferedSeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/buffered/severity-level", state.getPath()))
+	}
+	if !state.ConsoleSeverity.IsNull() && data.ConsoleSeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/console-config/common-config/console/severity", state.getPath()))
+	}
+	if !state.Facility.IsNull() && data.Facility.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/facility", state.getPath()))
+	}
+	if !state.HistorySize.IsNull() && data.HistorySize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/history/size", state.getPath()))
+	}
+	if !state.HistorySeverity.IsNull() && data.HistorySeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/history/severity-level", state.getPath()))
+	}
+	if !state.Trap.IsNull() && data.Trap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/trap", state.getPath()))
+	}
+	if !state.TrapSeverity.IsNull() && data.TrapSeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/trap/severity", state.getPath()))
+	}
+	if !state.OriginIdType.IsNull() && data.OriginIdType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/origin-id/type-value", state.getPath()))
+	}
+	if !state.OriginIdName.IsNull() && data.OriginIdName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/origin-id/string", state.getPath()))
+	}
+	if !state.FileName.IsNull() && data.FileName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/file/name", state.getPath()))
+	}
+	if !state.FileMaxSize.IsNull() && data.FileMaxSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/file/max-size", state.getPath()))
+	}
+	if !state.FileMinSize.IsNull() && data.FileMinSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/file/min-size", state.getPath()))
+	}
+	if !state.FileSeverity.IsNull() && data.FileSeverity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/file/severity", state.getPath()))
+	}
+	if !state.SourceInterface.IsNull() && data.SourceInterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface-conf/interface-name-non-vrf", state.getPath()))
+	}
 	for i := range state.SourceInterfacesVrf {
 		stateKeyValues := [...]string{state.SourceInterfacesVrf[i].Vrf.ValueString()}
 
@@ -618,6 +666,9 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 				found = false
 			}
 			if found {
+				if !state.SourceInterfacesVrf[i].InterfaceName.IsNull() && data.SourceInterfacesVrf[j].InterfaceName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface-conf/source-interface-vrf=%v/interface-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

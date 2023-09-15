@@ -351,6 +351,51 @@ func (data *EVPNInstanceData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *EVPNInstance) getDeletedItems(ctx context.Context, state EVPNInstance) []string {
 	deletedItems := make([]string, 0)
+	if !state.VlanBasedReplicationTypeIngress.IsNull() && data.VlanBasedReplicationTypeIngress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/replication-type/ingress", state.getPath()))
+	}
+	if !state.VlanBasedReplicationTypeStatic.IsNull() && data.VlanBasedReplicationTypeStatic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/replication-type/static", state.getPath()))
+	}
+	if !state.VlanBasedReplicationTypeP2mp.IsNull() && data.VlanBasedReplicationTypeP2mp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/replication-type/p2mp", state.getPath()))
+	}
+	if !state.VlanBasedReplicationTypeMp2mp.IsNull() && data.VlanBasedReplicationTypeMp2mp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/replication-type/mp2mp", state.getPath()))
+	}
+	if !state.VlanBasedEncapsulation.IsNull() && data.VlanBasedEncapsulation.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/encapsulation", state.getPath()))
+	}
+	if !state.VlanBasedAutoRouteTarget.IsNull() && data.VlanBasedAutoRouteTarget.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/auto-route-target_cont/auto-route-target", state.getPath()))
+	}
+	if !state.VlanBasedRd.IsNull() && data.VlanBasedRd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/rd/rd-value", state.getPath()))
+	}
+	if !state.VlanBasedRouteTarget.IsNull() && data.VlanBasedRouteTarget.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target/rt-value", state.getPath()))
+	}
+	if !state.VlanBasedRouteTargetBoth.IsNull() && data.VlanBasedRouteTargetBoth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target/both/rt-value", state.getPath()))
+	}
+	if !state.VlanBasedRouteTargetImport.IsNull() && data.VlanBasedRouteTargetImport.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target/import/rt-value", state.getPath()))
+	}
+	if !state.VlanBasedRouteTargetExport.IsNull() && data.VlanBasedRouteTargetExport.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target/export/rt-value", state.getPath()))
+	}
+	if !state.VlanBasedIpLocalLearningDisable.IsNull() && data.VlanBasedIpLocalLearningDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/ip/local-learning/disable", state.getPath()))
+	}
+	if !state.VlanBasedIpLocalLearningEnable.IsNull() && data.VlanBasedIpLocalLearningEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/ip/local-learning/enable", state.getPath()))
+	}
+	if !state.VlanBasedDefaultGatewayAdvertise.IsNull() && data.VlanBasedDefaultGatewayAdvertise.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/default-gateway/advertise", state.getPath()))
+	}
+	if !state.VlanBasedReOriginateRouteType5.IsNull() && data.VlanBasedReOriginateRouteType5.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/re-originate/route-type5", state.getPath()))
+	}
 	return deletedItems
 }
 

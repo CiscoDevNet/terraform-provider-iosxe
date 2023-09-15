@@ -1456,6 +1456,51 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Template) getDeletedItems(ctx context.Context, state Template) []string {
 	deletedItems := make([]string, 0)
+	if !state.Dot1xPae.IsNull() && data.Dot1xPae.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/pae", state.getPath()))
+	}
+	if !state.Dot1xMaxReauthReq.IsNull() && data.Dot1xMaxReauthReq.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/max-reauth-req", state.getPath()))
+	}
+	if !state.Dot1xMaxReq.IsNull() && data.Dot1xMaxReq.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/max-req", state.getPath()))
+	}
+	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/input/policy-map-name", state.getPath()))
+	}
+	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/output/policy-map-name", state.getPath()))
+	}
+	if !state.SourceTemplate.IsNull() && data.SourceTemplate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/source/template", state.getPath()))
+	}
+	if !state.SwitchportModeTrunk.IsNull() && data.SwitchportModeTrunk.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/mode/trunk", state.getPath()))
+	}
+	if !state.SwitchportModeAccess.IsNull() && data.SwitchportModeAccess.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/mode/access", state.getPath()))
+	}
+	if !state.SwitchportNonegotiate.IsNull() && data.SwitchportNonegotiate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/nonegotiate", state.getPath()))
+	}
+	if !state.SwitchportBlockUnicast.IsNull() && data.SwitchportBlockUnicast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/block/unicast", state.getPath()))
+	}
+	if !state.SwitchportPortSecurity.IsNull() && data.SwitchportPortSecurity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security", state.getPath()))
+	}
+	if !state.SwitchportPortSecurityAgingStatic.IsNull() && data.SwitchportPortSecurityAgingStatic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/aging/static", state.getPath()))
+	}
+	if !state.SwitchportPortSecurityAgingTime.IsNull() && data.SwitchportPortSecurityAgingTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/aging/time", state.getPath()))
+	}
+	if !state.SwitchportPortSecurityAgingType.IsNull() && data.SwitchportPortSecurityAgingType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/aging/type", state.getPath()))
+	}
+	if !state.SwitchportPortSecurityAgingTypeInactivity.IsNull() && data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/aging/type/inactivity", state.getPath()))
+	}
 	for i := range state.SwitchportPortSecurityMaximumRange {
 		stateKeyValues := [...]string{strconv.FormatInt(state.SwitchportPortSecurityMaximumRange[i].Range.ValueInt64(), 10)}
 
@@ -1474,12 +1519,138 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 				found = false
 			}
 			if found {
+				if !state.SwitchportPortSecurityMaximumRange[i].Vlan.IsNull() && data.SwitchportPortSecurityMaximumRange[j].Vlan.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/maximum/range=%v/vlan", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.SwitchportPortSecurityMaximumRange[i].VlanAccess.IsNull() && data.SwitchportPortSecurityMaximumRange[j].VlanAccess.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/maximum/range=%v/vlan/access", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/maximum/range=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.SwitchportPortSecurityViolationProtect.IsNull() && data.SwitchportPortSecurityViolationProtect.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/violation/protect", state.getPath()))
+	}
+	if !state.SwitchportPortSecurityViolationRestrict.IsNull() && data.SwitchportPortSecurityViolationRestrict.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/violation/restrict", state.getPath()))
+	}
+	if !state.SwitchportPortSecurityViolationShutdown.IsNull() && data.SwitchportPortSecurityViolationShutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/violation/shutdown", state.getPath()))
+	}
+	if !state.SwitchportAccessVlan.IsNull() && data.SwitchportAccessVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/access/vlan", state.getPath()))
+	}
+	if !state.SwitchportVoiceVlan.IsNull() && data.SwitchportVoiceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/voice/vlan", state.getPath()))
+	}
+	if !state.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/private-vlan/host-association", state.getPath()))
+	}
+	if !state.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/private-vlan/host-association", state.getPath()))
+	}
+	if !state.SwitchportTrunkAllowedVlans.IsNull() && data.SwitchportTrunkAllowedVlans.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/trunk/allowed/vlan/vlans", state.getPath()))
+	}
+	if !state.SwitchportTrunkAllowedVlansNone.IsNull() && data.SwitchportTrunkAllowedVlansNone.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/trunk/allowed/vlan/none", state.getPath()))
+	}
+	if !state.SwitchportTrunkAllowedVlansAll.IsNull() && data.SwitchportTrunkAllowedVlansAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/trunk/allowed/vlan/all", state.getPath()))
+	}
+	if !state.SwitchportTrunkNativeVlanTag.IsNull() && data.SwitchportTrunkNativeVlanTag.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/trunk/native/vlan/tag", state.getPath()))
+	}
+	if !state.SwitchportTrunkNativeVlanVlanId.IsNull() && data.SwitchportTrunkNativeVlanVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/trunk/native/vlan/vlan-id", state.getPath()))
+	}
+	if !state.Mab.IsNull() && data.Mab.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mab", state.getPath()))
+	}
+	if !state.MabEap.IsNull() && data.MabEap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mab/eap", state.getPath()))
+	}
+	if !state.AccessSessionClosed.IsNull() && data.AccessSessionClosed.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/closed", state.getPath()))
+	}
+	if !state.AccessSessionMonitor.IsNull() && data.AccessSessionMonitor.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/monitor", state.getPath()))
+	}
+	if !state.AccessSessionPortControl.IsNull() && data.AccessSessionPortControl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/port-control", state.getPath()))
+	}
+	if !state.AccessSessionControlDirection.IsNull() && data.AccessSessionControlDirection.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/control-direction", state.getPath()))
+	}
+	if !state.AccessSessionHostMode.IsNull() && data.AccessSessionHostMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/host-mode", state.getPath()))
+	}
+	if !state.AccessSessionInterfaceTemplateSticky.IsNull() && data.AccessSessionInterfaceTemplateSticky.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/interface-template/sticky", state.getPath()))
+	}
+	if !state.AccessSessionInterfaceTemplateStickyTimer.IsNull() && data.AccessSessionInterfaceTemplateStickyTimer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/interface-template/sticky/timer", state.getPath()))
+	}
+	if !state.AuthenticationPeriodic.IsNull() && data.AuthenticationPeriodic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/periodic", state.getPath()))
+	}
+	if !state.AuthenticationTimerReauthenticateServer.IsNull() && data.AuthenticationTimerReauthenticateServer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/timer/reauthenticate/server", state.getPath()))
+	}
+	if !state.AuthenticationTimerReauthenticateRange.IsNull() && data.AuthenticationTimerReauthenticateRange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/timer/reauthenticate/range", state.getPath()))
+	}
+	if !state.SpanningTreeBpduguardEnable.IsNull() && data.SpanningTreeBpduguardEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/spanning-tree/bpduguard/enable", state.getPath()))
+	}
+	if !state.SpanningTreeServicePolicy.IsNull() && data.SpanningTreeServicePolicy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/spanning-tree/service-policy", state.getPath()))
+	}
+	if !state.SpanningTreePortfastDisable.IsNull() && data.SpanningTreePortfastDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/spanning-tree/portfast/disable", state.getPath()))
+	}
+	if !state.SpanningTreePortfastEdge.IsNull() && data.SpanningTreePortfastEdge.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/spanning-tree/portfast/edge", state.getPath()))
+	}
+	if !state.SpanningTreePortfastNetwork.IsNull() && data.SpanningTreePortfastNetwork.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/spanning-tree/portfast/network", state.getPath()))
+	}
+	if !state.StormControlBroadcastLevelPpsThreshold.IsNull() && data.StormControlBroadcastLevelPpsThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/storm-control/broadcast/level/pps/threshold", state.getPath()))
+	}
+	if !state.StormControlBroadcastLevelBpsThreshold.IsNull() && data.StormControlBroadcastLevelBpsThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/storm-control/broadcast/level/bps/threshold", state.getPath()))
+	}
+	if !state.StormControlBroadcastLevelThreshold.IsNull() && data.StormControlBroadcastLevelThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/storm-control/broadcast/level/threshold", state.getPath()))
+	}
+	if !state.StormControlMulticastLevelPpsThreshold.IsNull() && data.StormControlMulticastLevelPpsThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/storm-control/multicast/level/pps/threshold", state.getPath()))
+	}
+	if !state.StormControlMulticastLevelBpsThreshold.IsNull() && data.StormControlMulticastLevelBpsThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/storm-control/multicast/level/bps/threshold", state.getPath()))
+	}
+	if !state.StormControlMulticastLevelThreshold.IsNull() && data.StormControlMulticastLevelThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/storm-control/multicast/level/threshold", state.getPath()))
+	}
+	if !state.StormControlActionShutdown.IsNull() && data.StormControlActionShutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/storm-control/action/shutdown", state.getPath()))
+	}
+	if !state.StormControlActionTrap.IsNull() && data.StormControlActionTrap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/storm-control/action/trap", state.getPath()))
+	}
+	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/load-interval", state.getPath()))
+	}
+	if !state.IpDhcpSnoopingLimitRate.IsNull() && data.IpDhcpSnoopingLimitRate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/snooping/limit/rate", state.getPath()))
+	}
+	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/snooping/trust", state.getPath()))
 	}
 	for i := range state.IpAccessGroup {
 		stateKeyValues := [...]string{state.IpAccessGroup[i].Direction.ValueString()}
@@ -1499,12 +1670,27 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 				found = false
 			}
 			if found {
+				if !state.IpAccessGroup[i].AccessList.IsNull() && data.IpAccessGroup[j].AccessList.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group=%v/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.SubscriberAgingInactivityTimerValue.IsNull() && data.SubscriberAgingInactivityTimerValue.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber/aging/inactivity-timer/value", state.getPath()))
+	}
+	if !state.SubscriberAgingInactivityTimerProbe.IsNull() && data.SubscriberAgingInactivityTimerProbe.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber/aging/inactivity-timer/probe", state.getPath()))
+	}
+	if !state.SubscriberAgingProbe.IsNull() && data.SubscriberAgingProbe.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber/aging/probe", state.getPath()))
+	}
+	if !state.DeviceTracking.IsNull() && data.DeviceTracking.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/device-tracking", state.getPath()))
 	}
 	for i := range state.DeviceTrackingAttachPolicy {
 		stateKeyValues := [...]string{state.DeviceTrackingAttachPolicy[i].PolicyName.ValueString()}
@@ -1524,12 +1710,33 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 				found = false
 			}
 			if found {
+				if !state.DeviceTrackingAttachPolicy[i].VlanRange.IsNull() && data.DeviceTrackingAttachPolicy[j].VlanRange.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/device-tracking/attach-policy/policy-name=%v/vlan/vlan-range", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/device-tracking/attach-policy/policy-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.DeviceTrackingVlanRange.IsNull() && data.DeviceTrackingVlanRange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/device-tracking/vlan/vlan-range", state.getPath()))
+	}
+	if !state.CtsManual.IsNull() && data.CtsManual.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cts/manual", state.getPath()))
+	}
+	if !state.CtsManualPolicyStaticSgt.IsNull() && data.CtsManualPolicyStaticSgt.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cts/manual/policy/static/sgt", state.getPath()))
+	}
+	if !state.CtsManualPolicyStaticTrusted.IsNull() && data.CtsManualPolicyStaticTrusted.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cts/manual/policy/static/trusted", state.getPath()))
+	}
+	if !state.CtsManualPropagateSgt.IsNull() && data.CtsManualPropagateSgt.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cts/manual/propagate/sgt", state.getPath()))
+	}
+	if !state.CtsRoleBasedEnforcement.IsNull() && data.CtsRoleBasedEnforcement.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cts/role-based/enforcement", state.getPath()))
 	}
 	return deletedItems
 }

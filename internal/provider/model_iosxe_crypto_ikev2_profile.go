@@ -412,6 +412,33 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 
 func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state CryptoIKEv2Profile) []string {
 	deletedItems := make([]string, 0)
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.AuthenticationRemotePreShare.IsNull() && data.AuthenticationRemotePreShare.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/remote/pre-share", state.getPath()))
+	}
+	if !state.AuthenticationLocalPreShare.IsNull() && data.AuthenticationLocalPreShare.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/local/pre-share", state.getPath()))
+	}
+	if !state.IdentityLocalAddress.IsNull() && data.IdentityLocalAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/local/address", state.getPath()))
+	}
+	if !state.IdentityLocalKeyId.IsNull() && data.IdentityLocalKeyId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/local/key-id", state.getPath()))
+	}
+	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/inbound-only", state.getPath()))
+	}
+	if !state.MatchAddressLocalIp.IsNull() && data.MatchAddressLocalIp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local/ip", state.getPath()))
+	}
+	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/name", state.getPath()))
+	}
+	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/any", state.getPath()))
+	}
 	for i := range state.MatchIdentityRemoteIpv4Addresses {
 		stateKeyValues := [...]string{state.MatchIdentityRemoteIpv4Addresses[i].Address.ValueString()}
 
@@ -430,12 +457,36 @@ func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state Crypt
 				found = false
 			}
 			if found {
+				if !state.MatchIdentityRemoteIpv4Addresses[i].Mask.IsNull() && data.MatchIdentityRemoteIpv4Addresses[j].Mask.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv4=%v/ipv4-mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.MatchIdentityRemoteIpv6Prefixes.IsNull() && data.MatchIdentityRemoteIpv6Prefixes.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix", state.getPath()))
+	}
+	if !state.MatchIdentityRemoteKeys.IsNull() && data.MatchIdentityRemoteKeys.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/key-ids", state.getPath()))
+	}
+	if !state.KeyringLocal.IsNull() && data.KeyringLocal.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/keyring/local/name", state.getPath()))
+	}
+	if !state.DpdInterval.IsNull() && data.DpdInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
+	}
+	if !state.DpdRetry.IsNull() && data.DpdRetry.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
+	}
+	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
+	}
+	if !state.ConfigExchangeRequest.IsNull() && data.ConfigExchangeRequest.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/config-exchange/request-1", state.getPath()))
 	}
 	return deletedItems
 }

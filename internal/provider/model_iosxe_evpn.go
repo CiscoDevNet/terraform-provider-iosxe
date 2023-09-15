@@ -294,6 +294,42 @@ func (data *EVPNData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 	deletedItems := make([]string, 0)
+	if !state.ReplicationTypeIngress.IsNull() && data.ReplicationTypeIngress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/ingress", state.getPath()))
+	}
+	if !state.ReplicationTypeStatic.IsNull() && data.ReplicationTypeStatic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/static", state.getPath()))
+	}
+	if !state.ReplicationTypeP2mp.IsNull() && data.ReplicationTypeP2mp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/p2mp", state.getPath()))
+	}
+	if !state.ReplicationTypeMp2mp.IsNull() && data.ReplicationTypeMp2mp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/mp2mp", state.getPath()))
+	}
+	if !state.MacDuplicationLimit.IsNull() && data.MacDuplicationLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac/duplication", state.getPath()))
+	}
+	if !state.MacDuplicationTime.IsNull() && data.MacDuplicationTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac/duplication", state.getPath()))
+	}
+	if !state.IpDuplicationLimit.IsNull() && data.IpDuplicationLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/duplication", state.getPath()))
+	}
+	if !state.IpDuplicationTime.IsNull() && data.IpDuplicationTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/duplication", state.getPath()))
+	}
+	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/router-id/interface/Loopback", state.getPath()))
+	}
+	if !state.DefaultGatewayAdvertise.IsNull() && data.DefaultGatewayAdvertise.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-gateway/advertise", state.getPath()))
+	}
+	if !state.LoggingPeerState.IsNull() && data.LoggingPeerState.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/peer/state", state.getPath()))
+	}
+	if !state.RouteTargetAutoVni.IsNull() && data.RouteTargetAutoVni.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-target/auto/vni", state.getPath()))
+	}
 	return deletedItems
 }
 

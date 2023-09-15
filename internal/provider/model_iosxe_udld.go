@@ -150,6 +150,18 @@ func (data *UDLDData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *UDLD) getDeletedItems(ctx context.Context, state UDLD) []string {
 	deletedItems := make([]string, 0)
+	if !state.Aggressive.IsNull() && data.Aggressive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:aggressive", state.getPath()))
+	}
+	if !state.Enable.IsNull() && data.Enable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:enable", state.getPath()))
+	}
+	if !state.MessageTime.IsNull() && data.MessageTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:message/time", state.getPath()))
+	}
+	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:recovery/interval", state.getPath()))
+	}
 	return deletedItems
 }
 

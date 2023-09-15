@@ -392,6 +392,72 @@ func (data *ClockData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Clock) getDeletedItems(ctx context.Context, state Clock) []string {
 	deletedItems := make([]string, 0)
+	if !state.CalendarValid.IsNull() && data.CalendarValid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/calendar-valid", state.getPath()))
+	}
+	if !state.SummerTimeZone.IsNull() && data.SummerTimeZone.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time", state.getPath()))
+	}
+	if !state.SummerTimeDate.IsNull() && data.SummerTimeDate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/date", state.getPath()))
+	}
+	if !state.SummerTimeDateStartDay.IsNull() && data.SummerTimeDateStartDay.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/start-day", state.getPath()))
+	}
+	if !state.SummerTimeDateStartMonth.IsNull() && data.SummerTimeDateStartMonth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/start-month", state.getPath()))
+	}
+	if !state.SummerTimeDateStartYear.IsNull() && data.SummerTimeDateStartYear.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/start-year", state.getPath()))
+	}
+	if !state.SummerTimeDateStartTime.IsNull() && data.SummerTimeDateStartTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/start-time", state.getPath()))
+	}
+	if !state.SummerTimeDateEndDay.IsNull() && data.SummerTimeDateEndDay.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/date-end-day", state.getPath()))
+	}
+	if !state.SummerTimeDateEndMonth.IsNull() && data.SummerTimeDateEndMonth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/date-end-month", state.getPath()))
+	}
+	if !state.SummerTimeDateEndYear.IsNull() && data.SummerTimeDateEndYear.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/date-end-year", state.getPath()))
+	}
+	if !state.SummerTimeDateEndTime.IsNull() && data.SummerTimeDateEndTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/date-end-time", state.getPath()))
+	}
+	if !state.SummerTimeDateOffset.IsNull() && data.SummerTimeDateOffset.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/offset", state.getPath()))
+	}
+	if !state.SummerTimeRecurring.IsNull() && data.SummerTimeRecurring.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring", state.getPath()))
+	}
+	if !state.SummerTimeRecurringStartWeek.IsNull() && data.SummerTimeRecurringStartWeek.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-start", state.getPath()))
+	}
+	if !state.SummerTimeRecurringStartWeekday.IsNull() && data.SummerTimeRecurringStartWeekday.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-start-day", state.getPath()))
+	}
+	if !state.SummerTimeRecurringStartMonth.IsNull() && data.SummerTimeRecurringStartMonth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-start-month", state.getPath()))
+	}
+	if !state.SummerTimeRecurringStartTime.IsNull() && data.SummerTimeRecurringStartTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-start-time", state.getPath()))
+	}
+	if !state.SummerTimeRecurringEndWeek.IsNull() && data.SummerTimeRecurringEndWeek.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-end", state.getPath()))
+	}
+	if !state.SummerTimeRecurringEndWeekday.IsNull() && data.SummerTimeRecurringEndWeekday.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-end-day", state.getPath()))
+	}
+	if !state.SummerTimeRecurringEndMonth.IsNull() && data.SummerTimeRecurringEndMonth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-end-month", state.getPath()))
+	}
+	if !state.SummerTimeRecurringEndTime.IsNull() && data.SummerTimeRecurringEndTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-end-time", state.getPath()))
+	}
+	if !state.SummerTimeRecurringOffset.IsNull() && data.SummerTimeRecurringOffset.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-offset", state.getPath()))
+	}
 	return deletedItems
 }
 

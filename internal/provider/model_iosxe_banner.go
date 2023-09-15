@@ -133,6 +133,18 @@ func (data *BannerData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Banner) getDeletedItems(ctx context.Context, state Banner) []string {
 	deletedItems := make([]string, 0)
+	if !state.ExecBanner.IsNull() && data.ExecBanner.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/exec/banner", state.getPath()))
+	}
+	if !state.LoginBanner.IsNull() && data.LoginBanner.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/banner", state.getPath()))
+	}
+	if !state.PromptTimeoutBanner.IsNull() && data.PromptTimeoutBanner.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/prompt-timeout/banner", state.getPath()))
+	}
+	if !state.MotdBanner.IsNull() && data.MotdBanner.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/motd/banner", state.getPath()))
+	}
 	return deletedItems
 }
 

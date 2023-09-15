@@ -1677,6 +1677,297 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 				found = false
 			}
 			if found {
+				if !state.Entries[i].Operation.IsNull() && data.Entries[j].Operation.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/operation", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].Description.IsNull() && data.Entries[j].Description.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].Continue.IsNull() && data.Entries[j].Continue.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/continue", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].ContinueSequenceNumber.IsNull() && data.Entries[j].ContinueSequenceNumber.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/continue/sequence-number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchInterfaces.IsNull() && data.Entries[j].MatchInterfaces.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/interface/interface", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchIpAddressAccessLists.IsNull() && data.Entries[j].MatchIpAddressAccessLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ip/address/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchIpAddressPrefixLists.IsNull() && data.Entries[j].MatchIpAddressPrefixLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ip/address/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchIpNextHopAccessLists.IsNull() && data.Entries[j].MatchIpNextHopAccessLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ip/next-hop/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchIpNextHopPrefixLists.IsNull() && data.Entries[j].MatchIpNextHopPrefixLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ip/next-hop/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchIpv6AddressAccessLists.IsNull() && data.Entries[j].MatchIpv6AddressAccessLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ipv6/address/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchIpv6AddressPrefixLists.IsNull() && data.Entries[j].MatchIpv6AddressPrefixLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ipv6/address/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchIpv6NextHopAccessLists.IsNull() && data.Entries[j].MatchIpv6NextHopAccessLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ipv6/next-hop/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchIpv6NextHopPrefixLists.IsNull() && data.Entries[j].MatchIpv6NextHopPrefixLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/ipv6/next-hop/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchRouteTypeExternal.IsNull() && data.Entries[j].MatchRouteTypeExternal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/external", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchRouteTypeExternalType1.IsNull() && data.Entries[j].MatchRouteTypeExternalType1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/external/type-1", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchRouteTypeExternalType2.IsNull() && data.Entries[j].MatchRouteTypeExternalType2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/external/type-2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchRouteTypeInternal.IsNull() && data.Entries[j].MatchRouteTypeInternal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/internal", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchRouteTypeLevel1.IsNull() && data.Entries[j].MatchRouteTypeLevel1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/level-1", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchRouteTypeLevel2.IsNull() && data.Entries[j].MatchRouteTypeLevel2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/level-2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchRouteTypeLocal.IsNull() && data.Entries[j].MatchRouteTypeLocal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolBgp.IsNull() && data.Entries[j].MatchSourceProtocolBgp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/bgp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolConnected.IsNull() && data.Entries[j].MatchSourceProtocolConnected.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/connected", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolEigrp.IsNull() && data.Entries[j].MatchSourceProtocolEigrp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/eigrp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolIsis.IsNull() && data.Entries[j].MatchSourceProtocolIsis.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/isis", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolLisp.IsNull() && data.Entries[j].MatchSourceProtocolLisp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/lisp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolOspf.IsNull() && data.Entries[j].MatchSourceProtocolOspf.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/ospf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolOspfv3.IsNull() && data.Entries[j].MatchSourceProtocolOspfv3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/ospfv3", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolRip.IsNull() && data.Entries[j].MatchSourceProtocolRip.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/rip", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchSourceProtocolStatic.IsNull() && data.Entries[j].MatchSourceProtocolStatic.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/static", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchTags.IsNull() && data.Entries[j].MatchTags.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/tag/tag_value", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchTrack.IsNull() && data.Entries[j].MatchTrack.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/track", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchAsPathsLegacy.IsNull() && data.Entries[j].MatchAsPathsLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/as-path/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchCommunityListsLegacy.IsNull() && data.Entries[j].MatchCommunityListsLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/community/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchExtcommunityListsLegacy.IsNull() && data.Entries[j].MatchExtcommunityListsLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/extcommunity/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchLocalPreferencesLegacy.IsNull() && data.Entries[j].MatchLocalPreferencesLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/local-preference/values", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchAsPaths.IsNull() && data.Entries[j].MatchAsPaths.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/as-path/access-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchCommunityLists.IsNull() && data.Entries[j].MatchCommunityLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/bgp-community/community-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchCommunityListExactMatch.IsNull() && data.Entries[j].MatchCommunityListExactMatch.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/bgp-community/exact-match", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchExtcommunityLists.IsNull() && data.Entries[j].MatchExtcommunityLists.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/extcommunity/extcommunity-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchLocalPreferences.IsNull() && data.Entries[j].MatchLocalPreferences.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/local-preference/values", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetDefaultInterfaces.IsNull() && data.Entries[j].SetDefaultInterfaces.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/default/interface-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetGlobal.IsNull() && data.Entries[j].SetGlobal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/global", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetInterfaces.IsNull() && data.Entries[j].SetInterfaces.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/interface-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpAddress.IsNull() && data.Entries[j].SetIpAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/address/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpDefaultGlobalNextHopAddress.IsNull() && data.Entries[j].SetIpDefaultGlobalNextHopAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/default/global/next-hop/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpDefaultNextHopAddress.IsNull() && data.Entries[j].SetIpDefaultNextHopAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/default/next-hop/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpGlobalNextHopAddress.IsNull() && data.Entries[j].SetIpGlobalNextHopAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/global/next-hop/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpNextHopAddress.IsNull() && data.Entries[j].SetIpNextHopAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/next-hop/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpNextHopSelf.IsNull() && data.Entries[j].SetIpNextHopSelf.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/next-hop/self", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpQosGroup.IsNull() && data.Entries[j].SetIpQosGroup.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/qos-group/qos-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpv6Address.IsNull() && data.Entries[j].SetIpv6Address.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ipv6/address/prefix-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpv6DefaultGlobalNextHop.IsNull() && data.Entries[j].SetIpv6DefaultGlobalNextHop.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ipv6/default/global/next-hop", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpv6DefaultNextHop.IsNull() && data.Entries[j].SetIpv6DefaultNextHop.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ipv6/default/next-hop/ipv6", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpv6NextHop.IsNull() && data.Entries[j].SetIpv6NextHop.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ipv6/next-hop/ipv6", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetLevel1.IsNull() && data.Entries[j].SetLevel1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/level/level-1", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetLevel12.IsNull() && data.Entries[j].SetLevel12.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/level/level-1-2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetLevel2.IsNull() && data.Entries[j].SetLevel2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/level/level-2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetMetricChange.IsNull() && data.Entries[j].SetMetricChange.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/metric/metric-change", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetMetricValue.IsNull() && data.Entries[j].SetMetricValue.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/metric/values/value", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetMetricDelay.IsNull() && data.Entries[j].SetMetricDelay.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/metric/values/delay", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetMetricReliability.IsNull() && data.Entries[j].SetMetricReliability.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/metric/values/reliability", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetMetricLoading.IsNull() && data.Entries[j].SetMetricLoading.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/metric/values/loading", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetMetricMtu.IsNull() && data.Entries[j].SetMetricMtu.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/metric/values/MTU", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetMetricType.IsNull() && data.Entries[j].SetMetricType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/metric-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetTag.IsNull() && data.Entries[j].SetTag.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/tag/tag-val", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetVrf.IsNull() && data.Entries[j].SetVrf.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/vrf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetAsPathPrependAsLegacy.IsNull() && data.Entries[j].SetAsPathPrependAsLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/as-path/prepend/as-container/as-number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetAsPathPrependLastAsLegacy.IsNull() && data.Entries[j].SetAsPathPrependLastAsLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/as-path/prepend/last-as-cont/last-as", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetAsPathTagLegacy.IsNull() && data.Entries[j].SetAsPathTagLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/as-path/tag", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityNoneLegacy.IsNull() && data.Entries[j].SetCommunityNoneLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/community/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunitiesLegacy.IsNull() && data.Entries[j].SetCommunitiesLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/community/community-well-known/community-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunitiesAdditiveLegacy.IsNull() && data.Entries[j].SetCommunitiesAdditiveLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/community/community-well-known/additive", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityListDeleteLegacy.IsNull() && data.Entries[j].SetCommunityListDeleteLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/comm-list/delete", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityListStandardLegacy.IsNull() && data.Entries[j].SetCommunityListStandardLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/comm-list/comm-list-standard", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityListExpandedLegacy.IsNull() && data.Entries[j].SetCommunityListExpandedLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-expanded", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityListNameLegacy.IsNull() && data.Entries[j].SetCommunityListNameLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/comm-list/comm-list-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetExtcomunityRtLegacy.IsNull() && data.Entries[j].SetExtcomunityRtLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/extcommunity/rt/asn-nn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetExtcomunitySooLegacy.IsNull() && data.Entries[j].SetExtcomunitySooLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/extcommunity/soo/asn-nn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetExtcomunityVpnDistinguisherLegacy.IsNull() && data.Entries[j].SetExtcomunityVpnDistinguisherLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/extcommunity/vpn-distinguisher/asn-nn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetLocalPreferenceLegacy.IsNull() && data.Entries[j].SetLocalPreferenceLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/local-preference", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetWeightLegacy.IsNull() && data.Entries[j].SetWeightLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/weight", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetAsPathPrependAs.IsNull() && data.Entries[j].SetAsPathPrependAs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/prepend/as-container/as-number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetAsPathPrependLastAs.IsNull() && data.Entries[j].SetAsPathPrependLastAs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/prepend/last-as-cont/last-as", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetAsPathTag.IsNull() && data.Entries[j].SetAsPathTag.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/tag", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityNone.IsNull() && data.Entries[j].SetCommunityNone.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunities.IsNull() && data.Entries[j].SetCommunities.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunitiesAdditive.IsNull() && data.Entries[j].SetCommunitiesAdditive.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/additive", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityListDelete.IsNull() && data.Entries[j].SetCommunityListDelete.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/delete", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityListStandard.IsNull() && data.Entries[j].SetCommunityListStandard.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-standard", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityListExpanded.IsNull() && data.Entries[j].SetCommunityListExpanded.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-expanded", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetCommunityListName.IsNull() && data.Entries[j].SetCommunityListName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetExtcomunityRt.IsNull() && data.Entries[j].SetExtcomunityRt.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/rt/asn-nn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetExtcomunitySoo.IsNull() && data.Entries[j].SetExtcomunitySoo.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/soo/asn-nn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetExtcomunityVpnDistinguisher.IsNull() && data.Entries[j].SetExtcomunityVpnDistinguisher.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/vpn-distinguisher/asn-nn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetExtcomunityVpnDistinguisherAdditive.IsNull() && data.Entries[j].SetExtcomunityVpnDistinguisherAdditive.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/vpn-distinguisher/asn-nn-additive", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetLocalPreference.IsNull() && data.Entries[j].SetLocalPreference.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/local-preference", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetWeight.IsNull() && data.Entries[j].SetWeight.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/Cisco-IOS-XE-bgp:bgp-route-map-set/weight", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

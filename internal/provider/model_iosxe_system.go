@@ -427,6 +427,51 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.Hostname.IsNull() && data.Hostname.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/hostname", state.getPath()))
+	}
+	if !state.IpRouting.IsNull() && data.IpRouting.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-conf/routing", state.getPath()))
+	}
+	if !state.Ipv6UnicastRouting.IsNull() && data.Ipv6UnicastRouting.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/unicast-routing", state.getPath()))
+	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/system/Cisco-IOS-XE-switch:mtu/size", state.getPath()))
+	}
+	if !state.IpSourceRoute.IsNull() && data.IpSourceRoute.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/source-route", state.getPath()))
+	}
+	if !state.IpDomainLookup.IsNull() && data.IpDomainLookup.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup", state.getPath()))
+	}
+	if !state.IpDomainName.IsNull() && data.IpDomainName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/name", state.getPath()))
+	}
+	if !state.LoginDelay.IsNull() && data.LoginDelay.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/delay", state.getPath()))
+	}
+	if !state.LoginOnFailure.IsNull() && data.LoginOnFailure.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-failure", state.getPath()))
+	}
+	if !state.LoginOnFailureLog.IsNull() && data.LoginOnFailureLog.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-failure/log", state.getPath()))
+	}
+	if !state.LoginOnSuccess.IsNull() && data.LoginOnSuccess.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-success", state.getPath()))
+	}
+	if !state.LoginOnSuccessLog.IsNull() && data.LoginOnSuccessLog.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-success/log", state.getPath()))
+	}
+	if !state.IpMulticastRouting.IsNull() && data.IpMulticastRouting.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", state.getPath()))
+	}
+	if !state.MulticastRoutingSwitch.IsNull() && data.MulticastRoutingSwitch.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", state.getPath()))
+	}
+	if !state.IpMulticastRoutingDistributed.IsNull() && data.IpMulticastRoutingDistributed.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", state.getPath()))
+	}
 	for i := range state.MulticastRoutingVrfs {
 		stateKeyValues := [...]string{state.MulticastRoutingVrfs[i].Vrf.ValueString()}
 
@@ -445,6 +490,9 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 				found = false
 			}
 			if found {
+				if !state.MulticastRoutingVrfs[i].Distributed.IsNull() && data.MulticastRoutingVrfs[j].Distributed.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v/distributed", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

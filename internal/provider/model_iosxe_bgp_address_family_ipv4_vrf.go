@@ -448,6 +448,15 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedItems(ctx context.Context, state 
 				found = false
 			}
 			if found {
+				if !state.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() && data.Vrfs[j].Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/advertise/l2vpn/evpn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv4UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv4UnicastRedistributeConnected.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/redistribute-vrf/connected", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv4UnicastRedistributeStatic.IsNull() && data.Vrfs[j].Ipv4UnicastRedistributeStatic.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/redistribute-vrf/static", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				for ci := range state.Vrfs[i].Ipv4UnicastNetworksMask {
 					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString(), state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()}
 
@@ -472,6 +481,15 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedItems(ctx context.Context, state 
 							found = false
 						}
 						if found {
+							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].RouteMap.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/with-mask=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Backdoor.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/with-mask=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Evpn.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/with-mask=%v/evpn", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							break
 						}
 					}
@@ -497,6 +515,15 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedItems(ctx context.Context, state 
 							found = false
 						}
 						if found {
+							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].RouteMap.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/no-mask=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].Backdoor.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/no-mask=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].Evpn.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/network/no-mask=%v/evpn", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							break
 						}
 					}

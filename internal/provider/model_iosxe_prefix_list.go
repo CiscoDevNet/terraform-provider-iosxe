@@ -220,6 +220,18 @@ func (data *PrefixList) getDeletedItems(ctx context.Context, state PrefixList) [
 				found = false
 			}
 			if found {
+				if !state.Prefixes[i].Action.IsNull() && data.Prefixes[j].Action.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/action", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Prefixes[i].Ip.IsNull() && data.Prefixes[j].Ip.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/ip", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Prefixes[i].Ge.IsNull() && data.Prefixes[j].Ge.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/ge", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Prefixes[i].Le.IsNull() && data.Prefixes[j].Le.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/le", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

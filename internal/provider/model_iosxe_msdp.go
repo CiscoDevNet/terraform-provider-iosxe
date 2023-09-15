@@ -251,6 +251,9 @@ func (data *MSDPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *MSDP) getDeletedItems(ctx context.Context, state MSDP) []string {
 	deletedItems := make([]string, 0)
+	if !state.OriginatorId.IsNull() && data.OriginatorId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/originator-id", state.getPath()))
+	}
 	for i := range state.Passwords {
 		stateKeyValues := [...]string{state.Passwords[i].Addr.ValueString()}
 
@@ -269,6 +272,12 @@ func (data *MSDP) getDeletedItems(ctx context.Context, state MSDP) []string {
 				found = false
 			}
 			if found {
+				if !state.Passwords[i].Encryption.IsNull() && data.Passwords[j].Encryption.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/password/peer-list=%v/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Passwords[i].Password.IsNull() && data.Passwords[j].Password.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/password/peer-list=%v/password", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -294,6 +303,12 @@ func (data *MSDP) getDeletedItems(ctx context.Context, state MSDP) []string {
 				found = false
 			}
 			if found {
+				if !state.Peers[i].RemoteAs.IsNull() && data.Peers[j].RemoteAs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/remote-as", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].ConnectSourceLoopback.IsNull() && data.Peers[j].ConnectSourceLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/connect-source/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

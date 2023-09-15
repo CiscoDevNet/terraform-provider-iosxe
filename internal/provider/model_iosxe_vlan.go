@@ -223,6 +223,27 @@ func (data *VLANData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *VLAN) getDeletedItems(ctx context.Context, state VLAN) []string {
 	deletedItems := make([]string, 0)
+	if !state.RemoteSpan.IsNull() && data.RemoteSpan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/remote-span", state.getPath()))
+	}
+	if !state.PrivateVlanPrimary.IsNull() && data.PrivateVlanPrimary.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/primary", state.getPath()))
+	}
+	if !state.PrivateVlanAssociation.IsNull() && data.PrivateVlanAssociation.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/association", state.getPath()))
+	}
+	if !state.PrivateVlanCommunity.IsNull() && data.PrivateVlanCommunity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/community", state.getPath()))
+	}
+	if !state.PrivateVlanIsolated.IsNull() && data.PrivateVlanIsolated.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/isolated", state.getPath()))
+	}
+	if !state.Name.IsNull() && data.Name.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/name", state.getPath()))
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
+	}
 	return deletedItems
 }
 

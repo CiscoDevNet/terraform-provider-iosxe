@@ -266,6 +266,27 @@ func (data *MDTSubscriptionData) fromBody(ctx context.Context, res gjson.Result)
 
 func (data *MDTSubscription) getDeletedItems(ctx context.Context, state MDTSubscription) []string {
 	deletedItems := make([]string, 0)
+	if !state.Stream.IsNull() && data.Stream.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/stream", state.getPath()))
+	}
+	if !state.Encoding.IsNull() && data.Encoding.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/encoding", state.getPath()))
+	}
+	if !state.SourceVrf.IsNull() && data.SourceVrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/source-vrf", state.getPath()))
+	}
+	if !state.SourceAddress.IsNull() && data.SourceAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/source-address", state.getPath()))
+	}
+	if !state.UpdatePolicyPeriodic.IsNull() && data.UpdatePolicyPeriodic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/period", state.getPath()))
+	}
+	if !state.UpdatePolicyOnChange.IsNull() && data.UpdatePolicyOnChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/no-synch-on-start", state.getPath()))
+	}
+	if !state.FilterXpath.IsNull() && data.FilterXpath.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/base/xpath", state.getPath()))
+	}
 	for i := range state.Receivers {
 		stateKeyValues := [...]string{state.Receivers[i].Address.ValueString(), strconv.FormatInt(state.Receivers[i].Port.ValueInt64(), 10)}
 
@@ -290,6 +311,9 @@ func (data *MDTSubscription) getDeletedItems(ctx context.Context, state MDTSubsc
 				found = false
 			}
 			if found {
+				if !state.Receivers[i].Protocol.IsNull() && data.Receivers[j].Protocol.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/mdt-receivers=%v/protocol", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

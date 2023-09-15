@@ -125,6 +125,12 @@ func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []string {
 	deletedItems := make([]string, 0)
+	if !state.Type.IsNull() && data.Type.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/type", state.getPath()))
+	}
+	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber", state.getPath()))
+	}
 	return deletedItems
 }
 

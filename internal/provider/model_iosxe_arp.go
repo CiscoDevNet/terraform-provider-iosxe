@@ -392,6 +392,15 @@ func (data *ARPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 	deletedItems := make([]string, 0)
+	if !state.IncompleteEntries.IsNull() && data.IncompleteEntries.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/incomplete/entries", state.getPath()))
+	}
+	if !state.ProxyDisable.IsNull() && data.ProxyDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/proxy/disable", state.getPath()))
+	}
+	if !state.EntryLearn.IsNull() && data.EntryLearn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/entry/learn", state.getPath()))
+	}
 	for i := range state.InspectionFilters {
 		stateKeyValues := [...]string{state.InspectionFilters[i].Name.ValueString()}
 
@@ -428,6 +437,9 @@ func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 							found = false
 						}
 						if found {
+							if !state.InspectionFilters[i].Vlan[ci].Static.IsNull() && data.InspectionFilters[j].Vlan[cj].Static.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/filter=%v/vlan=%v/static", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							break
 						}
 					}
@@ -441,6 +453,30 @@ func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/filter=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.InspectionValidateSrcMac.IsNull() && data.InspectionValidateSrcMac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
+	}
+	if !state.InspectionValidateDstMac.IsNull() && data.InspectionValidateDstMac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
+	}
+	if !state.InspectionValidateIp.IsNull() && data.InspectionValidateIp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
+	}
+	if !state.InspectionValidateAllowZeros.IsNull() && data.InspectionValidateAllowZeros.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate/allow", state.getPath()))
+	}
+	if !state.InspectionLogBufferEntries.IsNull() && data.InspectionLogBufferEntries.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/entries", state.getPath()))
+	}
+	if !state.InspectionLogBufferLogsEntries.IsNull() && data.InspectionLogBufferLogsEntries.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/logs", state.getPath()))
+	}
+	if !state.InspectionLogBufferLogsInterval.IsNull() && data.InspectionLogBufferLogsInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/logs", state.getPath()))
+	}
+	if !state.InspectionVlan.IsNull() && data.InspectionVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/vlan", state.getPath()))
 	}
 	return deletedItems
 }

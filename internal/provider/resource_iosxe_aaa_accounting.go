@@ -269,7 +269,7 @@ func (r *AAAAccountingResource) Update(ctx context.Context, req resource.UpdateR
 	body := plan.toBody(ctx)
 
 	deletedItems := plan.getDeletedItems(ctx, state)
-	tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedItems))
+	tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
 
 	emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
 	tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))

@@ -246,6 +246,30 @@ func (data *InterfacePIMData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *InterfacePIM) getDeletedItems(ctx context.Context, state InterfacePIM) []string {
 	deletedItems := make([]string, 0)
+	if !state.Passive.IsNull() && data.Passive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/passive", state.getPath()))
+	}
+	if !state.DenseMode.IsNull() && data.DenseMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/dense-mode", state.getPath()))
+	}
+	if !state.SparseMode.IsNull() && data.SparseMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-mode", state.getPath()))
+	}
+	if !state.SparseDenseMode.IsNull() && data.SparseDenseMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:pim-mode-choice-cfg/sparse-dense-mode", state.getPath()))
+	}
+	if !state.Bfd.IsNull() && data.Bfd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:bfd", state.getPath()))
+	}
+	if !state.Border.IsNull() && data.Border.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:border", state.getPath()))
+	}
+	if !state.BsrBorder.IsNull() && data.BsrBorder.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:bsr-border", state.getPath()))
+	}
+	if !state.DrPriority.IsNull() && data.DrPriority.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:dr-priority", state.getPath()))
+	}
 	return deletedItems
 }
 

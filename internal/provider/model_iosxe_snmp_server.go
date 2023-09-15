@@ -3180,6 +3180,51 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) []string {
 	deletedItems := make([]string, 0)
+	if !state.ChassisId.IsNull() && data.ChassisId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:chassis-id", state.getPath()))
+	}
+	if !state.Contact.IsNull() && data.Contact.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:contact", state.getPath()))
+	}
+	if !state.IfindexPersist.IsNull() && data.IfindexPersist.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:ifindex/persist", state.getPath()))
+	}
+	if !state.Location.IsNull() && data.Location.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:location", state.getPath()))
+	}
+	if !state.Packetsize.IsNull() && data.Packetsize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:packetsize", state.getPath()))
+	}
+	if !state.QueueLength.IsNull() && data.QueueLength.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:queue-length", state.getPath()))
+	}
+	if !state.EnableLoggingGetop.IsNull() && data.EnableLoggingGetop.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/logging/getop", state.getPath()))
+	}
+	if !state.EnableLoggingSetop.IsNull() && data.EnableLoggingSetop.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/logging/setop", state.getPath()))
+	}
+	if !state.EnableInforms.IsNull() && data.EnableInforms.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/informs", state.getPath()))
+	}
+	if !state.EnableTraps.IsNull() && data.EnableTraps.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps", state.getPath()))
+	}
+	if !state.EnableTrapsSnmpAuthentication.IsNull() && data.EnableTrapsSnmpAuthentication.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/authentication", state.getPath()))
+	}
+	if !state.EnableTrapsSnmpColdstart.IsNull() && data.EnableTrapsSnmpColdstart.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/coldstart", state.getPath()))
+	}
+	if !state.EnableTrapsSnmpLinkdown.IsNull() && data.EnableTrapsSnmpLinkdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/linkdown", state.getPath()))
+	}
+	if !state.EnableTrapsSnmpLinkup.IsNull() && data.EnableTrapsSnmpLinkup.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/linkup", state.getPath()))
+	}
+	if !state.EnableTrapsSnmpWarmstart.IsNull() && data.EnableTrapsSnmpWarmstart.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/warmstart", state.getPath()))
+	}
 	for i := range state.Hosts {
 		stateKeyValues := [...]string{state.Hosts[i].IpAddress.ValueString()}
 
@@ -3198,12 +3243,408 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 				found = false
 			}
 			if found {
+				if !state.Hosts[i].CommunityOrUser.IsNull() && data.Hosts[j].CommunityOrUser.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v/community-or-user", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Hosts[i].Version.IsNull() && data.Hosts[j].Version.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Hosts[i].Encryption.IsNull() && data.Hosts[j].Encryption.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.SystemShutdown.IsNull() && data.SystemShutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:system-shutdown", state.getPath()))
+	}
+	if !state.EnableTrapsFlowmon.IsNull() && data.EnableTrapsFlowmon.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/flowmon", state.getPath()))
+	}
+	if !state.EnableTrapsEntityPerfThroughputNotif.IsNull() && data.EnableTrapsEntityPerfThroughputNotif.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-perf/throughput-notif", state.getPath()))
+	}
+	if !state.EnableTrapsCallHomeMessageSendFail.IsNull() && data.EnableTrapsCallHomeMessageSendFail.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/call-home/message-send-fail", state.getPath()))
+	}
+	if !state.EnableTrapsCallHomeServerFail.IsNull() && data.EnableTrapsCallHomeServerFail.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/call-home/server-fail", state.getPath()))
+	}
+	if !state.EnableTrapsTty.IsNull() && data.EnableTrapsTty.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/tty", state.getPath()))
+	}
+	if !state.EnableTrapsOspfv3ConfigStateChange.IsNull() && data.EnableTrapsOspfv3ConfigStateChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospfv3:ospfv3-config/state-change/enable", state.getPath()))
+	}
+	if !state.EnableTrapsOspfv3ConfigErrors.IsNull() && data.EnableTrapsOspfv3ConfigErrors.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospfv3:ospfv3-config/errors/enable", state.getPath()))
+	}
+	if !state.EnableTrapsOspfConfigRetransmit.IsNull() && data.EnableTrapsOspfConfigRetransmit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/retransmit/enable", state.getPath()))
+	}
+	if !state.EnableTrapsOspfConfigLsa.IsNull() && data.EnableTrapsOspfConfigLsa.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/lsa/enable", state.getPath()))
+	}
+	if !state.EnableTrapsOspfNssaTransChange.IsNull() && data.EnableTrapsOspfNssaTransChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/cisco-specific/state-change/nssa-trans-change", state.getPath()))
+	}
+	if !state.EnableTrapsOspfShamlinkInterface.IsNull() && data.EnableTrapsOspfShamlinkInterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/cisco-specific/state-change/shamlink/interface", state.getPath()))
+	}
+	if !state.EnableTrapsOspfShamlinkNeighbor.IsNull() && data.EnableTrapsOspfShamlinkNeighbor.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/cisco-specific/state-change/shamlink/neighbor", state.getPath()))
+	}
+	if !state.EnableTrapsOspfErrorsEnable.IsNull() && data.EnableTrapsOspfErrorsEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/cisco-specific/errors/enable", state.getPath()))
+	}
+	if !state.EnableTrapsOspfRetransmitEnable.IsNull() && data.EnableTrapsOspfRetransmitEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/cisco-specific/retransmit/enable", state.getPath()))
+	}
+	if !state.EnableTrapsOspfLsaEnable.IsNull() && data.EnableTrapsOspfLsaEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/cisco-specific/lsa/enable", state.getPath()))
+	}
+	if !state.EnableTrapsEigrp.IsNull() && data.EnableTrapsEigrp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/eigrp", state.getPath()))
+	}
+	if !state.EnableTrapsAuthFrameworkSecViolation.IsNull() && data.EnableTrapsAuthFrameworkSecViolation.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/auth-framework/sec-violation", state.getPath()))
+	}
+	if !state.EnableTrapsRep.IsNull() && data.EnableTrapsRep.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/rep", state.getPath()))
+	}
+	if !state.EnableTrapsVtp.IsNull() && data.EnableTrapsVtp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vtp", state.getPath()))
+	}
+	if !state.EnableTrapsVlancreate.IsNull() && data.EnableTrapsVlancreate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vlancreate", state.getPath()))
+	}
+	if !state.EnableTrapsVlandelete.IsNull() && data.EnableTrapsVlandelete.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vlandelete", state.getPath()))
+	}
+	if !state.EnableTrapsPortSecurity.IsNull() && data.EnableTrapsPortSecurity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/port-security", state.getPath()))
+	}
+	if !state.EnableTrapsLicense.IsNull() && data.EnableTrapsLicense.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/license", state.getPath()))
+	}
+	if !state.EnableTrapsSmartLicense.IsNull() && data.EnableTrapsSmartLicense.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/smart-licenseing/smart-license", state.getPath()))
+	}
+	if !state.EnableTrapsCpuThreshold.IsNull() && data.EnableTrapsCpuThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/cpu/threshold", state.getPath()))
+	}
+	if !state.EnableTrapsMemoryBufferpeak.IsNull() && data.EnableTrapsMemoryBufferpeak.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/memory/bufferpeak", state.getPath()))
+	}
+	if !state.EnableTrapsStackwise.IsNull() && data.EnableTrapsStackwise.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stackwise", state.getPath()))
+	}
+	if !state.EnableTrapsUdldLinkFailRpt.IsNull() && data.EnableTrapsUdldLinkFailRpt.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/udld/link-fail-rpt", state.getPath()))
+	}
+	if !state.EnableTrapsUdldStatusChange.IsNull() && data.EnableTrapsUdldStatusChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/udld/status-change", state.getPath()))
+	}
+	if !state.EnableTrapsFruCtrl.IsNull() && data.EnableTrapsFruCtrl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/fru-ctrl", state.getPath()))
+	}
+	if !state.EnableTrapsFlashInsertion.IsNull() && data.EnableTrapsFlashInsertion.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/flash/insertion", state.getPath()))
+	}
+	if !state.EnableTrapsFlashRemoval.IsNull() && data.EnableTrapsFlashRemoval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/flash/removal", state.getPath()))
+	}
+	if !state.EnableTrapsFlashLowspace.IsNull() && data.EnableTrapsFlashLowspace.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/flash/lowspace", state.getPath()))
+	}
+	if !state.EnableTrapsEnergywise.IsNull() && data.EnableTrapsEnergywise.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/energywise", state.getPath()))
+	}
+	if !state.EnableTrapsPowerEthernetGroup.IsNull() && data.EnableTrapsPowerEthernetGroup.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/power-ethernet/group", state.getPath()))
+	}
+	if !state.EnableTrapsPowerEthernetPolice.IsNull() && data.EnableTrapsPowerEthernetPolice.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/power-ethernet/police", state.getPath()))
+	}
+	if !state.EnableTrapsEntity.IsNull() && data.EnableTrapsEntity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity", state.getPath()))
+	}
+	if !state.EnableTrapsPwVc.IsNull() && data.EnableTrapsPwVc.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw/vc", state.getPath()))
+	}
+	if !state.EnableTrapsEnvmon.IsNull() && data.EnableTrapsEnvmon.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/envmon", state.getPath()))
+	}
+	if !state.EnableTrapsCefResourceFailure.IsNull() && data.EnableTrapsCefResourceFailure.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/cef/resource-failure", state.getPath()))
+	}
+	if !state.EnableTrapsCefPeerStateChange.IsNull() && data.EnableTrapsCefPeerStateChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/cef/peer-state-change", state.getPath()))
+	}
+	if !state.EnableTrapsCefPeerFibStateChange.IsNull() && data.EnableTrapsCefPeerFibStateChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/cef/peer-fib-state-change", state.getPath()))
+	}
+	if !state.EnableTrapsCefInconsistency.IsNull() && data.EnableTrapsCefInconsistency.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/cef/inconsistency", state.getPath()))
+	}
+	if !state.EnableTrapsIsis.IsNull() && data.EnableTrapsIsis.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/isis", state.getPath()))
+	}
+	if !state.EnableTrapsIpsla.IsNull() && data.EnableTrapsIpsla.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsla", state.getPath()))
+	}
+	if !state.EnableTrapsEntityDiagBootUpFail.IsNull() && data.EnableTrapsEntityDiagBootUpFail.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-diag/boot-up-fail", state.getPath()))
+	}
+	if !state.EnableTrapsEntityDiagHmTestRecover.IsNull() && data.EnableTrapsEntityDiagHmTestRecover.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-diag/hm-test-recover", state.getPath()))
+	}
+	if !state.EnableTrapsEntityDiagHmThreshReached.IsNull() && data.EnableTrapsEntityDiagHmThreshReached.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-diag/hm-thresh-reached", state.getPath()))
+	}
+	if !state.EnableTrapsEntityDiagScheduledTestFail.IsNull() && data.EnableTrapsEntityDiagScheduledTestFail.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-diag/scheduled-test-fail", state.getPath()))
+	}
+	if !state.EnableTrapsBfd.IsNull() && data.EnableTrapsBfd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bfd", state.getPath()))
+	}
+	if !state.EnableTrapsIkePolicyAdd.IsNull() && data.EnableTrapsIkePolicyAdd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ike/policy/add", state.getPath()))
+	}
+	if !state.EnableTrapsIkePolicyDelete.IsNull() && data.EnableTrapsIkePolicyDelete.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ike/policy/delete", state.getPath()))
+	}
+	if !state.EnableTrapsIkeTunnelStart.IsNull() && data.EnableTrapsIkeTunnelStart.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ike/tunnel/start", state.getPath()))
+	}
+	if !state.EnableTrapsIkeTunnelStop.IsNull() && data.EnableTrapsIkeTunnelStop.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ike/tunnel/stop", state.getPath()))
+	}
+	if !state.EnableTrapsIpsecCryptomapAdd.IsNull() && data.EnableTrapsIpsecCryptomapAdd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/cryptomap/add", state.getPath()))
+	}
+	if !state.EnableTrapsIpsecCryptomapAttach.IsNull() && data.EnableTrapsIpsecCryptomapAttach.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/cryptomap/attach", state.getPath()))
+	}
+	if !state.EnableTrapsIpsecCryptomapDelete.IsNull() && data.EnableTrapsIpsecCryptomapDelete.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/cryptomap/delete", state.getPath()))
+	}
+	if !state.EnableTrapsIpsecCryptomapDetach.IsNull() && data.EnableTrapsIpsecCryptomapDetach.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/cryptomap/detach", state.getPath()))
+	}
+	if !state.EnableTrapsIpsecTunnelStart.IsNull() && data.EnableTrapsIpsecTunnelStart.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/tunnel/start", state.getPath()))
+	}
+	if !state.EnableTrapsIpsecTunnelStop.IsNull() && data.EnableTrapsIpsecTunnelStop.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/tunnel/stop", state.getPath()))
+	}
+	if !state.EnableTrapsIpsecTooManySas.IsNull() && data.EnableTrapsIpsecTooManySas.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/too-many-sas", state.getPath()))
+	}
+	if !state.EnableTrapsConfigCopy.IsNull() && data.EnableTrapsConfigCopy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/config-copy", state.getPath()))
+	}
+	if !state.EnableTrapsConfig.IsNull() && data.EnableTrapsConfig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/config", state.getPath()))
+	}
+	if !state.EnableTrapsConfigCtid.IsNull() && data.EnableTrapsConfigCtid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/config-ctid", state.getPath()))
+	}
+	if !state.EnableTrapsDhcp.IsNull() && data.EnableTrapsDhcp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/dhcp", state.getPath()))
+	}
+	if !state.EnableTrapsEventManager.IsNull() && data.EnableTrapsEventManager.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/event-manager", state.getPath()))
+	}
+	if !state.EnableTrapsHsrp.IsNull() && data.EnableTrapsHsrp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/hsrp", state.getPath()))
+	}
+	if !state.EnableTrapsIpmulticast.IsNull() && data.EnableTrapsIpmulticast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipmulticast", state.getPath()))
+	}
+	if !state.EnableTrapsMsdp.IsNull() && data.EnableTrapsMsdp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/msdp", state.getPath()))
+	}
+	if !state.EnableTrapsOspfConfigStateChange.IsNull() && data.EnableTrapsOspfConfigStateChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/state-change/enable", state.getPath()))
+	}
+	if !state.EnableTrapsOspfConfigErrors.IsNull() && data.EnableTrapsOspfConfigErrors.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/errors/enable", state.getPath()))
+	}
+	if !state.EnableTrapsPimInvalidPimMessage.IsNull() && data.EnableTrapsPimInvalidPimMessage.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pim/invalid-pim-message", state.getPath()))
+	}
+	if !state.EnableTrapsPimNeighborChange.IsNull() && data.EnableTrapsPimNeighborChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pim/neighbor-change", state.getPath()))
+	}
+	if !state.EnableTrapsPimRpMappingChange.IsNull() && data.EnableTrapsPimRpMappingChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pim/rp-mapping-change", state.getPath()))
+	}
+	if !state.EnableTrapsBridgeNewroot.IsNull() && data.EnableTrapsBridgeNewroot.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bridge/newroot", state.getPath()))
+	}
+	if !state.EnableTrapsBridgeTopologychange.IsNull() && data.EnableTrapsBridgeTopologychange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bridge/topologychange", state.getPath()))
+	}
+	if !state.EnableTrapsStpxInconsistency.IsNull() && data.EnableTrapsStpxInconsistency.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/inconsistency", state.getPath()))
+	}
+	if !state.EnableTrapsStpxRootInconsistency.IsNull() && data.EnableTrapsStpxRootInconsistency.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/root-inconsistency", state.getPath()))
+	}
+	if !state.EnableTrapsStpxLoopInconsistency.IsNull() && data.EnableTrapsStpxLoopInconsistency.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/loop-inconsistency", state.getPath()))
+	}
+	if !state.EnableTrapsSyslog.IsNull() && data.EnableTrapsSyslog.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog", state.getPath()))
+	}
+	if !state.EnableTrapsBgpCbgp2.IsNull() && data.EnableTrapsBgpCbgp2.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp/cbgp2", state.getPath()))
+	}
+	if !state.EnableTrapsNhrpNhs.IsNull() && data.EnableTrapsNhrpNhs.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/nhs", state.getPath()))
+	}
+	if !state.EnableTrapsNhrpNhc.IsNull() && data.EnableTrapsNhrpNhc.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/nhc", state.getPath()))
+	}
+	if !state.EnableTrapsNhrpNhp.IsNull() && data.EnableTrapsNhrpNhp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/nhp", state.getPath()))
+	}
+	if !state.EnableTrapsNhrpQuotaExceeded.IsNull() && data.EnableTrapsNhrpQuotaExceeded.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/quota-exceeded", state.getPath()))
+	}
+	if !state.EnableTrapsMplsTrafficEng.IsNull() && data.EnableTrapsMplsTrafficEng.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/traffic-eng", state.getPath()))
+	}
+	if !state.EnableTrapsMplsVpn.IsNull() && data.EnableTrapsMplsVpn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/vpn", state.getPath()))
+	}
+	if !state.EnableTrapsMplsRfcLdp.IsNull() && data.EnableTrapsMplsRfcLdp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc/ldp", state.getPath()))
+	}
+	if !state.EnableTrapsMplsLdp.IsNull() && data.EnableTrapsMplsLdp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/ldp", state.getPath()))
+	}
+	if !state.EnableTrapsFastRerouteProtected.IsNull() && data.EnableTrapsFastRerouteProtected.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/fast-reroute/protected", state.getPath()))
+	}
+	if !state.EnableTrapsLocalAuth.IsNull() && data.EnableTrapsLocalAuth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/local-auth", state.getPath()))
+	}
+	if !state.EnableTrapsVlanMembership.IsNull() && data.EnableTrapsVlanMembership.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vlan-membership", state.getPath()))
+	}
+	if !state.EnableTrapsErrdisable.IsNull() && data.EnableTrapsErrdisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/errdisable", state.getPath()))
+	}
+	if !state.EnableTrapsRf.IsNull() && data.EnableTrapsRf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/rf", state.getPath()))
+	}
+	if !state.EnableTrapsTransceiverAll.IsNull() && data.EnableTrapsTransceiverAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/transceiver/all", state.getPath()))
+	}
+	if !state.EnableTrapsBulkstatCollection.IsNull() && data.EnableTrapsBulkstatCollection.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bulkstat/collection", state.getPath()))
+	}
+	if !state.EnableTrapsBulkstatTransfer.IsNull() && data.EnableTrapsBulkstatTransfer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bulkstat/transfer", state.getPath()))
+	}
+	if !state.EnableTrapsMacNotificationChange.IsNull() && data.EnableTrapsMacNotificationChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mac-notification/change", state.getPath()))
+	}
+	if !state.EnableTrapsMacNotificationMove.IsNull() && data.EnableTrapsMacNotificationMove.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mac-notification/move", state.getPath()))
+	}
+	if !state.EnableTrapsMacNotificationThreshold.IsNull() && data.EnableTrapsMacNotificationThreshold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mac-notification/threshold", state.getPath()))
+	}
+	if !state.EnableTrapsVrfmibVrfUp.IsNull() && data.EnableTrapsVrfmibVrfUp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vrf-up", state.getPath()))
+	}
+	if !state.EnableTrapsVrfmibVrfDown.IsNull() && data.EnableTrapsVrfmibVrfDown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vrf-down", state.getPath()))
+	}
+	if !state.EnableTrapsVrfmibVnetTrunkUp.IsNull() && data.EnableTrapsVrfmibVnetTrunkUp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vnet-trunk-up", state.getPath()))
+	}
+	if !state.EnableTrapsVrfmibVnetTrunkDown.IsNull() && data.EnableTrapsVrfmibVnetTrunkDown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vnet-trunk-down", state.getPath()))
+	}
+	if !state.SourceInterfaceInformsGigabitEthernet.IsNull() && data.SourceInterfaceInformsGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet", state.getPath()))
+	}
+	if !state.SourceInterfaceInformsTenGigabitEthernet.IsNull() && data.SourceInterfaceInformsTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.SourceInterfaceInformsFortyGigabitEthernet.IsNull() && data.SourceInterfaceInformsFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.SourceInterfaceInformsHundredGigE.IsNull() && data.SourceInterfaceInformsHundredGigE.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/HundredGigE", state.getPath()))
+	}
+	if !state.SourceInterfaceInformsLoopback.IsNull() && data.SourceInterfaceInformsLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/Loopback", state.getPath()))
+	}
+	if !state.SourceInterfaceInformsPortChannel.IsNull() && data.SourceInterfaceInformsPortChannel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/Port-channel", state.getPath()))
+	}
+	if !state.SourceInterfaceInformsPortChannelSubinterface.IsNull() && data.SourceInterfaceInformsPortChannelSubinterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/Port-channel-subinterface/Port-channel", state.getPath()))
+	}
+	if !state.SourceInterfaceInformsVlan.IsNull() && data.SourceInterfaceInformsVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/Vlan", state.getPath()))
+	}
+	if !state.SourceInterfaceTrapsGigabitEthernet.IsNull() && data.SourceInterfaceTrapsGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/traps/GigabitEthernet", state.getPath()))
+	}
+	if !state.SourceInterfaceTrapsTenGigabitEthernet.IsNull() && data.SourceInterfaceTrapsTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/traps/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.SourceInterfaceTrapsFortyGigabitEthernet.IsNull() && data.SourceInterfaceTrapsFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/traps/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.SourceInterfaceTrapsHundredGigE.IsNull() && data.SourceInterfaceTrapsHundredGigE.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/traps/HundredGigE", state.getPath()))
+	}
+	if !state.SourceInterfaceTrapsLoopback.IsNull() && data.SourceInterfaceTrapsLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/traps/Loopback", state.getPath()))
+	}
+	if !state.SourceInterfaceTrapsPortChannel.IsNull() && data.SourceInterfaceTrapsPortChannel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/traps/Port-channel", state.getPath()))
+	}
+	if !state.SourceInterfaceTrapsPortChannelSubinterface.IsNull() && data.SourceInterfaceTrapsPortChannelSubinterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/traps/Port-channel-subinterface/Port-channel", state.getPath()))
+	}
+	if !state.SourceInterfaceTrapsVlan.IsNull() && data.SourceInterfaceTrapsVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/traps/Vlan", state.getPath()))
+	}
+	if !state.TrapSourceGigabitEthernet.IsNull() && data.TrapSourceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:trap-source/GigabitEthernet", state.getPath()))
+	}
+	if !state.TrapSourceTenGigabitEthernet.IsNull() && data.TrapSourceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:trap-source/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.TrapSourceFortyGigabitEthernet.IsNull() && data.TrapSourceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:trap-source/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.TrapSourceHundredGigE.IsNull() && data.TrapSourceHundredGigE.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:trap-source/HundredGigE", state.getPath()))
+	}
+	if !state.TrapSourceLoopback.IsNull() && data.TrapSourceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:trap-source/Loopback", state.getPath()))
+	}
+	if !state.TrapSourcePortChannel.IsNull() && data.TrapSourcePortChannel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:trap-source/Port-channel", state.getPath()))
+	}
+	if !state.TrapSourcePortChannelSubinterface.IsNull() && data.TrapSourcePortChannelSubinterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:trap-source/Port-channel-subinterface/Port-channel", state.getPath()))
+	}
+	if !state.TrapSourceVlan.IsNull() && data.TrapSourceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:trap-source/Vlan", state.getPath()))
 	}
 	for i := range state.SnmpCommunities {
 		stateKeyValues := [...]string{state.SnmpCommunities[i].Name.ValueString()}
@@ -3223,6 +3664,18 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 				found = false
 			}
 			if found {
+				if !state.SnmpCommunities[i].View.IsNull() && data.SnmpCommunities[j].View.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:community-config=%v/view", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.SnmpCommunities[i].Permission.IsNull() && data.SnmpCommunities[j].Permission.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:community-config=%v/permission", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.SnmpCommunities[i].Ipv6.IsNull() && data.SnmpCommunities[j].Ipv6.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:community-config=%v/ipv6", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.SnmpCommunities[i].AccessListName.IsNull() && data.SnmpCommunities[j].AccessListName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:community-config=%v/access-list-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -3279,6 +3732,9 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 				found = false
 			}
 			if found {
+				if !state.Views[i].IncExl.IsNull() && data.Views[j].IncExl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:view=%v/inc-exl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

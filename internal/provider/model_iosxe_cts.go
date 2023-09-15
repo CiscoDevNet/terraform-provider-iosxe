@@ -94,6 +94,9 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 	deletedItems := make([]string, 0)
+	if !state.AuthorizationList.IsNull() && data.AuthorizationList.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:authorization/list", state.getPath()))
+	}
 	return deletedItems
 }
 

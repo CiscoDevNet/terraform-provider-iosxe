@@ -268,6 +268,27 @@ func (data *DHCPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *DHCP) getDeletedItems(ctx context.Context, state DHCP) []string {
 	deletedItems := make([]string, 0)
+	if !state.CompatibilitySuboptionLinkSelection.IsNull() && data.CompatibilitySuboptionLinkSelection.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:compatibility/suboption/link-selection", state.getPath()))
+	}
+	if !state.CompatibilitySuboptionServerOverride.IsNull() && data.CompatibilitySuboptionServerOverride.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:compatibility/suboption/server-override", state.getPath()))
+	}
+	if !state.RelayInformationTrustAll.IsNull() && data.RelayInformationTrustAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:relay/information/trust-all", state.getPath()))
+	}
+	if !state.RelayInformationOptionDefault.IsNull() && data.RelayInformationOptionDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:relay/information/option/option-default", state.getPath()))
+	}
+	if !state.RelayInformationOptionVpn.IsNull() && data.RelayInformationOptionVpn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:relay/information/option/vpn", state.getPath()))
+	}
+	if !state.Snooping.IsNull() && data.Snooping.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping", state.getPath()))
+	}
+	if !state.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() && data.SnoopingInformationOptionFormatRemoteIdHostname.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname", state.getPath()))
+	}
 	for i := range state.SnoopingVlans {
 		stateKeyValues := [...]string{state.SnoopingVlans[i].VlanId.ValueString()}
 

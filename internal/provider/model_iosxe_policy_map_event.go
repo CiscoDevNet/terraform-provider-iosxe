@@ -350,6 +350,9 @@ func (data *PolicyMapEventData) fromBody(ctx context.Context, res gjson.Result) 
 
 func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMapEvent) []string {
 	deletedItems := make([]string, 0)
+	if !state.MatchType.IsNull() && data.MatchType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match-type", state.getPath()))
+	}
 	for i := range state.ClassNumbers {
 		stateKeyValues := [...]string{strconv.FormatInt(state.ClassNumbers[i].Number.ValueInt64(), 10)}
 
@@ -368,6 +371,12 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 				found = false
 			}
 			if found {
+				if !state.ClassNumbers[i].Class.IsNull() && data.ClassNumbers[j].Class.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/class", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.ClassNumbers[i].ExecutionType.IsNull() && data.ClassNumbers[j].ExecutionType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/execution-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				for ci := range state.ClassNumbers[i].ActionNumbers {
 					cstateKeyValues := [...]string{strconv.FormatInt(state.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64(), 10)}
 
@@ -386,6 +395,30 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 							found = false
 						}
 						if found {
+							if !state.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].PauseReauthentication.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/pause/reauthentication", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Authorize.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authorize", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].TerminateConfig.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].TerminateConfig.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/terminate-config", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigServiceTemplate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/service-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingMethod.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/method", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetries.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/retries", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetryTime.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/retry-time", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/priority", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							break
 						}
 					}

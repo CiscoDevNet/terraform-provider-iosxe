@@ -1093,6 +1093,159 @@ func (data *ErrdisableData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Errdisable) getDeletedItems(ctx context.Context, state Errdisable) []string {
 	deletedItems := make([]string, 0)
+	if !state.DetectCauseAll.IsNull() && data.DetectCauseAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/all", state.getPath()))
+	}
+	if !state.DetectCauseArpInspection.IsNull() && data.DetectCauseArpInspection.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/arp-inspection", state.getPath()))
+	}
+	if !state.DetectCauseBpduguard.IsNull() && data.DetectCauseBpduguard.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/bpduguard", state.getPath()))
+	}
+	if !state.DetectCauseDhcpRateLimit.IsNull() && data.DetectCauseDhcpRateLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/dhcp-rate-limit", state.getPath()))
+	}
+	if !state.DetectCauseDtpFlap.IsNull() && data.DetectCauseDtpFlap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/dtp-flap", state.getPath()))
+	}
+	if !state.DetectCauseGbicInvalid.IsNull() && data.DetectCauseGbicInvalid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/gbic-invalid", state.getPath()))
+	}
+	if !state.DetectCauseInlinePower.IsNull() && data.DetectCauseInlinePower.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/inline-power", state.getPath()))
+	}
+	if !state.DetectCauseL2ptguard.IsNull() && data.DetectCauseL2ptguard.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/l2ptguard", state.getPath()))
+	}
+	if !state.DetectCauseLinkFlap.IsNull() && data.DetectCauseLinkFlap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/link-flap", state.getPath()))
+	}
+	if !state.DetectCauseLoopback.IsNull() && data.DetectCauseLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/loopback", state.getPath()))
+	}
+	if !state.DetectCauseMlacpMinlink.IsNull() && data.DetectCauseMlacpMinlink.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/mlacp-minlink", state.getPath()))
+	}
+	if !state.DetectCausePagpFlap.IsNull() && data.DetectCausePagpFlap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/pagp-flap", state.getPath()))
+	}
+	if !state.DetectCausePppoeIaRateLimit.IsNull() && data.DetectCausePppoeIaRateLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/pppoe-ia-rate-limit", state.getPath()))
+	}
+	if !state.DetectCauseSecurityViolationShutdownVlan.IsNull() && data.DetectCauseSecurityViolationShutdownVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/security-violation/shutdown/vlan", state.getPath()))
+	}
+	if !state.DetectCauseSfpConfigMismatch.IsNull() && data.DetectCauseSfpConfigMismatch.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/sfp-config-mismatch", state.getPath()))
+	}
+	if !state.DetectCauseSmallFrame.IsNull() && data.DetectCauseSmallFrame.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/small-frame", state.getPath()))
+	}
+	if !state.DetectCauseLoopdetect.IsNull() && data.DetectCauseLoopdetect.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/detect/cause/loopdetect", state.getPath()))
+	}
+	if !state.FlapSettingCauseDtpFlapMaxFlaps.IsNull() && data.FlapSettingCauseDtpFlapMaxFlaps.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/flap-setting/cause/dtp-flap", state.getPath()))
+	}
+	if !state.FlapSettingCauseDtpFlapTime.IsNull() && data.FlapSettingCauseDtpFlapTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/flap-setting/cause/dtp-flap", state.getPath()))
+	}
+	if !state.FlapSettingCauseLinkFlapMaxFlaps.IsNull() && data.FlapSettingCauseLinkFlapMaxFlaps.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/flap-setting/cause/link-flap", state.getPath()))
+	}
+	if !state.FlapSettingCauseLinkFlapTime.IsNull() && data.FlapSettingCauseLinkFlapTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/flap-setting/cause/link-flap", state.getPath()))
+	}
+	if !state.FlapSettingCausePagpFlapMaxFlaps.IsNull() && data.FlapSettingCausePagpFlapMaxFlaps.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/flap-setting/cause/pagp-flap", state.getPath()))
+	}
+	if !state.FlapSettingCausePagpFlapTime.IsNull() && data.FlapSettingCausePagpFlapTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/flap-setting/cause/pagp-flap", state.getPath()))
+	}
+	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/interval", state.getPath()))
+	}
+	if !state.RecoveryCauseAll.IsNull() && data.RecoveryCauseAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/all", state.getPath()))
+	}
+	if !state.RecoveryCauseArpInspection.IsNull() && data.RecoveryCauseArpInspection.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/arp-inspection", state.getPath()))
+	}
+	if !state.RecoveryCauseBpduguard.IsNull() && data.RecoveryCauseBpduguard.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/bpduguard", state.getPath()))
+	}
+	if !state.RecoveryCauseChannelMisconfig.IsNull() && data.RecoveryCauseChannelMisconfig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/channel-misconfig", state.getPath()))
+	}
+	if !state.RecoveryCauseDhcpRateLimit.IsNull() && data.RecoveryCauseDhcpRateLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/dhcp-rate-limit", state.getPath()))
+	}
+	if !state.RecoveryCauseDtpFlap.IsNull() && data.RecoveryCauseDtpFlap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/dtp-flap", state.getPath()))
+	}
+	if !state.RecoveryCauseGbicInvalid.IsNull() && data.RecoveryCauseGbicInvalid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/gbic-invalid", state.getPath()))
+	}
+	if !state.RecoveryCauseInlinePower.IsNull() && data.RecoveryCauseInlinePower.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/inline-power", state.getPath()))
+	}
+	if !state.RecoveryCauseL2ptguard.IsNull() && data.RecoveryCauseL2ptguard.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/l2ptguard", state.getPath()))
+	}
+	if !state.RecoveryCauseLinkFlap.IsNull() && data.RecoveryCauseLinkFlap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/link-flap", state.getPath()))
+	}
+	if !state.RecoveryCauseLinkMonitorFailure.IsNull() && data.RecoveryCauseLinkMonitorFailure.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/link-monitor-failure", state.getPath()))
+	}
+	if !state.RecoveryCauseLoopback.IsNull() && data.RecoveryCauseLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/loopback", state.getPath()))
+	}
+	if !state.RecoveryCauseMacLimit.IsNull() && data.RecoveryCauseMacLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/mac-limit", state.getPath()))
+	}
+	if !state.RecoveryCauseMlacpMinlink.IsNull() && data.RecoveryCauseMlacpMinlink.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/mlacp-minlink", state.getPath()))
+	}
+	if !state.RecoveryCausePagpFlap.IsNull() && data.RecoveryCausePagpFlap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/pagp-flap", state.getPath()))
+	}
+	if !state.RecoveryCausePortModeFailure.IsNull() && data.RecoveryCausePortModeFailure.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/port-mode-failure", state.getPath()))
+	}
+	if !state.RecoveryCausePppoeIaRateLimit.IsNull() && data.RecoveryCausePppoeIaRateLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/pppoe-ia-rate-limit", state.getPath()))
+	}
+	if !state.RecoveryCausePsp.IsNull() && data.RecoveryCausePsp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/psp", state.getPath()))
+	}
+	if !state.RecoveryCausePsecureViolation.IsNull() && data.RecoveryCausePsecureViolation.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/psecure-violation", state.getPath()))
+	}
+	if !state.RecoveryCauseSecurityViolation.IsNull() && data.RecoveryCauseSecurityViolation.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/security-violation", state.getPath()))
+	}
+	if !state.RecoveryCauseSfpConfigMismatch.IsNull() && data.RecoveryCauseSfpConfigMismatch.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/sfp-config-mismatch", state.getPath()))
+	}
+	if !state.RecoveryCauseSmallFrame.IsNull() && data.RecoveryCauseSmallFrame.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/small-frame", state.getPath()))
+	}
+	if !state.RecoveryCauseStormControl.IsNull() && data.RecoveryCauseStormControl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/storm-control", state.getPath()))
+	}
+	if !state.RecoveryCauseUdld.IsNull() && data.RecoveryCauseUdld.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/udld", state.getPath()))
+	}
+	if !state.RecoveryCauseUnicastFlood.IsNull() && data.RecoveryCauseUnicastFlood.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/unicast-flood", state.getPath()))
+	}
+	if !state.RecoveryCauseVmps.IsNull() && data.RecoveryCauseVmps.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/vmps", state.getPath()))
+	}
+	if !state.RecoveryCauseLoopdetect.IsNull() && data.RecoveryCauseLoopdetect.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/loopdetect", state.getPath()))
+	}
 	return deletedItems
 }
 

@@ -144,6 +144,18 @@ func (data *VLANConfigurationData) fromBody(ctx context.Context, res gjson.Resul
 
 func (data *VLANConfiguration) getDeletedItems(ctx context.Context, state VLANConfiguration) []string {
 	deletedItems := make([]string, 0)
+	if !state.Vni.IsNull() && data.Vni.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni", state.getPath()))
+	}
+	if !state.AccessVfi.IsNull() && data.AccessVfi.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/member/access-vfi", state.getPath()))
+	}
+	if !state.EvpnInstance.IsNull() && data.EvpnInstance.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/member/evpn-instance/evpn-instance", state.getPath()))
+	}
+	if !state.EvpnInstanceVni.IsNull() && data.EvpnInstanceVni.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/member/evpn-instance/vni", state.getPath()))
+	}
 	return deletedItems
 }
 

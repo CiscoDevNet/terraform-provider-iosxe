@@ -369,6 +369,57 @@ func (data *CryptoIKEv2Keyring) getDeletedItems(ctx context.Context, state Crypt
 				found = false
 			}
 			if found {
+				if !state.Peers[i].Description.IsNull() && data.Peers[j].Description.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].Hostname.IsNull() && data.Peers[j].Hostname.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/hostname", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].Ipv4Address.IsNull() && data.Peers[j].Ipv4Address.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/address/ipv4/ipv4-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].Ipv4Mask.IsNull() && data.Peers[j].Ipv4Mask.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/address/ipv4/ipv4-mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].Ipv6Prefix.IsNull() && data.Peers[j].Ipv6Prefix.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/address/ipv6-prefix", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].IdentityKeyId.IsNull() && data.Peers[j].IdentityKeyId.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/key-id-number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].IdentityAddress.IsNull() && data.Peers[j].IdentityAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/address-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].IdentityEmailName.IsNull() && data.Peers[j].IdentityEmailName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/email-option/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].IdentityEmailDomain.IsNull() && data.Peers[j].IdentityEmailDomain.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/email-option/domain", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].IdentityFqdnName.IsNull() && data.Peers[j].IdentityFqdnName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/fqdn-option/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].IdentityFqdnDomain.IsNull() && data.Peers[j].IdentityFqdnDomain.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/identity/fqdn-option/domain", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].PreSharedKeyLocalEncryption.IsNull() && data.Peers[j].PreSharedKeyLocalEncryption.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/local-option/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].PreSharedKeyLocal.IsNull() && data.Peers[j].PreSharedKeyLocal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/local-option/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].PreSharedKeyRemoteEncryption.IsNull() && data.Peers[j].PreSharedKeyRemoteEncryption.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/remote-option/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].PreSharedKeyRemote.IsNull() && data.Peers[j].PreSharedKeyRemote.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/remote-option/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].PreSharedKeyEncryption.IsNull() && data.Peers[j].PreSharedKeyEncryption.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].PreSharedKey.IsNull() && data.Peers[j].PreSharedKey.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/pre-shared-key/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

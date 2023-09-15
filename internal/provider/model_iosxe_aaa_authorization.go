@@ -260,6 +260,12 @@ func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuth
 				found = false
 			}
 			if found {
+				if !state.Execs[i].A1Local.IsNull() && data.Execs[j].A1Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A1IfAuthenticated.IsNull() && data.Execs[j].A1IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -285,6 +291,9 @@ func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuth
 				found = false
 			}
 			if found {
+				if !state.Networks[i].A1Group.IsNull() && data.Networks[j].A1Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}

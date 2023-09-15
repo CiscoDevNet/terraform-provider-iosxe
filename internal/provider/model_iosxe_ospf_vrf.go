@@ -705,6 +705,30 @@ func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []string {
 	deletedItems := make([]string, 0)
+	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/all-interfaces", state.getPath()))
+	}
+	if !state.DefaultInformationOriginate.IsNull() && data.DefaultInformationOriginate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate", state.getPath()))
+	}
+	if !state.DefaultInformationOriginateAlways.IsNull() && data.DefaultInformationOriginateAlways.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate/always", state.getPath()))
+	}
+	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-metric", state.getPath()))
+	}
+	if !state.Distance.IsNull() && data.Distance.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/distance/distance", state.getPath()))
+	}
+	if !state.DomainTag.IsNull() && data.DomainTag.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/domain-tag", state.getPath()))
+	}
+	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/autoconfig", state.getPath()))
+	}
+	if !state.MplsLdpSync.IsNull() && data.MplsLdpSync.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/sync", state.getPath()))
+	}
 	for i := range state.Neighbor {
 		stateKeyValues := [...]string{state.Neighbor[i].Ip.ValueString()}
 
@@ -723,6 +747,12 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 				found = false
 			}
 			if found {
+				if !state.Neighbor[i].Priority.IsNull() && data.Neighbor[j].Priority.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Neighbor[i].Cost.IsNull() && data.Neighbor[j].Cost.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/cost", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -748,12 +778,27 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 				found = false
 			}
 			if found {
+				if !state.Network[i].Wildcard.IsNull() && data.Network[j].Wildcard.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/wildcard", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Network[i].Area.IsNull() && data.Network[j].Area.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/area", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.Priority.IsNull() && data.Priority.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
+	}
+	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/router-id", state.getPath()))
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
 	}
 	for i := range state.SummaryAddress {
 		stateKeyValues := [...]string{state.SummaryAddress[i].Ip.ValueString()}
@@ -773,6 +818,9 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 				found = false
 			}
 			if found {
+				if !state.SummaryAddress[i].Mask.IsNull() && data.SummaryAddress[j].Mask.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/summary-address=%v/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -798,12 +846,36 @@ func (data *OSPFVRF) getDeletedItems(ctx context.Context, state OSPFVRF) []strin
 				found = false
 			}
 			if found {
+				if !state.Areas[i].AuthenticationMessageDigest.IsNull() && data.Areas[j].AuthenticationMessageDigest.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/authentication/message-digest", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].Nssa.IsNull() && data.Areas[j].Nssa.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginate.IsNull() && data.Areas[j].NssaDefaultInformationOriginate.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetric.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetricType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate/metric-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].NssaNoSummary.IsNull() && data.Areas[j].NssaNoSummary.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].NssaNoRedistribution.IsNull() && data.Areas[j].NssaNoRedistribution.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/default", state.getPath()))
 	}
 	return deletedItems
 }
