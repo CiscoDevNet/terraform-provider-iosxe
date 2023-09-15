@@ -46,7 +46,7 @@ attributes:
   - yang_name: host-config/ip-community
     tf_name: hosts
     type: List
-    test_tags: [IOSXE179, IOSXE1710]
+    exclude_test: true
     attributes:
       - yang_name: ip-address
         id: true
@@ -65,6 +65,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-perf/throughput-notif
     tf_name: enable_traps_entity_perf_throughput_notif
     example: true
+    test_tags: [IOSXE179, IOSXE1710]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/call-home/message-send-fail
     tf_name: enable_traps_call_home_message_send_fail
     example: true

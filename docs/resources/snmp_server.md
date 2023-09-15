@@ -30,7 +30,6 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_snmp_warmstart               = true
   system_shutdown                           = true
   enable_traps_flowmon                      = true
-  enable_traps_entity_perf_throughput_notif = true
   enable_traps_call_home_message_send_fail  = true
   enable_traps_call_home_server_fail        = true
   enable_traps_tty                          = true

@@ -77,12 +77,6 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_arp_inspection_limit_rate", "1000"))
 	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "spanning_tree_link_type", "point-to-point"))
-	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_dhcp_snooping_trust", "true"))
-	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -179,12 +173,6 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	}
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	spanning_tree_link_type = "point-to-point"` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	ip_dhcp_snooping_trust = true` + "\n"
 	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"

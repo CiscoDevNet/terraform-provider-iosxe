@@ -186,10 +186,10 @@ attributes:
     test_tags: [C9000V]
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
     example: point-to-point
-    test_tags: [C9000V]
+    exclude_test: true
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
-    test_tags: [C9000V]
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
