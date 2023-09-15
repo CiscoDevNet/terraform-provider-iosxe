@@ -20,12 +20,16 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccIosxeLine(t *testing.T) {
+	if os.Getenv("LINE") == "" {
+		t.Skip("skipping test, set environment variable LINE")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.first", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_line.test", "console.0.exec_timeout_minutes", "45"))

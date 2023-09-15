@@ -33,7 +33,6 @@ attributes:
   - yang_name: switchport-conf/switchport
     tf_name: switchport
     example: false
-    exclude_test: true
     test_tags: [C9000V]
   - yang_name: ip/access-group/in/apply-type/apply-intf/acl/acl-name
     xpath: ip/access-group/in/acl/acl-name
@@ -165,7 +164,7 @@ attributes:
     attributes:
       - yang_name: address
         id: true
-        example: fe80::64  
+        example: fe80::64
       - yang_name: link-local
         example: true
   - yang_name: ipv6/address/prefix-list
@@ -181,19 +180,15 @@ attributes:
     example: 2147
   - yang_name: ip/arp/inspection/trust
     example: true
-    exclude_test: true
     test_tags: [C9000V]
   - yang_name: ip/arp/inspection/limit/rate
     example: 1000
-    exclude_test: true
     test_tags: [C9000V]
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
     example: point-to-point
-    exclude_test: true
     test_tags: [C9000V]
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
-    exclude_test: true
     test_tags: [C9000V]
 
 test_prerequisites:
