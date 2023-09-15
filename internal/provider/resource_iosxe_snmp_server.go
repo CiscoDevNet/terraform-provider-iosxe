@@ -139,7 +139,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable warmStart trap").String,
 				Optional:            true,
 			},
-			"host_config_ip_community": schema.ListNestedAttribute{
+			"hosts": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify hosts keyed by (ip-address, community-or-user)").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -173,7 +173,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable use of the SNMP reload command").String,
 				Optional:            true,
 			},
-			"enable_traps_snmp_flowmon": schema.BoolAttribute{
+			"enable_traps_flowmon": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP flowmon notifications").String,
 				Optional:            true,
 			},
@@ -181,7 +181,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable ENTITY PERFORMANCE MIB throughput traps").String,
 				Optional:            true,
 			},
-			"enable_traps_call_home": schema.BoolAttribute{
+			"enable_traps_call_home_message_send_fail": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
@@ -197,7 +197,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable all traps of state-change").String,
 				Optional:            true,
 			},
-			"enable_traps_ospfv3_errors_change": schema.BoolAttribute{
+			"enable_traps_ospfv3_config_errors": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable all traps of errors").String,
 				Optional:            true,
 			},
@@ -281,11 +281,11 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP stackwise traps").String,
 				Optional:            true,
 			},
-			"enable_traps_link_fail_rpt": schema.BoolAttribute{
+			"enable_traps_udld_link_fail_rpt": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP cudldpFastHelloLinkFailRptNotification traps").String,
 				Optional:            true,
 			},
-			"enable_traps_status_change": schema.BoolAttribute{
+			"enable_traps_udld_status_change": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP cudldpFastHelloStatusChangeNotification traps").String,
 				Optional:            true,
 			},
@@ -307,6 +307,14 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"enable_traps_energywise": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_power_ethernet_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP inline power group based traps").String,
+				Optional:            true,
+			},
+			"enable_traps_power_ethernet_police": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Policing Trap").String,
 				Optional:            true,
 			},
 			"enable_traps_entity": schema.BoolAttribute{
@@ -441,7 +449,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP MSDP traps").String,
 				Optional:            true,
 			},
-			"enable_traps_ospf_config_state": schema.BoolAttribute{
+			"enable_traps_ospf_config_state_change": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable all traps of state-change").String,
 				Optional:            true,
 			},
@@ -453,7 +461,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable invalid pim message trap").String,
 				Optional:            true,
 			},
-			"enable_traps_pim_invalid_neighbor_change": schema.BoolAttribute{
+			"enable_traps_pim_neighbor_change": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable neighbor change trap").String,
 				Optional:            true,
 			},
@@ -483,6 +491,10 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"enable_traps_syslog": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP syslog traps").String,
+				Optional:            true,
+			},
+			"enable_traps_bgp_cbgp2": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP MIBv2 traps").String,
 				Optional:            true,
 			},
 			"enable_traps_nhrp_nhs": schema.BoolAttribute{
@@ -519,6 +531,10 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"enable_traps_fast_reroute_protected": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_local_auth": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP local auth traps").String,
 				Optional:            true,
 			},
 			"enable_traps_vlan_membership": schema.BoolAttribute{
@@ -565,11 +581,11 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
-			"enable_traps_vnet_trunk_up": schema.BoolAttribute{
+			"enable_traps_vrfmib_vnet_trunk_up": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
-			"enable_traps_vnet_trunk_down": schema.BoolAttribute{
+			"enable_traps_vrfmib_vnet_trunk_down": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},

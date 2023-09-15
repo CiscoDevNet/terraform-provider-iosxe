@@ -43,11 +43,10 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/snmp/warmstart
     tf_name: enable_traps_snmp_warmstart
     example: true
-  
   - yang_name: host-config/ip-community
-    tf_name: host_config_ip_community
+    tf_name: hosts
     type: List
-    exclude_test: true
+    test_tags: [IOSXE179, IOSXE1710]
     attributes:
       - yang_name: ip-address
         id: true
@@ -58,17 +57,16 @@ attributes:
         example: 2c
       - yang_name: encryption
         example: 7
-
   - yang_name: Cisco-IOS-XE-snmp:system-shutdown
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/flowmon
-    tf_name: enable_traps_snmp_flowmon
+    tf_name: enable_traps_flowmon
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-perf/throughput-notif
     tf_name: enable_traps_entity_perf_throughput_notif
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/call-home/message-send-fail
-    tf_name: enable_traps_call_home
+    tf_name: enable_traps_call_home_message_send_fail
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/call-home/server-fail
     tf_name: enable_traps_call_home_server_fail
@@ -80,7 +78,7 @@ attributes:
     tf_name: enable_traps_ospfv3_config_state_change
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospfv3:ospfv3-config/errors/enable
-    tf_name: enable_traps_ospfv3_errors_change
+    tf_name: enable_traps_ospfv3_config_errors
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/retransmit/enable
     tf_name: enable_traps_ospf_config_retransmit
@@ -106,8 +104,6 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/cisco-specific/lsa/enable
     tf_name: enable_traps_ospf_lsa_enable
     example: true
-
-
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/eigrp
     tf_name: enable_traps_eigrp
     example: true
@@ -147,11 +143,11 @@ attributes:
     example: true
     test_tags: [C9000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/udld/link-fail-rpt
-    tf_name: enable_traps_link_fail_rpt
+    tf_name: enable_traps_udld_link_fail_rpt
     example: true
     test_tags: [C9000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/udld/status-change
-    tf_name: enable_traps_status_change
+    tf_name: enable_traps_udld_status_change
     example: true
     test_tags: [C9000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/fru-ctrl
@@ -170,19 +166,14 @@ attributes:
     tf_name: enable_traps_energywise
     example: true
     test_tags: [C9000V]
-
-  #   #Group 1 is not inline power capable.
-  # # - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/power-ethernet/group
-  # #   tf_name: enable_traps_power_ethernet_group
-  # #   example: true
-  # #   exclude_test: true
-  # #   test_tags: [C9000V]
-  # #   #Group 2 is not inline power capable.
-  # # - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/power-ethernet/police
-  # #   tf_name: enable_traps_power_ethernet_police
-  # #   example: true
-  # #   exclude_test: true
-  # #   test_tags: [C9000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/power-ethernet/group
+    tf_name: enable_traps_power_ethernet_group
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/power-ethernet/police
+    tf_name: enable_traps_power_ethernet_police
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity
     tf_name: enable_traps_entity
     example: true
@@ -197,51 +188,41 @@ attributes:
     tf_name: enable_traps_cef_resource_failure
     example: true
     exclude_test: true
-    # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/cef/peer-state-change
     tf_name: enable_traps_cef_peer_state_change
     example: true
     exclude_test: true
-    # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/cef/peer-fib-state-change
     tf_name: enable_traps_cef_peer_fib_state_change
     example: true
     exclude_test: true
-    # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/cef/inconsistency
     tf_name: enable_traps_cef_inconsistency
     example: true
     exclude_test: true
-    # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/isis
     tf_name: enable_traps_isis
     example: true
     exclude_test: true
-    # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsla
     tf_name: enable_traps_ipsla
     example: true
-
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-diag/boot-up-fail
     tf_name: enable_traps_entity_diag_boot_up_fail
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-diag/hm-test-recover
     tf_name: enable_traps_entity_diag_hm_test_recover
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-diag/hm-thresh-reached
     tf_name: enable_traps_entity_diag_hm_thresh_reached
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-diag/scheduled-test-fail
     tf_name: enable_traps_entity_diag_scheduled_test_fail
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/bfd
     tf_name: enable_traps_bfd
     example: true
@@ -271,7 +252,7 @@ attributes:
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/tunnel/start
     tf_name: enable_traps_ipsec_tunnel_start
-    example: true    
+    example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipsec/tunnel/stop
     tf_name: enable_traps_ipsec_tunnel_stop
     example: true
@@ -297,7 +278,6 @@ attributes:
     tf_name: enable_traps_hsrp
     example: true
     exclude_test: true
-  #   test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ipmulticast
     tf_name: enable_traps_ipmulticast
     example: true
@@ -305,7 +285,7 @@ attributes:
     tf_name: enable_traps_msdp
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/state-change/enable
-    tf_name: enable_traps_ospf_config_state
+    tf_name: enable_traps_ospf_config_state_change
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/errors/enable
     tf_name: enable_traps_ospf_config_errors
@@ -314,7 +294,7 @@ attributes:
     tf_name: enable_traps_pim_invalid_pim_message
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pim/neighbor-change
-    tf_name: enable_traps_pim_invalid_neighbor_change
+    tf_name: enable_traps_pim_neighbor_change
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pim/rp-mapping-change
     tf_name: enable_traps_pim_rp_mapping_change
@@ -322,6 +302,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/bridge/newroot
     tf_name: enable_traps_bridge_newroot
     example: true
+    test_tags: [C9000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/bridge/topologychange
     tf_name: enable_traps_bridge_topologychange
     example: true
@@ -341,64 +322,54 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog
     tf_name: enable_traps_syslog
     example: true
-
-  #   #Unable to run go generate for BGP as YANG path is not captured
-
-  # # - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp/cbgp2
-  # #   tf_name: enable_traps_bgp_cbgp2
-  # #   example: true
-  # #   exclude_test: true
-  #   # test_tags: [C8000V]
-
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp/cbgp2
+    tf_name: enable_traps_bgp_cbgp2
+    type: Bool
+    type_yang_bool: empty
+    description: Enable BGP MIBv2 traps
+    no_augment_config: true
+    exclude_test: true
+    example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/nhs
     tf_name: enable_traps_nhrp_nhs
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/nhc
     tf_name: enable_traps_nhrp_nhc
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/nhp
     tf_name: enable_traps_nhrp_nhp
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/quota-exceeded
     tf_name: enable_traps_nhrp_quota_exceeded
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/traffic-eng
     tf_name: enable_traps_mpls_traffic_eng
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/vpn
     tf_name: enable_traps_mpls_vpn
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc/ldp
     tf_name: enable_traps_mpls_rfc_ldp
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/ldp
     tf_name: enable_traps_mpls_ldp
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/fast-reroute/protected
     tf_name: enable_traps_fast_reroute_protected
     example: true
     exclude_test: true
-  #   # test_tags: [C8000V]
-  # - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/local-auth  #not supported on .47 & .48
-  #   tf_name: enable_traps_local_auth
-  #   example: true
-  #   exclude_test: true  
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/local-auth
+    tf_name: enable_traps_local_auth
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/vlan-membership
     tf_name: enable_traps_vlan_membership
     example: true
@@ -438,12 +409,11 @@ attributes:
     tf_name: enable_traps_vrfmib_vrf_down
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vnet-trunk-up
-    tf_name: enable_traps_vnet_trunk_up
+    tf_name: enable_traps_vrfmib_vnet_trunk_up
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vnet-trunk-down
-    tf_name: enable_traps_vnet_trunk_down
+    tf_name: enable_traps_vrfmib_vnet_trunk_down
     example: true
-
   - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/GigabitEthernet/GigabitEthernet
     xpath: Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet
     tf_name: source_interface_informs_gigabit_ethernet

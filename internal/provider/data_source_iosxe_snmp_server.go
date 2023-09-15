@@ -123,7 +123,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable warmStart trap",
 				Computed:            true,
 			},
-			"host_config_ip_community": schema.ListNestedAttribute{
+			"hosts": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify hosts keyed by (ip-address, community-or-user)",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -151,7 +151,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable use of the SNMP reload command",
 				Computed:            true,
 			},
-			"enable_traps_snmp_flowmon": schema.BoolAttribute{
+			"enable_traps_flowmon": schema.BoolAttribute{
 				MarkdownDescription: "Enable SNMP flowmon notifications",
 				Computed:            true,
 			},
@@ -159,7 +159,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable ENTITY PERFORMANCE MIB throughput traps",
 				Computed:            true,
 			},
-			"enable_traps_call_home": schema.BoolAttribute{
+			"enable_traps_call_home_message_send_fail": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
@@ -175,7 +175,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable all traps of state-change",
 				Computed:            true,
 			},
-			"enable_traps_ospfv3_errors_change": schema.BoolAttribute{
+			"enable_traps_ospfv3_config_errors": schema.BoolAttribute{
 				MarkdownDescription: "Enable all traps of errors",
 				Computed:            true,
 			},
@@ -259,11 +259,11 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable SNMP stackwise traps",
 				Computed:            true,
 			},
-			"enable_traps_link_fail_rpt": schema.BoolAttribute{
+			"enable_traps_udld_link_fail_rpt": schema.BoolAttribute{
 				MarkdownDescription: "Enable SNMP cudldpFastHelloLinkFailRptNotification traps",
 				Computed:            true,
 			},
-			"enable_traps_status_change": schema.BoolAttribute{
+			"enable_traps_udld_status_change": schema.BoolAttribute{
 				MarkdownDescription: "Enable SNMP cudldpFastHelloStatusChangeNotification traps",
 				Computed:            true,
 			},
@@ -285,6 +285,14 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 			},
 			"enable_traps_energywise": schema.BoolAttribute{
 				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_power_ethernet_group": schema.StringAttribute{
+				MarkdownDescription: "Enable SNMP inline power group based traps",
+				Computed:            true,
+			},
+			"enable_traps_power_ethernet_police": schema.BoolAttribute{
+				MarkdownDescription: "Enable Policing Trap",
 				Computed:            true,
 			},
 			"enable_traps_entity": schema.BoolAttribute{
@@ -419,7 +427,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable SNMP MSDP traps",
 				Computed:            true,
 			},
-			"enable_traps_ospf_config_state": schema.BoolAttribute{
+			"enable_traps_ospf_config_state_change": schema.BoolAttribute{
 				MarkdownDescription: "Enable all traps of state-change",
 				Computed:            true,
 			},
@@ -431,7 +439,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable invalid pim message trap",
 				Computed:            true,
 			},
-			"enable_traps_pim_invalid_neighbor_change": schema.BoolAttribute{
+			"enable_traps_pim_neighbor_change": schema.BoolAttribute{
 				MarkdownDescription: "Enable neighbor change trap",
 				Computed:            true,
 			},
@@ -461,6 +469,10 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 			},
 			"enable_traps_syslog": schema.BoolAttribute{
 				MarkdownDescription: "Enable SNMP syslog traps",
+				Computed:            true,
+			},
+			"enable_traps_bgp_cbgp2": schema.BoolAttribute{
+				MarkdownDescription: "Enable BGP MIBv2 traps",
 				Computed:            true,
 			},
 			"enable_traps_nhrp_nhs": schema.BoolAttribute{
@@ -497,6 +509,10 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 			},
 			"enable_traps_fast_reroute_protected": schema.BoolAttribute{
 				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_local_auth": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP local auth traps",
 				Computed:            true,
 			},
 			"enable_traps_vlan_membership": schema.BoolAttribute{
@@ -543,11 +559,11 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"enable_traps_vnet_trunk_up": schema.BoolAttribute{
+			"enable_traps_vrfmib_vnet_trunk_up": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"enable_traps_vnet_trunk_down": schema.BoolAttribute{
+			"enable_traps_vrfmib_vnet_trunk_down": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},

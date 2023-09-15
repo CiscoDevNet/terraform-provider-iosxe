@@ -29,13 +29,13 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_snmp_linkup                  = true
   enable_traps_snmp_warmstart               = true
   system_shutdown                           = true
-  enable_traps_snmp_flowmon                 = true
+  enable_traps_flowmon                      = true
   enable_traps_entity_perf_throughput_notif = true
-  enable_traps_call_home                    = true
+  enable_traps_call_home_message_send_fail  = true
   enable_traps_call_home_server_fail        = true
   enable_traps_tty                          = true
   enable_traps_ospfv3_config_state_change   = true
-  enable_traps_ospfv3_errors_change         = true
+  enable_traps_ospfv3_config_errors         = true
   enable_traps_ospf_config_retransmit       = true
   enable_traps_ospf_config_lsa              = true
   enable_traps_ospf_nssa_trans_change       = true
@@ -80,12 +80,11 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_event_manager                = true
   enable_traps_ipmulticast                  = true
   enable_traps_msdp                         = true
-  enable_traps_ospf_config_state            = true
+  enable_traps_ospf_config_state_change     = true
   enable_traps_ospf_config_errors           = true
   enable_traps_pim_invalid_pim_message      = true
-  enable_traps_pim_invalid_neighbor_change  = true
+  enable_traps_pim_neighbor_change          = true
   enable_traps_pim_rp_mapping_change        = true
-  enable_traps_bridge_newroot               = true
   enable_traps_syslog                       = true
   enable_traps_rf                           = true
   enable_traps_transceiver_all              = true
@@ -93,8 +92,8 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_bulkstat_transfer            = true
   enable_traps_vrfmib_vrf_up                = true
   enable_traps_vrfmib_vrf_down              = true
-  enable_traps_vnet_trunk_up                = true
-  enable_traps_vnet_trunk_down              = true
+  enable_traps_vrfmib_vnet_trunk_up         = true
+  enable_traps_vrfmib_vnet_trunk_down       = true
   source_interface_informs_loopback         = 1
   source_interface_traps_loopback           = 1
   trap_source_loopback                      = 1
@@ -139,11 +138,12 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps` (Boolean) Enable SNMP Traps
 - `enable_traps_auth_framework_sec_violation` (Boolean)
 - `enable_traps_bfd` (Boolean)
+- `enable_traps_bgp_cbgp2` (Boolean) Enable BGP MIBv2 traps
 - `enable_traps_bridge_newroot` (Boolean)
 - `enable_traps_bridge_topologychange` (Boolean)
 - `enable_traps_bulkstat_collection` (Boolean) Enable Data-Collection-MIB Collection notifications
 - `enable_traps_bulkstat_transfer` (Boolean) Enable Data-Collection-MIB Transfer notifications
-- `enable_traps_call_home` (Boolean)
+- `enable_traps_call_home_message_send_fail` (Boolean)
 - `enable_traps_call_home_server_fail` (Boolean)
 - `enable_traps_cef_inconsistency` (Boolean)
 - `enable_traps_cef_peer_fib_state_change` (Boolean)
@@ -169,6 +169,7 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_flash_insertion` (Boolean) Enable SNMP Flash Insertion notifications
 - `enable_traps_flash_lowspace` (Boolean) Enable SNMP Flash Lowspace notifications
 - `enable_traps_flash_removal` (Boolean) Enable SNMP Flash Removal notifications
+- `enable_traps_flowmon` (Boolean) Enable SNMP flowmon notifications
 - `enable_traps_fru_ctrl` (Boolean) Enable SNMP entity FRU control traps
 - `enable_traps_hsrp` (Boolean) Enable SNMP HSRP traps
 - `enable_traps_ike_policy_add` (Boolean) Enable IKE Policy add trap
@@ -186,7 +187,7 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_ipsla` (Boolean) Enable IPSLA traps traps
 - `enable_traps_isis` (Boolean) Enable ISIS traps traps
 - `enable_traps_license` (Boolean) Enable license traps
-- `enable_traps_link_fail_rpt` (Boolean) Enable SNMP cudldpFastHelloLinkFailRptNotification traps
+- `enable_traps_local_auth` (Boolean) Enable SNMP local auth traps
 - `enable_traps_mac_notification_change` (Boolean) Enable SNMP Change traps
 - `enable_traps_mac_notification_move` (Boolean) Enable SNMP Move traps
 - `enable_traps_mac_notification_threshold` (Boolean) Enable SNMP Threshold traps
@@ -203,46 +204,48 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_ospf_config_errors` (Boolean) Enable all traps of errors
 - `enable_traps_ospf_config_lsa` (Boolean) Enable all traps of lsa
 - `enable_traps_ospf_config_retransmit` (Boolean) Enable all traps of retransmit
-- `enable_traps_ospf_config_state` (Boolean) Enable all traps of state-change
+- `enable_traps_ospf_config_state_change` (Boolean) Enable all traps of state-change
 - `enable_traps_ospf_errors_enable` (Boolean) Enable all traps of errors
 - `enable_traps_ospf_lsa_enable` (Boolean) Enable all traps of lsa
 - `enable_traps_ospf_nssa_trans_change` (Boolean) Nssa translator state changes
 - `enable_traps_ospf_retransmit_enable` (Boolean) Enable all traps of retransmit
 - `enable_traps_ospf_shamlink_interface` (Boolean) Sham link interface state changes
 - `enable_traps_ospf_shamlink_neighbor` (Boolean) Sham link neighbor state changes
+- `enable_traps_ospfv3_config_errors` (Boolean) Enable all traps of errors
 - `enable_traps_ospfv3_config_state_change` (Boolean) Enable all traps of state-change
-- `enable_traps_ospfv3_errors_change` (Boolean) Enable all traps of errors
-- `enable_traps_pim_invalid_neighbor_change` (Boolean) Enable neighbor change trap
 - `enable_traps_pim_invalid_pim_message` (Boolean) Enable invalid pim message trap
+- `enable_traps_pim_neighbor_change` (Boolean) Enable neighbor change trap
 - `enable_traps_pim_rp_mapping_change` (Boolean) Enable rp mapping change trap
 - `enable_traps_port_security` (Boolean) Enable SNMP port security traps
+- `enable_traps_power_ethernet_group` (String) Enable SNMP inline power group based traps
+- `enable_traps_power_ethernet_police` (Boolean) Enable Policing Trap
 - `enable_traps_pw_vc` (Boolean)
 - `enable_traps_rep` (Boolean)
 - `enable_traps_rf` (Boolean) Enable all SNMP traps defined in CISCO-RF-MIB
 - `enable_traps_smart_license` (Boolean) Enable smart license traps
 - `enable_traps_snmp_authentication` (Boolean) Enable authentication trap
 - `enable_traps_snmp_coldstart` (Boolean) Enable coldStart trap
-- `enable_traps_snmp_flowmon` (Boolean) Enable SNMP flowmon notifications
 - `enable_traps_snmp_linkdown` (Boolean) Enable linkDown trap
 - `enable_traps_snmp_linkup` (Boolean) Enable linkUp trap
 - `enable_traps_snmp_warmstart` (Boolean) Enable warmStart trap
 - `enable_traps_stackwise` (Boolean) Enable SNMP stackwise traps
-- `enable_traps_status_change` (Boolean) Enable SNMP cudldpFastHelloStatusChangeNotification traps
 - `enable_traps_stpx_inconsistency` (Boolean)
 - `enable_traps_stpx_loop_inconsistency` (Boolean)
 - `enable_traps_stpx_root_inconsistency` (Boolean)
 - `enable_traps_syslog` (Boolean) Enable SNMP syslog traps
 - `enable_traps_transceiver_all` (Boolean)
 - `enable_traps_tty` (Boolean) Enable TCP connection traps
+- `enable_traps_udld_link_fail_rpt` (Boolean) Enable SNMP cudldpFastHelloLinkFailRptNotification traps
+- `enable_traps_udld_status_change` (Boolean) Enable SNMP cudldpFastHelloStatusChangeNotification traps
 - `enable_traps_vlan_membership` (Boolean)
 - `enable_traps_vlancreate` (Boolean)
 - `enable_traps_vlandelete` (Boolean)
-- `enable_traps_vnet_trunk_down` (Boolean)
-- `enable_traps_vnet_trunk_up` (Boolean)
+- `enable_traps_vrfmib_vnet_trunk_down` (Boolean)
+- `enable_traps_vrfmib_vnet_trunk_up` (Boolean)
 - `enable_traps_vrfmib_vrf_down` (Boolean)
 - `enable_traps_vrfmib_vrf_up` (Boolean)
 - `enable_traps_vtp` (Boolean)
-- `host_config_ip_community` (Attributes List) Specify hosts keyed by (ip-address, community-or-user) (see [below for nested schema](#nestedatt--host_config_ip_community))
+- `hosts` (Attributes List) Specify hosts keyed by (ip-address, community-or-user) (see [below for nested schema](#nestedatt--hosts))
 - `ifindex_persist` (Boolean) Persist interface indices
 - `location` (String) Text for mib object sysLocation
 - `packetsize` (Number) Largest SNMP packet size
@@ -298,8 +301,8 @@ Required:
 - `name` (String)
 
 
-<a id="nestedatt--host_config_ip_community"></a>
-### Nested Schema for `host_config_ip_community`
+<a id="nestedatt--hosts"></a>
+### Nested Schema for `hosts`
 
 Required:
 

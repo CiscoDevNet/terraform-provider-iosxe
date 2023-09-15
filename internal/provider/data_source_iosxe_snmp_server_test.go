@@ -42,14 +42,20 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_snmp_linkdown", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_snmp_linkup", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_snmp_warmstart", "true"))
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.ip_address", "11.1.1.1"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.community_or_user", "08116C5D1A0E550518"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.version", "2c"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.encryption", "7"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "system_shutdown", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_snmp_flowmon", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flowmon", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_perf_throughput_notif", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_call_home", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_call_home_message_send_fail", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_call_home_server_fail", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_tty", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospfv3_config_state_change", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospfv3_errors_change", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospfv3_config_errors", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospf_config_retransmit", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospf_config_lsa", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospf_nssa_trans_change", "true"))
@@ -75,10 +81,10 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_stackwise", "true"))
 	}
 	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_link_fail_rpt", "true"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_udld_link_fail_rpt", "true"))
 	}
 	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_status_change", "true"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_udld_status_change", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_fru_ctrl", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flash_insertion", "true"))
@@ -112,12 +118,14 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_event_manager", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ipmulticast", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_msdp", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospf_config_state", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospf_config_state_change", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospf_config_errors", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pim_invalid_pim_message", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pim_invalid_neighbor_change", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pim_neighbor_change", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pim_rp_mapping_change", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_bridge_newroot", "true"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_bridge_newroot", "true"))
+	}
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_bridge_topologychange", "true"))
 	}
@@ -152,8 +160,8 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrfmib_vrf_up", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrfmib_vrf_down", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vnet_trunk_up", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vnet_trunk_down", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrfmib_vnet_trunk_up", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrfmib_vnet_trunk_down", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_informs_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_traps_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "trap_source_loopback", "1"))
@@ -205,14 +213,22 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	enable_traps_snmp_linkdown = true` + "\n"
 	config += `	enable_traps_snmp_linkup = true` + "\n"
 	config += `	enable_traps_snmp_warmstart = true` + "\n"
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+		config += `	hosts = [{` + "\n"
+		config += `		ip_address = "11.1.1.1"` + "\n"
+		config += `		community_or_user = "08116C5D1A0E550518"` + "\n"
+		config += `		version = "2c"` + "\n"
+		config += `		encryption = "7"` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `	system_shutdown = true` + "\n"
-	config += `	enable_traps_snmp_flowmon = true` + "\n"
+	config += `	enable_traps_flowmon = true` + "\n"
 	config += `	enable_traps_entity_perf_throughput_notif = true` + "\n"
-	config += `	enable_traps_call_home = true` + "\n"
+	config += `	enable_traps_call_home_message_send_fail = true` + "\n"
 	config += `	enable_traps_call_home_server_fail = true` + "\n"
 	config += `	enable_traps_tty = true` + "\n"
 	config += `	enable_traps_ospfv3_config_state_change = true` + "\n"
-	config += `	enable_traps_ospfv3_errors_change = true` + "\n"
+	config += `	enable_traps_ospfv3_config_errors = true` + "\n"
 	config += `	enable_traps_ospf_config_retransmit = true` + "\n"
 	config += `	enable_traps_ospf_config_lsa = true` + "\n"
 	config += `	enable_traps_ospf_nssa_trans_change = true` + "\n"
@@ -238,10 +254,10 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 		config += `	enable_traps_stackwise = true` + "\n"
 	}
 	if os.Getenv("C9000V") != "" {
-		config += `	enable_traps_link_fail_rpt = true` + "\n"
+		config += `	enable_traps_udld_link_fail_rpt = true` + "\n"
 	}
 	if os.Getenv("C9000V") != "" {
-		config += `	enable_traps_status_change = true` + "\n"
+		config += `	enable_traps_udld_status_change = true` + "\n"
 	}
 	config += `	enable_traps_fru_ctrl = true` + "\n"
 	config += `	enable_traps_flash_insertion = true` + "\n"
@@ -275,12 +291,14 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	enable_traps_event_manager = true` + "\n"
 	config += `	enable_traps_ipmulticast = true` + "\n"
 	config += `	enable_traps_msdp = true` + "\n"
-	config += `	enable_traps_ospf_config_state = true` + "\n"
+	config += `	enable_traps_ospf_config_state_change = true` + "\n"
 	config += `	enable_traps_ospf_config_errors = true` + "\n"
 	config += `	enable_traps_pim_invalid_pim_message = true` + "\n"
-	config += `	enable_traps_pim_invalid_neighbor_change = true` + "\n"
+	config += `	enable_traps_pim_neighbor_change = true` + "\n"
 	config += `	enable_traps_pim_rp_mapping_change = true` + "\n"
-	config += `	enable_traps_bridge_newroot = true` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	enable_traps_bridge_newroot = true` + "\n"
+	}
 	if os.Getenv("C9000V") != "" {
 		config += `	enable_traps_bridge_topologychange = true` + "\n"
 	}
@@ -315,8 +333,8 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	}
 	config += `	enable_traps_vrfmib_vrf_up = true` + "\n"
 	config += `	enable_traps_vrfmib_vrf_down = true` + "\n"
-	config += `	enable_traps_vnet_trunk_up = true` + "\n"
-	config += `	enable_traps_vnet_trunk_down = true` + "\n"
+	config += `	enable_traps_vrfmib_vnet_trunk_up = true` + "\n"
+	config += `	enable_traps_vrfmib_vnet_trunk_down = true` + "\n"
 	config += `	source_interface_informs_loopback = 1` + "\n"
 	config += `	source_interface_traps_loopback = 1` + "\n"
 	config += `	trap_source_loopback = 1` + "\n"
