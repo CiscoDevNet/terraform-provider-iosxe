@@ -40,8 +40,8 @@ func TestAccIosxeAAA(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_server_radius.0.name", "T-Group"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_server_radius.0.server_names.0.name", "TESTRADIUS"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_server_radius.0.ip_radius_source_interface_loopback", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_tacacsplus.0.name", "tacacs-group"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_tacacsplus.0.servers.0.name", "tacacs_10.10.15.12"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_server_tacacsplus.0.name", "tacacs-group"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_server_tacacsplus.0.server_names.0.name", "tacacs_10.10.15.12"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -85,9 +85,9 @@ func testAccIosxeAAAConfig_all() string {
 	config += `		}]` + "\n"
 	config += `		ip_radius_source_interface_loopback = 0` + "\n"
 	config += `	}]` + "\n"
-	config += `	group_tacacsplus = [{` + "\n"
+	config += `	group_server_tacacsplus = [{` + "\n"
 	config += `		name = "tacacs-group"` + "\n"
-	config += `		servers = [{` + "\n"
+	config += `		server_names = [{` + "\n"
 	config += `			name = "tacacs_10.10.15.12"` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"

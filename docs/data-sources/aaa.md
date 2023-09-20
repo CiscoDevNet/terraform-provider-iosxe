@@ -27,7 +27,7 @@ data "iosxe_aaa" "example" {
 ### Read-Only
 
 - `group_server_radius` (Attributes List) Radius server-group definition (see [below for nested schema](#nestedatt--group_server_radius))
-- `group_tacacsplus` (Attributes List) Tacacs+ server-group definition (see [below for nested schema](#nestedatt--group_tacacsplus))
+- `group_server_tacacsplus` (Attributes List) Tacacs+ server-group definition (see [below for nested schema](#nestedatt--group_server_tacacsplus))
 - `id` (String) The path of the retrieved object.
 - `new_model` (Boolean) Enable NEW access control commands and functions.(Disables OLD commands.)
 - `server_radius_dynamic_author` (Boolean) Local server profile for RFC 3576 support
@@ -52,16 +52,16 @@ Read-Only:
 
 
 
-<a id="nestedatt--group_tacacsplus"></a>
-### Nested Schema for `group_tacacsplus`
+<a id="nestedatt--group_server_tacacsplus"></a>
+### Nested Schema for `group_server_tacacsplus`
 
 Read-Only:
 
 - `name` (String) Server-group name with max string length 32
-- `servers` (Attributes List) Name of tacacs server (see [below for nested schema](#nestedatt--group_tacacsplus--servers))
+- `server_names` (Attributes List) Name of tacacs server (see [below for nested schema](#nestedatt--group_server_tacacsplus--server_names))
 
-<a id="nestedatt--group_tacacsplus--servers"></a>
-### Nested Schema for `group_tacacsplus.servers`
+<a id="nestedatt--group_server_tacacsplus--server_names"></a>
+### Nested Schema for `group_server_tacacsplus.server_names`
 
 Read-Only:
 

@@ -35,10 +35,10 @@ resource "iosxe_aaa" "example" {
       ip_radius_source_interface_loopback = 0
     }
   ]
-  group_tacacsplus = [
+  group_server_tacacsplus = [
     {
       name = "tacacs-group"
-      servers = [
+      server_names = [
         {
           name = "tacacs_10.10.15.12"
         }
@@ -55,7 +55,7 @@ resource "iosxe_aaa" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `group_server_radius` (Attributes List) Radius server-group definition (see [below for nested schema](#nestedatt--group_server_radius))
-- `group_tacacsplus` (Attributes List) Tacacs+ server-group definition (see [below for nested schema](#nestedatt--group_tacacsplus))
+- `group_server_tacacsplus` (Attributes List) Tacacs+ server-group definition (see [below for nested schema](#nestedatt--group_server_tacacsplus))
 - `new_model` (Boolean) Enable NEW access control commands and functions.(Disables OLD commands.)
 - `server_radius_dynamic_author` (Boolean) Local server profile for RFC 3576 support
 - `server_radius_dynamic_author_clients` (Attributes List) Specify a RADIUS client (see [below for nested schema](#nestedatt--server_radius_dynamic_author_clients))
@@ -88,8 +88,8 @@ Required:
 
 
 
-<a id="nestedatt--group_tacacsplus"></a>
-### Nested Schema for `group_tacacsplus`
+<a id="nestedatt--group_server_tacacsplus"></a>
+### Nested Schema for `group_server_tacacsplus`
 
 Required:
 
@@ -97,10 +97,10 @@ Required:
 
 Optional:
 
-- `servers` (Attributes List) Name of tacacs server (see [below for nested schema](#nestedatt--group_tacacsplus--servers))
+- `server_names` (Attributes List) Name of tacacs server (see [below for nested schema](#nestedatt--group_server_tacacsplus--server_names))
 
-<a id="nestedatt--group_tacacsplus--servers"></a>
-### Nested Schema for `group_tacacsplus.servers`
+<a id="nestedatt--group_server_tacacsplus--server_names"></a>
+### Nested Schema for `group_server_tacacsplus.server_names`
 
 Required:
 

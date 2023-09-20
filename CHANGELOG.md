@@ -16,6 +16,12 @@
 - Add `ipv6_unicast_redistribute_connected` attribute to `iosxe_bgp_address_family_ipv6` resource and data source
 - Add `ipv6_unicast_redistribute_static` attribute to `iosxe_bgp_address_family_ipv6` resource and data source
 - When removing attributes from a resource (or setting them to `null`) which were previously set, the corresponding configuration will be removed from the device
+- Add `ip_radius_source_interface_loopback` attribute to `iosxe_aaa` resources and data sources
+- BREAKING CHANGE: Rename `group_tacacsplus` attribute to `group_server_tacacsplus` of `iosxe_aaa` resource and data source
+- BREAKING CHANGE: Rename `servers` attribute to `server_names` of `iosxe_aaa` resource and data source
+- Add `iosxe_service_template` resource and data source
+- Add `iosxe_vlan_access_map` resource and data source
+- Add `service_policy_subscriber` attribute to `iosxe_template` resources and data sources
 
 ## 0.4.0
 
@@ -60,10 +66,6 @@
 - BREAKING CHANGE: Rename `summary_address` attribute to `summary_addresses` of `iosxe_ospf` resource and data source
 - Add `ipv4_unicast_networks_mask` and `ipv4_unicast_networks` attribute to `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources and data sources
 - Add `ipv6_unicast_networks` attribute to `iosxe_bgp_address_family_ipv6` and `iosxe_bgp_address_family_ipv6_vrf` resources and data sources
-- Add `iosxe_service_template` resource and data source
-- Add `iosxe_vlan_access_map` resource and data source
-- Add `service_policy_subscriber` attribute to `iosxe_template` resources and data sources
-
 
 ## 0.3.3
 

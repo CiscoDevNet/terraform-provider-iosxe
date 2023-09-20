@@ -41,7 +41,7 @@ type AAA struct {
 	SessionId                        types.String                          `tfsdk:"session_id"`
 	ServerRadiusDynamicAuthorClients []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
 	GroupServerRadius                []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
-	GroupTacacsplus                  []AAAGroupTacacsplus                  `tfsdk:"group_tacacsplus"`
+	GroupServerTacacsplus            []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
 }
 
 type AAAData struct {
@@ -52,7 +52,7 @@ type AAAData struct {
 	SessionId                        types.String                          `tfsdk:"session_id"`
 	ServerRadiusDynamicAuthorClients []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
 	GroupServerRadius                []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
-	GroupTacacsplus                  []AAAGroupTacacsplus                  `tfsdk:"group_tacacsplus"`
+	GroupServerTacacsplus            []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
 }
 type AAAServerRadiusDynamicAuthorClients struct {
 	Ip            types.String `tfsdk:"ip"`
@@ -64,14 +64,14 @@ type AAAGroupServerRadius struct {
 	ServerNames                     []AAAGroupServerRadiusServerNames `tfsdk:"server_names"`
 	IpRadiusSourceInterfaceLoopback types.Int64                       `tfsdk:"ip_radius_source_interface_loopback"`
 }
-type AAAGroupTacacsplus struct {
-	Name    types.String                `tfsdk:"name"`
-	Servers []AAAGroupTacacsplusServers `tfsdk:"servers"`
+type AAAGroupServerTacacsplus struct {
+	Name        types.String                          `tfsdk:"name"`
+	ServerNames []AAAGroupServerTacacsplusServerNames `tfsdk:"server_names"`
 }
 type AAAGroupServerRadiusServerNames struct {
 	Name types.String `tfsdk:"name"`
 }
-type AAAGroupTacacsplusServers struct {
+type AAAGroupServerTacacsplusServerNames struct {
 	Name types.String `tfsdk:"name"`
 }
 
@@ -142,15 +142,15 @@ func (data AAA) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.GroupTacacsplus) > 0 {
+	if len(data.GroupServerTacacsplus) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.tacacsplus", []interface{}{})
-		for index, item := range data.GroupTacacsplus {
+		for index, item := range data.GroupServerTacacsplus {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.tacacsplus"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
-			if len(item.Servers) > 0 {
+			if len(item.ServerNames) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.tacacsplus"+"."+strconv.Itoa(index)+"."+"server.name", []interface{}{})
-				for cindex, citem := range item.Servers {
+				for cindex, citem := range item.ServerNames {
 					if !citem.Name.IsNull() && !citem.Name.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.tacacsplus"+"."+strconv.Itoa(index)+"."+"server.name"+"."+strconv.Itoa(cindex)+"."+"name", citem.Name.ValueString())
 					}
@@ -291,9 +291,9 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback = types.Int64Null()
 		}
 	}
-	for i := range data.GroupTacacsplus {
+	for i := range data.GroupServerTacacsplus {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.GroupTacacsplus[i].Name.ValueString()}
+		keyValues := [...]string{data.GroupServerTacacsplus[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "Cisco-IOS-XE-aaa:group.server.tacacsplus").ForEach(
@@ -314,14 +314,14 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.GroupTacacsplus[i].Name.IsNull() {
-			data.GroupTacacsplus[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.GroupServerTacacsplus[i].Name.IsNull() {
+			data.GroupServerTacacsplus[i].Name = types.StringValue(value.String())
 		} else {
-			data.GroupTacacsplus[i].Name = types.StringNull()
+			data.GroupServerTacacsplus[i].Name = types.StringNull()
 		}
-		for ci := range data.GroupTacacsplus[i].Servers {
+		for ci := range data.GroupServerTacacsplus[i].ServerNames {
 			keys := [...]string{"name"}
-			keyValues := [...]string{data.GroupTacacsplus[i].Servers[ci].Name.ValueString()}
+			keyValues := [...]string{data.GroupServerTacacsplus[i].ServerNames[ci].Name.ValueString()}
 
 			var cr gjson.Result
 			r.Get("server.name").ForEach(
@@ -342,10 +342,10 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 					return true
 				},
 			)
-			if value := cr.Get("name"); value.Exists() && !data.GroupTacacsplus[i].Servers[ci].Name.IsNull() {
-				data.GroupTacacsplus[i].Servers[ci].Name = types.StringValue(value.String())
+			if value := cr.Get("name"); value.Exists() && !data.GroupServerTacacsplus[i].ServerNames[ci].Name.IsNull() {
+				data.GroupServerTacacsplus[i].ServerNames[ci].Name = types.StringValue(value.String())
 			} else {
-				data.GroupTacacsplus[i].Servers[ci].Name = types.StringNull()
+				data.GroupServerTacacsplus[i].ServerNames[ci].Name = types.StringNull()
 			}
 		}
 	}
@@ -412,24 +412,24 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:group.server.tacacsplus"); value.Exists() {
-		data.GroupTacacsplus = make([]AAAGroupTacacsplus, 0)
+		data.GroupServerTacacsplus = make([]AAAGroupServerTacacsplus, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAGroupTacacsplus{}
+			item := AAAGroupServerTacacsplus{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("server.name"); cValue.Exists() {
-				item.Servers = make([]AAAGroupTacacsplusServers, 0)
+				item.ServerNames = make([]AAAGroupServerTacacsplusServerNames, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := AAAGroupTacacsplusServers{}
+					cItem := AAAGroupServerTacacsplusServerNames{}
 					if ccValue := cv.Get("name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
-					item.Servers = append(item.Servers, cItem)
+					item.ServerNames = append(item.ServerNames, cItem)
 					return true
 				})
 			}
-			data.GroupTacacsplus = append(data.GroupTacacsplus, item)
+			data.GroupServerTacacsplus = append(data.GroupServerTacacsplus, item)
 			return true
 		})
 	}
@@ -520,6 +520,9 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -527,11 +530,11 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.GroupTacacsplus {
-		stateKeyValues := [...]string{state.GroupTacacsplus[i].Name.ValueString()}
+	for i := range state.GroupServerTacacsplus {
+		stateKeyValues := [...]string{state.GroupServerTacacsplus[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.GroupTacacsplus[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.GroupServerTacacsplus[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -539,17 +542,17 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 		}
 
 		found := false
-		for j := range data.GroupTacacsplus {
+		for j := range data.GroupServerTacacsplus {
 			found = true
-			if state.GroupTacacsplus[i].Name.ValueString() != data.GroupTacacsplus[j].Name.ValueString() {
+			if state.GroupServerTacacsplus[i].Name.ValueString() != data.GroupServerTacacsplus[j].Name.ValueString() {
 				found = false
 			}
 			if found {
-				for ci := range state.GroupTacacsplus[i].Servers {
-					cstateKeyValues := [...]string{state.GroupTacacsplus[i].Servers[ci].Name.ValueString()}
+				for ci := range state.GroupServerTacacsplus[i].ServerNames {
+					cstateKeyValues := [...]string{state.GroupServerTacacsplus[i].ServerNames[ci].Name.ValueString()}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.GroupTacacsplus[i].Servers[ci].Name.ValueString()).IsZero() {
+					if !reflect.ValueOf(state.GroupServerTacacsplus[i].ServerNames[ci].Name.ValueString()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -557,9 +560,9 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 					}
 
 					found := false
-					for cj := range data.GroupTacacsplus[j].Servers {
+					for cj := range data.GroupServerTacacsplus[j].ServerNames {
 						found = true
-						if state.GroupTacacsplus[i].Servers[ci].Name.ValueString() != data.GroupTacacsplus[j].Servers[cj].Name.ValueString() {
+						if state.GroupServerTacacsplus[i].ServerNames[ci].Name.ValueString() != data.GroupServerTacacsplus[j].ServerNames[cj].Name.ValueString() {
 							found = false
 						}
 						if found {
@@ -613,8 +616,8 @@ func (data *AAA) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.GroupTacacsplus {
-		keyValues := [...]string{data.GroupTacacsplus[i].Name.ValueString()}
+	for i := range data.GroupServerTacacsplus {
+		keyValues := [...]string{data.GroupServerTacacsplus[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

@@ -20,10 +20,10 @@ resource "iosxe_aaa" "example" {
       ip_radius_source_interface_loopback = 0
     }
   ]
-  group_tacacsplus = [
+  group_server_tacacsplus = [
     {
       name = "tacacs-group"
-      servers = [
+      server_names = [
         {
           name = "tacacs_10.10.15.12"
         }

@@ -295,6 +295,12 @@ func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuth
 				if !state.Execs[i].A1Local.IsNull() && data.Execs[j].A1Local.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
+				if !state.Execs[i].A1Group.IsNull() && data.Execs[j].A1Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A2Local.IsNull() && data.Execs[j].A2Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Execs[i].A1IfAuthenticated.IsNull() && data.Execs[j].A1IfAuthenticated.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}

@@ -147,9 +147,18 @@ func (data *VLANAccessMapData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-func (data *VLANAccessMap) getDeletedListItems(ctx context.Context, state VLANAccessMap) []string {
-	deletedListItems := make([]string, 0)
-	return deletedListItems
+func (data *VLANAccessMap) getDeletedItems(ctx context.Context, state VLANAccessMap) []string {
+	deletedItems := make([]string, 0)
+	if !state.MatchIpv6Address.IsNull() && data.MatchIpv6Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/address", state.getPath()))
+	}
+	if !state.MatchIpAddress.IsNull() && data.MatchIpAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ip/address", state.getPath()))
+	}
+	if !state.Action.IsNull() && data.Action.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/action", state.getPath()))
+	}
+	return deletedItems
 }
 
 func (data *VLANAccessMap) getEmptyLeafsDelete(ctx context.Context) []string {

@@ -1491,6 +1491,12 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 	if !state.Dot1xMaxReq.IsNull() && data.Dot1xMaxReq.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/max-req", state.getPath()))
 	}
+	if !state.Dot1xTimeoutTxPeriod.IsNull() && data.Dot1xTimeoutTxPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/timeout/tx-period", state.getPath()))
+	}
+	if !state.ServicePolicySubscriber.IsNull() && data.ServicePolicySubscriber.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/type/control/subscriber", state.getPath()))
+	}
 	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/input/policy-map-name", state.getPath()))
 	}

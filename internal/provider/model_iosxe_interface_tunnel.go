@@ -927,6 +927,9 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	if !state.CryptoIpsecDfBit.IsNull() && data.CryptoIpsecDfBit.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-crypto:crypto/ipsec/df-bit", state.getPath()))
 	}
+	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/arp/timeout", state.getPath()))
+	}
 	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
 	}

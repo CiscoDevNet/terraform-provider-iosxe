@@ -514,8 +514,8 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
-func (data *ServiceTemplate) getDeletedListItems(ctx context.Context, state ServiceTemplate) []string {
-	deletedListItems := make([]string, 0)
+func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceTemplate) []string {
+	deletedItems := make([]string, 0)
 	for i := range state.AccessGroup {
 		stateKeyValues := [...]string{state.AccessGroup[i].Name.ValueString()}
 
@@ -538,8 +538,32 @@ func (data *ServiceTemplate) getDeletedListItems(ctx context.Context, state Serv
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/access-group-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/access-group-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.InactivityTimerValue.IsNull() && data.InactivityTimerValue.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inactivity-timer/value", state.getPath()))
+	}
+	if !state.InactivityTimerProbe.IsNull() && data.InactivityTimerProbe.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inactivity-timer/probe", state.getPath()))
+	}
+	if !state.Vlan.IsNull() && data.Vlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan", state.getPath()))
+	}
+	if !state.VoiceVlan.IsNull() && data.VoiceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/voice/vlan", state.getPath()))
+	}
+	if !state.LinksecPolicy.IsNull() && data.LinksecPolicy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/linksec/policy", state.getPath()))
+	}
+	if !state.Sgt.IsNull() && data.Sgt.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/sgt", state.getPath()))
+	}
+	if !state.AbsoluteTimer.IsNull() && data.AbsoluteTimer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/absolute-timer", state.getPath()))
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
 	for i := range state.InterfaceTemplate {
 		stateKeyValues := [...]string{state.InterfaceTemplate[i].Name.ValueString()}
@@ -563,8 +587,38 @@ func (data *ServiceTemplate) getDeletedListItems(ctx context.Context, state Serv
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/interface-template=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/interface-template=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.TunnelCapwapName.IsNull() && data.TunnelCapwapName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/tunnel/type/capwap/name", state.getPath()))
+	}
+	if !state.Vnid.IsNull() && data.Vnid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vnid", state.getPath()))
+	}
+	if !state.RedirectAppendClientMac.IsNull() && data.RedirectAppendClientMac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/append/client-mac", state.getPath()))
+	}
+	if !state.RedirectAppendSwitchMac.IsNull() && data.RedirectAppendSwitchMac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/append/switch-mac", state.getPath()))
+	}
+	if !state.RedirectUrlUrlName.IsNull() && data.RedirectUrlUrlName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/url_name", state.getPath()))
+	}
+	if !state.RedirectUrlMatchAclName.IsNull() && data.RedirectUrlMatchAclName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/match/acl_name", state.getPath()))
+	}
+	if !state.RedirectUrlMatchAction.IsNull() && data.RedirectUrlMatchAction.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/match/action", state.getPath()))
+	}
+	if !state.DnsAclPreauth.IsNull() && data.DnsAclPreauth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dns-acl/preauth", state.getPath()))
+	}
+	if !state.ServicePolicyQosInput.IsNull() && data.ServicePolicyQosInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/qos/input", state.getPath()))
+	}
+	if !state.ServicePolicyQosOutput.IsNull() && data.ServicePolicyQosOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/qos/output", state.getPath()))
 	}
 	for i := range state.TagConfig {
 		stateKeyValues := [...]string{state.TagConfig[i].Name.ValueString()}
@@ -588,10 +642,13 @@ func (data *ServiceTemplate) getDeletedListItems(ctx context.Context, state Serv
 			}
 		}
 		if !found {
-			deletedListItems = append(deletedListItems, fmt.Sprintf("%v/tag-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/tag-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	return deletedListItems
+	if !state.MdnsServicePolicy.IsNull() && data.MdnsServicePolicy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mdns-service-policy", state.getPath()))
+	}
+	return deletedItems
 }
 
 func (data *ServiceTemplate) getEmptyLeafsDelete(ctx context.Context) []string {

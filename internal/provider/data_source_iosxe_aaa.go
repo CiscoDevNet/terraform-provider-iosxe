@@ -123,7 +123,7 @@ func (d *AAADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
-			"group_tacacsplus": schema.ListNestedAttribute{
+			"group_server_tacacsplus": schema.ListNestedAttribute{
 				MarkdownDescription: "Tacacs+ server-group definition",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -132,7 +132,7 @@ func (d *AAADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "Server-group name with max string length 32",
 							Computed:            true,
 						},
-						"servers": schema.ListNestedAttribute{
+						"server_names": schema.ListNestedAttribute{
 							MarkdownDescription: "Name of tacacs server",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
