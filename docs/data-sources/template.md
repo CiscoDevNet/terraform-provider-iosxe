@@ -62,7 +62,7 @@ data "iosxe_template" "example" {
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `service_policy_input` (String) policy-map name
 - `service_policy_output` (String) policy-map name
-- `service_policy_subscriber` (String) Apply a subscriber control policy to the interface
+- `service_policy_type_control_subscriber` (String) Apply a subscriber control policy to the interface
 - `source_template` (String) Get config from a template
 - `spanning_tree_bpduguard_enable` (Boolean) Enable BPDU guard for this interface
 - `spanning_tree_portfast` (Boolean) Portfast options for the interface

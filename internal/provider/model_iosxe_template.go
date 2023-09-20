@@ -43,7 +43,7 @@ type Template struct {
 	Dot1xMaxReauthReq                                  types.Int64                                  `tfsdk:"dot1x_max_reauth_req"`
 	Dot1xMaxReq                                        types.Int64                                  `tfsdk:"dot1x_max_req"`
 	Dot1xTimeoutTxPeriod                               types.Int64                                  `tfsdk:"dot1x_timeout_tx_period"`
-	ServicePolicySubscriber                            types.String                                 `tfsdk:"service_policy_subscriber"`
+	ServicePolicyTypeControlSubscriber                 types.String                                 `tfsdk:"service_policy_type_control_subscriber"`
 	ServicePolicyInput                                 types.String                                 `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                                types.String                                 `tfsdk:"service_policy_output"`
 	SourceTemplate                                     types.String                                 `tfsdk:"source_template"`
@@ -120,7 +120,7 @@ type TemplateData struct {
 	Dot1xMaxReauthReq                                  types.Int64                                  `tfsdk:"dot1x_max_reauth_req"`
 	Dot1xMaxReq                                        types.Int64                                  `tfsdk:"dot1x_max_req"`
 	Dot1xTimeoutTxPeriod                               types.Int64                                  `tfsdk:"dot1x_timeout_tx_period"`
-	ServicePolicySubscriber                            types.String                                 `tfsdk:"service_policy_subscriber"`
+	ServicePolicyTypeControlSubscriber                 types.String                                 `tfsdk:"service_policy_type_control_subscriber"`
 	ServicePolicyInput                                 types.String                                 `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                                types.String                                 `tfsdk:"service_policy_output"`
 	SourceTemplate                                     types.String                                 `tfsdk:"source_template"`
@@ -238,8 +238,8 @@ func (data Template) toBody(ctx context.Context) string {
 	if !data.Dot1xTimeoutTxPeriod.IsNull() && !data.Dot1xTimeoutTxPeriod.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.timeout.tx-period", strconv.FormatInt(data.Dot1xTimeoutTxPeriod.ValueInt64(), 10))
 	}
-	if !data.ServicePolicySubscriber.IsNull() && !data.ServicePolicySubscriber.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"service-policy.type.control.subscriber", data.ServicePolicySubscriber.ValueString())
+	if !data.ServicePolicyTypeControlSubscriber.IsNull() && !data.ServicePolicyTypeControlSubscriber.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"service-policy.type.control.subscriber", data.ServicePolicyTypeControlSubscriber.ValueString())
 	}
 	if !data.ServicePolicyInput.IsNull() && !data.ServicePolicyInput.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"service-policy.input.policy-map-name", data.ServicePolicyInput.ValueString())
@@ -569,10 +569,10 @@ func (data *Template) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Dot1xTimeoutTxPeriod = types.Int64Null()
 	}
-	if value := res.Get(prefix + "service-policy.type.control.subscriber"); value.Exists() && !data.ServicePolicySubscriber.IsNull() {
-		data.ServicePolicySubscriber = types.StringValue(value.String())
+	if value := res.Get(prefix + "service-policy.type.control.subscriber"); value.Exists() && !data.ServicePolicyTypeControlSubscriber.IsNull() {
+		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
 	} else {
-		data.ServicePolicySubscriber = types.StringNull()
+		data.ServicePolicyTypeControlSubscriber = types.StringNull()
 	}
 	if value := res.Get(prefix + "service-policy.input.policy-map-name"); value.Exists() && !data.ServicePolicyInput.IsNull() {
 		data.ServicePolicyInput = types.StringValue(value.String())
@@ -1164,7 +1164,7 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Dot1xTimeoutTxPeriod = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "service-policy.type.control.subscriber"); value.Exists() {
-		data.ServicePolicySubscriber = types.StringValue(value.String())
+		data.ServicePolicyTypeControlSubscriber = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "service-policy.input.policy-map-name"); value.Exists() {
 		data.ServicePolicyInput = types.StringValue(value.String())
@@ -1494,7 +1494,7 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 	if !state.Dot1xTimeoutTxPeriod.IsNull() && data.Dot1xTimeoutTxPeriod.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/timeout/tx-period", state.getPath()))
 	}
-	if !state.ServicePolicySubscriber.IsNull() && data.ServicePolicySubscriber.IsNull() {
+	if !state.ServicePolicyTypeControlSubscriber.IsNull() && data.ServicePolicyTypeControlSubscriber.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/type/control/subscriber", state.getPath()))
 	}
 	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
@@ -1903,7 +1903,7 @@ func (data *Template) getDeletePaths(ctx context.Context) []string {
 	if !data.Dot1xTimeoutTxPeriod.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/timeout/tx-period", data.getPath()))
 	}
-	if !data.ServicePolicySubscriber.IsNull() {
+	if !data.ServicePolicyTypeControlSubscriber.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/service-policy/type/control/subscriber", data.getPath()))
 	}
 	if !data.ServicePolicyInput.IsNull() {

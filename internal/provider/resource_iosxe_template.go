@@ -109,7 +109,7 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 					int64validator.Between(1, 65535),
 				},
 			},
-			"service_policy_subscriber": schema.StringAttribute{
+			"service_policy_type_control_subscriber": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Apply a subscriber control policy to the interface").String,
 				Optional:            true,
 			},

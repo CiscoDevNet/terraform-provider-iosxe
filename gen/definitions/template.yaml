@@ -12,11 +12,9 @@ attributes:
     example: 3
   - yang_name: dot1x/max-req
     example: 3
-  # SP 11
   - yang_name: dot1x/timeout/tx-period
     example: 2
   - yang_name: service-policy/type/control/subscriber
-    tf_name: service_policy_subscriber
     example: dot1x_policy
   - yang_name: service-policy/input/policy-map-name
     tf_name: service_policy_input
@@ -201,16 +199,12 @@ attributes:
     example: true
   - yang_name: cts/manual/policy/static/sgt
     example: 100
-    exclude_test: true
   - yang_name: cts/manual/policy/static/trusted
     example: false
-    exclude_test: true
   - yang_name: cts/manual/propagate/sgt
-    example: true
-    exclude_test: true
+    example: false
   - yang_name: cts/role-based/enforcement
     example: false
-    exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy
     attributes:
