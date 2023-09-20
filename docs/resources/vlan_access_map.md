@@ -14,10 +14,10 @@ This resource can manage the VLAN Access Map configuration.
 
 ```terraform
 resource "iosxe_vlan_access_map" "example" {
-  name               = "accessmap1"
-  value              = 1000
-  match_ipv6_address = ["ipv6_address1"]
-  match_ip_address   = ["ip_address1"]
+  name               = "VAM1"
+  sequence           = 10
+  match_ipv6_address = ["ACL2"]
+  match_ip_address   = ["ACL1"]
   action             = "forward"
 }
 ```
@@ -28,7 +28,7 @@ resource "iosxe_vlan_access_map" "example" {
 ### Required
 
 - `name` (String) Vlan access map tag
-- `value` (Number) Sequence to insert to/delete from existing vlan access-map entry
+- `sequence` (Number) Sequence to insert to/delete from existing vlan access-map entry
   - Range: `0`-`65535`
 
 ### Optional
@@ -48,5 +48,5 @@ resource "iosxe_vlan_access_map" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxe_vlan_access_map.example "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=accessmap1,1000"
+terraform import iosxe_vlan_access_map.example "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10"
 ```

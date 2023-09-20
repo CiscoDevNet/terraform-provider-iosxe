@@ -31,10 +31,10 @@ func TestAccIosxeVLANAccessMap(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "name", "accessmap1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "value", "1000"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "match_ipv6_address.0", "ipv6_address1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "match_ip_address.0", "ip_address1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "name", "VAM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "sequence", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "match_ipv6_address.0", "ACL2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "match_ip_address.0", "ACL1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_access_map.test", "action", "forward"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -50,7 +50,7 @@ func TestAccIosxeVLANAccessMap(t *testing.T) {
 			{
 				ResourceName:  "iosxe_vlan_access_map.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=accessmap1,1000",
+				ImportStateId: "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10",
 			},
 		},
 	})
@@ -58,18 +58,18 @@ func TestAccIosxeVLANAccessMap(t *testing.T) {
 
 func testAccIosxeVLANAccessMapConfig_minimum() string {
 	config := `resource "iosxe_vlan_access_map" "test" {` + "\n"
-	config += `	name = "accessmap1"` + "\n"
-	config += `	value = 1000` + "\n"
+	config += `	name = "VAM1"` + "\n"
+	config += `	sequence = 10` + "\n"
 	config += `}` + "\n"
 	return config
 }
 
 func testAccIosxeVLANAccessMapConfig_all() string {
 	config := `resource "iosxe_vlan_access_map" "test" {` + "\n"
-	config += `	name = "accessmap1"` + "\n"
-	config += `	value = 1000` + "\n"
-	config += `	match_ipv6_address = ["ipv6_address1"]` + "\n"
-	config += `	match_ip_address = ["ip_address1"]` + "\n"
+	config += `	name = "VAM1"` + "\n"
+	config += `	sequence = 10` + "\n"
+	config += `	match_ipv6_address = ["ACL2"]` + "\n"
+	config += `	match_ip_address = ["ACL1"]` + "\n"
 	config += `	action = "forward"` + "\n"
 	config += `}` + "\n"
 	return config

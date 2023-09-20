@@ -14,8 +14,8 @@ This data source can read the VLAN Access Map configuration.
 
 ```terraform
 data "iosxe_vlan_access_map" "example" {
-  name  = "accessmap1"
-  value = 1000
+  name     = "VAM1"
+  sequence = 10
 }
 ```
 
@@ -25,7 +25,7 @@ data "iosxe_vlan_access_map" "example" {
 ### Required
 
 - `name` (String) Vlan access map tag
-- `value` (Number) Sequence to insert to/delete from existing vlan access-map entry
+- `sequence` (Number) Sequence to insert to/delete from existing vlan access-map entry
 
 ### Optional
 

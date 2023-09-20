@@ -67,7 +67,7 @@ func (d *VLANAccessMapDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Vlan access map tag",
 				Required:            true,
 			},
-			"value": schema.Int64Attribute{
+			"sequence": schema.Int64Attribute{
 				MarkdownDescription: "Sequence to insert to/delete from existing vlan access-map entry",
 				Required:            true,
 			},

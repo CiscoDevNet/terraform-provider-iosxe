@@ -74,7 +74,7 @@ func (r *VLANAccessMapResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"value": schema.Int64Attribute{
+			"sequence": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Sequence to insert to/delete from existing vlan access-map entry").AddIntegerRangeDescription(0, 65535).String,
 				Required:            true,
 				Validators: []validator.Int64{

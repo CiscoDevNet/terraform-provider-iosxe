@@ -36,7 +36,7 @@ type VLANAccessMap struct {
 	Device           types.String `tfsdk:"device"`
 	Id               types.String `tfsdk:"id"`
 	Name             types.String `tfsdk:"name"`
-	Value            types.Int64  `tfsdk:"value"`
+	Sequence         types.Int64  `tfsdk:"sequence"`
 	MatchIpv6Address types.List   `tfsdk:"match_ipv6_address"`
 	MatchIpAddress   types.List   `tfsdk:"match_ip_address"`
 	Action           types.String `tfsdk:"action"`
@@ -46,18 +46,18 @@ type VLANAccessMapData struct {
 	Device           types.String `tfsdk:"device"`
 	Id               types.String `tfsdk:"id"`
 	Name             types.String `tfsdk:"name"`
-	Value            types.Int64  `tfsdk:"value"`
+	Sequence         types.Int64  `tfsdk:"sequence"`
 	MatchIpv6Address types.List   `tfsdk:"match_ipv6_address"`
 	MatchIpAddress   types.List   `tfsdk:"match_ip_address"`
 	Action           types.String `tfsdk:"action"`
 }
 
 func (data VLANAccessMap) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=%v,%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Value.ValueInt64())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=%v,%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Sequence.ValueInt64())))
 }
 
 func (data VLANAccessMapData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=%v,%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Value.ValueInt64())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=%v,%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Sequence.ValueInt64())))
 }
 
 // if last path element has a key -> remove it
@@ -76,8 +76,8 @@ func (data VLANAccessMap) toBody(ctx context.Context) string {
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
 	}
-	if !data.Value.IsNull() && !data.Value.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"value", strconv.FormatInt(data.Value.ValueInt64(), 10))
+	if !data.Sequence.IsNull() && !data.Sequence.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"value", strconv.FormatInt(data.Sequence.ValueInt64(), 10))
 	}
 	if !data.MatchIpv6Address.IsNull() && !data.MatchIpv6Address.IsUnknown() {
 		var values []string
@@ -105,10 +105,10 @@ func (data *VLANAccessMap) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := res.Get(prefix + "value"); value.Exists() && !data.Value.IsNull() {
-		data.Value = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "value"); value.Exists() && !data.Sequence.IsNull() {
+		data.Sequence = types.Int64Value(value.Int())
 	} else {
-		data.Value = types.Int64Null()
+		data.Sequence = types.Int64Null()
 	}
 	if value := res.Get(prefix + "match.ipv6.address"); value.Exists() && !data.MatchIpv6Address.IsNull() {
 		data.MatchIpv6Address = helpers.GetStringList(value.Array())
