@@ -20,6 +20,7 @@
 - BREAKING CHANGE: Rename `group_tacacsplus` attribute to `group_server_tacacsplus` of `iosxe_aaa` resource and data source
 - BREAKING CHANGE: Rename `servers` attribute to `server_names` of `iosxe_aaa` resource and data source
 - Add `a1_group` and `a2_local` attributes to `iosxe_aaa_authorization` resources and data sources
+- Add `arp_timeout` attribute to `iosxe_interface_tunnel` resources and data sources
 - Add `iosxe_service_template` resource and data source
 - Add `iosxe_vlan_access_map` resource and data source
 - Add `service_policy_subscriber` attribute to `iosxe_template` resources and data sources
