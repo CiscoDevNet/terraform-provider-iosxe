@@ -467,11 +467,47 @@ func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state Crypt
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.MatchIdentityRemoteIpv6Prefixes.IsNull() && data.MatchIdentityRemoteIpv6Prefixes.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix", state.getPath()))
+	if !state.MatchIdentityRemoteIpv6Prefixes.IsNull() {
+		if data.MatchIdentityRemoteIpv6Prefixes.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &dataValues, false)
+			state.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
-	if !state.MatchIdentityRemoteKeys.IsNull() && data.MatchIdentityRemoteKeys.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/key-ids", state.getPath()))
+	if !state.MatchIdentityRemoteKeys.IsNull() {
+		if data.MatchIdentityRemoteKeys.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/key-ids", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIdentityRemoteKeys.ElementsAs(ctx, &dataValues, false)
+			state.MatchIdentityRemoteKeys.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/key-ids=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	if !state.KeyringLocal.IsNull() && data.KeyringLocal.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/keyring/local/name", state.getPath()))

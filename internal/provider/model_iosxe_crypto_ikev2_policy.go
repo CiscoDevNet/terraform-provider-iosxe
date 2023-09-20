@@ -222,8 +222,26 @@ func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state Crypto
 	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/inbound-only", state.getPath()))
 	}
-	if !state.MatchAddressLocalIp.IsNull() && data.MatchAddressLocalIp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip", state.getPath()))
+	if !state.MatchAddressLocalIp.IsNull() {
+		if data.MatchAddressLocalIp.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchAddressLocalIp.ElementsAs(ctx, &dataValues, false)
+			state.MatchAddressLocalIp.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/name", state.getPath()))

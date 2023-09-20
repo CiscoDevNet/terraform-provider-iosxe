@@ -134,8 +134,26 @@ func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Resu
 
 func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state CryptoIPSecProfile) []string {
 	deletedItems := make([]string, 0)
-	if !state.SetTransformSet.IsNull() && data.SetTransformSet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/transform-set", state.getPath()))
+	if !state.SetTransformSet.IsNull() {
+		if data.SetTransformSet.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/set/transform-set", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.SetTransformSet.ElementsAs(ctx, &dataValues, false)
+			state.SetTransformSet.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/set/transform-set=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	if !state.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.IsNull() && data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/ikev2-profile", state.getPath()))

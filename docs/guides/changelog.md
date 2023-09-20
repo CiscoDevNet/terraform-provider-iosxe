@@ -33,6 +33,7 @@ description: |-
 - Add `iosxe_service_template` resource and data source
 - Add `iosxe_vlan_access_map` resource and data source
 - Add `dot1x_timeout_tx_period` and `service_policy_type_control_subscriber` attributes to `iosxe_template` resources and data sources
+- When removing elements from a list attribute, the corresponding configuration on the device will be updated accordingly
 
 ## 0.4.0
 

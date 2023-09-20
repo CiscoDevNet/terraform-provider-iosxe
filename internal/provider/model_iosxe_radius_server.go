@@ -385,8 +385,26 @@ func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServe
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
-				if !state.Attributes[i].SendAttributes.IsNull() && data.Attributes[j].SendAttributes.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/send-attribute", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Attributes[i].SendAttributes.IsNull() {
+					if data.Attributes[j].SendAttributes.IsNull() {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/send-attribute", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					} else {
+						var dataValues, stateValues []string
+						data.Attributes[i].SendAttributes.ElementsAs(ctx, &dataValues, false)
+						state.Attributes[j].SendAttributes.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/send-attribute=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+							}
+						}
+					}
 				}
 				break
 			}

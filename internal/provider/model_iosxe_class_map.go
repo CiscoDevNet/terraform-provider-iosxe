@@ -456,8 +456,26 @@ func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []str
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/activated-service-template=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.MatchAuthorizingMethodPriorityGreaterThan.IsNull() && data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than", state.getPath()))
+	if !state.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+		if data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than", state.getPath()))
+		} else {
+			var dataValues, stateValues []int
+			data.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &dataValues, false)
+			state.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	if !state.MatchMethodDot1x.IsNull() && data.MatchMethodDot1x.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/method/dot1x", state.getPath()))

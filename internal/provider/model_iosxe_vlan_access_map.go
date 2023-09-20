@@ -149,11 +149,47 @@ func (data *VLANAccessMapData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *VLANAccessMap) getDeletedItems(ctx context.Context, state VLANAccessMap) []string {
 	deletedItems := make([]string, 0)
-	if !state.MatchIpv6Address.IsNull() && data.MatchIpv6Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/address", state.getPath()))
+	if !state.MatchIpv6Address.IsNull() {
+		if data.MatchIpv6Address.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/address", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIpv6Address.ElementsAs(ctx, &dataValues, false)
+			state.MatchIpv6Address.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/address=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
-	if !state.MatchIpAddress.IsNull() && data.MatchIpAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ip/address", state.getPath()))
+	if !state.MatchIpAddress.IsNull() {
+		if data.MatchIpAddress.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ip/address", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIpAddress.ElementsAs(ctx, &dataValues, false)
+			state.MatchIpAddress.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ip/address=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	if !state.Action.IsNull() && data.Action.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/action", state.getPath()))

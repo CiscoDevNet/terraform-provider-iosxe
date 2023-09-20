@@ -596,7 +596,37 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{camelCase .Name}}) []string {
 	deletedItems := make([]string, 0)
 	{{- range .Attributes}}
-	{{- if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
+	{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
+	if !state.{{toGoName .TfName}}.IsNull() {
+		if data.{{toGoName .TfName}}.IsNull() {
+			{{- if .DeleteParent}}
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath()))
+			{{- else}}
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}", state.getPath()))
+			{{- end}}
+		} else {
+			var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
+			data.{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
+			state.{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					{{- if .DeleteParent}}
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), v))
+					{{- else}}
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), v))
+					{{- end}}
+				}
+			}
+		}
+	}
+	{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 	if !state.{{toGoName .TfName}}.IsNull() && data.{{toGoName .TfName}}.IsNull() {
 		{{- if .DeleteParent}}
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath()))
@@ -634,7 +664,37 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 			{{- end}}
 			if found {
 				{{- range .Attributes}}
-				{{- if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
+				{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
+				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
+					if data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
+						{{- if .DeleteParent}}
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+						{{- else}}
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+						{{- end}}
+					} else {
+						var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
+						data.{{$list}}[i].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
+						state.{{$list}}[j].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								{{- if .DeleteParent}}
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+								{{- else}}
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+								{{- end}}
+							}
+						}
+					}
+				}
+				{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
 					{{- if .DeleteParent}}
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -672,7 +732,37 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 						{{- end}}
 						if found {
 							{{- range .Attributes}}
-							{{- if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
+							{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
+							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
+								if data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
+									{{- if .DeleteParent}}
+									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+									{{- else}}
+									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+									{{- end}}
+								} else {
+									var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
+									data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
+									state.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.ElementsAs(ctx, &stateValues, false)
+									for _, v := range stateValues {
+										found := false
+										for _, vv := range dataValues {
+											if v == vv {
+												found = true
+												break
+											}
+										}
+										if !found {
+											{{- if .DeleteParent}}
+											deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
+											{{- else}}
+											deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v{{$cXpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
+											{{- end}}
+										}
+									}
+								}
+							}
+							{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
 								{{- if .DeleteParent}}
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
