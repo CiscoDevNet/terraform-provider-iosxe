@@ -1,4 +1,4 @@
-## 0.4.1 (unreleased)
+## 0.5.0
 
 - Add `iosxe_errdisable` resource and data source
 - Add `iosxe_line` resource and data source
