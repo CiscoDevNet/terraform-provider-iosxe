@@ -66,7 +66,7 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"word": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify a template name (maximum 48 characters)").String,
 				Required:            true,
 				Validators: []validator.String{
@@ -76,7 +76,7 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"access_group": schema.ListNestedAttribute{
+			"access_groups": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Access list to be applied").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -88,7 +88,7 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 					},
 				},
 			},
-			"inactivity_timer_value": schema.Int64Attribute{
+			"ianctivity_timer": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enter a value between 1 and 65535").AddIntegerRangeDescription(1, 65535).String,
 				Optional:            true,
 				Validators: []validator.Int64{
@@ -135,7 +135,7 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Enter a description").String,
 				Optional:            true,
 			},
-			"interface_template": schema.ListNestedAttribute{
+			"interface_templates": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Interface template to be applied").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -163,11 +163,11 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Append switch Mac Address in redirect URL").String,
 				Optional:            true,
 			},
-			"redirect_url_url_name": schema.StringAttribute{
+			"redirect_url": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify a valid URL").String,
 				Optional:            true,
 			},
-			"redirect_url_match_acl_name": schema.StringAttribute{
+			"redirect_url_match_acl": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify the access list name").String,
 				Optional:            true,
 			},
@@ -190,7 +190,7 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Configure output Qos policy").String,
 				Optional:            true,
 			},
-			"tag_config": schema.ListNestedAttribute{
+			"tags": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("tag name").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

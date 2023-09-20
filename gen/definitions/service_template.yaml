@@ -5,15 +5,17 @@ doc_category: System
 no_delete_attributes: true
 attributes:
   - yang_name: word
-    example: DEFAULT_LINKSEC_POLICY_MUST_SECURE
+    tf_name: name
+    example: MY_TEMPLATE
   - yang_name: access-group-config
     type: List
-    tf_name: access_group
+    tf_name: access_groups
     attributes:
       - yang_name: name
         id: true
         example: ag1
   - yang_name: inactivity-timer/value
+    tf_name: ianctivity_timer
     example: 25
   - yang_name: inactivity-timer/probe
     example: false
@@ -30,7 +32,7 @@ attributes:
   - yang_name: description
     example: service_template_desc
   - yang_name: interface-template
-    tf_name: interface_template
+    tf_name: interface_templates
     type: List
     attributes:
       - yang_name: name
@@ -38,16 +40,18 @@ attributes:
         example: template1
   - yang_name: tunnel/type/capwap/name
     tf_name: tunnel_capwap_name
-    example: tunnel_name
+    example: TUN1
   - yang_name: vnid
-    example: vnid_1
+    example: 12345
   - yang_name: redirect/append/client-mac
     example: 00:01:00:01:00:01
   - yang_name: redirect/append/switch-mac
     example: 00:01:00:01:00:02
   - yang_name: redirect/url/url_name
+    tf_name: redirect_url
     example: valid_url
   - yang_name: redirect/url/match/acl_name
+    tf_name: redirect_url_match_acl
     example: acl_name
   - yang_name: redirect/url/match/action
     example: redirect-on-no-match
@@ -58,15 +62,12 @@ attributes:
   - yang_name: service-policy/qos/output
     example: output_qos
   - yang_name: tag-config
-    tf_name: tag_config
+    tf_name: tags
     type: List
     attributes:
       - yang_name: name
         id: true
         example: tag_name
-  # not available on device 
   - yang_name: mdns-service-policy
-    example: MDNS_SERVICE_POLICY_NAME
+    example: MDNS_SERVICE_POLICY_1
     exclude_test: true
-  
-  

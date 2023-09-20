@@ -63,11 +63,11 @@ func (d *ServiceTemplateDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"word": schema.StringAttribute{
+			"name": schema.StringAttribute{
 				MarkdownDescription: "Specify a template name (maximum 48 characters)",
 				Required:            true,
 			},
-			"access_group": schema.ListNestedAttribute{
+			"access_groups": schema.ListNestedAttribute{
 				MarkdownDescription: "Access list to be applied",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -79,7 +79,7 @@ func (d *ServiceTemplateDataSource) Schema(ctx context.Context, req datasource.S
 					},
 				},
 			},
-			"inactivity_timer_value": schema.Int64Attribute{
+			"ianctivity_timer": schema.Int64Attribute{
 				MarkdownDescription: "Enter a value between 1 and 65535",
 				Computed:            true,
 			},
@@ -111,7 +111,7 @@ func (d *ServiceTemplateDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Enter a description",
 				Computed:            true,
 			},
-			"interface_template": schema.ListNestedAttribute{
+			"interface_templates": schema.ListNestedAttribute{
 				MarkdownDescription: "Interface template to be applied",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -139,11 +139,11 @@ func (d *ServiceTemplateDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Append switch Mac Address in redirect URL",
 				Computed:            true,
 			},
-			"redirect_url_url_name": schema.StringAttribute{
+			"redirect_url": schema.StringAttribute{
 				MarkdownDescription: "Specify a valid URL",
 				Computed:            true,
 			},
-			"redirect_url_match_acl_name": schema.StringAttribute{
+			"redirect_url_match_acl": schema.StringAttribute{
 				MarkdownDescription: "Specify the access list name",
 				Computed:            true,
 			},
@@ -163,7 +163,7 @@ func (d *ServiceTemplateDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Configure output Qos policy",
 				Computed:            true,
 			},
-			"tag_config": schema.ListNestedAttribute{
+			"tags": schema.ListNestedAttribute{
 				MarkdownDescription: "tag name",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

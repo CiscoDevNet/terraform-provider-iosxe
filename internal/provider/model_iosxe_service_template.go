@@ -35,76 +35,76 @@ import (
 )
 
 type ServiceTemplate struct {
-	Device                  types.String                       `tfsdk:"device"`
-	Id                      types.String                       `tfsdk:"id"`
-	Word                    types.String                       `tfsdk:"word"`
-	AccessGroup             []ServiceTemplateAccessGroup       `tfsdk:"access_group"`
-	InactivityTimerValue    types.Int64                        `tfsdk:"inactivity_timer_value"`
-	InactivityTimerProbe    types.Bool                         `tfsdk:"inactivity_timer_probe"`
-	Vlan                    types.Int64                        `tfsdk:"vlan"`
-	VoiceVlan               types.Bool                         `tfsdk:"voice_vlan"`
-	LinksecPolicy           types.String                       `tfsdk:"linksec_policy"`
-	Sgt                     types.Int64                        `tfsdk:"sgt"`
-	AbsoluteTimer           types.Int64                        `tfsdk:"absolute_timer"`
-	Description             types.String                       `tfsdk:"description"`
-	InterfaceTemplate       []ServiceTemplateInterfaceTemplate `tfsdk:"interface_template"`
-	TunnelCapwapName        types.String                       `tfsdk:"tunnel_capwap_name"`
-	Vnid                    types.String                       `tfsdk:"vnid"`
-	RedirectAppendClientMac types.String                       `tfsdk:"redirect_append_client_mac"`
-	RedirectAppendSwitchMac types.String                       `tfsdk:"redirect_append_switch_mac"`
-	RedirectUrlUrlName      types.String                       `tfsdk:"redirect_url_url_name"`
-	RedirectUrlMatchAclName types.String                       `tfsdk:"redirect_url_match_acl_name"`
-	RedirectUrlMatchAction  types.String                       `tfsdk:"redirect_url_match_action"`
-	DnsAclPreauth           types.String                       `tfsdk:"dns_acl_preauth"`
-	ServicePolicyQosInput   types.String                       `tfsdk:"service_policy_qos_input"`
-	ServicePolicyQosOutput  types.String                       `tfsdk:"service_policy_qos_output"`
-	TagConfig               []ServiceTemplateTagConfig         `tfsdk:"tag_config"`
-	MdnsServicePolicy       types.String                       `tfsdk:"mdns_service_policy"`
+	Device                  types.String                        `tfsdk:"device"`
+	Id                      types.String                        `tfsdk:"id"`
+	Name                    types.String                        `tfsdk:"name"`
+	AccessGroups            []ServiceTemplateAccessGroups       `tfsdk:"access_groups"`
+	IanctivityTimer         types.Int64                         `tfsdk:"ianctivity_timer"`
+	InactivityTimerProbe    types.Bool                          `tfsdk:"inactivity_timer_probe"`
+	Vlan                    types.Int64                         `tfsdk:"vlan"`
+	VoiceVlan               types.Bool                          `tfsdk:"voice_vlan"`
+	LinksecPolicy           types.String                        `tfsdk:"linksec_policy"`
+	Sgt                     types.Int64                         `tfsdk:"sgt"`
+	AbsoluteTimer           types.Int64                         `tfsdk:"absolute_timer"`
+	Description             types.String                        `tfsdk:"description"`
+	InterfaceTemplates      []ServiceTemplateInterfaceTemplates `tfsdk:"interface_templates"`
+	TunnelCapwapName        types.String                        `tfsdk:"tunnel_capwap_name"`
+	Vnid                    types.String                        `tfsdk:"vnid"`
+	RedirectAppendClientMac types.String                        `tfsdk:"redirect_append_client_mac"`
+	RedirectAppendSwitchMac types.String                        `tfsdk:"redirect_append_switch_mac"`
+	RedirectUrl             types.String                        `tfsdk:"redirect_url"`
+	RedirectUrlMatchAcl     types.String                        `tfsdk:"redirect_url_match_acl"`
+	RedirectUrlMatchAction  types.String                        `tfsdk:"redirect_url_match_action"`
+	DnsAclPreauth           types.String                        `tfsdk:"dns_acl_preauth"`
+	ServicePolicyQosInput   types.String                        `tfsdk:"service_policy_qos_input"`
+	ServicePolicyQosOutput  types.String                        `tfsdk:"service_policy_qos_output"`
+	Tags                    []ServiceTemplateTags               `tfsdk:"tags"`
+	MdnsServicePolicy       types.String                        `tfsdk:"mdns_service_policy"`
 }
 
 type ServiceTemplateData struct {
-	Device                  types.String                       `tfsdk:"device"`
-	Id                      types.String                       `tfsdk:"id"`
-	Word                    types.String                       `tfsdk:"word"`
-	AccessGroup             []ServiceTemplateAccessGroup       `tfsdk:"access_group"`
-	InactivityTimerValue    types.Int64                        `tfsdk:"inactivity_timer_value"`
-	InactivityTimerProbe    types.Bool                         `tfsdk:"inactivity_timer_probe"`
-	Vlan                    types.Int64                        `tfsdk:"vlan"`
-	VoiceVlan               types.Bool                         `tfsdk:"voice_vlan"`
-	LinksecPolicy           types.String                       `tfsdk:"linksec_policy"`
-	Sgt                     types.Int64                        `tfsdk:"sgt"`
-	AbsoluteTimer           types.Int64                        `tfsdk:"absolute_timer"`
-	Description             types.String                       `tfsdk:"description"`
-	InterfaceTemplate       []ServiceTemplateInterfaceTemplate `tfsdk:"interface_template"`
-	TunnelCapwapName        types.String                       `tfsdk:"tunnel_capwap_name"`
-	Vnid                    types.String                       `tfsdk:"vnid"`
-	RedirectAppendClientMac types.String                       `tfsdk:"redirect_append_client_mac"`
-	RedirectAppendSwitchMac types.String                       `tfsdk:"redirect_append_switch_mac"`
-	RedirectUrlUrlName      types.String                       `tfsdk:"redirect_url_url_name"`
-	RedirectUrlMatchAclName types.String                       `tfsdk:"redirect_url_match_acl_name"`
-	RedirectUrlMatchAction  types.String                       `tfsdk:"redirect_url_match_action"`
-	DnsAclPreauth           types.String                       `tfsdk:"dns_acl_preauth"`
-	ServicePolicyQosInput   types.String                       `tfsdk:"service_policy_qos_input"`
-	ServicePolicyQosOutput  types.String                       `tfsdk:"service_policy_qos_output"`
-	TagConfig               []ServiceTemplateTagConfig         `tfsdk:"tag_config"`
-	MdnsServicePolicy       types.String                       `tfsdk:"mdns_service_policy"`
+	Device                  types.String                        `tfsdk:"device"`
+	Id                      types.String                        `tfsdk:"id"`
+	Name                    types.String                        `tfsdk:"name"`
+	AccessGroups            []ServiceTemplateAccessGroups       `tfsdk:"access_groups"`
+	IanctivityTimer         types.Int64                         `tfsdk:"ianctivity_timer"`
+	InactivityTimerProbe    types.Bool                          `tfsdk:"inactivity_timer_probe"`
+	Vlan                    types.Int64                         `tfsdk:"vlan"`
+	VoiceVlan               types.Bool                          `tfsdk:"voice_vlan"`
+	LinksecPolicy           types.String                        `tfsdk:"linksec_policy"`
+	Sgt                     types.Int64                         `tfsdk:"sgt"`
+	AbsoluteTimer           types.Int64                         `tfsdk:"absolute_timer"`
+	Description             types.String                        `tfsdk:"description"`
+	InterfaceTemplates      []ServiceTemplateInterfaceTemplates `tfsdk:"interface_templates"`
+	TunnelCapwapName        types.String                        `tfsdk:"tunnel_capwap_name"`
+	Vnid                    types.String                        `tfsdk:"vnid"`
+	RedirectAppendClientMac types.String                        `tfsdk:"redirect_append_client_mac"`
+	RedirectAppendSwitchMac types.String                        `tfsdk:"redirect_append_switch_mac"`
+	RedirectUrl             types.String                        `tfsdk:"redirect_url"`
+	RedirectUrlMatchAcl     types.String                        `tfsdk:"redirect_url_match_acl"`
+	RedirectUrlMatchAction  types.String                        `tfsdk:"redirect_url_match_action"`
+	DnsAclPreauth           types.String                        `tfsdk:"dns_acl_preauth"`
+	ServicePolicyQosInput   types.String                        `tfsdk:"service_policy_qos_input"`
+	ServicePolicyQosOutput  types.String                        `tfsdk:"service_policy_qos_output"`
+	Tags                    []ServiceTemplateTags               `tfsdk:"tags"`
+	MdnsServicePolicy       types.String                        `tfsdk:"mdns_service_policy"`
 }
-type ServiceTemplateAccessGroup struct {
+type ServiceTemplateAccessGroups struct {
 	Name types.String `tfsdk:"name"`
 }
-type ServiceTemplateInterfaceTemplate struct {
+type ServiceTemplateInterfaceTemplates struct {
 	Name types.String `tfsdk:"name"`
 }
-type ServiceTemplateTagConfig struct {
+type ServiceTemplateTags struct {
 	Name types.String `tfsdk:"name"`
 }
 
 func (data ServiceTemplate) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=%v", url.QueryEscape(fmt.Sprintf("%v", data.Word.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 func (data ServiceTemplateData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=%v", url.QueryEscape(fmt.Sprintf("%v", data.Word.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it
@@ -120,11 +120,11 @@ func (data ServiceTemplate) getPathShort() string {
 
 func (data ServiceTemplate) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if !data.Word.IsNull() && !data.Word.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"word", data.Word.ValueString())
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"word", data.Name.ValueString())
 	}
-	if !data.InactivityTimerValue.IsNull() && !data.InactivityTimerValue.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inactivity-timer.value", strconv.FormatInt(data.InactivityTimerValue.ValueInt64(), 10))
+	if !data.IanctivityTimer.IsNull() && !data.IanctivityTimer.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inactivity-timer.value", strconv.FormatInt(data.IanctivityTimer.ValueInt64(), 10))
 	}
 	if !data.InactivityTimerProbe.IsNull() && !data.InactivityTimerProbe.IsUnknown() {
 		if data.InactivityTimerProbe.ValueBool() {
@@ -163,11 +163,11 @@ func (data ServiceTemplate) toBody(ctx context.Context) string {
 	if !data.RedirectAppendSwitchMac.IsNull() && !data.RedirectAppendSwitchMac.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redirect.append.switch-mac", data.RedirectAppendSwitchMac.ValueString())
 	}
-	if !data.RedirectUrlUrlName.IsNull() && !data.RedirectUrlUrlName.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redirect.url.url_name", data.RedirectUrlUrlName.ValueString())
+	if !data.RedirectUrl.IsNull() && !data.RedirectUrl.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redirect.url.url_name", data.RedirectUrl.ValueString())
 	}
-	if !data.RedirectUrlMatchAclName.IsNull() && !data.RedirectUrlMatchAclName.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redirect.url.match.acl_name", data.RedirectUrlMatchAclName.ValueString())
+	if !data.RedirectUrlMatchAcl.IsNull() && !data.RedirectUrlMatchAcl.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redirect.url.match.acl_name", data.RedirectUrlMatchAcl.ValueString())
 	}
 	if !data.RedirectUrlMatchAction.IsNull() && !data.RedirectUrlMatchAction.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redirect.url.match.action", data.RedirectUrlMatchAction.ValueString())
@@ -184,25 +184,25 @@ func (data ServiceTemplate) toBody(ctx context.Context) string {
 	if !data.MdnsServicePolicy.IsNull() && !data.MdnsServicePolicy.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mdns-service-policy", data.MdnsServicePolicy.ValueString())
 	}
-	if len(data.AccessGroup) > 0 {
+	if len(data.AccessGroups) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-group-config", []interface{}{})
-		for index, item := range data.AccessGroup {
+		for index, item := range data.AccessGroups {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-group-config"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
 		}
 	}
-	if len(data.InterfaceTemplate) > 0 {
+	if len(data.InterfaceTemplates) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interface-template", []interface{}{})
-		for index, item := range data.InterfaceTemplate {
+		for index, item := range data.InterfaceTemplates {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"interface-template"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
 		}
 	}
-	if len(data.TagConfig) > 0 {
+	if len(data.Tags) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"tag-config", []interface{}{})
-		for index, item := range data.TagConfig {
+		for index, item := range data.Tags {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"tag-config"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
@@ -216,14 +216,14 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	if value := res.Get(prefix + "word"); value.Exists() && !data.Word.IsNull() {
-		data.Word = types.StringValue(value.String())
+	if value := res.Get(prefix + "word"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
 	} else {
-		data.Word = types.StringNull()
+		data.Name = types.StringNull()
 	}
-	for i := range data.AccessGroup {
+	for i := range data.AccessGroups {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.AccessGroup[i].Name.ValueString()}
+		keyValues := [...]string{data.AccessGroups[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "access-group-config").ForEach(
@@ -244,16 +244,16 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.AccessGroup[i].Name.IsNull() {
-			data.AccessGroup[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.AccessGroups[i].Name.IsNull() {
+			data.AccessGroups[i].Name = types.StringValue(value.String())
 		} else {
-			data.AccessGroup[i].Name = types.StringNull()
+			data.AccessGroups[i].Name = types.StringNull()
 		}
 	}
-	if value := res.Get(prefix + "inactivity-timer.value"); value.Exists() && !data.InactivityTimerValue.IsNull() {
-		data.InactivityTimerValue = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "inactivity-timer.value"); value.Exists() && !data.IanctivityTimer.IsNull() {
+		data.IanctivityTimer = types.Int64Value(value.Int())
 	} else {
-		data.InactivityTimerValue = types.Int64Null()
+		data.IanctivityTimer = types.Int64Null()
 	}
 	if value := res.Get(prefix + "inactivity-timer.probe"); !data.InactivityTimerProbe.IsNull() {
 		if value.Exists() {
@@ -298,9 +298,9 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.Description = types.StringNull()
 	}
-	for i := range data.InterfaceTemplate {
+	for i := range data.InterfaceTemplates {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.InterfaceTemplate[i].Name.ValueString()}
+		keyValues := [...]string{data.InterfaceTemplates[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "interface-template").ForEach(
@@ -321,10 +321,10 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.InterfaceTemplate[i].Name.IsNull() {
-			data.InterfaceTemplate[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.InterfaceTemplates[i].Name.IsNull() {
+			data.InterfaceTemplates[i].Name = types.StringValue(value.String())
 		} else {
-			data.InterfaceTemplate[i].Name = types.StringNull()
+			data.InterfaceTemplates[i].Name = types.StringNull()
 		}
 	}
 	if value := res.Get(prefix + "tunnel.type.capwap.name"); value.Exists() && !data.TunnelCapwapName.IsNull() {
@@ -347,15 +347,15 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.RedirectAppendSwitchMac = types.StringNull()
 	}
-	if value := res.Get(prefix + "redirect.url.url_name"); value.Exists() && !data.RedirectUrlUrlName.IsNull() {
-		data.RedirectUrlUrlName = types.StringValue(value.String())
+	if value := res.Get(prefix + "redirect.url.url_name"); value.Exists() && !data.RedirectUrl.IsNull() {
+		data.RedirectUrl = types.StringValue(value.String())
 	} else {
-		data.RedirectUrlUrlName = types.StringNull()
+		data.RedirectUrl = types.StringNull()
 	}
-	if value := res.Get(prefix + "redirect.url.match.acl_name"); value.Exists() && !data.RedirectUrlMatchAclName.IsNull() {
-		data.RedirectUrlMatchAclName = types.StringValue(value.String())
+	if value := res.Get(prefix + "redirect.url.match.acl_name"); value.Exists() && !data.RedirectUrlMatchAcl.IsNull() {
+		data.RedirectUrlMatchAcl = types.StringValue(value.String())
 	} else {
-		data.RedirectUrlMatchAclName = types.StringNull()
+		data.RedirectUrlMatchAcl = types.StringNull()
 	}
 	if value := res.Get(prefix + "redirect.url.match.action"); value.Exists() && !data.RedirectUrlMatchAction.IsNull() {
 		data.RedirectUrlMatchAction = types.StringValue(value.String())
@@ -377,9 +377,9 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.ServicePolicyQosOutput = types.StringNull()
 	}
-	for i := range data.TagConfig {
+	for i := range data.Tags {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.TagConfig[i].Name.ValueString()}
+		keyValues := [...]string{data.Tags[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "tag-config").ForEach(
@@ -400,10 +400,10 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.TagConfig[i].Name.IsNull() {
-			data.TagConfig[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.Tags[i].Name.IsNull() {
+			data.Tags[i].Name = types.StringValue(value.String())
 		} else {
-			data.TagConfig[i].Name = types.StringNull()
+			data.Tags[i].Name = types.StringNull()
 		}
 	}
 	if value := res.Get(prefix + "mdns-service-policy"); value.Exists() && !data.MdnsServicePolicy.IsNull() {
@@ -419,18 +419,18 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "access-group-config"); value.Exists() {
-		data.AccessGroup = make([]ServiceTemplateAccessGroup, 0)
+		data.AccessGroups = make([]ServiceTemplateAccessGroups, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ServiceTemplateAccessGroup{}
+			item := ServiceTemplateAccessGroups{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			data.AccessGroup = append(data.AccessGroup, item)
+			data.AccessGroups = append(data.AccessGroups, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "inactivity-timer.value"); value.Exists() {
-		data.InactivityTimerValue = types.Int64Value(value.Int())
+		data.IanctivityTimer = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "inactivity-timer.probe"); value.Exists() {
 		data.InactivityTimerProbe = types.BoolValue(true)
@@ -458,13 +458,13 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 		data.Description = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "interface-template"); value.Exists() {
-		data.InterfaceTemplate = make([]ServiceTemplateInterfaceTemplate, 0)
+		data.InterfaceTemplates = make([]ServiceTemplateInterfaceTemplates, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ServiceTemplateInterfaceTemplate{}
+			item := ServiceTemplateInterfaceTemplates{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			data.InterfaceTemplate = append(data.InterfaceTemplate, item)
+			data.InterfaceTemplates = append(data.InterfaceTemplates, item)
 			return true
 		})
 	}
@@ -481,10 +481,10 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 		data.RedirectAppendSwitchMac = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "redirect.url.url_name"); value.Exists() {
-		data.RedirectUrlUrlName = types.StringValue(value.String())
+		data.RedirectUrl = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "redirect.url.match.acl_name"); value.Exists() {
-		data.RedirectUrlMatchAclName = types.StringValue(value.String())
+		data.RedirectUrlMatchAcl = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "redirect.url.match.action"); value.Exists() {
 		data.RedirectUrlMatchAction = types.StringValue(value.String())
@@ -499,13 +499,13 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 		data.ServicePolicyQosOutput = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "tag-config"); value.Exists() {
-		data.TagConfig = make([]ServiceTemplateTagConfig, 0)
+		data.Tags = make([]ServiceTemplateTags, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := ServiceTemplateTagConfig{}
+			item := ServiceTemplateTags{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			data.TagConfig = append(data.TagConfig, item)
+			data.Tags = append(data.Tags, item)
 			return true
 		})
 	}
@@ -516,11 +516,11 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 
 func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceTemplate) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.AccessGroup {
-		stateKeyValues := [...]string{state.AccessGroup[i].Name.ValueString()}
+	for i := range state.AccessGroups {
+		stateKeyValues := [...]string{state.AccessGroups[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.AccessGroup[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.AccessGroups[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -528,9 +528,9 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 		}
 
 		found := false
-		for j := range data.AccessGroup {
+		for j := range data.AccessGroups {
 			found = true
-			if state.AccessGroup[i].Name.ValueString() != data.AccessGroup[j].Name.ValueString() {
+			if state.AccessGroups[i].Name.ValueString() != data.AccessGroups[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -541,7 +541,7 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/access-group-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.InactivityTimerValue.IsNull() && data.InactivityTimerValue.IsNull() {
+	if !state.IanctivityTimer.IsNull() && data.IanctivityTimer.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/inactivity-timer/value", state.getPath()))
 	}
 	if !state.InactivityTimerProbe.IsNull() && data.InactivityTimerProbe.IsNull() {
@@ -565,11 +565,11 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
-	for i := range state.InterfaceTemplate {
-		stateKeyValues := [...]string{state.InterfaceTemplate[i].Name.ValueString()}
+	for i := range state.InterfaceTemplates {
+		stateKeyValues := [...]string{state.InterfaceTemplates[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.InterfaceTemplate[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.InterfaceTemplates[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -577,9 +577,9 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 		}
 
 		found := false
-		for j := range data.InterfaceTemplate {
+		for j := range data.InterfaceTemplates {
 			found = true
-			if state.InterfaceTemplate[i].Name.ValueString() != data.InterfaceTemplate[j].Name.ValueString() {
+			if state.InterfaceTemplates[i].Name.ValueString() != data.InterfaceTemplates[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -602,10 +602,10 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 	if !state.RedirectAppendSwitchMac.IsNull() && data.RedirectAppendSwitchMac.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/append/switch-mac", state.getPath()))
 	}
-	if !state.RedirectUrlUrlName.IsNull() && data.RedirectUrlUrlName.IsNull() {
+	if !state.RedirectUrl.IsNull() && data.RedirectUrl.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/url_name", state.getPath()))
 	}
-	if !state.RedirectUrlMatchAclName.IsNull() && data.RedirectUrlMatchAclName.IsNull() {
+	if !state.RedirectUrlMatchAcl.IsNull() && data.RedirectUrlMatchAcl.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/match/acl_name", state.getPath()))
 	}
 	if !state.RedirectUrlMatchAction.IsNull() && data.RedirectUrlMatchAction.IsNull() {
@@ -620,11 +620,11 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 	if !state.ServicePolicyQosOutput.IsNull() && data.ServicePolicyQosOutput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/qos/output", state.getPath()))
 	}
-	for i := range state.TagConfig {
-		stateKeyValues := [...]string{state.TagConfig[i].Name.ValueString()}
+	for i := range state.Tags {
+		stateKeyValues := [...]string{state.Tags[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.TagConfig[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Tags[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -632,9 +632,9 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 		}
 
 		found := false
-		for j := range data.TagConfig {
+		for j := range data.Tags {
 			found = true
-			if state.TagConfig[i].Name.ValueString() != data.TagConfig[j].Name.ValueString() {
+			if state.Tags[i].Name.ValueString() != data.Tags[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -666,12 +666,12 @@ func (data *ServiceTemplate) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *ServiceTemplate) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.AccessGroup {
-		keyValues := [...]string{data.AccessGroup[i].Name.ValueString()}
+	for i := range data.AccessGroups {
+		keyValues := [...]string{data.AccessGroups[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-group-config=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.InactivityTimerValue.IsNull() {
+	if !data.IanctivityTimer.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/inactivity-timer/value", data.getPath()))
 	}
 	if !data.InactivityTimerProbe.IsNull() {
@@ -695,8 +695,8 @@ func (data *ServiceTemplate) getDeletePaths(ctx context.Context) []string {
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
 	}
-	for i := range data.InterfaceTemplate {
-		keyValues := [...]string{data.InterfaceTemplate[i].Name.ValueString()}
+	for i := range data.InterfaceTemplates {
+		keyValues := [...]string{data.InterfaceTemplates[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/interface-template=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
@@ -712,10 +712,10 @@ func (data *ServiceTemplate) getDeletePaths(ctx context.Context) []string {
 	if !data.RedirectAppendSwitchMac.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/append/switch-mac", data.getPath()))
 	}
-	if !data.RedirectUrlUrlName.IsNull() {
+	if !data.RedirectUrl.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/url/url_name", data.getPath()))
 	}
-	if !data.RedirectUrlMatchAclName.IsNull() {
+	if !data.RedirectUrlMatchAcl.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/url/match/acl_name", data.getPath()))
 	}
 	if !data.RedirectUrlMatchAction.IsNull() {
@@ -730,8 +730,8 @@ func (data *ServiceTemplate) getDeletePaths(ctx context.Context) []string {
 	if !data.ServicePolicyQosOutput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/service-policy/qos/output", data.getPath()))
 	}
-	for i := range data.TagConfig {
-		keyValues := [...]string{data.TagConfig[i].Name.ValueString()}
+	for i := range data.Tags {
+		keyValues := [...]string{data.Tags[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/tag-config=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

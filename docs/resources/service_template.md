@@ -14,13 +14,13 @@ This resource can manage the Service Template configuration.
 
 ```terraform
 resource "iosxe_service_template" "example" {
-  word = "DEFAULT_LINKSEC_POLICY_MUST_SECURE"
-  access_group = [
+  name = "MY_TEMPLATE"
+  access_groups = [
     {
       name = "ag1"
     }
   ]
-  inactivity_timer_value = 25
+  ianctivity_timer       = 25
   inactivity_timer_probe = false
   vlan                   = 27
   voice_vlan             = false
@@ -28,22 +28,22 @@ resource "iosxe_service_template" "example" {
   sgt                    = 57
   absolute_timer         = 45
   description            = "service_template_desc"
-  interface_template = [
+  interface_templates = [
     {
       name = "template1"
     }
   ]
-  tunnel_capwap_name          = "tunnel_name"
-  vnid                        = "vnid_1"
-  redirect_append_client_mac  = "00:01:00:01:00:01"
-  redirect_append_switch_mac  = "00:01:00:01:00:02"
-  redirect_url_url_name       = "valid_url"
-  redirect_url_match_acl_name = "acl_name"
-  redirect_url_match_action   = "redirect-on-no-match"
-  dns_acl_preauth             = "dns_acl_name"
-  service_policy_qos_input    = "input_qos"
-  service_policy_qos_output   = "output_qos"
-  tag_config = [
+  tunnel_capwap_name         = "TUN1"
+  vnid                       = "12345"
+  redirect_append_client_mac = "00:01:00:01:00:01"
+  redirect_append_switch_mac = "00:01:00:01:00:02"
+  redirect_url               = "valid_url"
+  redirect_url_match_acl     = "acl_name"
+  redirect_url_match_action  = "redirect-on-no-match"
+  dns_acl_preauth            = "dns_acl_name"
+  service_policy_qos_input   = "input_qos"
+  service_policy_qos_output  = "output_qos"
+  tags = [
     {
       name = "tag_name"
     }
@@ -56,33 +56,33 @@ resource "iosxe_service_template" "example" {
 
 ### Required
 
-- `word` (String) Specify a template name (maximum 48 characters)
+- `name` (String) Specify a template name (maximum 48 characters)
 
 ### Optional
 
 - `absolute_timer` (Number) Enter a value between 1 and 1073741823
   - Range: `1`-`1073741823`
-- `access_group` (Attributes List) Access list to be applied (see [below for nested schema](#nestedatt--access_group))
+- `access_groups` (Attributes List) Access list to be applied (see [below for nested schema](#nestedatt--access_groups))
 - `description` (String) Enter a description
 - `device` (String) A device name from the provider configuration.
 - `dns_acl_preauth` (String) pre-authentication
-- `inactivity_timer_probe` (Boolean) ARP probe
-- `inactivity_timer_value` (Number) Enter a value between 1 and 65535
+- `ianctivity_timer` (Number) Enter a value between 1 and 65535
   - Range: `1`-`65535`
-- `interface_template` (Attributes List) Interface template to be applied (see [below for nested schema](#nestedatt--interface_template))
+- `inactivity_timer_probe` (Boolean) ARP probe
+- `interface_templates` (Attributes List) Interface template to be applied (see [below for nested schema](#nestedatt--interface_templates))
 - `linksec_policy` (String) Set the link security policy
   - Choices: `must-not-secure`, `must-secure`, `should-secure`
 - `mdns_service_policy` (String) mdns policy to be applied
 - `redirect_append_client_mac` (String) Append client Mac Address in redirect URL
 - `redirect_append_switch_mac` (String) Append switch Mac Address in redirect URL
-- `redirect_url_match_acl_name` (String) Specify the access list name
+- `redirect_url` (String) Specify a valid URL
+- `redirect_url_match_acl` (String) Specify the access list name
 - `redirect_url_match_action` (String) - Choices: `one-time-redirect`, `redirect-on-no-match`
-- `redirect_url_url_name` (String) Specify a valid URL
 - `service_policy_qos_input` (String) Configure input Qos policy
 - `service_policy_qos_output` (String) Configure output Qos policy
 - `sgt` (Number) SGT tag
   - Range: `2`-`65519`
-- `tag_config` (Attributes List) tag name (see [below for nested schema](#nestedatt--tag_config))
+- `tags` (Attributes List) tag name (see [below for nested schema](#nestedatt--tags))
 - `tunnel_capwap_name` (String) tunnel profile name
 - `vlan` (Number) Vlan to be applied
   - Range: `1`-`4094`
@@ -93,24 +93,24 @@ resource "iosxe_service_template" "example" {
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--access_group"></a>
-### Nested Schema for `access_group`
+<a id="nestedatt--access_groups"></a>
+### Nested Schema for `access_groups`
 
 Required:
 
 - `name` (String) Specify the access list name
 
 
-<a id="nestedatt--interface_template"></a>
-### Nested Schema for `interface_template`
+<a id="nestedatt--interface_templates"></a>
+### Nested Schema for `interface_templates`
 
 Required:
 
 - `name` (String) Enter name of interface template
 
 
-<a id="nestedatt--tag_config"></a>
-### Nested Schema for `tag_config`
+<a id="nestedatt--tags"></a>
+### Nested Schema for `tags`
 
 Required:
 
@@ -121,5 +121,5 @@ Required:
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxe_service_template.example "Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=DEFAULT_LINKSEC_POLICY_MUST_SECURE"
+terraform import iosxe_service_template.example "Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=MY_TEMPLATE"
 ```

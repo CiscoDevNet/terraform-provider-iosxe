@@ -27,8 +27,8 @@ import (
 
 func TestAccDataSourceIosxeServiceTemplate(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "access_group.0.name", "ag1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "inactivity_timer_value", "25"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "access_groups.0.name", "ag1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "ianctivity_timer", "25"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "inactivity_timer_probe", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "vlan", "27"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "voice_vlan", "false"))
@@ -36,18 +36,18 @@ func TestAccDataSourceIosxeServiceTemplate(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "sgt", "57"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "absolute_timer", "45"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "description", "service_template_desc"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "interface_template.0.name", "template1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "tunnel_capwap_name", "tunnel_name"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "vnid", "vnid_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "interface_templates.0.name", "template1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "tunnel_capwap_name", "TUN1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "vnid", "12345"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "redirect_append_client_mac", "00:01:00:01:00:01"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "redirect_append_switch_mac", "00:01:00:01:00:02"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "redirect_url_url_name", "valid_url"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "redirect_url_match_acl_name", "acl_name"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "redirect_url", "valid_url"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "redirect_url_match_acl", "acl_name"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "redirect_url_match_action", "redirect-on-no-match"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "dns_acl_preauth", "dns_acl_name"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "service_policy_qos_input", "input_qos"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "service_policy_qos_output", "output_qos"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "tag_config.0.name", "tag_name"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_service_template.test", "tags.0.name", "tag_name"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -62,11 +62,11 @@ func TestAccDataSourceIosxeServiceTemplate(t *testing.T) {
 
 func testAccDataSourceIosxeServiceTemplateConfig() string {
 	config := `resource "iosxe_service_template" "test" {` + "\n"
-	config += `	word = "DEFAULT_LINKSEC_POLICY_MUST_SECURE"` + "\n"
-	config += `	access_group = [{` + "\n"
+	config += `	name = "MY_TEMPLATE"` + "\n"
+	config += `	access_groups = [{` + "\n"
 	config += `		name = "ag1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	inactivity_timer_value = 25` + "\n"
+	config += `	ianctivity_timer = 25` + "\n"
 	config += `	inactivity_timer_probe = false` + "\n"
 	config += `	vlan = 27` + "\n"
 	config += `	voice_vlan = false` + "\n"
@@ -74,27 +74,27 @@ func testAccDataSourceIosxeServiceTemplateConfig() string {
 	config += `	sgt = 57` + "\n"
 	config += `	absolute_timer = 45` + "\n"
 	config += `	description = "service_template_desc"` + "\n"
-	config += `	interface_template = [{` + "\n"
+	config += `	interface_templates = [{` + "\n"
 	config += `		name = "template1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	tunnel_capwap_name = "tunnel_name"` + "\n"
-	config += `	vnid = "vnid_1"` + "\n"
+	config += `	tunnel_capwap_name = "TUN1"` + "\n"
+	config += `	vnid = "12345"` + "\n"
 	config += `	redirect_append_client_mac = "00:01:00:01:00:01"` + "\n"
 	config += `	redirect_append_switch_mac = "00:01:00:01:00:02"` + "\n"
-	config += `	redirect_url_url_name = "valid_url"` + "\n"
-	config += `	redirect_url_match_acl_name = "acl_name"` + "\n"
+	config += `	redirect_url = "valid_url"` + "\n"
+	config += `	redirect_url_match_acl = "acl_name"` + "\n"
 	config += `	redirect_url_match_action = "redirect-on-no-match"` + "\n"
 	config += `	dns_acl_preauth = "dns_acl_name"` + "\n"
 	config += `	service_policy_qos_input = "input_qos"` + "\n"
 	config += `	service_policy_qos_output = "output_qos"` + "\n"
-	config += `	tag_config = [{` + "\n"
+	config += `	tags = [{` + "\n"
 	config += `		name = "tag_name"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_service_template" "test" {
-			word = "DEFAULT_LINKSEC_POLICY_MUST_SECURE"
+			name = "MY_TEMPLATE"
 			depends_on = [iosxe_service_template.test]
 		}
 	`
