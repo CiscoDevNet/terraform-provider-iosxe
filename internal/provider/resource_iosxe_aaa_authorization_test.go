@@ -33,6 +33,7 @@ func TestAccIosxeAAAAuthorization(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.name", "TEST"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a1_local", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a1_group", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a1_if_authenticated", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -65,6 +66,7 @@ func testAccIosxeAAAAuthorizationConfig_all() string {
 	config += `	execs = [{` + "\n"
 	config += `		name = "TEST"` + "\n"
 	config += `		a1_local = false` + "\n"
+	config += `		a1_group = "false"` + "\n"
 	config += `		a1_if_authenticated = true` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

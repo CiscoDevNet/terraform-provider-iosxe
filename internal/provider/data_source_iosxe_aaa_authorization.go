@@ -76,6 +76,14 @@ func (d *AAAAuthorizationDataSource) Schema(ctx context.Context, req datasource.
 							MarkdownDescription: "Use local database",
 							Computed:            true,
 						},
+						"a1_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
 						"a1_if_authenticated": schema.BoolAttribute{
 							MarkdownDescription: "Succeed if user has authenticated.",
 							Computed:            true,

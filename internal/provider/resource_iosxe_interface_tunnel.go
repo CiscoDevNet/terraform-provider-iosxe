@@ -198,6 +198,13 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					stringvalidator.OneOf("clear", "copy", "set"),
 				},
 			},
+			"arp_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set ARP cache timeout").AddIntegerRangeDescription(0, 2147483).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483),
+				},
+			},
 			"ipv4_address": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,

@@ -25,6 +25,7 @@ import (
 	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -129,6 +130,13 @@ func (r *AAAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										Required:            true,
 									},
 								},
+							},
+						},
+						"ip_radius_source_interface_loopback": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 2147483647),
 							},
 						},
 					},

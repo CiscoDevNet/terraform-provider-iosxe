@@ -69,6 +69,10 @@ description: |-
 - BREAKING CHANGE: Rename `summary_address` attribute to `summary_addresses` of `iosxe_ospf` resource and data source
 - Add `ipv4_unicast_networks_mask` and `ipv4_unicast_networks` attribute to `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources and data sources
 - Add `ipv6_unicast_networks` attribute to `iosxe_bgp_address_family_ipv6` and `iosxe_bgp_address_family_ipv6_vrf` resources and data sources
+- Add `iosxe_service_template` resource and data source
+- Add `iosxe_vlan_access_map` resource and data source
+- Add `service_policy_subscriber` attribute to `iosxe_template` resources and data sources
+
 
 ## 0.3.3
 

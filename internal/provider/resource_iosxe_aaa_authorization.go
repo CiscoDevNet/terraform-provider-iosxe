@@ -85,6 +85,14 @@ func (r *AAAAuthorizationResource) Schema(ctx context.Context, req resource.Sche
 							MarkdownDescription: helpers.NewAttributeDescription("Use local database").String,
 							Optional:            true,
 						},
+						"a1_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
 						"a1_if_authenticated": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Succeed if user has authenticated.").String,
 							Optional:            true,

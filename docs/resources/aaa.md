@@ -32,6 +32,7 @@ resource "iosxe_aaa" "example" {
           name = "TESTRADIUS"
         }
       ]
+      ip_radius_source_interface_loopback = 0
     }
   ]
   group_tacacsplus = [
@@ -74,6 +75,8 @@ Required:
 
 Optional:
 
+- `ip_radius_source_interface_loopback` (Number) Loopback interface
+  - Range: `0`-`2147483647`
 - `server_names` (Attributes List) Name of radius server (see [below for nested schema](#nestedatt--group_server_radius--server_names))
 
 <a id="nestedatt--group_server_radius--server_names"></a>

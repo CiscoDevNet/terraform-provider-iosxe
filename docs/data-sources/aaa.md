@@ -39,6 +39,7 @@ data "iosxe_aaa" "example" {
 
 Read-Only:
 
+- `ip_radius_source_interface_loopback` (Number) Loopback interface
 - `name` (String) Radius Server-group name with max string length 32
 - `server_names` (Attributes List) Name of radius server (see [below for nested schema](#nestedatt--group_server_radius--server_names))
 

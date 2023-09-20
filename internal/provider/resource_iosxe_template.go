@@ -102,6 +102,17 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 					int64validator.Between(1, 10),
 				},
 			},
+			"dot1x_timeout_tx_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for supplicant retries").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"service_policy_subscriber": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Apply a subscriber control policy to the interface").String,
+				Optional:            true,
+			},
 			"service_policy_input": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("policy-map name").String,
 				Optional:            true,

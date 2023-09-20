@@ -60,8 +60,9 @@ type AAAServerRadiusDynamicAuthorClients struct {
 	ServerKey     types.String `tfsdk:"server_key"`
 }
 type AAAGroupServerRadius struct {
-	Name        types.String                      `tfsdk:"name"`
-	ServerNames []AAAGroupServerRadiusServerNames `tfsdk:"server_names"`
+	Name                            types.String                      `tfsdk:"name"`
+	ServerNames                     []AAAGroupServerRadiusServerNames `tfsdk:"server_names"`
+	IpRadiusSourceInterfaceLoopback types.Int64                       `tfsdk:"ip_radius_source_interface_loopback"`
 }
 type AAAGroupTacacsplus struct {
 	Name    types.String                `tfsdk:"name"`
@@ -127,6 +128,9 @@ func (data AAA) toBody(ctx context.Context) string {
 		for index, item := range data.GroupServerRadius {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.radius"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.IpRadiusSourceInterfaceLoopback.IsNull() && !item.IpRadiusSourceInterfaceLoopback.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.radius"+"."+strconv.Itoa(index)+"."+"ip.radius.source-interface.Loopback", strconv.FormatInt(item.IpRadiusSourceInterfaceLoopback.ValueInt64(), 10))
 			}
 			if len(item.ServerNames) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.radius"+"."+strconv.Itoa(index)+"."+"server.name", []interface{}{})
@@ -281,6 +285,11 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 				data.GroupServerRadius[i].ServerNames[ci].Name = types.StringNull()
 			}
 		}
+		if value := r.Get("ip.radius.source-interface.Loopback"); value.Exists() && !data.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback.IsNull() {
+			data.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback = types.Int64Value(value.Int())
+		} else {
+			data.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback = types.Int64Null()
+		}
 	}
 	for i := range data.GroupTacacsplus {
 		keys := [...]string{"name"}
@@ -394,6 +403,9 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 					item.ServerNames = append(item.ServerNames, cItem)
 					return true
 				})
+			}
+			if cValue := v.Get("ip.radius.source-interface.Loopback"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceLoopback = types.Int64Value(cValue.Int())
 			}
 			data.GroupServerRadius = append(data.GroupServerRadius, item)
 			return true

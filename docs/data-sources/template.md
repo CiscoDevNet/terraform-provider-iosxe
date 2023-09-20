@@ -52,6 +52,7 @@ data "iosxe_template" "example" {
 - `dot1x_max_reauth_req` (Number) Max No. of Reauthentication Attempts
 - `dot1x_max_req` (Number) Max No. of Retries
 - `dot1x_pae` (String) Set 802.1x interface pae type
+- `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
 - `id` (String) The path of the retrieved object.
 - `ip_access_group` (Attributes List) Access control list for IP packets (see [below for nested schema](#nestedatt--ip_access_group))
 - `ip_dhcp_snooping_limit_rate` (Number) DHCP snooping rate limit
@@ -61,6 +62,7 @@ data "iosxe_template" "example" {
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `service_policy_input` (String) policy-map name
 - `service_policy_output` (String) policy-map name
+- `service_policy_subscriber` (String) Apply a subscriber control policy to the interface
 - `source_template` (String) Get config from a template
 - `spanning_tree_bpduguard_enable` (Boolean) Enable BPDU guard for this interface
 - `spanning_tree_portfast` (Boolean) Portfast options for the interface

@@ -56,6 +56,7 @@ type InterfaceTunnel struct {
 	TunnelDestinationIpv4        types.String                            `tfsdk:"tunnel_destination_ipv4"`
 	TunnelProtectionIpsecProfile types.String                            `tfsdk:"tunnel_protection_ipsec_profile"`
 	CryptoIpsecDfBit             types.String                            `tfsdk:"crypto_ipsec_df_bit"`
+	ArpTimeout                   types.Int64                             `tfsdk:"arp_timeout"`
 	Ipv4Address                  types.String                            `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                            `tfsdk:"ipv4_address_mask"`
 	Unnumbered                   types.String                            `tfsdk:"unnumbered"`
@@ -96,6 +97,7 @@ type InterfaceTunnelData struct {
 	TunnelDestinationIpv4        types.String                            `tfsdk:"tunnel_destination_ipv4"`
 	TunnelProtectionIpsecProfile types.String                            `tfsdk:"tunnel_protection_ipsec_profile"`
 	CryptoIpsecDfBit             types.String                            `tfsdk:"crypto_ipsec_df_bit"`
+	ArpTimeout                   types.Int64                             `tfsdk:"arp_timeout"`
 	Ipv4Address                  types.String                            `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                            `tfsdk:"ipv4_address_mask"`
 	Unnumbered                   types.String                            `tfsdk:"unnumbered"`
@@ -206,6 +208,9 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	}
 	if !data.CryptoIpsecDfBit.IsNull() && !data.CryptoIpsecDfBit.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-crypto:crypto.ipsec.df-bit", data.CryptoIpsecDfBit.ValueString())
+	}
+	if !data.ArpTimeout.IsNull() && !data.ArpTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"arp.timeout", strconv.FormatInt(data.ArpTimeout.ValueInt64(), 10))
 	}
 	if !data.Ipv4Address.IsNull() && !data.Ipv4Address.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.address.primary.address", data.Ipv4Address.ValueString())
@@ -493,6 +498,11 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.CryptoIpsecDfBit = types.StringNull()
 	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
+		data.ArpTimeout = types.Int64Value(value.Int())
+	} else {
+		data.ArpTimeout = types.Int64Null()
+	}
 	if value := res.Get(prefix + "ip.address.primary.address"); value.Exists() && !data.Ipv4Address.IsNull() {
 		data.Ipv4Address = types.StringValue(value.String())
 	} else {
@@ -731,6 +741,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-crypto:crypto.ipsec.df-bit"); value.Exists() {
 		data.CryptoIpsecDfBit = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "arp.timeout"); value.Exists() {
+		data.ArpTimeout = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ip.address.primary.address"); value.Exists() {
 		data.Ipv4Address = types.StringValue(value.String())
@@ -1102,6 +1115,9 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.CryptoIpsecDfBit.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-crypto:crypto/ipsec/df-bit", data.getPath()))
+	}
+	if !data.ArpTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
 	}
 	if !data.Ipv4Address.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))

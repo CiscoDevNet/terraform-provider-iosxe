@@ -35,6 +35,8 @@ func TestAccIosxeTemplate(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "dot1x_pae", "both"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "dot1x_max_reauth_req", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "dot1x_max_req", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "dot1x_timeout_tx_period", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "service_policy_subscriber", "dot1x_policy"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "service_policy_input", "SP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "service_policy_output", "SP2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "switchport_mode_trunk", "true"))
@@ -91,19 +93,15 @@ func TestAccIosxeTemplate(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "device_tracking", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "device_tracking_vlan_range", "100-199"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "cts_manual", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "cts_manual_policy_static_sgt", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "cts_manual_policy_static_trusted", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "cts_manual_propagate_sgt", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_template.test", "cts_role_based_enforcement", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeTemplateConfig_minimum(),
+				Config: testAccIosxeTemplatePrerequisitesConfig + testAccIosxeTemplateConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeTemplateConfig_all(),
+				Config: testAccIosxeTemplatePrerequisitesConfig + testAccIosxeTemplateConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -115,9 +113,22 @@ func TestAccIosxeTemplate(t *testing.T) {
 	})
 }
 
+const testAccIosxeTemplatePrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy"
+	attributes = {
+		"name" = "dot1x_policy"
+		"type" = "control"
+		"subscriber" = ""
+	}
+}
+
+`
+
 func testAccIosxeTemplateConfig_minimum() string {
 	config := `resource "iosxe_template" "test" {` + "\n"
 	config += `	template_name = "TEMP1"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -128,6 +139,8 @@ func testAccIosxeTemplateConfig_all() string {
 	config += `	dot1x_pae = "both"` + "\n"
 	config += `	dot1x_max_reauth_req = 3` + "\n"
 	config += `	dot1x_max_req = 3` + "\n"
+	config += `	dot1x_timeout_tx_period = 2` + "\n"
+	config += `	service_policy_subscriber = "dot1x_policy"` + "\n"
 	config += `	service_policy_input = "SP1"` + "\n"
 	config += `	service_policy_output = "SP2"` + "\n"
 	config += `	switchport_mode_trunk = true` + "\n"
@@ -188,10 +201,7 @@ func testAccIosxeTemplateConfig_all() string {
 	config += `	device_tracking = true` + "\n"
 	config += `	device_tracking_vlan_range = "100-199"` + "\n"
 	config += `	cts_manual = true` + "\n"
-	config += `	cts_manual_policy_static_sgt = 100` + "\n"
-	config += `	cts_manual_policy_static_trusted = false` + "\n"
-	config += `	cts_manual_propagate_sgt = false` + "\n"
-	config += `	cts_role_based_enforcement = false` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

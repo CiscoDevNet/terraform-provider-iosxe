@@ -116,6 +116,10 @@ func (d *AAADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 								},
 							},
 						},
+						"ip_radius_source_interface_loopback": schema.Int64Attribute{
+							MarkdownDescription: "Loopback interface",
+							Computed:            true,
+						},
 					},
 				},
 			},

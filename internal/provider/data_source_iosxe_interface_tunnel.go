@@ -159,6 +159,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Handling of encapsulated DF bit.",
 				Computed:            true,
 			},
+			"arp_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Set ARP cache timeout",
+				Computed:            true,
+			},
 			"ipv4_address": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,

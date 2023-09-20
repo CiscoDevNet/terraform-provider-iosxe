@@ -31,6 +31,7 @@ data "iosxe_interface_tunnel" "example" {
 
 ### Read-Only
 
+- `arp_timeout` (Number) Set ARP cache timeout
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
 - `bfd_enable` (Boolean) Enable BFD under the interface
 - `bfd_interval` (Number)
