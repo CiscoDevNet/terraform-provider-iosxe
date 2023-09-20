@@ -15,12 +15,10 @@ attributes:
         xpath: a1/local
         tf_name: a1_local
         example: false
-        # SP 11
       - yang_name: a1/auth-exec-choice/group/group
         xpath: a1/group
         tf_name: a1_group
-        example: false
-        # SP 11
+        example: GROUP1
       - yang_name: a2/auth-exec-choice/local/local
         xpath: a2/local
         tf_name: a2_local
