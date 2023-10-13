@@ -360,6 +360,8 @@ func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resourc
 		NewVLANResource,
 		NewVLANAccessMapResource,
 		NewVLANConfigurationResource,
+		NewVLANFilterResource,
+		NewVLANGroupResource,
 		NewVRFResource,
 		NewVTPResource,
 	}
@@ -453,6 +455,8 @@ func (p *IosxeProvider) DataSources(ctx context.Context) []func() datasource.Dat
 		NewVLANDataSource,
 		NewVLANAccessMapDataSource,
 		NewVLANConfigurationDataSource,
+		NewVLANFilterDataSource,
+		NewVLANGroupDataSource,
 		NewVRFDataSource,
 		NewVTPDataSource,
 	}
