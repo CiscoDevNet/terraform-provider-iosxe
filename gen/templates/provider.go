@@ -277,6 +277,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewRestconfResource,
+		NewSaveConfigResource,
 		{{- range .}}
 		New{{camelCase .Name}}Resource,
 		{{- end}}

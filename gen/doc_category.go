@@ -20,8 +20,8 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -51,12 +51,12 @@ func SnakeCase(s string) string {
 }
 
 func main() {
-	items, _ := ioutil.ReadDir(definitionsPath)
+	items, _ := os.ReadDir(definitionsPath)
 	configs := make([]YamlConfig, len(items))
 
 	// Load configs
 	for i, filename := range items {
-		yamlFile, err := ioutil.ReadFile(filepath.Join(definitionsPath, filename.Name()))
+		yamlFile, err := os.ReadFile(filepath.Join(definitionsPath, filename.Name()))
 		if err != nil {
 			log.Fatalf("Error reading file: %v", err)
 		}
@@ -72,7 +72,7 @@ func main() {
 	for i := range configs {
 		for _, path := range docPaths {
 			filename := path + SnakeCase(configs[i].Name) + ".md"
-			content, err := ioutil.ReadFile(filename)
+			content, err := os.ReadFile(filename)
 			if err != nil {
 				log.Fatalf("Error opening documentation: %v", err)
 			}
@@ -80,14 +80,14 @@ func main() {
 			s := string(content)
 			s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "`+configs[i].DocCategory+`"`)
 
-			ioutil.WriteFile(filename, []byte(s), 0644)
+			os.WriteFile(filename, []byte(s), 0644)
 		}
 	}
 
 	// update iosxe_restconf resource and data source
 	for _, path := range docPaths {
 		filename := path + "restconf.md"
-		content, err := ioutil.ReadFile(filename)
+		content, err := os.ReadFile(filename)
 		if err != nil {
 			log.Fatalf("Error opening documentation: %v", err)
 		}
@@ -95,6 +95,18 @@ func main() {
 		s := string(content)
 		s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
 
-		ioutil.WriteFile(filename, []byte(s), 0644)
+		os.WriteFile(filename, []byte(s), 0644)
 	}
+
+	// update iosxe_save_config resource
+	filename := "./docs/resources/save_config.md"
+	content, err := os.ReadFile(filename)
+	if err != nil {
+		log.Fatalf("Error opening documentation: %v", err)
+	}
+
+	s := string(content)
+	s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
+
+	os.WriteFile(filename, []byte(s), 0644)
 }

@@ -2,6 +2,7 @@
 
 - Add `iosxe_vlan_filter` resource and data source
 - Add `iosxe_vlan_group` resource and data source
+- Add `iosxe_save_config` resource
 
 ## 0.5.0
 
