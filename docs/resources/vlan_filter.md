@@ -14,7 +14,7 @@ This resource can manage the VLAN Filter configuration.
 
 ```terraform
 resource "iosxe_vlan_filter" "example" {
-  word       = "f1"
+  word       = "VAM1"
   vlan_lists = [1]
 }
 ```
@@ -24,12 +24,12 @@ resource "iosxe_vlan_filter" "example" {
 
 ### Required
 
+- `vlan_lists` (List of Number) VLANs to apply filter to
 - `word` (String)
 
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `vlan_lists` (List of Number) VLANs to apply filter to
 
 ### Read-Only
 
@@ -40,5 +40,5 @@ resource "iosxe_vlan_filter" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxe_vlan_filter.example "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:filter=f1"
+terraform import iosxe_vlan_filter.example "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:filter=VAM1"
 ```

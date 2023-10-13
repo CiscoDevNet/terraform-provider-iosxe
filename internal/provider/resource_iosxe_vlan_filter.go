@@ -73,7 +73,7 @@ func (r *VLANFilterResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"vlan_lists": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("VLANs to apply filter to").String,
 				ElementType:         types.Int64Type,
-				Optional:            true,
+				Required:            true,
 			},
 		},
 	}

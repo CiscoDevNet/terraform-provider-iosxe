@@ -3,18 +3,18 @@
 page_title: "iosxe_vlan_group Data Source - terraform-provider-iosxe"
 subcategory: "Switching"
 description: |-
-  This data source can read the VLAN group configuration.
+  This data source can read the VLAN Group configuration.
 ---
 
 # iosxe_vlan_group (Data Source)
 
-This data source can read the VLAN group configuration.
+This data source can read the VLAN Group configuration.
 
 ## Example Usage
 
 ```terraform
 data "iosxe_vlan_group" "example" {
-  name = "group"
+  name = "GROUP1"
 }
 ```
 

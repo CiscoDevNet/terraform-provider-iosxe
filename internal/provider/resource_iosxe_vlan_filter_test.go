@@ -31,39 +31,53 @@ func TestAccIosxeVLANFilter(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_filter.test", "word", "f1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_filter.test", "word", "VAM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_filter.test", "vlan_lists.0", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeVLANFilterConfig_minimum(),
+				Config: testAccIosxeVLANFilterPrerequisitesConfig + testAccIosxeVLANFilterConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeVLANFilterConfig_all(),
+				Config: testAccIosxeVLANFilterPrerequisitesConfig + testAccIosxeVLANFilterConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
 				ResourceName:  "iosxe_vlan_filter.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:filter=f1",
+				ImportStateId: "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:filter=VAM1",
 			},
 		},
 	})
 }
 
+const testAccIosxeVLANFilterPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10"
+	attributes = {
+		"name" = "VAM1"
+		"value" = "10"
+	}
+}
+
+`
+
 func testAccIosxeVLANFilterConfig_minimum() string {
 	config := `resource "iosxe_vlan_filter" "test" {` + "\n"
-	config += `	word = "f1"` + "\n"
+	config += `	word = "VAM1"` + "\n"
+	config += `	vlan_lists = [1]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
 
 func testAccIosxeVLANFilterConfig_all() string {
 	config := `resource "iosxe_vlan_filter" "test" {` + "\n"
-	config += `	word = "f1"` + "\n"
+	config += `	word = "VAM1"` + "\n"
 	config += `	vlan_lists = [1]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

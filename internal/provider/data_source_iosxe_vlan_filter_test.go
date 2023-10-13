@@ -37,22 +37,34 @@ func TestAccDataSourceIosxeVLANFilter(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeVLANFilterConfig(),
+				Config: testAccDataSourceIosxeVLANFilterPrerequisitesConfig + testAccDataSourceIosxeVLANFilterConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
 }
 
+const testAccDataSourceIosxeVLANFilterPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10"
+	attributes = {
+		"name" = "VAM1"
+		"value" = "10"
+	}
+}
+
+`
+
 func testAccDataSourceIosxeVLANFilterConfig() string {
 	config := `resource "iosxe_vlan_filter" "test" {` + "\n"
-	config += `	word = "f1"` + "\n"
+	config += `	word = "VAM1"` + "\n"
 	config += `	vlan_lists = [1]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_vlan_filter" "test" {
-			word = "f1"
+			word = "VAM1"
 			depends_on = [iosxe_vlan_filter.test]
 		}
 	`

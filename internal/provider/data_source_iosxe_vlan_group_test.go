@@ -46,13 +46,13 @@ func TestAccDataSourceIosxeVLANGroup(t *testing.T) {
 
 func testAccDataSourceIosxeVLANGroupConfig() string {
 	config := `resource "iosxe_vlan_group" "test" {` + "\n"
-	config += `	name = "group"` + "\n"
+	config += `	name = "GROUP1"` + "\n"
 	config += `	vlan_lists = [1]` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_vlan_group" "test" {
-			name = "group"
+			name = "GROUP1"
 			depends_on = [iosxe_vlan_group.test]
 		}
 	`

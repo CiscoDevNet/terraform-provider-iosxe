@@ -49,7 +49,7 @@ func (r *VLANGroupResource) Metadata(_ context.Context, req resource.MetadataReq
 func (r *VLANGroupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the VLAN group configuration.",
+		MarkdownDescription: "This resource can manage the VLAN Group configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -73,7 +73,7 @@ func (r *VLANGroupResource) Schema(ctx context.Context, req resource.SchemaReque
 			"vlan_lists": schema.ListAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("a single VLAN id (allowed value range 1-4094)or Comma-separated VLAN id range.e.g. 99 or 1-30 or  1-20,30,40-50").String,
 				ElementType:         types.Int64Type,
-				Optional:            true,
+				Required:            true,
 			},
 		},
 	}

@@ -14,7 +14,7 @@ This data source can read the VLAN Filter configuration.
 
 ```terraform
 data "iosxe_vlan_filter" "example" {
-  word = "f1"
+  word = "VAM1"
 }
 ```
 

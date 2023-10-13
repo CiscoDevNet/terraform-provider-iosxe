@@ -7,6 +7,11 @@ description: |-
 
 # Changelog
 
+## 0.5.1 (unreleased)
+
+- Add `iosxe_vlan_filter` resource and data source
+- Add `iosxe_vlan_group` resource and data source
+
 ## 0.5.0
 
 - Add `iosxe_errdisable` resource and data source

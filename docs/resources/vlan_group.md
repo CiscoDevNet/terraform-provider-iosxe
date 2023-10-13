@@ -3,18 +3,18 @@
 page_title: "iosxe_vlan_group Resource - terraform-provider-iosxe"
 subcategory: "Switching"
 description: |-
-  This resource can manage the VLAN group configuration.
+  This resource can manage the VLAN Group configuration.
 ---
 
 # iosxe_vlan_group (Resource)
 
-This resource can manage the VLAN group configuration.
+This resource can manage the VLAN Group configuration.
 
 ## Example Usage
 
 ```terraform
 resource "iosxe_vlan_group" "example" {
-  name       = "group"
+  name       = "GROUP1"
   vlan_lists = [1]
 }
 ```
@@ -25,11 +25,11 @@ resource "iosxe_vlan_group" "example" {
 ### Required
 
 - `name` (String) Group name starts with alphabet
+- `vlan_lists` (List of Number) a single VLAN id (allowed value range 1-4094)or Comma-separated VLAN id range.e.g. 99 or 1-30 or  1-20,30,40-50
 
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `vlan_lists` (List of Number) a single VLAN id (allowed value range 1-4094)or Comma-separated VLAN id range.e.g. 99 or 1-30 or  1-20,30,40-50
 
 ### Read-Only
 
@@ -40,5 +40,5 @@ resource "iosxe_vlan_group" "example" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxe_vlan_group.example "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=group"
+terraform import iosxe_vlan_group.example "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=GROUP1"
 ```

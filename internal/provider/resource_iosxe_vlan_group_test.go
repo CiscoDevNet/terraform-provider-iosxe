@@ -31,7 +31,7 @@ func TestAccIosxeVLANGroup(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_group.test", "name", "group"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_group.test", "name", "GROUP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vlan_group.test", "vlan_lists.0", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -47,7 +47,7 @@ func TestAccIosxeVLANGroup(t *testing.T) {
 			{
 				ResourceName:  "iosxe_vlan_group.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=group",
+				ImportStateId: "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=GROUP1",
 			},
 		},
 	})
@@ -55,14 +55,15 @@ func TestAccIosxeVLANGroup(t *testing.T) {
 
 func testAccIosxeVLANGroupConfig_minimum() string {
 	config := `resource "iosxe_vlan_group" "test" {` + "\n"
-	config += `	name = "group"` + "\n"
+	config += `	name = "GROUP1"` + "\n"
+	config += `	vlan_lists = [1]` + "\n"
 	config += `}` + "\n"
 	return config
 }
 
 func testAccIosxeVLANGroupConfig_all() string {
 	config := `resource "iosxe_vlan_group" "test" {` + "\n"
-	config += `	name = "group"` + "\n"
+	config += `	name = "GROUP1"` + "\n"
 	config += `	vlan_lists = [1]` + "\n"
 	config += `}` + "\n"
 	return config

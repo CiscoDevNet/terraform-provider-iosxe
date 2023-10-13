@@ -1,4 +1,4 @@
 resource "iosxe_vlan_group" "example" {
-  name       = "group"
+  name       = "GROUP1"
   vlan_lists = [1]
 }

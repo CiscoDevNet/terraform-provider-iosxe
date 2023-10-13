@@ -1,3 +1,3 @@
 data "iosxe_vlan_filter" "example" {
-  word = "f1"
+  word = "VAM1"
 }
