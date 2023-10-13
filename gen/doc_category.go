@@ -104,9 +104,17 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error opening documentation: %v", err)
 	}
-
 	s := string(content)
 	s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
+	os.WriteFile(filename, []byte(s), 0644)
 
+	// update iosxe_cli resource
+	filename = "./docs/resources/cli.md"
+	content, err = os.ReadFile(filename)
+	if err != nil {
+		log.Fatalf("Error opening documentation: %v", err)
+	}
+	s = string(content)
+	s = strings.ReplaceAll(s, `subcategory: ""`, `subcategory: "General"`)
 	os.WriteFile(filename, []byte(s), 0644)
 }
