@@ -20,12 +20,16 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccIosxeCli(t *testing.T) {
+	if os.Getenv("IOSXE179") == "" && os.Getenv("IOSXE1710") == "" {
+		t.Skip("skipping test, set environment variable IOSXE179 or IOSXE1710")
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
