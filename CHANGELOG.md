@@ -1,4 +1,4 @@
-## 0.5.1 (unreleased)
+## 0.5.1
 
 - Add `iosxe_vlan_filter` resource and data source
 - Add `iosxe_vlan_group` resource and data source
