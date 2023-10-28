@@ -419,6 +419,38 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping trust config").String,
 				Optional:            true,
 			},
+			"speed_100": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("100 Mbps operation").String,
+				Optional:            true,
+			},
+			"speed_1000": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("1000 Mbps operation").String,
+				Optional:            true,
+			},
+			"speed_2500": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("2500 Mbps operation").String,
+				Optional:            true,
+			},
+			"speed_5000": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("5000 Mbps operation").String,
+				Optional:            true,
+			},
+			"speed_10000": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("10000 Mbps operation").String,
+				Optional:            true,
+			},
+			"speed_25000": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("25000 Mbps operation").String,
+				Optional:            true,
+			},
+			"speed_40000": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("40000 Mbps operation").String,
+				Optional:            true,
+			},
+			"speed_100000": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("100000 Mbps operation").String,
+				Optional:            true,
+			},
 		},
 	}
 }

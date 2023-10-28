@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 0.5.2 (unreleased)
+
+- Add `speed` options to `interface_ethernet` resource and data source
+
 ## 0.5.1
 
 - Add `iosxe_vlan_filter` resource and data source

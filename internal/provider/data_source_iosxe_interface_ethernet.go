@@ -343,6 +343,38 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "DHCP Snooping trust config",
 				Computed:            true,
 			},
+			"speed_100": schema.BoolAttribute{
+				MarkdownDescription: "100 Mbps operation",
+				Computed:            true,
+			},
+			"speed_1000": schema.BoolAttribute{
+				MarkdownDescription: "1000 Mbps operation",
+				Computed:            true,
+			},
+			"speed_2500": schema.BoolAttribute{
+				MarkdownDescription: "2500 Mbps operation",
+				Computed:            true,
+			},
+			"speed_5000": schema.BoolAttribute{
+				MarkdownDescription: "5000 Mbps operation",
+				Computed:            true,
+			},
+			"speed_10000": schema.BoolAttribute{
+				MarkdownDescription: "10000 Mbps operation",
+				Computed:            true,
+			},
+			"speed_25000": schema.BoolAttribute{
+				MarkdownDescription: "25000 Mbps operation",
+				Computed:            true,
+			},
+			"speed_40000": schema.BoolAttribute{
+				MarkdownDescription: "40000 Mbps operation",
+				Computed:            true,
+			},
+			"speed_100000": schema.BoolAttribute{
+				MarkdownDescription: "100000 Mbps operation",
+				Computed:            true,
+			},
 		},
 	}
 }

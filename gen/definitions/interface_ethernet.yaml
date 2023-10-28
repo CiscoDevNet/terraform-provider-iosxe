@@ -238,6 +238,46 @@ attributes:
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
     test_tags: [C9000V]
+  - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/value-100/value-100
+    xpath: Cisco-IOS-XE-ethernet:speed/value-100
+    tf_name: speed_100
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/value-1000/value-1000
+    xpath: Cisco-IOS-XE-ethernet:speed/value-1000
+    tf_name: speed_1000
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/value-2500/value-2500
+    xpath: Cisco-IOS-XE-ethernet:speed/value-2500
+    tf_name: speed_2500
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/value-5000/value-5000
+    xpath: Cisco-IOS-XE-ethernet:speed/value-5000
+    tf_name: speed_5000
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/value-10000/value-10000
+    xpath: Cisco-IOS-XE-ethernet:speed/value-10000
+    tf_name: speed_10000
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/value-25000/value-25000
+    xpath: Cisco-IOS-XE-ethernet:speed/value-25000
+    tf_name: speed_25000
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/value-40000/value-40000
+    xpath: Cisco-IOS-XE-ethernet:speed/value-40000
+    tf_name: speed_40000
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/value-100000/value-100000
+    xpath: Cisco-IOS-XE-ethernet:speed/value-100000
+    tf_name: speed_100000
+    example: true
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

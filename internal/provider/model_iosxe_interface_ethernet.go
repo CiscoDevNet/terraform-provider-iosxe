@@ -94,6 +94,14 @@ type InterfaceEthernet struct {
 	IpArpInspectionTrust         types.Bool                                `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                               `tfsdk:"ip_arp_inspection_limit_rate"`
 	IpDhcpSnoopingTrust          types.Bool                                `tfsdk:"ip_dhcp_snooping_trust"`
+	Speed100                     types.Bool                                `tfsdk:"speed_100"`
+	Speed1000                    types.Bool                                `tfsdk:"speed_1000"`
+	Speed2500                    types.Bool                                `tfsdk:"speed_2500"`
+	Speed5000                    types.Bool                                `tfsdk:"speed_5000"`
+	Speed10000                   types.Bool                                `tfsdk:"speed_10000"`
+	Speed25000                   types.Bool                                `tfsdk:"speed_25000"`
+	Speed40000                   types.Bool                                `tfsdk:"speed_40000"`
+	Speed100000                  types.Bool                                `tfsdk:"speed_100000"`
 }
 
 type InterfaceEthernetData struct {
@@ -156,6 +164,14 @@ type InterfaceEthernetData struct {
 	IpArpInspectionTrust         types.Bool                                `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate     types.Int64                               `tfsdk:"ip_arp_inspection_limit_rate"`
 	IpDhcpSnoopingTrust          types.Bool                                `tfsdk:"ip_dhcp_snooping_trust"`
+	Speed100                     types.Bool                                `tfsdk:"speed_100"`
+	Speed1000                    types.Bool                                `tfsdk:"speed_1000"`
+	Speed2500                    types.Bool                                `tfsdk:"speed_2500"`
+	Speed5000                    types.Bool                                `tfsdk:"speed_5000"`
+	Speed10000                   types.Bool                                `tfsdk:"speed_10000"`
+	Speed25000                   types.Bool                                `tfsdk:"speed_25000"`
+	Speed40000                   types.Bool                                `tfsdk:"speed_40000"`
+	Speed100000                  types.Bool                                `tfsdk:"speed_100000"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -394,6 +410,46 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.IsUnknown() {
 		if data.IpDhcpSnoopingTrust.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust", map[string]string{})
+		}
+	}
+	if !data.Speed100.IsNull() && !data.Speed100.IsUnknown() {
+		if data.Speed100.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-100", map[string]string{})
+		}
+	}
+	if !data.Speed1000.IsNull() && !data.Speed1000.IsUnknown() {
+		if data.Speed1000.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-1000", map[string]string{})
+		}
+	}
+	if !data.Speed2500.IsNull() && !data.Speed2500.IsUnknown() {
+		if data.Speed2500.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-2500", map[string]string{})
+		}
+	}
+	if !data.Speed5000.IsNull() && !data.Speed5000.IsUnknown() {
+		if data.Speed5000.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-5000", map[string]string{})
+		}
+	}
+	if !data.Speed10000.IsNull() && !data.Speed10000.IsUnknown() {
+		if data.Speed10000.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-10000", map[string]string{})
+		}
+	}
+	if !data.Speed25000.IsNull() && !data.Speed25000.IsUnknown() {
+		if data.Speed25000.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-25000", map[string]string{})
+		}
+	}
+	if !data.Speed40000.IsNull() && !data.Speed40000.IsUnknown() {
+		if data.Speed40000.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-40000", map[string]string{})
+		}
+	}
+	if !data.Speed100000.IsNull() && !data.Speed100000.IsUnknown() {
+		if data.Speed100000.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-100000", map[string]string{})
 		}
 	}
 	if len(data.HelperAddresses) > 0 {
@@ -976,6 +1032,78 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpDhcpSnoopingTrust = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-100"); !data.Speed100.IsNull() {
+		if value.Exists() {
+			data.Speed100 = types.BoolValue(true)
+		} else {
+			data.Speed100 = types.BoolValue(false)
+		}
+	} else {
+		data.Speed100 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-1000"); !data.Speed1000.IsNull() {
+		if value.Exists() {
+			data.Speed1000 = types.BoolValue(true)
+		} else {
+			data.Speed1000 = types.BoolValue(false)
+		}
+	} else {
+		data.Speed1000 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-2500"); !data.Speed2500.IsNull() {
+		if value.Exists() {
+			data.Speed2500 = types.BoolValue(true)
+		} else {
+			data.Speed2500 = types.BoolValue(false)
+		}
+	} else {
+		data.Speed2500 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-5000"); !data.Speed5000.IsNull() {
+		if value.Exists() {
+			data.Speed5000 = types.BoolValue(true)
+		} else {
+			data.Speed5000 = types.BoolValue(false)
+		}
+	} else {
+		data.Speed5000 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-10000"); !data.Speed10000.IsNull() {
+		if value.Exists() {
+			data.Speed10000 = types.BoolValue(true)
+		} else {
+			data.Speed10000 = types.BoolValue(false)
+		}
+	} else {
+		data.Speed10000 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-25000"); !data.Speed25000.IsNull() {
+		if value.Exists() {
+			data.Speed25000 = types.BoolValue(true)
+		} else {
+			data.Speed25000 = types.BoolValue(false)
+		}
+	} else {
+		data.Speed25000 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-40000"); !data.Speed40000.IsNull() {
+		if value.Exists() {
+			data.Speed40000 = types.BoolValue(true)
+		} else {
+			data.Speed40000 = types.BoolValue(false)
+		}
+	} else {
+		data.Speed40000 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-100000"); !data.Speed100000.IsNull() {
+		if value.Exists() {
+			data.Speed100000 = types.BoolValue(true)
+		} else {
+			data.Speed100000 = types.BoolValue(false)
+		}
+	} else {
+		data.Speed100000 = types.BoolNull()
+	}
 }
 
 func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Result) {
@@ -1259,6 +1387,46 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.IpDhcpSnoopingTrust = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-100"); value.Exists() {
+		data.Speed100 = types.BoolValue(true)
+	} else {
+		data.Speed100 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-1000"); value.Exists() {
+		data.Speed1000 = types.BoolValue(true)
+	} else {
+		data.Speed1000 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-2500"); value.Exists() {
+		data.Speed2500 = types.BoolValue(true)
+	} else {
+		data.Speed2500 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-5000"); value.Exists() {
+		data.Speed5000 = types.BoolValue(true)
+	} else {
+		data.Speed5000 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-10000"); value.Exists() {
+		data.Speed10000 = types.BoolValue(true)
+	} else {
+		data.Speed10000 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-25000"); value.Exists() {
+		data.Speed25000 = types.BoolValue(true)
+	} else {
+		data.Speed25000 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-40000"); value.Exists() {
+		data.Speed40000 = types.BoolValue(true)
+	} else {
+		data.Speed40000 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.value-100000"); value.Exists() {
+		data.Speed100000 = types.BoolValue(true)
+	} else {
+		data.Speed100000 = types.BoolValue(false)
+	}
 }
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
@@ -1531,6 +1699,30 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", state.getPath()))
 	}
+	if !state.Speed100.IsNull() && data.Speed100.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", state.getPath()))
+	}
+	if !state.Speed1000.IsNull() && data.Speed1000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", state.getPath()))
+	}
+	if !state.Speed2500.IsNull() && data.Speed2500.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", state.getPath()))
+	}
+	if !state.Speed5000.IsNull() && data.Speed5000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", state.getPath()))
+	}
+	if !state.Speed10000.IsNull() && data.Speed10000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", state.getPath()))
+	}
+	if !state.Speed25000.IsNull() && data.Speed25000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", state.getPath()))
+	}
+	if !state.Speed40000.IsNull() && data.Speed40000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", state.getPath()))
+	}
+	if !state.Speed100000.IsNull() && data.Speed100000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -1629,6 +1821,30 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
+	}
+	if !data.Speed100.IsNull() && !data.Speed100.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", data.getPath()))
+	}
+	if !data.Speed1000.IsNull() && !data.Speed1000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", data.getPath()))
+	}
+	if !data.Speed2500.IsNull() && !data.Speed2500.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", data.getPath()))
+	}
+	if !data.Speed5000.IsNull() && !data.Speed5000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", data.getPath()))
+	}
+	if !data.Speed10000.IsNull() && !data.Speed10000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", data.getPath()))
+	}
+	if !data.Speed25000.IsNull() && !data.Speed25000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", data.getPath()))
+	}
+	if !data.Speed40000.IsNull() && !data.Speed40000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", data.getPath()))
+	}
+	if !data.Speed100000.IsNull() && !data.Speed100000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -1807,6 +2023,30 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
+	}
+	if !data.Speed100.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", data.getPath()))
+	}
+	if !data.Speed1000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", data.getPath()))
+	}
+	if !data.Speed2500.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", data.getPath()))
+	}
+	if !data.Speed5000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", data.getPath()))
+	}
+	if !data.Speed10000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", data.getPath()))
+	}
+	if !data.Speed25000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", data.getPath()))
+	}
+	if !data.Speed40000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", data.getPath()))
+	}
+	if !data.Speed100000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", data.getPath()))
 	}
 	return deletePaths
 }

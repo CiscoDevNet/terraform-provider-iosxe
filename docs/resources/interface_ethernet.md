@@ -134,6 +134,14 @@ resource "iosxe_interface_ethernet" "example" {
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
   - Choices: `point-to-point`, `shared`
 - `spanning_tree_portfast_trunk` (Boolean) Enable portfast on the interface even in trunk mode
+- `speed_100` (Boolean) 100 Mbps operation
+- `speed_1000` (Boolean) 1000 Mbps operation
+- `speed_10000` (Boolean) 10000 Mbps operation
+- `speed_100000` (Boolean) 100000 Mbps operation
+- `speed_2500` (Boolean) 2500 Mbps operation
+- `speed_25000` (Boolean) 25000 Mbps operation
+- `speed_40000` (Boolean) 40000 Mbps operation
+- `speed_5000` (Boolean) 5000 Mbps operation
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
