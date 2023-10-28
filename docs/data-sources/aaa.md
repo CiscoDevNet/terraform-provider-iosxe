@@ -39,7 +39,15 @@ data "iosxe_aaa" "example" {
 
 Read-Only:
 
+- `ip_radius_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `ip_radius_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `ip_radius_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `ip_radius_source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
 - `ip_radius_source_interface_loopback` (Number) Loopback interface
+- `ip_radius_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `ip_radius_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `ip_radius_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `ip_radius_source_interface_vlan` (Number) Iosxr Vlans
 - `name` (String) Radius Server-group name with max string length 32
 - `server_names` (Attributes List) Name of radius server (see [below for nested schema](#nestedatt--group_server_radius--server_names))
 
@@ -57,6 +65,15 @@ Read-Only:
 
 Read-Only:
 
+- `ip_tacacs_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `ip_tacacs_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `ip_tacacs_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `ip_tacacs_source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `ip_tacacs_source_interface_loopback` (Number) Loopback interface
+- `ip_tacacs_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `ip_tacacs_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `ip_tacacs_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `ip_tacacs_source_interface_vlan` (Number) Iosxr Vlans
 - `name` (String) Server-group name with max string length 32
 - `server_names` (Attributes List) Name of tacacs server (see [below for nested schema](#nestedatt--group_server_tacacsplus--server_names))
 

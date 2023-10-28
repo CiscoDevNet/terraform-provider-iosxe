@@ -28,6 +28,7 @@ resource "iosxe_aaa" "example" {
           name = "tacacs_10.10.15.12"
         }
       ]
+      ip_tacacs_source_interface_loopback = 0
     }
   ]
 }

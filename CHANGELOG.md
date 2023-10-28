@@ -1,6 +1,7 @@
 ## 0.5.2 (unreleased)
 
-- Add `speed` options to `interface_ethernet` resource and data source
+- Add `speed` options to `iosxe_interface_ethernet` resource and data source
+- Add more source interface type options to `iosxe_aaa` resource and data source
 
 ## 0.5.1
 

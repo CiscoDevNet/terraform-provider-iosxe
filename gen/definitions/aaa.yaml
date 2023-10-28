@@ -42,6 +42,46 @@ attributes:
         xpath: ip/radius/source-interface/Loopback
         tf_name: ip_radius_source_interface_loopback
         example: 0
+      - yang_name: ip/radius/source-interface/interface-choice/Vlan/Vlan
+        xpath: ip/radius/source-interface/Vlan
+        tf_name: ip_radius_source_interface_vlan
+        example: 500
+        exclude_test: true
+      - yang_name: ip/radius/source-interface/interface-choice/GigabitEthernet/GigabitEthernet
+        xpath: ip/radius/source-interface/GigabitEthernet
+        tf_name: ip_radius_source_interface_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/radius/source-interface/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+        xpath: ip/radius/source-interface/TwoGigabitEthernet
+        tf_name: ip_radius_source_interface_two_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/radius/source-interface/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+        xpath: ip/radius/source-interface/FiveGigabitEthernet
+        tf_name: ip_radius_source_interface_five_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/radius/source-interface/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+        xpath: ip/radius/source-interface/TenGigabitEthernet
+        tf_name: ip_radius_source_interface_ten_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/radius/source-interface/interface-choice/TwentyFiveGigE/TwentyFiveGigE
+        xpath: ip/radius/source-interface/TwentyFiveGigE
+        tf_name: ip_radius_source_interface_twenty_five_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/radius/source-interface/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+        xpath: ip/radius/source-interface/FortyGigabitEthernet
+        tf_name: ip_radius_source_interface_forty_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/radius/source-interface/interface-choice/HundredGigE/HundredGigE
+        xpath: ip/radius/source-interface/HundredGigE
+        tf_name: ip_radius_source_interface_hundred_gigabit_ethernet
+        example: 1
+        exclude_test: true
   - yang_name: Cisco-IOS-XE-aaa:group/server/tacacsplus
     tf_name: group_server_tacacsplus
     type: List
@@ -56,3 +96,47 @@ attributes:
           - yang_name: name
             example: tacacs_10.10.15.12
             id: true
+      - yang_name: ip/tacacs/source-interface/interface-choice/Loopback/Loopback
+        xpath: ip/tacacs/source-interface/Loopback
+        tf_name: ip_tacacs_source_interface_loopback
+        example: 0
+      - yang_name: ip/tacacs/source-interface/interface-choice/Vlan/Vlan
+        xpath: ip/tacacs/source-interface/Vlan
+        tf_name: ip_tacacs_source_interface_vlan
+        example: 500
+        exclude_test: true
+      - yang_name: ip/tacacs/source-interface/interface-choice/GigabitEthernet/GigabitEthernet
+        xpath: ip/tacacs/source-interface/GigabitEthernet
+        tf_name: ip_tacacs_source_interface_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/tacacs/source-interface/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+        xpath: ip/tacacs/source-interface/TwoGigabitEthernet
+        tf_name: ip_tacacs_source_interface_two_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/tacacs/source-interface/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+        xpath: ip/tacacs/source-interface/FiveGigabitEthernet
+        tf_name: ip_tacacs_source_interface_five_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/tacacs/source-interface/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+        xpath: ip/tacacs/source-interface/TenGigabitEthernet
+        tf_name: ip_tacacs_source_interface_ten_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/tacacs/source-interface/interface-choice/TwentyFiveGigE/TwentyFiveGigE
+        xpath: ip/tacacs/source-interface/TwentyFiveGigE
+        tf_name: ip_tacacs_source_interface_twenty_five_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/tacacs/source-interface/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+        xpath: ip/tacacs/source-interface/FortyGigabitEthernet
+        tf_name: ip_tacacs_source_interface_forty_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: ip/tacacs/source-interface/interface-choice/HundredGigE/HundredGigE
+        xpath: ip/tacacs/source-interface/HundredGigE
+        tf_name: ip_tacacs_source_interface_hundred_gigabit_ethernet
+        example: 1
+        exclude_test: true
