@@ -22,6 +22,16 @@ attributes:
       - yang_name: ipv4-unicast/redistribute-vrf/connected
         tf_name: ipv4_unicast_redistribute_connected
         example: true
+      - yang_name: ipv4-unicast/aggregate-address
+        tf_name: ipv4_unicast_aggregate_address
+        type: List
+        attributes:
+          - yang_name: ipv4-address
+            id: true
+            example: 50.0.0.0
+          - yang_name: ipv4-mask
+            id: true
+            example: 255.255.0.0
       - yang_name: ipv4-unicast/redistribute-vrf/static
         tf_name: ipv4_unicast_redistribute_static
         example: true

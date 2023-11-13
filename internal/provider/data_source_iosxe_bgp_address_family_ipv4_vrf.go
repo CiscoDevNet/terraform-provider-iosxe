@@ -88,6 +88,22 @@ func (d *BGPAddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req data
 							MarkdownDescription: "Connected",
 							Computed:            true,
 						},
+						"ipv4_unicast_aggregate_address": schema.ListNestedAttribute{
+							MarkdownDescription: "Configure BGP aggregate entries",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4_address": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"ipv4_mask": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
 						"ipv4_unicast_redistribute_static": schema.BoolAttribute{
 							MarkdownDescription: "Static routes",
 							Computed:            true,

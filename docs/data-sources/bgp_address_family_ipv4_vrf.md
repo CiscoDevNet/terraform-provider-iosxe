@@ -42,11 +42,21 @@ data "iosxe_bgp_address_family_ipv4_vrf" "example" {
 Read-Only:
 
 - `ipv4_unicast_advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
+- `ipv4_unicast_aggregate_address` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_aggregate_address))
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
 - `name` (String)
+
+<a id="nestedatt--vrfs--ipv4_unicast_aggregate_address"></a>
+### Nested Schema for `vrfs.ipv4_unicast_aggregate_address`
+
+Read-Only:
+
+- `ipv4_address` (String)
+- `ipv4_mask` (String)
+
 
 <a id="nestedatt--vrfs--ipv4_unicast_networks"></a>
 ### Nested Schema for `vrfs.ipv4_unicast_networks`

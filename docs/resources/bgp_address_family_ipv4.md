@@ -18,6 +18,12 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
   af_name                             = "unicast"
   ipv4_unicast_redistribute_connected = true
   ipv4_unicast_redistribute_static    = true
+  ipv4_unicast_aggregate_address = [
+    {
+      ipv4_address = "10.0.0.0"
+      ipv4_mask    = "255.255.0.0"
+    }
+  ]
   ipv4_unicast_networks_mask = [
     {
       network   = "12.0.0.0"
@@ -49,6 +55,7 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `ipv4_unicast_aggregate_address` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--ipv4_unicast_aggregate_address))
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
@@ -57,6 +64,15 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--ipv4_unicast_aggregate_address"></a>
+### Nested Schema for `ipv4_unicast_aggregate_address`
+
+Required:
+
+- `ipv4_address` (String)
+- `ipv4_mask` (String)
+
 
 <a id="nestedatt--ipv4_unicast_networks"></a>
 ### Nested Schema for `ipv4_unicast_networks`
