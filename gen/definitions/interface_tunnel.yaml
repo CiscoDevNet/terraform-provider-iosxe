@@ -62,6 +62,7 @@ attributes:
     exclude_test: true
   - yang_name: Cisco-IOS-XE-crypto:crypto/ipsec/df-bit
     example: clear
+    test_tags: [C8000V]
   - yang_name: arp/timeout
     example: 300
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/address

@@ -44,7 +44,9 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_addresses.0.prefix", "2005:DB8::/32"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_destination_ipv4", "2.2.2.2"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "crypto_ipsec_df_bit", "clear"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "crypto_ipsec_df_bit", "clear"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "arp_timeout", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address", "10.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address_mask", "255.255.255.0"))
@@ -131,7 +133,9 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `		eui_64 = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	tunnel_destination_ipv4 = "2.2.2.2"` + "\n"
-	config += `	crypto_ipsec_df_bit = "clear"` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	crypto_ipsec_df_bit = "clear"` + "\n"
+	}
 	config += `	arp_timeout = 300` + "\n"
 	config += `	ipv4_address = "10.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"

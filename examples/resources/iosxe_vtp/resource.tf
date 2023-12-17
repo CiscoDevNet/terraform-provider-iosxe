@@ -3,7 +3,7 @@ resource "iosxe_vtp" "example" {
   version                  = 3
   interface                = "Gi1/0/1"
   password                 = "test123"
-  password_hidden          = true
+  password_hidden          = false
   domain                   = "TESTDOMAIN"
   mode_client_mst          = true
   mode_client_unknown      = true

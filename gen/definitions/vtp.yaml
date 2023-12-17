@@ -19,7 +19,7 @@ attributes:
     tf_name: password
     example: test123
   - yang_name: Cisco-IOS-XE-vtp:password/hidden
-    example: true
+    example: false
   - yang_name: Cisco-IOS-XE-vtp:password/secret
     example: PASSWD123456789
     exclude_test: true

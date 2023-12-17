@@ -35,7 +35,7 @@ func TestAccIosxeVTP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vtp.test", "version", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vtp.test", "interface", "Gi1/0/1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vtp.test", "password", "test123"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vtp.test", "password_hidden", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vtp.test", "password_hidden", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vtp.test", "domain", "TESTDOMAIN"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vtp.test", "mode_client_mst", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_vtp.test", "mode_client_unknown", "true"))
@@ -80,7 +80,7 @@ func testAccIosxeVTPConfig_all() string {
 	config += `	version = 3` + "\n"
 	config += `	interface = "Gi1/0/1"` + "\n"
 	config += `	password = "test123"` + "\n"
-	config += `	password_hidden = true` + "\n"
+	config += `	password_hidden = false` + "\n"
 	config += `	domain = "TESTDOMAIN"` + "\n"
 	config += `	mode_client_mst = true` + "\n"
 	config += `	mode_client_unknown = true` + "\n"

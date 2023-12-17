@@ -38,7 +38,6 @@ resource "iosxe_interface_tunnel" "example" {
     }
   ]
   tunnel_destination_ipv4        = "2.2.2.2"
-  crypto_ipsec_df_bit            = "clear"
   arp_timeout                    = 300
   ipv4_address                   = "10.1.1.1"
   ipv4_address_mask              = "255.255.255.0"
