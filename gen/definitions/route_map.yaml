@@ -97,9 +97,11 @@ attributes:
       - yang_name: match/community/name
         tf_name: match_community_lists_legacy
         example: COMM1
+        test_tags: [IOSXE179, IOSXE1710]
       - yang_name: match/extcommunity/name
         tf_name: match_extcommunity_lists_legacy
         example: EXTCOMM1
+        test_tags: [IOSXE179, IOSXE1710]
       - yang_name: match/local-preference/values
         tf_name: match_local_preferences_legacy
         example: 100
