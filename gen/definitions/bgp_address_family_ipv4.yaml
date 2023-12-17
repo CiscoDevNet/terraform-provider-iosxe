@@ -15,7 +15,7 @@ attributes:
     tf_name: ipv4_unicast_redistribute_static
     example: true
   - yang_name: ipv4-unicast/aggregate-address
-    tf_name: ipv4_unicast_aggregate_address
+    tf_name: ipv4_unicast_aggregate_addresses
     type: List
     attributes:
       - yang_name: ipv4-address
