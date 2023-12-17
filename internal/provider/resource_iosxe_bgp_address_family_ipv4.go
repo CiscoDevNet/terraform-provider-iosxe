@@ -98,7 +98,7 @@ func (r *BGPAddressFamilyIPv4Resource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
 				Optional:            true,
 			},
-			"ipv4_unicast_aggregate_address": schema.ListNestedAttribute{
+			"ipv4_unicast_aggregate_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure BGP aggregate entries").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

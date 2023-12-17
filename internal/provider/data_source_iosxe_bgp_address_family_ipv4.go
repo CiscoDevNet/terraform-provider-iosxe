@@ -79,7 +79,7 @@ func (d *BGPAddressFamilyIPv4DataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Static routes",
 				Computed:            true,
 			},
-			"ipv4_unicast_aggregate_address": schema.ListNestedAttribute{
+			"ipv4_unicast_aggregate_addresses": schema.ListNestedAttribute{
 				MarkdownDescription: "Configure BGP aggregate entries",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

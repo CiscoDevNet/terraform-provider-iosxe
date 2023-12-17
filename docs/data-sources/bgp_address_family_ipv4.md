@@ -34,14 +34,14 @@ data "iosxe_bgp_address_family_ipv4" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
-- `ipv4_unicast_aggregate_address` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--ipv4_unicast_aggregate_address))
+- `ipv4_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--ipv4_unicast_aggregate_addresses))
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
 
-<a id="nestedatt--ipv4_unicast_aggregate_address"></a>
-### Nested Schema for `ipv4_unicast_aggregate_address`
+<a id="nestedatt--ipv4_unicast_aggregate_addresses"></a>
+### Nested Schema for `ipv4_unicast_aggregate_addresses`
 
 Read-Only:
 

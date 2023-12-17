@@ -11,6 +11,7 @@ description: |-
 
 - Add `speed` options to `iosxe_interface_ethernet` resource and data source
 - Add more source interface type options to `iosxe_aaa` resource and data source
+- Add `ipv4_unicast_aggregate_addresses` attribute to `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources and data sources
 
 ## 0.5.1
 

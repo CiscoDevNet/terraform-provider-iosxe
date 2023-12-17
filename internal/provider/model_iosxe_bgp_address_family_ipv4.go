@@ -35,30 +35,30 @@ import (
 )
 
 type BGPAddressFamilyIPv4 struct {
-	Device                           types.String                                      `tfsdk:"device"`
-	Id                               types.String                                      `tfsdk:"id"`
-	DeleteMode                       types.String                                      `tfsdk:"delete_mode"`
-	Asn                              types.String                                      `tfsdk:"asn"`
-	AfName                           types.String                                      `tfsdk:"af_name"`
-	Ipv4UnicastRedistributeConnected types.Bool                                        `tfsdk:"ipv4_unicast_redistribute_connected"`
-	Ipv4UnicastRedistributeStatic    types.Bool                                        `tfsdk:"ipv4_unicast_redistribute_static"`
-	Ipv4UnicastAggregateAddress      []BGPAddressFamilyIPv4Ipv4UnicastAggregateAddress `tfsdk:"ipv4_unicast_aggregate_address"`
-	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4Ipv4UnicastNetworksMask     `tfsdk:"ipv4_unicast_networks_mask"`
-	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4Ipv4UnicastNetworks         `tfsdk:"ipv4_unicast_networks"`
+	Device                           types.String                                        `tfsdk:"device"`
+	Id                               types.String                                        `tfsdk:"id"`
+	DeleteMode                       types.String                                        `tfsdk:"delete_mode"`
+	Asn                              types.String                                        `tfsdk:"asn"`
+	AfName                           types.String                                        `tfsdk:"af_name"`
+	Ipv4UnicastRedistributeConnected types.Bool                                          `tfsdk:"ipv4_unicast_redistribute_connected"`
+	Ipv4UnicastRedistributeStatic    types.Bool                                          `tfsdk:"ipv4_unicast_redistribute_static"`
+	Ipv4UnicastAggregateAddresses    []BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses `tfsdk:"ipv4_unicast_aggregate_addresses"`
+	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4Ipv4UnicastNetworksMask       `tfsdk:"ipv4_unicast_networks_mask"`
+	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4Ipv4UnicastNetworks           `tfsdk:"ipv4_unicast_networks"`
 }
 
 type BGPAddressFamilyIPv4Data struct {
-	Device                           types.String                                      `tfsdk:"device"`
-	Id                               types.String                                      `tfsdk:"id"`
-	Asn                              types.String                                      `tfsdk:"asn"`
-	AfName                           types.String                                      `tfsdk:"af_name"`
-	Ipv4UnicastRedistributeConnected types.Bool                                        `tfsdk:"ipv4_unicast_redistribute_connected"`
-	Ipv4UnicastRedistributeStatic    types.Bool                                        `tfsdk:"ipv4_unicast_redistribute_static"`
-	Ipv4UnicastAggregateAddress      []BGPAddressFamilyIPv4Ipv4UnicastAggregateAddress `tfsdk:"ipv4_unicast_aggregate_address"`
-	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4Ipv4UnicastNetworksMask     `tfsdk:"ipv4_unicast_networks_mask"`
-	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4Ipv4UnicastNetworks         `tfsdk:"ipv4_unicast_networks"`
+	Device                           types.String                                        `tfsdk:"device"`
+	Id                               types.String                                        `tfsdk:"id"`
+	Asn                              types.String                                        `tfsdk:"asn"`
+	AfName                           types.String                                        `tfsdk:"af_name"`
+	Ipv4UnicastRedistributeConnected types.Bool                                          `tfsdk:"ipv4_unicast_redistribute_connected"`
+	Ipv4UnicastRedistributeStatic    types.Bool                                          `tfsdk:"ipv4_unicast_redistribute_static"`
+	Ipv4UnicastAggregateAddresses    []BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses `tfsdk:"ipv4_unicast_aggregate_addresses"`
+	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4Ipv4UnicastNetworksMask       `tfsdk:"ipv4_unicast_networks_mask"`
+	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4Ipv4UnicastNetworks           `tfsdk:"ipv4_unicast_networks"`
 }
-type BGPAddressFamilyIPv4Ipv4UnicastAggregateAddress struct {
+type BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses struct {
 	Ipv4Address types.String `tfsdk:"ipv4_address"`
 	Ipv4Mask    types.String `tfsdk:"ipv4_mask"`
 }
@@ -108,9 +108,9 @@ func (data BGPAddressFamilyIPv4) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.redistribute.static", map[string]string{})
 		}
 	}
-	if len(data.Ipv4UnicastAggregateAddress) > 0 {
+	if len(data.Ipv4UnicastAggregateAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.aggregate-address", []interface{}{})
-		for index, item := range data.Ipv4UnicastAggregateAddress {
+		for index, item := range data.Ipv4UnicastAggregateAddresses {
 			if !item.Ipv4Address.IsNull() && !item.Ipv4Address.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.aggregate-address"+"."+strconv.Itoa(index)+"."+"ipv4-address", item.Ipv4Address.ValueString())
 			}
@@ -185,9 +185,9 @@ func (data *BGPAddressFamilyIPv4) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.Ipv4UnicastRedistributeStatic = types.BoolNull()
 	}
-	for i := range data.Ipv4UnicastAggregateAddress {
+	for i := range data.Ipv4UnicastAggregateAddresses {
 		keys := [...]string{"ipv4-address", "ipv4-mask"}
-		keyValues := [...]string{data.Ipv4UnicastAggregateAddress[i].Ipv4Address.ValueString(), data.Ipv4UnicastAggregateAddress[i].Ipv4Mask.ValueString()}
+		keyValues := [...]string{data.Ipv4UnicastAggregateAddresses[i].Ipv4Address.ValueString(), data.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "ipv4-unicast.aggregate-address").ForEach(
@@ -208,15 +208,15 @@ func (data *BGPAddressFamilyIPv4) updateFromBody(ctx context.Context, res gjson.
 				return true
 			},
 		)
-		if value := r.Get("ipv4-address"); value.Exists() && !data.Ipv4UnicastAggregateAddress[i].Ipv4Address.IsNull() {
-			data.Ipv4UnicastAggregateAddress[i].Ipv4Address = types.StringValue(value.String())
+		if value := r.Get("ipv4-address"); value.Exists() && !data.Ipv4UnicastAggregateAddresses[i].Ipv4Address.IsNull() {
+			data.Ipv4UnicastAggregateAddresses[i].Ipv4Address = types.StringValue(value.String())
 		} else {
-			data.Ipv4UnicastAggregateAddress[i].Ipv4Address = types.StringNull()
+			data.Ipv4UnicastAggregateAddresses[i].Ipv4Address = types.StringNull()
 		}
-		if value := r.Get("ipv4-mask"); value.Exists() && !data.Ipv4UnicastAggregateAddress[i].Ipv4Mask.IsNull() {
-			data.Ipv4UnicastAggregateAddress[i].Ipv4Mask = types.StringValue(value.String())
+		if value := r.Get("ipv4-mask"); value.Exists() && !data.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.IsNull() {
+			data.Ipv4UnicastAggregateAddresses[i].Ipv4Mask = types.StringValue(value.String())
 		} else {
-			data.Ipv4UnicastAggregateAddress[i].Ipv4Mask = types.StringNull()
+			data.Ipv4UnicastAggregateAddresses[i].Ipv4Mask = types.StringNull()
 		}
 	}
 	for i := range data.Ipv4UnicastNetworksMask {
@@ -328,16 +328,16 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 		data.Ipv4UnicastRedistributeStatic = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ipv4-unicast.aggregate-address"); value.Exists() {
-		data.Ipv4UnicastAggregateAddress = make([]BGPAddressFamilyIPv4Ipv4UnicastAggregateAddress, 0)
+		data.Ipv4UnicastAggregateAddresses = make([]BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv4Ipv4UnicastAggregateAddress{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses{}
 			if cValue := v.Get("ipv4-address"); cValue.Exists() {
 				item.Ipv4Address = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ipv4-mask"); cValue.Exists() {
 				item.Ipv4Mask = types.StringValue(cValue.String())
 			}
-			data.Ipv4UnicastAggregateAddress = append(data.Ipv4UnicastAggregateAddress, item)
+			data.Ipv4UnicastAggregateAddresses = append(data.Ipv4UnicastAggregateAddresses, item)
 			return true
 		})
 	}
@@ -392,14 +392,14 @@ func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGP
 	if !state.Ipv4UnicastRedistributeStatic.IsNull() && data.Ipv4UnicastRedistributeStatic.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/redistribute/static", state.getPath()))
 	}
-	for i := range state.Ipv4UnicastAggregateAddress {
-		stateKeyValues := [...]string{state.Ipv4UnicastAggregateAddress[i].Ipv4Address.ValueString(), state.Ipv4UnicastAggregateAddress[i].Ipv4Mask.ValueString()}
+	for i := range state.Ipv4UnicastAggregateAddresses {
+		stateKeyValues := [...]string{state.Ipv4UnicastAggregateAddresses[i].Ipv4Address.ValueString(), state.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv4UnicastAggregateAddress[i].Ipv4Address.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4UnicastAggregateAddresses[i].Ipv4Address.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv4UnicastAggregateAddress[i].Ipv4Mask.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -407,12 +407,12 @@ func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGP
 		}
 
 		found := false
-		for j := range data.Ipv4UnicastAggregateAddress {
+		for j := range data.Ipv4UnicastAggregateAddresses {
 			found = true
-			if state.Ipv4UnicastAggregateAddress[i].Ipv4Address.ValueString() != data.Ipv4UnicastAggregateAddress[j].Ipv4Address.ValueString() {
+			if state.Ipv4UnicastAggregateAddresses[i].Ipv4Address.ValueString() != data.Ipv4UnicastAggregateAddresses[j].Ipv4Address.ValueString() {
 				found = false
 			}
-			if state.Ipv4UnicastAggregateAddress[i].Ipv4Mask.ValueString() != data.Ipv4UnicastAggregateAddress[j].Ipv4Mask.ValueString() {
+			if state.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.ValueString() != data.Ipv4UnicastAggregateAddresses[j].Ipv4Mask.ValueString() {
 				found = false
 			}
 			if found {
@@ -527,8 +527,8 @@ func (data *BGPAddressFamilyIPv4) getDeletePaths(ctx context.Context) []string {
 	if !data.Ipv4UnicastRedistributeStatic.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/redistribute/static", data.getPath()))
 	}
-	for i := range data.Ipv4UnicastAggregateAddress {
-		keyValues := [...]string{data.Ipv4UnicastAggregateAddress[i].Ipv4Address.ValueString(), data.Ipv4UnicastAggregateAddress[i].Ipv4Mask.ValueString()}
+	for i := range data.Ipv4UnicastAggregateAddresses {
+		keyValues := [...]string{data.Ipv4UnicastAggregateAddresses[i].Ipv4Address.ValueString(), data.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/aggregate-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
