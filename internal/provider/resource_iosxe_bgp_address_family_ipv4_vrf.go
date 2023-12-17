@@ -107,6 +107,28 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 							MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
 							Optional:            true,
 						},
+						"ipv4_unicast_aggregate_address": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Configure BGP aggregate entries").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"ipv4_address": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+									"ipv4_mask": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+										},
+									},
+								},
+							},
+						},
 						"ipv4_unicast_redistribute_static": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
 							Optional:            true,

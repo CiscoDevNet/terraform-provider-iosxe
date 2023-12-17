@@ -14,6 +14,17 @@ attributes:
   - yang_name: ipv4-unicast/redistribute/static
     tf_name: ipv4_unicast_redistribute_static
     example: true
+  - yang_name: ipv4-unicast/aggregate-address
+    tf_name: ipv4_unicast_aggregate_addresses
+    type: List
+    attributes:
+      - yang_name: ipv4-address
+        id: true
+        example: 10.0.0.0
+      - yang_name: ipv4-mask
+        id: true
+        example: 255.255.0.0
+
   - yang_name: ipv4-unicast/network/with-mask
     tf_name: ipv4_unicast_networks_mask
     type: List

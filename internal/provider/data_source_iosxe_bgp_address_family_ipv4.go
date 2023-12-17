@@ -79,6 +79,22 @@ func (d *BGPAddressFamilyIPv4DataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Static routes",
 				Computed:            true,
 			},
+			"ipv4_unicast_aggregate_address": schema.ListNestedAttribute{
+				MarkdownDescription: "Configure BGP aggregate entries",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv4_address": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"ipv4_mask": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"ipv4_unicast_networks_mask": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify a network to announce via BGP",
 				Computed:            true,
