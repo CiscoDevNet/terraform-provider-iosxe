@@ -1,0 +1,20 @@
+---
+name: AS Path Access List
+path: Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=%v
+no_delete_attributes: true
+skip_minimum_test: true
+doc_category: BGP
+attributes:
+  - yang_name: name
+    example: 10
+  - yang_name: extended-grouping/extended_grouping
+    tf_name: entries
+    type: List
+    attributes:
+      - yang_name: action
+        id: true
+        example: permit
+      - yang_name: string
+        tf_name: regex
+        id: true
+        example: "^100$"
