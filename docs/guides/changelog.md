@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.5.2 (unreleased)
+## 0.5.2
 
 - Add `speed` options to `iosxe_interface_ethernet` resource and data source
 - Add more source interface type options to `iosxe_aaa` resource and data source
