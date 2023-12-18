@@ -4,6 +4,7 @@
 - Add more source interface type options to `iosxe_aaa` resource and data source
 - Add `ipv4_unicast_aggregate_addresses` attribute to `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources and data sources
 - Add `soft_reconfiguration` attribute to `iosxe_bgp_ipv4_unicast_neighbor`, `iosxe_bgp_ipv4_unicast_vrf_neighbor`, `iosxe_bgp_ipv6_unicast_neighbor` and `iosxe_bgp_l2vpn_evpn_neighbor` resources and data sources
+- Add `fall_over_bfd` attribute to `iosxe_bgp_neighbor` and `iosxe_bgp_ipv4_unicast_vrf_neighbor` resources and data sources
 
 ## 0.5.1
 

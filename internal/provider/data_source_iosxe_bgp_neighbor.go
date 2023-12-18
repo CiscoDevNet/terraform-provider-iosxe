@@ -103,6 +103,10 @@ func (d *BGPNeighborDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"fall_over_bfd": schema.BoolAttribute{
+				MarkdownDescription: "Use BFD to detect failure",
+				Computed:            true,
+			},
 			"fall_over_bfd_multi_hop": schema.BoolAttribute{
 				MarkdownDescription: "Force BFD multi-hop to detect failure",
 				Computed:            true,

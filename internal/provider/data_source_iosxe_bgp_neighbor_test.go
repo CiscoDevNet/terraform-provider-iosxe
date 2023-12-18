@@ -35,6 +35,7 @@ func TestAccDataSourceIosxeBGPNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "disable_connected_check", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_default_enable", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_default_route_map", "RMAP"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_bfd", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_bfd_single_hop", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_bfd_check_control_plane_failure", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_neighbor.test", "fall_over_bfd_strict_mode", "true"))
@@ -88,6 +89,7 @@ func testAccDataSourceIosxeBGPNeighborConfig() string {
 	config += `	disable_connected_check = false` + "\n"
 	config += `	fall_over_default_enable = false` + "\n"
 	config += `	fall_over_default_route_map = "RMAP"` + "\n"
+	config += `	fall_over_bfd = true` + "\n"
 	config += `	fall_over_bfd_single_hop = true` + "\n"
 	config += `	fall_over_bfd_check_control_plane_failure = true` + "\n"
 	config += `	fall_over_bfd_strict_mode = true` + "\n"

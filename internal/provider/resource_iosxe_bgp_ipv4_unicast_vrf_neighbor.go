@@ -163,6 +163,10 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"fall_over_bfd": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use BFD to detect failure").String,
+				Optional:            true,
+			},
 			"fall_over_bfd_multi_hop": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").String,
 				Optional:            true,

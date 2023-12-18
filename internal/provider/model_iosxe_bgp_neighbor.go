@@ -46,6 +46,7 @@ type BGPNeighbor struct {
 	DisableConnectedCheck               types.Bool   `tfsdk:"disable_connected_check"`
 	FallOverDefaultEnable               types.Bool   `tfsdk:"fall_over_default_enable"`
 	FallOverDefaultRouteMap             types.String `tfsdk:"fall_over_default_route_map"`
+	FallOverBfd                         types.Bool   `tfsdk:"fall_over_bfd"`
 	FallOverBfdMultiHop                 types.Bool   `tfsdk:"fall_over_bfd_multi_hop"`
 	FallOverBfdSingleHop                types.Bool   `tfsdk:"fall_over_bfd_single_hop"`
 	FallOverBfdCheckControlPlaneFailure types.Bool   `tfsdk:"fall_over_bfd_check_control_plane_failure"`
@@ -80,6 +81,7 @@ type BGPNeighborData struct {
 	DisableConnectedCheck               types.Bool   `tfsdk:"disable_connected_check"`
 	FallOverDefaultEnable               types.Bool   `tfsdk:"fall_over_default_enable"`
 	FallOverDefaultRouteMap             types.String `tfsdk:"fall_over_default_route_map"`
+	FallOverBfd                         types.Bool   `tfsdk:"fall_over_bfd"`
 	FallOverBfdMultiHop                 types.Bool   `tfsdk:"fall_over_bfd_multi_hop"`
 	FallOverBfdSingleHop                types.Bool   `tfsdk:"fall_over_bfd_single_hop"`
 	FallOverBfdCheckControlPlaneFailure types.Bool   `tfsdk:"fall_over_bfd_check_control_plane_failure"`
@@ -154,6 +156,11 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 	}
 	if !data.FallOverDefaultRouteMap.IsNull() && !data.FallOverDefaultRouteMap.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fall-over.default.route-map", data.FallOverDefaultRouteMap.ValueString())
+	}
+	if !data.FallOverBfd.IsNull() && !data.FallOverBfd.IsUnknown() {
+		if data.FallOverBfd.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fall-over.bfd", map[string]string{})
+		}
 	}
 	if !data.FallOverBfdMultiHop.IsNull() && !data.FallOverBfdMultiHop.IsUnknown() {
 		if data.FallOverBfdMultiHop.ValueBool() {
@@ -294,6 +301,15 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.FallOverDefaultRouteMap = types.StringValue(value.String())
 	} else {
 		data.FallOverDefaultRouteMap = types.StringNull()
+	}
+	if value := res.Get(prefix + "fall-over.bfd"); !data.FallOverBfd.IsNull() {
+		if value.Exists() {
+			data.FallOverBfd = types.BoolValue(true)
+		} else {
+			data.FallOverBfd = types.BoolValue(false)
+		}
+	} else {
+		data.FallOverBfd = types.BoolNull()
 	}
 	if value := res.Get(prefix + "fall-over.bfd.multi-hop"); !data.FallOverBfdMultiHop.IsNull() {
 		if value.Exists() {
@@ -463,6 +479,11 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "fall-over.default.route-map"); value.Exists() {
 		data.FallOverDefaultRouteMap = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "fall-over.bfd"); value.Exists() {
+		data.FallOverBfd = types.BoolValue(true)
+	} else {
+		data.FallOverBfd = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "fall-over.bfd.multi-hop"); value.Exists() {
 		data.FallOverBfdMultiHop = types.BoolValue(true)
 	} else {
@@ -563,6 +584,9 @@ func (data *BGPNeighbor) getDeletedItems(ctx context.Context, state BGPNeighbor)
 	if !state.FallOverDefaultRouteMap.IsNull() && data.FallOverDefaultRouteMap.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/default/route-map", state.getPath()))
 	}
+	if !state.FallOverBfd.IsNull() && data.FallOverBfd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd", state.getPath()))
+	}
 	if !state.FallOverBfdMultiHop.IsNull() && data.FallOverBfdMultiHop.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/multi-hop", state.getPath()))
 	}
@@ -634,6 +658,9 @@ func (data *BGPNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.FallOverDefaultEnable.IsNull() && !data.FallOverDefaultEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/default/enable", data.getPath()))
 	}
+	if !data.FallOverBfd.IsNull() && !data.FallOverBfd.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd", data.getPath()))
+	}
 	if !data.FallOverBfdMultiHop.IsNull() && !data.FallOverBfdMultiHop.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/multi-hop", data.getPath()))
 	}
@@ -686,6 +713,9 @@ func (data *BGPNeighbor) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.FallOverDefaultRouteMap.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/default/route-map", data.getPath()))
+	}
+	if !data.FallOverBfd.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd", data.getPath()))
 	}
 	if !data.FallOverBfdMultiHop.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/multi-hop", data.getPath()))

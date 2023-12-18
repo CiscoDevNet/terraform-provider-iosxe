@@ -40,6 +40,7 @@ func TestAccIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "timers_minimum_neighbor_hold", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "version", "4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "fall_over_default_route_map", "RMAP"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "fall_over_bfd", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "fall_over_bfd_single_hop", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "fall_over_bfd_check_control_plane_failure", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "fall_over_bfd_strict_mode", "true"))
@@ -141,6 +142,7 @@ func testAccIosxeBGPIPv4UnicastVRFNeighborConfig_all() string {
 	config += `	timers_minimum_neighbor_hold = 30` + "\n"
 	config += `	version = 4` + "\n"
 	config += `	fall_over_default_route_map = "RMAP"` + "\n"
+	config += `	fall_over_bfd = true` + "\n"
 	config += `	fall_over_bfd_single_hop = true` + "\n"
 	config += `	fall_over_bfd_check_control_plane_failure = true` + "\n"
 	config += `	fall_over_bfd_strict_mode = true` + "\n"

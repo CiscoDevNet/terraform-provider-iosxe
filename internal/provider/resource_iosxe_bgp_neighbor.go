@@ -123,6 +123,10 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"fall_over_bfd": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use BFD to detect failure").String,
+				Optional:            true,
+			},
 			"fall_over_bfd_multi_hop": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").String,
 				Optional:            true,

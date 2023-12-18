@@ -24,6 +24,7 @@ resource "iosxe_bgp_neighbor" "example" {
   disable_connected_check                   = false
   fall_over_default_enable                  = false
   fall_over_default_route_map               = "RMAP"
+  fall_over_bfd                             = true
   fall_over_bfd_single_hop                  = true
   fall_over_bfd_check_control_plane_failure = true
   fall_over_bfd_strict_mode                 = true
@@ -56,6 +57,7 @@ resource "iosxe_bgp_neighbor" "example" {
 - `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address
 - `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
 - `ebgp_multihop_max_hop` (Number) - Range: `2`-`255`
+- `fall_over_bfd` (Boolean) Use BFD to detect failure
 - `fall_over_bfd_check_control_plane_failure` (Boolean) Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation
 - `fall_over_bfd_multi_hop` (Boolean) Force BFD multi-hop to detect failure
 - `fall_over_bfd_single_hop` (Boolean) Force BFD single-hop to detect failure

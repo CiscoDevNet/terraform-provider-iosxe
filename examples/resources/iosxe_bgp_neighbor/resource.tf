@@ -9,6 +9,7 @@ resource "iosxe_bgp_neighbor" "example" {
   disable_connected_check                   = false
   fall_over_default_enable                  = false
   fall_over_default_route_map               = "RMAP"
+  fall_over_bfd                             = true
   fall_over_bfd_single_hop                  = true
   fall_over_bfd_check_control_plane_failure = true
   fall_over_bfd_strict_mode                 = true

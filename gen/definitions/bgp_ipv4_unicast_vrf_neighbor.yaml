@@ -52,6 +52,8 @@ attributes:
   - yang_name: fall-over/default/route-map
     tf_name: fall_over_default_route_map
     example: RMAP
+  - yang_name: fall-over/bfd
+    example: true
   - yang_name: fall-over/bfd/hop-choice/multi-hop/multi-hop
     xpath: fall-over/bfd/multi-hop
     tf_name: fall_over_bfd_multi_hop
