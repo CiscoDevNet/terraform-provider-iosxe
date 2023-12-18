@@ -80,11 +80,75 @@ func (d *AAAAuthorizationDataSource) Schema(ctx context.Context, req datasource.
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},
+						"a1_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use radius",
+							Computed:            true,
+						},
+						"a1_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+						"a1_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: "Succeed if user has authenticated.",
+							Computed:            true,
+						},
 						"a2_local": schema.BoolAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"a1_if_authenticated": schema.BoolAttribute{
+						"a2_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a2_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use Radius",
+							Computed:            true,
+						},
+						"a2_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+						"a2_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: "Succeed if user has authenticated.",
+							Computed:            true,
+						},
+						"a3_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a3_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a3_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use Radius",
+							Computed:            true,
+						},
+						"a3_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+						"a3_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: "Succeed if user has authenticated.",
+							Computed:            true,
+						},
+						"a4_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a4_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a4_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use radius",
+							Computed:            true,
+						},
+						"a4_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+						"a4_if_authenticated": schema.BoolAttribute{
 							MarkdownDescription: "Succeed if user has authenticated.",
 							Computed:            true,
 						},
@@ -100,7 +164,35 @@ func (d *AAAAuthorizationDataSource) Schema(ctx context.Context, req datasource.
 							MarkdownDescription: "",
 							Computed:            true,
 						},
+						"a1_local": schema.BoolAttribute{
+							MarkdownDescription: "Use local username authentication.",
+							Computed:            true,
+						},
 						"a1_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a2_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a3_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a3_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a4_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a4_group": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},

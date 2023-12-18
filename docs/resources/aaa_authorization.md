@@ -16,10 +16,20 @@ This resource can manage the AAA Authorization configuration.
 resource "iosxe_aaa_authorization" "example" {
   execs = [
     {
-      name                = "TEST"
-      a1_local            = false
-      a1_group            = "GROUP1"
-      a1_if_authenticated = true
+      name     = "EXEC1"
+      a1_group = "GROUP1"
+      a2_group = "GROUP2"
+      a3_group = "GROUP3"
+      a4_local = true
+    }
+  ]
+  networks = [
+    {
+      id       = "NET1"
+      a1_group = "RGROUP1"
+      a2_group = "RGROUP2"
+      a3_group = "RGROUP3"
+      a4_local = true
     }
   ]
 }
@@ -52,7 +62,23 @@ Optional:
 - `a1_group` (String) Use Server-group
 - `a1_if_authenticated` (Boolean) Succeed if user has authenticated.
 - `a1_local` (Boolean) Use local database
+- `a1_radius` (Boolean) Use radius
+- `a1_tacacs` (Boolean) Use TACACS+
+- `a2_group` (String) Use Server-group
+- `a2_if_authenticated` (Boolean) Succeed if user has authenticated.
 - `a2_local` (Boolean)
+- `a2_radius` (Boolean) Use Radius
+- `a2_tacacs` (Boolean) Use TACACS+
+- `a3_group` (String) Use Server-group
+- `a3_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a3_local` (Boolean)
+- `a3_radius` (Boolean) Use Radius
+- `a3_tacacs` (Boolean) Use TACACS+
+- `a4_group` (String) Use Server-group
+- `a4_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a4_local` (Boolean)
+- `a4_radius` (Boolean) Use radius
+- `a4_tacacs` (Boolean) Use TACACS+
 
 
 <a id="nestedatt--networks"></a>
@@ -65,6 +91,13 @@ Required:
 Optional:
 
 - `a1_group` (String) Use Server-group
+- `a1_local` (Boolean) Use local username authentication.
+- `a2_group` (String) Use Server-group
+- `a2_local` (Boolean)
+- `a3_group` (String) Use Server-group
+- `a3_local` (Boolean)
+- `a4_group` (String) Use Server-group
+- `a4_local` (Boolean)
 
 ## Import
 

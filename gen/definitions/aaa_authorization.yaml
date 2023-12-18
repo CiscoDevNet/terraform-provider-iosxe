@@ -10,33 +10,143 @@ attributes:
     attributes:
       - yang_name: name
         id: true
-        example: TEST
+        example: EXEC1
       - yang_name: a1/auth-exec-choice/local/local
         xpath: a1/local
         tf_name: a1_local
         example: false
+        exclude_test: true
       - yang_name: a1/auth-exec-choice/group/group
         xpath: a1/group
         tf_name: a1_group
         example: GROUP1
-      - yang_name: a2/auth-exec-choice/local/local
-        xpath: a2/local
-        tf_name: a2_local
-        example: false
+      - yang_name: a1/auth-exec-choice/radius/radius
+        xpath: a1/radius
+        tf_name: a1_radius
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-exec-choice/tacacs/tacacs
+        xpath: a1/tacacs
+        tf_name: a1_tacacs
+        example: true
         exclude_test: true
       - yang_name: a1/auth-exec-choice/if-authenticated/if-authenticated
         xpath: a1/if-authenticated
         tf_name: a1_if_authenticated
         example: true
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/local/local
+        xpath: a2/local
+        tf_name: a2_local
+        example: false
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/group/group
+        xpath: a2/group
+        tf_name: a2_group
+        example: GROUP2
+      - yang_name: a2/auth-exec-choice/radius/radius
+        xpath: a2/radius
+        tf_name: a2_radius
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/tacacs/tacacs
+        xpath: a2/tacacs
+        tf_name: a2_tacacs
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/if-authenticated/if-authenticated
+        xpath: a2/if-authenticated
+        tf_name: a2_if_authenticated
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/local/local
+        xpath: a3/local
+        tf_name: a3_local
+        example: false
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/group/group
+        xpath: a3/group
+        tf_name: a3_group
+        example: GROUP3
+      - yang_name: a3/auth-exec-choice/radius/radius
+        xpath: a3/radius
+        tf_name: a3_radius
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/tacacs/tacacs
+        xpath: a3/tacacs
+        tf_name: a3_tacacs
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/if-authenticated/if-authenticated
+        xpath: a3/if-authenticated
+        tf_name: a3_if_authenticated
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/local/local
+        xpath: a4/local
+        tf_name: a4_local
+        example: true
+      - yang_name: a4/auth-exec-choice/group/group
+        xpath: a4/group
+        tf_name: a4_group
+        example: GROUP4
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/radius/radius
+        xpath: a4/radius
+        tf_name: a4_radius
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/tacacs/tacacs
+        xpath: a4/tacacs
+        tf_name: a4_tacacs
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/if-authenticated/if-authenticated
+        xpath: a4/if-authenticated
+        tf_name: a4_if_authenticated
+        example: true
+        exclude_test: true
   - yang_name: network
     tf_name: networks
     type: List
-    exclude_test: true
     attributes:
       - yang_name: id
         id: true
-        example: TEST11
+        example: NET1
+      - yang_name: a1/auth-choice/local/local
+        xpath: a1/local
+        tf_name: a1_local
+        example: true
+        exclude_test: true
       - yang_name: a1/auth-choice/group/group
         xpath: a1/group
         tf_name: a1_group
-        example: Radius-GROUP
+        example: RGROUP1
+      - yang_name: a2/auth-choice/local/local
+        xpath: a2/local
+        tf_name: a2_local
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-choice/group/group
+        xpath: a2/group
+        tf_name: a2_group
+        example: RGROUP2
+      - yang_name: a3/auth-choice/local/local
+        xpath: a3/local
+        tf_name: a3_local
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-choice/group/group
+        xpath: a3/group
+        tf_name: a3_group
+        example: RGROUP3
+      - yang_name: a4/auth-choice/local/local
+        xpath: a4/local
+        tf_name: a4_local
+        example: true
+      - yang_name: a4/auth-choice/group/group
+        xpath: a4/group
+        tf_name: a4_group
+        example: RGROUP4
+        exclude_test: true

@@ -21,6 +21,7 @@ description: |-
 - Add `community_list_expanded` resource and data source
 - Add `authentication`, `mab` and `dot1x` attributes to `iosxe_interface_ethernet` resource and data source
 - Add `authorization_exec` and `transport_input` attributes to `iosxe_line` resource and data source
+- Add `a2`, `a3` and `a4` attributes to `iosxe_aaa_authorization` resource and data source
 
 ## 0.5.1
 

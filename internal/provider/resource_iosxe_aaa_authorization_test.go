@@ -31,10 +31,16 @@ func TestAccIosxeAAAAuthorization(t *testing.T) {
 		t.Skip("skipping test, set environment variable AAA")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.name", "TEST"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a1_local", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.name", "EXEC1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a1_group", "GROUP1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a1_if_authenticated", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a2_group", "GROUP2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a3_group", "GROUP3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "execs.0.a4_local", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "networks.0.id", "NET1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "networks.0.a1_group", "RGROUP1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "networks.0.a2_group", "RGROUP2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "networks.0.a3_group", "RGROUP3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_authorization.test", "networks.0.a4_local", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -64,10 +70,18 @@ func testAccIosxeAAAAuthorizationConfig_minimum() string {
 func testAccIosxeAAAAuthorizationConfig_all() string {
 	config := `resource "iosxe_aaa_authorization" "test" {` + "\n"
 	config += `	execs = [{` + "\n"
-	config += `		name = "TEST"` + "\n"
-	config += `		a1_local = false` + "\n"
+	config += `		name = "EXEC1"` + "\n"
 	config += `		a1_group = "GROUP1"` + "\n"
-	config += `		a1_if_authenticated = true` + "\n"
+	config += `		a2_group = "GROUP2"` + "\n"
+	config += `		a3_group = "GROUP3"` + "\n"
+	config += `		a4_local = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	networks = [{` + "\n"
+	config += `		id = "NET1"` + "\n"
+	config += `		a1_group = "RGROUP1"` + "\n"
+	config += `		a2_group = "RGROUP2"` + "\n"
+	config += `		a3_group = "RGROUP3"` + "\n"
+	config += `		a4_local = true` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config

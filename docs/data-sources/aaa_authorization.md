@@ -38,7 +38,23 @@ Read-Only:
 - `a1_group` (String) Use Server-group
 - `a1_if_authenticated` (Boolean) Succeed if user has authenticated.
 - `a1_local` (Boolean) Use local database
+- `a1_radius` (Boolean) Use radius
+- `a1_tacacs` (Boolean) Use TACACS+
+- `a2_group` (String) Use Server-group
+- `a2_if_authenticated` (Boolean) Succeed if user has authenticated.
 - `a2_local` (Boolean)
+- `a2_radius` (Boolean) Use Radius
+- `a2_tacacs` (Boolean) Use TACACS+
+- `a3_group` (String) Use Server-group
+- `a3_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a3_local` (Boolean)
+- `a3_radius` (Boolean) Use Radius
+- `a3_tacacs` (Boolean) Use TACACS+
+- `a4_group` (String) Use Server-group
+- `a4_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a4_local` (Boolean)
+- `a4_radius` (Boolean) Use radius
+- `a4_tacacs` (Boolean) Use TACACS+
 - `name` (String)
 
 
@@ -48,4 +64,11 @@ Read-Only:
 Read-Only:
 
 - `a1_group` (String) Use Server-group
+- `a1_local` (Boolean) Use local username authentication.
+- `a2_group` (String) Use Server-group
+- `a2_local` (Boolean)
+- `a3_group` (String) Use Server-group
+- `a3_local` (Boolean)
+- `a4_group` (String) Use Server-group
+- `a4_local` (Boolean)
 - `id` (String)
