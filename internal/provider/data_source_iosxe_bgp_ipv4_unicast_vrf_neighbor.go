@@ -191,6 +191,14 @@ func (d *BGPIPv4UnicastVRFNeighborDataSource) Schema(ctx context.Context, req da
 				MarkdownDescription: "Per neighbor soft reconfiguration",
 				Computed:            true,
 			},
+			"default_originate": schema.BoolAttribute{
+				MarkdownDescription: "Originate default route to this neighbor",
+				Computed:            true,
+			},
+			"default_originate_route_map": schema.StringAttribute{
+				MarkdownDescription: "Route-map to specify criteria to originate default",
+				Computed:            true,
+			},
 			"route_maps": schema.ListNestedAttribute{
 				MarkdownDescription: "Apply route map to neighbor",
 				Computed:            true,

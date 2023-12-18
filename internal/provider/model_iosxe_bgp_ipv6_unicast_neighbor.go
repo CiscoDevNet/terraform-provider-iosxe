@@ -35,28 +35,32 @@ import (
 )
 
 type BGPIPv6UnicastNeighbor struct {
-	Device               types.String                      `tfsdk:"device"`
-	Id                   types.String                      `tfsdk:"id"`
-	DeleteMode           types.String                      `tfsdk:"delete_mode"`
-	Asn                  types.String                      `tfsdk:"asn"`
-	Ip                   types.String                      `tfsdk:"ip"`
-	Activate             types.Bool                        `tfsdk:"activate"`
-	SendCommunity        types.String                      `tfsdk:"send_community"`
-	RouteReflectorClient types.Bool                        `tfsdk:"route_reflector_client"`
-	SoftReconfiguration  types.String                      `tfsdk:"soft_reconfiguration"`
-	RouteMaps            []BGPIPv6UnicastNeighborRouteMaps `tfsdk:"route_maps"`
+	Device                   types.String                      `tfsdk:"device"`
+	Id                       types.String                      `tfsdk:"id"`
+	DeleteMode               types.String                      `tfsdk:"delete_mode"`
+	Asn                      types.String                      `tfsdk:"asn"`
+	Ip                       types.String                      `tfsdk:"ip"`
+	Activate                 types.Bool                        `tfsdk:"activate"`
+	SendCommunity            types.String                      `tfsdk:"send_community"`
+	RouteReflectorClient     types.Bool                        `tfsdk:"route_reflector_client"`
+	SoftReconfiguration      types.String                      `tfsdk:"soft_reconfiguration"`
+	DefaultOriginate         types.Bool                        `tfsdk:"default_originate"`
+	DefaultOriginateRouteMap types.String                      `tfsdk:"default_originate_route_map"`
+	RouteMaps                []BGPIPv6UnicastNeighborRouteMaps `tfsdk:"route_maps"`
 }
 
 type BGPIPv6UnicastNeighborData struct {
-	Device               types.String                      `tfsdk:"device"`
-	Id                   types.String                      `tfsdk:"id"`
-	Asn                  types.String                      `tfsdk:"asn"`
-	Ip                   types.String                      `tfsdk:"ip"`
-	Activate             types.Bool                        `tfsdk:"activate"`
-	SendCommunity        types.String                      `tfsdk:"send_community"`
-	RouteReflectorClient types.Bool                        `tfsdk:"route_reflector_client"`
-	SoftReconfiguration  types.String                      `tfsdk:"soft_reconfiguration"`
-	RouteMaps            []BGPIPv6UnicastNeighborRouteMaps `tfsdk:"route_maps"`
+	Device                   types.String                      `tfsdk:"device"`
+	Id                       types.String                      `tfsdk:"id"`
+	Asn                      types.String                      `tfsdk:"asn"`
+	Ip                       types.String                      `tfsdk:"ip"`
+	Activate                 types.Bool                        `tfsdk:"activate"`
+	SendCommunity            types.String                      `tfsdk:"send_community"`
+	RouteReflectorClient     types.Bool                        `tfsdk:"route_reflector_client"`
+	SoftReconfiguration      types.String                      `tfsdk:"soft_reconfiguration"`
+	DefaultOriginate         types.Bool                        `tfsdk:"default_originate"`
+	DefaultOriginateRouteMap types.String                      `tfsdk:"default_originate_route_map"`
+	RouteMaps                []BGPIPv6UnicastNeighborRouteMaps `tfsdk:"route_maps"`
 }
 type BGPIPv6UnicastNeighborRouteMaps struct {
 	InOut        types.String `tfsdk:"in_out"`
@@ -102,6 +106,14 @@ func (data BGPIPv6UnicastNeighbor) toBody(ctx context.Context) string {
 	}
 	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"soft-reconfiguration", data.SoftReconfiguration.ValueString())
+	}
+	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.IsUnknown() {
+		if data.DefaultOriginate.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-originate", map[string]string{})
+		}
+	}
+	if !data.DefaultOriginateRouteMap.IsNull() && !data.DefaultOriginateRouteMap.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-originate.route-map", data.DefaultOriginateRouteMap.ValueString())
 	}
 	if len(data.RouteMaps) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
@@ -154,6 +166,20 @@ func (data *BGPIPv6UnicastNeighbor) updateFromBody(ctx context.Context, res gjso
 		data.SoftReconfiguration = types.StringValue(value.String())
 	} else {
 		data.SoftReconfiguration = types.StringNull()
+	}
+	if value := res.Get(prefix + "default-originate"); !data.DefaultOriginate.IsNull() {
+		if value.Exists() {
+			data.DefaultOriginate = types.BoolValue(true)
+		} else {
+			data.DefaultOriginate = types.BoolValue(false)
+		}
+	} else {
+		data.DefaultOriginate = types.BoolNull()
+	}
+	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() && !data.DefaultOriginateRouteMap.IsNull() {
+		data.DefaultOriginateRouteMap = types.StringValue(value.String())
+	} else {
+		data.DefaultOriginateRouteMap = types.StringNull()
 	}
 	for i := range data.RouteMaps {
 		keys := [...]string{"inout"}
@@ -212,6 +238,14 @@ func (data *BGPIPv6UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
 		data.SoftReconfiguration = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "default-originate"); value.Exists() {
+		data.DefaultOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultOriginate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() {
+		data.DefaultOriginateRouteMap = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "route-map"); value.Exists() {
 		data.RouteMaps = make([]BGPIPv6UnicastNeighborRouteMaps, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -238,6 +272,12 @@ func (data *BGPIPv6UnicastNeighbor) getDeletedItems(ctx context.Context, state B
 	}
 	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
+	}
+	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate", state.getPath()))
+	}
+	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate/route-map", state.getPath()))
 	}
 	for i := range state.RouteMaps {
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
@@ -278,6 +318,9 @@ func (data *BGPIPv6UnicastNeighbor) getEmptyLeafsDelete(ctx context.Context) []s
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
 	}
+	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-originate", data.getPath()))
+	}
 
 	return emptyLeafsDelete
 }
@@ -292,6 +335,12 @@ func (data *BGPIPv6UnicastNeighbor) getDeletePaths(ctx context.Context) []string
 	}
 	if !data.SoftReconfiguration.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
+	}
+	if !data.DefaultOriginate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate", data.getPath()))
+	}
+	if !data.DefaultOriginateRouteMap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate/route-map", data.getPath()))
 	}
 	for i := range data.RouteMaps {
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}

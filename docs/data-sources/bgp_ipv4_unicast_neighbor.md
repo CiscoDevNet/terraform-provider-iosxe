@@ -34,6 +34,8 @@ data "iosxe_bgp_ipv4_unicast_neighbor" "example" {
 ### Read-Only
 
 - `activate` (Boolean) Enable the address family for this neighbor
+- `default_originate` (Boolean) Originate default route to this neighbor
+- `default_originate_route_map` (String) Route-map to specify criteria to originate default
 - `id` (String) The path of the retrieved object.
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client

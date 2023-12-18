@@ -109,6 +109,10 @@ attributes:
     example: false
   - yang_name: soft-reconfiguration
     example: inbound
+  - yang_name: default-originate
+    example: true
+  - yang_name: default-originate/route-map
+    example: RM1
   - yang_name: route-map
     tf_name: route_maps
     type: List

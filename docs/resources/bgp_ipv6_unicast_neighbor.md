@@ -14,12 +14,14 @@ This resource can manage the BGP IPv6 Unicast Neighbor configuration.
 
 ```terraform
 resource "iosxe_bgp_ipv6_unicast_neighbor" "example" {
-  asn                    = "65000"
-  ip                     = "3.3.3.3"
-  activate               = true
-  send_community         = "both"
-  route_reflector_client = false
-  soft_reconfiguration   = "inbound"
+  asn                         = "65000"
+  ip                          = "3.3.3.3"
+  activate                    = true
+  send_community              = "both"
+  route_reflector_client      = false
+  soft_reconfiguration        = "inbound"
+  default_originate           = true
+  default_originate_route_map = "RM1"
   route_maps = [
     {
       in_out         = "in"
@@ -41,6 +43,8 @@ resource "iosxe_bgp_ipv6_unicast_neighbor" "example" {
 
 - `activate` (Boolean) Enable the address family for this neighbor
   - Default value: `true`
+- `default_originate` (Boolean) Originate default route to this neighbor
+- `default_originate_route_map` (String) Route-map to specify criteria to originate default
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.

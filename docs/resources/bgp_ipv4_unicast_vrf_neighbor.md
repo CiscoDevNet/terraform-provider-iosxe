@@ -39,6 +39,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   send_community                            = "both"
   route_reflector_client                    = false
   soft_reconfiguration                      = "inbound"
+  default_originate                         = true
+  default_originate_route_map               = "RM1"
   route_maps = [
     {
       in_out         = "in"
@@ -62,6 +64,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `activate` (Boolean) Enable the address family for this neighbor
   - Default value: `true`
 - `cluster_id` (String)
+- `default_originate` (Boolean) Originate default route to this neighbor
+- `default_originate_route_map` (String) Route-map to specify criteria to originate default
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `description` (String) Neighbor specific description

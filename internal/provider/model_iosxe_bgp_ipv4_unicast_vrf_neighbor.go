@@ -70,6 +70,8 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	SendCommunity                       types.String                         `tfsdk:"send_community"`
 	RouteReflectorClient                types.Bool                           `tfsdk:"route_reflector_client"`
 	SoftReconfiguration                 types.String                         `tfsdk:"soft_reconfiguration"`
+	DefaultOriginate                    types.Bool                           `tfsdk:"default_originate"`
+	DefaultOriginateRouteMap            types.String                         `tfsdk:"default_originate_route_map"`
 	RouteMaps                           []BGPIPv4UnicastVRFNeighborRouteMaps `tfsdk:"route_maps"`
 	EbgpMultihop                        types.Bool                           `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
@@ -110,6 +112,8 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	SendCommunity                       types.String                         `tfsdk:"send_community"`
 	RouteReflectorClient                types.Bool                           `tfsdk:"route_reflector_client"`
 	SoftReconfiguration                 types.String                         `tfsdk:"soft_reconfiguration"`
+	DefaultOriginate                    types.Bool                           `tfsdk:"default_originate"`
+	DefaultOriginateRouteMap            types.String                         `tfsdk:"default_originate_route_map"`
 	RouteMaps                           []BGPIPv4UnicastVRFNeighborRouteMaps `tfsdk:"route_maps"`
 	EbgpMultihop                        types.Bool                           `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
@@ -255,6 +259,14 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 	}
 	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"soft-reconfiguration", data.SoftReconfiguration.ValueString())
+	}
+	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.IsUnknown() {
+		if data.DefaultOriginate.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-originate", map[string]string{})
+		}
+	}
+	if !data.DefaultOriginateRouteMap.IsNull() && !data.DefaultOriginateRouteMap.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"default-originate.route-map", data.DefaultOriginateRouteMap.ValueString())
 	}
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
 		if data.EbgpMultihop.ValueBool() {
@@ -485,6 +497,20 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 	} else {
 		data.SoftReconfiguration = types.StringNull()
 	}
+	if value := res.Get(prefix + "default-originate"); !data.DefaultOriginate.IsNull() {
+		if value.Exists() {
+			data.DefaultOriginate = types.BoolValue(true)
+		} else {
+			data.DefaultOriginate = types.BoolValue(false)
+		}
+	} else {
+		data.DefaultOriginate = types.BoolNull()
+	}
+	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() && !data.DefaultOriginateRouteMap.IsNull() {
+		data.DefaultOriginateRouteMap = types.StringValue(value.String())
+	} else {
+		data.DefaultOriginateRouteMap = types.StringNull()
+	}
 	for i := range data.RouteMaps {
 		keys := [...]string{"inout"}
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
@@ -653,6 +679,14 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
 		data.SoftReconfiguration = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "default-originate"); value.Exists() {
+		data.DefaultOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultOriginate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() {
+		data.DefaultOriginateRouteMap = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "route-map"); value.Exists() {
 		data.RouteMaps = make([]BGPIPv4UnicastVRFNeighborRouteMaps, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -760,6 +794,12 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, stat
 	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
 	}
+	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate", state.getPath()))
+	}
+	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate/route-map", state.getPath()))
+	}
 	for i := range state.RouteMaps {
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
 
@@ -837,6 +877,9 @@ func (data *BGPIPv4UnicastVRFNeighbor) getEmptyLeafsDelete(ctx context.Context) 
 	}
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
+	}
+	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-originate", data.getPath()))
 	}
 
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.ValueBool() {
@@ -927,6 +970,12 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []str
 	}
 	if !data.SoftReconfiguration.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
+	}
+	if !data.DefaultOriginate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate", data.getPath()))
+	}
+	if !data.DefaultOriginateRouteMap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate/route-map", data.getPath()))
 	}
 	for i := range data.RouteMaps {
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}

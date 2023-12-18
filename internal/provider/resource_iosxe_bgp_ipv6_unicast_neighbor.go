@@ -111,6 +111,14 @@ func (r *BGPIPv6UnicastNeighborResource) Schema(ctx context.Context, req resourc
 					stringvalidator.OneOf("inbound"),
 				},
 			},
+			"default_originate": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Originate default route to this neighbor").String,
+				Optional:            true,
+			},
+			"default_originate_route_map": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Route-map to specify criteria to originate default").String,
+				Optional:            true,
+			},
 			"route_maps": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Apply route map to neighbor").String,
 				Optional:            true,

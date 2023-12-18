@@ -24,6 +24,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   send_community                            = "both"
   route_reflector_client                    = false
   soft_reconfiguration                      = "inbound"
+  default_originate                         = true
+  default_originate_route_map               = "RM1"
   route_maps = [
     {
       in_out         = "in"

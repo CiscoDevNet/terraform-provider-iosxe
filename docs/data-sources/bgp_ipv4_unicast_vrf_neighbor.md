@@ -37,6 +37,8 @@ data "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 
 - `activate` (Boolean) Enable the address family for this neighbor
 - `cluster_id` (String)
+- `default_originate` (Boolean) Originate default route to this neighbor
+- `default_originate_route_map` (String) Route-map to specify criteria to originate default
 - `description` (String) Neighbor specific description
 - `disable_connected_check` (Boolean) one-hop away EBGP peer using loopback address
 - `ebgp_multihop` (Boolean) Allow EBGP neighbors not on directly connected networks. For single-hop ebgp peers, delete ebgp-multihop directly.
