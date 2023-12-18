@@ -19,6 +19,7 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
   activate               = true
   send_community         = "both"
   route_reflector_client = false
+  soft_reconfiguration   = "inbound"
 }
 ```
 
@@ -39,6 +40,8 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
 - `device` (String) A device name from the provider configuration.
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
+- `soft_reconfiguration` (String) Per neighbor soft reconfiguration
+  - Choices: `inbound`
 
 ### Read-Only
 

@@ -37,6 +37,7 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   activate                                  = true
   send_community                            = "both"
   route_reflector_client                    = false
+  soft_reconfiguration                      = "inbound"
   route_maps = [
     {
       in_out         = "in"
@@ -86,6 +87,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
 - `shutdown` (Boolean) Administratively shut down this neighbor
+- `soft_reconfiguration` (String) Per neighbor soft reconfiguration
+  - Choices: `inbound`
 - `timers_holdtime` (Number) - Range: `0`-`65535`
 - `timers_keepalive_interval` (Number) - Range: `0`-`65535`
 - `timers_minimum_neighbor_hold` (Number) - Range: `0`-`65535`

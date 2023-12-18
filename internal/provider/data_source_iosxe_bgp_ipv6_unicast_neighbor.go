@@ -83,6 +83,10 @@ func (d *BGPIPv6UnicastNeighborDataSource) Schema(ctx context.Context, req datas
 				MarkdownDescription: "Configure a neighbor as Route Reflector client",
 				Computed:            true,
 			},
+			"soft_reconfiguration": schema.StringAttribute{
+				MarkdownDescription: "Per neighbor soft reconfiguration",
+				Computed:            true,
+			},
 			"route_maps": schema.ListNestedAttribute{
 				MarkdownDescription: "Apply route map to neighbor",
 				Computed:            true,

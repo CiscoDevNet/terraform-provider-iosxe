@@ -60,6 +60,7 @@ data "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String)
 - `shutdown` (Boolean) Administratively shut down this neighbor
+- `soft_reconfiguration` (String) Per neighbor soft reconfiguration
 - `timers_holdtime` (Number)
 - `timers_keepalive_interval` (Number)
 - `timers_minimum_neighbor_hold` (Number)

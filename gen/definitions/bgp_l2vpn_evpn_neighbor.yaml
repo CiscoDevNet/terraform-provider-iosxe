@@ -21,6 +21,8 @@ attributes:
     example: both
   - yang_name: route-reflector-client
     example: false
+  - yang_name: soft-reconfiguration
+    example: inbound
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
     attributes:

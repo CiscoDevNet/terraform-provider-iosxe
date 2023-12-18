@@ -40,6 +40,7 @@ type BGPL2VPNEVPNNeighbor struct {
 	Activate             types.Bool   `tfsdk:"activate"`
 	SendCommunity        types.String `tfsdk:"send_community"`
 	RouteReflectorClient types.Bool   `tfsdk:"route_reflector_client"`
+	SoftReconfiguration  types.String `tfsdk:"soft_reconfiguration"`
 }
 
 type BGPL2VPNEVPNNeighborData struct {
@@ -50,6 +51,7 @@ type BGPL2VPNEVPNNeighborData struct {
 	Activate             types.Bool   `tfsdk:"activate"`
 	SendCommunity        types.String `tfsdk:"send_community"`
 	RouteReflectorClient types.Bool   `tfsdk:"route_reflector_client"`
+	SoftReconfiguration  types.String `tfsdk:"soft_reconfiguration"`
 }
 
 func (data BGPL2VPNEVPNNeighbor) getPath() string {
@@ -89,6 +91,9 @@ func (data BGPL2VPNEVPNNeighbor) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-reflector-client", map[string]string{})
 		}
 	}
+	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"soft-reconfiguration", data.SoftReconfiguration.ValueString())
+	}
 	return body
 }
 
@@ -125,6 +130,11 @@ func (data *BGPL2VPNEVPNNeighbor) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.RouteReflectorClient = types.BoolNull()
 	}
+	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() && !data.SoftReconfiguration.IsNull() {
+		data.SoftReconfiguration = types.StringValue(value.String())
+	} else {
+		data.SoftReconfiguration = types.StringNull()
+	}
 }
 
 func (data *BGPL2VPNEVPNNeighborData) fromBody(ctx context.Context, res gjson.Result) {
@@ -145,6 +155,9 @@ func (data *BGPL2VPNEVPNNeighborData) fromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.RouteReflectorClient = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
+		data.SoftReconfiguration = types.StringValue(value.String())
+	}
 }
 
 func (data *BGPL2VPNEVPNNeighbor) getDeletedItems(ctx context.Context, state BGPL2VPNEVPNNeighbor) []string {
@@ -154,6 +167,9 @@ func (data *BGPL2VPNEVPNNeighbor) getDeletedItems(ctx context.Context, state BGP
 	}
 	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
+	}
+	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
 	}
 	return deletedItems
 }
@@ -176,6 +192,9 @@ func (data *BGPL2VPNEVPNNeighbor) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.RouteReflectorClient.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
+	}
+	if !data.SoftReconfiguration.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
 	}
 	return deletePaths
 }

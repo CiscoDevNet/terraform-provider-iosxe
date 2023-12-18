@@ -4,4 +4,5 @@ resource "iosxe_bgp_l2vpn_evpn_neighbor" "example" {
   activate               = true
   send_community         = "both"
   route_reflector_client = false
+  soft_reconfiguration   = "inbound"
 }

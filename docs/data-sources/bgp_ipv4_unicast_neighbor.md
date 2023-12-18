@@ -38,6 +38,7 @@ data "iosxe_bgp_ipv4_unicast_neighbor" "example" {
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String)
+- `soft_reconfiguration` (String) Per neighbor soft reconfiguration
 
 <a id="nestedatt--route_maps"></a>
 ### Nested Schema for `route_maps`

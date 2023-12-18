@@ -43,6 +43,7 @@ type BGPIPv4UnicastNeighbor struct {
 	Activate             types.Bool                        `tfsdk:"activate"`
 	SendCommunity        types.String                      `tfsdk:"send_community"`
 	RouteReflectorClient types.Bool                        `tfsdk:"route_reflector_client"`
+	SoftReconfiguration  types.String                      `tfsdk:"soft_reconfiguration"`
 	RouteMaps            []BGPIPv4UnicastNeighborRouteMaps `tfsdk:"route_maps"`
 }
 
@@ -54,6 +55,7 @@ type BGPIPv4UnicastNeighborData struct {
 	Activate             types.Bool                        `tfsdk:"activate"`
 	SendCommunity        types.String                      `tfsdk:"send_community"`
 	RouteReflectorClient types.Bool                        `tfsdk:"route_reflector_client"`
+	SoftReconfiguration  types.String                      `tfsdk:"soft_reconfiguration"`
 	RouteMaps            []BGPIPv4UnicastNeighborRouteMaps `tfsdk:"route_maps"`
 }
 type BGPIPv4UnicastNeighborRouteMaps struct {
@@ -97,6 +99,9 @@ func (data BGPIPv4UnicastNeighbor) toBody(ctx context.Context) string {
 		if data.RouteReflectorClient.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-reflector-client", map[string]string{})
 		}
+	}
+	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"soft-reconfiguration", data.SoftReconfiguration.ValueString())
 	}
 	if len(data.RouteMaps) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
@@ -144,6 +149,11 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBody(ctx context.Context, res gjso
 		}
 	} else {
 		data.RouteReflectorClient = types.BoolNull()
+	}
+	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() && !data.SoftReconfiguration.IsNull() {
+		data.SoftReconfiguration = types.StringValue(value.String())
+	} else {
+		data.SoftReconfiguration = types.StringNull()
 	}
 	for i := range data.RouteMaps {
 		keys := [...]string{"inout"}
@@ -199,6 +209,9 @@ func (data *BGPIPv4UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 	} else {
 		data.RouteReflectorClient = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
+		data.SoftReconfiguration = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "route-map"); value.Exists() {
 		data.RouteMaps = make([]BGPIPv4UnicastNeighborRouteMaps, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -222,6 +235,9 @@ func (data *BGPIPv4UnicastNeighbor) getDeletedItems(ctx context.Context, state B
 	}
 	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
+	}
+	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
 	}
 	for i := range state.RouteMaps {
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
@@ -273,6 +289,9 @@ func (data *BGPIPv4UnicastNeighbor) getDeletePaths(ctx context.Context) []string
 	}
 	if !data.RouteReflectorClient.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
+	}
+	if !data.SoftReconfiguration.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
 	}
 	for i := range data.RouteMaps {
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}

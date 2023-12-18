@@ -35,6 +35,7 @@ func TestAccIosxeBGPL2VPNEVPNNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "activate", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "send_community", "both"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "route_reflector_client", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_l2vpn_evpn_neighbor.test", "soft_reconfiguration", "inbound"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -98,6 +99,7 @@ func testAccIosxeBGPL2VPNEVPNNeighborConfig_all() string {
 	config += `	activate = true` + "\n"
 	config += `	send_community = "both"` + "\n"
 	config += `	route_reflector_client = false` + "\n"
+	config += `	soft_reconfiguration = "inbound"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config

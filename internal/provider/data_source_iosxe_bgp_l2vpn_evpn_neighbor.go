@@ -83,6 +83,10 @@ func (d *BGPL2VPNEVPNNeighborDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Configure a neighbor as Route Reflector client",
 				Computed:            true,
 			},
+			"soft_reconfiguration": schema.StringAttribute{
+				MarkdownDescription: "Per neighbor soft reconfiguration",
+				Computed:            true,
+			},
 		},
 	}
 }

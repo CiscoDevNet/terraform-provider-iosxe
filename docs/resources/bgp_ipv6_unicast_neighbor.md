@@ -19,6 +19,7 @@ resource "iosxe_bgp_ipv6_unicast_neighbor" "example" {
   activate               = true
   send_community         = "both"
   route_reflector_client = false
+  soft_reconfiguration   = "inbound"
   route_maps = [
     {
       in_out         = "in"
@@ -46,6 +47,8 @@ resource "iosxe_bgp_ipv6_unicast_neighbor" "example" {
 - `route_maps` (Attributes List) Apply route map to neighbor (see [below for nested schema](#nestedatt--route_maps))
 - `route_reflector_client` (Boolean) Configure a neighbor as Route Reflector client
 - `send_community` (String) - Choices: `both`, `extended`, `standard`
+- `soft_reconfiguration` (String) Per neighbor soft reconfiguration
+  - Choices: `inbound`
 
 ### Read-Only
 
