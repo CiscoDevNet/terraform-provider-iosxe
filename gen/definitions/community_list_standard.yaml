@@ -1,0 +1,15 @@
+---
+name: Community List Standard
+path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard=%v
+no_delete_attributes: true
+skip_minimum_test: true
+doc_category: BGP
+attributes:
+  - yang_name: name
+    example: CLS1
+  - yang_name: deny/deny-list
+    tf_name: deny_entries
+    example: "65000:500"
+  - yang_name: permit/permit-list
+    tf_name: permit_entries
+    example: "65000:501"

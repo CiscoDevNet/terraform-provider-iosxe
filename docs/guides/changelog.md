@@ -17,6 +17,8 @@ description: |-
 - Add `iosxe_as_path_access_list` resource and data source
 - Add `default_originate` and `default_originate_route_map` attributes to `iosxe_bgp_ipv4_unicast_neighbor`, `iosxe_bgp_ipv4_unicast_vrf_neighbor` and `iosxe_bgp_ipv6_unicast_neighbor` resources and data sources
 - Add `ip_bgp_community_new_format` attribute to `iosxe_system` resource and data source
+- Add `community_list_standard` resource and data source
+- Add `community_list_expanded` resource and data source
 
 ## 0.5.1
 

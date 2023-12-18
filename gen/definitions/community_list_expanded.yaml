@@ -1,0 +1,20 @@
+---
+name: Community List Expanded
+path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/expanded=%v
+no_delete_attributes: true
+skip_minimum_test: true
+doc_category: BGP
+attributes:
+  - yang_name: name
+    example: CLE1
+  - yang_name: extended-grouping/extended_grouping
+    tf_name: entries
+    type: List
+    attributes:
+      - yang_name: action
+        id: true
+        example: permit
+      - yang_name: string
+        tf_name: regex
+        id: true
+        example: "65000:500"
