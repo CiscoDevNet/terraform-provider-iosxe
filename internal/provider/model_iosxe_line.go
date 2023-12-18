@@ -71,6 +71,11 @@ type LineVty struct {
 	LoginAuthentication        types.String           `tfsdk:"login_authentication"`
 	TransportPreferredProtocol types.String           `tfsdk:"transport_preferred_protocol"`
 	EscapeCharacter            types.String           `tfsdk:"escape_character"`
+	AuthorizationExec          types.String           `tfsdk:"authorization_exec"`
+	AuthorizationExecDefault   types.Bool             `tfsdk:"authorization_exec_default"`
+	TransportInputAll          types.Bool             `tfsdk:"transport_input_all"`
+	TransportInputNone         types.Bool             `tfsdk:"transport_input_none"`
+	TransportInput             types.String           `tfsdk:"transport_input"`
 }
 type LineVtyAccessClasses struct {
 	Direction  types.String `tfsdk:"direction"`
@@ -168,6 +173,27 @@ func (data Line) toBody(ctx context.Context) string {
 			}
 			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"escape-character.char", item.EscapeCharacter.ValueString())
+			}
+			if !item.AuthorizationExec.IsNull() && !item.AuthorizationExec.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"authorization.exec.authorization-name", item.AuthorizationExec.ValueString())
+			}
+			if !item.AuthorizationExecDefault.IsNull() && !item.AuthorizationExecDefault.IsUnknown() {
+				if item.AuthorizationExecDefault.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"authorization.exec.default", map[string]string{})
+				}
+			}
+			if !item.TransportInputAll.IsNull() && !item.TransportInputAll.IsUnknown() {
+				if item.TransportInputAll.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.input.all", map[string]string{})
+				}
+			}
+			if !item.TransportInputNone.IsNull() && !item.TransportInputNone.IsUnknown() {
+				if item.TransportInputNone.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.input.none", map[string]string{})
+				}
+			}
+			if !item.TransportInput.IsNull() && !item.TransportInput.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.input.input", item.TransportInput.ValueString())
 			}
 			if len(item.AccessClasses) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"access-class.acccess-list", []interface{}{})
@@ -389,6 +415,43 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Vty[i].EscapeCharacter = types.StringNull()
 		}
+		if value := r.Get("authorization.exec.authorization-name"); value.Exists() && !data.Vty[i].AuthorizationExec.IsNull() {
+			data.Vty[i].AuthorizationExec = types.StringValue(value.String())
+		} else {
+			data.Vty[i].AuthorizationExec = types.StringNull()
+		}
+		if value := r.Get("authorization.exec.default"); !data.Vty[i].AuthorizationExecDefault.IsNull() {
+			if value.Exists() {
+				data.Vty[i].AuthorizationExecDefault = types.BoolValue(true)
+			} else {
+				data.Vty[i].AuthorizationExecDefault = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].AuthorizationExecDefault = types.BoolNull()
+		}
+		if value := r.Get("transport.input.all"); !data.Vty[i].TransportInputAll.IsNull() {
+			if value.Exists() {
+				data.Vty[i].TransportInputAll = types.BoolValue(true)
+			} else {
+				data.Vty[i].TransportInputAll = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].TransportInputAll = types.BoolNull()
+		}
+		if value := r.Get("transport.input.none"); !data.Vty[i].TransportInputNone.IsNull() {
+			if value.Exists() {
+				data.Vty[i].TransportInputNone = types.BoolValue(true)
+			} else {
+				data.Vty[i].TransportInputNone = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].TransportInputNone = types.BoolNull()
+		}
+		if value := r.Get("transport.input.input"); value.Exists() && !data.Vty[i].TransportInput.IsNull() {
+			data.Vty[i].TransportInput = types.StringValue(value.String())
+		} else {
+			data.Vty[i].TransportInput = types.StringNull()
+		}
 	}
 }
 
@@ -489,6 +552,27 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("escape-character.char"); cValue.Exists() {
 				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("authorization.exec.authorization-name"); cValue.Exists() {
+				item.AuthorizationExec = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("authorization.exec.default"); cValue.Exists() {
+				item.AuthorizationExecDefault = types.BoolValue(true)
+			} else {
+				item.AuthorizationExecDefault = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.input.all"); cValue.Exists() {
+				item.TransportInputAll = types.BoolValue(true)
+			} else {
+				item.TransportInputAll = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.input.none"); cValue.Exists() {
+				item.TransportInputNone = types.BoolValue(true)
+			} else {
+				item.TransportInputNone = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.input.input"); cValue.Exists() {
+				item.TransportInput = types.StringValue(cValue.String())
 			}
 			data.Vty = append(data.Vty, item)
 			return true
@@ -626,6 +710,21 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 				if !state.Vty[i].EscapeCharacter.IsNull() && data.Vty[j].EscapeCharacter.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/escape-character/char", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
+				if !state.Vty[i].AuthorizationExec.IsNull() && data.Vty[j].AuthorizationExec.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/authorization/exec/authorization-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].AuthorizationExecDefault.IsNull() && data.Vty[j].AuthorizationExecDefault.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/authorization/exec/default", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].TransportInputAll.IsNull() && data.Vty[j].TransportInputAll.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/all", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].TransportInputNone.IsNull() && data.Vty[j].TransportInputNone.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].TransportInput.IsNull() && data.Vty[j].TransportInput.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/input", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -654,6 +753,15 @@ func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 			if !data.Vty[i].AccessClasses[ci].VrfAlso.IsNull() && !data.Vty[i].AccessClasses[ci].VrfAlso.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v/vrf-also", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
+		}
+		if !data.Vty[i].AuthorizationExecDefault.IsNull() && !data.Vty[i].AuthorizationExecDefault.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/authorization/exec/default", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vty[i].TransportInputAll.IsNull() && !data.Vty[i].TransportInputAll.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/input/all", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vty[i].TransportInputNone.IsNull() && !data.Vty[i].TransportInputNone.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/input/none", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 	return emptyLeafsDelete

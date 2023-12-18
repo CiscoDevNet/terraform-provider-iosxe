@@ -176,6 +176,26 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "",
 							Computed:            true,
 						},
+						"authorization_exec": schema.StringAttribute{
+							MarkdownDescription: "Use an authorization list with this name",
+							Computed:            true,
+						},
+						"authorization_exec_default": schema.BoolAttribute{
+							MarkdownDescription: "Use the default authorization list",
+							Computed:            true,
+						},
+						"transport_input_all": schema.BoolAttribute{
+							MarkdownDescription: "All protocols",
+							Computed:            true,
+						},
+						"transport_input_none": schema.BoolAttribute{
+							MarkdownDescription: "Define no transport protocols for line",
+							Computed:            true,
+						},
+						"transport_input": schema.StringAttribute{
+							MarkdownDescription: "Define which protocols to use when connecting to the terminal server",
+							Computed:            true,
+						},
 					},
 				},
 			},

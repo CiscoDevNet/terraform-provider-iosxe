@@ -42,6 +42,8 @@ resource "iosxe_line" "example" {
       password                     = "testpasswd"
       transport_preferred_protocol = "none"
       escape_character             = "27"
+      authorization_exec_default   = true
+      transport_input              = "ssh"
     }
   ]
 }
@@ -96,6 +98,8 @@ Required:
 Optional:
 
 - `access_classes` (Attributes List) (see [below for nested schema](#nestedatt--vty--access_classes))
+- `authorization_exec` (String) Use an authorization list with this name
+- `authorization_exec_default` (Boolean) Use the default authorization list
 - `escape_character` (String)
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
   - Range: `0`-`35791`
@@ -107,6 +111,9 @@ Optional:
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
 - `password_type` (String) - Choices: `0`, `7`
+- `transport_input` (String) Define which protocols to use when connecting to the terminal server
+- `transport_input_all` (Boolean) All protocols
+- `transport_input_none` (Boolean) Define no transport protocols for line
 - `transport_preferred_protocol` (String) - Choices: `acercon`, `lat`, `mop`, `nasi`, `none`, `pad`, `rlogin`, `ssh`, `telnet`, `udptn`
 
 <a id="nestedatt--vty--access_classes"></a>

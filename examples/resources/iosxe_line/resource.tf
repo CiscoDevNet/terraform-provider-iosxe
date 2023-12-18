@@ -27,6 +27,8 @@ resource "iosxe_line" "example" {
       password                     = "testpasswd"
       transport_preferred_protocol = "none"
       escape_character             = "27"
+      authorization_exec_default   = true
+      transport_input              = "ssh"
     }
   ]
 }

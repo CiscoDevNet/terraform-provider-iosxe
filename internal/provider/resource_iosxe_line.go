@@ -238,6 +238,26 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 						},
+						"authorization_exec": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use an authorization list with this name").String,
+							Optional:            true,
+						},
+						"authorization_exec_default": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use the default authorization list").String,
+							Optional:            true,
+						},
+						"transport_input_all": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("All protocols").String,
+							Optional:            true,
+						},
+						"transport_input_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
+							Optional:            true,
+						},
+						"transport_input": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Define which protocols to use when connecting to the terminal server").String,
+							Optional:            true,
+						},
 					},
 				},
 			},

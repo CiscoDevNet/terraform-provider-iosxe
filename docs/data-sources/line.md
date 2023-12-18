@@ -53,6 +53,8 @@ Read-Only:
 Read-Only:
 
 - `access_classes` (Attributes List) (see [below for nested schema](#nestedatt--vty--access_classes))
+- `authorization_exec` (String) Use an authorization list with this name
+- `authorization_exec_default` (Boolean) Use the default authorization list
 - `escape_character` (String)
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
@@ -62,6 +64,9 @@ Read-Only:
 - `password` (String)
 - `password_level` (Number) Set exec level password
 - `password_type` (String)
+- `transport_input` (String) Define which protocols to use when connecting to the terminal server
+- `transport_input_all` (Boolean) All protocols
+- `transport_input_none` (Boolean) Define no transport protocols for line
 - `transport_preferred_protocol` (String)
 
 <a id="nestedatt--vty--access_classes"></a>
