@@ -34,6 +34,25 @@ data "iosxe_interface_ethernet" "example" {
 ### Read-Only
 
 - `arp_timeout` (Number) Set ARP cache timeout
+- `authentication_host_mode` (String) Set the Host mode for authentication on this interface
+- `authentication_order_dot1x` (Boolean) Authentication method dot1x allowed
+- `authentication_order_dot1x_mab` (Boolean) Authentication method mab allowed
+- `authentication_order_dot1x_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_order_mab` (Boolean) Authentication method mab allowed
+- `authentication_order_mab_dot1x` (Boolean) Authentication method dot1x allowed
+- `authentication_order_mab_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_order_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_periodic` (Boolean) Enable or Disable Reauthentication for this port
+- `authentication_port_control` (String) set the port-control value
+- `authentication_priority_dot1x` (Boolean) Authentication method dot1x allowed
+- `authentication_priority_dot1x_mab` (Boolean) Authentication method mab allowed
+- `authentication_priority_dot1x_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_priority_mab` (Boolean) Authentication method mab allowed
+- `authentication_priority_mab_dot1x` (Boolean) Authentication method dot1x allowed
+- `authentication_priority_mab_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_priority_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_timer_reauthenticate` (Number) Enter a value between 1 and 1073741823
+- `authentication_timer_reauthenticate_server` (Boolean) Obtain re-authentication timeout value from the server
 - `auto_qos_classify` (Boolean) Configure classification for untrusted devices
 - `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
 - `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
@@ -56,6 +75,17 @@ data "iosxe_interface_ethernet" "example" {
 - `channel_group_mode` (String) Etherchannel Mode of the interface
 - `channel_group_number` (Number)
 - `description` (String) Interface specific description
+- `dot1x_max_reauth_req` (Number) Max No. of Reauthentication Attempts
+- `dot1x_max_req` (Number) Max No. of Retries
+- `dot1x_pae` (String) Set 802.1x interface pae type
+- `dot1x_timeout_auth_period` (Number) Timeout for authenticator reply
+- `dot1x_timeout_held_period` (Number) Timeout for authentication retries
+- `dot1x_timeout_quiet_period` (Number) QuietPeriod in Seconds
+- `dot1x_timeout_ratelimit_period` (Number) Ratelimit Period in seconds
+- `dot1x_timeout_server_timeout` (Number) Timeout for Radius Retries
+- `dot1x_timeout_start_period` (Number) Timeout for EAPOL-start retries
+- `dot1x_timeout_supp_timeout` (Number) Timeout for supplicant reply
+- `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
 - `encapsulation_dot1q_vlan_id` (Number)
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.
@@ -79,6 +109,8 @@ data "iosxe_interface_ethernet" "example" {
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
+- `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type
 - `shutdown` (Boolean) Shutdown the selected interface
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))

@@ -375,6 +375,134 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "100000 Mbps operation",
 				Computed:            true,
 			},
+			"authentication_host_mode": schema.StringAttribute{
+				MarkdownDescription: "Set the Host mode for authentication on this interface",
+				Computed:            true,
+			},
+			"authentication_order_dot1x": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method dot1x allowed",
+				Computed:            true,
+			},
+			"authentication_order_dot1x_mab": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method mab allowed",
+				Computed:            true,
+			},
+			"authentication_order_dot1x_webauth": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method webauth allowed",
+				Computed:            true,
+			},
+			"authentication_order_mab": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method mab allowed",
+				Computed:            true,
+			},
+			"authentication_order_mab_dot1x": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method dot1x allowed",
+				Computed:            true,
+			},
+			"authentication_order_mab_webauth": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method webauth allowed",
+				Computed:            true,
+			},
+			"authentication_order_webauth": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method webauth allowed",
+				Computed:            true,
+			},
+			"authentication_priority_dot1x": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method dot1x allowed",
+				Computed:            true,
+			},
+			"authentication_priority_dot1x_mab": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method mab allowed",
+				Computed:            true,
+			},
+			"authentication_priority_dot1x_webauth": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method webauth allowed",
+				Computed:            true,
+			},
+			"authentication_priority_mab": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method mab allowed",
+				Computed:            true,
+			},
+			"authentication_priority_mab_dot1x": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method dot1x allowed",
+				Computed:            true,
+			},
+			"authentication_priority_mab_webauth": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method webauth allowed",
+				Computed:            true,
+			},
+			"authentication_priority_webauth": schema.BoolAttribute{
+				MarkdownDescription: "Authentication method webauth allowed",
+				Computed:            true,
+			},
+			"authentication_port_control": schema.StringAttribute{
+				MarkdownDescription: "set the port-control value",
+				Computed:            true,
+			},
+			"authentication_periodic": schema.BoolAttribute{
+				MarkdownDescription: "Enable or Disable Reauthentication for this port",
+				Computed:            true,
+			},
+			"authentication_timer_reauthenticate": schema.Int64Attribute{
+				MarkdownDescription: "Enter a value between 1 and 1073741823",
+				Computed:            true,
+			},
+			"authentication_timer_reauthenticate_server": schema.BoolAttribute{
+				MarkdownDescription: "Obtain re-authentication timeout value from the server",
+				Computed:            true,
+			},
+			"mab": schema.BoolAttribute{
+				MarkdownDescription: "MAC Authentication Bypass Interface Config Commands",
+				Computed:            true,
+			},
+			"mab_eap": schema.BoolAttribute{
+				MarkdownDescription: "Use EAP authentication for MAC Auth Bypass",
+				Computed:            true,
+			},
+			"dot1x_pae": schema.StringAttribute{
+				MarkdownDescription: "Set 802.1x interface pae type",
+				Computed:            true,
+			},
+			"dot1x_timeout_auth_period": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for authenticator reply",
+				Computed:            true,
+			},
+			"dot1x_timeout_held_period": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for authentication retries",
+				Computed:            true,
+			},
+			"dot1x_timeout_quiet_period": schema.Int64Attribute{
+				MarkdownDescription: "QuietPeriod in Seconds",
+				Computed:            true,
+			},
+			"dot1x_timeout_ratelimit_period": schema.Int64Attribute{
+				MarkdownDescription: "Ratelimit Period in seconds",
+				Computed:            true,
+			},
+			"dot1x_timeout_server_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for Radius Retries",
+				Computed:            true,
+			},
+			"dot1x_timeout_start_period": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for EAPOL-start retries",
+				Computed:            true,
+			},
+			"dot1x_timeout_supp_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for supplicant reply",
+				Computed:            true,
+			},
+			"dot1x_timeout_tx_period": schema.Int64Attribute{
+				MarkdownDescription: "Timeout for supplicant retries",
+				Computed:            true,
+			},
+			"dot1x_max_req": schema.Int64Attribute{
+				MarkdownDescription: "Max No. of Retries",
+				Computed:            true,
+			},
+			"dot1x_max_reauth_req": schema.Int64Attribute{
+				MarkdownDescription: "Max No. of Reauthentication Attempts",
+				Computed:            true,
+			},
 		},
 	}
 }

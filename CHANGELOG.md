@@ -10,6 +10,7 @@
 - Add `ip_bgp_community_new_format` attribute to `iosxe_system` resource and data source
 - Add `community_list_standard` resource and data source
 - Add `community_list_expanded` resource and data source
+- Add `authentication`, `mab` and `dot1x` attributes to `iosxe_interface_ethernet` resource and data source
 
 ## 0.5.1
 

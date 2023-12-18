@@ -75,6 +75,28 @@ resource "iosxe_interface_ethernet" "example" {
 
 - `arp_timeout` (Number) Set ARP cache timeout
   - Range: `0`-`2147483`
+- `authentication_host_mode` (String) Set the Host mode for authentication on this interface
+  - Choices: `multi-auth`, `multi-domain`, `multi-host`, `single-host`
+- `authentication_order_dot1x` (Boolean) Authentication method dot1x allowed
+- `authentication_order_dot1x_mab` (Boolean) Authentication method mab allowed
+- `authentication_order_dot1x_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_order_mab` (Boolean) Authentication method mab allowed
+- `authentication_order_mab_dot1x` (Boolean) Authentication method dot1x allowed
+- `authentication_order_mab_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_order_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_periodic` (Boolean) Enable or Disable Reauthentication for this port
+- `authentication_port_control` (String) set the port-control value
+  - Choices: `auto`, `force-authorized`, `force-unauthorized`
+- `authentication_priority_dot1x` (Boolean) Authentication method dot1x allowed
+- `authentication_priority_dot1x_mab` (Boolean) Authentication method mab allowed
+- `authentication_priority_dot1x_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_priority_mab` (Boolean) Authentication method mab allowed
+- `authentication_priority_mab_dot1x` (Boolean) Authentication method dot1x allowed
+- `authentication_priority_mab_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_priority_webauth` (Boolean) Authentication method webauth allowed
+- `authentication_timer_reauthenticate` (Number) Enter a value between 1 and 1073741823
+  - Range: `1`-`1073741823`
+- `authentication_timer_reauthenticate_server` (Boolean) Obtain re-authentication timeout value from the server
 - `auto_qos_classify` (Boolean) Configure classification for untrusted devices
 - `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
 - `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
@@ -101,6 +123,28 @@ resource "iosxe_interface_ethernet" "example" {
 - `channel_group_number` (Number) - Range: `1`-`512`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
+- `dot1x_max_reauth_req` (Number) Max No. of Reauthentication Attempts
+  - Range: `1`-`10`
+- `dot1x_max_req` (Number) Max No. of Retries
+  - Range: `1`-`10`
+- `dot1x_pae` (String) Set 802.1x interface pae type
+  - Choices: `authenticator`, `both`, `supplicant`
+- `dot1x_timeout_auth_period` (Number) Timeout for authenticator reply
+  - Range: `1`-`65535`
+- `dot1x_timeout_held_period` (Number) Timeout for authentication retries
+  - Range: `1`-`65535`
+- `dot1x_timeout_quiet_period` (Number) QuietPeriod in Seconds
+  - Range: `1`-`65535`
+- `dot1x_timeout_ratelimit_period` (Number) Ratelimit Period in seconds
+  - Range: `1`-`65535`
+- `dot1x_timeout_server_timeout` (Number) Timeout for Radius Retries
+  - Range: `1`-`65535`
+- `dot1x_timeout_start_period` (Number) Timeout for EAPOL-start retries
+  - Range: `1`-`65535`
+- `dot1x_timeout_supp_timeout` (Number) Timeout for supplicant reply
+  - Range: `1`-`65535`
+- `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
+  - Range: `1`-`65535`
 - `encapsulation_dot1q_vlan_id` (Number) - Range: `1`-`4094`
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
@@ -125,6 +169,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
+- `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type
   - Choices: `auto-select`, `rj45`, `sfp`
 - `shutdown` (Boolean) Shutdown the selected interface

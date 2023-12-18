@@ -451,6 +451,176 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("100000 Mbps operation").String,
 				Optional:            true,
 			},
+			"authentication_host_mode": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the Host mode for authentication on this interface").AddStringEnumDescription("multi-auth", "multi-domain", "multi-host", "single-host").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("multi-auth", "multi-domain", "multi-host", "single-host"),
+				},
+			},
+			"authentication_order_dot1x": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method dot1x allowed").String,
+				Optional:            true,
+			},
+			"authentication_order_dot1x_mab": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method mab allowed").String,
+				Optional:            true,
+			},
+			"authentication_order_dot1x_webauth": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method webauth allowed").String,
+				Optional:            true,
+			},
+			"authentication_order_mab": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method mab allowed").String,
+				Optional:            true,
+			},
+			"authentication_order_mab_dot1x": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method dot1x allowed").String,
+				Optional:            true,
+			},
+			"authentication_order_mab_webauth": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method webauth allowed").String,
+				Optional:            true,
+			},
+			"authentication_order_webauth": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method webauth allowed").String,
+				Optional:            true,
+			},
+			"authentication_priority_dot1x": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method dot1x allowed").String,
+				Optional:            true,
+			},
+			"authentication_priority_dot1x_mab": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method mab allowed").String,
+				Optional:            true,
+			},
+			"authentication_priority_dot1x_webauth": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method webauth allowed").String,
+				Optional:            true,
+			},
+			"authentication_priority_mab": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method mab allowed").String,
+				Optional:            true,
+			},
+			"authentication_priority_mab_dot1x": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method dot1x allowed").String,
+				Optional:            true,
+			},
+			"authentication_priority_mab_webauth": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method webauth allowed").String,
+				Optional:            true,
+			},
+			"authentication_priority_webauth": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authentication method webauth allowed").String,
+				Optional:            true,
+			},
+			"authentication_port_control": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("set the port-control value").AddStringEnumDescription("auto", "force-authorized", "force-unauthorized").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("auto", "force-authorized", "force-unauthorized"),
+				},
+			},
+			"authentication_periodic": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable or Disable Reauthentication for this port").String,
+				Optional:            true,
+			},
+			"authentication_timer_reauthenticate": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enter a value between 1 and 1073741823").AddIntegerRangeDescription(1, 1073741823).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1073741823),
+				},
+			},
+			"authentication_timer_reauthenticate_server": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Obtain re-authentication timeout value from the server").String,
+				Optional:            true,
+			},
+			"mab": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("MAC Authentication Bypass Interface Config Commands").String,
+				Optional:            true,
+			},
+			"mab_eap": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use EAP authentication for MAC Auth Bypass").String,
+				Optional:            true,
+			},
+			"dot1x_pae": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set 802.1x interface pae type").AddStringEnumDescription("authenticator", "both", "supplicant").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("authenticator", "both", "supplicant"),
+				},
+			},
+			"dot1x_timeout_auth_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for authenticator reply").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_held_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for authentication retries").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_quiet_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("QuietPeriod in Seconds").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_ratelimit_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ratelimit Period in seconds").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_server_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for Radius Retries").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_start_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for EAPOL-start retries").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_supp_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for supplicant reply").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_timeout_tx_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Timeout for supplicant retries").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+			},
+			"dot1x_max_req": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Max No. of Retries").AddIntegerRangeDescription(1, 10).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10),
+				},
+			},
+			"dot1x_max_reauth_req": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Max No. of Reauthentication Attempts").AddIntegerRangeDescription(1, 10).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10),
+				},
+			},
 		},
 	}
 }

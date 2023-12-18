@@ -278,6 +278,134 @@ attributes:
     tf_name: speed_100000
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/host-mode
+    example: multi-auth
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/order-config/method/dot1x-config/dot1x-config
+    xpath: Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config
+    tf_name: authentication_order_dot1x
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/order-config/method/dot1x-config/dot1x-config/mab
+    xpath: Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/mab
+    tf_name: authentication_order_dot1x_mab
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/order-config/method/dot1x-config/dot1x-config/webauth
+    xpath: Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/webauth
+    tf_name: authentication_order_dot1x_webauth
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/order-config/method/mab-config/mab-config
+    xpath: Cisco-IOS-XE-sanet:authentication/order-config/mab-config
+    tf_name: authentication_order_mab
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/order-config/method/mab-config/mab-config/dot1x
+    xpath: Cisco-IOS-XE-sanet:authentication/order-config/mab-config/dot1x
+    tf_name: authentication_order_mab_dot1x
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/order-config/method/mab-config/mab-config/webauth
+    xpath: Cisco-IOS-XE-sanet:authentication/order-config/mab-config/webauth
+    tf_name: authentication_order_mab_webauth
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/order-config/method/webauth-config/webauth-config
+    xpath: Cisco-IOS-XE-sanet:authentication/order-config/webauth-config
+    tf_name: authentication_order_webauth
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/priority-config/method/dot1x-config/dot1x-config
+    xpath: Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config
+    tf_name: authentication_priority_dot1x
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/priority-config/method/dot1x-config/dot1x-config/mab
+    xpath: Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/mab
+    tf_name: authentication_priority_dot1x_mab
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/priority-config/method/dot1x-config/dot1x-config/webauth
+    xpath: Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/webauth
+    tf_name: authentication_priority_dot1x_webauth
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/priority-config/method/mab-config/mab-config
+    xpath: Cisco-IOS-XE-sanet:authentication/priority-config/mab-config
+    tf_name: authentication_priority_mab
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/priority-config/method/mab-config/mab-config/dot1x
+    xpath: Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/dot1x
+    tf_name: authentication_priority_mab_dot1x
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/priority-config/method/mab-config/mab-config/webauth
+    xpath: Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/webauth
+    tf_name: authentication_priority_mab_webauth
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/priority-config/method/webauth-config/webauth-config
+    xpath: Cisco-IOS-XE-sanet:authentication/priority-config/webauth-config
+    tf_name: authentication_priority_webauth
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/port-control
+    example: auto
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/periodic
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/timer-val/value-config/value-config
+    xpath: Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/value-config
+    tf_name: authentication_timer_reauthenticate
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/timer-val/server-config/server-config
+    xpath: Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config
+    tf_name: authentication_timer_reauthenticate_server
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:mab
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:mab/eap
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/pae
+    example: authenticator
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/timeout/auth-period
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/timeout/held-period
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/timeout/quiet-period
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/timeout/ratelimit-period
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/timeout/server-timeout
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/timeout/start-period
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/timeout/supp-timeout
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/timeout/tx-period
+    example: 10
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/max-req
+    example: 3
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-dot1x:dot1x/max-reauth-req
+    example: 3
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
