@@ -67,6 +67,10 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Set system's network name",
 				Computed:            true,
 			},
+			"ip_bgp_community_new_format": schema.BoolAttribute{
+				MarkdownDescription: "select aa:nn format for BGP community",
+				Computed:            true,
+			},
 			"ip_routing": schema.BoolAttribute{
 				MarkdownDescription: "Enable or disable IP routing",
 				Computed:            true,

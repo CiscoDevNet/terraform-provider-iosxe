@@ -75,6 +75,10 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.RegexMatches(regexp.MustCompile(`([0-9.]*[A-Za-z\-_]+[A-Za-z0-9.\-_]*)`), ""),
 				},
 			},
+			"ip_bgp_community_new_format": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("select aa:nn format for BGP community").String,
+				Optional:            true,
+			},
 			"ip_routing": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable or disable IP routing").String,
 				Optional:            true,

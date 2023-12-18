@@ -28,6 +28,7 @@ data "iosxe_system" "example" {
 
 - `hostname` (String) Set system's network name
 - `id` (String) The path of the retrieved object.
+- `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
 - `ip_domain_name` (String) Define the default domain name
 - `ip_multicast_routing` (Boolean) Enable IP multicast forwarding

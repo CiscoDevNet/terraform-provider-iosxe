@@ -37,6 +37,7 @@ type System struct {
 	Device                        types.String                 `tfsdk:"device"`
 	Id                            types.String                 `tfsdk:"id"`
 	Hostname                      types.String                 `tfsdk:"hostname"`
+	IpBgpCommunityNewFormat       types.Bool                   `tfsdk:"ip_bgp_community_new_format"`
 	IpRouting                     types.Bool                   `tfsdk:"ip_routing"`
 	Ipv6UnicastRouting            types.Bool                   `tfsdk:"ipv6_unicast_routing"`
 	Mtu                           types.Int64                  `tfsdk:"mtu"`
@@ -58,6 +59,7 @@ type SystemData struct {
 	Device                        types.String                 `tfsdk:"device"`
 	Id                            types.String                 `tfsdk:"id"`
 	Hostname                      types.String                 `tfsdk:"hostname"`
+	IpBgpCommunityNewFormat       types.Bool                   `tfsdk:"ip_bgp_community_new_format"`
 	IpRouting                     types.Bool                   `tfsdk:"ip_routing"`
 	Ipv6UnicastRouting            types.Bool                   `tfsdk:"ipv6_unicast_routing"`
 	Mtu                           types.Int64                  `tfsdk:"mtu"`
@@ -102,6 +104,11 @@ func (data System) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Hostname.IsNull() && !data.Hostname.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"hostname", data.Hostname.ValueString())
+	}
+	if !data.IpBgpCommunityNewFormat.IsNull() && !data.IpBgpCommunityNewFormat.IsUnknown() {
+		if data.IpBgpCommunityNewFormat.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.bgp-community.new-format", map[string]string{})
+		}
 	}
 	if !data.IpRouting.IsNull() && !data.IpRouting.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.routing-conf.routing", data.IpRouting.ValueBool())
@@ -186,6 +193,15 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.Hostname = types.StringValue(value.String())
 	} else {
 		data.Hostname = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.bgp-community.new-format"); !data.IpBgpCommunityNewFormat.IsNull() {
+		if value.Exists() {
+			data.IpBgpCommunityNewFormat = types.BoolValue(true)
+		} else {
+			data.IpBgpCommunityNewFormat = types.BoolValue(false)
+		}
+	} else {
+		data.IpBgpCommunityNewFormat = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.routing-conf.routing"); !data.IpRouting.IsNull() {
 		if value.Exists() {
@@ -343,6 +359,11 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "hostname"); value.Exists() {
 		data.Hostname = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.bgp-community.new-format"); value.Exists() {
+		data.IpBgpCommunityNewFormat = types.BoolValue(true)
+	} else {
+		data.IpBgpCommunityNewFormat = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.routing-conf.routing"); value.Exists() {
 		data.IpRouting = types.BoolValue(value.Bool())
 	} else {
@@ -430,6 +451,9 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	if !state.Hostname.IsNull() && data.Hostname.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/hostname", state.getPath()))
 	}
+	if !state.IpBgpCommunityNewFormat.IsNull() && data.IpBgpCommunityNewFormat.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/bgp-community/new-format", state.getPath()))
+	}
 	if !state.IpRouting.IsNull() && data.IpRouting.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-conf/routing", state.getPath()))
 	}
@@ -505,6 +529,9 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.IpBgpCommunityNewFormat.IsNull() && !data.IpBgpCommunityNewFormat.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/bgp-community/new-format", data.getPath()))
+	}
 	if !data.Ipv6UnicastRouting.IsNull() && !data.Ipv6UnicastRouting.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/unicast-routing", data.getPath()))
 	}
@@ -543,6 +570,9 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.Hostname.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/hostname", data.getPath()))
+	}
+	if !data.IpBgpCommunityNewFormat.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/bgp-community/new-format", data.getPath()))
 	}
 	if !data.IpRouting.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/routing-conf/routing", data.getPath()))

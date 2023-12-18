@@ -6,6 +6,8 @@ doc_category: System
 attributes:
   - yang_name: hostname
     example: ROUTER-1
+  - yang_name: ip/bgp-community/new-format
+    example: true
   - yang_name: ip/routing-conf/routing
     tf_name: ip_routing
     exclude_test: true
