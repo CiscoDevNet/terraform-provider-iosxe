@@ -50,6 +50,7 @@ data "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `fall_over_bfd_strict_mode` (Boolean) Enable BFD strict-mode
 - `fall_over_default_route_map` (String)
 - `fall_over_maximum_metric_route_map` (String)
+- `ha_mode_graceful_restart` (Boolean) graceful-restart for this peer
 - `id` (String) The path of the retrieved object.
 - `local_as` (String)
 - `local_as_dual_as` (Boolean) Accept either real AS or local AS from the ebgp peer

@@ -280,6 +280,10 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 					int64validator.Between(2, 255),
 				},
 			},
+			"ha_mode_graceful_restart": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("graceful-restart for this peer").String,
+				Optional:            true,
+			},
 		},
 	}
 }

@@ -75,6 +75,7 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	RouteMaps                           []BGPIPv4UnicastVRFNeighborRouteMaps `tfsdk:"route_maps"`
 	EbgpMultihop                        types.Bool                           `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
+	HaModeGracefulRestart               types.Bool                           `tfsdk:"ha_mode_graceful_restart"`
 }
 
 type BGPIPv4UnicastVRFNeighborData struct {
@@ -117,6 +118,7 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	RouteMaps                           []BGPIPv4UnicastVRFNeighborRouteMaps `tfsdk:"route_maps"`
 	EbgpMultihop                        types.Bool                           `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
+	HaModeGracefulRestart               types.Bool                           `tfsdk:"ha_mode_graceful_restart"`
 }
 type BGPIPv4UnicastVRFNeighborRouteMaps struct {
 	InOut        types.String `tfsdk:"in_out"`
@@ -275,6 +277,11 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ebgp-multihop.max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
+	}
+	if !data.HaModeGracefulRestart.IsNull() && !data.HaModeGracefulRestart.IsUnknown() {
+		if data.HaModeGracefulRestart.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ha-mode.graceful-restart", map[string]string{})
+		}
 	}
 	if len(data.RouteMaps) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
@@ -559,6 +566,15 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 	} else {
 		data.EbgpMultihopMaxHop = types.Int64Null()
 	}
+	if value := res.Get(prefix + "ha-mode.graceful-restart"); !data.HaModeGracefulRestart.IsNull() {
+		if value.Exists() {
+			data.HaModeGracefulRestart = types.BoolValue(true)
+		} else {
+			data.HaModeGracefulRestart = types.BoolValue(false)
+		}
+	} else {
+		data.HaModeGracefulRestart = types.BoolNull()
+	}
 }
 
 func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjson.Result) {
@@ -709,6 +725,11 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ha-mode.graceful-restart"); value.Exists() {
+		data.HaModeGracefulRestart = types.BoolValue(true)
+	} else {
+		data.HaModeGracefulRestart = types.BoolValue(false)
+	}
 }
 
 func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, state BGPIPv4UnicastVRFNeighbor) []string {
@@ -834,6 +855,9 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, stat
 	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop/max-hop", state.getPath()))
 	}
+	if !state.HaModeGracefulRestart.IsNull() && data.HaModeGracefulRestart.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ha-mode/graceful-restart", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -884,6 +908,9 @@ func (data *BGPIPv4UnicastVRFNeighbor) getEmptyLeafsDelete(ctx context.Context) 
 
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
+	}
+	if !data.HaModeGracefulRestart.IsNull() && !data.HaModeGracefulRestart.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ha-mode/graceful-restart", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -987,6 +1014,9 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []str
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop/max-hop", data.getPath()))
+	}
+	if !data.HaModeGracefulRestart.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ha-mode/graceful-restart", data.getPath()))
 	}
 	return deletePaths
 }

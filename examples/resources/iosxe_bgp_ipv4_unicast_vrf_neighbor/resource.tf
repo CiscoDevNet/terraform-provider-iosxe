@@ -32,4 +32,5 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
       route_map_name = "RM1"
     }
   ]
+  ha_mode_graceful_restart = true
 }

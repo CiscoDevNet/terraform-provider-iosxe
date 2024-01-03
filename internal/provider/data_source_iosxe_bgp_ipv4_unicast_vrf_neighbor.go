@@ -223,6 +223,10 @@ func (d *BGPIPv4UnicastVRFNeighborDataSource) Schema(ctx context.Context, req da
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"ha_mode_graceful_restart": schema.BoolAttribute{
+				MarkdownDescription: "graceful-restart for this peer",
+				Computed:            true,
+			},
 		},
 	}
 }
