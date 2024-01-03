@@ -47,6 +47,7 @@ Read-Only:
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
+- `ipv4_unicast_router_id_loopback` (Number) Loopback interface
 - `name` (String)
 
 <a id="nestedatt--vrfs--ipv4_unicast_aggregate_addresses"></a>

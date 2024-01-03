@@ -22,6 +22,10 @@ attributes:
       - yang_name: ipv4-unicast/redistribute-vrf/connected
         tf_name: ipv4_unicast_redistribute_connected
         example: true
+      - yang_name: ipv4-unicast/bgp/router-id/id-choice/interface/interface/interface-choice/Loopback/Loopback
+        xpath: ipv4-unicast/bgp/router-id/interface/Loopback
+        tf_name: ipv4_unicast_router_id_loopback
+        example: 101
       - yang_name: ipv4-unicast/aggregate-address
         tf_name: ipv4_unicast_aggregate_addresses
         type: List
@@ -90,4 +94,15 @@ test_prerequisites:
     attributes:
       - name: id
         value: 65000
+    dependencies: [0]
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=101
+    attributes:
+      - name: name
+        value: 101
+      - name: ip/address/primary/address
+        value: 22.22.22.22
+      - name: ip/address/primary/mask
+        value: 255.255.255.255
+      - name: vrf/forwarding
+        value: VRF1
     dependencies: [0]

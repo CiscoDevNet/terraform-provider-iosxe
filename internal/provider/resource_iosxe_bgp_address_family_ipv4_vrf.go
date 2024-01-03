@@ -25,6 +25,7 @@ import (
 	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -106,6 +107,13 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 						"ipv4_unicast_redistribute_connected": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
 							Optional:            true,
+						},
+						"ipv4_unicast_router_id_loopback": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 2147483647),
+							},
 						},
 						"ipv4_unicast_aggregate_addresses": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Configure BGP aggregate entries").String,

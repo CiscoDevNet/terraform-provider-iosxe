@@ -6,6 +6,7 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
       name                                = "VRF1"
       ipv4_unicast_advertise_l2vpn_evpn   = true
       ipv4_unicast_redistribute_connected = true
+      ipv4_unicast_router_id_loopback     = 101
       ipv4_unicast_aggregate_addresses = [
         {
           ipv4_address = "50.0.0.0"

@@ -54,6 +54,7 @@ type BGPAddressFamilyIPv4VRFVrfs struct {
 	Name                             types.String                                               `tfsdk:"name"`
 	Ipv4UnicastAdvertiseL2vpnEvpn    types.Bool                                                 `tfsdk:"ipv4_unicast_advertise_l2vpn_evpn"`
 	Ipv4UnicastRedistributeConnected types.Bool                                                 `tfsdk:"ipv4_unicast_redistribute_connected"`
+	Ipv4UnicastRouterIdLoopback      types.Int64                                                `tfsdk:"ipv4_unicast_router_id_loopback"`
 	Ipv4UnicastAggregateAddresses    []BGPAddressFamilyIPv4VRFVrfsIpv4UnicastAggregateAddresses `tfsdk:"ipv4_unicast_aggregate_addresses"`
 	Ipv4UnicastRedistributeStatic    types.Bool                                                 `tfsdk:"ipv4_unicast_redistribute_static"`
 	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask       `tfsdk:"ipv4_unicast_networks_mask"`
@@ -116,6 +117,9 @@ func (data BGPAddressFamilyIPv4VRF) toBody(ctx context.Context) string {
 				if item.Ipv4UnicastRedistributeConnected.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.redistribute-vrf.connected", map[string]string{})
 				}
+			}
+			if !item.Ipv4UnicastRouterIdLoopback.IsNull() && !item.Ipv4UnicastRouterIdLoopback.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.bgp.router-id.interface.Loopback", strconv.FormatInt(item.Ipv4UnicastRouterIdLoopback.ValueInt64(), 10))
 			}
 			if !item.Ipv4UnicastRedistributeStatic.IsNull() && !item.Ipv4UnicastRedistributeStatic.IsUnknown() {
 				if item.Ipv4UnicastRedistributeStatic.ValueBool() {
@@ -238,6 +242,11 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBody(ctx context.Context, res gjs
 			}
 		} else {
 			data.Vrfs[i].Ipv4UnicastRedistributeConnected = types.BoolNull()
+		}
+		if value := r.Get("ipv4-unicast.bgp.router-id.interface.Loopback"); value.Exists() && !data.Vrfs[i].Ipv4UnicastRouterIdLoopback.IsNull() {
+			data.Vrfs[i].Ipv4UnicastRouterIdLoopback = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv4UnicastRouterIdLoopback = types.Int64Null()
 		}
 		for ci := range data.Vrfs[i].Ipv4UnicastAggregateAddresses {
 			keys := [...]string{"ipv4-address", "ipv4-mask"}
@@ -416,6 +425,9 @@ func (data *BGPAddressFamilyIPv4VRFData) fromBody(ctx context.Context, res gjson
 			} else {
 				item.Ipv4UnicastRedistributeConnected = types.BoolValue(false)
 			}
+			if cValue := v.Get("ipv4-unicast.bgp.router-id.interface.Loopback"); cValue.Exists() {
+				item.Ipv4UnicastRouterIdLoopback = types.Int64Value(cValue.Int())
+			}
 			if cValue := v.Get("ipv4-unicast.aggregate-address"); cValue.Exists() {
 				item.Ipv4UnicastAggregateAddresses = make([]BGPAddressFamilyIPv4VRFVrfsIpv4UnicastAggregateAddresses, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
@@ -517,6 +529,9 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedItems(ctx context.Context, state 
 				}
 				if !state.Vrfs[i].Ipv4UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv4UnicastRedistributeConnected.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/redistribute-vrf/connected", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv4UnicastRouterIdLoopback.IsNull() && data.Vrfs[j].Ipv4UnicastRouterIdLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/bgp/router-id/interface/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				for ci := range state.Vrfs[i].Ipv4UnicastAggregateAddresses {
 					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Address.ValueString(), state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Mask.ValueString()}

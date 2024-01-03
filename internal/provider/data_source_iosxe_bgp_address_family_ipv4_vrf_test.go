@@ -30,6 +30,7 @@ func TestAccDataSourceIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.name", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_advertise_l2vpn_evpn", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_connected", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_router_id_loopback", "101"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_aggregate_addresses.0.ipv4_address", "50.0.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_aggregate_addresses.0.ipv4_mask", "255.255.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_redistribute_static", "true"))
@@ -71,6 +72,17 @@ resource "iosxe_restconf" "PreReq1" {
 	depends_on = [iosxe_restconf.PreReq0, ]
 }
 
+resource "iosxe_restconf" "PreReq2" {
+	path = "Cisco-IOS-XE-native:native/interface/Loopback=101"
+	attributes = {
+		"name" = "101"
+		"ip/address/primary/address" = "22.22.22.22"
+		"ip/address/primary/mask" = "255.255.255.255"
+		"vrf/forwarding" = "VRF1"
+	}
+	depends_on = [iosxe_restconf.PreReq0, ]
+}
+
 `
 
 func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
@@ -82,6 +94,7 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
 	config += `		name = "VRF1"` + "\n"
 	config += `		ipv4_unicast_advertise_l2vpn_evpn = true` + "\n"
 	config += `		ipv4_unicast_redistribute_connected = true` + "\n"
+	config += `		ipv4_unicast_router_id_loopback = 101` + "\n"
 	config += `		ipv4_unicast_aggregate_addresses = [{` + "\n"
 	config += `			ipv4_address = "50.0.0.0"` + "\n"
 	config += `			ipv4_mask = "255.255.0.0"` + "\n"
@@ -99,7 +112,7 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
 	config += `			backdoor = true` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

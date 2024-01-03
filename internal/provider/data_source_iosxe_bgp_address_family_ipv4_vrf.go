@@ -88,6 +88,10 @@ func (d *BGPAddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req data
 							MarkdownDescription: "Connected",
 							Computed:            true,
 						},
+						"ipv4_unicast_router_id_loopback": schema.Int64Attribute{
+							MarkdownDescription: "Loopback interface",
+							Computed:            true,
+						},
 						"ipv4_unicast_aggregate_addresses": schema.ListNestedAttribute{
 							MarkdownDescription: "Configure BGP aggregate entries",
 							Computed:            true,
