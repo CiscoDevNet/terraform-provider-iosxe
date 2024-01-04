@@ -10,6 +10,7 @@ attributes:
   - yang_name: identity/accounting-list
     tf_name: identities
     type: List
+    test_tags: [IOSXE179, IOSXE1710]
     attributes:
       - yang_name: name
         id: true
