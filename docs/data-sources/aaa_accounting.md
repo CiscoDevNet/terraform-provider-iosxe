@@ -28,6 +28,7 @@ data "iosxe_aaa_accounting" "example" {
 
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `id` (String) The path of the retrieved object.
+- `identities` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--identities))
 - `identity_default_start_stop_group1` (String) Use Server-group
 - `identity_default_start_stop_group2` (String) Use Server-group
 - `identity_default_start_stop_group3` (String) Use Server-group
@@ -43,6 +44,21 @@ Read-Only:
 
 - `name` (String)
 - `start_stop_group1` (String) Use Server-group
+
+
+<a id="nestedatt--identities"></a>
+### Nested Schema for `identities`
+
+Read-Only:
+
+- `name` (String)
+- `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group1` (String) Use Server-group
+- `start_stop_group2` (String) Use Server-group
+- `start_stop_group3` (String) Use Server-group
+- `start_stop_group4` (String) Use Server-group
+- `start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group_logger` (Boolean) Use system logger for Accounting
 
 
 <a id="nestedatt--networks"></a>

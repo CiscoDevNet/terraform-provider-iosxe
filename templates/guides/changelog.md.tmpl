@@ -12,6 +12,7 @@ description: |-
 - Add `ipv4_unicast_router_id_loopback` attribute to `iosxe_bgp_address_family_ipv4_vrf` resource and data source
 - Add `ha_mode_graceful_restart` attribute to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source
 - Add `dot1x` attribute to `iosxe_aaa_authentication` resource and data source
+- Add `identities` attribute to `iosxe_aaa_accounting` resource and data source
 
 ## 0.5.2
 

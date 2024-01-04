@@ -67,6 +67,46 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Periodic intervals to send accounting update records(in minutes)",
 				Computed:            true,
 			},
+			"identities": schema.ListNestedAttribute{
+				MarkdownDescription: "Named Accounting list (max 31 characters, longer will be rejected).",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"start_stop_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"start_stop_group_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"start_stop_group_logger": schema.BoolAttribute{
+							MarkdownDescription: "Use system logger for Accounting",
+							Computed:            true,
+						},
+						"start_stop_group1": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group2": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group3": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group4": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"identity_default_start_stop_group1": schema.StringAttribute{
 				MarkdownDescription: "Use Server-group",
 				Computed:            true,

@@ -7,6 +7,33 @@ attributes:
     xpath: update/newinfo/periodic
     tf_name: update_newinfo_periodic
     example: 2880
+  - yang_name: identity/accounting-list
+    tf_name: identities
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: test
+      - yang_name: start-stop/broadcast
+        example: true
+      - yang_name: start-stop/group-config/broadcast
+        tf_name: start_stop_group_broadcast
+        example: true
+      - yang_name: start-stop/group-config/logger
+        tf_name: start_stop_group_logger
+        example: true
+      - yang_name: start-stop/group-config/group1/group
+        tf_name: start_stop_group1
+        example: GROUP1
+      - yang_name: start-stop/group-config/group2/group
+        tf_name: start_stop_group2
+        example: GROUP2
+      - yang_name: start-stop/group-config/group3/group
+        tf_name: start_stop_group3
+        example: GROUP3
+      - yang_name: start-stop/group-config/group4/group
+        tf_name: start_stop_group4
+        example: GROUP4
   - yang_name: identity/default/start-stop/group-config/group1/group
     tf_name: identity_default_start_stop_group1
     example: RADIUS-GROUP

@@ -14,7 +14,19 @@ This resource can manage the AAA Accounting configuration.
 
 ```terraform
 resource "iosxe_aaa_accounting" "example" {
-  update_newinfo_periodic            = 2880
+  update_newinfo_periodic = 2880
+  identities = [
+    {
+      name                       = "test"
+      start_stop_broadcast       = true
+      start_stop_group_broadcast = true
+      start_stop_group_logger    = true
+      start_stop_group1          = "GROUP1"
+      start_stop_group2          = "GROUP2"
+      start_stop_group3          = "GROUP3"
+      start_stop_group4          = "GROUP4"
+    }
+  ]
   identity_default_start_stop_group1 = "RADIUS-GROUP"
   identity_default_start_stop_group2 = "RADIUS-GROUP2"
   identity_default_start_stop_group3 = "RADIUS-GROUP3"
@@ -45,6 +57,7 @@ resource "iosxe_aaa_accounting" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
+- `identities` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--identities))
 - `identity_default_start_stop_group1` (String) Use Server-group
 - `identity_default_start_stop_group2` (String) Use Server-group
 - `identity_default_start_stop_group3` (String) Use Server-group
@@ -68,6 +81,24 @@ Required:
 Optional:
 
 - `start_stop_group1` (String) Use Server-group
+
+
+<a id="nestedatt--identities"></a>
+### Nested Schema for `identities`
+
+Required:
+
+- `name` (String)
+
+Optional:
+
+- `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group1` (String) Use Server-group
+- `start_stop_group2` (String) Use Server-group
+- `start_stop_group3` (String) Use Server-group
+- `start_stop_group4` (String) Use Server-group
+- `start_stop_group_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group_logger` (Boolean) Use system logger for Accounting
 
 
 <a id="nestedatt--networks"></a>
