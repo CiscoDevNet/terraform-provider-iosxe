@@ -155,6 +155,82 @@ func (d *AAAAuthenticationDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
+			"dot1x": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Named authentication method list for dot1x service.",
+							Computed:            true,
+						},
+						"a1_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a1_local": schema.BoolAttribute{
+							MarkdownDescription: "Use local username authentication",
+							Computed:            true,
+						},
+						"a1_cache": schema.StringAttribute{
+							MarkdownDescription: "Use Cached-group",
+							Computed:            true,
+						},
+						"a1_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use list of all Radius hosts",
+							Computed:            true,
+						},
+						"a2_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: "Use local username authentication",
+							Computed:            true,
+						},
+						"a2_cache": schema.StringAttribute{
+							MarkdownDescription: "Use Cached-group",
+							Computed:            true,
+						},
+						"a2_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use list of all Radius hosts",
+							Computed:            true,
+						},
+						"a3_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a3_local": schema.BoolAttribute{
+							MarkdownDescription: "Use local username authentication",
+							Computed:            true,
+						},
+						"a3_cache": schema.StringAttribute{
+							MarkdownDescription: "Use Cached-group",
+							Computed:            true,
+						},
+						"a3_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use list of all Radius hosts",
+							Computed:            true,
+						},
+						"a4_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a4_local": schema.BoolAttribute{
+							MarkdownDescription: "Use local username authentication",
+							Computed:            true,
+						},
+						"a4_cache": schema.StringAttribute{
+							MarkdownDescription: "Use Cached-group",
+							Computed:            true,
+						},
+						"a4_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use list of all Radius hosts",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"dot1x_default_a1_group": schema.StringAttribute{
 				MarkdownDescription: "Use Server-group",
 				Computed:            true,

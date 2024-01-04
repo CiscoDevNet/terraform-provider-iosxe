@@ -34,6 +34,11 @@ func TestAccDataSourceIosxeAAAAuthentication(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "logins.0.name", "test"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "logins.0.a1_group", "Radius-GROUP"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "logins.0.a2_none", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x.0.name", "test"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x.0.a1_group", "GROUP1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x.0.a2_cache", "GROUP2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x.0.a3_radius", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x.0.a4_local", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x_default_a1_group", "Radius-GROUP"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_authentication.test", "dot1x_default_a2_group", "Radius-GROUP2"))
 	resource.Test(t, resource.TestCase{
@@ -55,6 +60,13 @@ func testAccDataSourceIosxeAAAAuthenticationConfig() string {
 	config += `		name = "test"` + "\n"
 	config += `		a1_group = "Radius-GROUP"` + "\n"
 	config += `		a2_none = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	dot1x = [{` + "\n"
+	config += `		name = "test"` + "\n"
+	config += `		a1_group = "GROUP1"` + "\n"
+	config += `		a2_cache = "GROUP2"` + "\n"
+	config += `		a3_radius = true` + "\n"
+	config += `		a4_local = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	dot1x_default_a1_group = "Radius-GROUP"` + "\n"
 	config += `	dot1x_default_a2_group = "Radius-GROUP2"` + "\n"

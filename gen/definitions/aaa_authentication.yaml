@@ -109,6 +109,89 @@ attributes:
         tf_name: a4_group
         example: Tacacs-GROUP
         exclude_test: true
+  - yang_name: dot1x/dot1x-list
+    tf_name: dot1x
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: test
+      - yang_name: a1-config/dot1x-auth/group/group
+        xpath: a1-config/group
+        tf_name: a1_group
+        example: GROUP1
+      - yang_name: a1-config/dot1x-auth/local/local
+        xpath: a1-config/local
+        tf_name: a1_local
+        example: true
+        exclude_test: true
+      - yang_name: a1-config/dot1x-auth/cache/cache
+        xpath: a1-config/cache
+        tf_name: a1_cache
+        example: GROUP1
+        exclude_test: true
+      - yang_name: a1-config/dot1x-auth/radius/radius
+        xpath: a1-config/radius
+        tf_name: a1_radius
+        example: true
+        exclude_test: true
+      - yang_name: a2-config/dot1x-auth/group/group
+        xpath: a2-config/group
+        tf_name: a2_group
+        example: GROUP2
+        exclude_test: true
+      - yang_name: a2-config/dot1x-auth/local/local
+        xpath: a2-config/local
+        tf_name: a2_local
+        example: true
+        exclude_test: true
+      - yang_name: a2-config/dot1x-auth/cache/cache
+        xpath: a2-config/cache
+        tf_name: a2_cache
+        example: GROUP2
+      - yang_name: a2-config/dot1x-auth/radius/radius
+        xpath: a2-config/radius
+        tf_name: a2_radius
+        example: true
+        exclude_test: true
+      - yang_name: a3-config/dot1x-auth/group/group
+        xpath: a3-config/group
+        tf_name: a3_group
+        example: GROUP3
+        exclude_test: true
+      - yang_name: a3-config/dot1x-auth/local/local
+        xpath: a3-config/local
+        tf_name: a3_local
+        example: true
+        exclude_test: true
+      - yang_name: a3-config/dot1x-auth/cache/cache
+        xpath: a3-config/cache
+        tf_name: a3_cache
+        example: GROUP3
+        exclude_test: true
+      - yang_name: a3-config/dot1x-auth/radius/radius
+        xpath: a3-config/radius
+        tf_name: a3_radius
+        example: true
+      - yang_name: a4-config/dot1x-auth/group/group
+        xpath: a4-config/group
+        tf_name: a4_group
+        example: GROUP4
+        exclude_test: true
+      - yang_name: a4-config/dot1x-auth/local/local
+        xpath: a4-config/local
+        tf_name: a4_local
+        example: true
+      - yang_name: a4-config/dot1x-auth/cache/cache
+        xpath: a4-config/cache
+        tf_name: a4_cache
+        example: GROUP4
+        exclude_test: true
+      - yang_name: a4-config/dot1x-auth/radius/radius
+        xpath: a4-config/radius
+        tf_name: a4_radius
+        example: true
+        exclude_test: true
   - yang_name: dot1x/default/a1-config/dot1x-auth/group/group
     xpath: dot1x/default/a1-config/group
     tf_name: dot1x_default_a1_group

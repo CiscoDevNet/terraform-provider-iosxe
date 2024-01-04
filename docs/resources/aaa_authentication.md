@@ -21,6 +21,15 @@ resource "iosxe_aaa_authentication" "example" {
       a2_none  = true
     }
   ]
+  dot1x = [
+    {
+      name      = "test"
+      a1_group  = "GROUP1"
+      a2_cache  = "GROUP2"
+      a3_radius = true
+      a4_local  = true
+    }
+  ]
   dot1x_default_a1_group = "Radius-GROUP"
   dot1x_default_a2_group = "Radius-GROUP2"
 }
@@ -34,6 +43,7 @@ resource "iosxe_aaa_authentication" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `dot1x` (Attributes List) (see [below for nested schema](#nestedatt--dot1x))
 - `dot1x_default_a1_group` (String) Use Server-group
 - `dot1x_default_a1_local` (Boolean) Use local username authentication
 - `dot1x_default_a2_group` (String) Use Server-group
@@ -47,6 +57,33 @@ resource "iosxe_aaa_authentication" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--dot1x"></a>
+### Nested Schema for `dot1x`
+
+Required:
+
+- `name` (String) Named authentication method list for dot1x service.
+
+Optional:
+
+- `a1_cache` (String) Use Cached-group
+- `a1_group` (String) Use Server-group
+- `a1_local` (Boolean) Use local username authentication
+- `a1_radius` (Boolean) Use list of all Radius hosts
+- `a2_cache` (String) Use Cached-group
+- `a2_group` (String) Use Server-group
+- `a2_local` (Boolean) Use local username authentication
+- `a2_radius` (Boolean) Use list of all Radius hosts
+- `a3_cache` (String) Use Cached-group
+- `a3_group` (String) Use Server-group
+- `a3_local` (Boolean) Use local username authentication
+- `a3_radius` (Boolean) Use list of all Radius hosts
+- `a4_cache` (String) Use Cached-group
+- `a4_group` (String) Use Server-group
+- `a4_local` (Boolean) Use local username authentication
+- `a4_radius` (Boolean) Use list of all Radius hosts
+
 
 <a id="nestedatt--logins"></a>
 ### Nested Schema for `logins`

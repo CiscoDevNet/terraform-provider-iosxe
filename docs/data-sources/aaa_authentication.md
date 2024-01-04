@@ -26,6 +26,7 @@ data "iosxe_aaa_authentication" "example" {
 
 ### Read-Only
 
+- `dot1x` (Attributes List) (see [below for nested schema](#nestedatt--dot1x))
 - `dot1x_default_a1_group` (String) Use Server-group
 - `dot1x_default_a1_local` (Boolean) Use local username authentication
 - `dot1x_default_a2_group` (String) Use Server-group
@@ -36,6 +37,30 @@ data "iosxe_aaa_authentication" "example" {
 - `dot1x_default_a4_local` (Boolean) Use local username authentication
 - `id` (String) The path of the retrieved object.
 - `logins` (Attributes List) Set authentication lists for logins. (see [below for nested schema](#nestedatt--logins))
+
+<a id="nestedatt--dot1x"></a>
+### Nested Schema for `dot1x`
+
+Read-Only:
+
+- `a1_cache` (String) Use Cached-group
+- `a1_group` (String) Use Server-group
+- `a1_local` (Boolean) Use local username authentication
+- `a1_radius` (Boolean) Use list of all Radius hosts
+- `a2_cache` (String) Use Cached-group
+- `a2_group` (String) Use Server-group
+- `a2_local` (Boolean) Use local username authentication
+- `a2_radius` (Boolean) Use list of all Radius hosts
+- `a3_cache` (String) Use Cached-group
+- `a3_group` (String) Use Server-group
+- `a3_local` (Boolean) Use local username authentication
+- `a3_radius` (Boolean) Use list of all Radius hosts
+- `a4_cache` (String) Use Cached-group
+- `a4_group` (String) Use Server-group
+- `a4_local` (Boolean) Use local username authentication
+- `a4_radius` (Boolean) Use list of all Radius hosts
+- `name` (String) Named authentication method list for dot1x service.
+
 
 <a id="nestedatt--logins"></a>
 ### Nested Schema for `logins`

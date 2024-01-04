@@ -164,6 +164,82 @@ func (r *AAAAuthenticationResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 			},
+			"dot1x": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Named authentication method list for dot1x service.").String,
+							Required:            true,
+						},
+						"a1_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a1_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
+							Optional:            true,
+						},
+						"a1_cache": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Cached-group").String,
+							Optional:            true,
+						},
+						"a1_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use list of all Radius hosts").String,
+							Optional:            true,
+						},
+						"a2_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
+							Optional:            true,
+						},
+						"a2_cache": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Cached-group").String,
+							Optional:            true,
+						},
+						"a2_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use list of all Radius hosts").String,
+							Optional:            true,
+						},
+						"a3_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a3_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
+							Optional:            true,
+						},
+						"a3_cache": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Cached-group").String,
+							Optional:            true,
+						},
+						"a3_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use list of all Radius hosts").String,
+							Optional:            true,
+						},
+						"a4_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a4_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
+							Optional:            true,
+						},
+						"a4_cache": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Cached-group").String,
+							Optional:            true,
+						},
+						"a4_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use list of all Radius hosts").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
 			"dot1x_default_a1_group": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 				Optional:            true,

@@ -38,6 +38,7 @@ type AAAAuthentication struct {
 	Id                  types.String              `tfsdk:"id"`
 	DeleteMode          types.String              `tfsdk:"delete_mode"`
 	Logins              []AAAAuthenticationLogins `tfsdk:"logins"`
+	Dot1x               []AAAAuthenticationDot1x  `tfsdk:"dot1x"`
 	Dot1xDefaultA1Group types.String              `tfsdk:"dot1x_default_a1_group"`
 	Dot1xDefaultA1Local types.Bool                `tfsdk:"dot1x_default_a1_local"`
 	Dot1xDefaultA2Group types.String              `tfsdk:"dot1x_default_a2_group"`
@@ -52,6 +53,7 @@ type AAAAuthenticationData struct {
 	Device              types.String              `tfsdk:"device"`
 	Id                  types.String              `tfsdk:"id"`
 	Logins              []AAAAuthenticationLogins `tfsdk:"logins"`
+	Dot1x               []AAAAuthenticationDot1x  `tfsdk:"dot1x"`
 	Dot1xDefaultA1Group types.String              `tfsdk:"dot1x_default_a1_group"`
 	Dot1xDefaultA1Local types.Bool                `tfsdk:"dot1x_default_a1_local"`
 	Dot1xDefaultA2Group types.String              `tfsdk:"dot1x_default_a2_group"`
@@ -83,6 +85,25 @@ type AAAAuthenticationLogins struct {
 	A4Enable types.Bool   `tfsdk:"a4_enable"`
 	A4Local  types.Bool   `tfsdk:"a4_local"`
 	A4Group  types.String `tfsdk:"a4_group"`
+}
+type AAAAuthenticationDot1x struct {
+	Name     types.String `tfsdk:"name"`
+	A1Group  types.String `tfsdk:"a1_group"`
+	A1Local  types.Bool   `tfsdk:"a1_local"`
+	A1Cache  types.String `tfsdk:"a1_cache"`
+	A1Radius types.Bool   `tfsdk:"a1_radius"`
+	A2Group  types.String `tfsdk:"a2_group"`
+	A2Local  types.Bool   `tfsdk:"a2_local"`
+	A2Cache  types.String `tfsdk:"a2_cache"`
+	A2Radius types.Bool   `tfsdk:"a2_radius"`
+	A3Group  types.String `tfsdk:"a3_group"`
+	A3Local  types.Bool   `tfsdk:"a3_local"`
+	A3Cache  types.String `tfsdk:"a3_cache"`
+	A3Radius types.Bool   `tfsdk:"a3_radius"`
+	A4Group  types.String `tfsdk:"a4_group"`
+	A4Local  types.Bool   `tfsdk:"a4_local"`
+	A4Cache  types.String `tfsdk:"a4_cache"`
+	A4Radius types.Bool   `tfsdk:"a4_radius"`
 }
 
 func (data AAAAuthentication) getPath() string {
@@ -235,6 +256,78 @@ func (data AAAAuthentication) toBody(ctx context.Context) string {
 			}
 			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"login"+"."+strconv.Itoa(index)+"."+"a4.group", item.A4Group.ValueString())
+			}
+		}
+	}
+	if len(data.Dot1x) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list", []interface{}{})
+		for index, item := range data.Dot1x {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.A1Group.IsNull() && !item.A1Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a1-config.group", item.A1Group.ValueString())
+			}
+			if !item.A1Local.IsNull() && !item.A1Local.IsUnknown() {
+				if item.A1Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a1-config.local", map[string]string{})
+				}
+			}
+			if !item.A1Cache.IsNull() && !item.A1Cache.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a1-config.cache", item.A1Cache.ValueString())
+			}
+			if !item.A1Radius.IsNull() && !item.A1Radius.IsUnknown() {
+				if item.A1Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a1-config.radius", map[string]string{})
+				}
+			}
+			if !item.A2Group.IsNull() && !item.A2Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a2-config.group", item.A2Group.ValueString())
+			}
+			if !item.A2Local.IsNull() && !item.A2Local.IsUnknown() {
+				if item.A2Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a2-config.local", map[string]string{})
+				}
+			}
+			if !item.A2Cache.IsNull() && !item.A2Cache.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a2-config.cache", item.A2Cache.ValueString())
+			}
+			if !item.A2Radius.IsNull() && !item.A2Radius.IsUnknown() {
+				if item.A2Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a2-config.radius", map[string]string{})
+				}
+			}
+			if !item.A3Group.IsNull() && !item.A3Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a3-config.group", item.A3Group.ValueString())
+			}
+			if !item.A3Local.IsNull() && !item.A3Local.IsUnknown() {
+				if item.A3Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a3-config.local", map[string]string{})
+				}
+			}
+			if !item.A3Cache.IsNull() && !item.A3Cache.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a3-config.cache", item.A3Cache.ValueString())
+			}
+			if !item.A3Radius.IsNull() && !item.A3Radius.IsUnknown() {
+				if item.A3Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a3-config.radius", map[string]string{})
+				}
+			}
+			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a4-config.group", item.A4Group.ValueString())
+			}
+			if !item.A4Local.IsNull() && !item.A4Local.IsUnknown() {
+				if item.A4Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a4-config.local", map[string]string{})
+				}
+			}
+			if !item.A4Cache.IsNull() && !item.A4Cache.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a4-config.cache", item.A4Cache.ValueString())
+			}
+			if !item.A4Radius.IsNull() && !item.A4Radius.IsUnknown() {
+				if item.A4Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dot1x.dot1x-list"+"."+strconv.Itoa(index)+"."+"a4-config.radius", map[string]string{})
+				}
 			}
 		}
 	}
@@ -439,6 +532,147 @@ func (data *AAAAuthentication) updateFromBody(ctx context.Context, res gjson.Res
 			data.Logins[i].A4Group = types.StringNull()
 		}
 	}
+	for i := range data.Dot1x {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "dot1x.dot1x-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Dot1x[i].Name.IsNull() {
+			data.Dot1x[i].Name = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].Name = types.StringNull()
+		}
+		if value := r.Get("a1-config.group"); value.Exists() && !data.Dot1x[i].A1Group.IsNull() {
+			data.Dot1x[i].A1Group = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].A1Group = types.StringNull()
+		}
+		if value := r.Get("a1-config.local"); !data.Dot1x[i].A1Local.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].A1Local = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].A1Local = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].A1Local = types.BoolNull()
+		}
+		if value := r.Get("a1-config.cache"); value.Exists() && !data.Dot1x[i].A1Cache.IsNull() {
+			data.Dot1x[i].A1Cache = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].A1Cache = types.StringNull()
+		}
+		if value := r.Get("a1-config.radius"); !data.Dot1x[i].A1Radius.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].A1Radius = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].A1Radius = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].A1Radius = types.BoolNull()
+		}
+		if value := r.Get("a2-config.group"); value.Exists() && !data.Dot1x[i].A2Group.IsNull() {
+			data.Dot1x[i].A2Group = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].A2Group = types.StringNull()
+		}
+		if value := r.Get("a2-config.local"); !data.Dot1x[i].A2Local.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].A2Local = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].A2Local = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].A2Local = types.BoolNull()
+		}
+		if value := r.Get("a2-config.cache"); value.Exists() && !data.Dot1x[i].A2Cache.IsNull() {
+			data.Dot1x[i].A2Cache = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].A2Cache = types.StringNull()
+		}
+		if value := r.Get("a2-config.radius"); !data.Dot1x[i].A2Radius.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].A2Radius = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].A2Radius = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].A2Radius = types.BoolNull()
+		}
+		if value := r.Get("a3-config.group"); value.Exists() && !data.Dot1x[i].A3Group.IsNull() {
+			data.Dot1x[i].A3Group = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].A3Group = types.StringNull()
+		}
+		if value := r.Get("a3-config.local"); !data.Dot1x[i].A3Local.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].A3Local = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].A3Local = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].A3Local = types.BoolNull()
+		}
+		if value := r.Get("a3-config.cache"); value.Exists() && !data.Dot1x[i].A3Cache.IsNull() {
+			data.Dot1x[i].A3Cache = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].A3Cache = types.StringNull()
+		}
+		if value := r.Get("a3-config.radius"); !data.Dot1x[i].A3Radius.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].A3Radius = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].A3Radius = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].A3Radius = types.BoolNull()
+		}
+		if value := r.Get("a4-config.group"); value.Exists() && !data.Dot1x[i].A4Group.IsNull() {
+			data.Dot1x[i].A4Group = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].A4Group = types.StringNull()
+		}
+		if value := r.Get("a4-config.local"); !data.Dot1x[i].A4Local.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].A4Local = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].A4Local = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].A4Local = types.BoolNull()
+		}
+		if value := r.Get("a4-config.cache"); value.Exists() && !data.Dot1x[i].A4Cache.IsNull() {
+			data.Dot1x[i].A4Cache = types.StringValue(value.String())
+		} else {
+			data.Dot1x[i].A4Cache = types.StringNull()
+		}
+		if value := r.Get("a4-config.radius"); !data.Dot1x[i].A4Radius.IsNull() {
+			if value.Exists() {
+				data.Dot1x[i].A4Radius = types.BoolValue(true)
+			} else {
+				data.Dot1x[i].A4Radius = types.BoolValue(false)
+			}
+		} else {
+			data.Dot1x[i].A4Radius = types.BoolNull()
+		}
+	}
 	if value := res.Get(prefix + "dot1x.default.a1-config.group"); value.Exists() && !data.Dot1xDefaultA1Group.IsNull() {
 		data.Dot1xDefaultA1Group = types.StringValue(value.String())
 	} else {
@@ -605,6 +839,81 @@ func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Resul
 			return true
 		})
 	}
+	if value := res.Get(prefix + "dot1x.dot1x-list"); value.Exists() {
+		data.Dot1x = make([]AAAAuthenticationDot1x, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAuthenticationDot1x{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1-config.group"); cValue.Exists() {
+				item.A1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1-config.local"); cValue.Exists() {
+				item.A1Local = types.BoolValue(true)
+			} else {
+				item.A1Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1-config.cache"); cValue.Exists() {
+				item.A1Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1-config.radius"); cValue.Exists() {
+				item.A1Radius = types.BoolValue(true)
+			} else {
+				item.A1Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2-config.group"); cValue.Exists() {
+				item.A2Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2-config.local"); cValue.Exists() {
+				item.A2Local = types.BoolValue(true)
+			} else {
+				item.A2Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2-config.cache"); cValue.Exists() {
+				item.A2Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2-config.radius"); cValue.Exists() {
+				item.A2Radius = types.BoolValue(true)
+			} else {
+				item.A2Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3-config.group"); cValue.Exists() {
+				item.A3Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a3-config.local"); cValue.Exists() {
+				item.A3Local = types.BoolValue(true)
+			} else {
+				item.A3Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3-config.cache"); cValue.Exists() {
+				item.A3Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a3-config.radius"); cValue.Exists() {
+				item.A3Radius = types.BoolValue(true)
+			} else {
+				item.A3Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4-config.group"); cValue.Exists() {
+				item.A4Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a4-config.local"); cValue.Exists() {
+				item.A4Local = types.BoolValue(true)
+			} else {
+				item.A4Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4-config.cache"); cValue.Exists() {
+				item.A4Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a4-config.radius"); cValue.Exists() {
+				item.A4Radius = types.BoolValue(true)
+			} else {
+				item.A4Radius = types.BoolValue(false)
+			}
+			data.Dot1x = append(data.Dot1x, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "dot1x.default.a1-config.group"); value.Exists() {
 		data.Dot1xDefaultA1Group = types.StringValue(value.String())
 	}
@@ -726,6 +1035,79 @@ func (data *AAAAuthentication) getDeletedItems(ctx context.Context, state AAAAut
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/login=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Dot1x {
+		stateKeyValues := [...]string{state.Dot1x[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Dot1x[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Dot1x {
+			found = true
+			if state.Dot1x[i].Name.ValueString() != data.Dot1x[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Dot1x[i].A1Group.IsNull() && data.Dot1x[j].A1Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a1-config/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A1Local.IsNull() && data.Dot1x[j].A1Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a1-config/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A1Cache.IsNull() && data.Dot1x[j].A1Cache.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a1-config/cache", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A1Radius.IsNull() && data.Dot1x[j].A1Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a1-config/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A2Group.IsNull() && data.Dot1x[j].A2Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a2-config/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A2Local.IsNull() && data.Dot1x[j].A2Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a2-config/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A2Cache.IsNull() && data.Dot1x[j].A2Cache.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a2-config/cache", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A2Radius.IsNull() && data.Dot1x[j].A2Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a2-config/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A3Group.IsNull() && data.Dot1x[j].A3Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a3-config/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A3Local.IsNull() && data.Dot1x[j].A3Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a3-config/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A3Cache.IsNull() && data.Dot1x[j].A3Cache.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a3-config/cache", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A3Radius.IsNull() && data.Dot1x[j].A3Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a3-config/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A4Group.IsNull() && data.Dot1x[j].A4Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a4-config/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A4Local.IsNull() && data.Dot1x[j].A4Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a4-config/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A4Cache.IsNull() && data.Dot1x[j].A4Cache.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a4-config/cache", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Dot1x[i].A4Radius.IsNull() && data.Dot1x[j].A4Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a4-config/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/dot1x-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.Dot1xDefaultA1Group.IsNull() && data.Dot1xDefaultA1Group.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dot1x/default/a1-config/group", state.getPath()))
 	}
@@ -807,6 +1189,34 @@ func (data *AAAAuthentication) getEmptyLeafsDelete(ctx context.Context) []string
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login=%v/a4/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
+	for i := range data.Dot1x {
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+		if !data.Dot1x[i].A1Local.IsNull() && !data.Dot1x[i].A1Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a1-config/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].A1Radius.IsNull() && !data.Dot1x[i].A1Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a1-config/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].A2Local.IsNull() && !data.Dot1x[i].A2Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a2-config/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].A2Radius.IsNull() && !data.Dot1x[i].A2Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a2-config/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].A3Local.IsNull() && !data.Dot1x[i].A3Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a3-config/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].A3Radius.IsNull() && !data.Dot1x[i].A3Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a3-config/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].A4Local.IsNull() && !data.Dot1x[i].A4Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a4-config/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Dot1x[i].A4Radius.IsNull() && !data.Dot1x[i].A4Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/dot1x-list=%v/a4-config/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
 	if !data.Dot1xDefaultA1Local.IsNull() && !data.Dot1xDefaultA1Local.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dot1x/default/a1-config/local", data.getPath()))
 	}
@@ -828,6 +1238,11 @@ func (data *AAAAuthentication) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.Logins[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/login=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Dot1x {
+		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/dot1x-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.Dot1xDefaultA1Group.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dot1x/default/a1-config/group", data.getPath()))
