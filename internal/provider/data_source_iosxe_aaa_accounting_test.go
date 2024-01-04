@@ -29,9 +29,9 @@ func TestAccDataSourceIosxeAAAAccounting(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "update_newinfo_periodic", "2880"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.name", "test"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_broadcast", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group_broadcast", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group_logger", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_broadcast", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group_broadcast", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group_logger", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group1", "GROUP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group2", "GROUP2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group3", "GROUP3"))
@@ -64,9 +64,9 @@ func testAccDataSourceIosxeAAAAccountingConfig() string {
 	config += `	update_newinfo_periodic = 2880` + "\n"
 	config += `	identities = [{` + "\n"
 	config += `		name = "test"` + "\n"
-	config += `		start_stop_broadcast = true` + "\n"
-	config += `		start_stop_group_broadcast = true` + "\n"
-	config += `		start_stop_group_logger = true` + "\n"
+	config += `		start_stop_broadcast = false` + "\n"
+	config += `		start_stop_group_broadcast = false` + "\n"
+	config += `		start_stop_group_logger = false` + "\n"
 	config += `		start_stop_group1 = "GROUP1"` + "\n"
 	config += `		start_stop_group2 = "GROUP2"` + "\n"
 	config += `		start_stop_group3 = "GROUP3"` + "\n"

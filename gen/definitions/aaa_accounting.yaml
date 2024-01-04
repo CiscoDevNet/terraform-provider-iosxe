@@ -15,13 +15,13 @@ attributes:
         id: true
         example: test
       - yang_name: start-stop/broadcast
-        example: true
+        example: false
       - yang_name: start-stop/group-config/broadcast
         tf_name: start_stop_group_broadcast
-        example: true
+        example: false
       - yang_name: start-stop/group-config/logger
         tf_name: start_stop_group_logger
-        example: true
+        example: false
       - yang_name: start-stop/group-config/group1/group
         tf_name: start_stop_group1
         example: GROUP1

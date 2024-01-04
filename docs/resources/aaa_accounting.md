@@ -18,9 +18,9 @@ resource "iosxe_aaa_accounting" "example" {
   identities = [
     {
       name                       = "test"
-      start_stop_broadcast       = true
-      start_stop_group_broadcast = true
-      start_stop_group_logger    = true
+      start_stop_broadcast       = false
+      start_stop_group_broadcast = false
+      start_stop_group_logger    = false
       start_stop_group1          = "GROUP1"
       start_stop_group2          = "GROUP2"
       start_stop_group3          = "GROUP3"
