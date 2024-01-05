@@ -160,6 +160,81 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
+			"ip_http_access_class": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Restrict http server access by access-class").AddIntegerRangeDescription(1, 99).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 99),
+				},
+			},
+			"ip_http_authentication_aaa": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use AAA access control methods").String,
+				Optional:            true,
+			},
+			"ip_http_authentication_aaa_exec_authorization": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set method list for exec authorization").String,
+				Optional:            true,
+			},
+			"ip_http_authentication_aaa_login_authentication": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set method list for login authentication").String,
+				Optional:            true,
+			},
+			"ip_http_authentication_aaa_command_authorization": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set method list for command authorization").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"level": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enable level").AddIntegerRangeDescription(0, 15).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 15),
+							},
+						},
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use an authorization list with this name").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"ip_http_authentication_local": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use local username and passwords").String,
+				Optional:            true,
+			},
+			"ip_http_server": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable http server").String,
+				Optional:            true,
+			},
+			"ip_http_secure_server": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable HTTP secure server").String,
+				Optional:            true,
+			},
+			"ip_http_secure_trustpoint": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set http secure server certificate trustpoint").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 229),
+				},
+			},
+			"ip_http_tls_version": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set TLS version for HTTP secure server").AddStringEnumDescription("TLSv1.0", "TLSv1.1", "TLSv1.2").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("TLSv1.0", "TLSv1.1", "TLSv1.2"),
+				},
+			},
+			"ip_http_client_secure_trustpoint": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set http client certificate secure trustpoint").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 222),
+				},
+			},
+			"ip_http_client_source_interface": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify interface for source address in all HTTP(S) client connections").String,
+				Optional:            true,
+			},
 		},
 	}
 }

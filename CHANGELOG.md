@@ -2,6 +2,7 @@
 
 - Add `next_hop_self` and `next_hop_self_all` attributes to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source
 - Add `set_as_path_replace_any` and `set_as_path_replace_as` attributes to `iosxe_route_map` resource and data source
+- Add `ip_http` attributes to `iosxe_system` resource and data source
 
 ## 0.5.3
 

@@ -143,6 +143,66 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					},
 				},
 			},
+			"ip_http_access_class": schema.Int64Attribute{
+				MarkdownDescription: "Restrict http server access by access-class",
+				Computed:            true,
+			},
+			"ip_http_authentication_aaa": schema.BoolAttribute{
+				MarkdownDescription: "Use AAA access control methods",
+				Computed:            true,
+			},
+			"ip_http_authentication_aaa_exec_authorization": schema.StringAttribute{
+				MarkdownDescription: "Set method list for exec authorization",
+				Computed:            true,
+			},
+			"ip_http_authentication_aaa_login_authentication": schema.StringAttribute{
+				MarkdownDescription: "Set method list for login authentication",
+				Computed:            true,
+			},
+			"ip_http_authentication_aaa_command_authorization": schema.ListNestedAttribute{
+				MarkdownDescription: "Set method list for command authorization",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"level": schema.Int64Attribute{
+							MarkdownDescription: "Enable level",
+							Computed:            true,
+						},
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Use an authorization list with this name",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ip_http_authentication_local": schema.BoolAttribute{
+				MarkdownDescription: "Use local username and passwords",
+				Computed:            true,
+			},
+			"ip_http_server": schema.BoolAttribute{
+				MarkdownDescription: "Enable http server",
+				Computed:            true,
+			},
+			"ip_http_secure_server": schema.BoolAttribute{
+				MarkdownDescription: "Enable HTTP secure server",
+				Computed:            true,
+			},
+			"ip_http_secure_trustpoint": schema.StringAttribute{
+				MarkdownDescription: "Set http secure server certificate trustpoint",
+				Computed:            true,
+			},
+			"ip_http_tls_version": schema.StringAttribute{
+				MarkdownDescription: "Set TLS version for HTTP secure server",
+				Computed:            true,
+			},
+			"ip_http_client_secure_trustpoint": schema.StringAttribute{
+				MarkdownDescription: "Set http client certificate secure trustpoint",
+				Computed:            true,
+			},
+			"ip_http_client_source_interface": schema.StringAttribute{
+				MarkdownDescription: "Specify interface for source address in all HTTP(S) client connections",
+				Computed:            true,
+			},
 		},
 	}
 }

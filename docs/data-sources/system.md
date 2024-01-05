@@ -31,6 +31,18 @@ data "iosxe_system" "example" {
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
 - `ip_domain_name` (String) Define the default domain name
+- `ip_http_access_class` (Number) Restrict http server access by access-class
+- `ip_http_authentication_aaa` (Boolean) Use AAA access control methods
+- `ip_http_authentication_aaa_command_authorization` (Attributes List) Set method list for command authorization (see [below for nested schema](#nestedatt--ip_http_authentication_aaa_command_authorization))
+- `ip_http_authentication_aaa_exec_authorization` (String) Set method list for exec authorization
+- `ip_http_authentication_aaa_login_authentication` (String) Set method list for login authentication
+- `ip_http_authentication_local` (Boolean) Use local username and passwords
+- `ip_http_client_secure_trustpoint` (String) Set http client certificate secure trustpoint
+- `ip_http_client_source_interface` (String) Specify interface for source address in all HTTP(S) client connections
+- `ip_http_secure_server` (Boolean) Enable HTTP secure server
+- `ip_http_secure_trustpoint` (String) Set http secure server certificate trustpoint
+- `ip_http_server` (Boolean) Enable http server
+- `ip_http_tls_version` (String) Set TLS version for HTTP secure server
 - `ip_multicast_routing` (Boolean) Enable IP multicast forwarding
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
 - `ip_routing` (Boolean) Enable or disable IP routing
@@ -44,6 +56,15 @@ data "iosxe_system" "example" {
 - `mtu` (Number)
 - `multicast_routing_switch` (Boolean) Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.
 - `multicast_routing_vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--multicast_routing_vrfs))
+
+<a id="nestedatt--ip_http_authentication_aaa_command_authorization"></a>
+### Nested Schema for `ip_http_authentication_aaa_command_authorization`
+
+Read-Only:
+
+- `level` (Number) Enable level
+- `name` (String) Use an authorization list with this name
+
 
 <a id="nestedatt--multicast_routing_vrfs"></a>
 ### Nested Schema for `multicast_routing_vrfs`

@@ -34,51 +34,79 @@ import (
 )
 
 type System struct {
-	Device                        types.String                 `tfsdk:"device"`
-	Id                            types.String                 `tfsdk:"id"`
-	Hostname                      types.String                 `tfsdk:"hostname"`
-	IpBgpCommunityNewFormat       types.Bool                   `tfsdk:"ip_bgp_community_new_format"`
-	IpRouting                     types.Bool                   `tfsdk:"ip_routing"`
-	Ipv6UnicastRouting            types.Bool                   `tfsdk:"ipv6_unicast_routing"`
-	Mtu                           types.Int64                  `tfsdk:"mtu"`
-	IpSourceRoute                 types.Bool                   `tfsdk:"ip_source_route"`
-	IpDomainLookup                types.Bool                   `tfsdk:"ip_domain_lookup"`
-	IpDomainName                  types.String                 `tfsdk:"ip_domain_name"`
-	LoginDelay                    types.Int64                  `tfsdk:"login_delay"`
-	LoginOnFailure                types.Bool                   `tfsdk:"login_on_failure"`
-	LoginOnFailureLog             types.Bool                   `tfsdk:"login_on_failure_log"`
-	LoginOnSuccess                types.Bool                   `tfsdk:"login_on_success"`
-	LoginOnSuccessLog             types.Bool                   `tfsdk:"login_on_success_log"`
-	IpMulticastRouting            types.Bool                   `tfsdk:"ip_multicast_routing"`
-	MulticastRoutingSwitch        types.Bool                   `tfsdk:"multicast_routing_switch"`
-	IpMulticastRoutingDistributed types.Bool                   `tfsdk:"ip_multicast_routing_distributed"`
-	MulticastRoutingVrfs          []SystemMulticastRoutingVrfs `tfsdk:"multicast_routing_vrfs"`
+	Device                                      types.String                                        `tfsdk:"device"`
+	Id                                          types.String                                        `tfsdk:"id"`
+	Hostname                                    types.String                                        `tfsdk:"hostname"`
+	IpBgpCommunityNewFormat                     types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
+	IpRouting                                   types.Bool                                          `tfsdk:"ip_routing"`
+	Ipv6UnicastRouting                          types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
+	Mtu                                         types.Int64                                         `tfsdk:"mtu"`
+	IpSourceRoute                               types.Bool                                          `tfsdk:"ip_source_route"`
+	IpDomainLookup                              types.Bool                                          `tfsdk:"ip_domain_lookup"`
+	IpDomainName                                types.String                                        `tfsdk:"ip_domain_name"`
+	LoginDelay                                  types.Int64                                         `tfsdk:"login_delay"`
+	LoginOnFailure                              types.Bool                                          `tfsdk:"login_on_failure"`
+	LoginOnFailureLog                           types.Bool                                          `tfsdk:"login_on_failure_log"`
+	LoginOnSuccess                              types.Bool                                          `tfsdk:"login_on_success"`
+	LoginOnSuccessLog                           types.Bool                                          `tfsdk:"login_on_success_log"`
+	IpMulticastRouting                          types.Bool                                          `tfsdk:"ip_multicast_routing"`
+	MulticastRoutingSwitch                      types.Bool                                          `tfsdk:"multicast_routing_switch"`
+	IpMulticastRoutingDistributed               types.Bool                                          `tfsdk:"ip_multicast_routing_distributed"`
+	MulticastRoutingVrfs                        []SystemMulticastRoutingVrfs                        `tfsdk:"multicast_routing_vrfs"`
+	IpHttpAccessClass                           types.Int64                                         `tfsdk:"ip_http_access_class"`
+	IpHttpAuthenticationAaa                     types.Bool                                          `tfsdk:"ip_http_authentication_aaa"`
+	IpHttpAuthenticationAaaExecAuthorization    types.String                                        `tfsdk:"ip_http_authentication_aaa_exec_authorization"`
+	IpHttpAuthenticationAaaLoginAuthentication  types.String                                        `tfsdk:"ip_http_authentication_aaa_login_authentication"`
+	IpHttpAuthenticationAaaCommandAuthorization []SystemIpHttpAuthenticationAaaCommandAuthorization `tfsdk:"ip_http_authentication_aaa_command_authorization"`
+	IpHttpAuthenticationLocal                   types.Bool                                          `tfsdk:"ip_http_authentication_local"`
+	IpHttpServer                                types.Bool                                          `tfsdk:"ip_http_server"`
+	IpHttpSecureServer                          types.Bool                                          `tfsdk:"ip_http_secure_server"`
+	IpHttpSecureTrustpoint                      types.String                                        `tfsdk:"ip_http_secure_trustpoint"`
+	IpHttpTlsVersion                            types.String                                        `tfsdk:"ip_http_tls_version"`
+	IpHttpClientSecureTrustpoint                types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
+	IpHttpClientSourceInterface                 types.String                                        `tfsdk:"ip_http_client_source_interface"`
 }
 
 type SystemData struct {
-	Device                        types.String                 `tfsdk:"device"`
-	Id                            types.String                 `tfsdk:"id"`
-	Hostname                      types.String                 `tfsdk:"hostname"`
-	IpBgpCommunityNewFormat       types.Bool                   `tfsdk:"ip_bgp_community_new_format"`
-	IpRouting                     types.Bool                   `tfsdk:"ip_routing"`
-	Ipv6UnicastRouting            types.Bool                   `tfsdk:"ipv6_unicast_routing"`
-	Mtu                           types.Int64                  `tfsdk:"mtu"`
-	IpSourceRoute                 types.Bool                   `tfsdk:"ip_source_route"`
-	IpDomainLookup                types.Bool                   `tfsdk:"ip_domain_lookup"`
-	IpDomainName                  types.String                 `tfsdk:"ip_domain_name"`
-	LoginDelay                    types.Int64                  `tfsdk:"login_delay"`
-	LoginOnFailure                types.Bool                   `tfsdk:"login_on_failure"`
-	LoginOnFailureLog             types.Bool                   `tfsdk:"login_on_failure_log"`
-	LoginOnSuccess                types.Bool                   `tfsdk:"login_on_success"`
-	LoginOnSuccessLog             types.Bool                   `tfsdk:"login_on_success_log"`
-	IpMulticastRouting            types.Bool                   `tfsdk:"ip_multicast_routing"`
-	MulticastRoutingSwitch        types.Bool                   `tfsdk:"multicast_routing_switch"`
-	IpMulticastRoutingDistributed types.Bool                   `tfsdk:"ip_multicast_routing_distributed"`
-	MulticastRoutingVrfs          []SystemMulticastRoutingVrfs `tfsdk:"multicast_routing_vrfs"`
+	Device                                      types.String                                        `tfsdk:"device"`
+	Id                                          types.String                                        `tfsdk:"id"`
+	Hostname                                    types.String                                        `tfsdk:"hostname"`
+	IpBgpCommunityNewFormat                     types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
+	IpRouting                                   types.Bool                                          `tfsdk:"ip_routing"`
+	Ipv6UnicastRouting                          types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
+	Mtu                                         types.Int64                                         `tfsdk:"mtu"`
+	IpSourceRoute                               types.Bool                                          `tfsdk:"ip_source_route"`
+	IpDomainLookup                              types.Bool                                          `tfsdk:"ip_domain_lookup"`
+	IpDomainName                                types.String                                        `tfsdk:"ip_domain_name"`
+	LoginDelay                                  types.Int64                                         `tfsdk:"login_delay"`
+	LoginOnFailure                              types.Bool                                          `tfsdk:"login_on_failure"`
+	LoginOnFailureLog                           types.Bool                                          `tfsdk:"login_on_failure_log"`
+	LoginOnSuccess                              types.Bool                                          `tfsdk:"login_on_success"`
+	LoginOnSuccessLog                           types.Bool                                          `tfsdk:"login_on_success_log"`
+	IpMulticastRouting                          types.Bool                                          `tfsdk:"ip_multicast_routing"`
+	MulticastRoutingSwitch                      types.Bool                                          `tfsdk:"multicast_routing_switch"`
+	IpMulticastRoutingDistributed               types.Bool                                          `tfsdk:"ip_multicast_routing_distributed"`
+	MulticastRoutingVrfs                        []SystemMulticastRoutingVrfs                        `tfsdk:"multicast_routing_vrfs"`
+	IpHttpAccessClass                           types.Int64                                         `tfsdk:"ip_http_access_class"`
+	IpHttpAuthenticationAaa                     types.Bool                                          `tfsdk:"ip_http_authentication_aaa"`
+	IpHttpAuthenticationAaaExecAuthorization    types.String                                        `tfsdk:"ip_http_authentication_aaa_exec_authorization"`
+	IpHttpAuthenticationAaaLoginAuthentication  types.String                                        `tfsdk:"ip_http_authentication_aaa_login_authentication"`
+	IpHttpAuthenticationAaaCommandAuthorization []SystemIpHttpAuthenticationAaaCommandAuthorization `tfsdk:"ip_http_authentication_aaa_command_authorization"`
+	IpHttpAuthenticationLocal                   types.Bool                                          `tfsdk:"ip_http_authentication_local"`
+	IpHttpServer                                types.Bool                                          `tfsdk:"ip_http_server"`
+	IpHttpSecureServer                          types.Bool                                          `tfsdk:"ip_http_secure_server"`
+	IpHttpSecureTrustpoint                      types.String                                        `tfsdk:"ip_http_secure_trustpoint"`
+	IpHttpTlsVersion                            types.String                                        `tfsdk:"ip_http_tls_version"`
+	IpHttpClientSecureTrustpoint                types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
+	IpHttpClientSourceInterface                 types.String                                        `tfsdk:"ip_http_client_source_interface"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
 	Distributed types.Bool   `tfsdk:"distributed"`
+}
+type SystemIpHttpAuthenticationAaaCommandAuthorization struct {
+	Level types.Int64  `tfsdk:"level"`
+	Name  types.String `tfsdk:"name"`
 }
 
 func (data System) getPath() string {
@@ -168,6 +196,43 @@ func (data System) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.distributed", map[string]string{})
 		}
 	}
+	if !data.IpHttpAccessClass.IsNull() && !data.IpHttpAccessClass.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.access-class", strconv.FormatInt(data.IpHttpAccessClass.ValueInt64(), 10))
+	}
+	if !data.IpHttpAuthenticationAaa.IsNull() && !data.IpHttpAuthenticationAaa.IsUnknown() {
+		if data.IpHttpAuthenticationAaa.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.authentication.aaa", map[string]string{})
+		}
+	}
+	if !data.IpHttpAuthenticationAaaExecAuthorization.IsNull() && !data.IpHttpAuthenticationAaaExecAuthorization.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.authentication.aaa.exec-authorization", data.IpHttpAuthenticationAaaExecAuthorization.ValueString())
+	}
+	if !data.IpHttpAuthenticationAaaLoginAuthentication.IsNull() && !data.IpHttpAuthenticationAaaLoginAuthentication.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.authentication.aaa.login-authentication", data.IpHttpAuthenticationAaaLoginAuthentication.ValueString())
+	}
+	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.IsUnknown() {
+		if data.IpHttpAuthenticationLocal.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.authentication.local", map[string]string{})
+		}
+	}
+	if !data.IpHttpServer.IsNull() && !data.IpHttpServer.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.server", data.IpHttpServer.ValueBool())
+	}
+	if !data.IpHttpSecureServer.IsNull() && !data.IpHttpSecureServer.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.secure-server", data.IpHttpSecureServer.ValueBool())
+	}
+	if !data.IpHttpSecureTrustpoint.IsNull() && !data.IpHttpSecureTrustpoint.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.secure-trustpoint", data.IpHttpSecureTrustpoint.ValueString())
+	}
+	if !data.IpHttpTlsVersion.IsNull() && !data.IpHttpTlsVersion.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.tls-version", data.IpHttpTlsVersion.ValueString())
+	}
+	if !data.IpHttpClientSecureTrustpoint.IsNull() && !data.IpHttpClientSecureTrustpoint.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.client.secure-trustpoint", data.IpHttpClientSecureTrustpoint.ValueString())
+	}
+	if !data.IpHttpClientSourceInterface.IsNull() && !data.IpHttpClientSourceInterface.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.client.source-interface", data.IpHttpClientSourceInterface.ValueString())
+	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
 		for index, item := range data.MulticastRoutingVrfs {
@@ -178,6 +243,17 @@ func (data System) toBody(ctx context.Context) string {
 				if item.Distributed.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf"+"."+strconv.Itoa(index)+"."+"distributed", map[string]string{})
 				}
+			}
+		}
+	}
+	if len(data.IpHttpAuthenticationAaaCommandAuthorization) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.authentication.aaa.command-authorization", []interface{}{})
+		for index, item := range data.IpHttpAuthenticationAaaCommandAuthorization {
+			if !item.Level.IsNull() && !item.Level.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.authentication.aaa.command-authorization"+"."+strconv.Itoa(index)+"."+"level", strconv.FormatInt(item.Level.ValueInt64(), 10))
+			}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.authentication.aaa.command-authorization"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
 		}
 	}
@@ -349,6 +425,107 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.MulticastRoutingVrfs[i].Distributed = types.BoolNull()
 		}
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.access-class"); value.Exists() && !data.IpHttpAccessClass.IsNull() {
+		data.IpHttpAccessClass = types.Int64Value(value.Int())
+	} else {
+		data.IpHttpAccessClass = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa"); !data.IpHttpAuthenticationAaa.IsNull() {
+		if value.Exists() {
+			data.IpHttpAuthenticationAaa = types.BoolValue(true)
+		} else {
+			data.IpHttpAuthenticationAaa = types.BoolValue(false)
+		}
+	} else {
+		data.IpHttpAuthenticationAaa = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.exec-authorization"); value.Exists() && !data.IpHttpAuthenticationAaaExecAuthorization.IsNull() {
+		data.IpHttpAuthenticationAaaExecAuthorization = types.StringValue(value.String())
+	} else {
+		data.IpHttpAuthenticationAaaExecAuthorization = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.login-authentication"); value.Exists() && !data.IpHttpAuthenticationAaaLoginAuthentication.IsNull() {
+		data.IpHttpAuthenticationAaaLoginAuthentication = types.StringValue(value.String())
+	} else {
+		data.IpHttpAuthenticationAaaLoginAuthentication = types.StringNull()
+	}
+	for i := range data.IpHttpAuthenticationAaaCommandAuthorization {
+		keys := [...]string{"level"}
+		keyValues := [...]string{strconv.FormatInt(data.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
+
+		var r gjson.Result
+		res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.command-authorization").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("level"); value.Exists() && !data.IpHttpAuthenticationAaaCommandAuthorization[i].Level.IsNull() {
+			data.IpHttpAuthenticationAaaCommandAuthorization[i].Level = types.Int64Value(value.Int())
+		} else {
+			data.IpHttpAuthenticationAaaCommandAuthorization[i].Level = types.Int64Null()
+		}
+		if value := r.Get("name"); value.Exists() && !data.IpHttpAuthenticationAaaCommandAuthorization[i].Name.IsNull() {
+			data.IpHttpAuthenticationAaaCommandAuthorization[i].Name = types.StringValue(value.String())
+		} else {
+			data.IpHttpAuthenticationAaaCommandAuthorization[i].Name = types.StringNull()
+		}
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.local"); !data.IpHttpAuthenticationLocal.IsNull() {
+		if value.Exists() {
+			data.IpHttpAuthenticationLocal = types.BoolValue(true)
+		} else {
+			data.IpHttpAuthenticationLocal = types.BoolValue(false)
+		}
+	} else {
+		data.IpHttpAuthenticationLocal = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.server"); !data.IpHttpServer.IsNull() {
+		if value.Exists() {
+			data.IpHttpServer = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpHttpServer = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-server"); !data.IpHttpSecureServer.IsNull() {
+		if value.Exists() {
+			data.IpHttpSecureServer = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpHttpSecureServer = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-trustpoint"); value.Exists() && !data.IpHttpSecureTrustpoint.IsNull() {
+		data.IpHttpSecureTrustpoint = types.StringValue(value.String())
+	} else {
+		data.IpHttpSecureTrustpoint = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.tls-version"); value.Exists() && !data.IpHttpTlsVersion.IsNull() {
+		data.IpHttpTlsVersion = types.StringValue(value.String())
+	} else {
+		data.IpHttpTlsVersion = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.client.secure-trustpoint"); value.Exists() && !data.IpHttpClientSecureTrustpoint.IsNull() {
+		data.IpHttpClientSecureTrustpoint = types.StringValue(value.String())
+	} else {
+		data.IpHttpClientSecureTrustpoint = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.client.source-interface"); value.Exists() && !data.IpHttpClientSourceInterface.IsNull() {
+		data.IpHttpClientSourceInterface = types.StringValue(value.String())
+	} else {
+		data.IpHttpClientSourceInterface = types.StringNull()
+	}
 }
 
 func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
@@ -444,6 +621,61 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.access-class"); value.Exists() {
+		data.IpHttpAccessClass = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa"); value.Exists() {
+		data.IpHttpAuthenticationAaa = types.BoolValue(true)
+	} else {
+		data.IpHttpAuthenticationAaa = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.exec-authorization"); value.Exists() {
+		data.IpHttpAuthenticationAaaExecAuthorization = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.login-authentication"); value.Exists() {
+		data.IpHttpAuthenticationAaaLoginAuthentication = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.command-authorization"); value.Exists() {
+		data.IpHttpAuthenticationAaaCommandAuthorization = make([]SystemIpHttpAuthenticationAaaCommandAuthorization, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemIpHttpAuthenticationAaaCommandAuthorization{}
+			if cValue := v.Get("level"); cValue.Exists() {
+				item.Level = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.IpHttpAuthenticationAaaCommandAuthorization = append(data.IpHttpAuthenticationAaaCommandAuthorization, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.local"); value.Exists() {
+		data.IpHttpAuthenticationLocal = types.BoolValue(true)
+	} else {
+		data.IpHttpAuthenticationLocal = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.server"); value.Exists() {
+		data.IpHttpServer = types.BoolValue(value.Bool())
+	} else {
+		data.IpHttpServer = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-server"); value.Exists() {
+		data.IpHttpSecureServer = types.BoolValue(value.Bool())
+	} else {
+		data.IpHttpSecureServer = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-trustpoint"); value.Exists() {
+		data.IpHttpSecureTrustpoint = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.tls-version"); value.Exists() {
+		data.IpHttpTlsVersion = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.client.secure-trustpoint"); value.Exists() {
+		data.IpHttpClientSecureTrustpoint = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.client.source-interface"); value.Exists() {
+		data.IpHttpClientSourceInterface = types.StringValue(value.String())
+	}
 }
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
@@ -524,6 +756,67 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.IpHttpAccessClass.IsNull() && data.IpHttpAccessClass.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/access-class", state.getPath()))
+	}
+	if !state.IpHttpAuthenticationAaa.IsNull() && data.IpHttpAuthenticationAaa.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", state.getPath()))
+	}
+	if !state.IpHttpAuthenticationAaaExecAuthorization.IsNull() && data.IpHttpAuthenticationAaaExecAuthorization.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/exec-authorization", state.getPath()))
+	}
+	if !state.IpHttpAuthenticationAaaLoginAuthentication.IsNull() && data.IpHttpAuthenticationAaaLoginAuthentication.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/login-authentication", state.getPath()))
+	}
+	for i := range state.IpHttpAuthenticationAaaCommandAuthorization {
+		stateKeyValues := [...]string{strconv.FormatInt(state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpHttpAuthenticationAaaCommandAuthorization {
+			found = true
+			if state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64() != data.IpHttpAuthenticationAaaCommandAuthorization[j].Level.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.IpHttpAuthenticationAaaCommandAuthorization[i].Name.IsNull() && data.IpHttpAuthenticationAaaCommandAuthorization[j].Name.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.IpHttpAuthenticationLocal.IsNull() && data.IpHttpAuthenticationLocal.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", state.getPath()))
+	}
+	if !state.IpHttpServer.IsNull() && data.IpHttpServer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/server", state.getPath()))
+	}
+	if !state.IpHttpSecureServer.IsNull() && data.IpHttpSecureServer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-server", state.getPath()))
+	}
+	if !state.IpHttpSecureTrustpoint.IsNull() && data.IpHttpSecureTrustpoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-trustpoint", state.getPath()))
+	}
+	if !state.IpHttpTlsVersion.IsNull() && data.IpHttpTlsVersion.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/tls-version", state.getPath()))
+	}
+	if !state.IpHttpClientSecureTrustpoint.IsNull() && data.IpHttpClientSecureTrustpoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/secure-trustpoint", state.getPath()))
+	}
+	if !state.IpHttpClientSourceInterface.IsNull() && data.IpHttpClientSourceInterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/source-interface", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -562,6 +855,13 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 		if !data.MulticastRoutingVrfs[i].Distributed.IsNull() && !data.MulticastRoutingVrfs[i].Distributed.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v/distributed", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
+	}
+	if !data.IpHttpAuthenticationAaa.IsNull() && !data.IpHttpAuthenticationAaa.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", data.getPath()))
+	}
+
+	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -620,6 +920,44 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.MulticastRoutingVrfs[i].Vrf.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.IpHttpAccessClass.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/access-class", data.getPath()))
+	}
+	if !data.IpHttpAuthenticationAaa.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", data.getPath()))
+	}
+	if !data.IpHttpAuthenticationAaaExecAuthorization.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/exec-authorization", data.getPath()))
+	}
+	if !data.IpHttpAuthenticationAaaLoginAuthentication.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/login-authentication", data.getPath()))
+	}
+	for i := range data.IpHttpAuthenticationAaaCommandAuthorization {
+		keyValues := [...]string{strconv.FormatInt(data.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.IpHttpAuthenticationLocal.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", data.getPath()))
+	}
+	if !data.IpHttpServer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/server", data.getPath()))
+	}
+	if !data.IpHttpSecureServer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-server", data.getPath()))
+	}
+	if !data.IpHttpSecureTrustpoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-trustpoint", data.getPath()))
+	}
+	if !data.IpHttpTlsVersion.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/tls-version", data.getPath()))
+	}
+	if !data.IpHttpClientSecureTrustpoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/secure-trustpoint", data.getPath()))
+	}
+	if !data.IpHttpClientSourceInterface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/source-interface", data.getPath()))
 	}
 	return deletePaths
 }

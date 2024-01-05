@@ -56,6 +56,58 @@ attributes:
       - yang_name: distributed
         example: true
         test_tags: [C8000V]
+  - yang_name: ip/Cisco-IOS-XE-http:http/access-class
+    example: 10
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/authentication/authentication-choice/aaa/aaa
+    xpath: ip/Cisco-IOS-XE-http:http/authentication/aaa
+    tf_name: ip_http_authentication_aaa
+    example: true
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/authentication/authentication-choice/aaa/aaa/exec-authorization
+    xpath: ip/Cisco-IOS-XE-http:http/authentication/aaa/exec-authorization
+    tf_name: ip_http_authentication_aaa_exec_authorization
+    example: group1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/authentication/authentication-choice/aaa/aaa/login-authentication
+    xpath: ip/Cisco-IOS-XE-http:http/authentication/aaa/login-authentication
+    tf_name: ip_http_authentication_aaa_login_authentication
+    example: group1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/authentication/authentication-choice/aaa/aaa/command-authorization
+    xpath: ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization
+    tf_name: ip_http_authentication_aaa_command_authorization
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: level
+        id: true
+        example: 15
+      - yang_name: name
+        example: group1
+  - yang_name: ip/Cisco-IOS-XE-http:http/authentication/authentication-choice/local/local
+    xpath: ip/Cisco-IOS-XE-http:http/authentication/local
+    tf_name: ip_http_authentication_local
+    example: true
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/server
+    example: true
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/secure-server
+    example: true
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/secure-trustpoint
+    example: TP1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/tls-version
+    example: TLSv1.2
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/client/secure-trustpoint
+    example: TP1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/client/source-interface
+    example: Loopback0
+    exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true
