@@ -155,6 +155,8 @@ Optional:
 - `set_as_path_prepend_as_legacy` (String) <1-65535>;;AS number (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `set_as_path_prepend_last_as` (Number) - Range: `1`-`10`
 - `set_as_path_prepend_last_as_legacy` (Number) - Range: `1`-`10`
+- `set_as_path_replace_any` (Boolean) Replace each AS number in the AS-path with the local AS
+- `set_as_path_replace_as` (Attributes List) (see [below for nested schema](#nestedatt--entries--set_as_path_replace_as))
 - `set_as_path_tag` (Boolean) Set the tag as an AS-path attribute
 - `set_as_path_tag_legacy` (Boolean) Set the tag as an AS-path attribute (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `set_communities` (List of String)
@@ -218,6 +220,13 @@ Optional:
   - Range: `0`-`65535`
 - `set_weight_legacy` (Number) BGP weight for routing table (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
   - Range: `0`-`65535`
+
+<a id="nestedatt--entries--set_as_path_replace_as"></a>
+### Nested Schema for `entries.set_as_path_replace_as`
+
+Required:
+
+- `as_number` (String) <1-65535>;;AS number
 
 ## Import
 

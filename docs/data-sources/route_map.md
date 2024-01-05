@@ -84,6 +84,8 @@ Read-Only:
 - `set_as_path_prepend_as_legacy` (String) <1-65535>;;AS number (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `set_as_path_prepend_last_as` (Number)
 - `set_as_path_prepend_last_as_legacy` (Number)
+- `set_as_path_replace_any` (Boolean) Replace each AS number in the AS-path with the local AS
+- `set_as_path_replace_as` (Attributes List) (see [below for nested schema](#nestedatt--entries--set_as_path_replace_as))
 - `set_as_path_tag` (Boolean) Set the tag as an AS-path attribute
 - `set_as_path_tag_legacy` (Boolean) Set the tag as an AS-path attribute (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `set_communities` (List of String)
@@ -137,3 +139,10 @@ Read-Only:
 - `set_vrf` (String) VPN Routing/Forwarding instance name
 - `set_weight` (Number) BGP weight for routing table
 - `set_weight_legacy` (Number) BGP weight for routing table (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
+
+<a id="nestedatt--entries--set_as_path_replace_as"></a>
+### Nested Schema for `entries.set_as_path_replace_as`
+
+Read-Only:
+
+- `as_number` (String) <1-65535>;;AS number

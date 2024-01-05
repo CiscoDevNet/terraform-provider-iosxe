@@ -441,6 +441,22 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							MarkdownDescription: "Set the tag as an AS-path attribute",
 							Computed:            true,
 						},
+						"set_as_path_replace_any": schema.BoolAttribute{
+							MarkdownDescription: "Replace each AS number in the AS-path with the local AS",
+							Computed:            true,
+						},
+						"set_as_path_replace_as": schema.ListNestedAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"as_number": schema.StringAttribute{
+										MarkdownDescription: "<1-65535>;;AS number",
+										Computed:            true,
+									},
+								},
+							},
+						},
 						"set_community_none": schema.BoolAttribute{
 							MarkdownDescription: "No community attribute",
 							Computed:            true,

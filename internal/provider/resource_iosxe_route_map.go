@@ -521,6 +521,22 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							MarkdownDescription: helpers.NewAttributeDescription("Set the tag as an AS-path attribute").String,
 							Optional:            true,
 						},
+						"set_as_path_replace_any": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Replace each AS number in the AS-path with the local AS").String,
+							Optional:            true,
+						},
+						"set_as_path_replace_as": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"as_number": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("<1-65535>;;AS number").String,
+										Required:            true,
+									},
+								},
+							},
+						},
 						"set_community_none": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("No community attribute").String,
 							Optional:            true,

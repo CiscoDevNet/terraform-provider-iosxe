@@ -271,6 +271,18 @@ attributes:
         tf_name: set_as_path_tag
         exclude_test: true
         example: true
+      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/any
+        tf_name: set_as_path_replace_any
+        exclude_test: true
+        example: true
+      - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/as-path/replace/as-container
+        tf_name: set_as_path_replace_as
+        type: List
+        exclude_test: true
+        attributes:
+          - yang_name: as-number
+            id: true
+            example: 65001
       - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/none/none
         xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/none
         tf_name: set_community_none
