@@ -284,6 +284,14 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				MarkdownDescription: helpers.NewAttributeDescription("graceful-restart for this peer").String,
 				Optional:            true,
 			},
+			"next_hop_self": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Disable the next hop calculation for this neighbor").String,
+				Optional:            true,
+			},
+			"next_hop_self_all": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable next-hop-self for both eBGP and iBGP received paths").String,
+				Optional:            true,
+			},
 		},
 	}
 }

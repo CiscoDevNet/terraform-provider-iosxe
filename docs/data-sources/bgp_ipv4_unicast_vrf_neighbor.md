@@ -57,6 +57,8 @@ data "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `local_as_no_prepend` (Boolean) Do not prepend local-as to updates from ebgp peers
 - `local_as_replace_as` (Boolean) Replace real AS with local AS in the EBGP updates
 - `log_neighbor_changes_disable` (Boolean) disable
+- `next_hop_self` (Boolean) Disable the next hop calculation for this neighbor
+- `next_hop_self_all` (Boolean) Enable next-hop-self for both eBGP and iBGP received paths
 - `password` (String)
 - `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
 - `remote_as` (String) Specify a BGP peer-group remote-as

@@ -33,4 +33,6 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
     }
   ]
   ha_mode_graceful_restart = true
+  next_hop_self            = true
+  next_hop_self_all        = true
 }

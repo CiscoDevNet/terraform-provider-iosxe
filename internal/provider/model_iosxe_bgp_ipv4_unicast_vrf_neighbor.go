@@ -76,6 +76,8 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	EbgpMultihop                        types.Bool                           `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
 	HaModeGracefulRestart               types.Bool                           `tfsdk:"ha_mode_graceful_restart"`
+	NextHopSelf                         types.Bool                           `tfsdk:"next_hop_self"`
+	NextHopSelfAll                      types.Bool                           `tfsdk:"next_hop_self_all"`
 }
 
 type BGPIPv4UnicastVRFNeighborData struct {
@@ -119,6 +121,8 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	EbgpMultihop                        types.Bool                           `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64                          `tfsdk:"ebgp_multihop_max_hop"`
 	HaModeGracefulRestart               types.Bool                           `tfsdk:"ha_mode_graceful_restart"`
+	NextHopSelf                         types.Bool                           `tfsdk:"next_hop_self"`
+	NextHopSelfAll                      types.Bool                           `tfsdk:"next_hop_self_all"`
 }
 type BGPIPv4UnicastVRFNeighborRouteMaps struct {
 	InOut        types.String `tfsdk:"in_out"`
@@ -281,6 +285,16 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 	if !data.HaModeGracefulRestart.IsNull() && !data.HaModeGracefulRestart.IsUnknown() {
 		if data.HaModeGracefulRestart.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ha-mode.graceful-restart", map[string]string{})
+		}
+	}
+	if !data.NextHopSelf.IsNull() && !data.NextHopSelf.IsUnknown() {
+		if data.NextHopSelf.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"next-hop-self", map[string]string{})
+		}
+	}
+	if !data.NextHopSelfAll.IsNull() && !data.NextHopSelfAll.IsUnknown() {
+		if data.NextHopSelfAll.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"next-hop-self.all", map[string]string{})
 		}
 	}
 	if len(data.RouteMaps) > 0 {
@@ -575,6 +589,24 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 	} else {
 		data.HaModeGracefulRestart = types.BoolNull()
 	}
+	if value := res.Get(prefix + "next-hop-self"); !data.NextHopSelf.IsNull() {
+		if value.Exists() {
+			data.NextHopSelf = types.BoolValue(true)
+		} else {
+			data.NextHopSelf = types.BoolValue(false)
+		}
+	} else {
+		data.NextHopSelf = types.BoolNull()
+	}
+	if value := res.Get(prefix + "next-hop-self.all"); !data.NextHopSelfAll.IsNull() {
+		if value.Exists() {
+			data.NextHopSelfAll = types.BoolValue(true)
+		} else {
+			data.NextHopSelfAll = types.BoolValue(false)
+		}
+	} else {
+		data.NextHopSelfAll = types.BoolNull()
+	}
 }
 
 func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjson.Result) {
@@ -730,6 +762,16 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 	} else {
 		data.HaModeGracefulRestart = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "next-hop-self"); value.Exists() {
+		data.NextHopSelf = types.BoolValue(true)
+	} else {
+		data.NextHopSelf = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "next-hop-self.all"); value.Exists() {
+		data.NextHopSelfAll = types.BoolValue(true)
+	} else {
+		data.NextHopSelfAll = types.BoolValue(false)
+	}
 }
 
 func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, state BGPIPv4UnicastVRFNeighbor) []string {
@@ -858,6 +900,12 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, stat
 	if !state.HaModeGracefulRestart.IsNull() && data.HaModeGracefulRestart.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ha-mode/graceful-restart", state.getPath()))
 	}
+	if !state.NextHopSelf.IsNull() && data.NextHopSelf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/next-hop-self", state.getPath()))
+	}
+	if !state.NextHopSelfAll.IsNull() && data.NextHopSelfAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/next-hop-self/all", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -911,6 +959,12 @@ func (data *BGPIPv4UnicastVRFNeighbor) getEmptyLeafsDelete(ctx context.Context) 
 	}
 	if !data.HaModeGracefulRestart.IsNull() && !data.HaModeGracefulRestart.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ha-mode/graceful-restart", data.getPath()))
+	}
+	if !data.NextHopSelf.IsNull() && !data.NextHopSelf.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/next-hop-self", data.getPath()))
+	}
+	if !data.NextHopSelfAll.IsNull() && !data.NextHopSelfAll.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/next-hop-self/all", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -1017,6 +1071,12 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []str
 	}
 	if !data.HaModeGracefulRestart.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ha-mode/graceful-restart", data.getPath()))
+	}
+	if !data.NextHopSelf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/next-hop-self", data.getPath()))
+	}
+	if !data.NextHopSelfAll.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/next-hop-self/all", data.getPath()))
 	}
 	return deletePaths
 }

@@ -131,6 +131,10 @@ attributes:
     exclude_test: true
   - yang_name: ha-mode/graceful-restart
     example: true
+  - yang_name: next-hop-self
+    example: true
+  - yang_name: next-hop-self/all
+    example: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true
