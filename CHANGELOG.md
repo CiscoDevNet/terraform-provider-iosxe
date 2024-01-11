@@ -3,6 +3,7 @@
 - Add `bandwidth` attribute to `iosxe_interface_ethernet` resource and data source
 - Add `speed_nonegotiate` attribute to `iosxe_interface_ethernet` resource and data source
 - Add `service_policy_input` and `service_policy_output` attributes to `iosxe_interface_ethernet` resource and data source
+- Add `classes` and `description` attributes to `iosxe_policy_map` resource and data source
 
 ## 0.5.4
 

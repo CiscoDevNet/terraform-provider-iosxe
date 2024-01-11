@@ -6,8 +6,109 @@ no_delete_attributes: true
 attributes:
   - yang_name: name
     id: true
-    example: dot1x_policy
+    example: POLICY1
   - yang_name: type
     example: control
+    exclude_test: true
   - yang_name: subscriber
     example: true
+    exclude_test: true
+  - yang_name: description
+    example: My first policy-map
+  - yang_name: class
+    tf_name: classes
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: CLASS1
+      - yang_name: action-list
+        tf_name: actions
+        type: List
+        attributes:
+          - yang_name: action-type
+            tf_name: type
+            id: true
+            example: bandwidth
+          - yang_name: action-param/bandwidth-case/bandwidth/bits
+            xpath: bandwidth/bits
+            tf_name: bandwidth_bits
+            example: 1000000
+            exclude_test: true
+          - yang_name: action-param/bandwidth-case/bandwidth/percent
+            xpath: bandwidth/percent
+            tf_name: bandwidth_percent
+            example: 10
+          - yang_name: action-param/bandwidth-case/bandwidth/remaining/rem-option
+            xpath: bandwidth/remaining/rem-option
+            tf_name: bandwidth_remaining_option
+            example: percent
+            exclude_test: true
+          - yang_name: action-param/bandwidth-case/bandwidth/remaining/percent
+            xpath: bandwidth/remaining/percent
+            tf_name: bandwidth_remaining_percent
+            example: 10
+            exclude_test: true
+          - yang_name: action-param/bandwidth-case/bandwidth/remaining/ratio
+            xpath: bandwidth/remaining/ratio
+            tf_name: bandwidth_remaining_ratio
+            example: 100
+            exclude_test: true
+          - yang_name: action-param/priority-case/priority/level
+            xpath: priority/level
+            tf_name: priority_level
+            example: 1
+            exclude_test: true
+          - yang_name: action-param/priority-case/priority/burst
+            xpath: priority/burst
+            tf_name: priority_burst
+            example: 10000
+            exclude_test: true
+          - yang_name: action-param/queue-limit-case/queue-limit/queue-limit-value
+            xpath: queue-limit/queue-limit-value
+            tf_name: queue_limit
+            example: 10000
+            exclude_test: true
+          - yang_name: action-param/queue-limit-case/queue-limit/queue-limit-type
+            xpath: queue-limit/queue-limit-type
+            tf_name: queue_limit_type
+            example: ms
+            exclude_test: true
+          - yang_name: action-param/shape-case/shape/average/average-choice/a/bit-rate
+            xpath: shape/average/bit-rate
+            tf_name: shape_average_bit_rate
+            example: 1000
+            exclude_test: true
+          - yang_name: action-param/shape-case/shape/average/average-choice/a/bits-per-interval-sustained
+            xpath: shape/average/bits-per-interval-sustained
+            tf_name: shape_average_bits_per_interval_sustained
+            example: 1000
+            exclude_test: true
+          - yang_name: action-param/shape-case/shape/average/average-choice/a/bits-per-interval-excess
+            xpath: shape/average/bits-per-interval-excess
+            tf_name: shape_average_bits_per_interval_excess
+            example: 1000
+            exclude_test: true
+          - yang_name: action-param/shape-case/shape/average/average-choice/b/percent
+            xpath: shape/average/percent
+            tf_name: shape_average_percent
+            example: 10
+            exclude_test: true
+          - yang_name: action-param/shape-case/shape/average/average-choice/b/burst-size-sustained
+            xpath: shape/average/burst-size-sustained
+            tf_name: shape_average_burst_size_sustained
+            example: 1000
+            exclude_test: true
+          - yang_name: action-param/shape-case/shape/average/average-choice/b/ms
+            xpath: shape/average/ms
+            tf_name: shape_average_ms
+            example: 1000
+            exclude_test: true
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CLASS1
+    attributes:
+      - name: name
+        value: CLASS1
+      - name: prematch
+        value: match-all

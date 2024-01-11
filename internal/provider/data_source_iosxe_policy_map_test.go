@@ -27,30 +27,50 @@ import (
 
 func TestAccDataSourceIosxePolicyMap(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map.test", "type", "control"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map.test", "subscriber", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map.test", "description", "My first policy-map"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map.test", "classes.0.name", "CLASS1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map.test", "classes.0.actions.0.type", "bandwidth"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_policy_map.test", "classes.0.actions.0.bandwidth_percent", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxePolicyMapConfig(),
+				Config: testAccDataSourceIosxePolicyMapPrerequisitesConfig + testAccDataSourceIosxePolicyMapConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
 }
 
+const testAccDataSourceIosxePolicyMapPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CLASS1"
+	attributes = {
+		"name" = "CLASS1"
+		"prematch" = "match-all"
+	}
+}
+
+`
+
 func testAccDataSourceIosxePolicyMapConfig() string {
 	config := `resource "iosxe_policy_map" "test" {` + "\n"
-	config += `	name = "dot1x_policy"` + "\n"
-	config += `	type = "control"` + "\n"
-	config += `	subscriber = true` + "\n"
+	config += `	name = "POLICY1"` + "\n"
+	config += `	description = "My first policy-map"` + "\n"
+	config += `	classes = [{` + "\n"
+	config += `		name = "CLASS1"` + "\n"
+	config += `		actions = [{` + "\n"
+	config += `			type = "bandwidth"` + "\n"
+	config += `			bandwidth_percent = 10` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
 		data "iosxe_policy_map" "test" {
-			name = "dot1x_policy"
+			name = "POLICY1"
 			depends_on = [iosxe_policy_map.test]
 		}
 	`

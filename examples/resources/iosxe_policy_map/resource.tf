@@ -1,5 +1,15 @@
 resource "iosxe_policy_map" "example" {
-  name       = "dot1x_policy"
-  type       = "control"
-  subscriber = true
+  name        = "POLICY1"
+  description = "My first policy-map"
+  classes = [
+    {
+      name = "CLASS1"
+      actions = [
+        {
+          type              = "bandwidth"
+          bandwidth_percent = 10
+        }
+      ]
+    }
+  ]
 }

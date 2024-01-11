@@ -24,6 +24,7 @@ import (
 	"fmt"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -85,6 +86,142 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 			"subscriber": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Domain name of the policy map").String,
 				Optional:            true,
+			},
+			"description": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Policy-Map description").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 200),
+				},
+			},
+			"classes": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("policy criteria").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"actions": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"type": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("bandwidth", "compression", "dbl", "drop", "estimate", "fair-queue", "forward", "netflow-sampler", "police", "priority", "queue-buffers", "queue-limit", "random-detect", "service-policy", "set", "shape", "trust").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("bandwidth", "compression", "dbl", "drop", "estimate", "fair-queue", "forward", "netflow-sampler", "police", "priority", "queue-buffers", "queue-limit", "random-detect", "service-policy", "set", "shape", "trust"),
+										},
+									},
+									"bandwidth_bits": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 100000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 100000000),
+										},
+									},
+									"bandwidth_percent": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("% of total Bandwidth").AddIntegerRangeDescription(1, 100).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 100),
+										},
+									},
+									"bandwidth_remaining_option": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("percent", "ratio").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("percent", "ratio"),
+										},
+									},
+									"bandwidth_remaining_percent": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("% of the remaining bandwidth").AddIntegerRangeDescription(1, 100).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 100),
+										},
+									},
+									"bandwidth_remaining_ratio": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("ratio for sharing excess bandwidth").AddIntegerRangeDescription(1, 65536).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 65536),
+										},
+									},
+									"priority_level": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Multi-Level Priority Queue").AddIntegerRangeDescription(1, 2).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 2),
+										},
+									},
+									"priority_burst": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(32, 2000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(32, 2000000),
+										},
+									},
+									"queue_limit": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 64000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 64000000),
+										},
+									},
+									"queue_limit_type": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("bytes", "ms", "packets", "us").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("bytes", "ms", "packets", "us"),
+										},
+									},
+									"shape_average_bit_rate": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Target Bit Rate (bits/sec)").AddIntegerRangeDescription(8000, 100000000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(8000, 100000000000),
+										},
+									},
+									"shape_average_bits_per_interval_sustained": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("bits per interval, sustained. Recommend not to configure, algo finds the best value").AddIntegerRangeDescription(256, 154400000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(256, 154400000),
+										},
+									},
+									"shape_average_bits_per_interval_excess": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("bits per interval, excess.").AddIntegerRangeDescription(0, 154400000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 154400000),
+										},
+									},
+									"shape_average_percent": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("% of interface bandwidth for Committed information rate").AddIntegerRangeDescription(0, 100).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 100),
+										},
+									},
+									"shape_average_burst_size_sustained": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("sustained burst in milliseconds. Recommend not to configure it, the algorithm will find out the best value").AddIntegerRangeDescription(10, 2000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(10, 2000),
+										},
+									},
+									"shape_average_ms": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("milliseconds").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		},
 	}

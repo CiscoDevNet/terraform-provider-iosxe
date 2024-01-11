@@ -75,6 +75,94 @@ func (d *PolicyMapDataSource) Schema(ctx context.Context, req datasource.SchemaR
 				MarkdownDescription: "Domain name of the policy map",
 				Computed:            true,
 			},
+			"description": schema.StringAttribute{
+				MarkdownDescription: "Policy-Map description",
+				Computed:            true,
+			},
+			"classes": schema.ListNestedAttribute{
+				MarkdownDescription: "policy criteria",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"actions": schema.ListNestedAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"type": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"bandwidth_bits": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"bandwidth_percent": schema.Int64Attribute{
+										MarkdownDescription: "% of total Bandwidth",
+										Computed:            true,
+									},
+									"bandwidth_remaining_option": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"bandwidth_remaining_percent": schema.Int64Attribute{
+										MarkdownDescription: "% of the remaining bandwidth",
+										Computed:            true,
+									},
+									"bandwidth_remaining_ratio": schema.Int64Attribute{
+										MarkdownDescription: "ratio for sharing excess bandwidth",
+										Computed:            true,
+									},
+									"priority_level": schema.Int64Attribute{
+										MarkdownDescription: "Multi-Level Priority Queue",
+										Computed:            true,
+									},
+									"priority_burst": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"queue_limit": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"queue_limit_type": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"shape_average_bit_rate": schema.Int64Attribute{
+										MarkdownDescription: "Target Bit Rate (bits/sec)",
+										Computed:            true,
+									},
+									"shape_average_bits_per_interval_sustained": schema.Int64Attribute{
+										MarkdownDescription: "bits per interval, sustained. Recommend not to configure, algo finds the best value",
+										Computed:            true,
+									},
+									"shape_average_bits_per_interval_excess": schema.Int64Attribute{
+										MarkdownDescription: "bits per interval, excess.",
+										Computed:            true,
+									},
+									"shape_average_percent": schema.Int64Attribute{
+										MarkdownDescription: "% of interface bandwidth for Committed information rate",
+										Computed:            true,
+									},
+									"shape_average_burst_size_sustained": schema.Int64Attribute{
+										MarkdownDescription: "sustained burst in milliseconds. Recommend not to configure it, the algorithm will find out the best value",
+										Computed:            true,
+									},
+									"shape_average_ms": schema.BoolAttribute{
+										MarkdownDescription: "milliseconds",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

@@ -14,9 +14,19 @@ This resource can manage the Policy Map configuration.
 
 ```terraform
 resource "iosxe_policy_map" "example" {
-  name       = "dot1x_policy"
-  type       = "control"
-  subscriber = true
+  name        = "POLICY1"
+  description = "My first policy-map"
+  classes = [
+    {
+      name = "CLASS1"
+      actions = [
+        {
+          type              = "bandwidth"
+          bandwidth_percent = 10
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -29,6 +39,8 @@ resource "iosxe_policy_map" "example" {
 
 ### Optional
 
+- `classes` (Attributes List) policy criteria (see [below for nested schema](#nestedatt--classes))
+- `description` (String) Policy-Map description
 - `device` (String) A device name from the provider configuration.
 - `subscriber` (Boolean) Domain name of the policy map
 - `type` (String) type of the policy-map
@@ -38,10 +50,55 @@ resource "iosxe_policy_map" "example" {
 
 - `id` (String) The path of the object.
 
+<a id="nestedatt--classes"></a>
+### Nested Schema for `classes`
+
+Required:
+
+- `name` (String)
+
+Optional:
+
+- `actions` (Attributes List) (see [below for nested schema](#nestedatt--classes--actions))
+
+<a id="nestedatt--classes--actions"></a>
+### Nested Schema for `classes.actions`
+
+Required:
+
+- `type` (String) - Choices: `bandwidth`, `compression`, `dbl`, `drop`, `estimate`, `fair-queue`, `forward`, `netflow-sampler`, `police`, `priority`, `queue-buffers`, `queue-limit`, `random-detect`, `service-policy`, `set`, `shape`, `trust`
+
+Optional:
+
+- `bandwidth_bits` (Number) - Range: `1`-`100000000`
+- `bandwidth_percent` (Number) % of total Bandwidth
+  - Range: `1`-`100`
+- `bandwidth_remaining_option` (String) - Choices: `percent`, `ratio`
+- `bandwidth_remaining_percent` (Number) % of the remaining bandwidth
+  - Range: `1`-`100`
+- `bandwidth_remaining_ratio` (Number) ratio for sharing excess bandwidth
+  - Range: `1`-`65536`
+- `priority_burst` (Number) - Range: `32`-`2000000`
+- `priority_level` (Number) Multi-Level Priority Queue
+  - Range: `1`-`2`
+- `queue_limit` (Number) - Range: `1`-`64000000`
+- `queue_limit_type` (String) - Choices: `bytes`, `ms`, `packets`, `us`
+- `shape_average_bit_rate` (Number) Target Bit Rate (bits/sec)
+  - Range: `8000`-`100000000000`
+- `shape_average_bits_per_interval_excess` (Number) bits per interval, excess.
+  - Range: `0`-`154400000`
+- `shape_average_bits_per_interval_sustained` (Number) bits per interval, sustained. Recommend not to configure, algo finds the best value
+  - Range: `256`-`154400000`
+- `shape_average_burst_size_sustained` (Number) sustained burst in milliseconds. Recommend not to configure it, the algorithm will find out the best value
+  - Range: `10`-`2000`
+- `shape_average_ms` (Boolean) milliseconds
+- `shape_average_percent` (Number) % of interface bandwidth for Committed information rate
+  - Range: `0`-`100`
+
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import iosxe_policy_map.example "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy"
+terraform import iosxe_policy_map.example "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1"
 ```

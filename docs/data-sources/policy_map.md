@@ -14,7 +14,7 @@ This data source can read the Policy Map configuration.
 
 ```terraform
 data "iosxe_policy_map" "example" {
-  name = "dot1x_policy"
+  name = "POLICY1"
 }
 ```
 
@@ -31,6 +31,38 @@ data "iosxe_policy_map" "example" {
 
 ### Read-Only
 
+- `classes` (Attributes List) policy criteria (see [below for nested schema](#nestedatt--classes))
+- `description` (String) Policy-Map description
 - `id` (String) The path of the retrieved object.
 - `subscriber` (Boolean) Domain name of the policy map
 - `type` (String) type of the policy-map
+
+<a id="nestedatt--classes"></a>
+### Nested Schema for `classes`
+
+Read-Only:
+
+- `actions` (Attributes List) (see [below for nested schema](#nestedatt--classes--actions))
+- `name` (String)
+
+<a id="nestedatt--classes--actions"></a>
+### Nested Schema for `classes.actions`
+
+Read-Only:
+
+- `bandwidth_bits` (Number)
+- `bandwidth_percent` (Number) % of total Bandwidth
+- `bandwidth_remaining_option` (String)
+- `bandwidth_remaining_percent` (Number) % of the remaining bandwidth
+- `bandwidth_remaining_ratio` (Number) ratio for sharing excess bandwidth
+- `priority_burst` (Number)
+- `priority_level` (Number) Multi-Level Priority Queue
+- `queue_limit` (Number)
+- `queue_limit_type` (String)
+- `shape_average_bit_rate` (Number) Target Bit Rate (bits/sec)
+- `shape_average_bits_per_interval_excess` (Number) bits per interval, excess.
+- `shape_average_bits_per_interval_sustained` (Number) bits per interval, sustained. Recommend not to configure, algo finds the best value
+- `shape_average_burst_size_sustained` (Number) sustained burst in milliseconds. Recommend not to configure it, the algorithm will find out the best value
+- `shape_average_ms` (Boolean) milliseconds
+- `shape_average_percent` (Number) % of interface bandwidth for Committed information rate
+- `type` (String)

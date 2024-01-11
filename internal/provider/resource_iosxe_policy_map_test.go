@@ -27,41 +27,62 @@ import (
 
 func TestAccIosxePolicyMap(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map.test", "name", "dot1x_policy"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map.test", "type", "control"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map.test", "subscriber", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map.test", "name", "POLICY1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map.test", "description", "My first policy-map"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map.test", "classes.0.name", "CLASS1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map.test", "classes.0.actions.0.type", "bandwidth"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map.test", "classes.0.actions.0.bandwidth_percent", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxePolicyMapConfig_minimum(),
+				Config: testAccIosxePolicyMapPrerequisitesConfig + testAccIosxePolicyMapConfig_minimum(),
 			},
 			{
-				Config: testAccIosxePolicyMapConfig_all(),
+				Config: testAccIosxePolicyMapPrerequisitesConfig + testAccIosxePolicyMapConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
 				ResourceName:  "iosxe_policy_map.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy",
+				ImportStateId: "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1",
 			},
 		},
 	})
 }
 
+const testAccIosxePolicyMapPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CLASS1"
+	attributes = {
+		"name" = "CLASS1"
+		"prematch" = "match-all"
+	}
+}
+
+`
+
 func testAccIosxePolicyMapConfig_minimum() string {
 	config := `resource "iosxe_policy_map" "test" {` + "\n"
-	config += `	name = "dot1x_policy"` + "\n"
+	config += `	name = "POLICY1"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
 
 func testAccIosxePolicyMapConfig_all() string {
 	config := `resource "iosxe_policy_map" "test" {` + "\n"
-	config += `	name = "dot1x_policy"` + "\n"
-	config += `	type = "control"` + "\n"
-	config += `	subscriber = true` + "\n"
+	config += `	name = "POLICY1"` + "\n"
+	config += `	description = "My first policy-map"` + "\n"
+	config += `	classes = [{` + "\n"
+	config += `		name = "CLASS1"` + "\n"
+	config += `		actions = [{` + "\n"
+	config += `			type = "bandwidth"` + "\n"
+	config += `			bandwidth_percent = 10` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
