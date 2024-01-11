@@ -132,6 +132,11 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "failure type",
 				Computed:            true,
 			},
+			"match_dscp": schema.ListAttribute{
+				MarkdownDescription: "Match DSCP in IP(v4) and IPv6 packets",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: "Class-Map description",
 				Computed:            true,

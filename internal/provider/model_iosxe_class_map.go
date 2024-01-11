@@ -52,6 +52,7 @@ type ClassMap struct {
 	MatchResultTypeMethodDot1xMethodTimeout   types.Bool                               `tfsdk:"match_result_type_method_dot1x_method_timeout"`
 	MatchMethodMab                            types.Bool                               `tfsdk:"match_method_mab"`
 	MatchResultTypeMethodMabAuthoritative     types.Bool                               `tfsdk:"match_result_type_method_mab_authoritative"`
+	MatchDscp                                 types.List                               `tfsdk:"match_dscp"`
 	Description                               types.String                             `tfsdk:"description"`
 }
 
@@ -73,6 +74,7 @@ type ClassMapData struct {
 	MatchResultTypeMethodDot1xMethodTimeout   types.Bool                               `tfsdk:"match_result_type_method_dot1x_method_timeout"`
 	MatchMethodMab                            types.Bool                               `tfsdk:"match_method_mab"`
 	MatchResultTypeMethodMabAuthoritative     types.Bool                               `tfsdk:"match_result_type_method_mab_authoritative"`
+	MatchDscp                                 types.List                               `tfsdk:"match_dscp"`
 	Description                               types.String                             `tfsdk:"description"`
 }
 type ClassMapMatchActivatedServiceTemplates struct {
@@ -163,6 +165,11 @@ func (data ClassMap) toBody(ctx context.Context) string {
 		if data.MatchResultTypeMethodMabAuthoritative.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.result-type.method.mab.authoritative", map[string]string{})
 		}
+	}
+	if !data.MatchDscp.IsNull() && !data.MatchDscp.IsUnknown() {
+		var values []string
+		data.MatchDscp.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.dscp", values)
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
@@ -322,6 +329,11 @@ func (data *ClassMap) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchResultTypeMethodMabAuthoritative = types.BoolNull()
 	}
+	if value := res.Get(prefix + "match.dscp"); value.Exists() && !data.MatchDscp.IsNull() {
+		data.MatchDscp = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchDscp = types.ListNull(types.StringType)
+	}
 	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
 		data.Description = types.StringValue(value.String())
 	} else {
@@ -405,6 +417,11 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 		data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(true)
 	} else {
 		data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.dscp"); value.Exists() {
+		data.MatchDscp = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchDscp = types.ListNull(types.StringType)
 	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
@@ -495,6 +512,27 @@ func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []str
 	if !state.MatchResultTypeMethodMabAuthoritative.IsNull() && data.MatchResultTypeMethodMabAuthoritative.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/mab/authoritative", state.getPath()))
 	}
+	if !state.MatchDscp.IsNull() {
+		if data.MatchDscp.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/dscp", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchDscp.ElementsAs(ctx, &dataValues, false)
+			state.MatchDscp.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/dscp=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
@@ -582,6 +620,9 @@ func (data *ClassMap) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.MatchResultTypeMethodMabAuthoritative.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/mab/authoritative", data.getPath()))
+	}
+	if !data.MatchDscp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/dscp", data.getPath()))
 	}
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))

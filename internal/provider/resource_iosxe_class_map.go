@@ -146,6 +146,11 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: helpers.NewAttributeDescription("failure type").String,
 				Optional:            true,
 			},
+			"match_dscp": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match DSCP in IP(v4) and IPv6 packets").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Class-Map description").String,
 				Optional:            true,
