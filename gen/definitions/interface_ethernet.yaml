@@ -27,6 +27,9 @@ attributes:
   - yang_name: media-type
     exclude_test: true
     example: sfp
+  - yang_name: bandwidth/kilobits
+    tf_name: bandwidth
+    example: 1000000
   - yang_name: switchport-conf/switchport
     tf_name: switchport
     exclude_test: true

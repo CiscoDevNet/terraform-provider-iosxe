@@ -94,6 +94,13 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					stringvalidator.OneOf("auto-select", "rj45", "sfp"),
 				},
 			},
+			"bandwidth": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 200000000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 200000000),
+				},
+			},
 			"switchport": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,

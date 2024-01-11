@@ -1,3 +1,7 @@
+## 0.5.5 (unreleased)
+
+- Add `bandwidth` attribute to `iosxe_interface_ethernet` resource and data source
+
 ## 0.5.4
 
 - Add `next_hop_self` and `next_hop_self_all` attributes to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source

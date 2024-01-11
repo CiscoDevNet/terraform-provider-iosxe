@@ -65,6 +65,7 @@ data "iosxe_interface_ethernet" "example" {
 - `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
 - `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
 - `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
+- `bandwidth` (Number)
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
 - `bfd_enable` (Boolean) Enable BFD under the interface
 - `bfd_interval` (Number)

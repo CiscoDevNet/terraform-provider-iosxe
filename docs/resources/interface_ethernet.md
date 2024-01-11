@@ -16,6 +16,7 @@ This resource can manage the Interface Ethernet configuration.
 resource "iosxe_interface_ethernet" "example" {
   type                           = "GigabitEthernet"
   name                           = "3"
+  bandwidth                      = 1000000
   description                    = "My Interface Description"
   shutdown                       = false
   ip_proxy_arp                   = false
@@ -109,6 +110,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `auto_qos_voip_cisco_phone` (Boolean) Trust the QoS marking of Cisco IP Phone
 - `auto_qos_voip_cisco_softphone` (Boolean) Trust the QoS marking of Cisco IP SoftPhone
 - `auto_qos_voip_trust` (Boolean) Trust the DSCP/CoS marking
+- `bandwidth` (Number) - Range: `1`-`200000000`
 - `bfd_echo` (Boolean) Use echo adjunct as bfd detection mechanism
 - `bfd_enable` (Boolean) Enable BFD under the interface
 - `bfd_interval` (Number) - Range: `50`-`9999`

@@ -40,6 +40,7 @@ type InterfaceEthernet struct {
 	Type                                    types.String                              `tfsdk:"type"`
 	Name                                    types.String                              `tfsdk:"name"`
 	MediaType                               types.String                              `tfsdk:"media_type"`
+	Bandwidth                               types.Int64                               `tfsdk:"bandwidth"`
 	Switchport                              types.Bool                                `tfsdk:"switchport"`
 	Description                             types.String                              `tfsdk:"description"`
 	Shutdown                                types.Bool                                `tfsdk:"shutdown"`
@@ -142,6 +143,7 @@ type InterfaceEthernetData struct {
 	Type                                    types.String                              `tfsdk:"type"`
 	Name                                    types.String                              `tfsdk:"name"`
 	MediaType                               types.String                              `tfsdk:"media_type"`
+	Bandwidth                               types.Int64                               `tfsdk:"bandwidth"`
 	Switchport                              types.Bool                                `tfsdk:"switchport"`
 	Description                             types.String                              `tfsdk:"description"`
 	Shutdown                                types.Bool                                `tfsdk:"shutdown"`
@@ -281,6 +283,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	}
 	if !data.MediaType.IsNull() && !data.MediaType.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"media-type", data.MediaType.ValueString())
+	}
+	if !data.Bandwidth.IsNull() && !data.Bandwidth.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bandwidth.kilobits", strconv.FormatInt(data.Bandwidth.ValueInt64(), 10))
 	}
 	if !data.Switchport.IsNull() && !data.Switchport.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"switchport-conf.switchport", data.Switchport.ValueBool())
@@ -720,6 +725,11 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 		data.MediaType = types.StringValue(value.String())
 	} else {
 		data.MediaType = types.StringNull()
+	}
+	if value := res.Get(prefix + "bandwidth.kilobits"); value.Exists() && !data.Bandwidth.IsNull() {
+		data.Bandwidth = types.Int64Value(value.Int())
+	} else {
+		data.Bandwidth = types.Int64Null()
 	}
 	if value := res.Get(prefix + "switchport-conf.switchport"); !data.Switchport.IsNull() {
 		if value.Exists() {
@@ -1542,6 +1552,9 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "media-type"); value.Exists() {
 		data.MediaType = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "bandwidth.kilobits"); value.Exists() {
+		data.Bandwidth = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
 		data.Switchport = types.BoolValue(value.Bool())
 	} else {
@@ -1993,6 +2006,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	deletedItems := make([]string, 0)
 	if !state.MediaType.IsNull() && data.MediaType.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/media-type", state.getPath()))
+	}
+	if !state.Bandwidth.IsNull() && data.Bandwidth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bandwidth/kilobits", state.getPath()))
 	}
 	if !state.Switchport.IsNull() && data.Switchport.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport-conf/switchport", state.getPath()))
@@ -2563,6 +2579,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.MediaType.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/media-type", data.getPath()))
+	}
+	if !data.Bandwidth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bandwidth/kilobits", data.getPath()))
 	}
 	if !data.Switchport.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport-conf/switchport", data.getPath()))

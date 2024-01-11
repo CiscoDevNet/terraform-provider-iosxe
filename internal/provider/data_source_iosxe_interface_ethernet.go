@@ -75,6 +75,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Media type",
 				Computed:            true,
 			},
+			"bandwidth": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 			"switchport": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
