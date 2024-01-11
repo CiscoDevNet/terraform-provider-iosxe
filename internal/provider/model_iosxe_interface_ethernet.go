@@ -136,6 +136,8 @@ type InterfaceEthernet struct {
 	Dot1xTimeoutTxPeriod                    types.Int64                               `tfsdk:"dot1x_timeout_tx_period"`
 	Dot1xMaxReq                             types.Int64                               `tfsdk:"dot1x_max_req"`
 	Dot1xMaxReauthReq                       types.Int64                               `tfsdk:"dot1x_max_reauth_req"`
+	ServicePolicyInput                      types.String                              `tfsdk:"service_policy_input"`
+	ServicePolicyOutput                     types.String                              `tfsdk:"service_policy_output"`
 }
 
 type InterfaceEthernetData struct {
@@ -240,6 +242,8 @@ type InterfaceEthernetData struct {
 	Dot1xTimeoutTxPeriod                    types.Int64                               `tfsdk:"dot1x_timeout_tx_period"`
 	Dot1xMaxReq                             types.Int64                               `tfsdk:"dot1x_max_req"`
 	Dot1xMaxReauthReq                       types.Int64                               `tfsdk:"dot1x_max_reauth_req"`
+	ServicePolicyInput                      types.String                              `tfsdk:"service_policy_input"`
+	ServicePolicyOutput                     types.String                              `tfsdk:"service_policy_output"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -659,6 +663,12 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	}
 	if !data.Dot1xMaxReauthReq.IsNull() && !data.Dot1xMaxReauthReq.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:dot1x.max-reauth-req", strconv.FormatInt(data.Dot1xMaxReauthReq.ValueInt64(), 10))
+	}
+	if !data.ServicePolicyInput.IsNull() && !data.ServicePolicyInput.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-policy:service-policy.input", data.ServicePolicyInput.ValueString())
+	}
+	if !data.ServicePolicyOutput.IsNull() && !data.ServicePolicyOutput.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-policy:service-policy.output", data.ServicePolicyOutput.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -1558,6 +1568,16 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.Dot1xMaxReauthReq = types.Int64Null()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.input"); value.Exists() && !data.ServicePolicyInput.IsNull() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyInput = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.output"); value.Exists() && !data.ServicePolicyOutput.IsNull() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	} else {
+		data.ServicePolicyOutput = types.StringNull()
+	}
 }
 
 func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Result) {
@@ -2021,6 +2041,12 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:dot1x.max-reauth-req"); value.Exists() {
 		data.Dot1xMaxReauthReq = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
+		data.ServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-policy:service-policy.output"); value.Exists() {
+		data.ServicePolicyOutput = types.StringValue(value.String())
+	}
 }
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
@@ -2418,6 +2444,12 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	}
 	if !state.Dot1xMaxReauthReq.IsNull() && data.Dot1xMaxReauthReq.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-reauth-req", state.getPath()))
+	}
+	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
+	}
+	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", state.getPath()))
 	}
 	return deletedItems
 }
@@ -2902,6 +2934,12 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Dot1xMaxReauthReq.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-reauth-req", data.getPath()))
+	}
+	if !data.ServicePolicyInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
+	}
+	if !data.ServicePolicyOutput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", data.getPath()))
 	}
 	return deletePaths
 }

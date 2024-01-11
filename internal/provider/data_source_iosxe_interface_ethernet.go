@@ -511,6 +511,14 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Max No. of Reauthentication Attempts",
 				Computed:            true,
 			},
+			"service_policy_input": schema.StringAttribute{
+				MarkdownDescription: "Assign policy-map to the input of an interface",
+				Computed:            true,
+			},
+			"service_policy_output": schema.StringAttribute{
+				MarkdownDescription: "Assign policy-map to the output of an interface",
+				Computed:            true,
+			},
 		},
 	}
 }

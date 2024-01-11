@@ -113,6 +113,8 @@ data "iosxe_interface_ethernet" "example" {
 - `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type
+- `service_policy_input` (String) Assign policy-map to the input of an interface
+- `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode

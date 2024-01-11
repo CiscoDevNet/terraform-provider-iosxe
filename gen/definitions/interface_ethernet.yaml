@@ -414,6 +414,10 @@ attributes:
   - yang_name: Cisco-IOS-XE-dot1x:dot1x/max-reauth-req
     example: 3
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-policy:service-policy/input
+    example: POLICY1
+  - yang_name: Cisco-IOS-XE-policy:service-policy/output
+    example: POLICY1
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
@@ -423,3 +427,7 @@ test_prerequisites:
         value: VRF1
       - name: address-family/ipv4
         value: ""
+  - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1
+    attributes:
+      - name: name
+        value: POLICY1

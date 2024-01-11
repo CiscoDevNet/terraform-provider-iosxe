@@ -77,6 +77,8 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_snooping_trust", "true"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "service_policy_input", "POLICY1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "service_policy_output", "POLICY1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -96,6 +98,13 @@ resource "iosxe_restconf" "PreReq0" {
 	attributes = {
 		"name" = "VRF1"
 		"address-family/ipv4" = ""
+	}
+}
+
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1"
+	attributes = {
+		"name" = "POLICY1"
 	}
 }
 
@@ -159,7 +168,9 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_dhcp_snooping_trust = true` + "\n"
 	}
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	service_policy_input = "POLICY1"` + "\n"
+	config += `	service_policy_output = "POLICY1"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

@@ -60,6 +60,8 @@ resource "iosxe_interface_ethernet" "example" {
   ]
   arp_timeout             = 300
   spanning_tree_link_type = "point-to-point"
+  service_policy_input    = "POLICY1"
+  service_policy_output   = "POLICY1"
 }
 ```
 
@@ -175,6 +177,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type
   - Choices: `auto-select`, `rj45`, `sfp`
+- `service_policy_input` (String) Assign policy-map to the input of an interface
+- `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode

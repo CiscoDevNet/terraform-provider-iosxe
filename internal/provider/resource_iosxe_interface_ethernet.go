@@ -632,6 +632,14 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					int64validator.Between(1, 10),
 				},
 			},
+			"service_policy_input": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the input of an interface").String,
+				Optional:            true,
+			},
+			"service_policy_output": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the output of an interface").String,
+				Optional:            true,
+			},
 		},
 	}
 }
