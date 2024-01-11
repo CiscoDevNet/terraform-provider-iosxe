@@ -458,6 +458,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("100000 Mbps operation").String,
 				Optional:            true,
 			},
+			"speed_nonegotiate": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
 			"authentication_host_mode": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the Host mode for authentication on this interface").AddStringEnumDescription("multi-auth", "multi-domain", "multi-host", "single-host").String,
 				Optional:            true,

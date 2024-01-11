@@ -379,6 +379,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "100000 Mbps operation",
 				Computed:            true,
 			},
+			"speed_nonegotiate": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 			"authentication_host_mode": schema.StringAttribute{
 				MarkdownDescription: "Set the Host mode for authentication on this interface",
 				Computed:            true,

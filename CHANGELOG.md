@@ -1,6 +1,7 @@
 ## 0.5.5 (unreleased)
 
 - Add `bandwidth` attribute to `iosxe_interface_ethernet` resource and data source
+- Add `speed_nonegotiate` attribute to `iosxe_interface_ethernet` resource and data source
 
 ## 0.5.4
 

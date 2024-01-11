@@ -190,6 +190,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `speed_25000` (Boolean) 25000 Mbps operation
 - `speed_40000` (Boolean) 40000 Mbps operation
 - `speed_5000` (Boolean) 5000 Mbps operation
+- `speed_nonegotiate` (Boolean)
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
   - Choices: `cisco-phone`, `cts`, `ip-camera`, `media-player`
