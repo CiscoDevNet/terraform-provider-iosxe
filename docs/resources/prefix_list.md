@@ -24,6 +24,12 @@ resource "iosxe_prefix_list" "example" {
       le     = 32
     }
   ]
+  prefix_list_description = [
+    {
+      name        = "PREFIX_LIST_11"
+      description = "DIST_OF_THE_LIST"
+    }
+  ]
 }
 ```
 
@@ -33,11 +39,24 @@ resource "iosxe_prefix_list" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
+- `prefix_list_description` (Attributes List) Describe about prefix-list entry (see [below for nested schema](#nestedatt--prefix_list_description))
 - `prefixes` (Attributes List) Build prefix-lists with name ans seq.no (see [below for nested schema](#nestedatt--prefixes))
 
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--prefix_list_description"></a>
+### Nested Schema for `prefix_list_description`
+
+Required:
+
+- `name` (String)
+
+Optional:
+
+- `description` (String) Prefix-list specific description
+
 
 <a id="nestedatt--prefixes"></a>
 ### Nested Schema for `prefixes`

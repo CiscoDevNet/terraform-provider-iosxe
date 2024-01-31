@@ -95,6 +95,22 @@ func (d *PrefixListDataSource) Schema(ctx context.Context, req datasource.Schema
 					},
 				},
 			},
+			"prefix_list_description": schema.ListNestedAttribute{
+				MarkdownDescription: "Describe about prefix-list entry",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"description": schema.StringAttribute{
+							MarkdownDescription: "Prefix-list specific description",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

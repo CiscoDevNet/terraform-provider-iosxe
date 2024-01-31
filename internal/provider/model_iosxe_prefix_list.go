@@ -34,15 +34,17 @@ import (
 )
 
 type PrefixList struct {
-	Device   types.String         `tfsdk:"device"`
-	Id       types.String         `tfsdk:"id"`
-	Prefixes []PrefixListPrefixes `tfsdk:"prefixes"`
+	Device                types.String                      `tfsdk:"device"`
+	Id                    types.String                      `tfsdk:"id"`
+	Prefixes              []PrefixListPrefixes              `tfsdk:"prefixes"`
+	PrefixListDescription []PrefixListPrefixListDescription `tfsdk:"prefix_list_description"`
 }
 
 type PrefixListData struct {
-	Device   types.String         `tfsdk:"device"`
-	Id       types.String         `tfsdk:"id"`
-	Prefixes []PrefixListPrefixes `tfsdk:"prefixes"`
+	Device                types.String                      `tfsdk:"device"`
+	Id                    types.String                      `tfsdk:"id"`
+	Prefixes              []PrefixListPrefixes              `tfsdk:"prefixes"`
+	PrefixListDescription []PrefixListPrefixListDescription `tfsdk:"prefix_list_description"`
 }
 type PrefixListPrefixes struct {
 	Name   types.String `tfsdk:"name"`
@@ -51,6 +53,10 @@ type PrefixListPrefixes struct {
 	Ip     types.String `tfsdk:"ip"`
 	Ge     types.Int64  `tfsdk:"ge"`
 	Le     types.Int64  `tfsdk:"le"`
+}
+type PrefixListPrefixListDescription struct {
+	Name        types.String `tfsdk:"name"`
+	Description types.String `tfsdk:"description"`
 }
 
 func (data PrefixList) getPath() string {
@@ -94,6 +100,17 @@ func (data PrefixList) toBody(ctx context.Context) string {
 			}
 			if !item.Le.IsNull() && !item.Le.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prefixes"+"."+strconv.Itoa(index)+"."+"le", strconv.FormatInt(item.Le.ValueInt64(), 10))
+			}
+		}
+	}
+	if len(data.PrefixListDescription) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prefix-list-description", []interface{}{})
+		for index, item := range data.PrefixListDescription {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prefix-list-description"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Description.IsNull() && !item.Description.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"prefix-list-description"+"."+strconv.Itoa(index)+"."+"description", item.Description.ValueString())
 			}
 		}
 	}
@@ -159,6 +176,40 @@ func (data *PrefixList) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Prefixes[i].Le = types.Int64Null()
 		}
 	}
+	for i := range data.PrefixListDescription {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PrefixListDescription[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "prefix-list-description").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PrefixListDescription[i].Name.IsNull() {
+			data.PrefixListDescription[i].Name = types.StringValue(value.String())
+		} else {
+			data.PrefixListDescription[i].Name = types.StringNull()
+		}
+		if value := r.Get("description"); value.Exists() && !data.PrefixListDescription[i].Description.IsNull() {
+			data.PrefixListDescription[i].Description = types.StringValue(value.String())
+		} else {
+			data.PrefixListDescription[i].Description = types.StringNull()
+		}
+	}
 }
 
 func (data *PrefixListData) fromBody(ctx context.Context, res gjson.Result) {
@@ -189,6 +240,20 @@ func (data *PrefixListData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Le = types.Int64Value(cValue.Int())
 			}
 			data.Prefixes = append(data.Prefixes, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "prefix-list-description"); value.Exists() {
+		data.PrefixListDescription = make([]PrefixListPrefixListDescription, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PrefixListPrefixListDescription{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			data.PrefixListDescription = append(data.PrefixListDescription, item)
 			return true
 		})
 	}
@@ -239,6 +304,34 @@ func (data *PrefixList) getDeletedItems(ctx context.Context, state PrefixList) [
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.PrefixListDescription {
+		stateKeyValues := [...]string{state.PrefixListDescription[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PrefixListDescription[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PrefixListDescription {
+			found = true
+			if state.PrefixListDescription[i].Name.ValueString() != data.PrefixListDescription[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.PrefixListDescription[i].Description.IsNull() && data.PrefixListDescription[j].Description.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefix-list-description=%v/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/prefix-list-description=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedItems
 }
 
@@ -254,6 +347,11 @@ func (data *PrefixList) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.Prefixes[i].Name.ValueString(), strconv.FormatInt(data.Prefixes[i].Seq.ValueInt64(), 10)}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/prefixes=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PrefixListDescription {
+		keyValues := [...]string{data.PrefixListDescription[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/prefix-list-description=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

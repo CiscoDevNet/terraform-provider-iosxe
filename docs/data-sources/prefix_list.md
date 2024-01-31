@@ -27,7 +27,17 @@ data "iosxe_prefix_list" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
+- `prefix_list_description` (Attributes List) Describe about prefix-list entry (see [below for nested schema](#nestedatt--prefix_list_description))
 - `prefixes` (Attributes List) Build prefix-lists with name ans seq.no (see [below for nested schema](#nestedatt--prefixes))
+
+<a id="nestedatt--prefix_list_description"></a>
+### Nested Schema for `prefix_list_description`
+
+Read-Only:
+
+- `description` (String) Prefix-list specific description
+- `name` (String)
+
 
 <a id="nestedatt--prefixes"></a>
 ### Nested Schema for `prefixes`

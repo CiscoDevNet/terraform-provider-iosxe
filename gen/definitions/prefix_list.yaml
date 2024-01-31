@@ -22,3 +22,11 @@ attributes:
         example: 24
       - yang_name: le
         example: 32
+  - yang_name: prefix-list-description
+    type: List
+    attributes:
+      - yang_name: name
+        example: PREFIX_LIST_11
+        id: true
+      - yang_name: description
+        example: DIST_OF_THE_LIST
