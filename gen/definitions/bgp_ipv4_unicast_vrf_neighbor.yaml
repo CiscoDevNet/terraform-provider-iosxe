@@ -135,6 +135,8 @@ attributes:
     example: true
   - yang_name: next-hop-self/all
     example: true
+  - yang_name: advertisement-interval
+    example: 300
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true
