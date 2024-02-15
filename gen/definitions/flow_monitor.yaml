@@ -1,0 +1,85 @@
+---
+name: Flow Monitor
+path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow
+doc_category: Flow Monitor
+attributes:
+  - yang_name: record
+    tf_name: flow_record
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: FNF-input
+      - yang_name: description
+        example: IPv4-NetFlow
+      - yang_name: match/ipv4/source/address
+        example: true
+      - yang_name: match/ipv4/destination/address
+        example: true
+      - yang_name: match/ipv4/protocol
+        example: true
+      - yang_name: match/ipv4/tos
+        example: true
+      - yang_name: match/transport/source-port
+        example: true
+      - yang_name: match/transport/destination-port
+        example: true
+      - yang_name: match/interface/input
+        example: true
+      - yang_name: match/flow/direction
+        example: true
+      - yang_name: collect/interface/output
+        example: true
+      - yang_name: collect/counter/bytes/long
+        example: true
+      - yang_name: collect/counter/packets/long
+        example: true
+      - yang_name: collect/transport/tcp/flags
+        example: true
+      - yang_name: collect/timestamp/absolute/first
+        example: true
+      - yang_name: collect/timestamp/absolute/last
+        example: true
+
+  - yang_name: exporter
+    tf_name: flow_exporter
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: Scrutinizer
+      - yang_name: description
+        example: Export to Scrutinizer
+      - yang_name: destination/destination-choice/ipdest/ipdest/ip
+        xpath: destination/ipdest/ip
+        example: 1.1.1.1
+      - yang_name: source/interface-choice/Loopback/Loopback
+        xpath: source/Loopback
+        tf_name: source_loopback
+        example: 1474
+      - yang_name: transport/udp
+        example: 655
+      - yang_name: template/data/timeout
+        example: 60
+
+  - yang_name: monitor
+    tf_name: flow_monitor
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: Scrut_mon_input
+      - yang_name: description
+        example: IPv4 FNF ingress exports
+      - yang_name: exporter
+        tf_name: flow_monitor_exporter
+        type: List
+        attributes:
+          - yang_name: name
+            id: true
+            example: Scrutinizer
+      - yang_name: cache/timeout/active
+        example: 60
+      - yang_name: record/type
+        example: FNF_Input
+
