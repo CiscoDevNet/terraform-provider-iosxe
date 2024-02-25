@@ -62,6 +62,12 @@ resource "iosxe_interface_ethernet" "example" {
   spanning_tree_link_type = "point-to-point"
   service_policy_input    = "POLICY1"
   service_policy_output   = "POLICY1"
+  ip_flow_monitor = [
+    {
+      name      = "TEST"
+      direction = "INPUT"
+    }
+  ]
 }
 ```
 
@@ -160,6 +166,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_arp_inspection_trust` (Boolean) Configure Trust state
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
+- `ip_flow_monitor` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitor))
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
@@ -216,6 +223,18 @@ Optional:
 
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
+
+
+<a id="nestedatt--ip_flow_monitor"></a>
+### Nested Schema for `ip_flow_monitor`
+
+Required:
+
+- `name` (String) User defined
+
+Optional:
+
+- `direction` (String) - Choices: `input`, `output`
 
 
 <a id="nestedatt--ipv6_addresses"></a>

@@ -640,6 +640,25 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the output of an interface").String,
 				Optional:            true,
 			},
+			"ip_flow_monitor": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("User defined").String,
+							Required:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("input", "output"),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
