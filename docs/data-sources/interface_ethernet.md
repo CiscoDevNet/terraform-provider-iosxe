@@ -113,6 +113,7 @@ data "iosxe_interface_ethernet" "example" {
 - `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type
+- `negotiation_auto` (Boolean) Enable link autonegotiation
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface

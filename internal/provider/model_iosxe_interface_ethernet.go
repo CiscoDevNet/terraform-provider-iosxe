@@ -103,6 +103,7 @@ type InterfaceEthernet struct {
 	Speed25000                              types.Bool                                `tfsdk:"speed_25000"`
 	Speed40000                              types.Bool                                `tfsdk:"speed_40000"`
 	Speed100000                             types.Bool                                `tfsdk:"speed_100000"`
+	NegotiationAuto                         types.Bool                                `tfsdk:"negotiation_auto"`
 	SpeedNonegotiate                        types.Bool                                `tfsdk:"speed_nonegotiate"`
 	AuthenticationHostMode                  types.String                              `tfsdk:"authentication_host_mode"`
 	AuthenticationOrderDot1x                types.Bool                                `tfsdk:"authentication_order_dot1x"`
@@ -209,6 +210,7 @@ type InterfaceEthernetData struct {
 	Speed25000                              types.Bool                                `tfsdk:"speed_25000"`
 	Speed40000                              types.Bool                                `tfsdk:"speed_40000"`
 	Speed100000                             types.Bool                                `tfsdk:"speed_100000"`
+	NegotiationAuto                         types.Bool                                `tfsdk:"negotiation_auto"`
 	SpeedNonegotiate                        types.Bool                                `tfsdk:"speed_nonegotiate"`
 	AuthenticationHostMode                  types.String                              `tfsdk:"authentication_host_mode"`
 	AuthenticationOrderDot1x                types.Bool                                `tfsdk:"authentication_order_dot1x"`
@@ -526,6 +528,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 		if data.Speed100000.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:speed.value-100000", map[string]string{})
 		}
+	}
+	if !data.NegotiationAuto.IsNull() && !data.NegotiationAuto.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:negotiation.auto", data.NegotiationAuto.ValueBool())
 	}
 	if !data.SpeedNonegotiate.IsNull() && !data.SpeedNonegotiate.IsUnknown() {
 		if data.SpeedNonegotiate.ValueBool() {
@@ -1327,6 +1332,13 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.Speed100000 = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:negotiation.auto"); !data.NegotiationAuto.IsNull() {
+		if value.Exists() {
+			data.NegotiationAuto = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.NegotiationAuto = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.nonegotiate"); !data.SpeedNonegotiate.IsNull() {
 		if value.Exists() {
 			data.SpeedNonegotiate = types.BoolValue(true)
@@ -1904,6 +1916,11 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.Speed100000 = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:negotiation.auto"); value.Exists() {
+		data.NegotiationAuto = types.BoolValue(value.Bool())
+	} else {
+		data.NegotiationAuto = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.nonegotiate"); value.Exists() {
 		data.SpeedNonegotiate = types.BoolValue(true)
 	} else {
@@ -2345,6 +2362,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	}
 	if !state.Speed100000.IsNull() && data.Speed100000.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", state.getPath()))
+	}
+	if !state.NegotiationAuto.IsNull() && data.NegotiationAuto.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:negotiation/auto", state.getPath()))
 	}
 	if !state.SpeedNonegotiate.IsNull() && data.SpeedNonegotiate.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/nonegotiate", state.getPath()))
@@ -2835,6 +2855,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Speed100000.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", data.getPath()))
+	}
+	if !data.NegotiationAuto.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:negotiation/auto", data.getPath()))
 	}
 	if !data.SpeedNonegotiate.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/nonegotiate", data.getPath()))

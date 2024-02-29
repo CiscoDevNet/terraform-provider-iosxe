@@ -379,6 +379,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "100000 Mbps operation",
 				Computed:            true,
 			},
+			"negotiation_auto": schema.BoolAttribute{
+				MarkdownDescription: "Enable link autonegotiation",
+				Computed:            true,
+			},
 			"speed_nonegotiate": schema.BoolAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
