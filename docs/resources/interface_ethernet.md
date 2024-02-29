@@ -60,6 +60,7 @@ resource "iosxe_interface_ethernet" "example" {
   ]
   arp_timeout             = 300
   spanning_tree_link_type = "point-to-point"
+  negotiation_auto        = false
   service_policy_input    = "POLICY1"
   service_policy_output   = "POLICY1"
 }

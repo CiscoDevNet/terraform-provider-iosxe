@@ -77,6 +77,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_dhcp_snooping_trust", "true"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "negotiation_auto", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "service_policy_input", "POLICY1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "service_policy_output", "POLICY1"))
 	resource.Test(t, resource.TestCase{
@@ -168,6 +169,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_dhcp_snooping_trust = true` + "\n"
 	}
+	config += `	negotiation_auto = false` + "\n"
 	config += `	service_policy_input = "POLICY1"` + "\n"
 	config += `	service_policy_output = "POLICY1"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
