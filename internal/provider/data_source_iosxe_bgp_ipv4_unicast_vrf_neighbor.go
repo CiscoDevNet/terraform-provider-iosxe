@@ -235,6 +235,10 @@ func (d *BGPIPv4UnicastVRFNeighborDataSource) Schema(ctx context.Context, req da
 				MarkdownDescription: "Enable next-hop-self for both eBGP and iBGP received paths",
 				Computed:            true,
 			},
+			"advertisement_interval": schema.Int64Attribute{
+				MarkdownDescription: "Minimum interval between sending BGP routing updates",
+				Computed:            true,
+			},
 		},
 	}
 }

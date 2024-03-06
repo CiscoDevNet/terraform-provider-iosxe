@@ -50,6 +50,7 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   ha_mode_graceful_restart = true
   next_hop_self            = true
   next_hop_self_all        = true
+  advertisement_interval   = 300
 }
 ```
 
@@ -66,6 +67,8 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 
 - `activate` (Boolean) Enable the address family for this neighbor
   - Default value: `true`
+- `advertisement_interval` (Number) Minimum interval between sending BGP routing updates
+  - Range: `0`-`600`
 - `cluster_id` (String)
 - `default_originate` (Boolean) Originate default route to this neighbor
 - `default_originate_route_map` (String) Route-map to specify criteria to originate default

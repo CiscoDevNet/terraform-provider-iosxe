@@ -78,6 +78,7 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	HaModeGracefulRestart               types.Bool                           `tfsdk:"ha_mode_graceful_restart"`
 	NextHopSelf                         types.Bool                           `tfsdk:"next_hop_self"`
 	NextHopSelfAll                      types.Bool                           `tfsdk:"next_hop_self_all"`
+	AdvertisementInterval               types.Int64                          `tfsdk:"advertisement_interval"`
 }
 
 type BGPIPv4UnicastVRFNeighborData struct {
@@ -123,6 +124,7 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	HaModeGracefulRestart               types.Bool                           `tfsdk:"ha_mode_graceful_restart"`
 	NextHopSelf                         types.Bool                           `tfsdk:"next_hop_self"`
 	NextHopSelfAll                      types.Bool                           `tfsdk:"next_hop_self_all"`
+	AdvertisementInterval               types.Int64                          `tfsdk:"advertisement_interval"`
 }
 type BGPIPv4UnicastVRFNeighborRouteMaps struct {
 	InOut        types.String `tfsdk:"in_out"`
@@ -296,6 +298,9 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 		if data.NextHopSelfAll.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"next-hop-self.all", map[string]string{})
 		}
+	}
+	if !data.AdvertisementInterval.IsNull() && !data.AdvertisementInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"advertisement-interval", strconv.FormatInt(data.AdvertisementInterval.ValueInt64(), 10))
 	}
 	if len(data.RouteMaps) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
@@ -607,6 +612,11 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 	} else {
 		data.NextHopSelfAll = types.BoolNull()
 	}
+	if value := res.Get(prefix + "advertisement-interval"); value.Exists() && !data.AdvertisementInterval.IsNull() {
+		data.AdvertisementInterval = types.Int64Value(value.Int())
+	} else {
+		data.AdvertisementInterval = types.Int64Null()
+	}
 }
 
 func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjson.Result) {
@@ -772,6 +782,9 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 	} else {
 		data.NextHopSelfAll = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "advertisement-interval"); value.Exists() {
+		data.AdvertisementInterval = types.Int64Value(value.Int())
+	}
 }
 
 func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, state BGPIPv4UnicastVRFNeighbor) []string {
@@ -905,6 +918,9 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, stat
 	}
 	if !state.NextHopSelfAll.IsNull() && data.NextHopSelfAll.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/next-hop-self/all", state.getPath()))
+	}
+	if !state.AdvertisementInterval.IsNull() && data.AdvertisementInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/advertisement-interval", state.getPath()))
 	}
 	return deletedItems
 }
@@ -1077,6 +1093,9 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []str
 	}
 	if !data.NextHopSelfAll.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/next-hop-self/all", data.getPath()))
+	}
+	if !data.AdvertisementInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/advertisement-interval", data.getPath()))
 	}
 	return deletePaths
 }

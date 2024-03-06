@@ -292,6 +292,13 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				MarkdownDescription: helpers.NewAttributeDescription("Enable next-hop-self for both eBGP and iBGP received paths").String,
 				Optional:            true,
 			},
+			"advertisement_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum interval between sending BGP routing updates").AddIntegerRangeDescription(0, 600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 600),
+				},
+			},
 		},
 	}
 }
