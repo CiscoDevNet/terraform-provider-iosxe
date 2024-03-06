@@ -1,3 +1,7 @@
+## 0.5.6 (unreleased)
+
+- Add support for descriptions to `iosxe_prefix_list` resource and data source
+
 ## 0.5.5
 
 - Add `bandwidth` attribute to `iosxe_interface_ethernet` resource and data source

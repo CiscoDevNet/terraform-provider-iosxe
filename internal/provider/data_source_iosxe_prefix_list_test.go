@@ -33,8 +33,8 @@ func TestAccDataSourceIosxePrefixList(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_prefix_list.test", "prefixes.0.ip", "10.0.0.0/8"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_prefix_list.test", "prefixes.0.ge", "24"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_prefix_list.test", "prefixes.0.le", "32"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_prefix_list.test", "prefix_list_description.0.name", "PREFIX_LIST_11"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_prefix_list.test", "prefix_list_description.0.description", "DIST_OF_THE_LIST"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_prefix_list.test", "prefix_list_description.0.name", "PREFIX_LIST_1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_prefix_list.test", "prefix_list_description.0.description", "My prefix list"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -58,8 +58,8 @@ func testAccDataSourceIosxePrefixListConfig() string {
 	config += `		le = 32` + "\n"
 	config += `	}]` + "\n"
 	config += `	prefix_list_description = [{` + "\n"
-	config += `		name = "PREFIX_LIST_11"` + "\n"
-	config += `		description = "DIST_OF_THE_LIST"` + "\n"
+	config += `		name = "PREFIX_LIST_1"` + "\n"
+	config += `		description = "My prefix list"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 

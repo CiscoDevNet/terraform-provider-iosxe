@@ -11,8 +11,8 @@ resource "iosxe_prefix_list" "example" {
   ]
   prefix_list_description = [
     {
-      name        = "PREFIX_LIST_11"
-      description = "DIST_OF_THE_LIST"
+      name        = "PREFIX_LIST_1"
+      description = "My prefix list"
     }
   ]
 }
