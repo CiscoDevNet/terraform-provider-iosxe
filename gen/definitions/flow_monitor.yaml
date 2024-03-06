@@ -9,7 +9,7 @@ attributes:
   - yang_name: description
     example: My monitor
   - yang_name: exporter
-    tf_name: flow_monitor_exporter
+    tf_name: exporters
     type: List
     attributes:
       - yang_name: name

@@ -79,8 +79,8 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "service_policy_input", "POLICY1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "service_policy_output", "POLICY1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_flow_monitor.0.name", "TEST"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_flow_monitor.0.direction", "INPUT"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_flow_monitors.0.name", "MON1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_flow_monitors.0.direction", "input"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -172,9 +172,9 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	}
 	config += `	service_policy_input = "POLICY1"` + "\n"
 	config += `	service_policy_output = "POLICY1"` + "\n"
-	config += `	ip_flow_monitor = [{` + "\n"
-	config += `		name = "TEST"` + "\n"
-	config += `		direction = "INPUT"` + "\n"
+	config += `	ip_flow_monitors = [{` + "\n"
+	config += `		name = "MON1"` + "\n"
+	config += `		direction = "input"` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"

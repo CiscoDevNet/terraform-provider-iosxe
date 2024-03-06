@@ -5,6 +5,7 @@
 - Add `iosxe_flow_record` resource and data source
 - Add `iosxe_flow_exporter` resource and data source
 - Add `iosxe_flow_monitor` resource and data source
+- Add `ip_flow_monitors` attribute to `iosxe_interface_ethernet` resource and data source
 
 ## 0.5.5
 

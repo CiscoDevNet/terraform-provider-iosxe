@@ -33,12 +33,12 @@ data "iosxe_flow_monitor" "example" {
 
 - `cache_timeout_active` (Number) Active timeout
 - `description` (String) Provide a description for this Flow Monitor
-- `flow_monitor_exporter` (Attributes List) Add an Exporter to use to export records (see [below for nested schema](#nestedatt--flow_monitor_exporter))
+- `exporters` (Attributes List) Add an Exporter to use to export records (see [below for nested schema](#nestedatt--exporters))
 - `id` (String) The path of the retrieved object.
 - `record` (String)
 
-<a id="nestedatt--flow_monitor_exporter"></a>
-### Nested Schema for `flow_monitor_exporter`
+<a id="nestedatt--exporters"></a>
+### Nested Schema for `exporters`
 
 Read-Only:
 

@@ -16,7 +16,7 @@ This resource can manage the Flow Monitor configuration.
 resource "iosxe_flow_monitor" "example" {
   name        = "MON1"
   description = "My monitor"
-  flow_monitor_exporter = [
+  exporters = [
     {
       name = "EXPORTER1"
     }
@@ -41,15 +41,15 @@ resource "iosxe_flow_monitor" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Provide a description for this Flow Monitor
 - `device` (String) A device name from the provider configuration.
-- `flow_monitor_exporter` (Attributes List) Add an Exporter to use to export records (see [below for nested schema](#nestedatt--flow_monitor_exporter))
+- `exporters` (Attributes List) Add an Exporter to use to export records (see [below for nested schema](#nestedatt--exporters))
 - `record` (String)
 
 ### Read-Only
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--flow_monitor_exporter"></a>
-### Nested Schema for `flow_monitor_exporter`
+<a id="nestedatt--exporters"></a>
+### Nested Schema for `exporters`
 
 Required:
 

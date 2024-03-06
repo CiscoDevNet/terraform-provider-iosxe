@@ -640,7 +640,7 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the output of an interface").String,
 				Optional:            true,
 			},
-			"ip_flow_monitor": schema.ListNestedAttribute{
+			"ip_flow_monitors": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

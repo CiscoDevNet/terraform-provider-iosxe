@@ -29,7 +29,7 @@ func TestAccIosxeFlowMonitor(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_monitor.test", "name", "MON1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_monitor.test", "description", "My monitor"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_monitor.test", "flow_monitor_exporter.0.name", "EXPORTER1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_monitor.test", "exporters.0.name", "EXPORTER1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_monitor.test", "cache_timeout_active", "60"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_flow_monitor.test", "record", "FNF1"))
 	resource.Test(t, resource.TestCase{
@@ -63,7 +63,7 @@ func testAccIosxeFlowMonitorConfig_all() string {
 	config := `resource "iosxe_flow_monitor" "test" {` + "\n"
 	config += `	name = "MON1"` + "\n"
 	config += `	description = "My monitor"` + "\n"
-	config += `	flow_monitor_exporter = [{` + "\n"
+	config += `	exporters = [{` + "\n"
 	config += `		name = "EXPORTER1"` + "\n"
 	config += `	}]` + "\n"
 	config += `	cache_timeout_active = 60` + "\n"

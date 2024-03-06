@@ -419,14 +419,14 @@ attributes:
   - yang_name: Cisco-IOS-XE-policy:service-policy/output
     example: POLICY1
   - yang_name: ip/Cisco-IOS-XE-flow:flow/monitor-new
-    tf_name: ip_flow_monitor
+    tf_name: ip_flow_monitors
     type: List
     attributes:
       - yang_name: name
         id: true
-        example: TEST
+        example: MON1
       - yang_name: direction
-        example: INPUT
+        example: input
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

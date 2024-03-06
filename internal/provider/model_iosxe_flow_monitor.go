@@ -35,26 +35,26 @@ import (
 )
 
 type FlowMonitor struct {
-	Device              types.String                     `tfsdk:"device"`
-	Id                  types.String                     `tfsdk:"id"`
-	DeleteMode          types.String                     `tfsdk:"delete_mode"`
-	Name                types.String                     `tfsdk:"name"`
-	Description         types.String                     `tfsdk:"description"`
-	FlowMonitorExporter []FlowMonitorFlowMonitorExporter `tfsdk:"flow_monitor_exporter"`
-	CacheTimeoutActive  types.Int64                      `tfsdk:"cache_timeout_active"`
-	Record              types.String                     `tfsdk:"record"`
+	Device             types.String           `tfsdk:"device"`
+	Id                 types.String           `tfsdk:"id"`
+	DeleteMode         types.String           `tfsdk:"delete_mode"`
+	Name               types.String           `tfsdk:"name"`
+	Description        types.String           `tfsdk:"description"`
+	Exporters          []FlowMonitorExporters `tfsdk:"exporters"`
+	CacheTimeoutActive types.Int64            `tfsdk:"cache_timeout_active"`
+	Record             types.String           `tfsdk:"record"`
 }
 
 type FlowMonitorData struct {
-	Device              types.String                     `tfsdk:"device"`
-	Id                  types.String                     `tfsdk:"id"`
-	Name                types.String                     `tfsdk:"name"`
-	Description         types.String                     `tfsdk:"description"`
-	FlowMonitorExporter []FlowMonitorFlowMonitorExporter `tfsdk:"flow_monitor_exporter"`
-	CacheTimeoutActive  types.Int64                      `tfsdk:"cache_timeout_active"`
-	Record              types.String                     `tfsdk:"record"`
+	Device             types.String           `tfsdk:"device"`
+	Id                 types.String           `tfsdk:"id"`
+	Name               types.String           `tfsdk:"name"`
+	Description        types.String           `tfsdk:"description"`
+	Exporters          []FlowMonitorExporters `tfsdk:"exporters"`
+	CacheTimeoutActive types.Int64            `tfsdk:"cache_timeout_active"`
+	Record             types.String           `tfsdk:"record"`
 }
-type FlowMonitorFlowMonitorExporter struct {
+type FlowMonitorExporters struct {
 	Name types.String `tfsdk:"name"`
 }
 
@@ -91,9 +91,9 @@ func (data FlowMonitor) toBody(ctx context.Context) string {
 	if !data.Record.IsNull() && !data.Record.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"record.type", data.Record.ValueString())
 	}
-	if len(data.FlowMonitorExporter) > 0 {
+	if len(data.Exporters) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exporter", []interface{}{})
-		for index, item := range data.FlowMonitorExporter {
+		for index, item := range data.Exporters {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exporter"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
@@ -117,9 +117,9 @@ func (data *FlowMonitor) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Description = types.StringNull()
 	}
-	for i := range data.FlowMonitorExporter {
+	for i := range data.Exporters {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.FlowMonitorExporter[i].Name.ValueString()}
+		keyValues := [...]string{data.Exporters[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "exporter").ForEach(
@@ -140,10 +140,10 @@ func (data *FlowMonitor) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.FlowMonitorExporter[i].Name.IsNull() {
-			data.FlowMonitorExporter[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.Exporters[i].Name.IsNull() {
+			data.Exporters[i].Name = types.StringValue(value.String())
 		} else {
-			data.FlowMonitorExporter[i].Name = types.StringNull()
+			data.Exporters[i].Name = types.StringNull()
 		}
 	}
 	if value := res.Get(prefix + "cache.timeout.active"); value.Exists() && !data.CacheTimeoutActive.IsNull() {
@@ -167,13 +167,13 @@ func (data *FlowMonitorData) fromBody(ctx context.Context, res gjson.Result) {
 		data.Description = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "exporter"); value.Exists() {
-		data.FlowMonitorExporter = make([]FlowMonitorFlowMonitorExporter, 0)
+		data.Exporters = make([]FlowMonitorExporters, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := FlowMonitorFlowMonitorExporter{}
+			item := FlowMonitorExporters{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
-			data.FlowMonitorExporter = append(data.FlowMonitorExporter, item)
+			data.Exporters = append(data.Exporters, item)
 			return true
 		})
 	}
@@ -190,11 +190,11 @@ func (data *FlowMonitor) getDeletedItems(ctx context.Context, state FlowMonitor)
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
-	for i := range state.FlowMonitorExporter {
-		stateKeyValues := [...]string{state.FlowMonitorExporter[i].Name.ValueString()}
+	for i := range state.Exporters {
+		stateKeyValues := [...]string{state.Exporters[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.FlowMonitorExporter[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Exporters[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -202,9 +202,9 @@ func (data *FlowMonitor) getDeletedItems(ctx context.Context, state FlowMonitor)
 		}
 
 		found := false
-		for j := range data.FlowMonitorExporter {
+		for j := range data.Exporters {
 			found = true
-			if state.FlowMonitorExporter[i].Name.ValueString() != data.FlowMonitorExporter[j].Name.ValueString() {
+			if state.Exporters[i].Name.ValueString() != data.Exporters[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -235,8 +235,8 @@ func (data *FlowMonitor) getDeletePaths(ctx context.Context) []string {
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
 	}
-	for i := range data.FlowMonitorExporter {
-		keyValues := [...]string{data.FlowMonitorExporter[i].Name.ValueString()}
+	for i := range data.Exporters {
+		keyValues := [...]string{data.Exporters[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/exporter=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

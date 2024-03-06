@@ -71,7 +71,7 @@ func (d *FlowMonitorDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "Provide a description for this Flow Monitor",
 				Computed:            true,
 			},
-			"flow_monitor_exporter": schema.ListNestedAttribute{
+			"exporters": schema.ListNestedAttribute{
 				MarkdownDescription: "Add an Exporter to use to export records",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

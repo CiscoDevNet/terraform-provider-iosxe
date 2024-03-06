@@ -1,7 +1,7 @@
 resource "iosxe_flow_monitor" "example" {
   name        = "MON1"
   description = "My monitor"
-  flow_monitor_exporter = [
+  exporters = [
     {
       name = "EXPORTER1"
     }

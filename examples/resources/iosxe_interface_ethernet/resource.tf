@@ -47,10 +47,10 @@ resource "iosxe_interface_ethernet" "example" {
   spanning_tree_link_type = "point-to-point"
   service_policy_input    = "POLICY1"
   service_policy_output   = "POLICY1"
-  ip_flow_monitor = [
+  ip_flow_monitors = [
     {
-      name      = "TEST"
-      direction = "INPUT"
+      name      = "MON1"
+      direction = "input"
     }
   ]
 }

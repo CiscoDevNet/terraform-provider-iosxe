@@ -138,7 +138,7 @@ type InterfaceEthernet struct {
 	Dot1xMaxReauthReq                       types.Int64                               `tfsdk:"dot1x_max_reauth_req"`
 	ServicePolicyInput                      types.String                              `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                     types.String                              `tfsdk:"service_policy_output"`
-	IpFlowMonitor                           []InterfaceEthernetIpFlowMonitor          `tfsdk:"ip_flow_monitor"`
+	IpFlowMonitors                          []InterfaceEthernetIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
 }
 
 type InterfaceEthernetData struct {
@@ -245,7 +245,7 @@ type InterfaceEthernetData struct {
 	Dot1xMaxReauthReq                       types.Int64                               `tfsdk:"dot1x_max_reauth_req"`
 	ServicePolicyInput                      types.String                              `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                     types.String                              `tfsdk:"service_policy_output"`
-	IpFlowMonitor                           []InterfaceEthernetIpFlowMonitor          `tfsdk:"ip_flow_monitor"`
+	IpFlowMonitors                          []InterfaceEthernetIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -264,7 +264,7 @@ type InterfaceEthernetIpv6Addresses struct {
 	Prefix types.String `tfsdk:"prefix"`
 	Eui64  types.Bool   `tfsdk:"eui_64"`
 }
-type InterfaceEthernetIpFlowMonitor struct {
+type InterfaceEthernetIpFlowMonitors struct {
 	Name      types.String `tfsdk:"name"`
 	Direction types.String `tfsdk:"direction"`
 }
@@ -731,9 +731,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.IpFlowMonitor) > 0 {
+	if len(data.IpFlowMonitors) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-flow:flow.monitor-new", []interface{}{})
-		for index, item := range data.IpFlowMonitor {
+		for index, item := range data.IpFlowMonitors {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-flow:flow.monitor-new"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
@@ -1595,9 +1595,9 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.ServicePolicyOutput = types.StringNull()
 	}
-	for i := range data.IpFlowMonitor {
+	for i := range data.IpFlowMonitors {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.IpFlowMonitor[i].Name.ValueString()}
+		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "ip.Cisco-IOS-XE-flow:flow.monitor-new").ForEach(
@@ -1618,15 +1618,15 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.IpFlowMonitor[i].Name.IsNull() {
-			data.IpFlowMonitor[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.IpFlowMonitors[i].Name.IsNull() {
+			data.IpFlowMonitors[i].Name = types.StringValue(value.String())
 		} else {
-			data.IpFlowMonitor[i].Name = types.StringNull()
+			data.IpFlowMonitors[i].Name = types.StringNull()
 		}
-		if value := r.Get("direction"); value.Exists() && !data.IpFlowMonitor[i].Direction.IsNull() {
-			data.IpFlowMonitor[i].Direction = types.StringValue(value.String())
+		if value := r.Get("direction"); value.Exists() && !data.IpFlowMonitors[i].Direction.IsNull() {
+			data.IpFlowMonitors[i].Direction = types.StringValue(value.String())
 		} else {
-			data.IpFlowMonitor[i].Direction = types.StringNull()
+			data.IpFlowMonitors[i].Direction = types.StringNull()
 		}
 	}
 }
@@ -2099,16 +2099,16 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 		data.ServicePolicyOutput = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
-		data.IpFlowMonitor = make([]InterfaceEthernetIpFlowMonitor, 0)
+		data.IpFlowMonitors = make([]InterfaceEthernetIpFlowMonitors, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := InterfaceEthernetIpFlowMonitor{}
+			item := InterfaceEthernetIpFlowMonitors{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("direction"); cValue.Exists() {
 				item.Direction = types.StringValue(cValue.String())
 			}
-			data.IpFlowMonitor = append(data.IpFlowMonitor, item)
+			data.IpFlowMonitors = append(data.IpFlowMonitors, item)
 			return true
 		})
 	}
@@ -2516,11 +2516,11 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", state.getPath()))
 	}
-	for i := range state.IpFlowMonitor {
-		stateKeyValues := [...]string{state.IpFlowMonitor[i].Name.ValueString()}
+	for i := range state.IpFlowMonitors {
+		stateKeyValues := [...]string{state.IpFlowMonitors[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.IpFlowMonitor[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.IpFlowMonitors[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2528,13 +2528,13 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 		}
 
 		found := false
-		for j := range data.IpFlowMonitor {
+		for j := range data.IpFlowMonitors {
 			found = true
-			if state.IpFlowMonitor[i].Name.ValueString() != data.IpFlowMonitor[j].Name.ValueString() {
+			if state.IpFlowMonitors[i].Name.ValueString() != data.IpFlowMonitors[j].Name.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.IpFlowMonitor[i].Direction.IsNull() && data.IpFlowMonitor[j].Direction.IsNull() {
+				if !state.IpFlowMonitors[i].Direction.IsNull() && data.IpFlowMonitors[j].Direction.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v/direction", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
@@ -3035,8 +3035,8 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	if !data.ServicePolicyOutput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", data.getPath()))
 	}
-	for i := range data.IpFlowMonitor {
-		keyValues := [...]string{data.IpFlowMonitor[i].Name.ValueString()}
+	for i := range data.IpFlowMonitors {
+		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
