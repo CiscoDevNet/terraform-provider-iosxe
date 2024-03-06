@@ -519,6 +519,22 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Assign policy-map to the output of an interface",
 				Computed:            true,
 			},
+			"ip_flow_monitor": schema.ListNestedAttribute{
+				MarkdownDescription: "Apply a Flow Monitor",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "User defined",
+							Computed:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }
