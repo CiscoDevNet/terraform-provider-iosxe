@@ -60,6 +60,7 @@ resource "iosxe_interface_ethernet" "example" {
   ]
   arp_timeout             = 300
   spanning_tree_link_type = "point-to-point"
+  negotiation_auto        = false
   service_policy_input    = "POLICY1"
   service_policy_output   = "POLICY1"
   ip_flow_monitors = [
@@ -184,6 +185,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type
   - Choices: `auto-select`, `rj45`, `sfp`
+- `negotiation_auto` (Boolean) Enable link autonegotiation
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface

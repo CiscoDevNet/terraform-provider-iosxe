@@ -281,6 +281,8 @@ attributes:
     tf_name: speed_100000
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-ethernet:negotiation/auto
+    example: false
   - yang_name: Cisco-IOS-XE-ethernet:speed/speed-choice/nonegotiate/nonegotiate
     xpath: Cisco-IOS-XE-ethernet:speed/nonegotiate
     tf_name: speed_nonegotiate

@@ -458,6 +458,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("100000 Mbps operation").String,
 				Optional:            true,
 			},
+			"negotiation_auto": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable link autonegotiation").String,
+				Optional:            true,
+			},
 			"speed_nonegotiate": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
