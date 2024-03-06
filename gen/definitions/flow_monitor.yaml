@@ -1,0 +1,22 @@
+---
+name: Flow Monitor
+path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/monitor=%v
+doc_category: Flow
+attributes:
+  - yang_name: name
+    id: true
+    example: MON1
+  - yang_name: description
+    example: My monitor
+  - yang_name: exporter
+    tf_name: flow_monitor_exporter
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: EXPORTER1
+  - yang_name: cache/timeout/active
+    example: 60
+  - yang_name: record/type
+    tf_name: record
+    example: FNF1

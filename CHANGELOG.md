@@ -4,6 +4,7 @@
 - Add `advertisement_interval` attribute to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source
 - Add `iosxe_flow_record` resource and data source
 - Add `iosxe_flow_exporter` resource and data source
+- Add `iosxe_flow_monitor` resource and data source
 
 ## 0.5.5
 
