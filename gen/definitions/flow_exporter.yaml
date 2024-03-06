@@ -1,0 +1,21 @@
+---
+name: Flow Exporter
+path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/exporter=%v
+doc_category: Flow
+attributes:
+  - yang_name: name
+    example: EXPORTER1
+  - yang_name: description
+    example: My exporter
+  - yang_name: destination/destination-choice/ipdest/ipdest/ip
+    xpath: destination/ipdest/ip
+    tf_name: destination_ip
+    example: 1.1.1.1
+  - yang_name: source/interface-choice/Loopback/Loopback
+    xpath: source/Loopback
+    tf_name: source_loopback
+    example: 123
+  - yang_name: transport/udp
+    example: 655
+  - yang_name: template/data/timeout
+    example: 60
