@@ -33,6 +33,8 @@ func TestAccIosxePrefixList(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_prefix_list.test", "prefixes.0.ip", "10.0.0.0/8"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_prefix_list.test", "prefixes.0.ge", "24"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_prefix_list.test", "prefixes.0.le", "32"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_prefix_list.test", "prefix_list_description.0.name", "PREFIX_LIST_11"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_prefix_list.test", "prefix_list_description.0.description", "DIST_OF_THE_LIST"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -68,6 +70,10 @@ func testAccIosxePrefixListConfig_all() string {
 	config += `		ip = "10.0.0.0/8"` + "\n"
 	config += `		ge = 24` + "\n"
 	config += `		le = 32` + "\n"
+	config += `	}]` + "\n"
+	config += `	prefix_list_description = [{` + "\n"
+	config += `		name = "PREFIX_LIST_11"` + "\n"
+	config += `		description = "DIST_OF_THE_LIST"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config

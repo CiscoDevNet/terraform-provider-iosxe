@@ -117,6 +117,28 @@ func (r *PrefixListResource) Schema(ctx context.Context, req resource.SchemaRequ
 					},
 				},
 			},
+			"prefix_list_description": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Describe about prefix-list entry").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([^s].*)|(s[^e].*)|(se[^q].*)|(seq[^u].*)|(sequ[^e].*)|(seque[^n].*)|(sequen[^c].*)|(sequenc[^e].*)|(sequence[^\-].*)|(sequence\-[^n].*)|(sequence\-n[^u].*)|(sequence\-nu[^m].*)|(sequence\-num[^b].*)|(sequence\-numb[^e].*)|(sequence\-numbe[^r].*)|(sequence\-number..*)`), ""),
+							},
+						},
+						"description": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Prefix-list specific description").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 80),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
