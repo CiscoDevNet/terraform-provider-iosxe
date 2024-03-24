@@ -26,8 +26,10 @@ attributes:
   - yang_name: collect/interface/output
     example: true
   - yang_name: collect/counter/bytes/long
+    delete_parent: true
     example: true
   - yang_name: collect/counter/packets/long
+    delete_parent: true
     example: true
   - yang_name: collect/transport/tcp/flags
     example: true

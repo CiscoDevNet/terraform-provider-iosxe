@@ -430,10 +430,10 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/interface/output", state.getPath()))
 	}
 	if !state.CollectCounterBytesLong.IsNull() && data.CollectCounterBytesLong.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/counter/bytes/long", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/counter/bytes", state.getPath()))
 	}
 	if !state.CollectCounterPacketsLong.IsNull() && data.CollectCounterPacketsLong.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/counter/packets/long", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/counter/packets", state.getPath()))
 	}
 	if !state.CollectTransportTcpFlags.IsNull() && data.CollectTransportTcpFlags.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/transport/tcp/flags", state.getPath()))
@@ -527,10 +527,10 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
 	}
 	if !data.CollectCounterBytesLong.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/counter/bytes/long", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/counter/bytes", data.getPath()))
 	}
 	if !data.CollectCounterPacketsLong.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/counter/packets/long", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/counter/packets", data.getPath()))
 	}
 	if !data.CollectTransportTcpFlags.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/transport/tcp/flags", data.getPath()))
