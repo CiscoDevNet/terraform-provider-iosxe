@@ -1,6 +1,6 @@
 ---
 name: Flow Record
-path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/record=%v
+path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=%v
 doc_category: Flow
 attributes:
   - yang_name: name

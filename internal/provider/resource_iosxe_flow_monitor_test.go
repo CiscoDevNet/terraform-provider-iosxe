@@ -37,24 +37,42 @@ func TestAccIosxeFlowMonitor(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeFlowMonitorConfig_minimum(),
+				Config: testAccIosxeFlowMonitorPrerequisitesConfig + testAccIosxeFlowMonitorConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeFlowMonitorConfig_all(),
+				Config: testAccIosxeFlowMonitorPrerequisitesConfig + testAccIosxeFlowMonitorConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
 				ResourceName:  "iosxe_flow_monitor.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/monitor=MON1",
+				ImportStateId: "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1",
 			},
 		},
 	})
 }
 
+const testAccIosxeFlowMonitorPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1"
+	attributes = {
+		"name" = "EXPORTER1"
+	}
+}
+
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=FNF1"
+	attributes = {
+		"name" = "FNF1"
+	}
+}
+
+`
+
 func testAccIosxeFlowMonitorConfig_minimum() string {
 	config := `resource "iosxe_flow_monitor" "test" {` + "\n"
 	config += `	name = "MON1"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -68,6 +86,7 @@ func testAccIosxeFlowMonitorConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	cache_timeout_active = 60` + "\n"
 	config += `	record = "FNF1"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

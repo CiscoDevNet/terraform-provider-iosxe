@@ -56,11 +56,11 @@ type FlowExporterData struct {
 }
 
 func (data FlowExporter) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/exporter=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 func (data FlowExporterData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/exporter=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it

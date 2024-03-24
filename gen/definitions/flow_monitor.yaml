@@ -1,6 +1,6 @@
 ---
 name: Flow Monitor
-path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/monitor=%v
+path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=%v
 doc_category: Flow
 attributes:
   - yang_name: name
@@ -20,3 +20,12 @@ attributes:
   - yang_name: record/type
     tf_name: record
     example: FNF1
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1
+    attributes:
+      - name: name
+        value: EXPORTER1
+  - path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=FNF1
+    attributes:
+      - name: name
+        value: FNF1

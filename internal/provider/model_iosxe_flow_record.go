@@ -75,11 +75,11 @@ type FlowRecordData struct {
 }
 
 func (data FlowRecord) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/record=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 func (data FlowRecordData) getPath() string {
-	return fmt.Sprintf("Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/record=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return fmt.Sprintf("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
 
 // if last path element has a key -> remove it

@@ -47,7 +47,7 @@ func TestAccIosxeFlowExporter(t *testing.T) {
 			{
 				ResourceName:  "iosxe_flow_exporter.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/exporter=EXPORTER1",
+				ImportStateId: "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1",
 			},
 		},
 	})

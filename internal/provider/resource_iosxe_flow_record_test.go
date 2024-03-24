@@ -57,7 +57,7 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 			{
 				ResourceName:  "iosxe_flow_record.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/Cisco-IOS-XE-flow:flow/record=FNF1",
+				ImportStateId: "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=FNF1",
 			},
 		},
 	})
