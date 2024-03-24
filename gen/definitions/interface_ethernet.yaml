@@ -428,6 +428,7 @@ attributes:
         id: true
         example: MON1
       - yang_name: direction
+        id: true
         example: input
 
 test_prerequisites:
@@ -442,3 +443,18 @@ test_prerequisites:
     attributes:
       - name: name
         value: POLICY1
+  - path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=REC1
+    attributes:
+      - name: name
+        value: REC1
+      - name: match/ipv4/source/address
+        value: ""
+      - name: collect/interface/output
+        value: ""
+  - path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1
+    attributes:
+      - name: name
+        value: MON1
+      - name: record/type
+        value: REC1
+    dependencies: [2]

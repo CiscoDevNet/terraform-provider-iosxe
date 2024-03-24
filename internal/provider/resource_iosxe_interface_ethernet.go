@@ -655,7 +655,7 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 						},
 						"direction": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
-							Optional:            true,
+							Required:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("input", "output"),
 							},

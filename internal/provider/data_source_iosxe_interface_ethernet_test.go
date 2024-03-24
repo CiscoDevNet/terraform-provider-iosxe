@@ -111,6 +111,24 @@ resource "iosxe_restconf" "PreReq1" {
 	}
 }
 
+resource "iosxe_restconf" "PreReq2" {
+	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=REC1"
+	attributes = {
+		"name" = "REC1"
+		"match/ipv4/source/address" = ""
+		"collect/interface/output" = ""
+	}
+}
+
+resource "iosxe_restconf" "PreReq3" {
+	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1"
+	attributes = {
+		"name" = "MON1"
+		"record/type" = "REC1"
+	}
+	depends_on = [iosxe_restconf.PreReq2, ]
+}
+
 `
 
 func testAccDataSourceIosxeInterfaceEthernetConfig() string {
@@ -178,7 +196,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		name = "MON1"` + "\n"
 	config += `		direction = "input"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

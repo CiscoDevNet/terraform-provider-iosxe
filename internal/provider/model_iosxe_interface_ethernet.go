@@ -1608,8 +1608,8 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 		data.ServicePolicyOutput = types.StringNull()
 	}
 	for i := range data.IpFlowMonitors {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString()}
+		keys := [...]string{"name", "direction"}
+		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "ip.Cisco-IOS-XE-flow:flow.monitor-new").ForEach(
@@ -2537,10 +2537,13 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", state.getPath()))
 	}
 	for i := range state.IpFlowMonitors {
-		stateKeyValues := [...]string{state.IpFlowMonitors[i].Name.ValueString()}
+		stateKeyValues := [...]string{state.IpFlowMonitors[i].Name.ValueString(), state.IpFlowMonitors[i].Direction.ValueString()}
 
 		emptyKeys := true
 		if !reflect.ValueOf(state.IpFlowMonitors[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.IpFlowMonitors[i].Direction.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2553,10 +2556,10 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 			if state.IpFlowMonitors[i].Name.ValueString() != data.IpFlowMonitors[j].Name.ValueString() {
 				found = false
 			}
+			if state.IpFlowMonitors[i].Direction.ValueString() != data.IpFlowMonitors[j].Direction.ValueString() {
+				found = false
+			}
 			if found {
-				if !state.IpFlowMonitors[i].Direction.IsNull() && data.IpFlowMonitors[j].Direction.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v/direction", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				break
 			}
 		}
@@ -3059,7 +3062,7 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", data.getPath()))
 	}
 	for i := range data.IpFlowMonitors {
-		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString()}
+		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

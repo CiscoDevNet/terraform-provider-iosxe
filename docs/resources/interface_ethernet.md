@@ -232,11 +232,8 @@ Optional:
 
 Required:
 
-- `name` (String) User defined
-
-Optional:
-
 - `direction` (String) - Choices: `input`, `output`
+- `name` (String) User defined
 
 
 <a id="nestedatt--ipv6_addresses"></a>
