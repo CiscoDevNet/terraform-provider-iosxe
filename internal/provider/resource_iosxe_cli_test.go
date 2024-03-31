@@ -27,8 +27,8 @@ import (
 )
 
 func TestAccIosxeCli(t *testing.T) {
-	if os.Getenv("IOSXE179") == "" && os.Getenv("IOSXE1710") == "" {
-		t.Skip("skipping test, set environment variable IOSXE179 or IOSXE1710")
+	if os.Getenv("IOSXE179") == "" && os.Getenv("IOSXE1713") == "" {
+		t.Skip("skipping test, set environment variable IOSXE179 or IOSXE1713")
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },

@@ -25,6 +25,7 @@ attributes:
     example: false
   - yang_name: cluster-id
     example: 2.2.2.2
+    test_tags: [IOSXE176, IOSXE179]
   - yang_name: log-neighbor-changes/disable
     example: true
   - yang_name: password/enctype

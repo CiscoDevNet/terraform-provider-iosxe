@@ -20,7 +20,6 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   remote_as                                 = "65000"
   description                               = "BGP Neighbor Description"
   shutdown                                  = false
-  cluster_id                                = "2.2.2.2"
   log_neighbor_changes_disable              = true
   password_type                             = 1
   password                                  = "LINE"

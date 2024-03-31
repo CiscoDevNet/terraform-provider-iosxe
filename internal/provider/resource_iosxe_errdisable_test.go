@@ -40,7 +40,7 @@ func TestAccIosxeErrdisable(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "detect_cause_security_violation_shutdown_vlan", "true"))
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "detect_cause_loopdetect", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "flap_setting_cause_dtp_flap_max_flaps", "80"))
@@ -90,7 +90,7 @@ func TestAccIosxeErrdisable(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "recovery_cause_storm_control", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "recovery_cause_udld", "true"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "recovery_cause_loopdetect", "true"))
 	}
 	resource.Test(t, resource.TestCase{
@@ -133,7 +133,7 @@ func testAccIosxeErrdisableConfig_all() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	detect_cause_security_violation_shutdown_vlan = true` + "\n"
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	detect_cause_loopdetect = true` + "\n"
 	}
 	config += `	flap_setting_cause_dtp_flap_max_flaps = 80` + "\n"
@@ -183,7 +183,7 @@ func testAccIosxeErrdisableConfig_all() string {
 		config += `	recovery_cause_storm_control = true` + "\n"
 	}
 	config += `	recovery_cause_udld = true` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	recovery_cause_loopdetect = true` + "\n"
 	}
 	config += `}` + "\n"

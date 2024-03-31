@@ -42,7 +42,6 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_vlancreate                   = true
   enable_traps_vlandelete                   = true
   enable_traps_port_security                = true
-  enable_traps_license                      = true
   enable_traps_smart_license                = true
   enable_traps_cpu_threshold                = true
   enable_traps_memory_bufferpeak            = true

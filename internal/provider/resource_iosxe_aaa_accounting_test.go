@@ -29,7 +29,7 @@ import (
 func TestAccIosxeAAAAccounting(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "update_newinfo_periodic", "2880"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identities.0.name", "test"))
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identities.0.start_stop_broadcast", "false"))
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identities.0.start_stop_group_broadcast", "false"))
@@ -78,7 +78,7 @@ func testAccIosxeAAAAccountingConfig_minimum() string {
 func testAccIosxeAAAAccountingConfig_all() string {
 	config := `resource "iosxe_aaa_accounting" "test" {` + "\n"
 	config += `	update_newinfo_periodic = 2880` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	identities = [{` + "\n"
 		config += `		name = "test"` + "\n"
 		config += `		start_stop_broadcast = false` + "\n"

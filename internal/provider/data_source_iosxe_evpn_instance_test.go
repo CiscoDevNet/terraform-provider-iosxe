@@ -38,8 +38,12 @@ func TestAccDataSourceIosxeEVPNInstance(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_encapsulation", "vxlan"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_auto_route_target", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_rd", "10:10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target", "10:10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_both", "10:10"))
+	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target", "10:10"))
+	}
+	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_both", "10:10"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_import", "10:10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_export", "10:10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_ip_local_learning_disable", "false"))
@@ -68,8 +72,12 @@ func testAccDataSourceIosxeEVPNInstanceConfig() string {
 	config += `	vlan_based_encapsulation = "vxlan"` + "\n"
 	config += `	vlan_based_auto_route_target = false` + "\n"
 	config += `	vlan_based_rd = "10:10"` + "\n"
-	config += `	vlan_based_route_target = "10:10"` + "\n"
-	config += `	vlan_based_route_target_both = "10:10"` + "\n"
+	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+		config += `	vlan_based_route_target = "10:10"` + "\n"
+	}
+	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+		config += `	vlan_based_route_target_both = "10:10"` + "\n"
+	}
 	config += `	vlan_based_route_target_import = "10:10"` + "\n"
 	config += `	vlan_based_route_target_export = "10:10"` + "\n"
 	config += `	vlan_based_ip_local_learning_disable = false` + "\n"

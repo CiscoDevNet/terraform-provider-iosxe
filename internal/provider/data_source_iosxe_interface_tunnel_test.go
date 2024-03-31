@@ -60,13 +60,13 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_mode_ipsec_ipv4", "true"))
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_template", "bfd_template1"))
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_enable", "true"))
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_local_address", "1.2.3.4"))
 	}
 	resource.Test(t, resource.TestCase{
@@ -136,13 +136,13 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	tunnel_mode_ipsec_ipv4 = true` + "\n"
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	bfd_template = "bfd_template1"` + "\n"
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	bfd_enable = true` + "\n"
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	bfd_local_address = "1.2.3.4"` + "\n"
 	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"

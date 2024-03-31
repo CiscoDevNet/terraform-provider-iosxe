@@ -115,38 +115,38 @@ attributes:
         example: VRF1
   - yang_name: bfd/Cisco-IOS-XE-bfd:template
     example: bfd_template1
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: bfd/Cisco-IOS-XE-bfd:enable
     example: true
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: bfd/Cisco-IOS-XE-bfd:local-address
     example: 1.2.3.4
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/msecs
     tf_name: bfd_interval
     optional: true
     example: 1000
     delete_parent: true
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx
     tf_name: bfd_interval_min_rx
     optional: true
     example: 1000
     delete_parent: true
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier
     tf_name: bfd_interval_multiplier
     optional: true
     example: 3
     delete_parent: true
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: bfd/Cisco-IOS-XE-bfd:echo
     example: true
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: ipv6/enable
     example: true
   - yang_name: ipv6/mtu

@@ -48,7 +48,7 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "hosts.0.encryption", "7"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "system_shutdown", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flowmon", "true"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_entity_perf_throughput_notif", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_call_home_message_send_fail", "true"))
@@ -73,7 +73,9 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_vlancreate", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_vlandelete", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_port_security", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_license", "true"))
+	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_license", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_smart_license", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_cpu_threshold", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_memory_bufferpeak", "true"))
@@ -89,7 +91,7 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_fru_ctrl", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flash_insertion", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flash_removal", "true"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_flash_lowspace", "true"))
 	}
 	if os.Getenv("C9000V") != "" {
@@ -237,7 +239,7 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	system_shutdown = true` + "\n"
 	config += `	enable_traps_flowmon = true` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	enable_traps_entity_perf_throughput_notif = true` + "\n"
 	}
 	config += `	enable_traps_call_home_message_send_fail = true` + "\n"
@@ -262,7 +264,9 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `	enable_traps_vlancreate = true` + "\n"
 	config += `	enable_traps_vlandelete = true` + "\n"
 	config += `	enable_traps_port_security = true` + "\n"
-	config += `	enable_traps_license = true` + "\n"
+	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+		config += `	enable_traps_license = true` + "\n"
+	}
 	config += `	enable_traps_smart_license = true` + "\n"
 	config += `	enable_traps_cpu_threshold = true` + "\n"
 	config += `	enable_traps_memory_bufferpeak = true` + "\n"
@@ -278,7 +282,7 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `	enable_traps_fru_ctrl = true` + "\n"
 	config += `	enable_traps_flash_insertion = true` + "\n"
 	config += `	enable_traps_flash_removal = true` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1710") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	enable_traps_flash_lowspace = true` + "\n"
 	}
 	if os.Getenv("C9000V") != "" {

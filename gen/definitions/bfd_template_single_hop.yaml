@@ -29,35 +29,35 @@ attributes:
     xpath: interval-singlehop-v2/mill-unit/min-tx
     tf_name: interval_milliseconds_min_tx
     example: 200
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-rx
     xpath: interval-singlehop-v2/mill-unit/min-rx
     tf_name: interval_milliseconds_min_rx
     example: 200
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/interval-types/both/both
     xpath: interval-singlehop-v2/mill-unit/both
     tf_name: interval_milliseconds_both
     example: 5
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-singlehop-v2/units/unit-mill/mill-unit/multiplier
     xpath: interval-singlehop-v2/mill-unit/multiplier
     tf_name: interval_milliseconds_multiplier
     example: 4
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-singlehop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-rx
     xpath: interval-singlehop-v2/ms-unit/min-rx
     tf_name: interval_microseconds_min_rx
     example: 200
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-singlehop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-tx
     xpath: interval-singlehop-v2/ms-unit/min-tx
     tf_name: interval_microseconds_min_tx
     example: 200
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1710]
+    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: echo
     example: true
   - yang_name: dampening/half-time
