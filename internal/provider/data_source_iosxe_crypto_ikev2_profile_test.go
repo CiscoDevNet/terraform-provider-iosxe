@@ -28,6 +28,7 @@ import (
 func TestAccDataSourceIosxeCryptoIKEv2Profile(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_profile.test", "description", "My description"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_profile.test", "ivrf", "I-VRF of the profile"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_profile.test", "authentication_remote_pre_share", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_profile.test", "authentication_local_pre_share", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2_profile.test", "identity_local_key_id", "key1"))
@@ -68,6 +69,7 @@ func testAccDataSourceIosxeCryptoIKEv2ProfileConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	name = "profile1"` + "\n"
 	config += `	description = "My description"` + "\n"
+	config += `	ivrf = "I-VRF of the profile"` + "\n"
 	config += `	authentication_remote_pre_share = true` + "\n"
 	config += `	authentication_local_pre_share = true` + "\n"
 	config += `	identity_local_key_id = "key1"` + "\n"

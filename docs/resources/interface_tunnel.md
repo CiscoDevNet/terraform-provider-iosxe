@@ -41,6 +41,7 @@ resource "iosxe_interface_tunnel" "example" {
   arp_timeout                    = 300
   ipv4_address                   = "10.1.1.1"
   ipv4_address_mask              = "255.255.255.0"
+  ip_mtu                         = 1200
   ip_dhcp_relay_source_interface = "Loopback100"
   ip_access_group_in             = "1"
   ip_access_group_in_enable      = true
@@ -88,6 +89,8 @@ resource "iosxe_interface_tunnel" "example" {
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
+- `ip_mtu` (Number) Set IP Maximum Transmission Unit
+  - Range: `68`-`18000`
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages

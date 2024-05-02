@@ -16,6 +16,7 @@ This resource can manage the Crypto IKEv2 Profile configuration.
 resource "iosxe_crypto_ikev2_profile" "example" {
   name                            = "profile1"
   description                     = "My description"
+  ivrf                            = "I-VRF of the profile"
   authentication_remote_pre_share = true
   authentication_local_pre_share  = true
   identity_local_key_id           = "key1"
@@ -57,6 +58,7 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `dpd_retry` (Number) - Range: `2`-`60`
 - `identity_local_address` (String) address
 - `identity_local_key_id` (String) key-id opaque string - proprietary types of identification key-id string
+- `ivrf` (String) I-VRF of the profile
 - `keyring_local` (String) Keyring name
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)

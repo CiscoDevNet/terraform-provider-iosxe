@@ -41,6 +41,7 @@ data "iosxe_crypto_ikev2_profile" "example" {
 - `id` (String) The path of the retrieved object.
 - `identity_local_address` (String) address
 - `identity_local_key_id` (String) key-id opaque string - proprietary types of identification key-id string
+- `ivrf` (String) I-VRF of the profile
 - `keyring_local` (String) Keyring name
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)

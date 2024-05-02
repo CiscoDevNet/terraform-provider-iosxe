@@ -71,6 +71,10 @@ func (d *CryptoIKEv2ProfileDataSource) Schema(ctx context.Context, req datasourc
 				MarkdownDescription: "Specify a description of this profile",
 				Computed:            true,
 			},
+			"ivrf": schema.StringAttribute{
+				MarkdownDescription: "I-VRF of the profile",
+				Computed:            true,
+			},
 			"authentication_remote_pre_share": schema.BoolAttribute{
 				MarkdownDescription: "Pre-Shared Key",
 				Computed:            true,

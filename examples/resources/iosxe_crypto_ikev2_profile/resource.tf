@@ -1,6 +1,7 @@
 resource "iosxe_crypto_ikev2_profile" "example" {
   name                            = "profile1"
   description                     = "My description"
+  ivrf                            = "I-VRF of the profile"
   authentication_remote_pre_share = true
   authentication_local_pre_share  = true
   identity_local_key_id           = "key1"
