@@ -14,6 +14,7 @@ resource "iosxe_crypto_ikev2_profile" "example" {
   ]
   match_identity_remote_keys = ["key1"]
   keyring_local              = "test"
+  ivrf                       = "VRF1"
   dpd_interval               = 10
   dpd_retry                  = 2
   dpd_query                  = "periodic"

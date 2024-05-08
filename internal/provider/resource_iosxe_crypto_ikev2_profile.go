@@ -153,6 +153,10 @@ func (r *CryptoIKEv2ProfileResource) Schema(ctx context.Context, req resource.Sc
 				MarkdownDescription: helpers.NewAttributeDescription("Keyring name").String,
 				Optional:            true,
 			},
+			"ivrf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("I-VRF of the profile").String,
+				Optional:            true,
+			},
 			"dpd_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(10, 3600).String,
 				Optional:            true,

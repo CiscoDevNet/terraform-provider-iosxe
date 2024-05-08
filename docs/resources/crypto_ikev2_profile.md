@@ -29,6 +29,7 @@ resource "iosxe_crypto_ikev2_profile" "example" {
   ]
   match_identity_remote_keys = ["key1"]
   keyring_local              = "test"
+  ivrf                       = "VRF1"
   dpd_interval               = 10
   dpd_retry                  = 2
   dpd_query                  = "periodic"
@@ -57,6 +58,7 @@ resource "iosxe_crypto_ikev2_profile" "example" {
 - `dpd_retry` (Number) - Range: `2`-`60`
 - `identity_local_address` (String) address
 - `identity_local_key_id` (String) key-id opaque string - proprietary types of identification key-id string
+- `ivrf` (String) I-VRF of the profile
 - `keyring_local` (String) Keyring name
 - `match_address_local_ip` (String)
 - `match_fvrf` (String)

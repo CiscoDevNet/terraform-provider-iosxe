@@ -52,6 +52,8 @@ attributes:
   - yang_name: keyring/local/name
     tf_name: keyring_local
     example: test
+  - yang_name: ivrf
+    example: VRF1
   - yang_name: dpd/interval
     delete_parent: true
     example: 10
@@ -70,3 +72,10 @@ test_prerequisites:
     attributes:
       - name: name
         value: test
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""

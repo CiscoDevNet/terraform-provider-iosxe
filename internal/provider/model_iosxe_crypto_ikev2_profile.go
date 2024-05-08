@@ -52,6 +52,7 @@ type CryptoIKEv2Profile struct {
 	MatchIdentityRemoteIpv6Prefixes  types.List                                           `tfsdk:"match_identity_remote_ipv6_prefixes"`
 	MatchIdentityRemoteKeys          types.List                                           `tfsdk:"match_identity_remote_keys"`
 	KeyringLocal                     types.String                                         `tfsdk:"keyring_local"`
+	Ivrf                             types.String                                         `tfsdk:"ivrf"`
 	DpdInterval                      types.Int64                                          `tfsdk:"dpd_interval"`
 	DpdRetry                         types.Int64                                          `tfsdk:"dpd_retry"`
 	DpdQuery                         types.String                                         `tfsdk:"dpd_query"`
@@ -75,6 +76,7 @@ type CryptoIKEv2ProfileData struct {
 	MatchIdentityRemoteIpv6Prefixes  types.List                                           `tfsdk:"match_identity_remote_ipv6_prefixes"`
 	MatchIdentityRemoteKeys          types.List                                           `tfsdk:"match_identity_remote_keys"`
 	KeyringLocal                     types.String                                         `tfsdk:"keyring_local"`
+	Ivrf                             types.String                                         `tfsdk:"ivrf"`
 	DpdInterval                      types.Int64                                          `tfsdk:"dpd_interval"`
 	DpdRetry                         types.Int64                                          `tfsdk:"dpd_retry"`
 	DpdQuery                         types.String                                         `tfsdk:"dpd_query"`
@@ -156,6 +158,9 @@ func (data CryptoIKEv2Profile) toBody(ctx context.Context) string {
 	}
 	if !data.KeyringLocal.IsNull() && !data.KeyringLocal.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"keyring.local.name", data.KeyringLocal.ValueString())
+	}
+	if !data.Ivrf.IsNull() && !data.Ivrf.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ivrf", data.Ivrf.ValueString())
 	}
 	if !data.DpdInterval.IsNull() && !data.DpdInterval.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd.interval", strconv.FormatInt(data.DpdInterval.ValueInt64(), 10))
@@ -303,6 +308,11 @@ func (data *CryptoIKEv2Profile) updateFromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.KeyringLocal = types.StringNull()
 	}
+	if value := res.Get(prefix + "ivrf"); value.Exists() && !data.Ivrf.IsNull() {
+		data.Ivrf = types.StringValue(value.String())
+	} else {
+		data.Ivrf = types.StringNull()
+	}
 	if value := res.Get(prefix + "dpd.interval"); value.Exists() && !data.DpdInterval.IsNull() {
 		data.DpdInterval = types.Int64Value(value.Int())
 	} else {
@@ -393,6 +403,9 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 	}
 	if value := res.Get(prefix + "keyring.local.name"); value.Exists() {
 		data.KeyringLocal = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ivrf"); value.Exists() {
+		data.Ivrf = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "dpd.interval"); value.Exists() {
 		data.DpdInterval = types.Int64Value(value.Int())
@@ -512,6 +525,9 @@ func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state Crypt
 	if !state.KeyringLocal.IsNull() && data.KeyringLocal.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/keyring/local/name", state.getPath()))
 	}
+	if !state.Ivrf.IsNull() && data.Ivrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ivrf", state.getPath()))
+	}
 	if !state.DpdInterval.IsNull() && data.DpdInterval.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
 	}
@@ -587,6 +603,9 @@ func (data *CryptoIKEv2Profile) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.KeyringLocal.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/keyring/local/name", data.getPath()))
+	}
+	if !data.Ivrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ivrf", data.getPath()))
 	}
 	if !data.DpdInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd", data.getPath()))

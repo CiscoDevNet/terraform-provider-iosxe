@@ -38,6 +38,7 @@ func TestAccIosxeCryptoIKEv2Profile(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "match_identity_remote_ipv4_addresses.0.mask", "255.255.255.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "match_identity_remote_keys.0", "key1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "keyring_local", "test"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "ivrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "dpd_interval", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "dpd_retry", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_profile.test", "dpd_query", "periodic"))
@@ -70,12 +71,21 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"address-family/ipv4" = ""
+	}
+}
+
 `
 
 func testAccIosxeCryptoIKEv2ProfileConfig_minimum() string {
 	config := `resource "iosxe_crypto_ikev2_profile" "test" {` + "\n"
 	config += `	name = "profile1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -95,11 +105,12 @@ func testAccIosxeCryptoIKEv2ProfileConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	match_identity_remote_keys = ["key1"]` + "\n"
 	config += `	keyring_local = "test"` + "\n"
+	config += `	ivrf = "VRF1"` + "\n"
 	config += `	dpd_interval = 10` + "\n"
 	config += `	dpd_retry = 2` + "\n"
 	config += `	dpd_query = "periodic"` + "\n"
 	config += `	config_exchange_request = false` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
