@@ -53,7 +53,6 @@ attributes:
     tf_name: keyring_local
     example: test
   - yang_name: ivrf
-    tf_name: ivrf
     example: VRF1
   - yang_name: dpd/interval
     delete_parent: true
