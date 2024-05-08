@@ -24,11 +24,32 @@ resource "iosxe_policy_map_event" "example" {
       execution_type = "do-until-failure"
       action_numbers = [
         {
-          number                        = 10
-          authenticate_using_method     = "dot1x"
-          authenticate_using_retries    = 2
-          authenticate_using_retry_time = 0
-          authenticate_using_priority   = 10
+          number                                            = 10
+          activate_service_template_config_service_template = "DEFAULT_LINK_POLICY"
+          activate_service_template_config_aaa_list         = "methodlist1"
+          activate_service_template_config_precedence       = 1
+          activate_interface_template                       = "templ1"
+          activate_policy_type_control_subscriber           = "subscriber1"
+          authenticate_using_method                         = "dot1x"
+          authenticate_using_retries                        = 2
+          authenticate_using_retry_time                     = 0
+          authenticate_using_priority                       = 10
+          authenticate_using_aaa_authc_list                 = "listname1"
+          authenticate_using_aaa_authz_list                 = "listname2"
+          authenticate_using_both                           = true
+          replace                                           = true
+          restrict                                          = true
+          clear_session                                     = true
+          clear_authenticated_data_hosts_on_port            = true
+          protect                                           = true
+          err_disable                                       = true
+          resume_reauthentication                           = true
+          authentication_restart                            = 2
+          set_domain                                        = "data"
+          unauthorize                                       = true
+          notify                                            = true
+          set_timer_name                                    = "timer1"
+          set_timer_value                                   = 3600
         }
       ]
     }
@@ -76,18 +97,48 @@ Required:
 
 Optional:
 
+- `activate_interface_template` (String) activate interface template
+- `activate_policy_type_control_subscriber` (String) policy type control subscriber
+- `activate_service_template_config_aaa_list` (String) Named Method List
+- `activate_service_template_config_precedence` (Number) Template precedence
+  - Range: `1`-`254`
+- `activate_service_template_config_replace_all` (Boolean) Replace all existing authorization data and services
 - `activate_service_template_config_service_template` (String) activate service template
+- `authenticate_using_aaa_authc_list` (String) Specify authentication method list
+- `authenticate_using_aaa_authz_list` (String) Specify authorization method list
+- `authenticate_using_both` (Boolean) Enabling Dot1x Authenticator & Supplicant
 - `authenticate_using_method` (String) - Choices: `dot1x`, `mab`, `webauth`
+- `authenticate_using_parameter_map` (String) Specify parameter map name
 - `authenticate_using_priority` (Number) Method priority
   - Range: `1`-`254`
 - `authenticate_using_retries` (Number) Number of times to retry failed authentications
   - Range: `1`-`5`
 - `authenticate_using_retry_time` (Number) Time interval between retries
   - Range: `0`-`65535`
+- `authentication_restart` (Number) restarts the auth sequence after the specified number of sec
+  - Range: `1`-`65535`
 - `authorize` (Boolean) authorize session
+- `clear_authenticated_data_hosts_on_port` (Boolean) clears authenticated data hosts on the port
+- `clear_session` (Boolean) clears an active session
+- `deactivate_interface_template` (String) activate interface template
+- `deactivate_policy_type_control_subscriber` (String) policy type control subscriber
+- `deactivate_service_template` (String) activate service template
+- `err_disable` (Boolean) temporarily disable port
+- `map_attribute_to_service_table` (String) map identity-update attribute to a auto-conf templates
+- `notify` (Boolean) notifies the session attributes
 - `pause_reauthentication` (Boolean) pause reauthentication
+- `protect` (Boolean) silently drop violating packets
+- `replace` (Boolean) clear existing session and create session for violating host
+- `restrict` (Boolean) drop violating packets and generate a syslog
+- `resume_reauthentication` (Boolean) resume reauthentication
+- `set_domain` (String) set domain
+  - Choices: `data`, `switch`, `voice`
+- `set_timer_name` (String) timer name
+- `set_timer_value` (Number) Enter a value between 1 and 65535
+  - Range: `0`-`65535`
 - `terminate_config` (String) terminate auth method
   - Choices: `dot1x`, `mab`, `webauth`
+- `unauthorize` (Boolean) unauthorize session
 
 ## Import
 

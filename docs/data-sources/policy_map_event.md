@@ -52,12 +52,38 @@ Read-Only:
 
 Read-Only:
 
+- `activate_interface_template` (String) activate interface template
+- `activate_policy_type_control_subscriber` (String) policy type control subscriber
+- `activate_service_template_config_aaa_list` (String) Named Method List
+- `activate_service_template_config_precedence` (Number) Template precedence
+- `activate_service_template_config_replace_all` (Boolean) Replace all existing authorization data and services
 - `activate_service_template_config_service_template` (String) activate service template
+- `authenticate_using_aaa_authc_list` (String) Specify authentication method list
+- `authenticate_using_aaa_authz_list` (String) Specify authorization method list
+- `authenticate_using_both` (Boolean) Enabling Dot1x Authenticator & Supplicant
 - `authenticate_using_method` (String)
+- `authenticate_using_parameter_map` (String) Specify parameter map name
 - `authenticate_using_priority` (Number) Method priority
 - `authenticate_using_retries` (Number) Number of times to retry failed authentications
 - `authenticate_using_retry_time` (Number) Time interval between retries
+- `authentication_restart` (Number) restarts the auth sequence after the specified number of sec
 - `authorize` (Boolean) authorize session
+- `clear_authenticated_data_hosts_on_port` (Boolean) clears authenticated data hosts on the port
+- `clear_session` (Boolean) clears an active session
+- `deactivate_interface_template` (String) activate interface template
+- `deactivate_policy_type_control_subscriber` (String) policy type control subscriber
+- `deactivate_service_template` (String) activate service template
+- `err_disable` (Boolean) temporarily disable port
+- `map_attribute_to_service_table` (String) map identity-update attribute to a auto-conf templates
+- `notify` (Boolean) notifies the session attributes
 - `number` (Number)
 - `pause_reauthentication` (Boolean) pause reauthentication
+- `protect` (Boolean) silently drop violating packets
+- `replace` (Boolean) clear existing session and create session for violating host
+- `restrict` (Boolean) drop violating packets and generate a syslog
+- `resume_reauthentication` (Boolean) resume reauthentication
+- `set_domain` (String) set domain
+- `set_timer_name` (String) timer name
+- `set_timer_value` (Number) Enter a value between 1 and 65535
 - `terminate_config` (String) terminate auth method
+- `unauthorize` (Boolean) unauthorize session

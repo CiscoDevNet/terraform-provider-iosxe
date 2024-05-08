@@ -150,6 +150,41 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 											stringvalidator.LengthBetween(1, 48),
 										},
 									},
+									"activate_service_template_config_aaa_list": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Named Method List").String,
+										Optional:            true,
+									},
+									"activate_service_template_config_precedence": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Template precedence").AddIntegerRangeDescription(1, 254).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 254),
+										},
+									},
+									"activate_service_template_config_replace_all": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Replace all existing authorization data and services").String,
+										Optional:            true,
+									},
+									"activate_interface_template": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("activate interface template").String,
+										Optional:            true,
+									},
+									"activate_policy_type_control_subscriber": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("policy type control subscriber").String,
+										Optional:            true,
+									},
+									"deactivate_interface_template": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("activate interface template").String,
+										Optional:            true,
+									},
+									"deactivate_service_template": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("activate service template").String,
+										Optional:            true,
+									},
+									"deactivate_policy_type_control_subscriber": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("policy type control subscriber").String,
+										Optional:            true,
+									},
 									"authenticate_using_method": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("dot1x", "mab", "webauth").String,
 										Optional:            true,
@@ -177,6 +212,87 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Int64{
 											int64validator.Between(1, 254),
 										},
+									},
+									"authenticate_using_aaa_authc_list": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify authentication method list").String,
+										Optional:            true,
+									},
+									"authenticate_using_aaa_authz_list": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify authorization method list").String,
+										Optional:            true,
+									},
+									"authenticate_using_both": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Enabling Dot1x Authenticator & Supplicant").String,
+										Optional:            true,
+									},
+									"authenticate_using_parameter_map": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify parameter map name").String,
+										Optional:            true,
+									},
+									"replace": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("clear existing session and create session for violating host").String,
+										Optional:            true,
+									},
+									"restrict": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("drop violating packets and generate a syslog").String,
+										Optional:            true,
+									},
+									"clear_session": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("clears an active session").String,
+										Optional:            true,
+									},
+									"clear_authenticated_data_hosts_on_port": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("clears authenticated data hosts on the port").String,
+										Optional:            true,
+									},
+									"protect": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("silently drop violating packets").String,
+										Optional:            true,
+									},
+									"err_disable": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("temporarily disable port").String,
+										Optional:            true,
+									},
+									"resume_reauthentication": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("resume reauthentication").String,
+										Optional:            true,
+									},
+									"authentication_restart": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("restarts the auth sequence after the specified number of sec").AddIntegerRangeDescription(1, 65535).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 65535),
+										},
+									},
+									"set_domain": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("set domain").AddStringEnumDescription("data", "switch", "voice").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("data", "switch", "voice"),
+										},
+									},
+									"unauthorize": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("unauthorize session").String,
+										Optional:            true,
+									},
+									"notify": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("notifies the session attributes").String,
+										Optional:            true,
+									},
+									"set_timer_name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("timer name").String,
+										Optional:            true,
+									},
+									"set_timer_value": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Enter a value between 1 and 65535").AddIntegerRangeDescription(0, 65535).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 65535),
+										},
+									},
+									"map_attribute_to_service_table": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("map identity-update attribute to a auto-conf templates").String,
+										Optional:            true,
 									},
 								},
 							},

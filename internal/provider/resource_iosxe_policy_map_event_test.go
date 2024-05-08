@@ -33,10 +33,31 @@ func TestAccIosxePolicyMapEvent(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.class", "MY_CLASS"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.execution_type", "do-until-failure"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.number", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.activate_service_template_config_service_template", "DEFAULT_LINK_POLICY"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.activate_service_template_config_aaa_list", "methodlist1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.activate_service_template_config_precedence", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.activate_interface_template", "templ1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.activate_policy_type_control_subscriber", "subscriber1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_method", "dot1x"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_retries", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_retry_time", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_aaa_authc_list", "listname1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_aaa_authz_list", "listname2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authenticate_using_both", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.replace", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.restrict", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.clear_session", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.clear_authenticated_data_hosts_on_port", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.protect", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.err_disable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.resume_reauthentication", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.authentication_restart", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.set_domain", "data"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.unauthorize", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.notify", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.set_timer_name", "timer1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_policy_map_event.test", "class_numbers.0.action_numbers.0.set_timer_value", "3600"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -99,10 +120,31 @@ func testAccIosxePolicyMapEventConfig_all() string {
 	config += `		execution_type = "do-until-failure"` + "\n"
 	config += `		action_numbers = [{` + "\n"
 	config += `			number = 10` + "\n"
+	config += `			activate_service_template_config_service_template = "DEFAULT_LINK_POLICY"` + "\n"
+	config += `			activate_service_template_config_aaa_list = "methodlist1"` + "\n"
+	config += `			activate_service_template_config_precedence = 1` + "\n"
+	config += `			activate_interface_template = "templ1"` + "\n"
+	config += `			activate_policy_type_control_subscriber = "subscriber1"` + "\n"
 	config += `			authenticate_using_method = "dot1x"` + "\n"
 	config += `			authenticate_using_retries = 2` + "\n"
 	config += `			authenticate_using_retry_time = 0` + "\n"
 	config += `			authenticate_using_priority = 10` + "\n"
+	config += `			authenticate_using_aaa_authc_list = "listname1"` + "\n"
+	config += `			authenticate_using_aaa_authz_list = "listname2"` + "\n"
+	config += `			authenticate_using_both = true` + "\n"
+	config += `			replace = true` + "\n"
+	config += `			restrict = true` + "\n"
+	config += `			clear_session = true` + "\n"
+	config += `			clear_authenticated_data_hosts_on_port = true` + "\n"
+	config += `			protect = true` + "\n"
+	config += `			err_disable = true` + "\n"
+	config += `			resume_reauthentication = true` + "\n"
+	config += `			authentication_restart = 2` + "\n"
+	config += `			set_domain = "data"` + "\n"
+	config += `			unauthorize = true` + "\n"
+	config += `			notify = true` + "\n"
+	config += `			set_timer_name = "timer1"` + "\n"
+	config += `			set_timer_value = 3600` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"

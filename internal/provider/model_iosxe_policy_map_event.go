@@ -63,10 +63,36 @@ type PolicyMapEventClassNumbersActionNumbers struct {
 	Authorize                                    types.Bool   `tfsdk:"authorize"`
 	TerminateConfig                              types.String `tfsdk:"terminate_config"`
 	ActivateServiceTemplateConfigServiceTemplate types.String `tfsdk:"activate_service_template_config_service_template"`
+	ActivateServiceTemplateConfigAaaList         types.String `tfsdk:"activate_service_template_config_aaa_list"`
+	ActivateServiceTemplateConfigPrecedence      types.Int64  `tfsdk:"activate_service_template_config_precedence"`
+	ActivateServiceTemplateConfigReplaceAll      types.Bool   `tfsdk:"activate_service_template_config_replace_all"`
+	ActivateInterfaceTemplate                    types.String `tfsdk:"activate_interface_template"`
+	ActivatePolicyTypeControlSubscriber          types.String `tfsdk:"activate_policy_type_control_subscriber"`
+	DeactivateInterfaceTemplate                  types.String `tfsdk:"deactivate_interface_template"`
+	DeactivateServiceTemplate                    types.String `tfsdk:"deactivate_service_template"`
+	DeactivatePolicyTypeControlSubscriber        types.String `tfsdk:"deactivate_policy_type_control_subscriber"`
 	AuthenticateUsingMethod                      types.String `tfsdk:"authenticate_using_method"`
 	AuthenticateUsingRetries                     types.Int64  `tfsdk:"authenticate_using_retries"`
 	AuthenticateUsingRetryTime                   types.Int64  `tfsdk:"authenticate_using_retry_time"`
 	AuthenticateUsingPriority                    types.Int64  `tfsdk:"authenticate_using_priority"`
+	AuthenticateUsingAaaAuthcList                types.String `tfsdk:"authenticate_using_aaa_authc_list"`
+	AuthenticateUsingAaaAuthzList                types.String `tfsdk:"authenticate_using_aaa_authz_list"`
+	AuthenticateUsingBoth                        types.Bool   `tfsdk:"authenticate_using_both"`
+	AuthenticateUsingParameterMap                types.String `tfsdk:"authenticate_using_parameter_map"`
+	Replace                                      types.Bool   `tfsdk:"replace"`
+	Restrict                                     types.Bool   `tfsdk:"restrict"`
+	ClearSession                                 types.Bool   `tfsdk:"clear_session"`
+	ClearAuthenticatedDataHostsOnPort            types.Bool   `tfsdk:"clear_authenticated_data_hosts_on_port"`
+	Protect                                      types.Bool   `tfsdk:"protect"`
+	ErrDisable                                   types.Bool   `tfsdk:"err_disable"`
+	ResumeReauthentication                       types.Bool   `tfsdk:"resume_reauthentication"`
+	AuthenticationRestart                        types.Int64  `tfsdk:"authentication_restart"`
+	SetDomain                                    types.String `tfsdk:"set_domain"`
+	Unauthorize                                  types.Bool   `tfsdk:"unauthorize"`
+	Notify                                       types.Bool   `tfsdk:"notify"`
+	SetTimerName                                 types.String `tfsdk:"set_timer_name"`
+	SetTimerValue                                types.Int64  `tfsdk:"set_timer_value"`
+	MapAttributeToServiceTable                   types.String `tfsdk:"map_attribute_to_service_table"`
 }
 
 func (data PolicyMapEvent) getPath() string {
@@ -130,6 +156,32 @@ func (data PolicyMapEvent) toBody(ctx context.Context) string {
 					if !citem.ActivateServiceTemplateConfigServiceTemplate.IsNull() && !citem.ActivateServiceTemplateConfigServiceTemplate.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"activate.service-template-config.service-template", citem.ActivateServiceTemplateConfigServiceTemplate.ValueString())
 					}
+					if !citem.ActivateServiceTemplateConfigAaaList.IsNull() && !citem.ActivateServiceTemplateConfigAaaList.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"activate.service-template-config.aaa-list", citem.ActivateServiceTemplateConfigAaaList.ValueString())
+					}
+					if !citem.ActivateServiceTemplateConfigPrecedence.IsNull() && !citem.ActivateServiceTemplateConfigPrecedence.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"activate.service-template-config.precedence", strconv.FormatInt(citem.ActivateServiceTemplateConfigPrecedence.ValueInt64(), 10))
+					}
+					if !citem.ActivateServiceTemplateConfigReplaceAll.IsNull() && !citem.ActivateServiceTemplateConfigReplaceAll.IsUnknown() {
+						if citem.ActivateServiceTemplateConfigReplaceAll.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"activate.service-template-config.replace-all", map[string]string{})
+						}
+					}
+					if !citem.ActivateInterfaceTemplate.IsNull() && !citem.ActivateInterfaceTemplate.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"activate.interface-template", citem.ActivateInterfaceTemplate.ValueString())
+					}
+					if !citem.ActivatePolicyTypeControlSubscriber.IsNull() && !citem.ActivatePolicyTypeControlSubscriber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"activate.policy.type.control.subscriber", citem.ActivatePolicyTypeControlSubscriber.ValueString())
+					}
+					if !citem.DeactivateInterfaceTemplate.IsNull() && !citem.DeactivateInterfaceTemplate.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"deactivate.interface-template", citem.DeactivateInterfaceTemplate.ValueString())
+					}
+					if !citem.DeactivateServiceTemplate.IsNull() && !citem.DeactivateServiceTemplate.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"deactivate.service-template", citem.DeactivateServiceTemplate.ValueString())
+					}
+					if !citem.DeactivatePolicyTypeControlSubscriber.IsNull() && !citem.DeactivatePolicyTypeControlSubscriber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"deactivate.policy.type.control.subscriber", citem.DeactivatePolicyTypeControlSubscriber.ValueString())
+					}
 					if !citem.AuthenticateUsingMethod.IsNull() && !citem.AuthenticateUsingMethod.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.method", citem.AuthenticateUsingMethod.ValueString())
 					}
@@ -141,6 +193,80 @@ func (data PolicyMapEvent) toBody(ctx context.Context) string {
 					}
 					if !citem.AuthenticateUsingPriority.IsNull() && !citem.AuthenticateUsingPriority.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.priority", strconv.FormatInt(citem.AuthenticateUsingPriority.ValueInt64(), 10))
+					}
+					if !citem.AuthenticateUsingAaaAuthcList.IsNull() && !citem.AuthenticateUsingAaaAuthcList.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.aaa.authc-list", citem.AuthenticateUsingAaaAuthcList.ValueString())
+					}
+					if !citem.AuthenticateUsingAaaAuthzList.IsNull() && !citem.AuthenticateUsingAaaAuthzList.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.aaa.authz-list", citem.AuthenticateUsingAaaAuthzList.ValueString())
+					}
+					if !citem.AuthenticateUsingBoth.IsNull() && !citem.AuthenticateUsingBoth.IsUnknown() {
+						if citem.AuthenticateUsingBoth.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.both", map[string]string{})
+						}
+					}
+					if !citem.AuthenticateUsingParameterMap.IsNull() && !citem.AuthenticateUsingParameterMap.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authenticate.using.parameter-map", citem.AuthenticateUsingParameterMap.ValueString())
+					}
+					if !citem.Replace.IsNull() && !citem.Replace.IsUnknown() {
+						if citem.Replace.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"replace", map[string]string{})
+						}
+					}
+					if !citem.Restrict.IsNull() && !citem.Restrict.IsUnknown() {
+						if citem.Restrict.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"restrict", map[string]string{})
+						}
+					}
+					if !citem.ClearSession.IsNull() && !citem.ClearSession.IsUnknown() {
+						if citem.ClearSession.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"clear-session", map[string]string{})
+						}
+					}
+					if !citem.ClearAuthenticatedDataHostsOnPort.IsNull() && !citem.ClearAuthenticatedDataHostsOnPort.IsUnknown() {
+						if citem.ClearAuthenticatedDataHostsOnPort.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"clear-authenticated-data-hosts-on-port", map[string]string{})
+						}
+					}
+					if !citem.Protect.IsNull() && !citem.Protect.IsUnknown() {
+						if citem.Protect.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"protect", map[string]string{})
+						}
+					}
+					if !citem.ErrDisable.IsNull() && !citem.ErrDisable.IsUnknown() {
+						if citem.ErrDisable.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"err-disable", map[string]string{})
+						}
+					}
+					if !citem.ResumeReauthentication.IsNull() && !citem.ResumeReauthentication.IsUnknown() {
+						if citem.ResumeReauthentication.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"resume.reauthentication", map[string]string{})
+						}
+					}
+					if !citem.AuthenticationRestart.IsNull() && !citem.AuthenticationRestart.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"authentication-restart", strconv.FormatInt(citem.AuthenticationRestart.ValueInt64(), 10))
+					}
+					if !citem.SetDomain.IsNull() && !citem.SetDomain.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"set-domain", citem.SetDomain.ValueString())
+					}
+					if !citem.Unauthorize.IsNull() && !citem.Unauthorize.IsUnknown() {
+						if citem.Unauthorize.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"unauthorize", map[string]string{})
+						}
+					}
+					if !citem.Notify.IsNull() && !citem.Notify.IsUnknown() {
+						if citem.Notify.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"notify", map[string]string{})
+						}
+					}
+					if !citem.SetTimerName.IsNull() && !citem.SetTimerName.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"set-timer.name", citem.SetTimerName.ValueString())
+					}
+					if !citem.SetTimerValue.IsNull() && !citem.SetTimerValue.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"set-timer.value", strconv.FormatInt(citem.SetTimerValue.ValueInt64(), 10))
+					}
+					if !citem.MapAttributeToServiceTable.IsNull() && !citem.MapAttributeToServiceTable.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class-number"+"."+strconv.Itoa(index)+"."+"action-number"+"."+strconv.Itoa(cindex)+"."+"map.attribute-to-service.table", citem.MapAttributeToServiceTable.ValueString())
 					}
 				}
 			}
@@ -258,6 +384,50 @@ func (data *PolicyMapEvent) updateFromBody(ctx context.Context, res gjson.Result
 			} else {
 				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate = types.StringNull()
 			}
+			if value := cr.Get("activate.service-template-config.aaa-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList = types.StringNull()
+			}
+			if value := cr.Get("activate.service-template-config.precedence"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence = types.Int64Null()
+			}
+			if value := cr.Get("activate.service-template-config.replace-all"); !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll = types.BoolNull()
+			}
+			if value := cr.Get("activate.interface-template"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate = types.StringNull()
+			}
+			if value := cr.Get("activate.policy.type.control.subscriber"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber = types.StringNull()
+			}
+			if value := cr.Get("deactivate.interface-template"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate = types.StringNull()
+			}
+			if value := cr.Get("deactivate.service-template"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate = types.StringNull()
+			}
+			if value := cr.Get("deactivate.policy.type.control.subscriber"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber = types.StringNull()
+			}
 			if value := cr.Get("authenticate.using.method"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() {
 				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod = types.StringValue(value.String())
 			} else {
@@ -277,6 +447,136 @@ func (data *PolicyMapEvent) updateFromBody(ctx context.Context, res gjson.Result
 				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority = types.Int64Value(value.Int())
 			} else {
 				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority = types.Int64Null()
+			}
+			if value := cr.Get("authenticate.using.aaa.authc-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList = types.StringNull()
+			}
+			if value := cr.Get("authenticate.using.aaa.authz-list"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList = types.StringNull()
+			}
+			if value := cr.Get("authenticate.using.both"); !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth = types.BoolNull()
+			}
+			if value := cr.Get("authenticate.using.parameter-map"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap = types.StringNull()
+			}
+			if value := cr.Get("replace"); !data.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Replace = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Replace = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Replace = types.BoolNull()
+			}
+			if value := cr.Get("restrict"); !data.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Restrict = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Restrict = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Restrict = types.BoolNull()
+			}
+			if value := cr.Get("clear-session"); !data.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ClearSession = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ClearSession = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ClearSession = types.BoolNull()
+			}
+			if value := cr.Get("clear-authenticated-data-hosts-on-port"); !data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort = types.BoolNull()
+			}
+			if value := cr.Get("protect"); !data.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Protect = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Protect = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Protect = types.BoolNull()
+			}
+			if value := cr.Get("err-disable"); !data.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ErrDisable = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ErrDisable = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ErrDisable = types.BoolNull()
+			}
+			if value := cr.Get("resume.reauthentication"); !data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication = types.BoolNull()
+			}
+			if value := cr.Get("authentication-restart"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart = types.Int64Null()
+			}
+			if value := cr.Get("set-domain"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].SetDomain.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].SetDomain = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].SetDomain = types.StringNull()
+			}
+			if value := cr.Get("unauthorize"); !data.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Unauthorize = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Unauthorize = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Unauthorize = types.BoolNull()
+			}
+			if value := cr.Get("notify"); !data.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() {
+				if value.Exists() {
+					data.ClassNumbers[i].ActionNumbers[ci].Notify = types.BoolValue(true)
+				} else {
+					data.ClassNumbers[i].ActionNumbers[ci].Notify = types.BoolValue(false)
+				}
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].Notify = types.BoolNull()
+			}
+			if value := cr.Get("set-timer.name"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].SetTimerName.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].SetTimerName = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].SetTimerName = types.StringNull()
+			}
+			if value := cr.Get("set-timer.value"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].SetTimerValue.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].SetTimerValue = types.Int64Value(value.Int())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].SetTimerValue = types.Int64Null()
+			}
+			if value := cr.Get("map.attribute-to-service.table"); value.Exists() && !data.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable.IsNull() {
+				data.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable = types.StringValue(value.String())
+			} else {
+				data.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable = types.StringNull()
 			}
 		}
 	}
@@ -326,6 +626,32 @@ func (data *PolicyMapEventData) fromBody(ctx context.Context, res gjson.Result) 
 					if ccValue := cv.Get("activate.service-template-config.service-template"); ccValue.Exists() {
 						cItem.ActivateServiceTemplateConfigServiceTemplate = types.StringValue(ccValue.String())
 					}
+					if ccValue := cv.Get("activate.service-template-config.aaa-list"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigAaaList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("activate.service-template-config.precedence"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigPrecedence = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("activate.service-template-config.replace-all"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigReplaceAll = types.BoolValue(true)
+					} else {
+						cItem.ActivateServiceTemplateConfigReplaceAll = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("activate.interface-template"); ccValue.Exists() {
+						cItem.ActivateInterfaceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("activate.policy.type.control.subscriber"); ccValue.Exists() {
+						cItem.ActivatePolicyTypeControlSubscriber = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("deactivate.interface-template"); ccValue.Exists() {
+						cItem.DeactivateInterfaceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("deactivate.service-template"); ccValue.Exists() {
+						cItem.DeactivateServiceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("deactivate.policy.type.control.subscriber"); ccValue.Exists() {
+						cItem.DeactivatePolicyTypeControlSubscriber = types.StringValue(ccValue.String())
+					}
 					if ccValue := cv.Get("authenticate.using.method"); ccValue.Exists() {
 						cItem.AuthenticateUsingMethod = types.StringValue(ccValue.String())
 					}
@@ -337,6 +663,80 @@ func (data *PolicyMapEventData) fromBody(ctx context.Context, res gjson.Result) 
 					}
 					if ccValue := cv.Get("authenticate.using.priority"); ccValue.Exists() {
 						cItem.AuthenticateUsingPriority = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("authenticate.using.aaa.authc-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaAuthcList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("authenticate.using.aaa.authz-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaAuthzList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("authenticate.using.both"); ccValue.Exists() {
+						cItem.AuthenticateUsingBoth = types.BoolValue(true)
+					} else {
+						cItem.AuthenticateUsingBoth = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("authenticate.using.parameter-map"); ccValue.Exists() {
+						cItem.AuthenticateUsingParameterMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("replace"); ccValue.Exists() {
+						cItem.Replace = types.BoolValue(true)
+					} else {
+						cItem.Replace = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("restrict"); ccValue.Exists() {
+						cItem.Restrict = types.BoolValue(true)
+					} else {
+						cItem.Restrict = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("clear-session"); ccValue.Exists() {
+						cItem.ClearSession = types.BoolValue(true)
+					} else {
+						cItem.ClearSession = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("clear-authenticated-data-hosts-on-port"); ccValue.Exists() {
+						cItem.ClearAuthenticatedDataHostsOnPort = types.BoolValue(true)
+					} else {
+						cItem.ClearAuthenticatedDataHostsOnPort = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("protect"); ccValue.Exists() {
+						cItem.Protect = types.BoolValue(true)
+					} else {
+						cItem.Protect = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("err-disable"); ccValue.Exists() {
+						cItem.ErrDisable = types.BoolValue(true)
+					} else {
+						cItem.ErrDisable = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("resume.reauthentication"); ccValue.Exists() {
+						cItem.ResumeReauthentication = types.BoolValue(true)
+					} else {
+						cItem.ResumeReauthentication = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("authentication-restart"); ccValue.Exists() {
+						cItem.AuthenticationRestart = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("set-domain"); ccValue.Exists() {
+						cItem.SetDomain = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("unauthorize"); ccValue.Exists() {
+						cItem.Unauthorize = types.BoolValue(true)
+					} else {
+						cItem.Unauthorize = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("notify"); ccValue.Exists() {
+						cItem.Notify = types.BoolValue(true)
+					} else {
+						cItem.Notify = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("set-timer.name"); ccValue.Exists() {
+						cItem.SetTimerName = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("set-timer.value"); ccValue.Exists() {
+						cItem.SetTimerValue = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("map.attribute-to-service.table"); ccValue.Exists() {
+						cItem.MapAttributeToServiceTable = types.StringValue(ccValue.String())
 					}
 					item.ActionNumbers = append(item.ActionNumbers, cItem)
 					return true
@@ -407,6 +807,30 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigServiceTemplate.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/service-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigAaaList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/aaa-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigPrecedence.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/precedence", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigReplaceAll.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/replace-all", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateInterfaceTemplate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/interface-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivatePolicyTypeControlSubscriber.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/policy/type/control/subscriber", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateInterfaceTemplate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/interface-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateServiceTemplate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/service-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivatePolicyTypeControlSubscriber.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/policy/type/control/subscriber", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingMethod.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/method", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
@@ -418,6 +842,60 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 							}
 							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/priority", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa/authc-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa/authz-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingBoth.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/both", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingParameterMap.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/parameter-map", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Replace.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/replace", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Restrict.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/restrict", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearSession.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-session", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearAuthenticatedDataHostsOnPort.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-authenticated-data-hosts-on-port", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Protect.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/protect", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ErrDisable.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/err-disable", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ResumeReauthentication.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/resume/reauthentication", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticationRestart.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authentication-restart", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetDomain.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetDomain.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/set-domain", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Unauthorize.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/unauthorize", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Notify.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/notify", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerName.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerName.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/set-timer/name", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerValue.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerValue.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/set-timer/value", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].MapAttributeToServiceTable.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/map/attribute-to-service/table", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							break
 						}
@@ -449,6 +927,39 @@ func (data *PolicyMapEvent) getEmptyLeafsDelete(ctx context.Context) []string {
 			}
 			if !data.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Authorize.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/authorize", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/replace-all", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/both", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Replace.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/replace", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Restrict.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/restrict", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ClearSession.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-session", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-authenticated-data-hosts-on-port", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Protect.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/protect", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ErrDisable.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/err-disable", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/resume/reauthentication", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Unauthorize.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/unauthorize", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Notify.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/notify", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 		}
 	}

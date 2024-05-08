@@ -40,6 +40,25 @@ attributes:
             exclude_test: true
           - yang_name: activate/service-template-config/service-template
             example: DEFAULT_LINK_POLICY
+          - yang_name: activate/service-template-config/aaa-list
+            example: methodlist1
+          - yang_name: activate/service-template-config/precedence
+            example: 1
+          - yang_name: activate/service-template-config/replace-all
+            exclude_test: true
+            example: true
+          - yang_name: activate/interface-template
+            example: templ1
+          - yang_name: activate/policy/type/control/subscriber
+            example: subscriber1
+          - yang_name: deactivate/interface-template
+            example: templ1
+            exclude_test: true
+          - yang_name: deactivate/service-template
+            example: templ1
+            exclude_test: true
+          - yang_name: deactivate/policy/type/control/subscriber
+            example: subscriber1
             exclude_test: true
           - yang_name: authenticate/using/method
             example: dot1x
@@ -49,6 +68,45 @@ attributes:
             example: 0
           - yang_name: authenticate/using/priority
             example: 10
+          - yang_name: authenticate/using/aaa/authc-list
+            example: listname1
+          - yang_name: authenticate/using/aaa/authz-list
+            example: listname2
+          - yang_name: authenticate/using/both
+            example: true
+          - yang_name: authenticate/using/parameter-map
+            example: mapname1
+            exclude_test: true
+          - yang_name: replace
+            example: true
+          - yang_name: restrict
+            example: true
+          - yang_name: clear-session
+            example: true
+          - yang_name: clear-authenticated-data-hosts-on-port
+            example: true
+          - yang_name: protect
+            example: true
+          - yang_name: err-disable
+            example: true
+          - yang_name: resume/reauthentication
+            example: true
+          - yang_name: authentication-restart
+            example: 2
+          - yang_name: set-domain
+            enum_values: ["data", "voice", "switch"]
+            example: "data"
+          - yang_name: unauthorize
+            example: true
+          - yang_name: notify
+            example: true
+          - yang_name: set-timer/name
+            example: "timer1"
+          - yang_name: set-timer/value
+            example: 3600
+          - yang_name: map/attribute-to-service/table
+            example: name1
+            exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy
     attributes:
