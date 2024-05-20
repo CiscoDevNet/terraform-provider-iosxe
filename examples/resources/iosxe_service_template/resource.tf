@@ -5,7 +5,7 @@ resource "iosxe_service_template" "example" {
       name = "ag1"
     }
   ]
-  ianctivity_timer       = 25
+  inactivity_timer       = 25
   inactivity_timer_probe = false
   vlan                   = 27
   voice_vlan             = false

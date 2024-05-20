@@ -15,7 +15,7 @@ attributes:
         id: true
         example: ag1
   - yang_name: inactivity-timer/value
-    tf_name: ianctivity_timer
+    tf_name: inactivity_timer
     example: 25
   - yang_name: inactivity-timer/probe
     example: false

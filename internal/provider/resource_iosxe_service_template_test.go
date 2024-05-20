@@ -29,7 +29,7 @@ func TestAccIosxeServiceTemplate(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service_template.test", "name", "MY_TEMPLATE"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service_template.test", "access_groups.0.name", "ag1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service_template.test", "ianctivity_timer", "25"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service_template.test", "inactivity_timer", "25"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service_template.test", "inactivity_timer_probe", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service_template.test", "vlan", "27"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service_template.test", "voice_vlan", "false"))
@@ -82,7 +82,7 @@ func testAccIosxeServiceTemplateConfig_all() string {
 	config += `	access_groups = [{` + "\n"
 	config += `		name = "ag1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	ianctivity_timer = 25` + "\n"
+	config += `	inactivity_timer = 25` + "\n"
 	config += `	inactivity_timer_probe = false` + "\n"
 	config += `	vlan = 27` + "\n"
 	config += `	voice_vlan = false` + "\n"

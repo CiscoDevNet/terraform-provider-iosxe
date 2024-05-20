@@ -88,7 +88,7 @@ func (r *ServiceTemplateResource) Schema(ctx context.Context, req resource.Schem
 					},
 				},
 			},
-			"ianctivity_timer": schema.Int64Attribute{
+			"inactivity_timer": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enter a value between 1 and 65535").AddIntegerRangeDescription(1, 65535).String,
 				Optional:            true,
 				Validators: []validator.Int64{

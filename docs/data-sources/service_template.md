@@ -35,8 +35,8 @@ data "iosxe_service_template" "example" {
 - `access_groups` (Attributes List) Access list to be applied (see [below for nested schema](#nestedatt--access_groups))
 - `description` (String) Enter a description
 - `dns_acl_preauth` (String) pre-authentication
-- `ianctivity_timer` (Number) Enter a value between 1 and 65535
 - `id` (String) The path of the retrieved object.
+- `inactivity_timer` (Number) Enter a value between 1 and 65535
 - `inactivity_timer_probe` (Boolean) ARP probe
 - `interface_templates` (Attributes List) Interface template to be applied (see [below for nested schema](#nestedatt--interface_templates))
 - `linksec_policy` (String) Set the link security policy
