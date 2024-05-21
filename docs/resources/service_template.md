@@ -20,7 +20,7 @@ resource "iosxe_service_template" "example" {
       name = "ag1"
     }
   ]
-  ianctivity_timer       = 25
+  inactivity_timer       = 25
   inactivity_timer_probe = false
   vlan                   = 27
   voice_vlan             = false
@@ -66,7 +66,7 @@ resource "iosxe_service_template" "example" {
 - `description` (String) Enter a description
 - `device` (String) A device name from the provider configuration.
 - `dns_acl_preauth` (String) pre-authentication
-- `ianctivity_timer` (Number) Enter a value between 1 and 65535
+- `inactivity_timer` (Number) Enter a value between 1 and 65535
   - Range: `1`-`65535`
 - `inactivity_timer_probe` (Boolean) ARP probe
 - `interface_templates` (Attributes List) Interface template to be applied (see [below for nested schema](#nestedatt--interface_templates))

@@ -39,7 +39,7 @@ type ServiceTemplate struct {
 	Id                      types.String                        `tfsdk:"id"`
 	Name                    types.String                        `tfsdk:"name"`
 	AccessGroups            []ServiceTemplateAccessGroups       `tfsdk:"access_groups"`
-	IanctivityTimer         types.Int64                         `tfsdk:"ianctivity_timer"`
+	InactivityTimer         types.Int64                         `tfsdk:"inactivity_timer"`
 	InactivityTimerProbe    types.Bool                          `tfsdk:"inactivity_timer_probe"`
 	Vlan                    types.Int64                         `tfsdk:"vlan"`
 	VoiceVlan               types.Bool                          `tfsdk:"voice_vlan"`
@@ -67,7 +67,7 @@ type ServiceTemplateData struct {
 	Id                      types.String                        `tfsdk:"id"`
 	Name                    types.String                        `tfsdk:"name"`
 	AccessGroups            []ServiceTemplateAccessGroups       `tfsdk:"access_groups"`
-	IanctivityTimer         types.Int64                         `tfsdk:"ianctivity_timer"`
+	InactivityTimer         types.Int64                         `tfsdk:"inactivity_timer"`
 	InactivityTimerProbe    types.Bool                          `tfsdk:"inactivity_timer_probe"`
 	Vlan                    types.Int64                         `tfsdk:"vlan"`
 	VoiceVlan               types.Bool                          `tfsdk:"voice_vlan"`
@@ -123,8 +123,8 @@ func (data ServiceTemplate) toBody(ctx context.Context) string {
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"word", data.Name.ValueString())
 	}
-	if !data.IanctivityTimer.IsNull() && !data.IanctivityTimer.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inactivity-timer.value", strconv.FormatInt(data.IanctivityTimer.ValueInt64(), 10))
+	if !data.InactivityTimer.IsNull() && !data.InactivityTimer.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inactivity-timer.value", strconv.FormatInt(data.InactivityTimer.ValueInt64(), 10))
 	}
 	if !data.InactivityTimerProbe.IsNull() && !data.InactivityTimerProbe.IsUnknown() {
 		if data.InactivityTimerProbe.ValueBool() {
@@ -250,10 +250,10 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 			data.AccessGroups[i].Name = types.StringNull()
 		}
 	}
-	if value := res.Get(prefix + "inactivity-timer.value"); value.Exists() && !data.IanctivityTimer.IsNull() {
-		data.IanctivityTimer = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "inactivity-timer.value"); value.Exists() && !data.InactivityTimer.IsNull() {
+		data.InactivityTimer = types.Int64Value(value.Int())
 	} else {
-		data.IanctivityTimer = types.Int64Null()
+		data.InactivityTimer = types.Int64Null()
 	}
 	if value := res.Get(prefix + "inactivity-timer.probe"); !data.InactivityTimerProbe.IsNull() {
 		if value.Exists() {
@@ -430,7 +430,7 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 		})
 	}
 	if value := res.Get(prefix + "inactivity-timer.value"); value.Exists() {
-		data.IanctivityTimer = types.Int64Value(value.Int())
+		data.InactivityTimer = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "inactivity-timer.probe"); value.Exists() {
 		data.InactivityTimerProbe = types.BoolValue(true)
@@ -541,7 +541,7 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/access-group-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.IanctivityTimer.IsNull() && data.IanctivityTimer.IsNull() {
+	if !state.InactivityTimer.IsNull() && data.InactivityTimer.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/inactivity-timer/value", state.getPath()))
 	}
 	if !state.InactivityTimerProbe.IsNull() && data.InactivityTimerProbe.IsNull() {
@@ -671,7 +671,7 @@ func (data *ServiceTemplate) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-group-config=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.IanctivityTimer.IsNull() {
+	if !data.InactivityTimer.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/inactivity-timer/value", data.getPath()))
 	}
 	if !data.InactivityTimerProbe.IsNull() {
