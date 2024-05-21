@@ -16,6 +16,7 @@ description: |-
 - Add `iosxe_flow_monitor` resource and data source
 - Add `ip_flow_monitors` attribute to `iosxe_interface_ethernet` resource and data source
 - Add `negotiation_auto` attribute to `iosxe_interface_ethernet` resource and data source
+- BREAKING CHANGE: Rename `ianctivity_timer` attribute to `inactivity_timer` of `iosxe_service_template` resource and data source
 
 ## 0.5.5
 
