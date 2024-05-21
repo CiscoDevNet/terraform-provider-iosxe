@@ -26,6 +26,7 @@ resource "iosxe_interface_tunnel" "example" {
   arp_timeout                    = 300
   ipv4_address                   = "10.1.1.1"
   ipv4_address_mask              = "255.255.255.0"
+  ip_mtu                         = 1200
   ip_dhcp_relay_source_interface = "Loopback100"
   ip_access_group_in             = "1"
   ip_access_group_in_enable      = true

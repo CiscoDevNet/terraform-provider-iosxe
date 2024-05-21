@@ -60,6 +60,7 @@ type InterfaceTunnel struct {
 	Ipv4Address                  types.String                            `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                            `tfsdk:"ipv4_address_mask"`
 	Unnumbered                   types.String                            `tfsdk:"unnumbered"`
+	IpMtu                        types.Int64                             `tfsdk:"ip_mtu"`
 	IpDhcpRelaySourceInterface   types.String                            `tfsdk:"ip_dhcp_relay_source_interface"`
 	IpAccessGroupIn              types.String                            `tfsdk:"ip_access_group_in"`
 	IpAccessGroupInEnable        types.Bool                              `tfsdk:"ip_access_group_in_enable"`
@@ -101,6 +102,7 @@ type InterfaceTunnelData struct {
 	Ipv4Address                  types.String                            `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                            `tfsdk:"ipv4_address_mask"`
 	Unnumbered                   types.String                            `tfsdk:"unnumbered"`
+	IpMtu                        types.Int64                             `tfsdk:"ip_mtu"`
 	IpDhcpRelaySourceInterface   types.String                            `tfsdk:"ip_dhcp_relay_source_interface"`
 	IpAccessGroupIn              types.String                            `tfsdk:"ip_access_group_in"`
 	IpAccessGroupInEnable        types.Bool                              `tfsdk:"ip_access_group_in_enable"`
@@ -220,6 +222,9 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	}
 	if !data.Unnumbered.IsNull() && !data.Unnumbered.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.unnumbered", data.Unnumbered.ValueString())
+	}
+	if !data.IpMtu.IsNull() && !data.IpMtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.mtu", strconv.FormatInt(data.IpMtu.ValueInt64(), 10))
 	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() && !data.IpDhcpRelaySourceInterface.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface", data.IpDhcpRelaySourceInterface.ValueString())
@@ -518,6 +523,11 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.Unnumbered = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() && !data.IpMtu.IsNull() {
+		data.IpMtu = types.Int64Value(value.Int())
+	} else {
+		data.IpMtu = types.Int64Null()
+	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() && !data.IpDhcpRelaySourceInterface.IsNull() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
 	} else {
@@ -754,6 +764,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 	if value := res.Get(prefix + "ip.unnumbered"); value.Exists() {
 		data.Unnumbered = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.mtu"); value.Exists() {
+		data.IpMtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
 	}
@@ -938,6 +951,9 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	}
 	if !state.Unnumbered.IsNull() && data.Unnumbered.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/unnumbered", state.getPath()))
+	}
+	if !state.IpMtu.IsNull() && data.IpMtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/mtu", state.getPath()))
 	}
 	if !state.IpDhcpRelaySourceInterface.IsNull() && data.IpDhcpRelaySourceInterface.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", state.getPath()))
@@ -1130,6 +1146,9 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Unnumbered.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/unnumbered", data.getPath()))
+	}
+	if !data.IpMtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/mtu", data.getPath()))
 	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.getPath()))

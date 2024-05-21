@@ -40,6 +40,7 @@ type CryptoIKEv2Profile struct {
 	DeleteMode                       types.String                                         `tfsdk:"delete_mode"`
 	Name                             types.String                                         `tfsdk:"name"`
 	Description                      types.String                                         `tfsdk:"description"`
+	Ivrf                             types.String                                         `tfsdk:"ivrf"`
 	AuthenticationRemotePreShare     types.Bool                                           `tfsdk:"authentication_remote_pre_share"`
 	AuthenticationLocalPreShare      types.Bool                                           `tfsdk:"authentication_local_pre_share"`
 	IdentityLocalAddress             types.String                                         `tfsdk:"identity_local_address"`
@@ -64,6 +65,7 @@ type CryptoIKEv2ProfileData struct {
 	Id                               types.String                                         `tfsdk:"id"`
 	Name                             types.String                                         `tfsdk:"name"`
 	Description                      types.String                                         `tfsdk:"description"`
+	Ivrf                             types.String                                         `tfsdk:"ivrf"`
 	AuthenticationRemotePreShare     types.Bool                                           `tfsdk:"authentication_remote_pre_share"`
 	AuthenticationLocalPreShare      types.Bool                                           `tfsdk:"authentication_local_pre_share"`
 	IdentityLocalAddress             types.String                                         `tfsdk:"identity_local_address"`
@@ -113,6 +115,9 @@ func (data CryptoIKEv2Profile) toBody(ctx context.Context) string {
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
+	}
+	if !data.Ivrf.IsNull() && !data.Ivrf.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ivrf", data.Ivrf.ValueString())
 	}
 	if !data.AuthenticationRemotePreShare.IsNull() && !data.AuthenticationRemotePreShare.IsUnknown() {
 		if data.AuthenticationRemotePreShare.ValueBool() {
@@ -202,6 +207,11 @@ func (data *CryptoIKEv2Profile) updateFromBody(ctx context.Context, res gjson.Re
 		data.Description = types.StringValue(value.String())
 	} else {
 		data.Description = types.StringNull()
+	}
+	if value := res.Get(prefix + "ivrf"); value.Exists() && !data.Ivrf.IsNull() {
+		data.Ivrf = types.StringValue(value.String())
+	} else {
+		data.Ivrf = types.StringNull()
 	}
 	if value := res.Get(prefix + "authentication.remote.pre-share"); !data.AuthenticationRemotePreShare.IsNull() {
 		if value.Exists() {
@@ -345,6 +355,9 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ivrf"); value.Exists() {
+		data.Ivrf = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "authentication.remote.pre-share"); value.Exists() {
 		data.AuthenticationRemotePreShare = types.BoolValue(true)
 	} else {
@@ -427,6 +440,9 @@ func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state Crypt
 	deletedItems := make([]string, 0)
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.Ivrf.IsNull() && data.Ivrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ivrf", state.getPath()))
 	}
 	if !state.AuthenticationRemotePreShare.IsNull() && data.AuthenticationRemotePreShare.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/remote/pre-share", state.getPath()))
@@ -565,6 +581,9 @@ func (data *CryptoIKEv2Profile) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+	if !data.Ivrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ivrf", data.getPath()))
 	}
 	if !data.AuthenticationRemotePreShare.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/remote/pre-share", data.getPath()))

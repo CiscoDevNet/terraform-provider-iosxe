@@ -80,6 +80,8 @@ attributes:
     tf_name: unnumbered
     exclude_test: true
     example: Loopback100
+  - yang_name: ip/mtu
+    example: 1200
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface
     tf_name: ip_dhcp_relay_source_interface
     example: Loopback100

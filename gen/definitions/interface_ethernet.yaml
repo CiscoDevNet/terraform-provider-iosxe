@@ -21,6 +21,7 @@ attributes:
       - HundredGigE
       - TwoHundredGigE
       - FourHundredGigE
+      - Tunnel
     example: GigabitEthernet
   - yang_name: name
     example: 3

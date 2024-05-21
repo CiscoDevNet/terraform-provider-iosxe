@@ -7,6 +7,8 @@ attributes:
     example: profile1
   - yang_name: description
     example: My description
+  - yang_name: ivrf
+    example: "I-VRF of the profile"
   - yang_name: authentication/remote/pre-share
     example: true
   - yang_name: authentication/local/pre-share
