@@ -43,9 +43,13 @@ Additional documentation, including available resources and their arguments/attr
 
 If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (see [Requirements](#requirements) above).
 
-To compile the provider, run `go install`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+If any file in `gen` directory has been modified, run all the generators:
 
-To generate or update documentation, run `go generate`.
+```shell
+go generate -x
+```
+
+To compile the provider, run `go install`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
 
 In order to run the full suite of Acceptance tests, run `make testacc`. Make sure the respective environment variables are set (e.g., `IOSXE_USERNAME`, `IOSXE_PASSWORD`, `IOSXE_URL`).
 
