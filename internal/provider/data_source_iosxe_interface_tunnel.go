@@ -247,6 +247,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Use echo adjunct as bfd detection mechanism",
 				Computed:            true,
 			},
+			"load_interval": schema.Int64Attribute{
+				MarkdownDescription: "Specify interval for load calculation for an interface",
+				Computed:            true,
+			},
 		},
 	}
 }

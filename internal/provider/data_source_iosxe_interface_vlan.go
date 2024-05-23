@@ -227,6 +227,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 					},
 				},
 			},
+			"load_interval": schema.Int64Attribute{
+				MarkdownDescription: "Specify interval for load calculation for an interface",
+				Computed:            true,
+			},
 		},
 	}
 }

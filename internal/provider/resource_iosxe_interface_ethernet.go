@@ -674,6 +674,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LINKUP and LINKDOWN traps").String,
 				Optional:            true,
 			},
+			"logging_event_link_status_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
+				Optional:            true,
+			},
 		},
 	}
 }

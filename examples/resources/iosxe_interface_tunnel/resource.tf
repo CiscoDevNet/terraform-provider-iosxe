@@ -38,4 +38,5 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
+  load_interval = 30
 }

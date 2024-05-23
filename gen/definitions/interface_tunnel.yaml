@@ -155,6 +155,8 @@ attributes:
     example: true
     exclude_test: true
     test_tags: [IOSXE179, IOSXE1713]
+  - yang_name: load-interval
+    example: 30
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

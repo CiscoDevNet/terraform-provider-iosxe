@@ -74,6 +74,7 @@ type InterfaceTunnel struct {
 	BfdIntervalMinRx             types.Int64                             `tfsdk:"bfd_interval_min_rx"`
 	BfdIntervalMultiplier        types.Int64                             `tfsdk:"bfd_interval_multiplier"`
 	BfdEcho                      types.Bool                              `tfsdk:"bfd_echo"`
+	LoadInterval                 types.Int64                             `tfsdk:"load_interval"`
 }
 
 type InterfaceTunnelData struct {
@@ -115,6 +116,7 @@ type InterfaceTunnelData struct {
 	BfdIntervalMinRx             types.Int64                             `tfsdk:"bfd_interval_min_rx"`
 	BfdIntervalMultiplier        types.Int64                             `tfsdk:"bfd_interval_multiplier"`
 	BfdEcho                      types.Bool                              `tfsdk:"bfd_echo"`
+	LoadInterval                 types.Int64                             `tfsdk:"load_interval"`
 }
 type InterfaceTunnelIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -265,6 +267,9 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	}
 	if !data.BfdEcho.IsNull() && !data.BfdEcho.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:echo", data.BfdEcho.ValueBool())
+	}
+	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address", []interface{}{})
@@ -642,6 +647,11 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.BfdEcho = types.BoolNull()
 	}
+	if value := res.Get(prefix + "load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	} else {
+		data.LoadInterval = types.Int64Null()
+	}
 }
 
 func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result) {
@@ -821,6 +831,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.BfdEcho = types.BoolValue(value.Bool())
 	} else {
 		data.BfdEcho = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "load-interval"); value.Exists() {
+		data.LoadInterval = types.Int64Value(value.Int())
 	}
 }
 
@@ -1009,6 +1022,9 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	if !state.BfdEcho.IsNull() && data.BfdEcho.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", state.getPath()))
 	}
+	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/load-interval", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -1174,6 +1190,9 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.BfdEcho.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", data.getPath()))
+	}
+	if !data.LoadInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/load-interval", data.getPath()))
 	}
 	return deletePaths
 }

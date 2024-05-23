@@ -87,6 +87,7 @@ type InterfacePortChannel struct {
 	IpArpInspectionLimitRate     types.Int64                                  `tfsdk:"ip_arp_inspection_limit_rate"`
 	SpanningTreeLinkType         types.String                                 `tfsdk:"spanning_tree_link_type"`
 	IpDhcpSnoopingTrust          types.Bool                                   `tfsdk:"ip_dhcp_snooping_trust"`
+	LoadInterval                 types.Int64                                  `tfsdk:"load_interval"`
 }
 
 type InterfacePortChannelData struct {
@@ -141,6 +142,7 @@ type InterfacePortChannelData struct {
 	IpArpInspectionLimitRate     types.Int64                                  `tfsdk:"ip_arp_inspection_limit_rate"`
 	SpanningTreeLinkType         types.String                                 `tfsdk:"spanning_tree_link_type"`
 	IpDhcpSnoopingTrust          types.Bool                                   `tfsdk:"ip_dhcp_snooping_trust"`
+	LoadInterval                 types.Int64                                  `tfsdk:"load_interval"`
 }
 type InterfacePortChannelHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -356,6 +358,9 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 		if data.IpDhcpSnoopingTrust.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust", map[string]string{})
 		}
+	}
+	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -852,6 +857,11 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.IpDhcpSnoopingTrust = types.BoolNull()
 	}
+	if value := res.Get(prefix + "load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	} else {
+		data.LoadInterval = types.Int64Null()
+	}
 }
 
 func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Result) {
@@ -1099,6 +1109,9 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.IpDhcpSnoopingTrust = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "load-interval"); value.Exists() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	}
 }
 
 func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state InterfacePortChannel) []string {
@@ -1324,6 +1337,9 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 	}
 	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", state.getPath()))
+	}
+	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/load-interval", state.getPath()))
 	}
 	return deletedItems
 }
@@ -1568,6 +1584,9 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
+	}
+	if !data.LoadInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/load-interval", data.getPath()))
 	}
 	return deletePaths
 }

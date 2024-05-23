@@ -142,6 +142,7 @@ type InterfaceEthernet struct {
 	IpFlowMonitors                          []InterfaceEthernetIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
 	LoadInterval                            types.Int64                               `tfsdk:"load_interval"`
 	SnmpTrapLinkStatus                      types.Bool                                `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable            types.Bool                                `tfsdk:"logging_event_link_status_enable"`
 }
 
 type InterfaceEthernetData struct {
@@ -252,6 +253,7 @@ type InterfaceEthernetData struct {
 	IpFlowMonitors                          []InterfaceEthernetIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
 	LoadInterval                            types.Int64                               `tfsdk:"load_interval"`
 	SnmpTrapLinkStatus                      types.Bool                                `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable            types.Bool                                `tfsdk:"logging_event_link_status_enable"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -690,6 +692,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	}
 	if !data.SnmpTrapLinkStatus.IsNull() && !data.SnmpTrapLinkStatus.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:snmp.trap.link-status", data.SnmpTrapLinkStatus.ValueBool())
+	}
+	if !data.LoggingEventLinkStatusEnable.IsNull() && !data.LoggingEventLinkStatusEnable.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"logging.event.link-status-enable", data.LoggingEventLinkStatusEnable.ValueBool())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -1663,6 +1668,13 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.SnmpTrapLinkStatus = types.BoolNull()
 	}
+	if value := res.Get(prefix + "logging.event.link-status-enable"); !data.LoggingEventLinkStatusEnable.IsNull() {
+		if value.Exists() {
+			data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.LoggingEventLinkStatusEnable = types.BoolNull()
+	}
 }
 
 func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Result) {
@@ -2159,6 +2171,11 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.SnmpTrapLinkStatus = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "logging.event.link-status-enable"); value.Exists() {
+		data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
+	} else {
+		data.LoggingEventLinkStatusEnable = types.BoolValue(false)
+	}
 }
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
@@ -2602,6 +2619,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	}
 	if !state.SnmpTrapLinkStatus.IsNull() && data.SnmpTrapLinkStatus.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:snmp/trap/link-status", state.getPath()))
+	}
+	if !state.LoggingEventLinkStatusEnable.IsNull() && data.LoggingEventLinkStatusEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/event/link-status-enable", state.getPath()))
 	}
 	return deletedItems
 }
@@ -3107,6 +3127,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.SnmpTrapLinkStatus.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:snmp/trap/link-status", data.getPath()))
+	}
+	if !data.LoggingEventLinkStatusEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/event/link-status-enable", data.getPath()))
 	}
 	return deletePaths
 }

@@ -69,8 +69,8 @@ resource "iosxe_interface_ethernet" "example" {
       direction = "input"
     }
   ]
-  load_interval         = 30
-  snmp_trap_link_status = true
+  load_interval                    = 30
+  logging_event_link_status_enable = false
 }
 ```
 
@@ -185,6 +185,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
+- `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
 - `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type

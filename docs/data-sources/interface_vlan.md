@@ -59,6 +59,7 @@ data "iosxe_interface_vlan" "example" {
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `load_interval` (Number) Specify interval for load calculation for an interface
 - `shutdown` (Boolean) Shutdown the selected interface
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table

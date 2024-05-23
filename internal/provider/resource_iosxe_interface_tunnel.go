@@ -307,6 +307,13 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 				Optional:            true,
 			},
+			"load_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify interval for load calculation for an interface").AddIntegerRangeDescription(30, 600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(30, 600),
+				},
+			},
 		},
 	}
 }

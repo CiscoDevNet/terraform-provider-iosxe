@@ -70,6 +70,7 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "bfd_local_address", "1.2.3.4"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "load_interval", "30"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -161,6 +162,7 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
 		config += `	bfd_local_address = "1.2.3.4"` + "\n"
 	}
+	config += `	load_interval = 30` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

@@ -76,6 +76,7 @@ func TestAccDataSourceIosxeInterfacePortChannel(t *testing.T) {
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ip_arp_inspection_limit_rate", "1000"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "load_interval", "30"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -158,6 +159,7 @@ func testAccDataSourceIosxeInterfacePortChannelConfig() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	}
+	config += `	load_interval = 30` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

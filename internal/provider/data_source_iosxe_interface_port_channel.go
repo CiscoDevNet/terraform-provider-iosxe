@@ -299,6 +299,10 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "DHCP Snooping trust config",
 				Computed:            true,
 			},
+			"load_interval": schema.Int64Attribute{
+				MarkdownDescription: "Specify interval for load calculation for an interface",
+				Computed:            true,
+			},
 		},
 	}
 }
