@@ -140,6 +140,7 @@ type InterfaceEthernet struct {
 	ServicePolicyInput                      types.String                              `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                     types.String                              `tfsdk:"service_policy_output"`
 	IpFlowMonitors                          []InterfaceEthernetIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
+	LoadInterval                            types.Int64                               `tfsdk:"load_interval"`
 }
 
 type InterfaceEthernetData struct {
@@ -248,6 +249,7 @@ type InterfaceEthernetData struct {
 	ServicePolicyInput                      types.String                              `tfsdk:"service_policy_input"`
 	ServicePolicyOutput                     types.String                              `tfsdk:"service_policy_output"`
 	IpFlowMonitors                          []InterfaceEthernetIpFlowMonitors         `tfsdk:"ip_flow_monitors"`
+	LoadInterval                            types.Int64                               `tfsdk:"load_interval"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -680,6 +682,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	}
 	if !data.ServicePolicyOutput.IsNull() && !data.ServicePolicyOutput.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-policy:service-policy.output", data.ServicePolicyOutput.ValueString())
+	}
+	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -1641,6 +1646,11 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 			data.IpFlowMonitors[i].Direction = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	} else {
+		data.LoadInterval = types.Int64Null()
+	}
 }
 
 func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Result) {
@@ -2129,6 +2139,9 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 			return true
 		})
 	}
+	if value := res.Get(prefix + "load-interval"); value.Exists() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	}
 }
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
@@ -2566,6 +2579,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/load-interval", state.getPath()))
 	}
 	return deletedItems
 }
@@ -3065,6 +3081,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.LoadInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/load-interval", data.getPath()))
 	}
 	return deletePaths
 }

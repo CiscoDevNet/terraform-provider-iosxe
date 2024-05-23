@@ -539,6 +539,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
+			"load_interval": schema.Int64Attribute{
+				MarkdownDescription: "Specify interval for load calculation for an interface",
+				Computed:            true,
+			},
 		},
 	}
 }

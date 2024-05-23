@@ -111,6 +111,7 @@ data "iosxe_interface_ethernet" "example" {
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `load_interval` (Number) Specify interval for load calculation for an interface
 - `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type

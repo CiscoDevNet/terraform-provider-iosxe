@@ -54,4 +54,5 @@ resource "iosxe_interface_ethernet" "example" {
       direction = "input"
     }
   ]
+  load_interval = 30
 }

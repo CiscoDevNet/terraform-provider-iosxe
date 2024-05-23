@@ -83,6 +83,7 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "service_policy_output", "POLICY1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_flow_monitors.0.name", "MON1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_flow_monitors.0.direction", "input"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "load_interval", "30"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -214,6 +215,7 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `		name = "MON1"` + "\n"
 	config += `		direction = "input"` + "\n"
 	config += `	}]` + "\n"
+	config += `	load_interval = 30` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 	return config
