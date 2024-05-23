@@ -670,6 +670,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					int64validator.Between(30, 600),
 				},
 			},
+			"snmp_trap_link_status": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LINKUP and LINKDOWN traps").String,
+				Optional:            true,
+			},
 		},
 	}
 }

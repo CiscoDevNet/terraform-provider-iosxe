@@ -69,7 +69,8 @@ resource "iosxe_interface_ethernet" "example" {
       direction = "input"
     }
   ]
-  load_interval = 30
+  load_interval         = 30
+  snmp_trap_link_status = true
 }
 ```
 
@@ -192,6 +193,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
+- `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`

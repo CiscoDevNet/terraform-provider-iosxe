@@ -432,6 +432,9 @@ attributes:
         example: input
   - yang_name: load-interval
     example: 30
+  - yang_name: Cisco-IOS-XE-snmp:snmp/trap/link-status
+    example: true
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

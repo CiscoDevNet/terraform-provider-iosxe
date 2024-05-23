@@ -54,5 +54,6 @@ resource "iosxe_interface_ethernet" "example" {
       direction = "input"
     }
   ]
-  load_interval = 30
+  load_interval         = 30
+  snmp_trap_link_status = true
 }
