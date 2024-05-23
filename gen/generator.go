@@ -23,7 +23,6 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"math"
 	"os"
@@ -530,12 +529,12 @@ func renderTemplate(templatePath, outputPath string, config interface{}) {
 }
 
 func main() {
-	items, _ := ioutil.ReadDir(definitionsPath)
+	items, _ := os.ReadDir(definitionsPath)
 	configs := make([]YamlConfig, len(items))
 
 	// Load configs
 	for i, filename := range items {
-		yamlFile, err := ioutil.ReadFile(filepath.Join(definitionsPath, filename.Name()))
+		yamlFile, err := os.ReadFile(filepath.Join(definitionsPath, filename.Name()))
 		if err != nil {
 			log.Fatalf("Error reading file: %v", err)
 		}
@@ -548,7 +547,7 @@ func main() {
 		configs[i] = config
 	}
 
-	items, _ = ioutil.ReadDir(modelsPath)
+	items, _ = os.ReadDir(modelsPath)
 	modelPaths := make([]string, 0)
 
 	// Iterate over yang models
@@ -564,6 +563,8 @@ func main() {
 			augmentConfig(&configs[i], modelPaths)
 		}
 
+		fmt.Printf("Augumented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
+
 		// Iterate over templates and render files
 		for _, t := range templates {
 			renderTemplate(t.path, t.prefix+SnakeCase(configs[i].Name)+t.suffix, configs[i])
@@ -573,7 +574,7 @@ func main() {
 	// render provider.go
 	renderTemplate(providerTemplate, providerLocation, configs)
 
-	changelog, err := ioutil.ReadFile(changelogOriginal)
+	changelog, err := os.ReadFile(changelogOriginal)
 	if err != nil {
 		log.Fatalf("Error reading changelog: %v", err)
 	}
