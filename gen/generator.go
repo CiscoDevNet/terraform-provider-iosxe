@@ -23,7 +23,6 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"math"
 	"os"
@@ -438,7 +437,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 	}
 }
 
-func augmentConfig(config *YamlConfig, modelPaths []string) {
+func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 	path := ""
 	if config.AugmentPath != "" {
 		path = config.AugmentPath
@@ -447,7 +446,7 @@ func augmentConfig(config *YamlConfig, modelPaths []string) {
 	}
 
 	module := strings.Split(path, ":")[0]
-	e, errors := yang.GetModule(module, modelPaths...)
+	e, errors := yangModules.GetModule(module)
 	if len(errors) > 0 {
 		fmt.Printf("YANG parser error(s): %+v\n\n", errors)
 		return
@@ -530,12 +529,12 @@ func renderTemplate(templatePath, outputPath string, config interface{}) {
 }
 
 func main() {
-	items, _ := ioutil.ReadDir(definitionsPath)
+	items, _ := os.ReadDir(definitionsPath)
 	configs := make([]YamlConfig, len(items))
 
 	// Load configs
 	for i, filename := range items {
-		yamlFile, err := ioutil.ReadFile(filepath.Join(definitionsPath, filename.Name()))
+		yamlFile, err := os.ReadFile(filepath.Join(definitionsPath, filename.Name()))
 		if err != nil {
 			log.Fatalf("Error reading file: %v", err)
 		}
@@ -548,21 +547,29 @@ func main() {
 		configs[i] = config
 	}
 
-	items, _ = ioutil.ReadDir(modelsPath)
-	modelPaths := make([]string, 0)
+	items, _ = os.ReadDir(modelsPath)
+
+	yangModules := yang.NewModules()
 
 	// Iterate over yang models
 	for _, item := range items {
-		if filepath.Ext(item.Name()) == ".yang" {
-			modelPaths = append(modelPaths, filepath.Join(modelsPath, item.Name()))
+		if filepath.Ext(item.Name()) != ".yang" {
+			continue
+		}
+
+		fn := filepath.Join(modelsPath, item.Name())
+		if err := yangModules.Read(fn); err != nil {
+			log.Fatalf("yang parser: %v", err)
 		}
 	}
 
 	for i := range configs {
 		// Augment config by yang models
 		if !configs[i].NoAugmentConfig {
-			augmentConfig(&configs[i], modelPaths)
+			augmentConfig(&configs[i], yangModules)
 		}
+
+		fmt.Printf("Augumented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
 
 		// Iterate over templates and render files
 		for _, t := range templates {
@@ -573,7 +580,7 @@ func main() {
 	// render provider.go
 	renderTemplate(providerTemplate, providerLocation, configs)
 
-	changelog, err := ioutil.ReadFile(changelogOriginal)
+	changelog, err := os.ReadFile(changelogOriginal)
 	if err != nil {
 		log.Fatalf("Error reading changelog: %v", err)
 	}
