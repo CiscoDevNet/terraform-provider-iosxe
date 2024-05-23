@@ -437,7 +437,7 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 	}
 }
 
-func augmentConfig(config *YamlConfig, modelPaths []string) {
+func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 	path := ""
 	if config.AugmentPath != "" {
 		path = config.AugmentPath
@@ -446,7 +446,7 @@ func augmentConfig(config *YamlConfig, modelPaths []string) {
 	}
 
 	module := strings.Split(path, ":")[0]
-	e, errors := yang.GetModule(module, modelPaths...)
+	e, errors := yangModules.GetModule(module)
 	if len(errors) > 0 {
 		fmt.Printf("YANG parser error(s): %+v\n\n", errors)
 		return
@@ -548,19 +548,25 @@ func main() {
 	}
 
 	items, _ = os.ReadDir(modelsPath)
-	modelPaths := make([]string, 0)
+
+	yangModules := yang.NewModules()
 
 	// Iterate over yang models
 	for _, item := range items {
-		if filepath.Ext(item.Name()) == ".yang" {
-			modelPaths = append(modelPaths, filepath.Join(modelsPath, item.Name()))
+		if filepath.Ext(item.Name()) != ".yang" {
+			continue
+		}
+
+		fn := filepath.Join(modelsPath, item.Name())
+		if err := yangModules.Read(fn); err != nil {
+			log.Fatalf("yang parser: %v", err)
 		}
 	}
 
 	for i := range configs {
 		// Augment config by yang models
 		if !configs[i].NoAugmentConfig {
-			augmentConfig(&configs[i], modelPaths)
+			augmentConfig(&configs[i], yangModules)
 		}
 
 		fmt.Printf("Augumented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
