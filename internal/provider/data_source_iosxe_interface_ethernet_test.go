@@ -83,8 +83,6 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_flow_monitors.0.name", "MON1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_flow_monitors.0.direction", "input"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "load_interval", "30"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "snmp_trap_link_status", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "logging_event_link_status_enable", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

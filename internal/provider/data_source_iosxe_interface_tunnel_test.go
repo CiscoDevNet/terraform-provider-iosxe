@@ -70,7 +70,7 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_local_address", "1.2.3.4"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "load_interval", "30"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "snmp_trap_link_status", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "snmp_trap_link_status", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "logging_event_link_status_enable", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -149,7 +149,7 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 		config += `	bfd_local_address = "1.2.3.4"` + "\n"
 	}
 	config += `	load_interval = 30` + "\n"
-	config += `	snmp_trap_link_status = true` + "\n"
+	config += `	snmp_trap_link_status = false` + "\n"
 	config += `	logging_event_link_status_enable = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"

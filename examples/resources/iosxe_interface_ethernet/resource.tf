@@ -56,5 +56,5 @@ resource "iosxe_interface_ethernet" "example" {
   ]
   load_interval                    = 30
   snmp_trap_link_status            = true
-  logging_event_link_status_enable = false
+  logging_event_link_status_enable = true
 }
