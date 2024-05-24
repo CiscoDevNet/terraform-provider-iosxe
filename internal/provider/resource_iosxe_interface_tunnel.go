@@ -314,6 +314,14 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 					int64validator.Between(30, 600),
 				},
 			},
+			"snmp_trap_link_status": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LINKUP and LINKDOWN traps").String,
+				Optional:            true,
+			},
+			"logging_event_link_status_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
+				Optional:            true,
+			},
 		},
 	}
 }

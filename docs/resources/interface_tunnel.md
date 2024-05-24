@@ -53,7 +53,9 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
-  load_interval = 30
+  load_interval                    = 30
+  snmp_trap_link_status            = true
+  logging_event_link_status_enable = true
 }
 ```
 
@@ -104,7 +106,9 @@ resource "iosxe_interface_tunnel" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
+- `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
 - `shutdown` (Boolean) Shutdown the selected interface
+- `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) Determine the ipsec policy profile to use.

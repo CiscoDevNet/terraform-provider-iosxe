@@ -434,7 +434,6 @@ attributes:
     example: 30
   - yang_name: Cisco-IOS-XE-snmp:snmp/trap/link-status
     example: true
-    exclude_test: true
   - yang_name: logging/event/link-status-enable
     example: false
 
