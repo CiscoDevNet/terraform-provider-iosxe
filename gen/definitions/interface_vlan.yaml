@@ -129,6 +129,9 @@ attributes:
         example: 2006:DB8::/32
       - yang_name: eui-64
         example: true
+  - yang_name: load-interval
+    example: 30
+
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

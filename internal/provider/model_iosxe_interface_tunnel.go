@@ -74,6 +74,9 @@ type InterfaceTunnel struct {
 	BfdIntervalMinRx             types.Int64                             `tfsdk:"bfd_interval_min_rx"`
 	BfdIntervalMultiplier        types.Int64                             `tfsdk:"bfd_interval_multiplier"`
 	BfdEcho                      types.Bool                              `tfsdk:"bfd_echo"`
+	LoadInterval                 types.Int64                             `tfsdk:"load_interval"`
+	SnmpTrapLinkStatus           types.Bool                              `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable types.Bool                              `tfsdk:"logging_event_link_status_enable"`
 }
 
 type InterfaceTunnelData struct {
@@ -115,6 +118,9 @@ type InterfaceTunnelData struct {
 	BfdIntervalMinRx             types.Int64                             `tfsdk:"bfd_interval_min_rx"`
 	BfdIntervalMultiplier        types.Int64                             `tfsdk:"bfd_interval_multiplier"`
 	BfdEcho                      types.Bool                              `tfsdk:"bfd_echo"`
+	LoadInterval                 types.Int64                             `tfsdk:"load_interval"`
+	SnmpTrapLinkStatus           types.Bool                              `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable types.Bool                              `tfsdk:"logging_event_link_status_enable"`
 }
 type InterfaceTunnelIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -265,6 +271,15 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	}
 	if !data.BfdEcho.IsNull() && !data.BfdEcho.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bfd.Cisco-IOS-XE-bfd:echo", data.BfdEcho.ValueBool())
+	}
+	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
+	}
+	if !data.SnmpTrapLinkStatus.IsNull() && !data.SnmpTrapLinkStatus.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:snmp.trap.link-status", data.SnmpTrapLinkStatus.ValueBool())
+	}
+	if !data.LoggingEventLinkStatusEnable.IsNull() && !data.LoggingEventLinkStatusEnable.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"logging.event.link-status-enable", data.LoggingEventLinkStatusEnable.ValueBool())
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address", []interface{}{})
@@ -642,6 +657,25 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.BfdEcho = types.BoolNull()
 	}
+	if value := res.Get(prefix + "load-interval"); value.Exists() && !data.LoadInterval.IsNull() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	} else {
+		data.LoadInterval = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:snmp.trap.link-status"); !data.SnmpTrapLinkStatus.IsNull() {
+		if value.Exists() {
+			data.SnmpTrapLinkStatus = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SnmpTrapLinkStatus = types.BoolNull()
+	}
+	if value := res.Get(prefix + "logging.event.link-status-enable"); !data.LoggingEventLinkStatusEnable.IsNull() {
+		if value.Exists() {
+			data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.LoggingEventLinkStatusEnable = types.BoolNull()
+	}
 }
 
 func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result) {
@@ -821,6 +855,19 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.BfdEcho = types.BoolValue(value.Bool())
 	} else {
 		data.BfdEcho = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "load-interval"); value.Exists() {
+		data.LoadInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:snmp.trap.link-status"); value.Exists() {
+		data.SnmpTrapLinkStatus = types.BoolValue(value.Bool())
+	} else {
+		data.SnmpTrapLinkStatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "logging.event.link-status-enable"); value.Exists() {
+		data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
+	} else {
+		data.LoggingEventLinkStatusEnable = types.BoolValue(false)
 	}
 }
 
@@ -1009,6 +1056,15 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	if !state.BfdEcho.IsNull() && data.BfdEcho.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", state.getPath()))
 	}
+	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/load-interval", state.getPath()))
+	}
+	if !state.SnmpTrapLinkStatus.IsNull() && data.SnmpTrapLinkStatus.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:snmp/trap/link-status", state.getPath()))
+	}
+	if !state.LoggingEventLinkStatusEnable.IsNull() && data.LoggingEventLinkStatusEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/event/link-status-enable", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -1174,6 +1230,15 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.BfdEcho.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", data.getPath()))
+	}
+	if !data.LoadInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/load-interval", data.getPath()))
+	}
+	if !data.SnmpTrapLinkStatus.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:snmp/trap/link-status", data.getPath()))
+	}
+	if !data.LoggingEventLinkStatusEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/event/link-status-enable", data.getPath()))
 	}
 	return deletePaths
 }

@@ -47,7 +47,10 @@ resource "iosxe_interface_port_channel" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout = 2147
+  arp_timeout                      = 2147
+  load_interval                    = 30
+  snmp_trap_link_status            = true
+  logging_event_link_status_enable = false
 }
 ```
 
@@ -110,7 +113,11 @@ resource "iosxe_interface_port_channel" "example" {
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
   - Range: `1280`-`9976`
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `load_interval` (Number) Specify interval for load calculation for an interface
+  - Range: `30`-`600`
+- `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
 - `shutdown` (Boolean) Shutdown the selected interface
+- `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
   - Choices: `loop`, `none`, `root`
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use

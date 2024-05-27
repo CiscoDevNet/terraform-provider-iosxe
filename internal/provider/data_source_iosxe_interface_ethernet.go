@@ -539,6 +539,18 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
+			"load_interval": schema.Int64Attribute{
+				MarkdownDescription: "Specify interval for load calculation for an interface",
+				Computed:            true,
+			},
+			"snmp_trap_link_status": schema.BoolAttribute{
+				MarkdownDescription: "Allow SNMP LINKUP and LINKDOWN traps",
+				Computed:            true,
+			},
+			"logging_event_link_status_enable": schema.BoolAttribute{
+				MarkdownDescription: "UPDOWN and CHANGE messages",
+				Computed:            true,
+			},
 		},
 	}
 }

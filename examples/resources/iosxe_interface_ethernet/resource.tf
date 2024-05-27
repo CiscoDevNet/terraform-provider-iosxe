@@ -21,12 +21,6 @@ resource "iosxe_interface_ethernet" "example" {
       vrf     = "VRF1"
     }
   ]
-  source_template = [
-    {
-      template_name = "TEMP1"
-      merge         = false
-    }
-  ]
   ipv6_enable             = true
   ipv6_mtu                = 1300
   ipv6_nd_ra_suppress_all = true
@@ -54,4 +48,7 @@ resource "iosxe_interface_ethernet" "example" {
       direction = "input"
     }
   ]
+  load_interval                    = 30
+  snmp_trap_link_status            = true
+  logging_event_link_status_enable = true
 }

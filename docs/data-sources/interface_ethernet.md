@@ -111,6 +111,8 @@ data "iosxe_interface_ethernet" "example" {
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
+- `load_interval` (Number) Specify interval for load calculation for an interface
+- `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
 - `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type
@@ -118,6 +120,7 @@ data "iosxe_interface_ethernet" "example" {
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
 - `shutdown` (Boolean) Shutdown the selected interface
+- `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use

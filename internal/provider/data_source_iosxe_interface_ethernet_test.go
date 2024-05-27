@@ -47,8 +47,6 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "helper_addresses.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.template_name", "TEMP1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "source_template.0.merge", "false"))
 	if os.Getenv("IOSXE179") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bfd_template", "bfd_template1"))
 	}
@@ -82,6 +80,9 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "service_policy_output", "POLICY1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_flow_monitors.0.name", "MON1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_flow_monitors.0.direction", "input"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "load_interval", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "snmp_trap_link_status", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "logging_event_link_status_enable", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -153,10 +154,6 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		global = false` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	source_template = [{` + "\n"
-	config += `		template_name = "TEMP1"` + "\n"
-	config += `		merge = false` + "\n"
-	config += `	}]` + "\n"
 	if os.Getenv("IOSXE179") != "" {
 		config += `	bfd_template = "bfd_template1"` + "\n"
 	}
@@ -196,6 +193,9 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `		name = "MON1"` + "\n"
 	config += `		direction = "input"` + "\n"
 	config += `	}]` + "\n"
+	config += `	load_interval = 30` + "\n"
+	config += `	snmp_trap_link_status = true` + "\n"
+	config += `	logging_event_link_status_enable = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 

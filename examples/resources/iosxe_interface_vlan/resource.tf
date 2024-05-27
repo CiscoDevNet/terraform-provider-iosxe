@@ -40,4 +40,5 @@ resource "iosxe_interface_vlan" "example" {
       eui_64 = true
     }
   ]
+  load_interval = 30
 }

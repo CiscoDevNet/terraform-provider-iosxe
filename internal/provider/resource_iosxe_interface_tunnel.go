@@ -307,6 +307,21 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("Use echo adjunct as bfd detection mechanism").String,
 				Optional:            true,
 			},
+			"load_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify interval for load calculation for an interface").AddIntegerRangeDescription(30, 600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(30, 600),
+				},
+			},
+			"snmp_trap_link_status": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LINKUP and LINKDOWN traps").String,
+				Optional:            true,
+			},
+			"logging_event_link_status_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
+				Optional:            true,
+			},
 		},
 	}
 }

@@ -190,6 +190,12 @@ attributes:
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
     exclude_test: true
+  - yang_name: load-interval
+    example: 30
+  - yang_name: Cisco-IOS-XE-snmp:snmp/trap/link-status
+    example: true
+  - yang_name: logging/event/link-status-enable
+    example: false
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

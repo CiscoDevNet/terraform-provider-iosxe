@@ -156,6 +156,7 @@ attributes:
   - yang_name: source/template/template-name
     tf_name: source_template
     type: List
+    exclude_test: true
     attributes:
       - yang_name: template-name
         example: TEMP1
@@ -430,6 +431,12 @@ attributes:
       - yang_name: direction
         id: true
         example: input
+  - yang_name: load-interval
+    example: 30
+  - yang_name: Cisco-IOS-XE-snmp:snmp/trap/link-status
+    example: true
+  - yang_name: logging/event/link-status-enable
+    example: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

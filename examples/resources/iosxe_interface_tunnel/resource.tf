@@ -38,4 +38,7 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
+  load_interval                    = 30
+  snmp_trap_link_status            = false
+  logging_event_link_status_enable = true
 }

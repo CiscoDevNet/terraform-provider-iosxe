@@ -32,5 +32,8 @@ resource "iosxe_interface_port_channel" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout = 2147
+  arp_timeout                      = 2147
+  load_interval                    = 30
+  snmp_trap_link_status            = true
+  logging_event_link_status_enable = false
 }
