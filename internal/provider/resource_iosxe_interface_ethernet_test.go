@@ -48,8 +48,6 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "helper_addresses.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "source_template.0.template_name", "TEMP1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "source_template.0.merge", "false"))
 	if os.Getenv("IOSXE179") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bfd_template", "bfd_template1"))
 	}
@@ -84,6 +82,8 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_flow_monitors.0.name", "MON1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_flow_monitors.0.direction", "input"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "load_interval", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "snmp_trap_link_status", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "logging_event_link_status_enable", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -171,10 +171,6 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `		address = "10.10.10.10"` + "\n"
 	config += `		global = false` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
-	config += `	}]` + "\n"
-	config += `	source_template = [{` + "\n"
-	config += `		template_name = "TEMP1"` + "\n"
-	config += `		merge = false` + "\n"
 	config += `	}]` + "\n"
 	if os.Getenv("IOSXE179") != "" {
 		config += `	bfd_template = "bfd_template1"` + "\n"

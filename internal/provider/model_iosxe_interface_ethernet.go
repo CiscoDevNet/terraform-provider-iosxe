@@ -1661,6 +1661,20 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.LoadInterval = types.Int64Null()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:snmp.trap.link-status"); !data.SnmpTrapLinkStatus.IsNull() {
+		if value.Exists() {
+			data.SnmpTrapLinkStatus = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SnmpTrapLinkStatus = types.BoolNull()
+	}
+	if value := res.Get(prefix + "logging.event.link-status-enable"); !data.LoggingEventLinkStatusEnable.IsNull() {
+		if value.Exists() {
+			data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.LoggingEventLinkStatusEnable = types.BoolNull()
+	}
 }
 
 func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Result) {
@@ -2151,6 +2165,16 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	}
 	if value := res.Get(prefix + "load-interval"); value.Exists() {
 		data.LoadInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:snmp.trap.link-status"); value.Exists() {
+		data.SnmpTrapLinkStatus = types.BoolValue(value.Bool())
+	} else {
+		data.SnmpTrapLinkStatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "logging.event.link-status-enable"); value.Exists() {
+		data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
+	} else {
+		data.LoggingEventLinkStatusEnable = types.BoolValue(false)
 	}
 }
 

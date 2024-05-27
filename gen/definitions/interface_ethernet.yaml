@@ -156,6 +156,7 @@ attributes:
   - yang_name: source/template/template-name
     tf_name: source_template
     type: List
+    exclude_test: true
     attributes:
       - yang_name: template-name
         example: TEMP1
@@ -433,10 +434,8 @@ attributes:
   - yang_name: load-interval
     example: 30
   - yang_name: Cisco-IOS-XE-snmp:snmp/trap/link-status
-    write_only: true
     example: true
   - yang_name: logging/event/link-status-enable
-    write_only: true
     example: true
 
 test_prerequisites:
