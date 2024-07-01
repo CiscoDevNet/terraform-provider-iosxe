@@ -1,4 +1,4 @@
-## 0.5.6 (unreleased)
+ ## 0.5.6
 
 - Add support for descriptions to `iosxe_prefix_list` resource and data source
 - Add `advertisement_interval` attribute to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source
@@ -10,7 +10,7 @@
 - BREAKING CHANGE: Rename `ianctivity_timer` attribute to `inactivity_timer` of `iosxe_service_template` resource and data source
 - Add `Tunnel` option to `iosxe_interface_ospf` and `iosxe_interface_ospfv3` resource and data source
 - Add `logging_event_link_status_enable` and `snmp_trap_link_status` attributes to `iosxe_interface_ethernet`, `iosxe_interface_port_channel`, `iosxe_interface_tunnel` resources and data sources
-- Add `load_interval` attribute to `iosxe_interface_ethernet`, `iosxe_interface_port_channel`,  `iosxe_interface_tunnel`, `iosxe_interface_vlan` resources and data sources
+- Add `load_interval` attribute to `iosxe_interface_ethernet`, `iosxe_interface_port_channel`, `iosxe_interface_tunnel`, `iosxe_interface_vlan` resources and data sources
 
 ## 0.5.5
 
