@@ -175,6 +175,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Enable IP processing without an explicit address",
 				Computed:            true,
 			},
+			"ip_mtu": schema.Int64Attribute{
+				MarkdownDescription: "Set IP Maximum Transmission Unit",
+				Computed:            true,
+			},
 			"ip_dhcp_relay_source_interface": schema.StringAttribute{
 				MarkdownDescription: "Set source interface for relayed messages",
 				Computed:            true,

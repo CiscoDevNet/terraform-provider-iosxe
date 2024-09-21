@@ -7,7 +7,12 @@ description: |-
 
 # Changelog
 
- ## 0.5.6
+## 0.5.7 (unreleased)
+
+- Add `Tunnel` interface type to `iosxe_interface_pim` resource and data source
+- Add `ip_mtu` attribute to `iosxe_interface_tunnel` resources and data sources
+
+## 0.5.6
 
 - Add support for descriptions to `iosxe_prefix_list` resource and data source
 - Add `advertisement_interval` attribute to `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source

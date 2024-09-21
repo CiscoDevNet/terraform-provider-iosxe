@@ -50,6 +50,7 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "arp_timeout", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address", "10.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ipv4_address_mask", "255.255.255.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_mtu", "1200"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_dhcp_relay_source_interface", "Loopback100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "ip_access_group_in_enable", "true"))
@@ -142,6 +143,7 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	arp_timeout = 300` + "\n"
 	config += `	ipv4_address = "10.1.1.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
+	config += `	ip_mtu = 1200` + "\n"
 	config += `	ip_dhcp_relay_source_interface = "Loopback100"` + "\n"
 	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_in_enable = true` + "\n"

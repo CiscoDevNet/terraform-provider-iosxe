@@ -23,6 +23,7 @@ attributes:
       - Loopback
       - Vlan
       - Port-channel
+      - Tunnel
     example: Loopback
   - yang_name: name
     example: 100
