@@ -69,6 +69,10 @@ attributes:
     tf_name: password
     delete_parent: true
     example: test1234
+  - yang_name: peer-group/peer-group-name
+    tf_name: peer_group
+    example: PEERGRP
+    exclude_test: true
   - yang_name: timers/keepalive-interval
     delete_parent: true
     example: 655
