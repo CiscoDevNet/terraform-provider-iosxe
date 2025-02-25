@@ -114,6 +114,31 @@ func (r *RestconfResource) Schema(ctx context.Context, req resource.SchemaReques
 	}
 }
 
+func (r *RestconfResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data Restconf
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	for l := range data.Lists {
+		key := data.Lists[l].Key.ValueString()
+		for i := range data.Lists[l].Items {
+			var m map[string]string
+			data.Lists[l].Items[i].ElementsAs(ctx, &m, false)
+			if _, ok := m[key]; !ok {
+				resp.Diagnostics.AddAttributeError(
+					path.Root("lists"),
+					"Invalid List Configuration",
+					fmt.Sprintf("Key '%s' is missing in list item.", key),
+				)
+			}
+		}
+	}
+}
+
 func (r *RestconfResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
