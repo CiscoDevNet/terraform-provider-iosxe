@@ -45,6 +45,8 @@ resource "iosxe_route_map" "example" {
       match_tags                               = [100]
       match_track                              = 1
       match_as_paths_legacy                    = [10]
+      match_community_lists_legacy             = ["COMM1"]
+      match_extcommunity_lists_legacy          = ["EXTCOMM1"]
       match_local_preferences_legacy           = [100]
       set_default_interfaces                   = ["Loopback1"]
       set_global                               = false

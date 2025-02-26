@@ -13,28 +13,23 @@ attributes:
     tf_name: interval_milliseconds_both
     example: 8234
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-multihop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-tx
     xpath: interval-multihop-v2/mill-unit/min-tx
     tf_name: interval_milliseconds_min_tx
     example: 4500
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-multihop-v2/units/unit-mill/mill-unit/interval-types/tx-rx/min-rx
     xpath: interval-multihop-v2/mill-unit/min-rx
     tf_name: interval_milliseconds_min_rx
     example: 5500
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-multihop-v2/units/unit-mill/mill-unit/multiplier
     xpath: interval-multihop-v2/mill-unit/multiplier
     tf_name: interval_milliseconds_multiplier
     example: 40
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/microseconds
     xpath: interval-multihop-v2/microseconds
     tf_name: interval_microseconds
     example: true
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/interval-types/both/both
     xpath: interval-multihop-v2/both
     tf_name: interval_microseconds_both
@@ -45,19 +40,16 @@ attributes:
     tf_name: interval_microseconds_min_tx
     example: 4500
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/interval-types/tx-rx/min-rx
     xpath: interval-multihop-v2/min-rx
     tf_name: interval_microseconds_min_rx
     example: 5500
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: interval-multihop-v2/units/unit-ms/ms-unit/multiplier
     xpath: interval-multihop-v2/multiplier
     tf_name: interval_microseconds_multiplier
     example: 40
     exclude_test: true
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: authentication/auth-type/md5/md5/keychain
     xpath: authentication/md5/keychain
     tf_name: authentication_md5_keychain

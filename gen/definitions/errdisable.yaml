@@ -47,7 +47,6 @@ attributes:
     exclude_test: true
   - yang_name: detect/cause/loopdetect
     example: true
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: flap-setting/cause/dtp-flap/max-flaps
     example: 80
     delete_parent: true
@@ -135,4 +134,3 @@ attributes:
     exclude_test: true
   - yang_name: recovery/cause/loopdetect
     example: true
-    test_tags: [IOSXE179, IOSXE1713]

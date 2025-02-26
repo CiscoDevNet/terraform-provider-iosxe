@@ -20,7 +20,6 @@
 package provider
 
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -29,16 +28,14 @@ import (
 func TestAccDataSourceIosxeAAAAccounting(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "update_newinfo_periodic", "2880"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.name", "test"))
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_broadcast", "false"))
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group_broadcast", "false"))
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group_logger", "false"))
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group1", "GROUP1"))
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group2", "GROUP2"))
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group3", "GROUP3"))
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group4", "GROUP4"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.name", "test"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_broadcast", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group_broadcast", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group_logger", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group1", "GROUP1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group2", "GROUP2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group3", "GROUP3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identities.0.start_stop_group4", "GROUP4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identity_default_start_stop_group1", "RADIUS-GROUP"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identity_default_start_stop_group2", "RADIUS-GROUP2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identity_default_start_stop_group3", "RADIUS-GROUP3"))
@@ -65,18 +62,16 @@ func testAccDataSourceIosxeAAAAccountingConfig() string {
 	config := `resource "iosxe_aaa_accounting" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	update_newinfo_periodic = 2880` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	identities = [{` + "\n"
-		config += `		name = "test"` + "\n"
-		config += `		start_stop_broadcast = false` + "\n"
-		config += `		start_stop_group_broadcast = false` + "\n"
-		config += `		start_stop_group_logger = false` + "\n"
-		config += `		start_stop_group1 = "GROUP1"` + "\n"
-		config += `		start_stop_group2 = "GROUP2"` + "\n"
-		config += `		start_stop_group3 = "GROUP3"` + "\n"
-		config += `		start_stop_group4 = "GROUP4"` + "\n"
-		config += `	}]` + "\n"
-	}
+	config += `	identities = [{` + "\n"
+	config += `		name = "test"` + "\n"
+	config += `		start_stop_broadcast = false` + "\n"
+	config += `		start_stop_group_broadcast = false` + "\n"
+	config += `		start_stop_group_logger = false` + "\n"
+	config += `		start_stop_group1 = "GROUP1"` + "\n"
+	config += `		start_stop_group2 = "GROUP2"` + "\n"
+	config += `		start_stop_group3 = "GROUP3"` + "\n"
+	config += `		start_stop_group4 = "GROUP4"` + "\n"
+	config += `	}]` + "\n"
 	config += `	identity_default_start_stop_group1 = "RADIUS-GROUP"` + "\n"
 	config += `	identity_default_start_stop_group2 = "RADIUS-GROUP2"` + "\n"
 	config += `	identity_default_start_stop_group3 = "RADIUS-GROUP3"` + "\n"

@@ -23,6 +23,7 @@ resource "iosxe_snmp_server" "example" {
   ]
   system_shutdown                           = true
   enable_traps_flowmon                      = true
+  enable_traps_entity_perf_throughput_notif = true
   enable_traps_call_home_message_send_fail  = true
   enable_traps_call_home_server_fail        = true
   enable_traps_tty                          = true
@@ -48,6 +49,7 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_fru_ctrl                     = true
   enable_traps_flash_insertion              = true
   enable_traps_flash_removal                = true
+  enable_traps_flash_lowspace               = true
   enable_traps_entity                       = true
   enable_traps_pw_vc                        = true
   enable_traps_ipsla                        = true

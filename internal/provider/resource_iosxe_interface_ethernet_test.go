@@ -48,13 +48,13 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "helper_addresses.0.vrf", "VRF1"))
-	if os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bfd_template", "bfd_template1"))
 	}
-	if os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bfd_enable", "false"))
 	}
-	if os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bfd_local_address", "1.2.3.4"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_enable", "true"))
@@ -172,13 +172,13 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `		global = false` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
-	if os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		config += `	bfd_template = "bfd_template1"` + "\n"
 	}
-	if os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		config += `	bfd_enable = false` + "\n"
 	}
-	if os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		config += `	bfd_local_address = "1.2.3.4"` + "\n"
 	}
 	config += `	ipv6_enable = true` + "\n"

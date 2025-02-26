@@ -20,7 +20,6 @@
 package provider
 
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -30,15 +29,9 @@ func TestAccIosxeBFDTemplateMultiHop(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "name", "T11"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "echo", "true"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "interval_milliseconds_min_tx", "4500"))
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "interval_milliseconds_min_rx", "5500"))
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "interval_milliseconds_multiplier", "40"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "interval_milliseconds_min_tx", "4500"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "interval_milliseconds_min_rx", "5500"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "interval_milliseconds_multiplier", "40"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "authentication_md5_keychain", "KEYNAME"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "dampening_half_time", "21"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bfd_template_multi_hop.test", "dampening_unsuppress_time", "1800"))
@@ -75,15 +68,9 @@ func testAccIosxeBFDTemplateMultiHopConfig_all() string {
 	config := `resource "iosxe_bfd_template_multi_hop" "test" {` + "\n"
 	config += `	name = "T11"` + "\n"
 	config += `	echo = true` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	interval_milliseconds_min_tx = 4500` + "\n"
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	interval_milliseconds_min_rx = 5500` + "\n"
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	interval_milliseconds_multiplier = 40` + "\n"
-	}
+	config += `	interval_milliseconds_min_tx = 4500` + "\n"
+	config += `	interval_milliseconds_min_rx = 5500` + "\n"
+	config += `	interval_milliseconds_multiplier = 40` + "\n"
 	config += `	authentication_md5_keychain = "KEYNAME"` + "\n"
 	config += `	dampening_half_time = 21` + "\n"
 	config += `	dampening_unsuppress_time = 1800` + "\n"

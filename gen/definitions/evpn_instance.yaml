@@ -40,12 +40,12 @@ attributes:
     xpath: vlan-based/route-target/rt-value
     tf_name: vlan_based_route_target
     example: 10:10
-    test_tags: [IOSXE176, IOSXE179]
+    test_tags: [IOSXE179, IOSXE1712]
   - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/both/rt-value
     xpath: vlan-based/route-target/both/rt-value
     tf_name: vlan_based_route_target_both
     example: 10:10
-    test_tags: [IOSXE176, IOSXE179]
+    test_tags: [IOSXE179, IOSXE1712]
   - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/import/rt-value
     xpath: vlan-based/route-target/import/rt-value
     tf_name: vlan_based_route_target_import

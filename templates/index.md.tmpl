@@ -25,8 +25,8 @@ All resources and data sources have been tested with the following releases.
 
 | Platform       | Version |
 | -------------- | ------- |
-| Catalyst 8000v | 17.6.5  |
 | Catalyst 8000v | 17.9.4  |
+| Catalyst 8000v | 17.12.4  |
 | Catalyst 9000v | 17.13.1 |
 
 ## Example Usage

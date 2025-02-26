@@ -64,7 +64,6 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-perf/throughput-notif
     tf_name: enable_traps_entity_perf_throughput_notif
     example: true
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/call-home/message-send-fail
     tf_name: enable_traps_call_home_message_send_fail
     example: true
@@ -129,7 +128,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/license
     tf_name: enable_traps_license
     example: true
-    test_tags: [IOSXE176, IOSXE179]
+    test_tags: [IOSXE179, IOSXE1712]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/smart-licenseing/smart-license
     tf_name: enable_traps_smart_license
     example: true
@@ -163,7 +162,6 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/flash/lowspace
     tf_name: enable_traps_flash_lowspace
     example: true
-    test_tags: [IOSXE179, IOSXE1713]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/energywise
     tf_name: enable_traps_energywise
     example: true

@@ -34,6 +34,9 @@ resource "iosxe_interface_port_channel_subinterface" "example" {
       global  = false
     }
   ]
+  bfd_template            = "bfd_template1"
+  bfd_enable              = true
+  bfd_local_address       = "1.2.3.4"
   ipv6_enable             = true
   ipv6_mtu                = 1300
   ipv6_nd_ra_suppress_all = true

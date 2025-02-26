@@ -39,6 +39,9 @@ resource "iosxe_interface_tunnel" "example" {
       vrf     = "VRF1"
     }
   ]
+  bfd_template                     = "bfd_template1"
+  bfd_enable                       = true
+  bfd_local_address                = "1.2.3.4"
   load_interval                    = 30
   snmp_trap_link_status            = false
   logging_event_link_status_enable = true

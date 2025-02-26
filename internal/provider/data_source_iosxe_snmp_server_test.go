@@ -48,9 +48,7 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.encryption", "7"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "system_shutdown", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flowmon", "true"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_perf_throughput_notif", "true"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_perf_throughput_notif", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_call_home_message_send_fail", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_call_home_server_fail", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_tty", "true"))
@@ -73,7 +71,7 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vlancreate", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vlandelete", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_port_security", "true"))
-	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_license", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_smart_license", "true"))
@@ -91,9 +89,7 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_fru_ctrl", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flash_insertion", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flash_removal", "true"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flash_lowspace", "true"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flash_lowspace", "true"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_energywise", "true"))
 	}
@@ -225,9 +221,7 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	}]` + "\n"
 	config += `	system_shutdown = true` + "\n"
 	config += `	enable_traps_flowmon = true` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	enable_traps_entity_perf_throughput_notif = true` + "\n"
-	}
+	config += `	enable_traps_entity_perf_throughput_notif = true` + "\n"
 	config += `	enable_traps_call_home_message_send_fail = true` + "\n"
 	config += `	enable_traps_call_home_server_fail = true` + "\n"
 	config += `	enable_traps_tty = true` + "\n"
@@ -250,7 +244,7 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	enable_traps_vlancreate = true` + "\n"
 	config += `	enable_traps_vlandelete = true` + "\n"
 	config += `	enable_traps_port_security = true` + "\n"
-	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		config += `	enable_traps_license = true` + "\n"
 	}
 	config += `	enable_traps_smart_license = true` + "\n"
@@ -268,9 +262,7 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	enable_traps_fru_ctrl = true` + "\n"
 	config += `	enable_traps_flash_insertion = true` + "\n"
 	config += `	enable_traps_flash_removal = true` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	enable_traps_flash_lowspace = true` + "\n"
-	}
+	config += `	enable_traps_flash_lowspace = true` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	enable_traps_energywise = true` + "\n"
 	}

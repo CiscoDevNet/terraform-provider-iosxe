@@ -52,15 +52,9 @@ func TestAccDataSourceIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ip_dhcp_relay_source_interface", "Loopback100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "helper_addresses.0.global", "false"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "bfd_template", "bfd_template1"))
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "bfd_enable", "true"))
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "bfd_local_address", "1.2.3.4"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "bfd_template", "bfd_template1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "bfd_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "bfd_local_address", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ipv6_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ipv6_mtu", "1300"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel.test", "ipv6_nd_ra_suppress_all", "true"))
@@ -133,15 +127,9 @@ func testAccDataSourceIosxeInterfacePortChannelConfig() string {
 	config += `		address = "10.10.10.10"` + "\n"
 	config += `		global = false` + "\n"
 	config += `	}]` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	bfd_template = "bfd_template1"` + "\n"
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	bfd_enable = true` + "\n"
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	bfd_local_address = "1.2.3.4"` + "\n"
-	}
+	config += `	bfd_template = "bfd_template1"` + "\n"
+	config += `	bfd_enable = true` + "\n"
+	config += `	bfd_local_address = "1.2.3.4"` + "\n"
 	config += `	ipv6_enable = true` + "\n"
 	config += `	ipv6_mtu = 1300` + "\n"
 	config += `	ipv6_nd_ra_suppress_all = true` + "\n"

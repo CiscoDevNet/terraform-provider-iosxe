@@ -61,15 +61,9 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "tunnel_mode_ipsec_ipv4", "true"))
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_template", "bfd_template1"))
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_enable", "true"))
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_local_address", "1.2.3.4"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_template", "bfd_template1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "bfd_local_address", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "snmp_trap_link_status", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "logging_event_link_status_enable", "true"))
@@ -141,15 +135,9 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	tunnel_mode_ipsec_ipv4 = true` + "\n"
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	bfd_template = "bfd_template1"` + "\n"
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	bfd_enable = true` + "\n"
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `	bfd_local_address = "1.2.3.4"` + "\n"
-	}
+	config += `	bfd_template = "bfd_template1"` + "\n"
+	config += `	bfd_enable = true` + "\n"
+	config += `	bfd_local_address = "1.2.3.4"` + "\n"
 	config += `	load_interval = 30` + "\n"
 	config += `	snmp_trap_link_status = false` + "\n"
 	config += `	logging_event_link_status_enable = true` + "\n"

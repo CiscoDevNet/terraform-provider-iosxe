@@ -20,7 +20,6 @@
 package provider
 
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -56,12 +55,8 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_tags.0", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_track", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_as_paths_legacy.0", "10"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_community_lists_legacy.0", "COMM1"))
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_extcommunity_lists_legacy.0", "EXTCOMM1"))
-	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_community_lists_legacy.0", "COMM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_extcommunity_lists_legacy.0", "EXTCOMM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_local_preferences_legacy.0", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_default_interfaces.0", "Loopback1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_global", "false"))
@@ -150,12 +145,8 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	config += `		match_tags = [100]` + "\n"
 	config += `		match_track = 1` + "\n"
 	config += `		match_as_paths_legacy = [10]` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `		match_community_lists_legacy = ["COMM1"]` + "\n"
-	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1713") != "" {
-		config += `		match_extcommunity_lists_legacy = ["EXTCOMM1"]` + "\n"
-	}
+	config += `		match_community_lists_legacy = ["COMM1"]` + "\n"
+	config += `		match_extcommunity_lists_legacy = ["EXTCOMM1"]` + "\n"
 	config += `		match_local_preferences_legacy = [100]` + "\n"
 	config += `		set_default_interfaces = ["Loopback1"]` + "\n"
 	config += `		set_global = false` + "\n"

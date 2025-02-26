@@ -31,7 +31,7 @@ func TestAccDataSourceIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "remote_as", "65000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "description", "BGP Neighbor Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "shutdown", "false"))
-	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "cluster_id", "2.2.2.2"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_ipv4_unicast_vrf_neighbor.test", "log_neighbor_changes_disable", "true"))
@@ -127,7 +127,7 @@ func testAccDataSourceIosxeBGPIPv4UnicastVRFNeighborConfig() string {
 	config += `	remote_as = "65000"` + "\n"
 	config += `	description = "BGP Neighbor Description"` + "\n"
 	config += `	shutdown = false` + "\n"
-	if os.Getenv("IOSXE176") != "" || os.Getenv("IOSXE179") != "" {
+	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
 		config += `	cluster_id = "2.2.2.2"` + "\n"
 	}
 	config += `	log_neighbor_changes_disable = true` + "\n"
