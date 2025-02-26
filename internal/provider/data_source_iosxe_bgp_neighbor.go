@@ -155,6 +155,10 @@ func (d *BGPNeighborDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"peer_group": schema.StringAttribute{
+				MarkdownDescription: "peer-group name",
+				Computed:            true,
+			},
 			"timers_keepalive_interval": schema.Int64Attribute{
 				MarkdownDescription: "",
 				Computed:            true,

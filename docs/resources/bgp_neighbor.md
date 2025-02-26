@@ -73,6 +73,7 @@ resource "iosxe_bgp_neighbor" "example" {
 - `password` (String)
 - `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
   - Range: `0`-`7`
+- `peer_group` (String) peer-group name
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `shutdown` (Boolean) Administratively shut down this neighbor
 - `timers_holdtime` (Number) - Range: `0`-`65535`

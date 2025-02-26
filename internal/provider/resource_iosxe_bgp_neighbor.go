@@ -182,6 +182,10 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 				},
 			},
+			"peer_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("peer-group name").String,
+				Optional:            true,
+			},
 			"timers_keepalive_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
 				Optional:            true,

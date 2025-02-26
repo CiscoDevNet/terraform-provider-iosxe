@@ -59,6 +59,7 @@ type BGPNeighbor struct {
 	LogNeighborChanges                  types.Bool   `tfsdk:"log_neighbor_changes"`
 	PasswordType                        types.Int64  `tfsdk:"password_type"`
 	Password                            types.String `tfsdk:"password"`
+	PeerGroup                           types.String `tfsdk:"peer_group"`
 	TimersKeepaliveInterval             types.Int64  `tfsdk:"timers_keepalive_interval"`
 	TimersHoldtime                      types.Int64  `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64  `tfsdk:"timers_minimum_neighbor_hold"`
@@ -94,6 +95,7 @@ type BGPNeighborData struct {
 	LogNeighborChanges                  types.Bool   `tfsdk:"log_neighbor_changes"`
 	PasswordType                        types.Int64  `tfsdk:"password_type"`
 	Password                            types.String `tfsdk:"password"`
+	PeerGroup                           types.String `tfsdk:"peer_group"`
 	TimersKeepaliveInterval             types.Int64  `tfsdk:"timers_keepalive_interval"`
 	TimersHoldtime                      types.Int64  `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64  `tfsdk:"timers_minimum_neighbor_hold"`
@@ -213,6 +215,9 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 	}
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.text", data.Password.ValueString())
+	}
+	if !data.PeerGroup.IsNull() && !data.PeerGroup.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer-group.peer-group-name", data.PeerGroup.ValueString())
 	}
 	if !data.TimersKeepaliveInterval.IsNull() && !data.TimersKeepaliveInterval.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timers.keepalive-interval", strconv.FormatInt(data.TimersKeepaliveInterval.ValueInt64(), 10))
@@ -403,6 +408,11 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Password = types.StringNull()
 	}
+	if value := res.Get(prefix + "peer-group.peer-group-name"); value.Exists() && !data.PeerGroup.IsNull() {
+		data.PeerGroup = types.StringValue(value.String())
+	} else {
+		data.PeerGroup = types.StringNull()
+	}
 	if value := res.Get(prefix + "timers.keepalive-interval"); value.Exists() && !data.TimersKeepaliveInterval.IsNull() {
 		data.TimersKeepaliveInterval = types.Int64Value(value.Int())
 	} else {
@@ -536,6 +546,9 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "password.text"); value.Exists() {
 		data.Password = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "peer-group.peer-group-name"); value.Exists() {
+		data.PeerGroup = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "timers.keepalive-interval"); value.Exists() {
 		data.TimersKeepaliveInterval = types.Int64Value(value.Int())
 	}
@@ -622,6 +635,9 @@ func (data *BGPNeighbor) getDeletedItems(ctx context.Context, state BGPNeighbor)
 	}
 	if !state.Password.IsNull() && data.Password.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/password", state.getPath()))
+	}
+	if !state.PeerGroup.IsNull() && data.PeerGroup.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/peer-group/peer-group-name", state.getPath()))
 	}
 	if !state.TimersKeepaliveInterval.IsNull() && data.TimersKeepaliveInterval.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/timers", state.getPath()))
@@ -752,6 +768,9 @@ func (data *BGPNeighbor) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Password.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/password", data.getPath()))
+	}
+	if !data.PeerGroup.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/peer-group/peer-group-name", data.getPath()))
 	}
 	if !data.TimersKeepaliveInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))

@@ -54,6 +54,7 @@ data "iosxe_bgp_neighbor" "example" {
 - `log_neighbor_changes` (Boolean) Log neighbor up/down and reset reason
 - `password` (String)
 - `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
+- `peer_group` (String) peer-group name
 - `remote_as` (String) Specify a BGP peer-group remote-as
 - `shutdown` (Boolean) Administratively shut down this neighbor
 - `timers_holdtime` (Number)
