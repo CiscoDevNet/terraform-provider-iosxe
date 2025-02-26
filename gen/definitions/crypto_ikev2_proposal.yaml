@@ -17,38 +17,46 @@ attributes:
     exclude_test: true
   - yang_name: encryption/aes-cbc-256
     example: true
-    exclude_test: true
   - yang_name: encryption/aes-gcm-128
     example: true
     exclude_test: true
   - yang_name: encryption/aes-gcm-256
     example: true
+    exclude_test: true
   - yang_name: group/one
     example: true
+    exclude_test: true
   - yang_name: group/two
     example: true
+    exclude_test: true
   - yang_name: group/fourteen
     example: true
+    exclude_test: true
   - yang_name: group/fifteen
     example: true
+    exclude_test: true
   - yang_name: group/sixteen
     example: true
   - yang_name: group/nineteen
     example: true
+    exclude_test: true
   - yang_name: group/twenty
     example: true
+    exclude_test: true
   - yang_name: group/twenty-one
     example: true
+    exclude_test: true
   - yang_name: group/twenty-four
     example: true
+    exclude_test: true
   - yang_name: integrity/md5
     example: true
     exclude_test: true
   - yang_name: integrity/sha1
     example: true
+    exclude_test: true
   - yang_name: integrity/sha256
     example: true
-    exclude_test: true
   - yang_name: integrity/sha384
     example: true
     exclude_test: true
@@ -60,6 +68,7 @@ attributes:
     exclude_test: true
   - yang_name: prf/sha1
     example: true
+    exclude_test: true
   - yang_name: prf/sha256
     example: true
     exclude_test: true

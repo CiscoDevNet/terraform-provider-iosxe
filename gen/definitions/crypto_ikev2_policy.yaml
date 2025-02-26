@@ -31,9 +31,9 @@ test_prerequisites:
     attributes:
       - name: name
         value: proposal123
-      - name: encryption/en-3des
+      - name: encryption/aes-cbc-256
         value: ""
-      - name: group/fourteen
+      - name: group/sixteen
         value: ""
-      - name: integrity/md5
+      - name: integrity/sha256
         value: ""

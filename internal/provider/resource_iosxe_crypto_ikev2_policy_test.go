@@ -56,9 +56,9 @@ resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=proposal123"
 	attributes = {
 		"name" = "proposal123"
-		"encryption/en-3des" = ""
-		"group/fourteen" = ""
-		"integrity/md5" = ""
+		"encryption/aes-cbc-256" = ""
+		"group/sixteen" = ""
+		"integrity/sha256" = ""
 	}
 }
 
