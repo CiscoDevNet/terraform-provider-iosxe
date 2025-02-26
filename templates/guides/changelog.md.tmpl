@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.5.7 (unreleased)
+## 0.5.7
 
 - Add `Tunnel` interface type to `iosxe_interface_pim` resource and data source
 - Add `ip_mtu` attribute to `iosxe_interface_tunnel` resources and data sources
