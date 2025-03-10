@@ -250,6 +250,65 @@ func (data *AccessListStandard) updateFromBody(ctx context.Context, res gjson.Re
 	}
 }
 
+func (data *AccessListStandard) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "access-list-seq-rule"); value.Exists() {
+		data.Entries = make([]AccessListStandardEntries, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AccessListStandardEntries{}
+			if cValue := v.Get("sequence"); cValue.Exists() {
+				item.Sequence = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("remark"); cValue.Exists() {
+				item.Remark = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("deny.std-ace.ipv4-address-prefix"); cValue.Exists() {
+				item.DenyPrefix = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("deny.std-ace.mask"); cValue.Exists() {
+				item.DenyPrefixMask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("deny.std-ace.any"); cValue.Exists() {
+				item.DenyAny = types.BoolValue(true)
+			} else {
+				item.DenyAny = types.BoolValue(false)
+			}
+			if cValue := v.Get("deny.std-ace.host-address"); cValue.Exists() {
+				item.DenyHost = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("deny.std-ace.log"); cValue.Exists() {
+				item.DenyLog = types.BoolValue(true)
+			} else {
+				item.DenyLog = types.BoolValue(false)
+			}
+			if cValue := v.Get("permit.std-ace.ipv4-address-prefix"); cValue.Exists() {
+				item.PermitPrefix = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("permit.std-ace.mask"); cValue.Exists() {
+				item.PermitPrefixMask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("permit.std-ace.any"); cValue.Exists() {
+				item.PermitAny = types.BoolValue(true)
+			} else {
+				item.PermitAny = types.BoolValue(false)
+			}
+			if cValue := v.Get("permit.std-ace.host-address"); cValue.Exists() {
+				item.PermitHost = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("permit.std-ace.log"); cValue.Exists() {
+				item.PermitLog = types.BoolValue(true)
+			} else {
+				item.PermitLog = types.BoolValue(false)
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
 func (data *AccessListStandardData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

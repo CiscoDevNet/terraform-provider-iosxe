@@ -379,6 +379,108 @@ func (data *VTP) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *VTP) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:file"); value.Exists() {
+		data.File = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:version"); value.Exists() {
+		data.Version = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:interface.interface-name"); value.Exists() {
+		data.Interface = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:interface.only"); value.Exists() {
+		data.InterfaceOnly = types.BoolValue(true)
+	} else {
+		data.InterfaceOnly = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:password.password"); value.Exists() {
+		data.Password = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:password.hidden"); value.Exists() {
+		data.PasswordHidden = types.BoolValue(true)
+	} else {
+		data.PasswordHidden = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:password.secret"); value.Exists() {
+		data.PasswordSecret = types.BoolValue(true)
+	} else {
+		data.PasswordSecret = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:pruning"); value.Exists() {
+		data.Pruning = types.BoolValue(true)
+	} else {
+		data.Pruning = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:domain"); value.Exists() {
+		data.Domain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client.mst"); value.Exists() {
+		data.ModeClientMst = types.BoolValue(true)
+	} else {
+		data.ModeClientMst = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client.unknown"); value.Exists() {
+		data.ModeClientUnknown = types.BoolValue(true)
+	} else {
+		data.ModeClientUnknown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client.vlan"); value.Exists() {
+		data.ModeClientVlan = types.BoolValue(true)
+	} else {
+		data.ModeClientVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off.mst"); value.Exists() {
+		data.ModeOffMst = types.BoolValue(true)
+	} else {
+		data.ModeOffMst = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off.unknown"); value.Exists() {
+		data.ModeOffUnknown = types.BoolValue(true)
+	} else {
+		data.ModeOffUnknown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off.vlan"); value.Exists() {
+		data.ModeOffVlan = types.BoolValue(true)
+	} else {
+		data.ModeOffVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server.mst"); value.Exists() {
+		data.ModeServerMst = types.BoolValue(true)
+	} else {
+		data.ModeServerMst = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server.unknown"); value.Exists() {
+		data.ModeServerUnknown = types.BoolValue(true)
+	} else {
+		data.ModeServerUnknown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server.vlan"); value.Exists() {
+		data.ModeServerVlan = types.BoolValue(true)
+	} else {
+		data.ModeServerVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent.mst"); value.Exists() {
+		data.ModeTransparentMst = types.BoolValue(true)
+	} else {
+		data.ModeTransparentMst = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent.unknown"); value.Exists() {
+		data.ModeTransparentUnknown = types.BoolValue(true)
+	} else {
+		data.ModeTransparentUnknown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent.vlan"); value.Exists() {
+		data.ModeTransparentVlan = types.BoolValue(true)
+	} else {
+		data.ModeTransparentVlan = types.BoolValue(false)
+	}
+}
+
 func (data *VTPData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

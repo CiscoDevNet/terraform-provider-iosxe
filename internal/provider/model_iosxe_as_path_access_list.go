@@ -136,6 +136,27 @@ func (data *ASPathAccessList) updateFromBody(ctx context.Context, res gjson.Resu
 	}
 }
 
+func (data *ASPathAccessList) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "extended-grouping.extended_grouping"); value.Exists() {
+		data.Entries = make([]ASPathAccessListEntries, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ASPathAccessListEntries{}
+			if cValue := v.Get("action"); cValue.Exists() {
+				item.Action = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("string"); cValue.Exists() {
+				item.Regex = types.StringValue(cValue.String())
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
 func (data *ASPathAccessListData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

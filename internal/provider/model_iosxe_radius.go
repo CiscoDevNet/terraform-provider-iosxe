@@ -205,6 +205,50 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *Radius) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "address.ipv4"); value.Exists() {
+		data.Ipv4Address = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address.auth-port"); value.Exists() {
+		data.AuthenticationPort = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "address.acct-port"); value.Exists() {
+		data.AccountingPort = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "timeout"); value.Exists() {
+		data.Timeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "retransmit"); value.Exists() {
+		data.Retransmit = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "key.key"); value.Exists() {
+		data.Key = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "automate-tester.username"); value.Exists() {
+		data.AutomateTesterUsername = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "automate-tester.ignore-acct-port"); value.Exists() {
+		data.AutomateTesterIgnoreAcctPort = types.BoolValue(true)
+	} else {
+		data.AutomateTesterIgnoreAcctPort = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "automate-tester.probe-on-config"); value.Exists() {
+		data.AutomateTesterProbeOnConfig = types.BoolValue(true)
+	} else {
+		data.AutomateTesterProbeOnConfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "pac.key.key"); value.Exists() {
+		data.PacKey = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "pac.key.encryption"); value.Exists() {
+		data.PacKeyEncryption = types.StringValue(value.String())
+	}
+}
+
 func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

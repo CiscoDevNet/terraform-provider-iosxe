@@ -376,6 +376,105 @@ func (data *PIM) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *PIM) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:autorp-container.autorp"); value.Exists() {
+		data.Autorp = types.BoolValue(value.Bool())
+	} else {
+		data.Autorp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:autorp-container.listener"); value.Exists() {
+		data.AutorpListener = types.BoolValue(true)
+	} else {
+		data.AutorpListener = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:bsr-candidate.Loopback"); value.Exists() {
+		data.BsrCandidateLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:bsr-candidate.mask"); value.Exists() {
+		data.BsrCandidateMask = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:bsr-candidate.priority"); value.Exists() {
+		data.BsrCandidatePriority = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:bsr-candidate.accept-rp-candidate"); value.Exists() {
+		data.BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:ssm.range"); value.Exists() {
+		data.SsmRange = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:ssm.default"); value.Exists() {
+		data.SsmDefault = types.BoolValue(true)
+	} else {
+		data.SsmDefault = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address-conf.address"); value.Exists() {
+		data.RpAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address-conf.override"); value.Exists() {
+		data.RpAddressOverride = types.BoolValue(true)
+	} else {
+		data.RpAddressOverride = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address-conf.bidir"); value.Exists() {
+		data.RpAddressBidir = types.BoolValue(true)
+	} else {
+		data.RpAddressBidir = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-address-list"); value.Exists() {
+		data.RpAddresses = make([]PIMRpAddresses, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PIMRpAddresses{}
+			if cValue := v.Get("access-list"); cValue.Exists() {
+				item.AccessList = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("rp-address"); cValue.Exists() {
+				item.RpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("override"); cValue.Exists() {
+				item.Override = types.BoolValue(true)
+			} else {
+				item.Override = types.BoolValue(false)
+			}
+			if cValue := v.Get("bidir"); cValue.Exists() {
+				item.Bidir = types.BoolValue(true)
+			} else {
+				item.Bidir = types.BoolValue(false)
+			}
+			data.RpAddresses = append(data.RpAddresses, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:rp-candidate"); value.Exists() {
+		data.RpCandidates = make([]PIMRpCandidates, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PIMRpCandidates{}
+			if cValue := v.Get("interface"); cValue.Exists() {
+				item.Interface = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group-list"); cValue.Exists() {
+				item.GroupList = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("interval"); cValue.Exists() {
+				item.Interval = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("bidir"); cValue.Exists() {
+				item.Bidir = types.BoolValue(true)
+			} else {
+				item.Bidir = types.BoolValue(false)
+			}
+			data.RpCandidates = append(data.RpCandidates, item)
+			return true
+		})
+	}
+}
+
 func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

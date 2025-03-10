@@ -27,7 +27,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/netascode/go-restconf"
 	"github.com/tidwall/sjson"
 )
 
@@ -39,7 +38,7 @@ func NewCliResource() resource.Resource {
 }
 
 type CliResource struct {
-	clients map[string]*restconf.Client
+	data *IosxeProviderData
 }
 
 func (r *CliResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -69,7 +68,7 @@ func (r *CliResource) Configure(_ context.Context, req resource.ConfigureRequest
 		return
 	}
 
-	r.clients = req.ProviderData.(map[string]*restconf.Client)
+	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
 func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -87,20 +86,23 @@ func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	if _, ok := r.clients[device.ValueString()]; !ok {
+	tflog.Debug(ctx, "Beginning to send CLI commands")
+
+	d, ok := r.data.Devices[device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, "Beginning to send CLI commands")
-
-	body := ""
-	body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
-	request := r.clients[device.ValueString()].NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
-	_, err := r.clients[device.ValueString()].Do(request)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
-		return
+	if d.Managed {
+		body := ""
+		body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
+		request := d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
+		_, err := d.Client.Do(request)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
+			return
+		}
 	}
 
 	tflog.Debug(ctx, "Send CLI commands finished successfully")
@@ -129,20 +131,23 @@ func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	if _, ok := r.clients[device.ValueString()]; !ok {
+	tflog.Debug(ctx, "Beginning to send CLI commands")
+
+	d, ok := r.data.Devices[device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, "Beginning to send CLI commands")
-
-	body := ""
-	body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
-	request := r.clients[device.ValueString()].NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
-	_, err := r.clients[device.ValueString()].Do(request)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
-		return
+	if d.Managed {
+		body := ""
+		body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
+		request := d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
+		_, err := d.Client.Do(request)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
+			return
+		}
 	}
 
 	tflog.Debug(ctx, "Send CLI commands finished successfully")

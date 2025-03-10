@@ -158,6 +158,33 @@ func (data *FlowMonitor) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *FlowMonitor) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "exporter"); value.Exists() {
+		data.Exporters = make([]FlowMonitorExporters, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := FlowMonitorExporters{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.Exporters = append(data.Exporters, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "cache.timeout.active"); value.Exists() {
+		data.CacheTimeoutActive = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "record.type"); value.Exists() {
+		data.Record = types.StringValue(value.String())
+	}
+}
+
 func (data *FlowMonitorData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

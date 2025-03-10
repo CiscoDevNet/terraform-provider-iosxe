@@ -217,6 +217,51 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBody(ctx context.Context, res gjso
 	}
 }
 
+func (data *BGPIPv4UnicastNeighbor) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "activate"); value.Exists() {
+		data.Activate = types.BoolValue(true)
+	} else {
+		data.Activate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
+		data.SendCommunity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "route-reflector-client"); value.Exists() {
+		data.RouteReflectorClient = types.BoolValue(true)
+	} else {
+		data.RouteReflectorClient = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
+		data.SoftReconfiguration = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "default-originate"); value.Exists() {
+		data.DefaultOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultOriginate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() {
+		data.DefaultOriginateRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "route-map"); value.Exists() {
+		data.RouteMaps = make([]BGPIPv4UnicastNeighborRouteMaps, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPIPv4UnicastNeighborRouteMaps{}
+			if cValue := v.Get("inout"); cValue.Exists() {
+				item.InOut = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("route-map-name"); cValue.Exists() {
+				item.RouteMapName = types.StringValue(cValue.String())
+			}
+			data.RouteMaps = append(data.RouteMaps, item)
+			return true
+		})
+	}
+}
+
 func (data *BGPIPv4UnicastNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -235,6 +235,63 @@ func (data *EVPN) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *EVPN) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "replication-type.ingress"); value.Exists() {
+		data.ReplicationTypeIngress = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeIngress = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "replication-type.static"); value.Exists() {
+		data.ReplicationTypeStatic = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeStatic = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "replication-type.p2mp"); value.Exists() {
+		data.ReplicationTypeP2mp = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeP2mp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "replication-type.mp2mp"); value.Exists() {
+		data.ReplicationTypeMp2mp = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeMp2mp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "mac.duplication.limit"); value.Exists() {
+		data.MacDuplicationLimit = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "mac.duplication.time"); value.Exists() {
+		data.MacDuplicationTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.duplication.limit"); value.Exists() {
+		data.IpDuplicationLimit = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.duplication.time"); value.Exists() {
+		data.IpDuplicationTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "router-id.interface.Loopback"); value.Exists() {
+		data.RouterIdLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "default-gateway.advertise"); value.Exists() {
+		data.DefaultGatewayAdvertise = types.BoolValue(true)
+	} else {
+		data.DefaultGatewayAdvertise = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "logging.peer.state"); value.Exists() {
+		data.LoggingPeerState = types.BoolValue(true)
+	} else {
+		data.LoggingPeerState = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "route-target.auto.vni"); value.Exists() {
+		data.RouteTargetAutoVni = types.BoolValue(true)
+	} else {
+		data.RouteTargetAutoVni = types.BoolValue(false)
+	}
+}
+
 func (data *EVPNData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -118,6 +118,26 @@ func (data *BGP) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *BGP) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "bgp.default.ipv4-unicast"); value.Exists() {
+		data.DefaultIpv4Unicast = types.BoolValue(value.Bool())
+	} else {
+		data.DefaultIpv4Unicast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "bgp.log-neighbor-changes"); value.Exists() {
+		data.LogNeighborChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogNeighborChanges = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "bgp.router-id.interface.Loopback"); value.Exists() {
+		data.RouterIdLoopback = types.Int64Value(value.Int())
+	}
+}
+
 func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -59,8 +59,19 @@ type IosxeProviderModel struct {
 }
 
 type IosxeProviderModelDevice struct {
-	Name types.String `tfsdk:"name"`
-	URL  types.String `tfsdk:"url"`
+	Name    types.String `tfsdk:"name"`
+	URL     types.String `tfsdk:"url"`
+	Managed types.Bool   `tfsdk:"managed"`
+}
+
+// IosxeProviderData describes the data maintained by the provider.
+type IosxeProviderData struct {
+	Devices map[string]*IosxeProviderDataDevice
+}
+
+type IosxeProviderDataDevice struct {
+	Client *restconf.Client
+	Managed bool
 }
 
 func (p *IosxeProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -107,6 +118,10 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 						"url": schema.StringAttribute{
 							MarkdownDescription: "URL of the Cisco IOS-XE device.",
 							Required:            true,
+						},
+						"managed": schema.BoolAttribute{
+							MarkdownDescription: "Enable or disable device management. This can be used to temporarily skip a device due to maintainance for example. Defaults to `true`.",
+							Optional:            true,
 						},
 					},
 				},
@@ -247,7 +262,9 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		retries = config.Retries.ValueInt64()
 	}
 
-	clients := make(map[string]*restconf.Client)
+	data := IosxeProviderData{}
+	data.Devices = make(map[string]*IosxeProviderDataDevice)
+
 	c, err := restconf.NewClient(url, username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true))
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -256,9 +273,15 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		)
 		return
 	}
-	clients[""] = c
+	data.Devices[""] = &IosxeProviderDataDevice{Client: c, Managed: true}
 
 	for _, device := range config.Devices {
+		var managed bool
+		if device.Managed.IsUnknown() || device.Managed.IsNull() {
+			managed = true
+		} else {
+			managed = device.Managed.ValueBool()
+		}
 		c, err := restconf.NewClient(device.URL.ValueString(), username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true))
 		if err != nil {
 			resp.Diagnostics.AddError(
@@ -267,11 +290,11 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		clients[device.Name.ValueString()] = c
+		data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{Client: c, Managed: managed}
 	}
 
-	resp.DataSourceData = clients
-	resp.ResourceData = clients
+	resp.DataSourceData = &data
+	resp.ResourceData = &data
 }
 
 func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resource {

@@ -41,7 +41,7 @@ func NewClassMapResource() resource.Resource {
 }
 
 type ClassMapResource struct {
-	clients map[string]*restconf.Client
+	data *IosxeProviderData
 }
 
 func (r *ClassMapResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -167,7 +167,7 @@ func (r *ClassMapResource) Configure(_ context.Context, req resource.ConfigureRe
 		return
 	}
 
-	r.clients = req.ProviderData.(map[string]*restconf.Client)
+	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
 func (r *ClassMapResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -180,43 +180,46 @@ func (r *ClassMapResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	if _, ok := r.clients[plan.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Create", plan.getPath()))
+
+	device, ok := r.data.Devices[plan.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", plan.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Create", plan.getPath()))
+	if device.Managed {
+		// Create object
+		body := plan.toBody(ctx)
 
-	// Create object
-	body := plan.toBody(ctx)
+		emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
+		tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
-	emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
-	tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
-
-	if YangPatch {
-		edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
-		for _, i := range emptyLeafsDelete {
-			edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-		}
-		_, err := r.clients[plan.Device.ValueString()].YangPatchData("", "1", "", edits)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object, got error: %s", err))
-			return
-		}
-	} else {
-		res, err := r.clients[plan.Device.ValueString()].PatchData(plan.getPathShort(), body)
-		if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-			_, err = r.clients[plan.Device.ValueString()].PutData(plan.getPath(), body)
-		}
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
-			return
-		}
-		for _, i := range emptyLeafsDelete {
-			res, err := r.clients[plan.Device.ValueString()].DeleteData(i)
-			if err != nil && res.StatusCode != 404 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+		if YangPatch {
+			edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
+			for _, i := range emptyLeafsDelete {
+				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
+			}
+			_, err := device.Client.YangPatchData("", "1", "", edits)
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object, got error: %s", err))
 				return
+			}
+		} else {
+			res, err := device.Client.PatchData(plan.getPathShort(), body)
+			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
+				_, err = device.Client.PutData(plan.getPath(), body)
+			}
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				return
+			}
+			for _, i := range emptyLeafsDelete {
+				res, err := device.Client.DeleteData(i)
+				if err != nil && res.StatusCode != 404 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					return
+				}
 			}
 		}
 	}
@@ -227,6 +230,8 @@ func (r *ClassMapResource) Create(ctx context.Context, req resource.CreateReques
 
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
+
+	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
 func (r *ClassMapResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -239,29 +244,44 @@ func (r *ClassMapResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	if _, ok := r.clients[state.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.Id.ValueString()))
+
+	device, ok := r.data.Devices[state.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", state.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.Id.ValueString()))
+	if device.Managed {
+		res, err := device.Client.GetData(state.Id.ValueString())
+		if res.StatusCode == 404 {
+			state = ClassMap{Device: state.Device, Id: state.Id}
+		} else {
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+				return
+			}
 
-	res, err := r.clients[state.Device.ValueString()].GetData(state.Id.ValueString())
-	if res.StatusCode == 404 {
-		state = ClassMap{Device: state.Device, Id: state.Id}
-	} else {
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
-			return
+			imp, diags := helpers.IsFlagImporting(ctx, req)
+			if resp.Diagnostics.Append(diags...); resp.Diagnostics.HasError() {
+				return
+			}
+
+			// After `terraform import` we switch to a full read.
+			if imp {
+				state.fromBody(ctx, res.Res)
+			} else {
+				state.updateFromBody(ctx, res.Res)
+			}
 		}
-
-		state.updateFromBody(ctx, res.Res)
 	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.Id.ValueString()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
+
+	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
 func (r *ClassMapResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
@@ -281,55 +301,58 @@ func (r *ClassMapResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	if _, ok := r.clients[plan.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
+
+	device, ok := r.data.Devices[plan.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", plan.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Id.ValueString()))
+	if device.Managed {
+		body := plan.toBody(ctx)
 
-	body := plan.toBody(ctx)
+		deletedItems := plan.getDeletedItems(ctx, state)
+		tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
 
-	deletedItems := plan.getDeletedItems(ctx, state)
-	tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
+		emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
+		tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
-	emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
-	tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
-
-	if YangPatch {
-		edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
-		for _, i := range deletedItems {
-			edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-		}
-		for _, i := range emptyLeafsDelete {
-			edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-		}
-		_, err := r.clients[plan.Device.ValueString()].YangPatchData("", "1", "", edits)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update object, got error: %s", err))
-			return
-		}
-	} else {
-		res, err := r.clients[plan.Device.ValueString()].PatchData(plan.getPathShort(), body)
-		if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-			_, err = r.clients[plan.Device.ValueString()].PutData(plan.getPath(), body)
-		}
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
-			return
-		}
-		for _, i := range deletedItems {
-			res, err := r.clients[state.Device.ValueString()].DeleteData(i)
-			if err != nil && res.StatusCode != 404 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+		if YangPatch {
+			edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
+			for _, i := range deletedItems {
+				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
+			}
+			for _, i := range emptyLeafsDelete {
+				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
+			}
+			_, err := device.Client.YangPatchData("", "1", "", edits)
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update object, got error: %s", err))
 				return
 			}
-		}
-		for _, i := range emptyLeafsDelete {
-			res, err := r.clients[plan.Device.ValueString()].DeleteData(i)
-			if err != nil && res.StatusCode != 404 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+		} else {
+			res, err := device.Client.PatchData(plan.getPathShort(), body)
+			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
+				_, err = device.Client.PutData(plan.getPath(), body)
+			}
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
 				return
+			}
+			for _, i := range deletedItems {
+				res, err := device.Client.DeleteData(i)
+				if err != nil && res.StatusCode != 404 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					return
+				}
+			}
+			for _, i := range emptyLeafsDelete {
+				res, err := device.Client.DeleteData(i)
+				if err != nil && res.StatusCode != 404 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					return
+				}
 			}
 		}
 	}
@@ -350,40 +373,44 @@ func (r *ClassMapResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	if _, ok := r.clients[state.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
+
+	device, ok := r.data.Devices[state.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", state.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Id.ValueString()))
-	deleteMode := "all"
+	if device.Managed {
+		deleteMode := "all"
 
-	if deleteMode == "all" {
-		res, err := r.clients[state.Device.ValueString()].DeleteData(state.Id.ValueString())
-		if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-			return
-		}
-	} else {
-		deletePaths := state.getDeletePaths(ctx)
-		tflog.Debug(ctx, fmt.Sprintf("Paths to delete: %+v", deletePaths))
-
-		if YangPatch {
-			edits := []restconf.YangPatchEdit{}
-			for _, i := range deletePaths {
-				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-			}
-			_, err := r.clients[state.Device.ValueString()].YangPatchData("", "1", "", edits)
-			if err != nil {
+		if deleteMode == "all" {
+			res, err := device.Client.DeleteData(state.Id.ValueString())
+			if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
 				return
 			}
 		} else {
-			for _, i := range deletePaths {
-				res, err := r.clients[state.Device.ValueString()].DeleteData(i)
-				if err != nil && res.StatusCode != 404 {
+			deletePaths := state.getDeletePaths(ctx)
+			tflog.Debug(ctx, fmt.Sprintf("Paths to delete: %+v", deletePaths))
+
+			if YangPatch {
+				edits := []restconf.YangPatchEdit{}
+				for _, i := range deletePaths {
+					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
+				}
+				_, err := device.Client.YangPatchData("", "1", "", edits)
+				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
 					return
+				}
+			} else {
+				for _, i := range deletePaths {
+					res, err := device.Client.DeleteData(i)
+					if err != nil && res.StatusCode != 404 {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+						return
+					}
 				}
 			}
 		}
@@ -396,4 +423,6 @@ func (r *ClassMapResource) Delete(ctx context.Context, req resource.DeleteReques
 
 func (r *ClassMapResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+
+	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }

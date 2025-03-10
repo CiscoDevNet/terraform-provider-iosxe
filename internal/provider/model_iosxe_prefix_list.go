@@ -212,6 +212,53 @@ func (data *PrefixList) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *PrefixList) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "prefixes"); value.Exists() {
+		data.Prefixes = make([]PrefixListPrefixes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PrefixListPrefixes{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("no"); cValue.Exists() {
+				item.Seq = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("action"); cValue.Exists() {
+				item.Action = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ge"); cValue.Exists() {
+				item.Ge = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("le"); cValue.Exists() {
+				item.Le = types.Int64Value(cValue.Int())
+			}
+			data.Prefixes = append(data.Prefixes, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "prefix-list-description"); value.Exists() {
+		data.PrefixListDescription = make([]PrefixListPrefixListDescription, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PrefixListPrefixListDescription{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			data.PrefixListDescription = append(data.PrefixListDescription, item)
+			return true
+		})
+	}
+}
+
 func (data *PrefixListData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

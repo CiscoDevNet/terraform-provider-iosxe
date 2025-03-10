@@ -280,6 +280,75 @@ func (data *CryptoIKEv2Keyring) updateFromBody(ctx context.Context, res gjson.Re
 	}
 }
 
+func (data *CryptoIKEv2Keyring) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "peer"); value.Exists() {
+		data.Peers = make([]CryptoIKEv2KeyringPeers, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := CryptoIKEv2KeyringPeers{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("hostname"); cValue.Exists() {
+				item.Hostname = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("address.ipv4.ipv4-address"); cValue.Exists() {
+				item.Ipv4Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("address.ipv4.ipv4-mask"); cValue.Exists() {
+				item.Ipv4Mask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("address.ipv6-prefix"); cValue.Exists() {
+				item.Ipv6Prefix = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("identity.key-id-number"); cValue.Exists() {
+				item.IdentityKeyId = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("identity.address-type"); cValue.Exists() {
+				item.IdentityAddress = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("identity.email-option.name"); cValue.Exists() {
+				item.IdentityEmailName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("identity.email-option.domain"); cValue.Exists() {
+				item.IdentityEmailDomain = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("identity.fqdn-option.name"); cValue.Exists() {
+				item.IdentityFqdnName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("identity.fqdn-option.domain"); cValue.Exists() {
+				item.IdentityFqdnDomain = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("pre-shared-key.local-option.encryption"); cValue.Exists() {
+				item.PreSharedKeyLocalEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("pre-shared-key.local-option.key"); cValue.Exists() {
+				item.PreSharedKeyLocal = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("pre-shared-key.remote-option.encryption"); cValue.Exists() {
+				item.PreSharedKeyRemoteEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("pre-shared-key.remote-option.key"); cValue.Exists() {
+				item.PreSharedKeyRemote = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("pre-shared-key.encryption"); cValue.Exists() {
+				item.PreSharedKeyEncryption = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("pre-shared-key.key"); cValue.Exists() {
+				item.PreSharedKey = types.StringValue(cValue.String())
+			}
+			data.Peers = append(data.Peers, item)
+			return true
+		})
+	}
+}
+
 func (data *CryptoIKEv2KeyringData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

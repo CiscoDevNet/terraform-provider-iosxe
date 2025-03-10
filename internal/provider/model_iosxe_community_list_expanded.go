@@ -136,6 +136,27 @@ func (data *CommunityListExpanded) updateFromBody(ctx context.Context, res gjson
 	}
 }
 
+func (data *CommunityListExpanded) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "extended-grouping.extended_grouping"); value.Exists() {
+		data.Entries = make([]CommunityListExpandedEntries, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := CommunityListExpandedEntries{}
+			if cValue := v.Get("action"); cValue.Exists() {
+				item.Action = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("string"); cValue.Exists() {
+				item.Regex = types.StringValue(cValue.String())
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
 func (data *CommunityListExpandedData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -532,6 +532,159 @@ func (data *AccessListExtended) updateFromBody(ctx context.Context, res gjson.Re
 	}
 }
 
+func (data *AccessListExtended) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "access-list-seq-rule"); value.Exists() {
+		data.Entries = make([]AccessListExtendedEntries, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AccessListExtendedEntries{}
+			if cValue := v.Get("sequence"); cValue.Exists() {
+				item.Sequence = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("remark"); cValue.Exists() {
+				item.Remark = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.action"); cValue.Exists() {
+				item.AceRuleAction = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.protocol"); cValue.Exists() {
+				item.AceRuleProtocol = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.object-group-str"); cValue.Exists() {
+				item.ServiceObjectGroup = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.ipv4-address"); cValue.Exists() {
+				item.SourcePrefix = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.mask"); cValue.Exists() {
+				item.SourcePrefixMask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.any"); cValue.Exists() {
+				item.SourceAny = types.BoolValue(true)
+			} else {
+				item.SourceAny = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.host-address"); cValue.Exists() {
+				item.SourceHost = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.object-group"); cValue.Exists() {
+				item.SourceObjectGroup = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-eq"); cValue.Exists() {
+				item.SourcePortEqual = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-gt"); cValue.Exists() {
+				item.SourcePortGreaterThan = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-lt"); cValue.Exists() {
+				item.SourcePortLesserThan = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-range1"); cValue.Exists() {
+				item.SourcePortRangeFrom = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.src-range2"); cValue.Exists() {
+				item.SourcePortRangeTo = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dest-ipv4-address"); cValue.Exists() {
+				item.DestinationPrefix = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dest-mask"); cValue.Exists() {
+				item.DestinationPrefixMask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-any"); cValue.Exists() {
+				item.DestinationAny = types.BoolValue(true)
+			} else {
+				item.DestinationAny = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.dst-host-address"); cValue.Exists() {
+				item.DestinationHost = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-object-group"); cValue.Exists() {
+				item.DestinationObjectGroup = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-eq"); cValue.Exists() {
+				item.DestinationPortEqual = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-gt"); cValue.Exists() {
+				item.DestinationPortGreaterThan = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-lt"); cValue.Exists() {
+				item.DestinationPortLesserThan = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-range1"); cValue.Exists() {
+				item.DestinationPortRangeFrom = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.dst-range2"); cValue.Exists() {
+				item.DestinationPortRangeTo = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.ack"); cValue.Exists() {
+				item.Ack = types.BoolValue(true)
+			} else {
+				item.Ack = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.fin"); cValue.Exists() {
+				item.Fin = types.BoolValue(true)
+			} else {
+				item.Fin = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.psh"); cValue.Exists() {
+				item.Psh = types.BoolValue(true)
+			} else {
+				item.Psh = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.rst"); cValue.Exists() {
+				item.Rst = types.BoolValue(true)
+			} else {
+				item.Rst = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.syn"); cValue.Exists() {
+				item.Syn = types.BoolValue(true)
+			} else {
+				item.Syn = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.urg"); cValue.Exists() {
+				item.Urg = types.BoolValue(true)
+			} else {
+				item.Urg = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.established"); cValue.Exists() {
+				item.Established = types.BoolValue(true)
+			} else {
+				item.Established = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.dscp"); cValue.Exists() {
+				item.Dscp = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.fragments"); cValue.Exists() {
+				item.Fragments = types.BoolValue(true)
+			} else {
+				item.Fragments = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.precedence"); cValue.Exists() {
+				item.Precedence = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.tos"); cValue.Exists() {
+				item.Tos = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ace-rule.log"); cValue.Exists() {
+				item.Log = types.BoolValue(true)
+			} else {
+				item.Log = types.BoolValue(false)
+			}
+			if cValue := v.Get("ace-rule.log-input"); cValue.Exists() {
+				item.LogInput = types.BoolValue(true)
+			} else {
+				item.LogInput = types.BoolValue(false)
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
 func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

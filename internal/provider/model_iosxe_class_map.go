@@ -341,6 +341,93 @@ func (data *ClassMap) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *ClassMap) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "type"); value.Exists() {
+		data.Type = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "subscriber"); value.Exists() {
+		data.Subscriber = types.BoolValue(true)
+	} else {
+		data.Subscriber = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prematch"); value.Exists() {
+		data.Prematch = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.authorization-status.authorized"); value.Exists() {
+		data.MatchAuthorizationStatusAuthorized = types.BoolValue(true)
+	} else {
+		data.MatchAuthorizationStatusAuthorized = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.result-type.aaa-timeout"); value.Exists() {
+		data.MatchResultTypeAaaTimeout = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeAaaTimeout = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.authorization-status.unauthorized"); value.Exists() {
+		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
+	} else {
+		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.activated-service-template"); value.Exists() {
+		data.MatchActivatedServiceTemplates = make([]ClassMapMatchActivatedServiceTemplates, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ClassMapMatchActivatedServiceTemplates{}
+			if cValue := v.Get("service-name"); cValue.Exists() {
+				item.ServiceName = types.StringValue(cValue.String())
+			}
+			data.MatchActivatedServiceTemplates = append(data.MatchActivatedServiceTemplates, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "match.authorizing-method-priority.greater-than"); value.Exists() {
+		data.MatchAuthorizingMethodPriorityGreaterThan = helpers.GetInt64List(value.Array())
+	} else {
+		data.MatchAuthorizingMethodPriorityGreaterThan = types.ListNull(types.Int64Type)
+	}
+	if value := res.Get(prefix + "match.method.dot1x"); value.Exists() {
+		data.MatchMethodDot1x = types.BoolValue(true)
+	} else {
+		data.MatchMethodDot1x = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.result-type.method.dot1x.authoritative"); value.Exists() {
+		data.MatchResultTypeMethodDot1xAuthoritative = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xAuthoritative = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.result-type.method.dot1x.agent-not-found"); value.Exists() {
+		data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.result-type.method.dot1x.method-timeout"); value.Exists() {
+		data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.method.mab"); value.Exists() {
+		data.MatchMethodMab = types.BoolValue(true)
+	} else {
+		data.MatchMethodMab = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.result-type.method.mab.authoritative"); value.Exists() {
+		data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.dscp"); value.Exists() {
+		data.MatchDscp = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchDscp = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+}
+
 func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

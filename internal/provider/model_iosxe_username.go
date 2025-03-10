@@ -143,6 +143,31 @@ func (data *Username) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *Username) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "privilege"); value.Exists() {
+		data.Privilege = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "password.encryption"); value.Exists() {
+		data.PasswordEncryption = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "password.password"); value.Exists() {
+		data.Password = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "secret.encryption"); value.Exists() {
+		data.SecretEncryption = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "secret.secret"); value.Exists() {
+		data.Secret = types.StringValue(value.String())
+	}
+}
+
 func (data *UsernameData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

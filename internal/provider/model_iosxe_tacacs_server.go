@@ -114,6 +114,22 @@ func (data *TACACSServer) updateFromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+func (data *TACACSServer) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "address.ipv4"); value.Exists() {
+		data.AddressIpv4 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "timeout"); value.Exists() {
+		data.Timeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "key.key"); value.Exists() {
+		data.Key = types.StringValue(value.String())
+	}
+}
+
 func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

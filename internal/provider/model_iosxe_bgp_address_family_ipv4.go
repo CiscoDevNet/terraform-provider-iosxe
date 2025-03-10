@@ -312,6 +312,78 @@ func (data *BGPAddressFamilyIPv4) updateFromBody(ctx context.Context, res gjson.
 	}
 }
 
+func (data *BGPAddressFamilyIPv4) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "ipv4-unicast.redistribute.connected"); value.Exists() {
+		data.Ipv4UnicastRedistributeConnected = types.BoolValue(true)
+	} else {
+		data.Ipv4UnicastRedistributeConnected = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv4-unicast.redistribute.static"); value.Exists() {
+		data.Ipv4UnicastRedistributeStatic = types.BoolValue(true)
+	} else {
+		data.Ipv4UnicastRedistributeStatic = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv4-unicast.aggregate-address"); value.Exists() {
+		data.Ipv4UnicastAggregateAddresses = make([]BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses{}
+			if cValue := v.Get("ipv4-address"); cValue.Exists() {
+				item.Ipv4Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv4-mask"); cValue.Exists() {
+				item.Ipv4Mask = types.StringValue(cValue.String())
+			}
+			data.Ipv4UnicastAggregateAddresses = append(data.Ipv4UnicastAggregateAddresses, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ipv4-unicast.network.with-mask"); value.Exists() {
+		data.Ipv4UnicastNetworksMask = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworksMask, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPAddressFamilyIPv4Ipv4UnicastNetworksMask{}
+			if cValue := v.Get("number"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("backdoor"); cValue.Exists() {
+				item.Backdoor = types.BoolValue(true)
+			} else {
+				item.Backdoor = types.BoolValue(false)
+			}
+			data.Ipv4UnicastNetworksMask = append(data.Ipv4UnicastNetworksMask, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ipv4-unicast.network.no-mask"); value.Exists() {
+		data.Ipv4UnicastNetworks = make([]BGPAddressFamilyIPv4Ipv4UnicastNetworks, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPAddressFamilyIPv4Ipv4UnicastNetworks{}
+			if cValue := v.Get("number"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("backdoor"); cValue.Exists() {
+				item.Backdoor = types.BoolValue(true)
+			} else {
+				item.Backdoor = types.BoolValue(false)
+			}
+			data.Ipv4UnicastNetworks = append(data.Ipv4UnicastNetworks, item)
+			return true
+		})
+	}
+}
+
 func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -205,6 +205,50 @@ func (data *MSDP) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *MSDP) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "originator-id"); value.Exists() {
+		data.OriginatorId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "password.peer-list"); value.Exists() {
+		data.Passwords = make([]MSDPPasswords, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := MSDPPasswords{}
+			if cValue := v.Get("addr"); cValue.Exists() {
+				item.Addr = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("encryption"); cValue.Exists() {
+				item.Encryption = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("password"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			data.Passwords = append(data.Passwords, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "peer"); value.Exists() {
+		data.Peers = make([]MSDPPeers, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := MSDPPeers{}
+			if cValue := v.Get("addr"); cValue.Exists() {
+				item.Addr = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("remote-as"); cValue.Exists() {
+				item.RemoteAs = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("connect-source.Loopback"); cValue.Exists() {
+				item.ConnectSourceLoopback = types.Int64Value(cValue.Int())
+			}
+			data.Peers = append(data.Peers, item)
+			return true
+		})
+	}
+}
+
 func (data *MSDPData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

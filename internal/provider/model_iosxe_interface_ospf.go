@@ -349,6 +349,92 @@ func (data *InterfaceOSPF) updateFromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
+func (data *InterfaceOSPF) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "cost"); value.Exists() {
+		data.Cost = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dead-interval"); value.Exists() {
+		data.DeadInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "hello-interval"); value.Exists() {
+		data.HelloInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "mtu-ignore"); value.Exists() {
+		data.MtuIgnore = types.BoolValue(value.Bool())
+	} else {
+		data.MtuIgnore = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "network.broadcast"); value.Exists() {
+		data.NetworkTypeBroadcast = types.BoolValue(true)
+	} else {
+		data.NetworkTypeBroadcast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "network.non-broadcast"); value.Exists() {
+		data.NetworkTypeNonBroadcast = types.BoolValue(true)
+	} else {
+		data.NetworkTypeNonBroadcast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "network.point-to-multipoint"); value.Exists() {
+		data.NetworkTypePointToMultipoint = types.BoolValue(true)
+	} else {
+		data.NetworkTypePointToMultipoint = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "network.point-to-point"); value.Exists() {
+		data.NetworkTypePointToPoint = types.BoolValue(true)
+	} else {
+		data.NetworkTypePointToPoint = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "priority"); value.Exists() {
+		data.Priority = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ttl-security.hops"); value.Exists() {
+		data.TtlSecurityHops = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "process-id"); value.Exists() {
+		data.ProcessIds = make([]InterfaceOSPFProcessIds, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceOSPFProcessIds{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Id = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("area"); cValue.Exists() {
+				item.Areas = make([]InterfaceOSPFProcessIdsAreas, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := InterfaceOSPFProcessIdsAreas{}
+					if ccValue := cv.Get("area-id"); ccValue.Exists() {
+						cItem.AreaId = types.StringValue(ccValue.String())
+					}
+					item.Areas = append(item.Areas, cItem)
+					return true
+				})
+			}
+			data.ProcessIds = append(data.ProcessIds, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "message-digest-key"); value.Exists() {
+		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceOSPFMessageDigestKeys{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Id = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("md5.auth-key"); cValue.Exists() {
+				item.Md5AuthKey = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("md5.auth-type"); cValue.Exists() {
+				item.Md5AuthType = types.Int64Value(cValue.Int())
+			}
+			data.MessageDigestKeys = append(data.MessageDigestKeys, item)
+			return true
+		})
+	}
+}
+
 func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

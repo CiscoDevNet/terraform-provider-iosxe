@@ -137,6 +137,29 @@ func (data *BGPL2VPNEVPNNeighbor) updateFromBody(ctx context.Context, res gjson.
 	}
 }
 
+func (data *BGPL2VPNEVPNNeighbor) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "activate"); value.Exists() {
+		data.Activate = types.BoolValue(true)
+	} else {
+		data.Activate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
+		data.SendCommunity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "route-reflector-client"); value.Exists() {
+		data.RouteReflectorClient = types.BoolValue(true)
+	} else {
+		data.RouteReflectorClient = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
+		data.SoftReconfiguration = types.StringValue(value.String())
+	}
+}
+
 func (data *BGPL2VPNEVPNNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

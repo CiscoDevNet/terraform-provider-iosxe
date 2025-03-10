@@ -114,6 +114,24 @@ func (data *CryptoIPSecProfile) updateFromBody(ctx context.Context, res gjson.Re
 	}
 }
 
+func (data *CryptoIPSecProfile) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "set.transform-set"); value.Exists() {
+		data.SetTransformSet = helpers.GetStringList(value.Array())
+	} else {
+		data.SetTransformSet = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "set.ikev2-profile"); value.Exists() {
+		data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "set.isakmp-profile"); value.Exists() {
+		data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile = types.StringValue(value.String())
+	}
+}
+
 func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

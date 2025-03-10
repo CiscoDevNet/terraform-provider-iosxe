@@ -94,6 +94,18 @@ func (data *VLANGroup) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *VLANGroup) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "vlan-lists"); value.Exists() {
+		data.VlanLists = helpers.GetInt64List(value.Array())
+	} else {
+		data.VlanLists = types.ListNull(types.Int64Type)
+	}
+}
+
 func (data *VLANGroupData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

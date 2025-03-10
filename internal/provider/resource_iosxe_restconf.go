@@ -29,7 +29,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/netascode/go-restconf"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces
@@ -41,7 +40,7 @@ func NewRestconfResource() resource.Resource {
 }
 
 type RestconfResource struct {
-	clients map[string]*restconf.Client
+	data *IosxeProviderData
 }
 
 func (r *RestconfResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -144,7 +143,7 @@ func (r *RestconfResource) Configure(_ context.Context, req resource.ConfigureRe
 		return
 	}
 
-	r.clients = req.ProviderData.(map[string]*restconf.Client)
+	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
 func (r *RestconfResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -157,21 +156,24 @@ func (r *RestconfResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	if _, ok := r.clients[plan.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Create", plan.getPath()))
+
+	device, ok := r.data.Devices[plan.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", plan.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Create", plan.getPath()))
-
-	body := plan.toBody(ctx)
-	res, err := r.clients[plan.Device.ValueString()].PatchData(plan.getPathShort(), body)
-	if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-		_, err = r.clients[plan.Device.ValueString()].PutData(plan.getPath(), body)
-	}
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
-		return
+	if device.Managed {
+		body := plan.toBody(ctx)
+		res, err := device.Client.PatchData(plan.getPathShort(), body)
+		if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
+			_, err = device.Client.PutData(plan.getPath(), body)
+		}
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+			return
+		}
 	}
 
 	plan.Id = plan.Path
@@ -196,24 +198,27 @@ func (r *RestconfResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	if _, ok := r.clients[state.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.getPath()))
+
+	device, ok := r.data.Devices[state.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", state.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.getPath()))
+	if device.Managed {
+		res, err := device.Client.GetData(state.getPath())
+		if res.StatusCode == 404 {
+			state.Attributes = types.MapNull(types.StringType)
+			state.Lists = make([]RestconfList, 0)
+		} else {
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to read object, got error: %s", err))
+				return
+			}
 
-	res, err := r.clients[state.Device.ValueString()].GetData(state.getPath())
-	if res.StatusCode == 404 {
-		state.Attributes = types.MapNull(types.StringType)
-		state.Lists = make([]RestconfList, 0)
-	} else {
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to read object, got error: %s", err))
-			return
+			state.fromBody(ctx, res.Res)
 		}
-
-		state.fromBody(ctx, res.Res)
 	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.getPath()))
@@ -239,31 +244,34 @@ func (r *RestconfResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	if _, ok := r.clients[plan.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.getPath()))
+
+	device, ok := r.data.Devices[plan.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", plan.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.getPath()))
-
-	body := plan.toBody(ctx)
-	res, err := r.clients[plan.Device.ValueString()].PatchData(plan.getPathShort(), body)
-	if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-		_, err = r.clients[plan.Device.ValueString()].PutData(plan.getPath(), body)
-	}
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
-		return
-	}
-
-	deletedItems := plan.getDeletedItems(ctx, state)
-	tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedItems))
-
-	for _, i := range deletedItems {
-		res, err := r.clients[state.Device.ValueString()].DeleteData(i)
-		if err != nil && res.StatusCode != 404 {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+	if device.Managed {
+		body := plan.toBody(ctx)
+		res, err := device.Client.PatchData(plan.getPathShort(), body)
+		if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
+			_, err = device.Client.PutData(plan.getPath(), body)
+		}
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
 			return
+		}
+
+		deletedItems := plan.getDeletedItems(ctx, state)
+		tflog.Debug(ctx, fmt.Sprintf("List items to delete: %+v", deletedItems))
+
+		for _, i := range deletedItems {
+			res, err := device.Client.DeleteData(i)
+			if err != nil && res.StatusCode != 404 {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+				return
+			}
 		}
 	}
 
@@ -283,15 +291,16 @@ func (r *RestconfResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	if _, ok := r.clients[state.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.getPath()))
+
+	device, ok := r.data.Devices[state.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", state.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.getPath()))
-
-	if state.Delete.ValueBool() {
-		res, err := r.clients[state.Device.ValueString()].DeleteData(state.getPath())
+	if device.Managed && state.Delete.ValueBool() {
+		res, err := device.Client.DeleteData(state.getPath())
 		if err != nil && res.StatusCode != 404 {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
 			return

@@ -454,6 +454,126 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *BGPNeighbor) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "remote-as"); value.Exists() {
+		data.RemoteAs = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "cluster-id"); value.Exists() {
+		data.ClusterId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "version"); value.Exists() {
+		data.Version = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "disable-connected-check"); value.Exists() {
+		data.DisableConnectedCheck = types.BoolValue(true)
+	} else {
+		data.DisableConnectedCheck = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.default.enable"); value.Exists() {
+		data.FallOverDefaultEnable = types.BoolValue(true)
+	} else {
+		data.FallOverDefaultEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.default.route-map"); value.Exists() {
+		data.FallOverDefaultRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "fall-over.bfd"); value.Exists() {
+		data.FallOverBfd = types.BoolValue(true)
+	} else {
+		data.FallOverBfd = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.bfd.multi-hop"); value.Exists() {
+		data.FallOverBfdMultiHop = types.BoolValue(true)
+	} else {
+		data.FallOverBfdMultiHop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.bfd.single-hop"); value.Exists() {
+		data.FallOverBfdSingleHop = types.BoolValue(true)
+	} else {
+		data.FallOverBfdSingleHop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.bfd.check-control-plane-failure"); value.Exists() {
+		data.FallOverBfdCheckControlPlaneFailure = types.BoolValue(true)
+	} else {
+		data.FallOverBfdCheckControlPlaneFailure = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.bfd.strict-mode"); value.Exists() {
+		data.FallOverBfdStrictMode = types.BoolValue(true)
+	} else {
+		data.FallOverBfdStrictMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.maximum-metric.route-map"); value.Exists() {
+		data.FallOverMaximumMetricRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "local-as.as-no"); value.Exists() {
+		data.LocalAs = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "local-as.no-prepend"); value.Exists() {
+		data.LocalAsNoPrepend = types.BoolValue(true)
+	} else {
+		data.LocalAsNoPrepend = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "local-as.replace-as"); value.Exists() {
+		data.LocalAsReplaceAs = types.BoolValue(true)
+	} else {
+		data.LocalAsReplaceAs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "local-as.dual-as"); value.Exists() {
+		data.LocalAsDualAs = types.BoolValue(true)
+	} else {
+		data.LocalAsDualAs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "log-neighbor-changes"); value.Exists() {
+		data.LogNeighborChanges = types.BoolValue(true)
+	} else {
+		data.LogNeighborChanges = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "password.enctype"); value.Exists() {
+		data.PasswordType = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "password.text"); value.Exists() {
+		data.Password = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "peer-group.peer-group-name"); value.Exists() {
+		data.PeerGroup = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "timers.keepalive-interval"); value.Exists() {
+		data.TimersKeepaliveInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "timers.holdtime"); value.Exists() {
+		data.TimersHoldtime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "timers.minimum-neighbor-hold"); value.Exists() {
+		data.TimersMinimumNeighborHold = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ttl-security.hops"); value.Exists() {
+		data.TtlSecurityHops = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
+		data.UpdateSourceLoopback = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ebgp-multihop"); value.Exists() {
+		data.EbgpMultihop = types.BoolValue(true)
+	} else {
+		data.EbgpMultihop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
+		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	}
+}
+
 func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

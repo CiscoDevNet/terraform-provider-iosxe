@@ -199,6 +199,51 @@ func (data *InterfacePIM) updateFromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+func (data *InterfacePIM) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:pim-mode-choice-cfg.passive"); value.Exists() {
+		data.Passive = types.BoolValue(true)
+	} else {
+		data.Passive = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:pim-mode-choice-cfg.dense-mode"); value.Exists() {
+		data.DenseMode = types.BoolValue(true)
+	} else {
+		data.DenseMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:pim-mode-choice-cfg.sparse-mode"); value.Exists() {
+		data.SparseMode = types.BoolValue(true)
+	} else {
+		data.SparseMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:pim-mode-choice-cfg.sparse-dense-mode"); value.Exists() {
+		data.SparseDenseMode = types.BoolValue(true)
+	} else {
+		data.SparseDenseMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:bfd"); value.Exists() {
+		data.Bfd = types.BoolValue(true)
+	} else {
+		data.Bfd = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:border"); value.Exists() {
+		data.Border = types.BoolValue(true)
+	} else {
+		data.Border = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:bsr-border"); value.Exists() {
+		data.BsrBorder = types.BoolValue(true)
+	} else {
+		data.BsrBorder = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:dr-priority"); value.Exists() {
+		data.DrPriority = types.Int64Value(value.Int())
+	}
+}
+
 func (data *InterfacePIMData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

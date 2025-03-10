@@ -118,6 +118,24 @@ func (data *CryptoIPSecTransformSet) updateFromBody(ctx context.Context, res gjs
 	}
 }
 
+func (data *CryptoIPSecTransformSet) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "esp"); value.Exists() {
+		data.Esp = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "esp-hmac"); value.Exists() {
+		data.EspHmac = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "mode.tunnel-choice"); value.Exists() {
+		data.ModeTunnel = types.BoolValue(true)
+	} else {
+		data.ModeTunnel = types.BoolValue(false)
+	}
+}
+
 func (data *CryptoIPSecTransformSetData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -255,6 +255,62 @@ func (data *InterfaceNVE) updateFromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+func (data *InterfaceNVE) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "host-reachability.protocol.bgp"); value.Exists() {
+		data.HostReachabilityProtocolBgp = types.BoolValue(true)
+	} else {
+		data.HostReachabilityProtocolBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "source-interface.Loopback"); value.Exists() {
+		data.SourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "member-in-one-line.member.vni"); value.Exists() {
+		data.VniVrfs = make([]InterfaceNVEVniVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceNVEVniVrfs{}
+			if cValue := v.Get("vni-range"); cValue.Exists() {
+				item.VniRange = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.VniVrfs = append(data.VniVrfs, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "member.vni"); value.Exists() {
+		data.Vnis = make([]InterfaceNVEVnis, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceNVEVnis{}
+			if cValue := v.Get("vni-range"); cValue.Exists() {
+				item.VniRange = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mcast-group.multicast-group-min"); cValue.Exists() {
+				item.Ipv4MulticastGroup = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ir-cp-config.ingress-replication"); cValue.Exists() {
+				item.IngressReplication = types.BoolValue(true)
+			} else {
+				item.IngressReplication = types.BoolValue(false)
+			}
+			data.Vnis = append(data.Vnis, item)
+			return true
+		})
+	}
+}
+
 func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -261,6 +261,70 @@ func (data *RadiusServer) updateFromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+func (data *RadiusServer) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:attribute"); value.Exists() {
+		data.Attributes = make([]RadiusServerAttributes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := RadiusServerAttributes{}
+			if cValue := v.Get("number"); cValue.Exists() {
+				item.Number = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("access-request.include"); cValue.Exists() {
+				item.AccessRequestInclude = types.BoolValue(true)
+			} else {
+				item.AccessRequestInclude = types.BoolValue(false)
+			}
+			if cValue := v.Get("attri31.attri31-list"); cValue.Exists() {
+				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31Parameters, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := RadiusServerAttributesAttribute31Parameters{}
+					if ccValue := cv.Get("calling-station-id"); ccValue.Exists() {
+						cItem.CallingStationId = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("id-mac.format"); ccValue.Exists() {
+						cItem.IdMacFormat = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("id-mac.lu-case"); ccValue.Exists() {
+						cItem.IdMacLuCase = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("id-send.nas-port-detail"); ccValue.Exists() {
+						cItem.IdSendNasPortDetail = types.BoolValue(true)
+					} else {
+						cItem.IdSendNasPortDetail = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("id-send.mac-only"); ccValue.Exists() {
+						cItem.IdSendMacOnly = types.BoolValue(true)
+					} else {
+						cItem.IdSendMacOnly = types.BoolValue(false)
+					}
+					item.Attribute31Parameters = append(item.Attribute31Parameters, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("send-attribute"); cValue.Exists() {
+				item.SendAttributes = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SendAttributes = types.ListNull(types.StringType)
+			}
+			data.Attributes = append(data.Attributes, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:dead-criteria.time"); value.Exists() {
+		data.DeadCriteriaTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:dead-criteria.tries"); value.Exists() {
+		data.DeadCriteriaTries = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:deadtime"); value.Exists() {
+		data.Deadtime = types.Int64Value(value.Int())
+	}
+}
+
 func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

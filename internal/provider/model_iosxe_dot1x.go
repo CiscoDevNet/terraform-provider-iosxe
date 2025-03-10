@@ -287,6 +287,78 @@ func (data *Dot1x) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *Dot1x) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:auth-fail.eapol"); value.Exists() {
+		data.AuthFailEapol = types.BoolValue(true)
+	} else {
+		data.AuthFailEapol = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:credentials"); value.Exists() {
+		data.Credentials = make([]Dot1xCredentials, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := Dot1xCredentials{}
+			if cValue := v.Get("profile-name"); cValue.Exists() {
+				item.ProfileName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("username"); cValue.Exists() {
+				item.Username = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("password.type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("password.secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("pki-trustpoint"); cValue.Exists() {
+				item.PkiTrustpoint = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("anonymous-id"); cValue.Exists() {
+				item.AnonymousId = types.StringValue(cValue.String())
+			}
+			data.Credentials = append(data.Credentials, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:critical.eapol-config.block"); value.Exists() {
+		data.CriticalEapolConfigBlock = types.BoolValue(true)
+	} else {
+		data.CriticalEapolConfigBlock = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:critical.recovery.delay"); value.Exists() {
+		data.CriticalRecoveryDelay = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:test.timeout"); value.Exists() {
+		data.TestTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:logging.verbose"); value.Exists() {
+		data.LoggingVerbose = types.BoolValue(true)
+	} else {
+		data.LoggingVerbose = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:supplicant.controlled.transient"); value.Exists() {
+		data.SupplicantControlledTransient = types.BoolValue(true)
+	} else {
+		data.SupplicantControlledTransient = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:supplicant.force-multicast"); value.Exists() {
+		data.SupplicantForceMulticast = types.BoolValue(true)
+	} else {
+		data.SupplicantForceMulticast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:system-auth-control"); value.Exists() {
+		data.SystemAuthControl = types.BoolValue(true)
+	} else {
+		data.SystemAuthControl = types.BoolValue(false)
+	}
+}
+
 func (data *Dot1xData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

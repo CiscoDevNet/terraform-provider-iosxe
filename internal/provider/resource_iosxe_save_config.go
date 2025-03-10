@@ -28,7 +28,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/netascode/go-restconf"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces
@@ -39,7 +38,7 @@ func NewSaveConfigResource() resource.Resource {
 }
 
 type SaveConfigResource struct {
-	clients map[string]*restconf.Client
+	data *IosxeProviderData
 }
 
 func (r *SaveConfigResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -71,7 +70,7 @@ func (r *SaveConfigResource) Configure(_ context.Context, req resource.Configure
 		return
 	}
 
-	r.clients = req.ProviderData.(map[string]*restconf.Client)
+	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
 func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
@@ -89,18 +88,21 @@ func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	if _, ok := r.clients[device.ValueString()]; !ok {
+	tflog.Debug(ctx, "Beginning to save config")
+
+	d, ok := r.data.Devices[device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, "Beginning to save config")
-
-	request := r.clients[device.ValueString()].NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
-	_, err := r.clients[device.ValueString()].Do(request)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
-		return
+	if d.Managed {
+		request := d.Client.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
+		_, err := d.Client.Do(request)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
+			return
+		}
 	}
 
 	tflog.Debug(ctx, "Save config finished successfully")
@@ -130,18 +132,21 @@ func (r *SaveConfigResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	if _, ok := r.clients[device.ValueString()]; !ok {
+	tflog.Debug(ctx, "Beginning to save config")
+
+	d, ok := r.data.Devices[device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, "Beginning to save config")
-
-	request := r.clients[device.ValueString()].NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
-	_, err := r.clients[device.ValueString()].Do(request)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
-		return
+	if d.Managed {
+		request := d.Client.NewReq("POST", "/operations/cisco-ia:save-config/", strings.NewReader(""))
+		_, err := d.Client.Do(request)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to save config, got error: %s", err))
+			return
+		}
 	}
 
 	tflog.Debug(ctx, "Save config finished successfully")

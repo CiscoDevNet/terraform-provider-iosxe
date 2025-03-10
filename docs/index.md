@@ -58,3 +58,7 @@ Required:
 
 - `name` (String) Device name.
 - `url` (String) URL of the Cisco IOS-XE device.
+
+Optional:
+
+- `managed` (Boolean) Enable or disable device management. This can be used to temporarily skip a device due to maintainance for example. Defaults to `true`.

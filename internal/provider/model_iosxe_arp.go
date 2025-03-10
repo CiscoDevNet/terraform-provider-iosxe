@@ -313,6 +313,83 @@ func (data *ARP) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *ARP) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "incomplete.entries"); value.Exists() {
+		data.IncompleteEntries = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "proxy.disable"); value.Exists() {
+		data.ProxyDisable = types.BoolValue(true)
+	} else {
+		data.ProxyDisable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "entry.learn"); value.Exists() {
+		data.EntryLearn = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "inspection.filter"); value.Exists() {
+		data.InspectionFilters = make([]ARPInspectionFilters, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ARPInspectionFilters{}
+			if cValue := v.Get("arpacl"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vlan"); cValue.Exists() {
+				item.Vlan = make([]ARPInspectionFiltersVlan, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := ARPInspectionFiltersVlan{}
+					if ccValue := cv.Get("vlan-range"); ccValue.Exists() {
+						cItem.VlanRange = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("static"); ccValue.Exists() {
+						cItem.Static = types.BoolValue(true)
+					} else {
+						cItem.Static = types.BoolValue(false)
+					}
+					item.Vlan = append(item.Vlan, cItem)
+					return true
+				})
+			}
+			data.InspectionFilters = append(data.InspectionFilters, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "inspection.validate.src-mac"); value.Exists() {
+		data.InspectionValidateSrcMac = types.BoolValue(true)
+	} else {
+		data.InspectionValidateSrcMac = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "inspection.validate.dst-mac"); value.Exists() {
+		data.InspectionValidateDstMac = types.BoolValue(true)
+	} else {
+		data.InspectionValidateDstMac = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "inspection.validate.ip"); value.Exists() {
+		data.InspectionValidateIp = types.BoolValue(true)
+	} else {
+		data.InspectionValidateIp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "inspection.validate.allow.zeros"); value.Exists() {
+		data.InspectionValidateAllowZeros = types.BoolValue(true)
+	} else {
+		data.InspectionValidateAllowZeros = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "inspection.log-buffer.entries"); value.Exists() {
+		data.InspectionLogBufferEntries = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "inspection.log-buffer.logs.entries"); value.Exists() {
+		data.InspectionLogBufferLogsEntries = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "inspection.log-buffer.logs.interval"); value.Exists() {
+		data.InspectionLogBufferLogsInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "inspection.vlan"); value.Exists() {
+		data.InspectionVlan = types.StringValue(value.String())
+	}
+}
+
 func (data *ARPData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

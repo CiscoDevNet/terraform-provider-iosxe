@@ -1286,6 +1286,449 @@ func (data *RouteMap) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *RouteMap) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-route-map:route-map-without-order-seq"); value.Exists() {
+		data.Entries = make([]RouteMapEntries, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := RouteMapEntries{}
+			if cValue := v.Get("seq_no"); cValue.Exists() {
+				item.Seq = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("operation"); cValue.Exists() {
+				item.Operation = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("continue"); cValue.Exists() {
+				item.Continue = types.BoolValue(true)
+			} else {
+				item.Continue = types.BoolValue(false)
+			}
+			if cValue := v.Get("continue.sequence-number"); cValue.Exists() {
+				item.ContinueSequenceNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("match.interface.interface"); cValue.Exists() {
+				item.MatchInterfaces = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchInterfaces = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.ip.address.access-list"); cValue.Exists() {
+				item.MatchIpAddressAccessLists = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchIpAddressAccessLists = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.ip.address.prefix-list"); cValue.Exists() {
+				item.MatchIpAddressPrefixLists = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchIpAddressPrefixLists = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.ip.next-hop.access-list"); cValue.Exists() {
+				item.MatchIpNextHopAccessLists = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchIpNextHopAccessLists = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.ip.next-hop.prefix-list"); cValue.Exists() {
+				item.MatchIpNextHopPrefixLists = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchIpNextHopPrefixLists = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.ipv6.address.access-list"); cValue.Exists() {
+				item.MatchIpv6AddressAccessLists = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("match.ipv6.address.prefix-list"); cValue.Exists() {
+				item.MatchIpv6AddressPrefixLists = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("match.ipv6.next-hop.access-list"); cValue.Exists() {
+				item.MatchIpv6NextHopAccessLists = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("match.ipv6.next-hop.prefix-list"); cValue.Exists() {
+				item.MatchIpv6NextHopPrefixLists = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("match.route-type.external"); cValue.Exists() {
+				item.MatchRouteTypeExternal = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeExternal = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.route-type.external.type-1"); cValue.Exists() {
+				item.MatchRouteTypeExternalType1 = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeExternalType1 = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.route-type.external.type-2"); cValue.Exists() {
+				item.MatchRouteTypeExternalType2 = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeExternalType2 = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.route-type.internal"); cValue.Exists() {
+				item.MatchRouteTypeInternal = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeInternal = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.route-type.level-1"); cValue.Exists() {
+				item.MatchRouteTypeLevel1 = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeLevel1 = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.route-type.level-2"); cValue.Exists() {
+				item.MatchRouteTypeLevel2 = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeLevel2 = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.route-type.local"); cValue.Exists() {
+				item.MatchRouteTypeLocal = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeLocal = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.source-protocol.bgp"); cValue.Exists() {
+				item.MatchSourceProtocolBgp = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchSourceProtocolBgp = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.source-protocol.connected"); cValue.Exists() {
+				item.MatchSourceProtocolConnected = types.BoolValue(true)
+			} else {
+				item.MatchSourceProtocolConnected = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.source-protocol.eigrp"); cValue.Exists() {
+				item.MatchSourceProtocolEigrp = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchSourceProtocolEigrp = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.source-protocol.isis"); cValue.Exists() {
+				item.MatchSourceProtocolIsis = types.BoolValue(true)
+			} else {
+				item.MatchSourceProtocolIsis = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.source-protocol.lisp"); cValue.Exists() {
+				item.MatchSourceProtocolLisp = types.BoolValue(true)
+			} else {
+				item.MatchSourceProtocolLisp = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.source-protocol.ospf"); cValue.Exists() {
+				item.MatchSourceProtocolOspf = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchSourceProtocolOspf = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.source-protocol.ospfv3"); cValue.Exists() {
+				item.MatchSourceProtocolOspfv3 = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchSourceProtocolOspfv3 = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.source-protocol.rip"); cValue.Exists() {
+				item.MatchSourceProtocolRip = types.BoolValue(true)
+			} else {
+				item.MatchSourceProtocolRip = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.source-protocol.static"); cValue.Exists() {
+				item.MatchSourceProtocolStatic = types.BoolValue(true)
+			} else {
+				item.MatchSourceProtocolStatic = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.tag.tag_value"); cValue.Exists() {
+				item.MatchTags = helpers.GetInt64List(cValue.Array())
+			} else {
+				item.MatchTags = types.ListNull(types.Int64Type)
+			}
+			if cValue := v.Get("match.track"); cValue.Exists() {
+				item.MatchTrack = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("match.as-path.access-list"); cValue.Exists() {
+				item.MatchAsPathsLegacy = helpers.GetInt64List(cValue.Array())
+			} else {
+				item.MatchAsPathsLegacy = types.ListNull(types.Int64Type)
+			}
+			if cValue := v.Get("match.community.name"); cValue.Exists() {
+				item.MatchCommunityListsLegacy = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchCommunityListsLegacy = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.extcommunity.name"); cValue.Exists() {
+				item.MatchExtcommunityListsLegacy = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchExtcommunityListsLegacy = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.local-preference.values"); cValue.Exists() {
+				item.MatchLocalPreferencesLegacy = helpers.GetInt64List(cValue.Array())
+			} else {
+				item.MatchLocalPreferencesLegacy = types.ListNull(types.Int64Type)
+			}
+			if cValue := v.Get("match.Cisco-IOS-XE-bgp:bgp-route-map-match.as-path.access-list"); cValue.Exists() {
+				item.MatchAsPaths = helpers.GetInt64List(cValue.Array())
+			} else {
+				item.MatchAsPaths = types.ListNull(types.Int64Type)
+			}
+			if cValue := v.Get("match.Cisco-IOS-XE-bgp:bgp-route-map-match.bgp-community.community-list"); cValue.Exists() {
+				item.MatchCommunityLists = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchCommunityLists = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.Cisco-IOS-XE-bgp:bgp-route-map-match.bgp-community.exact-match"); cValue.Exists() {
+				item.MatchCommunityListExactMatch = types.BoolValue(true)
+			} else {
+				item.MatchCommunityListExactMatch = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.Cisco-IOS-XE-bgp:bgp-route-map-match.extcommunity.extcommunity-list"); cValue.Exists() {
+				item.MatchExtcommunityLists = helpers.GetStringList(cValue.Array())
+			} else {
+				item.MatchExtcommunityLists = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("match.Cisco-IOS-XE-bgp:bgp-route-map-match.local-preference.values"); cValue.Exists() {
+				item.MatchLocalPreferences = helpers.GetInt64List(cValue.Array())
+			} else {
+				item.MatchLocalPreferences = types.ListNull(types.Int64Type)
+			}
+			if cValue := v.Get("set.default.interface-list"); cValue.Exists() {
+				item.SetDefaultInterfaces = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetDefaultInterfaces = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.global"); cValue.Exists() {
+				item.SetGlobal = types.BoolValue(true)
+			} else {
+				item.SetGlobal = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.interface-list"); cValue.Exists() {
+				item.SetInterfaces = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetInterfaces = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.ip.address.prefix-list"); cValue.Exists() {
+				item.SetIpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.ip.default.global.next-hop.address"); cValue.Exists() {
+				item.SetIpDefaultGlobalNextHopAddress = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetIpDefaultGlobalNextHopAddress = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.ip.default.next-hop.address"); cValue.Exists() {
+				item.SetIpDefaultNextHopAddress = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetIpDefaultNextHopAddress = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.ip.global.next-hop.address"); cValue.Exists() {
+				item.SetIpGlobalNextHopAddress = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetIpGlobalNextHopAddress = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.ip.next-hop.address"); cValue.Exists() {
+				item.SetIpNextHopAddress = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetIpNextHopAddress = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.ip.next-hop.self"); cValue.Exists() {
+				item.SetIpNextHopSelf = types.BoolValue(true)
+			} else {
+				item.SetIpNextHopSelf = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.ip.qos-group.qos-id"); cValue.Exists() {
+				item.SetIpQosGroup = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.ipv6.address.prefix-list"); cValue.Exists() {
+				item.SetIpv6Address = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetIpv6Address = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.ipv6.default.global.next-hop"); cValue.Exists() {
+				item.SetIpv6DefaultGlobalNextHop = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.ipv6.default.next-hop.ipv6"); cValue.Exists() {
+				item.SetIpv6DefaultNextHop = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetIpv6DefaultNextHop = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.ipv6.next-hop.ipv6"); cValue.Exists() {
+				item.SetIpv6NextHop = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetIpv6NextHop = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.level.level-1"); cValue.Exists() {
+				item.SetLevel1 = types.BoolValue(true)
+			} else {
+				item.SetLevel1 = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.level.level-1-2"); cValue.Exists() {
+				item.SetLevel12 = types.BoolValue(true)
+			} else {
+				item.SetLevel12 = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.level.level-2"); cValue.Exists() {
+				item.SetLevel2 = types.BoolValue(true)
+			} else {
+				item.SetLevel2 = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.metric.metric-change"); cValue.Exists() {
+				item.SetMetricChange = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.metric.values.value"); cValue.Exists() {
+				item.SetMetricValue = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.metric.values.delay"); cValue.Exists() {
+				item.SetMetricDelay = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.metric.values.reliability"); cValue.Exists() {
+				item.SetMetricReliability = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.metric.values.loading"); cValue.Exists() {
+				item.SetMetricLoading = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.metric.values.MTU"); cValue.Exists() {
+				item.SetMetricMtu = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.metric-type"); cValue.Exists() {
+				item.SetMetricType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.tag.tag-val"); cValue.Exists() {
+				item.SetTag = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.vrf"); cValue.Exists() {
+				item.SetVrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.as-path.prepend.as-container.as-number"); cValue.Exists() {
+				item.SetAsPathPrependAsLegacy = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.as-path.prepend.last-as-cont.last-as"); cValue.Exists() {
+				item.SetAsPathPrependLastAsLegacy = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.as-path.tag"); cValue.Exists() {
+				item.SetAsPathTagLegacy = types.BoolValue(true)
+			} else {
+				item.SetAsPathTagLegacy = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.community.none"); cValue.Exists() {
+				item.SetCommunityNoneLegacy = types.BoolValue(true)
+			} else {
+				item.SetCommunityNoneLegacy = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.community.community-well-known.community-list"); cValue.Exists() {
+				item.SetCommunitiesLegacy = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetCommunitiesLegacy = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.community.community-well-known.additive"); cValue.Exists() {
+				item.SetCommunitiesAdditiveLegacy = types.BoolValue(true)
+			} else {
+				item.SetCommunitiesAdditiveLegacy = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.comm-list.delete"); cValue.Exists() {
+				item.SetCommunityListDeleteLegacy = types.BoolValue(true)
+			} else {
+				item.SetCommunityListDeleteLegacy = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.comm-list.comm-list-standard"); cValue.Exists() {
+				item.SetCommunityListStandardLegacy = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.comm-list.comm-list-expanded"); cValue.Exists() {
+				item.SetCommunityListExpandedLegacy = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.comm-list.comm-list-name"); cValue.Exists() {
+				item.SetCommunityListNameLegacy = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.extcommunity.rt.asn-nn"); cValue.Exists() {
+				item.SetExtcomunityRtLegacy = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetExtcomunityRtLegacy = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.extcommunity.soo.asn-nn"); cValue.Exists() {
+				item.SetExtcomunitySooLegacy = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.extcommunity.vpn-distinguisher.asn-nn"); cValue.Exists() {
+				item.SetExtcomunityVpnDistinguisherLegacy = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.local-preference"); cValue.Exists() {
+				item.SetLocalPreferenceLegacy = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.weight"); cValue.Exists() {
+				item.SetWeightLegacy = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.as-path.prepend.as-container.as-number"); cValue.Exists() {
+				item.SetAsPathPrependAs = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.as-path.prepend.last-as-cont.last-as"); cValue.Exists() {
+				item.SetAsPathPrependLastAs = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.as-path.tag"); cValue.Exists() {
+				item.SetAsPathTag = types.BoolValue(true)
+			} else {
+				item.SetAsPathTag = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.as-path.replace.any"); cValue.Exists() {
+				item.SetAsPathReplaceAny = types.BoolValue(true)
+			} else {
+				item.SetAsPathReplaceAny = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.as-path.replace.as-container"); cValue.Exists() {
+				item.SetAsPathReplaceAs = make([]RouteMapEntriesSetAsPathReplaceAs, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := RouteMapEntriesSetAsPathReplaceAs{}
+					if ccValue := cv.Get("as-number"); ccValue.Exists() {
+						cItem.AsNumber = types.StringValue(ccValue.String())
+					}
+					item.SetAsPathReplaceAs = append(item.SetAsPathReplaceAs, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.bgp-community.none"); cValue.Exists() {
+				item.SetCommunityNone = types.BoolValue(true)
+			} else {
+				item.SetCommunityNone = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.bgp-community.community-well-known.community-list"); cValue.Exists() {
+				item.SetCommunities = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetCommunities = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.bgp-community.community-well-known.additive"); cValue.Exists() {
+				item.SetCommunitiesAdditive = types.BoolValue(true)
+			} else {
+				item.SetCommunitiesAdditive = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.comm-list.delete"); cValue.Exists() {
+				item.SetCommunityListDelete = types.BoolValue(true)
+			} else {
+				item.SetCommunityListDelete = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.comm-list.comm-list-standard"); cValue.Exists() {
+				item.SetCommunityListStandard = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.comm-list.comm-list-expanded"); cValue.Exists() {
+				item.SetCommunityListExpanded = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.comm-list.comm-list-name"); cValue.Exists() {
+				item.SetCommunityListName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.extcommunity.rt.asn-nn"); cValue.Exists() {
+				item.SetExtcomunityRt = helpers.GetStringList(cValue.Array())
+			} else {
+				item.SetExtcomunityRt = types.ListNull(types.StringType)
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.extcommunity.soo.asn-nn"); cValue.Exists() {
+				item.SetExtcomunitySoo = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.extcommunity.vpn-distinguisher.asn-nn"); cValue.Exists() {
+				item.SetExtcomunityVpnDistinguisher = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.extcommunity.vpn-distinguisher.asn-nn-additive"); cValue.Exists() {
+				item.SetExtcomunityVpnDistinguisherAdditive = types.BoolValue(true)
+			} else {
+				item.SetExtcomunityVpnDistinguisherAdditive = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.local-preference"); cValue.Exists() {
+				item.SetLocalPreference = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("set.Cisco-IOS-XE-bgp:bgp-route-map-set.weight"); cValue.Exists() {
+				item.SetWeight = types.Int64Value(cValue.Int())
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
 func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

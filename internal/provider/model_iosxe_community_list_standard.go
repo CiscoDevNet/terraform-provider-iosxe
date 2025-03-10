@@ -106,6 +106,23 @@ func (data *CommunityListStandard) updateFromBody(ctx context.Context, res gjson
 	}
 }
 
+func (data *CommunityListStandard) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "deny.deny-list"); value.Exists() {
+		data.DenyEntries = helpers.GetStringList(value.Array())
+	} else {
+		data.DenyEntries = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "permit.permit-list"); value.Exists() {
+		data.PermitEntries = helpers.GetStringList(value.Array())
+	} else {
+		data.PermitEntries = types.ListNull(types.StringType)
+	}
+}
+
 func (data *CommunityListStandardData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

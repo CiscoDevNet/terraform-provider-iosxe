@@ -345,6 +345,93 @@ func (data *PolicyMap) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *PolicyMap) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "type"); value.Exists() {
+		data.Type = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "subscriber"); value.Exists() {
+		data.Subscriber = types.BoolValue(true)
+	} else {
+		data.Subscriber = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "class"); value.Exists() {
+		data.Classes = make([]PolicyMapClasses, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PolicyMapClasses{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("action-list"); cValue.Exists() {
+				item.Actions = make([]PolicyMapClassesActions, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := PolicyMapClassesActions{}
+					if ccValue := cv.Get("action-type"); ccValue.Exists() {
+						cItem.Type = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("bandwidth.bits"); ccValue.Exists() {
+						cItem.BandwidthBits = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("bandwidth.percent"); ccValue.Exists() {
+						cItem.BandwidthPercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("bandwidth.remaining.rem-option"); ccValue.Exists() {
+						cItem.BandwidthRemainingOption = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("bandwidth.remaining.percent"); ccValue.Exists() {
+						cItem.BandwidthRemainingPercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("bandwidth.remaining.ratio"); ccValue.Exists() {
+						cItem.BandwidthRemainingRatio = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("priority.level"); ccValue.Exists() {
+						cItem.PriorityLevel = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("priority.burst"); ccValue.Exists() {
+						cItem.PriorityBurst = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("queue-limit.queue-limit-value"); ccValue.Exists() {
+						cItem.QueueLimit = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("queue-limit.queue-limit-type"); ccValue.Exists() {
+						cItem.QueueLimitType = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("shape.average.bit-rate"); ccValue.Exists() {
+						cItem.ShapeAverageBitRate = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("shape.average.bits-per-interval-sustained"); ccValue.Exists() {
+						cItem.ShapeAverageBitsPerIntervalSustained = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("shape.average.bits-per-interval-excess"); ccValue.Exists() {
+						cItem.ShapeAverageBitsPerIntervalExcess = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("shape.average.percent"); ccValue.Exists() {
+						cItem.ShapeAveragePercent = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("shape.average.burst-size-sustained"); ccValue.Exists() {
+						cItem.ShapeAverageBurstSizeSustained = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("shape.average.ms"); ccValue.Exists() {
+						cItem.ShapeAverageMs = types.BoolValue(true)
+					} else {
+						cItem.ShapeAverageMs = types.BoolValue(false)
+					}
+					item.Actions = append(item.Actions, cItem)
+					return true
+				})
+			}
+			data.Classes = append(data.Classes, item)
+			return true
+		})
+	}
+}
+
 func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

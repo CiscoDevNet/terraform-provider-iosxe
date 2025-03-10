@@ -403,6 +403,107 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBody(ctx context.Context, res gjs
 	}
 }
 
+func (data *BGPAddressFamilyIPv4VRF) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "vrf"); value.Exists() {
+		data.Vrfs = make([]BGPAddressFamilyIPv4VRFVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPAddressFamilyIPv4VRFVrfs{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv4-unicast.advertise.l2vpn.evpn"); cValue.Exists() {
+				item.Ipv4UnicastAdvertiseL2vpnEvpn = types.BoolValue(true)
+			} else {
+				item.Ipv4UnicastAdvertiseL2vpnEvpn = types.BoolValue(false)
+			}
+			if cValue := v.Get("ipv4-unicast.redistribute-vrf.connected"); cValue.Exists() {
+				item.Ipv4UnicastRedistributeConnected = types.BoolValue(true)
+			} else {
+				item.Ipv4UnicastRedistributeConnected = types.BoolValue(false)
+			}
+			if cValue := v.Get("ipv4-unicast.bgp.router-id.interface.Loopback"); cValue.Exists() {
+				item.Ipv4UnicastRouterIdLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv4-unicast.aggregate-address"); cValue.Exists() {
+				item.Ipv4UnicastAggregateAddresses = make([]BGPAddressFamilyIPv4VRFVrfsIpv4UnicastAggregateAddresses, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv4VRFVrfsIpv4UnicastAggregateAddresses{}
+					if ccValue := cv.Get("ipv4-address"); ccValue.Exists() {
+						cItem.Ipv4Address = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("ipv4-mask"); ccValue.Exists() {
+						cItem.Ipv4Mask = types.StringValue(ccValue.String())
+					}
+					item.Ipv4UnicastAggregateAddresses = append(item.Ipv4UnicastAggregateAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ipv4-unicast.redistribute-vrf.static"); cValue.Exists() {
+				item.Ipv4UnicastRedistributeStatic = types.BoolValue(true)
+			} else {
+				item.Ipv4UnicastRedistributeStatic = types.BoolValue(false)
+			}
+			if cValue := v.Get("ipv4-unicast.network.with-mask"); cValue.Exists() {
+				item.Ipv4UnicastNetworksMask = make([]BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworksMask{}
+					if ccValue := cv.Get("number"); ccValue.Exists() {
+						cItem.Network = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("mask"); ccValue.Exists() {
+						cItem.Mask = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("route-map"); ccValue.Exists() {
+						cItem.RouteMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("backdoor"); ccValue.Exists() {
+						cItem.Backdoor = types.BoolValue(true)
+					} else {
+						cItem.Backdoor = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("evpn"); ccValue.Exists() {
+						cItem.Evpn = types.BoolValue(true)
+					} else {
+						cItem.Evpn = types.BoolValue(false)
+					}
+					item.Ipv4UnicastNetworksMask = append(item.Ipv4UnicastNetworksMask, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ipv4-unicast.network.no-mask"); cValue.Exists() {
+				item.Ipv4UnicastNetworks = make([]BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworks, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := BGPAddressFamilyIPv4VRFVrfsIpv4UnicastNetworks{}
+					if ccValue := cv.Get("number"); ccValue.Exists() {
+						cItem.Network = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("route-map"); ccValue.Exists() {
+						cItem.RouteMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("backdoor"); ccValue.Exists() {
+						cItem.Backdoor = types.BoolValue(true)
+					} else {
+						cItem.Backdoor = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("evpn"); ccValue.Exists() {
+						cItem.Evpn = types.BoolValue(true)
+					} else {
+						cItem.Evpn = types.BoolValue(false)
+					}
+					item.Ipv4UnicastNetworks = append(item.Ipv4UnicastNetworks, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
+			return true
+		})
+	}
+}
+
 func (data *BGPAddressFamilyIPv4VRFData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

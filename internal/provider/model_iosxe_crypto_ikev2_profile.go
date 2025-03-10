@@ -337,6 +337,92 @@ func (data *CryptoIKEv2Profile) updateFromBody(ctx context.Context, res gjson.Re
 	}
 }
 
+func (data *CryptoIKEv2Profile) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "authentication.remote.pre-share"); value.Exists() {
+		data.AuthenticationRemotePreShare = types.BoolValue(true)
+	} else {
+		data.AuthenticationRemotePreShare = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "authentication.local.pre-share"); value.Exists() {
+		data.AuthenticationLocalPreShare = types.BoolValue(true)
+	} else {
+		data.AuthenticationLocalPreShare = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "identity.local.address"); value.Exists() {
+		data.IdentityLocalAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "identity.local.key-id"); value.Exists() {
+		data.IdentityLocalKeyId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.inbound-only"); value.Exists() {
+		data.MatchInboundOnly = types.BoolValue(true)
+	} else {
+		data.MatchInboundOnly = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.address.local.ip"); value.Exists() {
+		data.MatchAddressLocalIp = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.fvrf.name"); value.Exists() {
+		data.MatchFvrf = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.fvrf.any"); value.Exists() {
+		data.MatchFvrfAny = types.BoolValue(true)
+	} else {
+		data.MatchFvrfAny = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.identity.remote.address.ipv4"); value.Exists() {
+		data.MatchIdentityRemoteIpv4Addresses = make([]CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := CryptoIKEv2ProfileMatchIdentityRemoteIpv4Addresses{}
+			if cValue := v.Get("ipv4-address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ipv4-mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			data.MatchIdentityRemoteIpv4Addresses = append(data.MatchIdentityRemoteIpv4Addresses, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "match.identity.remote.address.ipv6-prefix"); value.Exists() {
+		data.MatchIdentityRemoteIpv6Prefixes = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIdentityRemoteIpv6Prefixes = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.identity.remote.key-ids"); value.Exists() {
+		data.MatchIdentityRemoteKeys = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIdentityRemoteKeys = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "keyring.local.name"); value.Exists() {
+		data.KeyringLocal = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ivrf"); value.Exists() {
+		data.Ivrf = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dpd.interval"); value.Exists() {
+		data.DpdInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dpd.retry"); value.Exists() {
+		data.DpdRetry = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dpd.query"); value.Exists() {
+		data.DpdQuery = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "config-exchange.request-1"); value.Exists() {
+		data.ConfigExchangeRequest = types.BoolValue(value.Bool())
+	} else {
+		data.ConfigExchangeRequest = types.BoolValue(false)
+	}
+}
+
 func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

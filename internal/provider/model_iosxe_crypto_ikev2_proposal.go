@@ -482,6 +482,138 @@ func (data *CryptoIKEv2Proposal) updateFromBody(ctx context.Context, res gjson.R
 	}
 }
 
+func (data *CryptoIKEv2Proposal) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "encryption.en-3des"); value.Exists() {
+		data.EncryptionEn3des = types.BoolValue(true)
+	} else {
+		data.EncryptionEn3des = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-128"); value.Exists() {
+		data.EncryptionAesCbc128 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesCbc128 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-192"); value.Exists() {
+		data.EncryptionAesCbc192 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesCbc192 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-cbc-256"); value.Exists() {
+		data.EncryptionAesCbc256 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesCbc256 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-gcm-128"); value.Exists() {
+		data.EncryptionAesGcm128 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesGcm128 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "encryption.aes-gcm-256"); value.Exists() {
+		data.EncryptionAesGcm256 = types.BoolValue(true)
+	} else {
+		data.EncryptionAesGcm256 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.one"); value.Exists() {
+		data.GroupOne = types.BoolValue(true)
+	} else {
+		data.GroupOne = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.two"); value.Exists() {
+		data.GroupTwo = types.BoolValue(true)
+	} else {
+		data.GroupTwo = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.fourteen"); value.Exists() {
+		data.GroupFourteen = types.BoolValue(true)
+	} else {
+		data.GroupFourteen = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.fifteen"); value.Exists() {
+		data.GroupFifteen = types.BoolValue(true)
+	} else {
+		data.GroupFifteen = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.sixteen"); value.Exists() {
+		data.GroupSixteen = types.BoolValue(true)
+	} else {
+		data.GroupSixteen = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.nineteen"); value.Exists() {
+		data.GroupNineteen = types.BoolValue(true)
+	} else {
+		data.GroupNineteen = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.twenty"); value.Exists() {
+		data.GroupTwenty = types.BoolValue(true)
+	} else {
+		data.GroupTwenty = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.twenty-one"); value.Exists() {
+		data.GroupTwentyOne = types.BoolValue(true)
+	} else {
+		data.GroupTwentyOne = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "group.twenty-four"); value.Exists() {
+		data.GroupTwentyFour = types.BoolValue(true)
+	} else {
+		data.GroupTwentyFour = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.md5"); value.Exists() {
+		data.IntegrityMd5 = types.BoolValue(true)
+	} else {
+		data.IntegrityMd5 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.sha1"); value.Exists() {
+		data.IntegritySha1 = types.BoolValue(true)
+	} else {
+		data.IntegritySha1 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.sha256"); value.Exists() {
+		data.IntegritySha256 = types.BoolValue(true)
+	} else {
+		data.IntegritySha256 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.sha384"); value.Exists() {
+		data.IntegritySha384 = types.BoolValue(true)
+	} else {
+		data.IntegritySha384 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "integrity.sha512"); value.Exists() {
+		data.IntegritySha512 = types.BoolValue(true)
+	} else {
+		data.IntegritySha512 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.md5"); value.Exists() {
+		data.PrfMd5 = types.BoolValue(true)
+	} else {
+		data.PrfMd5 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.sha1"); value.Exists() {
+		data.PrfSha1 = types.BoolValue(true)
+	} else {
+		data.PrfSha1 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.sha256"); value.Exists() {
+		data.PrfSha256 = types.BoolValue(true)
+	} else {
+		data.PrfSha256 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.sha384"); value.Exists() {
+		data.PrfSha384 = types.BoolValue(true)
+	} else {
+		data.PrfSha384 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "prf.sha512"); value.Exists() {
+		data.PrfSha512 = types.BoolValue(true)
+	} else {
+		data.PrfSha512 = types.BoolValue(false)
+	}
+}
+
 func (data *CryptoIKEv2ProposalData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

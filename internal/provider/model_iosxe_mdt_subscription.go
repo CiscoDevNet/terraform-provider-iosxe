@@ -217,6 +217,53 @@ func (data *MDTSubscription) updateFromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
+func (data *MDTSubscription) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "base.stream"); value.Exists() {
+		data.Stream = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "base.encoding"); value.Exists() {
+		data.Encoding = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "base.source-vrf"); value.Exists() {
+		data.SourceVrf = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "base.source-address"); value.Exists() {
+		data.SourceAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "base.period"); value.Exists() {
+		data.UpdatePolicyPeriodic = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "base.no-synch-on-start"); value.Exists() {
+		data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
+	} else {
+		data.UpdatePolicyOnChange = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "base.xpath"); value.Exists() {
+		data.FilterXpath = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "mdt-receivers"); value.Exists() {
+		data.Receivers = make([]MDTSubscriptionReceivers, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := MDTSubscriptionReceivers{}
+			if cValue := v.Get("address"); cValue.Exists() {
+				item.Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("port"); cValue.Exists() {
+				item.Port = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("protocol"); cValue.Exists() {
+				item.Protocol = types.StringValue(cValue.String())
+			}
+			data.Receivers = append(data.Receivers, item)
+			return true
+		})
+	}
+}
+
 func (data *MDTSubscriptionData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

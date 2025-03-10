@@ -103,6 +103,21 @@ func (data *InterfaceMPLS) updateFromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
+func (data *InterfaceMPLS) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-mpls:ip"); value.Exists() {
+		data.Ip = types.BoolValue(true)
+	} else {
+		data.Ip = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-mpls:mtu"); value.Exists() {
+		data.Mtu = types.StringValue(value.String())
+	}
+}
+
 func (data *InterfaceMPLSData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

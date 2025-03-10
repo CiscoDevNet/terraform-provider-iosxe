@@ -82,6 +82,16 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:authorization.list"); value.Exists() {
+		data.AuthorizationList = types.StringValue(value.String())
+	}
+}
+
 func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

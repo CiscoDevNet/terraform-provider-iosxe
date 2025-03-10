@@ -504,6 +504,141 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *AAA) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:new-model"); value.Exists() {
+		data.NewModel = types.BoolValue(true)
+	} else {
+		data.NewModel = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:server.radius.dynamic-author"); value.Exists() {
+		data.ServerRadiusDynamicAuthor = types.BoolValue(true)
+	} else {
+		data.ServerRadiusDynamicAuthor = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:session-id"); value.Exists() {
+		data.SessionId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:server.radius.dynamic-author.client"); value.Exists() {
+		data.ServerRadiusDynamicAuthorClients = make([]AAAServerRadiusDynamicAuthorClients, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAServerRadiusDynamicAuthorClients{}
+			if cValue := v.Get("ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("server-key.key"); cValue.Exists() {
+				item.ServerKeyType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("server-key.string"); cValue.Exists() {
+				item.ServerKey = types.StringValue(cValue.String())
+			}
+			data.ServerRadiusDynamicAuthorClients = append(data.ServerRadiusDynamicAuthorClients, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:group.server.radius"); value.Exists() {
+		data.GroupServerRadius = make([]AAAGroupServerRadius, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAGroupServerRadius{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("server.name"); cValue.Exists() {
+				item.ServerNames = make([]AAAGroupServerRadiusServerNames, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := AAAGroupServerRadiusServerNames{}
+					if ccValue := cv.Get("name"); ccValue.Exists() {
+						cItem.Name = types.StringValue(ccValue.String())
+					}
+					item.ServerNames = append(item.ServerNames, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ip.radius.source-interface.Loopback"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ip.radius.source-interface.Vlan"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceVlan = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ip.radius.source-interface.GigabitEthernet"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.radius.source-interface.TwoGigabitEthernet"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceTwoGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.radius.source-interface.FiveGigabitEthernet"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.radius.source-interface.TenGigabitEthernet"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceTenGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.radius.source-interface.TwentyFiveGigE"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.radius.source-interface.FortyGigabitEthernet"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceFortyGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.radius.source-interface.HundredGigE"); cValue.Exists() {
+				item.IpRadiusSourceInterfaceHundredGigabitEthernet = types.StringValue(cValue.String())
+			}
+			data.GroupServerRadius = append(data.GroupServerRadius, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:group.server.tacacsplus"); value.Exists() {
+		data.GroupServerTacacsplus = make([]AAAGroupServerTacacsplus, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAGroupServerTacacsplus{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("server.name"); cValue.Exists() {
+				item.ServerNames = make([]AAAGroupServerTacacsplusServerNames, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := AAAGroupServerTacacsplusServerNames{}
+					if ccValue := cv.Get("name"); ccValue.Exists() {
+						cItem.Name = types.StringValue(ccValue.String())
+					}
+					item.ServerNames = append(item.ServerNames, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.Loopback"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.Vlan"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceVlan = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.GigabitEthernet"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.TwoGigabitEthernet"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceTwoGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.FiveGigabitEthernet"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.TenGigabitEthernet"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceTenGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.TwentyFiveGigE"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.FortyGigabitEthernet"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceFortyGigabitEthernet = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.tacacs.source-interface.HundredGigE"); cValue.Exists() {
+				item.IpTacacsSourceInterfaceHundredGigabitEthernet = types.StringValue(cValue.String())
+			}
+			data.GroupServerTacacsplus = append(data.GroupServerTacacsplus, item)
+			return true
+		})
+	}
+}
+
 func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

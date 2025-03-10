@@ -582,6 +582,172 @@ func (data *PolicyMapEvent) updateFromBody(ctx context.Context, res gjson.Result
 	}
 }
 
+func (data *PolicyMapEvent) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "match-type"); value.Exists() {
+		data.MatchType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "class-number"); value.Exists() {
+		data.ClassNumbers = make([]PolicyMapEventClassNumbers, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PolicyMapEventClassNumbers{}
+			if cValue := v.Get("number"); cValue.Exists() {
+				item.Number = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("class"); cValue.Exists() {
+				item.Class = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("execution-type"); cValue.Exists() {
+				item.ExecutionType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("action-number"); cValue.Exists() {
+				item.ActionNumbers = make([]PolicyMapEventClassNumbersActionNumbers, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := PolicyMapEventClassNumbersActionNumbers{}
+					if ccValue := cv.Get("number"); ccValue.Exists() {
+						cItem.Number = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("pause.reauthentication"); ccValue.Exists() {
+						cItem.PauseReauthentication = types.BoolValue(true)
+					} else {
+						cItem.PauseReauthentication = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("authorize"); ccValue.Exists() {
+						cItem.Authorize = types.BoolValue(true)
+					} else {
+						cItem.Authorize = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("terminate-config"); ccValue.Exists() {
+						cItem.TerminateConfig = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("activate.service-template-config.service-template"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigServiceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("activate.service-template-config.aaa-list"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigAaaList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("activate.service-template-config.precedence"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigPrecedence = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("activate.service-template-config.replace-all"); ccValue.Exists() {
+						cItem.ActivateServiceTemplateConfigReplaceAll = types.BoolValue(true)
+					} else {
+						cItem.ActivateServiceTemplateConfigReplaceAll = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("activate.interface-template"); ccValue.Exists() {
+						cItem.ActivateInterfaceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("activate.policy.type.control.subscriber"); ccValue.Exists() {
+						cItem.ActivatePolicyTypeControlSubscriber = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("deactivate.interface-template"); ccValue.Exists() {
+						cItem.DeactivateInterfaceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("deactivate.service-template"); ccValue.Exists() {
+						cItem.DeactivateServiceTemplate = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("deactivate.policy.type.control.subscriber"); ccValue.Exists() {
+						cItem.DeactivatePolicyTypeControlSubscriber = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("authenticate.using.method"); ccValue.Exists() {
+						cItem.AuthenticateUsingMethod = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("authenticate.using.retries"); ccValue.Exists() {
+						cItem.AuthenticateUsingRetries = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("authenticate.using.retry-time"); ccValue.Exists() {
+						cItem.AuthenticateUsingRetryTime = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("authenticate.using.priority"); ccValue.Exists() {
+						cItem.AuthenticateUsingPriority = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("authenticate.using.aaa.authc-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaAuthcList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("authenticate.using.aaa.authz-list"); ccValue.Exists() {
+						cItem.AuthenticateUsingAaaAuthzList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("authenticate.using.both"); ccValue.Exists() {
+						cItem.AuthenticateUsingBoth = types.BoolValue(true)
+					} else {
+						cItem.AuthenticateUsingBoth = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("authenticate.using.parameter-map"); ccValue.Exists() {
+						cItem.AuthenticateUsingParameterMap = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("replace"); ccValue.Exists() {
+						cItem.Replace = types.BoolValue(true)
+					} else {
+						cItem.Replace = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("restrict"); ccValue.Exists() {
+						cItem.Restrict = types.BoolValue(true)
+					} else {
+						cItem.Restrict = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("clear-session"); ccValue.Exists() {
+						cItem.ClearSession = types.BoolValue(true)
+					} else {
+						cItem.ClearSession = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("clear-authenticated-data-hosts-on-port"); ccValue.Exists() {
+						cItem.ClearAuthenticatedDataHostsOnPort = types.BoolValue(true)
+					} else {
+						cItem.ClearAuthenticatedDataHostsOnPort = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("protect"); ccValue.Exists() {
+						cItem.Protect = types.BoolValue(true)
+					} else {
+						cItem.Protect = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("err-disable"); ccValue.Exists() {
+						cItem.ErrDisable = types.BoolValue(true)
+					} else {
+						cItem.ErrDisable = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("resume.reauthentication"); ccValue.Exists() {
+						cItem.ResumeReauthentication = types.BoolValue(true)
+					} else {
+						cItem.ResumeReauthentication = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("authentication-restart"); ccValue.Exists() {
+						cItem.AuthenticationRestart = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("set-domain"); ccValue.Exists() {
+						cItem.SetDomain = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("unauthorize"); ccValue.Exists() {
+						cItem.Unauthorize = types.BoolValue(true)
+					} else {
+						cItem.Unauthorize = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("notify"); ccValue.Exists() {
+						cItem.Notify = types.BoolValue(true)
+					} else {
+						cItem.Notify = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("set-timer.name"); ccValue.Exists() {
+						cItem.SetTimerName = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("set-timer.value"); ccValue.Exists() {
+						cItem.SetTimerValue = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("map.attribute-to-service.table"); ccValue.Exists() {
+						cItem.MapAttributeToServiceTable = types.StringValue(ccValue.String())
+					}
+					item.ActionNumbers = append(item.ActionNumbers, cItem)
+					return true
+				})
+			}
+			data.ClassNumbers = append(data.ClassNumbers, item)
+			return true
+		})
+	}
+}
+
 func (data *PolicyMapEventData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

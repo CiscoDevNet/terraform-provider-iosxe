@@ -455,6 +455,131 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *Line) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "console"); value.Exists() {
+		data.Console = make([]LineConsole, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LineConsole{}
+			if cValue := v.Get("first"); cValue.Exists() {
+				item.First = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("exec-timeout.minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("exec-timeout.seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("login.local"); cValue.Exists() {
+				item.LoginLocal = types.BoolValue(true)
+			} else {
+				item.LoginLocal = types.BoolValue(false)
+			}
+			if cValue := v.Get("login.authentication"); cValue.Exists() {
+				item.LoginAuthentication = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("privilege.level.number"); cValue.Exists() {
+				item.PrivilegeLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("password.level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("password.type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("password.secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			data.Console = append(data.Console, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "vty"); value.Exists() {
+		data.Vty = make([]LineVty, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LineVty{}
+			if cValue := v.Get("first"); cValue.Exists() {
+				item.First = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("last"); cValue.Exists() {
+				item.Last = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("access-class.acccess-list"); cValue.Exists() {
+				item.AccessClasses = make([]LineVtyAccessClasses, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LineVtyAccessClasses{}
+					if ccValue := cv.Get("direction"); ccValue.Exists() {
+						cItem.Direction = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("access-list"); ccValue.Exists() {
+						cItem.AccessList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("vrf-also"); ccValue.Exists() {
+						cItem.VrfAlso = types.BoolValue(true)
+					} else {
+						cItem.VrfAlso = types.BoolValue(false)
+					}
+					item.AccessClasses = append(item.AccessClasses, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("exec-timeout.minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("exec-timeout.seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("password.level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("password.type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("password.secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("login.authentication"); cValue.Exists() {
+				item.LoginAuthentication = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.preferred.protocol"); cValue.Exists() {
+				item.TransportPreferredProtocol = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("escape-character.char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("authorization.exec.authorization-name"); cValue.Exists() {
+				item.AuthorizationExec = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("authorization.exec.default"); cValue.Exists() {
+				item.AuthorizationExecDefault = types.BoolValue(true)
+			} else {
+				item.AuthorizationExecDefault = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.input.all"); cValue.Exists() {
+				item.TransportInputAll = types.BoolValue(true)
+			} else {
+				item.TransportInputAll = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.input.none"); cValue.Exists() {
+				item.TransportInputNone = types.BoolValue(true)
+			} else {
+				item.TransportInputNone = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.input.input"); cValue.Exists() {
+				item.TransportInput = types.StringValue(cValue.String())
+			}
+			data.Vty = append(data.Vty, item)
+			return true
+		})
+	}
+}
+
 func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

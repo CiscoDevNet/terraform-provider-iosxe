@@ -658,6 +658,172 @@ func (data *VRF) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *VRF) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "rd"); value.Exists() {
+		data.Rd = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "address-family.ipv4"); value.Exists() {
+		data.AddressFamilyIpv4 = types.BoolValue(true)
+	} else {
+		data.AddressFamilyIpv4 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "address-family.ipv6"); value.Exists() {
+		data.AddressFamilyIpv6 = types.BoolValue(true)
+	} else {
+		data.AddressFamilyIpv6 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "vpn.id"); value.Exists() {
+		data.VpnId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "route-target.import"); value.Exists() {
+		data.RouteTargetImport = make([]VRFRouteTargetImport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFRouteTargetImport{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.RouteTargetImport = append(data.RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "route-target.export"); value.Exists() {
+		data.RouteTargetExport = make([]VRFRouteTargetExport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFRouteTargetExport{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.RouteTargetExport = append(data.RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv4.route-target.import-route-target.without-stitching"); value.Exists() {
+		data.Ipv4RouteTargetImport = make([]VRFIpv4RouteTargetImport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv4RouteTargetImport{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteTargetImport = append(data.Ipv4RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv4.route-target.import-route-target.with-stitching"); value.Exists() {
+		data.Ipv4RouteTargetImportStitching = make([]VRFIpv4RouteTargetImportStitching, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv4RouteTargetImportStitching{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv4RouteTargetImportStitching = append(data.Ipv4RouteTargetImportStitching, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv4.route-target.export-route-target.without-stitching"); value.Exists() {
+		data.Ipv4RouteTargetExport = make([]VRFIpv4RouteTargetExport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv4RouteTargetExport{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv4RouteTargetExport = append(data.Ipv4RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv4.route-target.export-route-target.with-stitching"); value.Exists() {
+		data.Ipv4RouteTargetExportStitching = make([]VRFIpv4RouteTargetExportStitching, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv4RouteTargetExportStitching{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv4RouteTargetExportStitching = append(data.Ipv4RouteTargetExportStitching, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv6.route-target.import-route-target.without-stitching"); value.Exists() {
+		data.Ipv6RouteTargetImport = make([]VRFIpv6RouteTargetImport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv6RouteTargetImport{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv6RouteTargetImport = append(data.Ipv6RouteTargetImport, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv6.route-target.import-route-target.with-stitching"); value.Exists() {
+		data.Ipv6RouteTargetImportStitching = make([]VRFIpv6RouteTargetImportStitching, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv6RouteTargetImportStitching{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv6RouteTargetImportStitching = append(data.Ipv6RouteTargetImportStitching, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv6.route-target.export-route-target.without-stitching"); value.Exists() {
+		data.Ipv6RouteTargetExport = make([]VRFIpv6RouteTargetExport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv6RouteTargetExport{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			data.Ipv6RouteTargetExport = append(data.Ipv6RouteTargetExport, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "address-family.ipv6.route-target.export-route-target.with-stitching"); value.Exists() {
+		data.Ipv6RouteTargetExportStitching = make([]VRFIpv6RouteTargetExportStitching, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := VRFIpv6RouteTargetExportStitching{}
+			if cValue := v.Get("asn-ip"); cValue.Exists() {
+				item.Value = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stitching"); cValue.Exists() {
+				item.Stitching = types.BoolValue(true)
+			} else {
+				item.Stitching = types.BoolValue(false)
+			}
+			data.Ipv6RouteTargetExportStitching = append(data.Ipv6RouteTargetExportStitching, item)
+			return true
+		})
+	}
+}
+
 func (data *VRFData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

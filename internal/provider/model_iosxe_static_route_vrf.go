@@ -234,6 +234,57 @@ func (data *StaticRouteVRF) updateFromBody(ctx context.Context, res gjson.Result
 	}
 }
 
+func (data *StaticRouteVRF) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "ip-route-interface-forwarding-list"); value.Exists() {
+		data.Routes = make([]StaticRouteVRFRoutes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := StaticRouteVRFRoutes{}
+			if cValue := v.Get("prefix"); cValue.Exists() {
+				item.Prefix = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("fwd-list"); cValue.Exists() {
+				item.NextHops = make([]StaticRouteVRFRoutesNextHops, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := StaticRouteVRFRoutesNextHops{}
+					if ccValue := cv.Get("fwd"); ccValue.Exists() {
+						cItem.NextHop = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("metric"); ccValue.Exists() {
+						cItem.Metric = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("global"); ccValue.Exists() {
+						cItem.Global = types.BoolValue(true)
+					} else {
+						cItem.Global = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("name"); ccValue.Exists() {
+						cItem.Name = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("permanent"); ccValue.Exists() {
+						cItem.Permanent = types.BoolValue(true)
+					} else {
+						cItem.Permanent = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("tag"); ccValue.Exists() {
+						cItem.Tag = types.Int64Value(ccValue.Int())
+					}
+					item.NextHops = append(item.NextHops, cItem)
+					return true
+				})
+			}
+			data.Routes = append(data.Routes, item)
+			return true
+		})
+	}
+}
+
 func (data *StaticRouteVRFData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

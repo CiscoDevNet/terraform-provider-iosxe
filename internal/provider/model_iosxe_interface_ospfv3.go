@@ -152,6 +152,36 @@ func (data *InterfaceOSPFv3) updateFromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
+func (data *InterfaceOSPFv3) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "network-type.broadcast"); value.Exists() {
+		data.NetworkTypeBroadcast = types.BoolValue(true)
+	} else {
+		data.NetworkTypeBroadcast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "network-type.non-broadcast"); value.Exists() {
+		data.NetworkTypeNonBroadcast = types.BoolValue(true)
+	} else {
+		data.NetworkTypeNonBroadcast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "network-type.point-to-multipoint"); value.Exists() {
+		data.NetworkTypePointToMultipoint = types.BoolValue(true)
+	} else {
+		data.NetworkTypePointToMultipoint = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "network-type.point-to-point"); value.Exists() {
+		data.NetworkTypePointToPoint = types.BoolValue(true)
+	} else {
+		data.NetworkTypePointToPoint = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "cost-config.value"); value.Exists() {
+		data.Cost = types.Int64Value(value.Int())
+	}
+}
+
 func (data *InterfaceOSPFv3Data) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

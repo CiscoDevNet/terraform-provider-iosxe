@@ -371,6 +371,102 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
+func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "update.newinfo.periodic"); value.Exists() {
+		data.UpdateNewinfoPeriodic = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "identity.accounting-list"); value.Exists() {
+		data.Identities = make([]AAAAccountingIdentities, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingIdentities{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group-config.broadcast"); cValue.Exists() {
+				item.StartStopGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group-config.logger"); cValue.Exists() {
+				item.StartStopGroupLogger = types.BoolValue(true)
+			} else {
+				item.StartStopGroupLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group-config.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group2.group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group3.group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group4.group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			data.Identities = append(data.Identities, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group1.group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup1 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group2.group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup2 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group3.group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup3 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "identity.default.start-stop.group-config.group4.group"); value.Exists() {
+		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "exec"); value.Exists() {
+		data.Execs = make([]AAAAccountingExecs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingExecs{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			data.Execs = append(data.Execs, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "network"); value.Exists() {
+		data.Networks = make([]AAAAccountingNetworks, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingNetworks{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group-config.group2.group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			data.Networks = append(data.Networks, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "system.guarantee-first"); value.Exists() {
+		data.SystemGuaranteeFirst = types.BoolValue(value.Bool())
+	} else {
+		data.SystemGuaranteeFirst = types.BoolValue(false)
+	}
+}
+
 func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

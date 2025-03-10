@@ -194,6 +194,43 @@ func (data *StaticRoute) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *StaticRoute) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "fwd-list"); value.Exists() {
+		data.NextHops = make([]StaticRouteNextHops, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := StaticRouteNextHops{}
+			if cValue := v.Get("fwd"); cValue.Exists() {
+				item.NextHop = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("metric"); cValue.Exists() {
+				item.Metric = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("global"); cValue.Exists() {
+				item.Global = types.BoolValue(true)
+			} else {
+				item.Global = types.BoolValue(false)
+			}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("permanent"); cValue.Exists() {
+				item.Permanent = types.BoolValue(true)
+			} else {
+				item.Permanent = types.BoolValue(false)
+			}
+			if cValue := v.Get("tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			data.NextHops = append(data.NextHops, item)
+			return true
+		})
+	}
+}
+
 func (data *StaticRouteData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

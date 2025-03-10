@@ -413,6 +413,107 @@ func (data *ServiceTemplate) updateFromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
+func (data *ServiceTemplate) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "access-group-config"); value.Exists() {
+		data.AccessGroups = make([]ServiceTemplateAccessGroups, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ServiceTemplateAccessGroups{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.AccessGroups = append(data.AccessGroups, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "inactivity-timer.value"); value.Exists() {
+		data.InactivityTimer = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "inactivity-timer.probe"); value.Exists() {
+		data.InactivityTimerProbe = types.BoolValue(true)
+	} else {
+		data.InactivityTimerProbe = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "vlan"); value.Exists() {
+		data.Vlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "voice.vlan"); value.Exists() {
+		data.VoiceVlan = types.BoolValue(true)
+	} else {
+		data.VoiceVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "linksec.policy"); value.Exists() {
+		data.LinksecPolicy = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "sgt"); value.Exists() {
+		data.Sgt = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "absolute-timer"); value.Exists() {
+		data.AbsoluteTimer = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "interface-template"); value.Exists() {
+		data.InterfaceTemplates = make([]ServiceTemplateInterfaceTemplates, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ServiceTemplateInterfaceTemplates{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.InterfaceTemplates = append(data.InterfaceTemplates, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "tunnel.type.capwap.name"); value.Exists() {
+		data.TunnelCapwapName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "vnid"); value.Exists() {
+		data.Vnid = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "redirect.append.client-mac"); value.Exists() {
+		data.RedirectAppendClientMac = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "redirect.append.switch-mac"); value.Exists() {
+		data.RedirectAppendSwitchMac = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "redirect.url.url_name"); value.Exists() {
+		data.RedirectUrl = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "redirect.url.match.acl_name"); value.Exists() {
+		data.RedirectUrlMatchAcl = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "redirect.url.match.action"); value.Exists() {
+		data.RedirectUrlMatchAction = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dns-acl.preauth"); value.Exists() {
+		data.DnsAclPreauth = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "service-policy.qos.input"); value.Exists() {
+		data.ServicePolicyQosInput = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "service-policy.qos.output"); value.Exists() {
+		data.ServicePolicyQosOutput = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "tag-config"); value.Exists() {
+		data.Tags = make([]ServiceTemplateTags, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := ServiceTemplateTags{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.Tags = append(data.Tags, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "mdns-service-policy"); value.Exists() {
+		data.MdnsServicePolicy = types.StringValue(value.String())
+	}
+}
+
 func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

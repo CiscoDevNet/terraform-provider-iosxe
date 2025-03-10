@@ -477,6 +477,127 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "monitor-config.common-config.monitor.severity"); value.Exists() {
+		data.MonitorSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "buffered.size-value"); value.Exists() {
+		data.BufferedSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "buffered.severity-level"); value.Exists() {
+		data.BufferedSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "console-config.common-config.console.severity"); value.Exists() {
+		data.ConsoleSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "facility"); value.Exists() {
+		data.Facility = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "history.size"); value.Exists() {
+		data.HistorySize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "history.severity-level"); value.Exists() {
+		data.HistorySeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "trap"); value.Exists() {
+		data.Trap = types.BoolValue(true)
+	} else {
+		data.Trap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "trap.severity"); value.Exists() {
+		data.TrapSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "origin-id.type-value"); value.Exists() {
+		data.OriginIdType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "origin-id.string"); value.Exists() {
+		data.OriginIdName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "file.name"); value.Exists() {
+		data.FileName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "file.max-size"); value.Exists() {
+		data.FileMaxSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "file.min-size"); value.Exists() {
+		data.FileMinSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "file.severity"); value.Exists() {
+		data.FileSeverity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "source-interface-conf.interface-name-non-vrf"); value.Exists() {
+		data.SourceInterface = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "source-interface-conf.source-interface-vrf"); value.Exists() {
+		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrf, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingSourceInterfacesVrf{}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("interface-name"); cValue.Exists() {
+				item.InterfaceName = types.StringValue(cValue.String())
+			}
+			data.SourceInterfacesVrf = append(data.SourceInterfacesVrf, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "host.ipv4-host-list"); value.Exists() {
+		data.Ipv4Hosts = make([]LoggingIpv4Hosts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv4Hosts{}
+			if cValue := v.Get("ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			data.Ipv4Hosts = append(data.Ipv4Hosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "host.ipv4-host-vrf-list"); value.Exists() {
+		data.Ipv4VrfHosts = make([]LoggingIpv4VrfHosts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv4VrfHosts{}
+			if cValue := v.Get("ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.Ipv4VrfHosts = append(data.Ipv4VrfHosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "host.ipv6.ipv6-host-list"); value.Exists() {
+		data.Ipv6Hosts = make([]LoggingIpv6Hosts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv6Hosts{}
+			if cValue := v.Get("ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			data.Ipv6Hosts = append(data.Ipv6Hosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "host.ipv6.ipv6-host-vrf-list"); value.Exists() {
+		data.Ipv6VrfHosts = make([]LoggingIpv6VrfHosts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv6VrfHosts{}
+			if cValue := v.Get("ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			data.Ipv6VrfHosts = append(data.Ipv6VrfHosts, item)
+			return true
+		})
+	}
+}
+
 func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

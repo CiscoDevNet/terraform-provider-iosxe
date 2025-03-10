@@ -181,6 +181,42 @@ func (data *CryptoIKEv2Policy) updateFromBody(ctx context.Context, res gjson.Res
 	}
 }
 
+func (data *CryptoIKEv2Policy) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "match.inbound-only"); value.Exists() {
+		data.MatchInboundOnly = types.BoolValue(true)
+	} else {
+		data.MatchInboundOnly = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.address.local-ip"); value.Exists() {
+		data.MatchAddressLocalIp = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchAddressLocalIp = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.fvrf.name"); value.Exists() {
+		data.MatchFvrf = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.fvrf.any"); value.Exists() {
+		data.MatchFvrfAny = types.BoolValue(true)
+	} else {
+		data.MatchFvrfAny = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "proposal"); value.Exists() {
+		data.Proposals = make([]CryptoIKEv2PolicyProposals, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := CryptoIKEv2PolicyProposals{}
+			if cValue := v.Get("proposals"); cValue.Exists() {
+				item.Proposals = types.StringValue(cValue.String())
+			}
+			data.Proposals = append(data.Proposals, item)
+			return true
+		})
+	}
+}
+
 func (data *CryptoIKEv2PolicyData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

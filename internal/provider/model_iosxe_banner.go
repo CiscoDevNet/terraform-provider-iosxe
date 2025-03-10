@@ -112,6 +112,25 @@ func (data *Banner) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *Banner) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "exec.banner"); value.Exists() {
+		data.ExecBanner = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "login.banner"); value.Exists() {
+		data.LoginBanner = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "prompt-timeout.banner"); value.Exists() {
+		data.PromptTimeoutBanner = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "motd.banner"); value.Exists() {
+		data.MotdBanner = types.StringValue(value.String())
+	}
+}
+
 func (data *BannerData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

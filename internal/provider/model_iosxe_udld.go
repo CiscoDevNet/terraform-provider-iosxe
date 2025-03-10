@@ -125,6 +125,29 @@ func (data *UDLD) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *UDLD) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-udld:aggressive"); value.Exists() {
+		data.Aggressive = types.BoolValue(true)
+	} else {
+		data.Aggressive = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-udld:enable"); value.Exists() {
+		data.Enable = types.BoolValue(true)
+	} else {
+		data.Enable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-udld:message.time"); value.Exists() {
+		data.MessageTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-udld:recovery.interval"); value.Exists() {
+		data.RecoveryInterval = types.Int64Value(value.Int())
+	}
+}
+
 func (data *UDLDData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

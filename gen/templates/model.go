@@ -450,7 +450,9 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 	{{- end}}
 }
 
-func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Result) {
+func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result) {
+{{- define "fromBodyTemplate"}}
+	{{- $name := camelCase .Name}}
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -591,6 +593,12 @@ func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Res
 	{{- end}}
 	{{- end}}
 	{{- end}}
+{{- end}}
+{{- template "fromBodyTemplate" .}}
+}
+
+func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Result) {
+{{- template "fromBodyTemplate" .}}
 }
 
 func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{camelCase .Name}}) []string {

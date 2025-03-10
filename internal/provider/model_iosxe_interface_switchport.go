@@ -264,6 +264,72 @@ func (data *InterfaceSwitchport) updateFromBody(ctx context.Context, res gjson.R
 	}
 }
 
+func (data *InterfaceSwitchport) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:mode.access"); value.Exists() {
+		data.ModeAccess = types.BoolValue(true)
+	} else {
+		data.ModeAccess = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:mode.dot1q-tunnel"); value.Exists() {
+		data.ModeDot1qTunnel = types.BoolValue(true)
+	} else {
+		data.ModeDot1qTunnel = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:mode.private-vlan.trunk"); value.Exists() {
+		data.ModePrivateVlanTrunk = types.BoolValue(true)
+	} else {
+		data.ModePrivateVlanTrunk = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:mode.private-vlan.host"); value.Exists() {
+		data.ModePrivateVlanHost = types.BoolValue(true)
+	} else {
+		data.ModePrivateVlanHost = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:mode.private-vlan.promiscuous"); value.Exists() {
+		data.ModePrivateVlanPromiscuous = types.BoolValue(true)
+	} else {
+		data.ModePrivateVlanPromiscuous = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:mode.trunk"); value.Exists() {
+		data.ModeTrunk = types.BoolValue(true)
+	} else {
+		data.ModeTrunk = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:nonegotiate"); value.Exists() {
+		data.Nonegotiate = types.BoolValue(true)
+	} else {
+		data.Nonegotiate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:access.vlan.vlan"); value.Exists() {
+		data.AccessVlan = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan.vlans"); value.Exists() {
+		data.TrunkAllowedVlans = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.allowed.vlan.none"); value.Exists() {
+		data.TrunkAllowedVlansNone = types.BoolValue(true)
+	} else {
+		data.TrunkAllowedVlansNone = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.native.vlan.tag"); value.Exists() {
+		data.TrunkNativeVlanTag = types.BoolValue(value.Bool())
+	} else {
+		data.TrunkNativeVlanTag = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:trunk.native.vlan.vlan-id"); value.Exists() {
+		data.TrunkNativeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "host"); value.Exists() {
+		data.Host = types.BoolValue(true)
+	} else {
+		data.Host = types.BoolValue(false)
+	}
+}
+
 func (data *InterfaceSwitchportData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

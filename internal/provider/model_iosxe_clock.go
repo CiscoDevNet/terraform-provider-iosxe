@@ -311,6 +311,85 @@ func (data *Clock) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *Clock) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "calendar-valid"); value.Exists() {
+		data.CalendarValid = types.BoolValue(true)
+	} else {
+		data.CalendarValid = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "summer-time.zone"); value.Exists() {
+		data.SummerTimeZone = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.date"); value.Exists() {
+		data.SummerTimeDate = types.BoolValue(true)
+	} else {
+		data.SummerTimeDate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "summer-time.start-day"); value.Exists() {
+		data.SummerTimeDateStartDay = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "summer-time.start-month"); value.Exists() {
+		data.SummerTimeDateStartMonth = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.start-year"); value.Exists() {
+		data.SummerTimeDateStartYear = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "summer-time.start-time"); value.Exists() {
+		data.SummerTimeDateStartTime = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.date-end-day"); value.Exists() {
+		data.SummerTimeDateEndDay = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "summer-time.date-end-month"); value.Exists() {
+		data.SummerTimeDateEndMonth = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.date-end-year"); value.Exists() {
+		data.SummerTimeDateEndYear = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "summer-time.date-end-time"); value.Exists() {
+		data.SummerTimeDateEndTime = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.offset"); value.Exists() {
+		data.SummerTimeDateOffset = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "summer-time.recurring"); value.Exists() {
+		data.SummerTimeRecurring = types.BoolValue(true)
+	} else {
+		data.SummerTimeRecurring = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "summer-time.recurring-start"); value.Exists() {
+		data.SummerTimeRecurringStartWeek = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.recurring-start-day"); value.Exists() {
+		data.SummerTimeRecurringStartWeekday = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.recurring-start-month"); value.Exists() {
+		data.SummerTimeRecurringStartMonth = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.recurring-start-time"); value.Exists() {
+		data.SummerTimeRecurringStartTime = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.recurring-end"); value.Exists() {
+		data.SummerTimeRecurringEndWeek = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.recurring-end-day"); value.Exists() {
+		data.SummerTimeRecurringEndWeekday = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.recurring-end-month"); value.Exists() {
+		data.SummerTimeRecurringEndMonth = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.recurring-end-time"); value.Exists() {
+		data.SummerTimeRecurringEndTime = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "summer-time.recurring-offset"); value.Exists() {
+		data.SummerTimeRecurringOffset = types.Int64Value(value.Int())
+	}
+}
+
 func (data *ClockData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

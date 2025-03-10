@@ -843,6 +843,254 @@ func (data *Errdisable) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *Errdisable) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "detect.cause.all"); value.Exists() {
+		data.DetectCauseAll = types.BoolValue(true)
+	} else {
+		data.DetectCauseAll = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.arp-inspection"); value.Exists() {
+		data.DetectCauseArpInspection = types.BoolValue(true)
+	} else {
+		data.DetectCauseArpInspection = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.bpduguard"); value.Exists() {
+		data.DetectCauseBpduguard = types.BoolValue(true)
+	} else {
+		data.DetectCauseBpduguard = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.dhcp-rate-limit"); value.Exists() {
+		data.DetectCauseDhcpRateLimit = types.BoolValue(true)
+	} else {
+		data.DetectCauseDhcpRateLimit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.dtp-flap"); value.Exists() {
+		data.DetectCauseDtpFlap = types.BoolValue(true)
+	} else {
+		data.DetectCauseDtpFlap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.gbic-invalid"); value.Exists() {
+		data.DetectCauseGbicInvalid = types.BoolValue(true)
+	} else {
+		data.DetectCauseGbicInvalid = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.inline-power"); value.Exists() {
+		data.DetectCauseInlinePower = types.BoolValue(true)
+	} else {
+		data.DetectCauseInlinePower = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.l2ptguard"); value.Exists() {
+		data.DetectCauseL2ptguard = types.BoolValue(true)
+	} else {
+		data.DetectCauseL2ptguard = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.link-flap"); value.Exists() {
+		data.DetectCauseLinkFlap = types.BoolValue(true)
+	} else {
+		data.DetectCauseLinkFlap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.loopback"); value.Exists() {
+		data.DetectCauseLoopback = types.BoolValue(true)
+	} else {
+		data.DetectCauseLoopback = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.mlacp-minlink"); value.Exists() {
+		data.DetectCauseMlacpMinlink = types.BoolValue(true)
+	} else {
+		data.DetectCauseMlacpMinlink = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.pagp-flap"); value.Exists() {
+		data.DetectCausePagpFlap = types.BoolValue(true)
+	} else {
+		data.DetectCausePagpFlap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.pppoe-ia-rate-limit"); value.Exists() {
+		data.DetectCausePppoeIaRateLimit = types.BoolValue(true)
+	} else {
+		data.DetectCausePppoeIaRateLimit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.security-violation.shutdown.vlan"); value.Exists() {
+		data.DetectCauseSecurityViolationShutdownVlan = types.BoolValue(true)
+	} else {
+		data.DetectCauseSecurityViolationShutdownVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.sfp-config-mismatch"); value.Exists() {
+		data.DetectCauseSfpConfigMismatch = types.BoolValue(true)
+	} else {
+		data.DetectCauseSfpConfigMismatch = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.small-frame"); value.Exists() {
+		data.DetectCauseSmallFrame = types.BoolValue(true)
+	} else {
+		data.DetectCauseSmallFrame = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "detect.cause.loopdetect"); value.Exists() {
+		data.DetectCauseLoopdetect = types.BoolValue(value.Bool())
+	} else {
+		data.DetectCauseLoopdetect = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "flap-setting.cause.dtp-flap.max-flaps"); value.Exists() {
+		data.FlapSettingCauseDtpFlapMaxFlaps = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "flap-setting.cause.dtp-flap.time"); value.Exists() {
+		data.FlapSettingCauseDtpFlapTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "flap-setting.cause.link-flap.max-flaps"); value.Exists() {
+		data.FlapSettingCauseLinkFlapMaxFlaps = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "flap-setting.cause.link-flap.time"); value.Exists() {
+		data.FlapSettingCauseLinkFlapTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "flap-setting.cause.pagp-flap.max-flaps"); value.Exists() {
+		data.FlapSettingCausePagpFlapMaxFlaps = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "flap-setting.cause.pagp-flap.time"); value.Exists() {
+		data.FlapSettingCausePagpFlapTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "recovery.interval"); value.Exists() {
+		data.RecoveryInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "recovery.cause.all"); value.Exists() {
+		data.RecoveryCauseAll = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseAll = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.arp-inspection"); value.Exists() {
+		data.RecoveryCauseArpInspection = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseArpInspection = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.bpduguard"); value.Exists() {
+		data.RecoveryCauseBpduguard = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseBpduguard = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.channel-misconfig"); value.Exists() {
+		data.RecoveryCauseChannelMisconfig = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseChannelMisconfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.dhcp-rate-limit"); value.Exists() {
+		data.RecoveryCauseDhcpRateLimit = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseDhcpRateLimit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.dtp-flap"); value.Exists() {
+		data.RecoveryCauseDtpFlap = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseDtpFlap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.gbic-invalid"); value.Exists() {
+		data.RecoveryCauseGbicInvalid = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseGbicInvalid = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.inline-power"); value.Exists() {
+		data.RecoveryCauseInlinePower = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseInlinePower = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.l2ptguard"); value.Exists() {
+		data.RecoveryCauseL2ptguard = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseL2ptguard = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.link-flap"); value.Exists() {
+		data.RecoveryCauseLinkFlap = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseLinkFlap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.link-monitor-failure"); value.Exists() {
+		data.RecoveryCauseLinkMonitorFailure = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseLinkMonitorFailure = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.loopback"); value.Exists() {
+		data.RecoveryCauseLoopback = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseLoopback = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.mac-limit"); value.Exists() {
+		data.RecoveryCauseMacLimit = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseMacLimit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.mlacp-minlink"); value.Exists() {
+		data.RecoveryCauseMlacpMinlink = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseMlacpMinlink = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.pagp-flap"); value.Exists() {
+		data.RecoveryCausePagpFlap = types.BoolValue(true)
+	} else {
+		data.RecoveryCausePagpFlap = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.port-mode-failure"); value.Exists() {
+		data.RecoveryCausePortModeFailure = types.BoolValue(true)
+	} else {
+		data.RecoveryCausePortModeFailure = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.pppoe-ia-rate-limit"); value.Exists() {
+		data.RecoveryCausePppoeIaRateLimit = types.BoolValue(true)
+	} else {
+		data.RecoveryCausePppoeIaRateLimit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.psp"); value.Exists() {
+		data.RecoveryCausePsp = types.BoolValue(true)
+	} else {
+		data.RecoveryCausePsp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.psecure-violation"); value.Exists() {
+		data.RecoveryCausePsecureViolation = types.BoolValue(true)
+	} else {
+		data.RecoveryCausePsecureViolation = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.security-violation"); value.Exists() {
+		data.RecoveryCauseSecurityViolation = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseSecurityViolation = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.sfp-config-mismatch"); value.Exists() {
+		data.RecoveryCauseSfpConfigMismatch = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseSfpConfigMismatch = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.small-frame"); value.Exists() {
+		data.RecoveryCauseSmallFrame = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseSmallFrame = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.storm-control"); value.Exists() {
+		data.RecoveryCauseStormControl = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseStormControl = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.udld"); value.Exists() {
+		data.RecoveryCauseUdld = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseUdld = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.unicast-flood"); value.Exists() {
+		data.RecoveryCauseUnicastFlood = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseUnicastFlood = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.vmps"); value.Exists() {
+		data.RecoveryCauseVmps = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseVmps = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.loopdetect"); value.Exists() {
+		data.RecoveryCauseLoopdetect = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseLoopdetect = types.BoolValue(false)
+	}
+}
+
 func (data *ErrdisableData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -28,7 +28,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/netascode/go-restconf"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -42,7 +41,7 @@ func NewInterfaceNVEDataSource() datasource.DataSource {
 }
 
 type InterfaceNVEDataSource struct {
-	clients map[string]*restconf.Client
+	data *IosxeProviderData
 }
 
 func (d *InterfaceNVEDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -128,7 +127,7 @@ func (d *InterfaceNVEDataSource) Configure(_ context.Context, req datasource.Con
 		return
 	}
 
-	d.clients = req.ProviderData.(map[string]*restconf.Client)
+	d.data = req.ProviderData.(*IosxeProviderData)
 }
 
 func (d *InterfaceNVEDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -141,14 +140,15 @@ func (d *InterfaceNVEDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
-	if _, ok := d.clients[config.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", config.getPath()))
+
+	device, ok := d.data.Devices[config.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", config.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", config.getPath()))
-
-	res, err := d.clients[config.Device.ValueString()].GetData(config.getPath())
+	res, err := device.Client.GetData(config.getPath())
 	if res.StatusCode == 404 {
 		config = InterfaceNVEData{Device: config.Device}
 	} else {

@@ -28,7 +28,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
-	"github.com/netascode/go-restconf"
 )
 
 // Ensure the implementation satisfies the expected interfaces.
@@ -42,7 +41,7 @@ func NewBGPAddressFamilyIPv6DataSource() datasource.DataSource {
 }
 
 type BGPAddressFamilyIPv6DataSource struct {
-	clients map[string]*restconf.Client
+	data *IosxeProviderData
 }
 
 func (d *BGPAddressFamilyIPv6DataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -108,7 +107,7 @@ func (d *BGPAddressFamilyIPv6DataSource) Configure(_ context.Context, req dataso
 		return
 	}
 
-	d.clients = req.ProviderData.(map[string]*restconf.Client)
+	d.data = req.ProviderData.(*IosxeProviderData)
 }
 
 func (d *BGPAddressFamilyIPv6DataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
@@ -121,14 +120,15 @@ func (d *BGPAddressFamilyIPv6DataSource) Read(ctx context.Context, req datasourc
 		return
 	}
 
-	if _, ok := d.clients[config.Device.ValueString()]; !ok {
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", config.getPath()))
+
+	device, ok := d.data.Devices[config.Device.ValueString()]
+	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", config.Device.ValueString()))
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", config.getPath()))
-
-	res, err := d.clients[config.Device.ValueString()].GetData(config.getPath())
+	res, err := device.Client.GetData(config.getPath())
 	if res.StatusCode == 404 {
 		config = BGPAddressFamilyIPv6Data{Device: config.Device}
 	} else {

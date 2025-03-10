@@ -528,6 +528,156 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *System) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "hostname"); value.Exists() {
+		data.Hostname = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.bgp-community.new-format"); value.Exists() {
+		data.IpBgpCommunityNewFormat = types.BoolValue(true)
+	} else {
+		data.IpBgpCommunityNewFormat = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.routing-conf.routing"); value.Exists() {
+		data.IpRouting = types.BoolValue(value.Bool())
+	} else {
+		data.IpRouting = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6.unicast-routing"); value.Exists() {
+		data.Ipv6UnicastRouting = types.BoolValue(true)
+	} else {
+		data.Ipv6UnicastRouting = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "system.Cisco-IOS-XE-switch:mtu.size"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.source-route"); value.Exists() {
+		data.IpSourceRoute = types.BoolValue(value.Bool())
+	} else {
+		data.IpSourceRoute = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.domain.lookup"); value.Exists() {
+		data.IpDomainLookup = types.BoolValue(value.Bool())
+	} else {
+		data.IpDomainLookup = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.domain.name"); value.Exists() {
+		data.IpDomainName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "login.delay"); value.Exists() {
+		data.LoginDelay = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "login.on-failure"); value.Exists() {
+		data.LoginOnFailure = types.BoolValue(true)
+	} else {
+		data.LoginOnFailure = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "login.on-failure.log"); value.Exists() {
+		data.LoginOnFailureLog = types.BoolValue(true)
+	} else {
+		data.LoginOnFailureLog = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "login.on-success"); value.Exists() {
+		data.LoginOnSuccess = types.BoolValue(true)
+	} else {
+		data.LoginOnSuccess = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "login.on-success.log"); value.Exists() {
+		data.LoginOnSuccessLog = types.BoolValue(true)
+	} else {
+		data.LoginOnSuccessLog = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing"); value.Exists() {
+		data.IpMulticastRouting = types.BoolValue(true)
+	} else {
+		data.IpMulticastRouting = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:mcr-conf.multicast-routing"); value.Exists() {
+		data.MulticastRoutingSwitch = types.BoolValue(true)
+	} else {
+		data.MulticastRoutingSwitch = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing.distributed"); value.Exists() {
+		data.IpMulticastRoutingDistributed = types.BoolValue(true)
+	} else {
+		data.IpMulticastRoutingDistributed = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-multicast:multicast-routing.vrf"); value.Exists() {
+		data.MulticastRoutingVrfs = make([]SystemMulticastRoutingVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemMulticastRoutingVrfs{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("distributed"); cValue.Exists() {
+				item.Distributed = types.BoolValue(true)
+			} else {
+				item.Distributed = types.BoolValue(false)
+			}
+			data.MulticastRoutingVrfs = append(data.MulticastRoutingVrfs, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.access-class"); value.Exists() {
+		data.IpHttpAccessClass = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa"); value.Exists() {
+		data.IpHttpAuthenticationAaa = types.BoolValue(true)
+	} else {
+		data.IpHttpAuthenticationAaa = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.exec-authorization"); value.Exists() {
+		data.IpHttpAuthenticationAaaExecAuthorization = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.login-authentication"); value.Exists() {
+		data.IpHttpAuthenticationAaaLoginAuthentication = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.aaa.command-authorization"); value.Exists() {
+		data.IpHttpAuthenticationAaaCommandAuthorization = make([]SystemIpHttpAuthenticationAaaCommandAuthorization, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemIpHttpAuthenticationAaaCommandAuthorization{}
+			if cValue := v.Get("level"); cValue.Exists() {
+				item.Level = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.IpHttpAuthenticationAaaCommandAuthorization = append(data.IpHttpAuthenticationAaaCommandAuthorization, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.authentication.local"); value.Exists() {
+		data.IpHttpAuthenticationLocal = types.BoolValue(true)
+	} else {
+		data.IpHttpAuthenticationLocal = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.server"); value.Exists() {
+		data.IpHttpServer = types.BoolValue(value.Bool())
+	} else {
+		data.IpHttpServer = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-server"); value.Exists() {
+		data.IpHttpSecureServer = types.BoolValue(value.Bool())
+	} else {
+		data.IpHttpSecureServer = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-trustpoint"); value.Exists() {
+		data.IpHttpSecureTrustpoint = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.tls-version"); value.Exists() {
+		data.IpHttpTlsVersion = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.client.secure-trustpoint"); value.Exists() {
+		data.IpHttpClientSecureTrustpoint = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.client.source-interface"); value.Exists() {
+		data.IpHttpClientSourceInterface = types.StringValue(value.String())
+	}
+}
+
 func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

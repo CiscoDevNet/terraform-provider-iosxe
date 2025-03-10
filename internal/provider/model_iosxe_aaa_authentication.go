@@ -731,6 +731,223 @@ func (data *AAAAuthentication) updateFromBody(ctx context.Context, res gjson.Res
 	}
 }
 
+func (data *AAAAuthentication) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "login"); value.Exists() {
+		data.Logins = make([]AAAAuthenticationLogins, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAuthenticationLogins{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1.none"); cValue.Exists() {
+				item.A1None = types.BoolValue(true)
+			} else {
+				item.A1None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.line"); cValue.Exists() {
+				item.A1Line = types.BoolValue(true)
+			} else {
+				item.A1Line = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.enable"); cValue.Exists() {
+				item.A1Enable = types.BoolValue(true)
+			} else {
+				item.A1Enable = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.local"); cValue.Exists() {
+				item.A1Local = types.BoolValue(true)
+			} else {
+				item.A1Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.group"); cValue.Exists() {
+				item.A1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2.none"); cValue.Exists() {
+				item.A2None = types.BoolValue(true)
+			} else {
+				item.A2None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.line"); cValue.Exists() {
+				item.A2Line = types.BoolValue(true)
+			} else {
+				item.A2Line = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.enable"); cValue.Exists() {
+				item.A2Enable = types.BoolValue(true)
+			} else {
+				item.A2Enable = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.local"); cValue.Exists() {
+				item.A2Local = types.BoolValue(true)
+			} else {
+				item.A2Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.group"); cValue.Exists() {
+				item.A2Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a3.none"); cValue.Exists() {
+				item.A3None = types.BoolValue(true)
+			} else {
+				item.A3None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.line"); cValue.Exists() {
+				item.A3Line = types.BoolValue(true)
+			} else {
+				item.A3Line = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.enable"); cValue.Exists() {
+				item.A3Enable = types.BoolValue(true)
+			} else {
+				item.A3Enable = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.local"); cValue.Exists() {
+				item.A3Local = types.BoolValue(true)
+			} else {
+				item.A3Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.group"); cValue.Exists() {
+				item.A3Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a4.none"); cValue.Exists() {
+				item.A4None = types.BoolValue(true)
+			} else {
+				item.A4None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.line"); cValue.Exists() {
+				item.A4Line = types.BoolValue(true)
+			} else {
+				item.A4Line = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.enable"); cValue.Exists() {
+				item.A4Enable = types.BoolValue(true)
+			} else {
+				item.A4Enable = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.local"); cValue.Exists() {
+				item.A4Local = types.BoolValue(true)
+			} else {
+				item.A4Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.group"); cValue.Exists() {
+				item.A4Group = types.StringValue(cValue.String())
+			}
+			data.Logins = append(data.Logins, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "dot1x.dot1x-list"); value.Exists() {
+		data.Dot1x = make([]AAAAuthenticationDot1x, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAuthenticationDot1x{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1-config.group"); cValue.Exists() {
+				item.A1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1-config.local"); cValue.Exists() {
+				item.A1Local = types.BoolValue(true)
+			} else {
+				item.A1Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1-config.cache"); cValue.Exists() {
+				item.A1Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1-config.radius"); cValue.Exists() {
+				item.A1Radius = types.BoolValue(true)
+			} else {
+				item.A1Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2-config.group"); cValue.Exists() {
+				item.A2Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2-config.local"); cValue.Exists() {
+				item.A2Local = types.BoolValue(true)
+			} else {
+				item.A2Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2-config.cache"); cValue.Exists() {
+				item.A2Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2-config.radius"); cValue.Exists() {
+				item.A2Radius = types.BoolValue(true)
+			} else {
+				item.A2Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3-config.group"); cValue.Exists() {
+				item.A3Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a3-config.local"); cValue.Exists() {
+				item.A3Local = types.BoolValue(true)
+			} else {
+				item.A3Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3-config.cache"); cValue.Exists() {
+				item.A3Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a3-config.radius"); cValue.Exists() {
+				item.A3Radius = types.BoolValue(true)
+			} else {
+				item.A3Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4-config.group"); cValue.Exists() {
+				item.A4Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a4-config.local"); cValue.Exists() {
+				item.A4Local = types.BoolValue(true)
+			} else {
+				item.A4Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4-config.cache"); cValue.Exists() {
+				item.A4Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a4-config.radius"); cValue.Exists() {
+				item.A4Radius = types.BoolValue(true)
+			} else {
+				item.A4Radius = types.BoolValue(false)
+			}
+			data.Dot1x = append(data.Dot1x, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "dot1x.default.a1-config.group"); value.Exists() {
+		data.Dot1xDefaultA1Group = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.a1-config.local"); value.Exists() {
+		data.Dot1xDefaultA1Local = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultA1Local = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.a2-config.group"); value.Exists() {
+		data.Dot1xDefaultA2Group = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.a2-config.local"); value.Exists() {
+		data.Dot1xDefaultA2Local = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultA2Local = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.a3-config.group"); value.Exists() {
+		data.Dot1xDefaultA3Group = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.a3-config.local"); value.Exists() {
+		data.Dot1xDefaultA3Local = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultA3Local = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dot1x.default.a4-config.group"); value.Exists() {
+		data.Dot1xDefaultA4Group = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dot1x.default.a4-config.local"); value.Exists() {
+		data.Dot1xDefaultA4Local = types.BoolValue(true)
+	} else {
+		data.Dot1xDefaultA4Local = types.BoolValue(false)
+	}
+}
+
 func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

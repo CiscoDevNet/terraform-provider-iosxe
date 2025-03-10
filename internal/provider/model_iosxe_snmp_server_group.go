@@ -199,6 +199,48 @@ func (data *SNMPServerGroup) updateFromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
+func (data *SNMPServerGroup) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "v3.security-level-list"); value.Exists() {
+		data.V3Security = make([]SNMPServerGroupV3Security, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SNMPServerGroupV3Security{}
+			if cValue := v.Get("security-level"); cValue.Exists() {
+				item.SecurityLevel = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("context-node"); cValue.Exists() {
+				item.ContextNode = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("match-node"); cValue.Exists() {
+				item.MatchNode = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("read-node"); cValue.Exists() {
+				item.ReadNode = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("write-node"); cValue.Exists() {
+				item.WriteNode = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("notify-node"); cValue.Exists() {
+				item.NotifyNode = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("access-config.ipv6-acl"); cValue.Exists() {
+				item.AccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("access-config.standard-acl"); cValue.Exists() {
+				item.AccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("access-config.acl-name"); cValue.Exists() {
+				item.AccessAclName = types.StringValue(cValue.String())
+			}
+			data.V3Security = append(data.V3Security, item)
+			return true
+		})
+	}
+}
+
 func (data *SNMPServerGroupData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

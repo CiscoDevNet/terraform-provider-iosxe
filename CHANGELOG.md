@@ -1,3 +1,8 @@
+## 0.5.8 (unreleased)
+
+- Fix import of resources
+- Add `managed` flag to provider device configuration to allow temporarily skipping a device due to maintenance
+
 ## 0.5.7
 
 - Add `Tunnel` interface type to `iosxe_interface_pim` resource and data source

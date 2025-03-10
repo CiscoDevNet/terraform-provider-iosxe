@@ -217,6 +217,55 @@ func (data *DHCP) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *DHCP) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:compatibility.suboption.link-selection"); value.Exists() {
+		data.CompatibilitySuboptionLinkSelection = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:compatibility.suboption.server-override"); value.Exists() {
+		data.CompatibilitySuboptionServerOverride = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:relay.information.trust-all"); value.Exists() {
+		data.RelayInformationTrustAll = types.BoolValue(true)
+	} else {
+		data.RelayInformationTrustAll = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:relay.information.option.option-default"); value.Exists() {
+		data.RelayInformationOptionDefault = types.BoolValue(true)
+	} else {
+		data.RelayInformationOptionDefault = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:relay.information.option.vpn"); value.Exists() {
+		data.RelayInformationOptionVpn = types.BoolValue(true)
+	} else {
+		data.RelayInformationOptionVpn = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping"); value.Exists() {
+		data.Snooping = types.BoolValue(true)
+	} else {
+		data.Snooping = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping-conf.snooping.information.options.option.format.remote-id.hostname"); value.Exists() {
+		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(true)
+	} else {
+		data.SnoopingInformationOptionFormatRemoteIdHostname = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dhcp:snooping-conf.snooping.vlan-list"); value.Exists() {
+		data.SnoopingVlans = make([]DHCPSnoopingVlans, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DHCPSnoopingVlans{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.VlanId = types.StringValue(cValue.String())
+			}
+			data.SnoopingVlans = append(data.SnoopingVlans, item)
+			return true
+		})
+	}
+}
+
 func (data *DHCPData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

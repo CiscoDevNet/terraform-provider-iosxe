@@ -123,6 +123,25 @@ func (data *VLANConfiguration) updateFromBody(ctx context.Context, res gjson.Res
 	}
 }
 
+func (data *VLANConfiguration) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "member.vni"); value.Exists() {
+		data.Vni = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "member.access-vfi"); value.Exists() {
+		data.AccessVfi = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "member.evpn-instance.evpn-instance"); value.Exists() {
+		data.EvpnInstance = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "member.evpn-instance.vni"); value.Exists() {
+		data.EvpnInstanceVni = types.Int64Value(value.Int())
+	}
+}
+
 func (data *VLANConfigurationData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

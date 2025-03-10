@@ -113,6 +113,25 @@ func (data *CryptoIKEv2) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *CryptoIKEv2) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "nat.keepalive"); value.Exists() {
+		data.NatKeepalive = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dpd-container.dpd"); value.Exists() {
+		data.Dpd = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dpd-container.retry-interval"); value.Exists() {
+		data.DpdRetryInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dpd-container.dpd-query"); value.Exists() {
+		data.DpdQuery = types.StringValue(value.String())
+	}
+}
+
 func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

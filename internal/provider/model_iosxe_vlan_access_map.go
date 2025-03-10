@@ -127,6 +127,26 @@ func (data *VLANAccessMap) updateFromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
+func (data *VLANAccessMap) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "match.ipv6.address"); value.Exists() {
+		data.MatchIpv6Address = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIpv6Address = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.ip.address"); value.Exists() {
+		data.MatchIpAddress = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIpAddress = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "action"); value.Exists() {
+		data.Action = types.StringValue(value.String())
+	}
+}
+
 func (data *VLANAccessMapData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

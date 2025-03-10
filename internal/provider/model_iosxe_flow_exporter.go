@@ -134,6 +134,28 @@ func (data *FlowExporter) updateFromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+func (data *FlowExporter) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "destination.ipdest.ip"); value.Exists() {
+		data.DestinationIp = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "source.Loopback"); value.Exists() {
+		data.SourceLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "transport.udp"); value.Exists() {
+		data.TransportUdp = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "template.data.timeout"); value.Exists() {
+		data.TemplateDataTimeout = types.Int64Value(value.Int())
+	}
+}
+
 func (data *FlowExporterData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

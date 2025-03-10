@@ -556,6 +556,153 @@ func (data *OSPFVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *OSPFVRF) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "bfd.all-interfaces"); value.Exists() {
+		data.BfdAllInterfaces = types.BoolValue(true)
+	} else {
+		data.BfdAllInterfaces = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "default-information.originate"); value.Exists() {
+		data.DefaultInformationOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "default-information.originate.always"); value.Exists() {
+		data.DefaultInformationOriginateAlways = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginateAlways = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "distance.distance"); value.Exists() {
+		data.Distance = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "domain-tag"); value.Exists() {
+		data.DomainTag = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "mpls.ldp.autoconfig"); value.Exists() {
+		data.MplsLdpAutoconfig = types.BoolValue(true)
+	} else {
+		data.MplsLdpAutoconfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "mpls.ldp.sync"); value.Exists() {
+		data.MplsLdpSync = types.BoolValue(true)
+	} else {
+		data.MplsLdpSync = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "neighbor"); value.Exists() {
+		data.Neighbor = make([]OSPFVRFNeighbor, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFVRFNeighbor{}
+			if cValue := v.Get("ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("cost"); cValue.Exists() {
+				item.Cost = types.Int64Value(cValue.Int())
+			}
+			data.Neighbor = append(data.Neighbor, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "network"); value.Exists() {
+		data.Network = make([]OSPFVRFNetwork, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFVRFNetwork{}
+			if cValue := v.Get("ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("area"); cValue.Exists() {
+				item.Area = types.StringValue(cValue.String())
+			}
+			data.Network = append(data.Network, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "priority"); value.Exists() {
+		data.Priority = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "router-id"); value.Exists() {
+		data.RouterId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(value.Bool())
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "summary-address"); value.Exists() {
+		data.SummaryAddress = make([]OSPFVRFSummaryAddress, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFVRFSummaryAddress{}
+			if cValue := v.Get("ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			data.SummaryAddress = append(data.SummaryAddress, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "area"); value.Exists() {
+		data.Areas = make([]OSPFVRFAreas, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFVRFAreas{}
+			if cValue := v.Get("area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("authentication.message-digest"); cValue.Exists() {
+				item.AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				item.AuthenticationMessageDigest = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa"); cValue.Exists() {
+				item.Nssa = types.BoolValue(true)
+			} else {
+				item.Nssa = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate"); cValue.Exists() {
+				item.NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				item.NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("nssa.nssa-options.default-information-originate.metric-type"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("nssa.nssa-options.no-summary"); cValue.Exists() {
+				item.NssaNoSummary = types.BoolValue(true)
+			} else {
+				item.NssaNoSummary = types.BoolValue(false)
+			}
+			if cValue := v.Get("nssa.nssa-options.no-redistribution"); cValue.Exists() {
+				item.NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				item.NssaNoRedistribution = types.BoolValue(false)
+			}
+			data.Areas = append(data.Areas, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
+		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+	} else {
+		data.PassiveInterfaceDefault = types.BoolValue(false)
+	}
+}
+
 func (data *OSPFVRFData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

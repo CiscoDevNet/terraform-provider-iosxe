@@ -274,6 +274,67 @@ func (data *SNMPServerUser) updateFromBody(ctx context.Context, res gjson.Result
 	}
 }
 
+func (data *SNMPServerUser) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "v3.auth-config.algorithm"); value.Exists() {
+		data.V3AuthAlgorithm = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.password"); value.Exists() {
+		data.V3AuthPassword = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.aes.algorithm"); value.Exists() {
+		data.V3AuthPrivAesAlgorithm = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.aes.password"); value.Exists() {
+		data.V3AuthPrivAesPassword = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.aes.access-config.ipv6-acl"); value.Exists() {
+		data.V3AuthPrivAesAccessIpv6Acl = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.aes.access-config.standard-acl"); value.Exists() {
+		data.V3AuthPrivAesAccessStandardAcl = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.aes.access-config.acl-name"); value.Exists() {
+		data.V3AuthPrivAesAccessAclName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.des.password"); value.Exists() {
+		data.V3AuthPrivDesPassword = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.des.access-config.ipv6-acl"); value.Exists() {
+		data.V3AuthPrivDesAccessIpv6Acl = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.des.access-config.standard-acl"); value.Exists() {
+		data.V3AuthPrivDesAccessStandardAcl = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.des.access-config.acl-name"); value.Exists() {
+		data.V3AuthPrivDesAccessAclName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.des3.password"); value.Exists() {
+		data.V3AuthPrivDes3Password = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.des3.access-config.ipv6-acl"); value.Exists() {
+		data.V3AuthPrivDes3AccessIpv6Acl = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.des3.access-config.standard-acl"); value.Exists() {
+		data.V3AuthPrivDes3AccessStandardAcl = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "v3.auth-config.priv-config.des3.access-config.acl-name"); value.Exists() {
+		data.V3AuthPrivDes3AccessAclName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.access-config.ipv6-acl"); value.Exists() {
+		data.V3AuthAccessIpv6Acl = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "v3.auth-config.access-config.standard-acl"); value.Exists() {
+		data.V3AuthAccessStandardAcl = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "v3.auth-config.access-config.acl-name"); value.Exists() {
+		data.V3AuthAccessAclName = types.StringValue(value.String())
+	}
+}
+
 func (data *SNMPServerUserData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

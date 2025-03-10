@@ -619,6 +619,174 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 	}
 }
 
+func (data *BGPIPv4UnicastVRFNeighbor) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "remote-as"); value.Exists() {
+		data.RemoteAs = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(true)
+	} else {
+		data.Shutdown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "cluster-id"); value.Exists() {
+		data.ClusterId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "log-neighbor-changes.disable"); value.Exists() {
+		data.LogNeighborChangesDisable = types.BoolValue(true)
+	} else {
+		data.LogNeighborChangesDisable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "password.enctype"); value.Exists() {
+		data.PasswordType = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "password.text"); value.Exists() {
+		data.Password = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "timers.keepalive-interval"); value.Exists() {
+		data.TimersKeepaliveInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "timers.holdtime"); value.Exists() {
+		data.TimersHoldtime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "timers.minimum-neighbor-hold"); value.Exists() {
+		data.TimersMinimumNeighborHold = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "version"); value.Exists() {
+		data.Version = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "fall-over.default.route-map"); value.Exists() {
+		data.FallOverDefaultRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "fall-over.bfd"); value.Exists() {
+		data.FallOverBfd = types.BoolValue(true)
+	} else {
+		data.FallOverBfd = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.bfd.multi-hop"); value.Exists() {
+		data.FallOverBfdMultiHop = types.BoolValue(true)
+	} else {
+		data.FallOverBfdMultiHop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.bfd.single-hop"); value.Exists() {
+		data.FallOverBfdSingleHop = types.BoolValue(true)
+	} else {
+		data.FallOverBfdSingleHop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.bfd.check-control-plane-failure"); value.Exists() {
+		data.FallOverBfdCheckControlPlaneFailure = types.BoolValue(true)
+	} else {
+		data.FallOverBfdCheckControlPlaneFailure = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.bfd.strict-mode"); value.Exists() {
+		data.FallOverBfdStrictMode = types.BoolValue(true)
+	} else {
+		data.FallOverBfdStrictMode = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fall-over.maximum-metric.route-map"); value.Exists() {
+		data.FallOverMaximumMetricRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "disable-connected-check"); value.Exists() {
+		data.DisableConnectedCheck = types.BoolValue(true)
+	} else {
+		data.DisableConnectedCheck = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ttl-security.hops"); value.Exists() {
+		data.TtlSecurityHops = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "local-as.as-no"); value.Exists() {
+		data.LocalAs = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "local-as.no-prepend"); value.Exists() {
+		data.LocalAsNoPrepend = types.BoolValue(true)
+	} else {
+		data.LocalAsNoPrepend = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "local-as.replace-as"); value.Exists() {
+		data.LocalAsReplaceAs = types.BoolValue(true)
+	} else {
+		data.LocalAsReplaceAs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "local-as.dual-as"); value.Exists() {
+		data.LocalAsDualAs = types.BoolValue(true)
+	} else {
+		data.LocalAsDualAs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
+		data.UpdateSourceLoopback = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "activate"); value.Exists() {
+		data.Activate = types.BoolValue(true)
+	} else {
+		data.Activate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "send-community.send-community-where"); value.Exists() {
+		data.SendCommunity = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "route-reflector-client"); value.Exists() {
+		data.RouteReflectorClient = types.BoolValue(true)
+	} else {
+		data.RouteReflectorClient = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
+		data.SoftReconfiguration = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "default-originate"); value.Exists() {
+		data.DefaultOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultOriginate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "default-originate.route-map"); value.Exists() {
+		data.DefaultOriginateRouteMap = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "route-map"); value.Exists() {
+		data.RouteMaps = make([]BGPIPv4UnicastVRFNeighborRouteMaps, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPIPv4UnicastVRFNeighborRouteMaps{}
+			if cValue := v.Get("inout"); cValue.Exists() {
+				item.InOut = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("route-map-name"); cValue.Exists() {
+				item.RouteMapName = types.StringValue(cValue.String())
+			}
+			data.RouteMaps = append(data.RouteMaps, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ebgp-multihop"); value.Exists() {
+		data.EbgpMultihop = types.BoolValue(true)
+	} else {
+		data.EbgpMultihop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
+		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ha-mode.graceful-restart"); value.Exists() {
+		data.HaModeGracefulRestart = types.BoolValue(true)
+	} else {
+		data.HaModeGracefulRestart = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "next-hop-self"); value.Exists() {
+		data.NextHopSelf = types.BoolValue(true)
+	} else {
+		data.NextHopSelf = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "next-hop-self.all"); value.Exists() {
+		data.NextHopSelfAll = types.BoolValue(true)
+	} else {
+		data.NextHopSelfAll = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "advertisement-interval"); value.Exists() {
+		data.AdvertisementInterval = types.Int64Value(value.Int())
+	}
+}
+
 func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

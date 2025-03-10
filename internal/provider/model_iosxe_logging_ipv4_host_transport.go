@@ -221,6 +221,49 @@ func (data *LoggingIPv4HostTransport) updateFromBody(ctx context.Context, res gj
 	}
 }
 
+func (data *LoggingIPv4HostTransport) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "transport.udp.port-config"); value.Exists() {
+		data.TransportUdpPorts = make([]LoggingIPv4HostTransportTransportUdpPorts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIPv4HostTransportTransportUdpPorts{}
+			if cValue := v.Get("port-number"); cValue.Exists() {
+				item.PortNumber = types.Int64Value(cValue.Int())
+			}
+			data.TransportUdpPorts = append(data.TransportUdpPorts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "transport.tcp.port-config"); value.Exists() {
+		data.TransportTcpPorts = make([]LoggingIPv4HostTransportTransportTcpPorts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIPv4HostTransportTransportTcpPorts{}
+			if cValue := v.Get("port-number"); cValue.Exists() {
+				item.PortNumber = types.Int64Value(cValue.Int())
+			}
+			data.TransportTcpPorts = append(data.TransportTcpPorts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "transport.tls.port"); value.Exists() {
+		data.TransportTlsPorts = make([]LoggingIPv4HostTransportTransportTlsPorts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIPv4HostTransportTransportTlsPorts{}
+			if cValue := v.Get("port-number"); cValue.Exists() {
+				item.PortNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("profile"); cValue.Exists() {
+				item.Profile = types.StringValue(cValue.String())
+			}
+			data.TransportTlsPorts = append(data.TransportTlsPorts, item)
+			return true
+		})
+	}
+}
+
 func (data *LoggingIPv4HostTransportData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

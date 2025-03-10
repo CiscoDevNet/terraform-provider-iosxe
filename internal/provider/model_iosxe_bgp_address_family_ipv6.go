@@ -186,6 +186,42 @@ func (data *BGPAddressFamilyIPv6) updateFromBody(ctx context.Context, res gjson.
 	}
 }
 
+func (data *BGPAddressFamilyIPv6) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.connected"); value.Exists() {
+		data.Ipv6UnicastRedistributeConnected = types.BoolValue(true)
+	} else {
+		data.Ipv6UnicastRedistributeConnected = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6-unicast.redistribute-v6.static"); value.Exists() {
+		data.Ipv6UnicastRedistributeStatic = types.BoolValue(true)
+	} else {
+		data.Ipv6UnicastRedistributeStatic = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ipv6-unicast.network"); value.Exists() {
+		data.Ipv6UnicastNetworks = make([]BGPAddressFamilyIPv6Ipv6UnicastNetworks, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPAddressFamilyIPv6Ipv6UnicastNetworks{}
+			if cValue := v.Get("number"); cValue.Exists() {
+				item.Network = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("route-map"); cValue.Exists() {
+				item.RouteMap = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("backdoor"); cValue.Exists() {
+				item.Backdoor = types.BoolValue(true)
+			} else {
+				item.Backdoor = types.BoolValue(false)
+			}
+			data.Ipv6UnicastNetworks = append(data.Ipv6UnicastNetworks, item)
+			return true
+		})
+	}
+}
+
 func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

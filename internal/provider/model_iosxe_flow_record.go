@@ -317,6 +317,86 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.ipv4.source.address"); value.Exists() {
+		data.MatchIpv4SourceAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv4SourceAddress = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.destination.address"); value.Exists() {
+		data.MatchIpv4DestinationAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv4DestinationAddress = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.protocol"); value.Exists() {
+		data.MatchIpv4Protocol = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Protocol = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.tos"); value.Exists() {
+		data.MatchIpv4Tos = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Tos = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.transport.source-port"); value.Exists() {
+		data.MatchTransportSourcePort = types.BoolValue(true)
+	} else {
+		data.MatchTransportSourcePort = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.transport.destination-port"); value.Exists() {
+		data.MatchTransportDestinationPort = types.BoolValue(true)
+	} else {
+		data.MatchTransportDestinationPort = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.interface.input"); value.Exists() {
+		data.MatchInterfaceInput = types.BoolValue(true)
+	} else {
+		data.MatchInterfaceInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.flow.direction"); value.Exists() {
+		data.MatchFlowDirection = types.BoolValue(true)
+	} else {
+		data.MatchFlowDirection = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.interface.output"); value.Exists() {
+		data.CollectInterfaceOutput = types.BoolValue(true)
+	} else {
+		data.CollectInterfaceOutput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.counter.bytes.long"); value.Exists() {
+		data.CollectCounterBytesLong = types.BoolValue(true)
+	} else {
+		data.CollectCounterBytesLong = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.counter.packets.long"); value.Exists() {
+		data.CollectCounterPacketsLong = types.BoolValue(true)
+	} else {
+		data.CollectCounterPacketsLong = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.transport.tcp.flags"); value.Exists() {
+		data.CollectTransportTcpFlags = types.BoolValue(true)
+	} else {
+		data.CollectTransportTcpFlags = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.timestamp.absolute.first"); value.Exists() {
+		data.CollectTimestampAbsoluteFirst = types.BoolValue(true)
+	} else {
+		data.CollectTimestampAbsoluteFirst = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.timestamp.absolute.last"); value.Exists() {
+		data.CollectTimestampAbsoluteLast = types.BoolValue(true)
+	} else {
+		data.CollectTimestampAbsoluteLast = types.BoolValue(false)
+	}
+}
+
 func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

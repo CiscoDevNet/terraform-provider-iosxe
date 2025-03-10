@@ -301,6 +301,79 @@ func (data *BFDTemplateMultiHop) updateFromBody(ctx context.Context, res gjson.R
 	}
 }
 
+func (data *BFDTemplateMultiHop) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "echo"); value.Exists() {
+		data.Echo = types.BoolValue(true)
+	} else {
+		data.Echo = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.mill-unit.both"); value.Exists() {
+		data.IntervalMillisecondsBoth = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.mill-unit.min-tx"); value.Exists() {
+		data.IntervalMillisecondsMinTx = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.mill-unit.min-rx"); value.Exists() {
+		data.IntervalMillisecondsMinRx = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.mill-unit.multiplier"); value.Exists() {
+		data.IntervalMillisecondsMultiplier = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.microseconds"); value.Exists() {
+		data.IntervalMicroseconds = types.BoolValue(true)
+	} else {
+		data.IntervalMicroseconds = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.both"); value.Exists() {
+		data.IntervalMicrosecondsBoth = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.min-tx"); value.Exists() {
+		data.IntervalMicrosecondsMinTx = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.min-rx"); value.Exists() {
+		data.IntervalMicrosecondsMinRx = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "interval-multihop-v2.multiplier"); value.Exists() {
+		data.IntervalMicrosecondsMultiplier = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "authentication.md5.keychain"); value.Exists() {
+		data.AuthenticationMd5Keychain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "authentication.meticulous-md5.keychain"); value.Exists() {
+		data.AuthenticationMeticulousMd5Keychain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "authentication.meticulous-sha-1_keychain"); value.Exists() {
+		data.AuthenticationMeticulousSha1keychain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "authentication.sha-1.keychain"); value.Exists() {
+		data.AuthenticationSha1Keychain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "dampening.half-time"); value.Exists() {
+		data.DampeningHalfTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dampening.unsuppress-time"); value.Exists() {
+		data.DampeningUnsuppressTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dampening.suppress-time"); value.Exists() {
+		data.DampeningSuppressTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dampening.max-suppressing-time"); value.Exists() {
+		data.DampeningMaxSuppressingTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dampening.threshold"); value.Exists() {
+		data.DampeningThreshold = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "dampening.down-monitoring"); value.Exists() {
+		data.DampeningDownMonitoring = types.BoolValue(true)
+	} else {
+		data.DampeningDownMonitoring = types.BoolValue(false)
+	}
+}
+
 func (data *BFDTemplateMultiHopData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {

@@ -233,6 +233,63 @@ func (data *CDP) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+func (data *CDP) fromBody(ctx context.Context, res gjson.Result) {
+	prefix := helpers.LastElement(data.getPath()) + "."
+	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
+		prefix += "0."
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:holdtime"); value.Exists() {
+		data.Holdtime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:timer"); value.Exists() {
+		data.Timer = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
+		data.Run = types.BoolValue(value.Bool())
+	} else {
+		data.Run = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
+		data.FilterTlvList = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
+		data.TlvLists = make([]CDPTlvLists, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := CDPTlvLists{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vtp-mgmt-domain"); cValue.Exists() {
+				item.VtpMgmtDomain = types.BoolValue(true)
+			} else {
+				item.VtpMgmtDomain = types.BoolValue(false)
+			}
+			if cValue := v.Get("cos"); cValue.Exists() {
+				item.Cos = types.BoolValue(true)
+			} else {
+				item.Cos = types.BoolValue(false)
+			}
+			if cValue := v.Get("duplex"); cValue.Exists() {
+				item.Duplex = types.BoolValue(true)
+			} else {
+				item.Duplex = types.BoolValue(false)
+			}
+			if cValue := v.Get("trust"); cValue.Exists() {
+				item.Trust = types.BoolValue(true)
+			} else {
+				item.Trust = types.BoolValue(false)
+			}
+			if cValue := v.Get("version"); cValue.Exists() {
+				item.Version = types.BoolValue(true)
+			} else {
+				item.Version = types.BoolValue(false)
+			}
+			data.TlvLists = append(data.TlvLists, item)
+			return true
+		})
+	}
+}
+
 func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
