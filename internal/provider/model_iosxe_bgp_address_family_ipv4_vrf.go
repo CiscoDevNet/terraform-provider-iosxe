@@ -800,3 +800,12 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletePaths(ctx context.Context) []strin
 	}
 	return deletePaths
 }
+
+func (data *BGPAddressFamilyIPv4VRF) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv4=%s", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Asn = types.StringValue(matches[1])
+	data.AfName = types.StringValue(matches[2])
+}

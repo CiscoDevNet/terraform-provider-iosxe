@@ -481,3 +481,11 @@ func (data *InterfaceNVE) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *InterfaceNVE) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/nve=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
+}

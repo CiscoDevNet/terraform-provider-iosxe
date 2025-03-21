@@ -872,3 +872,19 @@ func (data *{{camelCase .Name}}) getDeletePaths(ctx context.Context) []string {
 	{{- end}}
 	return deletePaths
 }
+
+{{if hasId .Attributes}}
+func (data *{{camelCase .Name}}) getIdsFromPath() {
+	reString := strings.ReplaceAll("{{.Path}}", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+{{- $count := 1}}
+{{- range .Attributes}}
+{{- if or .Id .Reference}}
+	data.{{toGoName .TfName}} = types.{{.Type}}Value({{if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(matches[{{$count}}], 10, 0)){{else}}matches[{{$count}}]{{end}})
+{{- $count = (add $count 1)}}
+{{- end}}
+{{- end}}
+}
+{{end}}

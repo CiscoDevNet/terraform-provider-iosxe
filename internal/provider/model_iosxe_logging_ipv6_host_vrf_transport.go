@@ -425,3 +425,12 @@ func (data *LoggingIPv6HostVRFTransport) getDeletePaths(ctx context.Context) []s
 	}
 	return deletePaths
 }
+
+func (data *LoggingIPv6HostVRFTransport) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-vrf-transport-list=%s,%s", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Ipv6Host = types.StringValue(matches[1])
+	data.Vrf = types.StringValue(matches[2])
+}

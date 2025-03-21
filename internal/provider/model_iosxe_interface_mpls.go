@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -161,4 +162,13 @@ func (data *InterfaceMPLS) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:mtu", data.getPath()))
 	}
 	return deletePaths
+}
+
+func (data *InterfaceMPLS) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/%s=%v/mpls", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Type = types.StringValue(matches[1])
+	data.Name = types.StringValue(matches[2])
 }

@@ -22,6 +22,7 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"flag"
 	"fmt"
 	"log"
 	"math"
@@ -36,13 +37,14 @@ import (
 )
 
 const (
-	definitionsPath   = "./gen/definitions/"
-	modelsPath        = "./gen/models/"
-	providerTemplate  = "./gen/templates/provider.go"
-	providerLocation  = "./internal/provider/provider.go"
-	changelogTemplate = "./gen/templates/changelog.md.tmpl"
-	changelogLocation = "./templates/guides/changelog.md.tmpl"
-	changelogOriginal = "./CHANGELOG.md"
+	definitionsPath     = "./gen/definitions/"
+	fullDefinitionsPath = "./gen/full_definitions/"
+	modelsPath          = "./gen/models/"
+	providerTemplate    = "./gen/templates/provider.go"
+	providerLocation    = "./internal/provider/provider.go"
+	changelogTemplate   = "./gen/templates/changelog.md.tmpl"
+	changelogLocation   = "./templates/guides/changelog.md.tmpl"
+	changelogOriginal   = "./CHANGELOG.md"
 )
 
 type t struct {
@@ -273,6 +275,11 @@ func contains(s []string, str string) bool {
 	return false
 }
 
+// Templating helper function to support arithmetic addition
+func Add(a, b int) int {
+	return a + b
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
 	"toGoName":              ToGoName,
@@ -286,6 +293,7 @@ var functions = template.FuncMap{
 	"removeLastPathElement": RemoveLastPathElement,
 	"getXPath":              GetXPath,
 	"contains":              contains,
+	"add":                   Add,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {
@@ -529,6 +537,10 @@ func renderTemplate(templatePath, outputPath string, config interface{}) {
 }
 
 func main() {
+	var writeFlag bool
+	flag.BoolVar(&writeFlag, "w", false, "Write full definitions")
+	flag.Parse()
+
 	items, _ := os.ReadDir(definitionsPath)
 	configs := make([]YamlConfig, len(items))
 
@@ -571,18 +583,34 @@ func main() {
 
 		fmt.Printf("Augumented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
 
-		// Iterate over templates and render files
-		for _, t := range templates {
-			renderTemplate(t.path, t.prefix+SnakeCase(configs[i].Name)+t.suffix, configs[i])
+		if writeFlag {
+			// Write full definitions
+			yamlFile, err := yaml.Marshal(&configs[i])
+			if err != nil {
+				log.Fatalf("Error marshalling yaml: %v", err)
+			}
+
+			outputFile := filepath.Join(fullDefinitionsPath, SnakeCase(configs[i].Name)+".yaml")
+			err = os.WriteFile(outputFile, yamlFile, 0644)
+			if err != nil {
+				log.Fatalf("Error writing YAML file: %v", err)
+			}
+		} else {
+			// Iterate over templates and render files
+			for _, t := range templates {
+				renderTemplate(t.path, t.prefix+SnakeCase(configs[i].Name)+t.suffix, configs[i])
+			}
 		}
 	}
 
-	// render provider.go
-	renderTemplate(providerTemplate, providerLocation, configs)
+	if !writeFlag {
+		// render provider.go
+		renderTemplate(providerTemplate, providerLocation, configs)
 
-	changelog, err := os.ReadFile(changelogOriginal)
-	if err != nil {
-		log.Fatalf("Error reading changelog: %v", err)
+		changelog, err := os.ReadFile(changelogOriginal)
+		if err != nil {
+			log.Fatalf("Error reading changelog: %v", err)
+		}
+		renderTemplate(changelogTemplate, changelogLocation, string(changelog))
 	}
-	renderTemplate(changelogTemplate, changelogLocation, string(changelog))
 }

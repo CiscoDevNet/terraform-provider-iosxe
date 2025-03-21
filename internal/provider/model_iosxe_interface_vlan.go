@@ -1262,3 +1262,11 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *InterfaceVLAN) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/Vlan=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
+}

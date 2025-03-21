@@ -457,6 +457,7 @@ func (r *InterfacePortChannelSubinterfaceResource) Read(ctx context.Context, req
 			// After `terraform import` we switch to a full read.
 			if imp {
 				state.fromBody(ctx, res.Res)
+				state.getIdsFromPath()
 			} else {
 				state.updateFromBody(ctx, res.Res)
 			}

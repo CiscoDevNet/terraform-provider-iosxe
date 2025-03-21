@@ -804,3 +804,11 @@ func (data *PIMVRF) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *PIMVRF) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/ip/pim/Cisco-IOS-XE-multicast:vrf=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Vrf = types.StringValue(matches[1])
+}

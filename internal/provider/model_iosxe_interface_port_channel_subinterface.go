@@ -1711,3 +1711,11 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	}
 	return deletePaths
 }
+
+func (data *InterfacePortChannelSubinterface) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.StringValue(matches[1])
+}

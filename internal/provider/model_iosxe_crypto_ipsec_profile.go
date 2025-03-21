@@ -24,6 +24,7 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -199,4 +200,12 @@ func (data *CryptoIPSecProfile) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/isakmp-profile", data.getPath()))
 	}
 	return deletePaths
+}
+
+func (data *CryptoIPSecProfile) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.StringValue(matches[1])
 }

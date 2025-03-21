@@ -877,3 +877,11 @@ func (data *InterfaceLoopback) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *InterfaceLoopback) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/Loopback=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
+}

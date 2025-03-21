@@ -25,6 +25,7 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -589,4 +590,12 @@ func (data *BFDTemplateMultiHop) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/down-monitoring", data.getPath()))
 	}
 	return deletePaths
+}
+
+func (data *BFDTemplateMultiHop) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=%s", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.StringValue(matches[1])
 }

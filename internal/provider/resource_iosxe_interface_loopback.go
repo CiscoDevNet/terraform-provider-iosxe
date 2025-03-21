@@ -325,6 +325,7 @@ func (r *InterfaceLoopbackResource) Read(ctx context.Context, req resource.ReadR
 			// After `terraform import` we switch to a full read.
 			if imp {
 				state.fromBody(ctx, res.Res)
+				state.getIdsFromPath()
 			} else {
 				state.updateFromBody(ctx, res.Res)
 			}

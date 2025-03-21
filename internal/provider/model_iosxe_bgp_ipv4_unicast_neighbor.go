@@ -394,3 +394,12 @@ func (data *BGPIPv4UnicastNeighbor) getDeletePaths(ctx context.Context) []string
 	}
 	return deletePaths
 }
+
+func (data *BGPIPv4UnicastNeighbor) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=%s", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Asn = types.StringValue(matches[1])
+	data.Ip = types.StringValue(matches[2])
+}

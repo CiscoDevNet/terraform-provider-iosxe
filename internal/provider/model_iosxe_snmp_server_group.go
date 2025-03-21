@@ -352,3 +352,11 @@ func (data *SNMPServerGroup) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *SNMPServerGroup) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:group=%s", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.StringValue(matches[1])
+}

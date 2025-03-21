@@ -441,6 +441,7 @@ func (r *InterfaceTunnelResource) Read(ctx context.Context, req resource.ReadReq
 			// After `terraform import` we switch to a full read.
 			if imp {
 				state.fromBody(ctx, res.Res)
+				state.getIdsFromPath()
 			} else {
 				state.updateFromBody(ctx, res.Res)
 			}

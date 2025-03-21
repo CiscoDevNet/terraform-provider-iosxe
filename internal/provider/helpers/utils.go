@@ -75,3 +75,10 @@ func GetInt64List(result []gjson.Result) types.List {
 	}
 	return types.ListValueMust(types.Int64Type, v)
 }
+
+func Must[T any](v T, err error) T {
+	if err != nil {
+		panic(err)
+	}
+	return v
+}

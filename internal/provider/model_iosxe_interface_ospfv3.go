@@ -25,6 +25,7 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -267,4 +268,13 @@ func (data *InterfaceOSPFv3) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/cost-config/value", data.getPath()))
 	}
 	return deletePaths
+}
+
+func (data *InterfaceOSPFv3) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/%s=%v/Cisco-IOS-XE-ospfv3:ospfv3", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Type = types.StringValue(matches[1])
+	data.Name = types.StringValue(matches[2])
 }

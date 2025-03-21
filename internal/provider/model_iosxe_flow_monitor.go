@@ -275,3 +275,11 @@ func (data *FlowMonitor) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *FlowMonitor) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.StringValue(matches[1])
+}

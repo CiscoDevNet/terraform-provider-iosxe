@@ -1126,3 +1126,12 @@ func (data *OSPFVRF) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *OSPFVRF) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf=%v,%s", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.ProcessId = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
+	data.Vrf = types.StringValue(matches[2])
+}

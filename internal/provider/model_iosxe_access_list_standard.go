@@ -461,3 +461,11 @@ func (data *AccessListStandard) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *AccessListStandard) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.StringValue(matches[1])
+}

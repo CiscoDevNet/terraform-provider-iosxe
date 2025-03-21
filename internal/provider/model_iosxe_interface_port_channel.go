@@ -1896,3 +1896,11 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *InterfacePortChannel) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/Port-channel=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Name = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
+}

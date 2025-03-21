@@ -3634,3 +3634,12 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+func (data *InterfaceEthernet) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/%s=%v", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Type = types.StringValue(matches[1])
+	data.Name = types.StringValue(matches[2])
+}

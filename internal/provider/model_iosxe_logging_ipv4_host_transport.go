@@ -415,3 +415,11 @@ func (data *LoggingIPv4HostTransport) getDeletePaths(ctx context.Context) []stri
 	}
 	return deletePaths
 }
+
+func (data *LoggingIPv4HostTransport) getIdsFromPath() {
+	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/logging/host/ipv4-host-transport-list=%s", "%s", "(.+)")
+	reString = strings.ReplaceAll(reString, "%v", "(.+)")
+	re := regexp.MustCompile(reString)
+	matches := re.FindStringSubmatch(data.Id.ValueString())
+	data.Ipv4Host = types.StringValue(matches[1])
+}
