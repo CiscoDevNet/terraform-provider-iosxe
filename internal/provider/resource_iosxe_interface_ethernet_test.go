@@ -96,9 +96,11 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_interface_ethernet.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/interface/GigabitEthernet=3",
+				ResourceName:      "iosxe_interface_ethernet.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/interface/GigabitEthernet=3",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

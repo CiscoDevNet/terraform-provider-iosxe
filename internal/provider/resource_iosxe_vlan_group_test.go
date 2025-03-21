@@ -45,9 +45,11 @@ func TestAccIosxeVLANGroup(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_vlan_group.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=GROUP1",
+				ResourceName:      "iosxe_vlan_group.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=GROUP1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

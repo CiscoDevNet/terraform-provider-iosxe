@@ -48,9 +48,11 @@ func TestAccIosxeBGPIPv4UnicastNeighbor(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_bgp_ipv4_unicast_neighbor.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=3.3.3.3",
+				ResourceName:      "iosxe_bgp_ipv4_unicast_neighbor.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=3.3.3.3",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

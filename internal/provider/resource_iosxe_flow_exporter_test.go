@@ -45,9 +45,11 @@ func TestAccIosxeFlowExporter(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_flow_exporter.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1",
+				ResourceName:      "iosxe_flow_exporter.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

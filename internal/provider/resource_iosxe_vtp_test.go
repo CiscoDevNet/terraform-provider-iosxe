@@ -60,9 +60,11 @@ func TestAccIosxeVTP(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_vtp.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/vtp",
+				ResourceName:      "iosxe_vtp.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/vtp",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

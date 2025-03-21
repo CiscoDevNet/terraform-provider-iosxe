@@ -70,9 +70,11 @@ func TestAccIosxePolicyMapEvent(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_policy_map_event.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy/event=authentication-success",
+				ResourceName:      "iosxe_policy_map_event.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy/event=authentication-success",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

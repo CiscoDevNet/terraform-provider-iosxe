@@ -49,9 +49,11 @@ func TestAccIosxeCDP(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_cdp.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/cdp",
+				ResourceName:      "iosxe_cdp.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/cdp",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

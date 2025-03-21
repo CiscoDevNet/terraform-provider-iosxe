@@ -47,9 +47,11 @@ func TestAccIosxePrefixList(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_prefix_list.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ip/prefix-lists",
+				ResourceName:      "iosxe_prefix_list.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ip/prefix-lists",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

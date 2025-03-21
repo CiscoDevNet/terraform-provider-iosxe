@@ -44,9 +44,11 @@ func TestAccIosxeStaticRoute(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_static_route.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list=5.5.5.5,255.255.255.255",
+				ResourceName:      "iosxe_static_route.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list=5.5.5.5,255.255.255.255",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

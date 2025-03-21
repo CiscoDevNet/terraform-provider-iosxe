@@ -56,9 +56,11 @@ func TestAccIosxePIMVRF(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_pim_vrf.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ip/pim/Cisco-IOS-XE-multicast:vrf=VRF1",
+				ResourceName:      "iosxe_pim_vrf.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ip/pim/Cisco-IOS-XE-multicast:vrf=VRF1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

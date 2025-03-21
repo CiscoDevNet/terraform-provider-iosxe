@@ -73,9 +73,11 @@ func TestAccIosxeNTP(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_ntp.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ntp",
+				ResourceName:      "iosxe_ntp.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ntp",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

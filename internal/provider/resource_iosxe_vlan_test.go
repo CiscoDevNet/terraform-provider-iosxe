@@ -46,9 +46,11 @@ func TestAccIosxeVLAN(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_vlan.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list=123",
+				ResourceName:      "iosxe_vlan.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list=123",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

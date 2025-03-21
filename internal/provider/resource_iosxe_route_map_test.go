@@ -104,9 +104,11 @@ func TestAccIosxeRouteMap(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_route_map.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/route-map=RM1",
+				ResourceName:      "iosxe_route_map.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/route-map=RM1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

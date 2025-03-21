@@ -63,9 +63,11 @@ func TestAccIosxeLine(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_line.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/line",
+				ResourceName:      "iosxe_line.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/line",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

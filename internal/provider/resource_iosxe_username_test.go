@@ -44,9 +44,11 @@ func TestAccIosxeUsername(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_username.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/username=user1",
+				ResourceName:      "iosxe_username.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/username=user1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

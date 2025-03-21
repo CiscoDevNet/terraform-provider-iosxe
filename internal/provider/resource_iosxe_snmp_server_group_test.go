@@ -45,9 +45,11 @@ func TestAccIosxeSNMPServerGroup(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_snmp_server_group.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:group=GROUP1",
+				ResourceName:      "iosxe_snmp_server_group.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:group=GROUP1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

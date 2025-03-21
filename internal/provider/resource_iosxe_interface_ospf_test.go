@@ -54,9 +54,11 @@ func TestAccIosxeInterfaceOSPF(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_interface_ospf.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/interface/Loopback=1/ip/Cisco-IOS-XE-ospf:router-ospf/ospf",
+				ResourceName:      "iosxe_interface_ospf.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Loopback=1/ip/Cisco-IOS-XE-ospf:router-ospf/ospf",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

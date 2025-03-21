@@ -72,9 +72,11 @@ func TestAccIosxeBFD(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_bfd.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/bfd",
+				ResourceName:      "iosxe_bfd.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/bfd",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

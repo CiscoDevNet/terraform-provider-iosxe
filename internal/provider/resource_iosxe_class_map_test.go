@@ -53,9 +53,11 @@ func TestAccIosxeClassMap(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_class_map.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CM1",
+				ResourceName:      "iosxe_class_map.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CM1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

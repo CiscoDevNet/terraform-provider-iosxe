@@ -53,9 +53,11 @@ func TestAccIosxeAAAAuthorization(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_aaa_authorization.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authorization",
+				ResourceName:      "iosxe_aaa_authorization.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authorization",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

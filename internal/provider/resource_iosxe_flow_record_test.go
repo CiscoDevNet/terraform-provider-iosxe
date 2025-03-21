@@ -55,9 +55,11 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_flow_record.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=FNF1",
+				ResourceName:      "iosxe_flow_record.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=FNF1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

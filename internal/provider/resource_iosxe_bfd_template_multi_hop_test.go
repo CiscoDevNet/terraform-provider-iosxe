@@ -49,9 +49,11 @@ func TestAccIosxeBFDTemplateMultiHop(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_bfd_template_multi_hop.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=T11",
+				ResourceName:      "iosxe_bfd_template_multi_hop.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=T11",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

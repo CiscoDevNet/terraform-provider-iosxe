@@ -80,9 +80,11 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_interface_tunnel.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/interface/Tunnel=90",
+				ResourceName:      "iosxe_interface_tunnel.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Tunnel=90",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

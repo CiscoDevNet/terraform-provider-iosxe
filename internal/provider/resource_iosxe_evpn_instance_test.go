@@ -60,9 +60,11 @@ func TestAccIosxeEVPNInstance(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_evpn_instance.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=10",
+				ResourceName:      "iosxe_evpn_instance.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=10",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

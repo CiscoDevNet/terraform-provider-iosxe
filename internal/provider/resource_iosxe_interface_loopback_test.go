@@ -60,9 +60,11 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_interface_loopback.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/interface/Loopback=100",
+				ResourceName:      "iosxe_interface_loopback.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Loopback=100",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

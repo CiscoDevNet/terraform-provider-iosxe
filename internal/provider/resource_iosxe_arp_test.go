@@ -71,9 +71,11 @@ func TestAccIosxeARP(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_arp.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ip/arp",
+				ResourceName:      "iosxe_arp.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ip/arp",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

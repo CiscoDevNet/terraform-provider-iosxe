@@ -49,9 +49,11 @@ func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_bfd_template_single_hop.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=SH-TEMPLATE-1",
+				ResourceName:      "iosxe_bfd_template_single_hop.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=SH-TEMPLATE-1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

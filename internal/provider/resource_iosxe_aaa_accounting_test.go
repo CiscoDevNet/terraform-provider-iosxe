@@ -58,9 +58,11 @@ func TestAccIosxeAAAAccounting(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_aaa_accounting.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:accounting",
+				ResourceName:      "iosxe_aaa_accounting.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:accounting",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

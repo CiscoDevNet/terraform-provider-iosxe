@@ -47,9 +47,11 @@ func TestAccIosxeUDLD(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_udld.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/udld",
+				ResourceName:      "iosxe_udld.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/udld",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

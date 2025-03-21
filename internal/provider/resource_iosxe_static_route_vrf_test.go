@@ -45,9 +45,11 @@ func TestAccIosxeStaticRouteVRF(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_static_route_vrf.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ip/route/vrf=VRF1",
+				ResourceName:      "iosxe_static_route_vrf.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ip/route/vrf=VRF1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

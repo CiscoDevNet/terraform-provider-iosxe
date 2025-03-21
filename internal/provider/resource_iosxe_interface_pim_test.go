@@ -47,9 +47,11 @@ func TestAccIosxeInterfacePIM(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_interface_pim.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/interface/Loopback=100/ip/pim",
+				ResourceName:      "iosxe_interface_pim.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Loopback=100/ip/pim",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

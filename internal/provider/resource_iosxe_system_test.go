@@ -64,9 +64,11 @@ func TestAccIosxeSystem(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_system.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native",
+				ResourceName:      "iosxe_system.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

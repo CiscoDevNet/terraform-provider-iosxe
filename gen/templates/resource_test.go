@@ -103,7 +103,9 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 			{
 				ResourceName:  "iosxe_{{snakeCase $name}}.test",
 				ImportState:   true,
+				ImportStateVerify: true,
 				ImportStateId: "{{getExamplePath .Path .Attributes}}",
+				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

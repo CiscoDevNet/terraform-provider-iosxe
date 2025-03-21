@@ -51,9 +51,11 @@ func TestAccIosxeRadius(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_radius.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=radius_10.10.15.12",
+				ResourceName:      "iosxe_radius.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=radius_10.10.15.12",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

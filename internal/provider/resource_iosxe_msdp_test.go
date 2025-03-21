@@ -46,9 +46,11 @@ func TestAccIosxeMSDP(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_msdp.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp",
+				ResourceName:      "iosxe_msdp.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

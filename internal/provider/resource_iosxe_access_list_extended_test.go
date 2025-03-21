@@ -58,9 +58,11 @@ func TestAccIosxeAccessListExtended(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_access_list_extended.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:extended=EACL1",
+				ResourceName:      "iosxe_access_list_extended.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:extended=EACL1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

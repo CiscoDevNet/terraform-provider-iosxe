@@ -57,9 +57,11 @@ func TestAccIosxeVRF(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_vrf.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/vrf/definition=VRF22",
+				ResourceName:      "iosxe_vrf.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/vrf/definition=VRF22",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

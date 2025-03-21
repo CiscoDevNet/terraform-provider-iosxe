@@ -39,9 +39,11 @@ func TestAccIosxeCommunityListStandard(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_community_list_standard.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard=CLS1",
+				ResourceName:      "iosxe_community_list_standard.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard=CLS1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

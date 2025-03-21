@@ -86,9 +86,11 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_interface_port_channel.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/interface/Port-channel=10",
+				ResourceName:      "iosxe_interface_port_channel.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Port-channel=10",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

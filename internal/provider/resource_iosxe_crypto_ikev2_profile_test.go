@@ -55,9 +55,11 @@ func TestAccIosxeCryptoIKEv2Profile(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_crypto_ikev2_profile.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/profile=profile1",
+				ResourceName:      "iosxe_crypto_ikev2_profile.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/profile=profile1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

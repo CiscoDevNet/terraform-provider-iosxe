@@ -44,9 +44,11 @@ func TestAccIosxeLoggingIPv4HostVRFTransport(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_logging_ipv4_host_vrf_transport.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/logging/host/ipv4-host-vrf-transport-list=2.2.2.2,VRF1",
+				ResourceName:      "iosxe_logging_ipv4_host_vrf_transport.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/logging/host/ipv4-host-vrf-transport-list=2.2.2.2,VRF1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

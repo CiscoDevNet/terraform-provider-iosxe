@@ -44,9 +44,11 @@ func TestAccIosxePolicyMap(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_policy_map.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1",
+				ResourceName:      "iosxe_policy_map.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

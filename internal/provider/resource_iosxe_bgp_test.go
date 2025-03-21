@@ -43,9 +43,11 @@ func TestAccIosxeBGP(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_bgp.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000",
+				ResourceName:      "iosxe_bgp.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

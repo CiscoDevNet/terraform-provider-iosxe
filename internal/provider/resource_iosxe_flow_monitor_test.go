@@ -44,9 +44,11 @@ func TestAccIosxeFlowMonitor(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:  "iosxe_flow_monitor.test",
-				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1",
+				ResourceName:      "iosxe_flow_monitor.test",
+				ImportState:       true,
+				ImportStateVerify: true,
+				ImportStateId:     "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1",
+				Check:             resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
