@@ -48,11 +48,12 @@ func TestAccIosxeVLANAccessMap(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_vlan_access_map.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_vlan_access_map.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

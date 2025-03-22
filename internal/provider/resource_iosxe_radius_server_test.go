@@ -46,11 +46,12 @@ func TestAccIosxeRadiusServer(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_radius_server.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/radius-server",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_radius_server.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/radius-server",
+				ImportStateVerifyIgnore: []string{"attributes.0.access_request_include", "attributes.0.attribute_31_parameters.0.id_send_nas_port_detail", "attributes.0.attribute_31_parameters.0.id_send_mac_only"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

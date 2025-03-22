@@ -101,11 +101,12 @@ func TestAccIosxeErrdisable(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_errdisable.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/errdisable",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_errdisable.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/errdisable",
+				ImportStateVerifyIgnore: []string{"detect_cause_bpduguard", "detect_cause_gbic_invalid", "detect_cause_inline_power", "detect_cause_loopback", "detect_cause_mlacp_minlink", "detect_cause_pagp_flap", "detect_cause_sfp_config_mismatch", "detect_cause_small_frame", "recovery_cause_mlacp_minlink", "recovery_cause_small_frame", "recovery_cause_unicast_flood", "recovery_cause_vmps"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

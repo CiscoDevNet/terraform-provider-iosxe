@@ -57,11 +57,12 @@ func TestAccIosxePIM(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_pim.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/ip/pim",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_pim.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/ip/pim",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

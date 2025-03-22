@@ -44,11 +44,12 @@ func TestAccIosxeInterfaceOSPFv3(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_interface_ospfv3.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Loopback=1/Cisco-IOS-XE-ospfv3:ospfv3",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_interface_ospfv3.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Loopback=1/Cisco-IOS-XE-ospfv3:ospfv3",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

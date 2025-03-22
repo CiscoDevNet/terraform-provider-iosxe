@@ -49,11 +49,12 @@ func TestAccIosxeCryptoIKEv2Keyring(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_crypto_ikev2_keyring.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=keyring1",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_crypto_ikev2_keyring.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=keyring1",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

@@ -186,11 +186,12 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_snmp_server.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/snmp-server",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_snmp_server.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/snmp-server",
+				ImportStateVerifyIgnore: []string{"enable_informs", "enable_traps_power_ethernet_police", "enable_traps_cef_resource_failure", "enable_traps_cef_peer_state_change", "enable_traps_cef_peer_fib_state_change", "enable_traps_cef_inconsistency", "enable_traps_isis", "enable_traps_entity_diag_boot_up_fail", "enable_traps_entity_diag_hm_test_recover", "enable_traps_entity_diag_hm_thresh_reached", "enable_traps_entity_diag_scheduled_test_fail", "enable_traps_hsrp", "enable_traps_bgp_cbgp2", "enable_traps_nhrp_nhs", "enable_traps_nhrp_nhc", "enable_traps_nhrp_nhp", "enable_traps_nhrp_quota_exceeded", "enable_traps_mpls_traffic_eng", "enable_traps_mpls_vpn", "enable_traps_mpls_rfc_ldp", "enable_traps_mpls_ldp", "enable_traps_fast_reroute_protected", "enable_traps_local_auth"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

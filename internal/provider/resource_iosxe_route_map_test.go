@@ -104,11 +104,12 @@ func TestAccIosxeRouteMap(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_route_map.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/route-map=RM1",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_route_map.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/route-map=RM1",
+				ImportStateVerifyIgnore: []string{"entries.0.match_community_list_exact_match", "entries.0.set_ip_next_hop_self", "entries.0.set_level_1_2", "entries.0.set_level_2", "entries.0.set_community_none_legacy", "entries.0.set_as_path_tag", "entries.0.set_as_path_replace_any", "entries.0.set_community_none", "entries.0.set_communities_additive", "entries.0.set_community_list_delete", "entries.0.set_extcomunity_vpn_distinguisher_additive"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

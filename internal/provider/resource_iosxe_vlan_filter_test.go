@@ -45,11 +45,12 @@ func TestAccIosxeVLANFilter(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_vlan_filter.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:filter=VAM1",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_vlan_filter.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:filter=VAM1",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

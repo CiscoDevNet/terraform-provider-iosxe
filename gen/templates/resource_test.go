@@ -105,6 +105,7 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 				ImportState:   true,
 				ImportStateVerify: true,
 				ImportStateId: "{{getExamplePath .Path .Attributes}}",
+				ImportStateVerifyIgnore: []string{ {{range getImportExcludes .Attributes}}"{{.}}",{{end}} },
 				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},

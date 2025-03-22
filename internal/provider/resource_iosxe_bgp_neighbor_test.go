@@ -57,11 +57,12 @@ func TestAccIosxeBGPNeighbor(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_bgp_neighbor.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/neighbor=3.3.3.3",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_bgp_neighbor.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/neighbor=3.3.3.3",
+				ImportStateVerifyIgnore: []string{"fall_over_bfd_multi_hop", "local_as_no_prepend", "local_as_replace_as", "local_as_dual_as", "ebgp_multihop"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

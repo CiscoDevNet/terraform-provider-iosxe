@@ -61,11 +61,12 @@ func TestAccIosxeServiceTemplate(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_service_template.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=MY_TEMPLATE",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_service_template.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=MY_TEMPLATE",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

@@ -51,11 +51,12 @@ func TestAccIosxeClock(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_clock.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/clock",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_clock.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/clock",
+				ImportStateVerifyIgnore: []string{"summer_time_date"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

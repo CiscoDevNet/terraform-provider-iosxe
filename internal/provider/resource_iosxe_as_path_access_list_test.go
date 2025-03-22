@@ -39,11 +39,12 @@ func TestAccIosxeASPathAccessList(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_as_path_access_list.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=10",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_as_path_access_list.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=10",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

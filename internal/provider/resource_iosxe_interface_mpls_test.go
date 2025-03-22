@@ -41,11 +41,12 @@ func TestAccIosxeInterfaceMPLS(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_interface_mpls.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Loopback=1/mpls",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_interface_mpls.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Loopback=1/mpls",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

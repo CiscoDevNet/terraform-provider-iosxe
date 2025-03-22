@@ -44,11 +44,12 @@ func TestAccIosxeDHCP(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_dhcp.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/ip/dhcp",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_dhcp.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/ip/dhcp",
+				ImportStateVerifyIgnore: []string{"snooping_information_option_format_remote_id_hostname"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

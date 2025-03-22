@@ -280,6 +280,23 @@ func Add(a, b int) int {
 	return a + b
 }
 
+// GetImportExcludes returns a list of attributes to exclude from import testing
+func GetImportExcludes(attributes []YamlConfigAttribute) []string {
+	var excludes []string
+	for _, attr := range attributes {
+		if (attr.TypeYangBool == "empty" || attr.TypeYangBool == "presence") && attr.ExcludeTest {
+			excludes = append(excludes, attr.TfName)
+		}
+		if len(attr.Attributes) > 0 {
+			ca := GetImportExcludes(attr.Attributes)
+			for _, c := range ca {
+				excludes = append(excludes, attr.TfName+".0."+c)
+			}
+		}
+	}
+	return excludes
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
 	"toGoName":              ToGoName,
@@ -294,6 +311,7 @@ var functions = template.FuncMap{
 	"getXPath":              GetXPath,
 	"contains":              contains,
 	"add":                   Add,
+	"getImportExcludes":     GetImportExcludes,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {

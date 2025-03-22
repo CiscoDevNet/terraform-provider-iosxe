@@ -67,11 +67,12 @@ func TestAccIosxeOSPFVRF(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_ospf_vrf.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf=2,VRF1",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_ospf_vrf.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf=2,VRF1",
+				ImportStateVerifyIgnore: []string{"mpls_ldp_autoconfig", "mpls_ldp_sync"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

@@ -43,11 +43,12 @@ func TestAccIosxeLoggingIPv4HostTransport(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_logging_ipv4_host_transport.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/logging/host/ipv4-host-transport-list=2.2.2.2",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_logging_ipv4_host_transport.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/logging/host/ipv4-host-transport-list=2.2.2.2",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

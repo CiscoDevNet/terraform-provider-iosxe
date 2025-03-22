@@ -43,11 +43,12 @@ func TestAccIosxeTACACSServer(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_tacacs_server.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=tacacs_10.10.15.13",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_tacacs_server.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=tacacs_10.10.15.13",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

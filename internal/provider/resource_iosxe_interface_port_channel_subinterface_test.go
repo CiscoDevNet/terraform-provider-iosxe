@@ -77,11 +77,12 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_interface_port_channel_subinterface.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=10.666",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_interface_port_channel_subinterface.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=10.666",
+				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

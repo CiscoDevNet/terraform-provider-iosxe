@@ -49,11 +49,12 @@ func TestAccIosxeMDTSubscription(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_mdt_subscription.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=101",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_mdt_subscription.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=101",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

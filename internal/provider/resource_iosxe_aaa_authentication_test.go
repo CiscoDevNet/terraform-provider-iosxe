@@ -53,11 +53,12 @@ func TestAccIosxeAAAAuthentication(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_aaa_authentication.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authentication",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_aaa_authentication.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authentication",
+				ImportStateVerifyIgnore: []string{"logins.0.a1_none", "logins.0.a1_line", "logins.0.a1_enable", "logins.0.a1_local", "logins.0.a2_line", "logins.0.a2_enable", "logins.0.a2_local", "logins.0.a3_none", "logins.0.a3_line", "logins.0.a3_enable", "logins.0.a3_local", "logins.0.a4_none", "logins.0.a4_line", "logins.0.a4_enable", "logins.0.a4_local", "dot1x.0.a1_local", "dot1x.0.a1_radius", "dot1x.0.a2_local", "dot1x.0.a2_radius", "dot1x.0.a3_local", "dot1x.0.a4_radius", "dot1x_default_a1_local", "dot1x_default_a2_local", "dot1x_default_a3_local", "dot1x_default_a4_local"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

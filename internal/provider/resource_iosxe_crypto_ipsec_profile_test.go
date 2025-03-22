@@ -42,11 +42,12 @@ func TestAccIosxeCryptoIPSecProfile(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_crypto_ipsec_profile.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=vpn200",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_crypto_ipsec_profile.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=vpn200",
+				ImportStateVerifyIgnore: []string{},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

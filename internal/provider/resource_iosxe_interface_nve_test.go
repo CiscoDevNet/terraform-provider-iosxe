@@ -50,11 +50,12 @@ func TestAccIosxeInterfaceNVE(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_interface_nve.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/interface/nve=1",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_interface_nve.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/interface/nve=1",
+				ImportStateVerifyIgnore: []string{"vnis.0.ingress_replication"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

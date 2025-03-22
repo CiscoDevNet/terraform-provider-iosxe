@@ -109,11 +109,12 @@ func TestAccIosxeTemplate(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_template.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=TEMP1",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_template.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=TEMP1",
+				ImportStateVerifyIgnore: []string{"switchport_trunk_allowed_vlans_none", "switchport_trunk_allowed_vlans_all", "spanning_tree_service_policy", "subscriber_aging_inactivity_timer_probe"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

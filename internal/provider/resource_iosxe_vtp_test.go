@@ -60,11 +60,12 @@ func TestAccIosxeVTP(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_vtp.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/vtp",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_vtp.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/vtp",
+				ImportStateVerifyIgnore: []string{"interface_only", "password_secret", "pruning", "mode_off_unknown"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

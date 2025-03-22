@@ -60,11 +60,12 @@ func TestAccIosxeInterfaceLoopback(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_interface_loopback.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/interface/Loopback=100",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_interface_loopback.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Loopback=100",
+				ImportStateVerifyIgnore: []string{"ipv6_nd_ra_suppress_all", "ipv6_address_autoconfig_default"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

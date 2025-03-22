@@ -57,11 +57,12 @@ func TestAccIosxeVRF(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_vrf.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/vrf/definition=VRF22",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_vrf.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/vrf/definition=VRF22",
+				ImportStateVerifyIgnore: []string{"ipv4_route_target_import_stitching.0.stitching", "ipv4_route_target_export_stitching.0.stitching", "ipv6_route_target_import_stitching.0.stitching", "ipv6_route_target_export_stitching.0.stitching"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})

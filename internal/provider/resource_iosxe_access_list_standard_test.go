@@ -45,11 +45,12 @@ func TestAccIosxeAccessListStandard(t *testing.T) {
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:      "iosxe_access_list_standard.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateId:     "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=SACL1",
-				Check:             resource.ComposeTestCheckFunc(checks...),
+				ResourceName:            "iosxe_access_list_standard.test",
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateId:           "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=SACL1",
+				ImportStateVerifyIgnore: []string{"entries.0.deny_any", "entries.0.permit_any", "entries.0.permit_log"},
+				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
