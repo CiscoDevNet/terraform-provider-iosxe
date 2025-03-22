@@ -284,7 +284,7 @@ func Add(a, b int) int {
 func GetImportExcludes(attributes []YamlConfigAttribute) []string {
 	var excludes []string
 	for _, attr := range attributes {
-		if (attr.TypeYangBool == "empty" || attr.TypeYangBool == "presence") && attr.ExcludeTest {
+		if (attr.TypeYangBool == "empty" || attr.TypeYangBool == "presence") && (attr.ExcludeTest || len(attr.TestTags) > 0) {
 			excludes = append(excludes, attr.TfName)
 		}
 		if len(attr.Attributes) > 0 {

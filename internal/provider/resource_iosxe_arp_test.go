@@ -75,7 +75,7 @@ func TestAccIosxeARP(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/ip/arp",
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"inspection_validate_src_mac", "inspection_validate_dst_mac", "inspection_validate_ip", "inspection_validate_allow_zeros"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

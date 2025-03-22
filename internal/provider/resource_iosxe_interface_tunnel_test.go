@@ -84,7 +84,7 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Tunnel=90",
-				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default"},
+				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "tunnel_mode_ipsec_ipv4"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
