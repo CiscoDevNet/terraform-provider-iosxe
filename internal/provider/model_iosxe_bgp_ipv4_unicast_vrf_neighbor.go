@@ -1273,7 +1273,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Asn = types.StringValue(matches[1])
-	data.Vrf = types.StringValue(matches[2])
-	data.Ip = types.StringValue(matches[3])
+	data.Asn = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
+	data.Vrf = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
+	data.Ip = types.StringValue(helpers.Must(url.QueryUnescape(matches[3])))
 }

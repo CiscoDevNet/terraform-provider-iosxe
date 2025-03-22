@@ -544,7 +544,7 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.routing-conf.routing"); value.Exists() {
 		data.IpRouting = types.BoolValue(value.Bool())
 	} else {
-		data.IpRouting = types.BoolValue(false)
+		data.IpRouting = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ipv6.unicast-routing"); value.Exists() {
 		data.Ipv6UnicastRouting = types.BoolValue(true)
@@ -557,12 +557,12 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.source-route"); value.Exists() {
 		data.IpSourceRoute = types.BoolValue(value.Bool())
 	} else {
-		data.IpSourceRoute = types.BoolValue(false)
+		data.IpSourceRoute = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.domain.lookup"); value.Exists() {
 		data.IpDomainLookup = types.BoolValue(value.Bool())
 	} else {
-		data.IpDomainLookup = types.BoolValue(false)
+		data.IpDomainLookup = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.domain.name"); value.Exists() {
 		data.IpDomainName = types.StringValue(value.String())
@@ -657,12 +657,12 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.server"); value.Exists() {
 		data.IpHttpServer = types.BoolValue(value.Bool())
 	} else {
-		data.IpHttpServer = types.BoolValue(false)
+		data.IpHttpServer = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-server"); value.Exists() {
 		data.IpHttpSecureServer = types.BoolValue(value.Bool())
 	} else {
-		data.IpHttpSecureServer = types.BoolValue(false)
+		data.IpHttpSecureServer = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-trustpoint"); value.Exists() {
 		data.IpHttpSecureTrustpoint = types.StringValue(value.String())
@@ -694,7 +694,7 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.routing-conf.routing"); value.Exists() {
 		data.IpRouting = types.BoolValue(value.Bool())
 	} else {
-		data.IpRouting = types.BoolValue(false)
+		data.IpRouting = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ipv6.unicast-routing"); value.Exists() {
 		data.Ipv6UnicastRouting = types.BoolValue(true)
@@ -707,12 +707,12 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.source-route"); value.Exists() {
 		data.IpSourceRoute = types.BoolValue(value.Bool())
 	} else {
-		data.IpSourceRoute = types.BoolValue(false)
+		data.IpSourceRoute = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.domain.lookup"); value.Exists() {
 		data.IpDomainLookup = types.BoolValue(value.Bool())
 	} else {
-		data.IpDomainLookup = types.BoolValue(false)
+		data.IpDomainLookup = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.domain.name"); value.Exists() {
 		data.IpDomainName = types.StringValue(value.String())
@@ -807,12 +807,12 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.server"); value.Exists() {
 		data.IpHttpServer = types.BoolValue(value.Bool())
 	} else {
-		data.IpHttpServer = types.BoolValue(false)
+		data.IpHttpServer = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-server"); value.Exists() {
 		data.IpHttpSecureServer = types.BoolValue(value.Bool())
 	} else {
-		data.IpHttpSecureServer = types.BoolValue(false)
+		data.IpHttpSecureServer = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-trustpoint"); value.Exists() {
 		data.IpHttpSecureTrustpoint = types.StringValue(value.String())

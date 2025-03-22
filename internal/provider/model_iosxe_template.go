@@ -1282,7 +1282,7 @@ func (data *Template) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "switchport.trunk.native.vlan.tag"); value.Exists() {
 		data.SwitchportTrunkNativeVlanTag = types.BoolValue(value.Bool())
 	} else {
-		data.SwitchportTrunkNativeVlanTag = types.BoolValue(false)
+		data.SwitchportTrunkNativeVlanTag = types.BoolNull()
 	}
 	if value := res.Get(prefix + "switchport.trunk.native.vlan.vlan-id"); value.Exists() {
 		data.SwitchportTrunkNativeVlanVlanId = types.Int64Value(value.Int())
@@ -1305,7 +1305,7 @@ func (data *Template) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "access-session.monitor"); value.Exists() {
 		data.AccessSessionMonitor = types.BoolValue(value.Bool())
 	} else {
-		data.AccessSessionMonitor = types.BoolValue(false)
+		data.AccessSessionMonitor = types.BoolNull()
 	}
 	if value := res.Get(prefix + "access-session.port-control"); value.Exists() {
 		data.AccessSessionPortControl = types.StringValue(value.String())
@@ -1471,12 +1471,12 @@ func (data *Template) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "cts.manual.propagate.sgt"); value.Exists() {
 		data.CtsManualPropagateSgt = types.BoolValue(value.Bool())
 	} else {
-		data.CtsManualPropagateSgt = types.BoolValue(false)
+		data.CtsManualPropagateSgt = types.BoolNull()
 	}
 	if value := res.Get(prefix + "cts.role-based.enforcement"); value.Exists() {
 		data.CtsRoleBasedEnforcement = types.BoolValue(value.Bool())
 	} else {
-		data.CtsRoleBasedEnforcement = types.BoolValue(false)
+		data.CtsRoleBasedEnforcement = types.BoolNull()
 	}
 }
 
@@ -1616,7 +1616,7 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "switchport.trunk.native.vlan.tag"); value.Exists() {
 		data.SwitchportTrunkNativeVlanTag = types.BoolValue(value.Bool())
 	} else {
-		data.SwitchportTrunkNativeVlanTag = types.BoolValue(false)
+		data.SwitchportTrunkNativeVlanTag = types.BoolNull()
 	}
 	if value := res.Get(prefix + "switchport.trunk.native.vlan.vlan-id"); value.Exists() {
 		data.SwitchportTrunkNativeVlanVlanId = types.Int64Value(value.Int())
@@ -1639,7 +1639,7 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "access-session.monitor"); value.Exists() {
 		data.AccessSessionMonitor = types.BoolValue(value.Bool())
 	} else {
-		data.AccessSessionMonitor = types.BoolValue(false)
+		data.AccessSessionMonitor = types.BoolNull()
 	}
 	if value := res.Get(prefix + "access-session.port-control"); value.Exists() {
 		data.AccessSessionPortControl = types.StringValue(value.String())
@@ -1805,12 +1805,12 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "cts.manual.propagate.sgt"); value.Exists() {
 		data.CtsManualPropagateSgt = types.BoolValue(value.Bool())
 	} else {
-		data.CtsManualPropagateSgt = types.BoolValue(false)
+		data.CtsManualPropagateSgt = types.BoolNull()
 	}
 	if value := res.Get(prefix + "cts.role-based.enforcement"); value.Exists() {
 		data.CtsRoleBasedEnforcement = types.BoolValue(value.Bool())
 	} else {
-		data.CtsRoleBasedEnforcement = types.BoolValue(false)
+		data.CtsRoleBasedEnforcement = types.BoolNull()
 	}
 }
 
@@ -2449,5 +2449,5 @@ func (data *Template) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.TemplateName = types.StringValue(matches[1])
+	data.TemplateName = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

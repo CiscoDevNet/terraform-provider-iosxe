@@ -31,6 +31,7 @@ attributes:
       - yang_name: profile
         example: PROF1
         exclude_test: true
+
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true
@@ -41,3 +42,9 @@ test_prerequisites:
         value: ""
       - name: address-family/ipv6
         value: ""
+  - path: Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-vrf-list=2001::1,VRF1
+    attributes:
+      - name: ipv6-host
+        value: 2001::1
+      - name: vrf
+        value: VRF1

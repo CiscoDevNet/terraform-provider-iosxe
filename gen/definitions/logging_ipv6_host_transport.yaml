@@ -29,3 +29,9 @@ attributes:
       - yang_name: profile
         example: PROF1
         exclude_test: true
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-list=2001::1
+    attributes:
+      - name: ipv6-host
+        value: 2001::1

@@ -444,17 +444,17 @@ func (data *InterfaceLoopback) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
-		data.IpProxyArp = types.BoolValue(false)
+		data.IpProxyArp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
 	} else {
-		data.IpRedirects = types.BoolValue(false)
+		data.IpRedirects = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
 		data.IpUnreachables = types.BoolValue(value.Bool())
 	} else {
-		data.IpUnreachables = types.BoolValue(false)
+		data.IpUnreachables = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -557,17 +557,17 @@ func (data *InterfaceLoopbackData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
-		data.IpProxyArp = types.BoolValue(false)
+		data.IpProxyArp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
 	} else {
-		data.IpRedirects = types.BoolValue(false)
+		data.IpRedirects = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
 		data.IpUnreachables = types.BoolValue(value.Bool())
 	} else {
-		data.IpUnreachables = types.BoolValue(false)
+		data.IpUnreachables = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() {
 		data.VrfForwarding = types.StringValue(value.String())

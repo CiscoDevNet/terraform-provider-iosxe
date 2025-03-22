@@ -366,7 +366,7 @@ func (data *InterfaceOSPF) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "mtu-ignore"); value.Exists() {
 		data.MtuIgnore = types.BoolValue(value.Bool())
 	} else {
-		data.MtuIgnore = types.BoolValue(false)
+		data.MtuIgnore = types.BoolNull()
 	}
 	if value := res.Get(prefix + "network.broadcast"); value.Exists() {
 		data.NetworkTypeBroadcast = types.BoolValue(true)
@@ -452,7 +452,7 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "mtu-ignore"); value.Exists() {
 		data.MtuIgnore = types.BoolValue(value.Bool())
 	} else {
-		data.MtuIgnore = types.BoolValue(false)
+		data.MtuIgnore = types.BoolNull()
 	}
 	if value := res.Get(prefix + "network.broadcast"); value.Exists() {
 		data.NetworkTypeBroadcast = types.BoolValue(true)
@@ -702,6 +702,6 @@ func (data *InterfaceOSPF) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Type = types.StringValue(matches[1])
-	data.Name = types.StringValue(matches[2])
+	data.Type = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
+	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

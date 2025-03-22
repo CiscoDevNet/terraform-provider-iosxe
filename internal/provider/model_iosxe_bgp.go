@@ -127,12 +127,12 @@ func (data *BGP) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bgp.default.ipv4-unicast"); value.Exists() {
 		data.DefaultIpv4Unicast = types.BoolValue(value.Bool())
 	} else {
-		data.DefaultIpv4Unicast = types.BoolValue(false)
+		data.DefaultIpv4Unicast = types.BoolNull()
 	}
 	if value := res.Get(prefix + "bgp.log-neighbor-changes"); value.Exists() {
 		data.LogNeighborChanges = types.BoolValue(value.Bool())
 	} else {
-		data.LogNeighborChanges = types.BoolValue(false)
+		data.LogNeighborChanges = types.BoolNull()
 	}
 	if value := res.Get(prefix + "bgp.router-id.interface.Loopback"); value.Exists() {
 		data.RouterIdLoopback = types.Int64Value(value.Int())
@@ -147,12 +147,12 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bgp.default.ipv4-unicast"); value.Exists() {
 		data.DefaultIpv4Unicast = types.BoolValue(value.Bool())
 	} else {
-		data.DefaultIpv4Unicast = types.BoolValue(false)
+		data.DefaultIpv4Unicast = types.BoolNull()
 	}
 	if value := res.Get(prefix + "bgp.log-neighbor-changes"); value.Exists() {
 		data.LogNeighborChanges = types.BoolValue(value.Bool())
 	} else {
-		data.LogNeighborChanges = types.BoolValue(false)
+		data.LogNeighborChanges = types.BoolNull()
 	}
 	if value := res.Get(prefix + "bgp.router-id.interface.Loopback"); value.Exists() {
 		data.RouterIdLoopback = types.Int64Value(value.Int())
@@ -197,5 +197,5 @@ func (data *BGP) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Asn = types.StringValue(matches[1])
+	data.Asn = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

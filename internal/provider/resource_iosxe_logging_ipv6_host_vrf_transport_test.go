@@ -47,7 +47,7 @@ func TestAccIosxeLoggingIPv6HostVRFTransport(t *testing.T) {
 				ResourceName:            "iosxe_logging_ipv6_host_vrf_transport.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-vrf-transport-list=2001::1,VRF1",
+				ImportStateId:           "Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-vrf-transport-list=2001%3A%3A1,VRF1",
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -66,13 +66,21 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-vrf-list=2001::1,VRF1"
+	attributes = {
+		"ipv6-host" = "2001::1"
+		"vrf" = "VRF1"
+	}
+}
+
 `
 
 func testAccIosxeLoggingIPv6HostVRFTransportConfig_minimum() string {
 	config := `resource "iosxe_logging_ipv6_host_vrf_transport" "test" {` + "\n"
 	config += `	ipv6_host = "2001::1"` + "\n"
 	config += `	vrf = "VRF1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -90,7 +98,7 @@ func testAccIosxeLoggingIPv6HostVRFTransportConfig_all() string {
 	config += `	transport_tls_ports = [{` + "\n"
 	config += `		port_number = 10002` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

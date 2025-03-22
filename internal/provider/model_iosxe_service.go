@@ -455,7 +455,7 @@ func (data *Service) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "pad-conf.pad"); value.Exists() {
 		data.Pad = types.BoolValue(value.Bool())
 	} else {
-		data.Pad = types.BoolValue(false)
+		data.Pad = types.BoolNull()
 	}
 	if value := res.Get(prefix + "password-encryption"); value.Exists() {
 		data.PasswordEncryption = types.BoolValue(true)
@@ -465,7 +465,7 @@ func (data *Service) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "password-recovery"); value.Exists() {
 		data.PasswordRecovery = types.BoolValue(value.Bool())
 	} else {
-		data.PasswordRecovery = types.BoolValue(false)
+		data.PasswordRecovery = types.BoolNull()
 	}
 	if value := res.Get(prefix + "timestamps"); value.Exists() {
 		data.Timestamps = types.BoolValue(true)
@@ -582,7 +582,7 @@ func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "pad-conf.pad"); value.Exists() {
 		data.Pad = types.BoolValue(value.Bool())
 	} else {
-		data.Pad = types.BoolValue(false)
+		data.Pad = types.BoolNull()
 	}
 	if value := res.Get(prefix + "password-encryption"); value.Exists() {
 		data.PasswordEncryption = types.BoolValue(true)
@@ -592,7 +592,7 @@ func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "password-recovery"); value.Exists() {
 		data.PasswordRecovery = types.BoolValue(value.Bool())
 	} else {
-		data.PasswordRecovery = types.BoolValue(false)
+		data.PasswordRecovery = types.BoolNull()
 	}
 	if value := res.Get(prefix + "timestamps"); value.Exists() {
 		data.Timestamps = types.BoolValue(true)

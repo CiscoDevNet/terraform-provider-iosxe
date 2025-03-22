@@ -36,10 +36,10 @@ func TestAccIosxeLoggingIPv4HostTransport(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeLoggingIPv4HostTransportConfig_minimum(),
+				Config: testAccIosxeLoggingIPv4HostTransportPrerequisitesConfig + testAccIosxeLoggingIPv4HostTransportConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeLoggingIPv4HostTransportConfig_all(),
+				Config: testAccIosxeLoggingIPv4HostTransportPrerequisitesConfig + testAccIosxeLoggingIPv4HostTransportConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -54,9 +54,20 @@ func TestAccIosxeLoggingIPv4HostTransport(t *testing.T) {
 	})
 }
 
+const testAccIosxeLoggingIPv4HostTransportPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/logging/host/ipv4-host-list=2.2.2.2"
+	attributes = {
+		"ipv4-host" = "2.2.2.2"
+	}
+}
+
+`
+
 func testAccIosxeLoggingIPv4HostTransportConfig_minimum() string {
 	config := `resource "iosxe_logging_ipv4_host_transport" "test" {` + "\n"
 	config += `	ipv4_host = "2.2.2.2"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -73,6 +84,7 @@ func testAccIosxeLoggingIPv4HostTransportConfig_all() string {
 	config += `	transport_tls_ports = [{` + "\n"
 	config += `		port_number = 10002` + "\n"
 	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

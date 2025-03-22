@@ -163,5 +163,5 @@ func (data *VLANFilter) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Word = types.StringValue(matches[1])
+	data.Word = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

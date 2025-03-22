@@ -1691,7 +1691,7 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
 		data.Switchport = types.BoolValue(value.Bool())
 	} else {
-		data.Switchport = types.BoolValue(false)
+		data.Switchport = types.BoolNull()
 	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
@@ -1704,17 +1704,17 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
-		data.IpProxyArp = types.BoolValue(false)
+		data.IpProxyArp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
 	} else {
-		data.IpRedirects = types.BoolValue(false)
+		data.IpRedirects = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
 		data.IpUnreachables = types.BoolValue(value.Bool())
 	} else {
-		data.IpUnreachables = types.BoolValue(false)
+		data.IpUnreachables = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -1863,7 +1863,7 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); value.Exists() {
 		data.BfdEnable = types.BoolValue(value.Bool())
 	} else {
-		data.BfdEnable = types.BoolValue(false)
+		data.BfdEnable = types.BoolNull()
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() {
 		data.BfdLocalAddress = types.StringValue(value.String())
@@ -1880,7 +1880,7 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); value.Exists() {
 		data.BfdEcho = types.BoolValue(value.Bool())
 	} else {
-		data.BfdEcho = types.BoolValue(false)
+		data.BfdEcho = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ipv6.enable"); value.Exists() {
 		data.Ipv6Enable = types.BoolValue(true)
@@ -2004,7 +2004,7 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:negotiation.auto"); value.Exists() {
 		data.NegotiationAuto = types.BoolValue(value.Bool())
 	} else {
-		data.NegotiationAuto = types.BoolValue(false)
+		data.NegotiationAuto = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.nonegotiate"); value.Exists() {
 		data.SpeedNonegotiate = types.BoolValue(true)
@@ -2169,12 +2169,12 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:snmp.trap.link-status"); value.Exists() {
 		data.SnmpTrapLinkStatus = types.BoolValue(value.Bool())
 	} else {
-		data.SnmpTrapLinkStatus = types.BoolValue(false)
+		data.SnmpTrapLinkStatus = types.BoolNull()
 	}
 	if value := res.Get(prefix + "logging.event.link-status-enable"); value.Exists() {
 		data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
 	} else {
-		data.LoggingEventLinkStatusEnable = types.BoolValue(false)
+		data.LoggingEventLinkStatusEnable = types.BoolNull()
 	}
 }
 
@@ -2192,7 +2192,7 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
 		data.Switchport = types.BoolValue(value.Bool())
 	} else {
-		data.Switchport = types.BoolValue(false)
+		data.Switchport = types.BoolNull()
 	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
@@ -2205,17 +2205,17 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
-		data.IpProxyArp = types.BoolValue(false)
+		data.IpProxyArp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
 	} else {
-		data.IpRedirects = types.BoolValue(false)
+		data.IpRedirects = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
 		data.IpUnreachables = types.BoolValue(value.Bool())
 	} else {
-		data.IpUnreachables = types.BoolValue(false)
+		data.IpUnreachables = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -2364,7 +2364,7 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); value.Exists() {
 		data.BfdEnable = types.BoolValue(value.Bool())
 	} else {
-		data.BfdEnable = types.BoolValue(false)
+		data.BfdEnable = types.BoolNull()
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() {
 		data.BfdLocalAddress = types.StringValue(value.String())
@@ -2381,7 +2381,7 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); value.Exists() {
 		data.BfdEcho = types.BoolValue(value.Bool())
 	} else {
-		data.BfdEcho = types.BoolValue(false)
+		data.BfdEcho = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ipv6.enable"); value.Exists() {
 		data.Ipv6Enable = types.BoolValue(true)
@@ -2505,7 +2505,7 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:negotiation.auto"); value.Exists() {
 		data.NegotiationAuto = types.BoolValue(value.Bool())
 	} else {
-		data.NegotiationAuto = types.BoolValue(false)
+		data.NegotiationAuto = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:speed.nonegotiate"); value.Exists() {
 		data.SpeedNonegotiate = types.BoolValue(true)
@@ -2670,12 +2670,12 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:snmp.trap.link-status"); value.Exists() {
 		data.SnmpTrapLinkStatus = types.BoolValue(value.Bool())
 	} else {
-		data.SnmpTrapLinkStatus = types.BoolValue(false)
+		data.SnmpTrapLinkStatus = types.BoolNull()
 	}
 	if value := res.Get(prefix + "logging.event.link-status-enable"); value.Exists() {
 		data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
 	} else {
-		data.LoggingEventLinkStatusEnable = types.BoolValue(false)
+		data.LoggingEventLinkStatusEnable = types.BoolNull()
 	}
 }
 
@@ -3640,6 +3640,6 @@ func (data *InterfaceEthernet) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Type = types.StringValue(matches[1])
-	data.Name = types.StringValue(matches[2])
+	data.Type = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
+	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

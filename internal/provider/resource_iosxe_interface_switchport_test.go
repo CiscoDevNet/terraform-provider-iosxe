@@ -57,7 +57,7 @@ func TestAccIosxeInterfaceSwitchport(t *testing.T) {
 				ResourceName:            "iosxe_interface_switchport.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1/0/3/switchport-config/switchport",
+				ImportStateId:           "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2F0%2F3/switchport-config/switchport",
 				ImportStateVerifyIgnore: []string{"trunk_allowed_vlans_none"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},

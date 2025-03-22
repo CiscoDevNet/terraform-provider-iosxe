@@ -463,7 +463,7 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "system.guarantee-first"); value.Exists() {
 		data.SystemGuaranteeFirst = types.BoolValue(value.Bool())
 	} else {
-		data.SystemGuaranteeFirst = types.BoolValue(false)
+		data.SystemGuaranteeFirst = types.BoolNull()
 	}
 }
 
@@ -559,7 +559,7 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "system.guarantee-first"); value.Exists() {
 		data.SystemGuaranteeFirst = types.BoolValue(value.Bool())
 	} else {
-		data.SystemGuaranteeFirst = types.BoolValue(false)
+		data.SystemGuaranteeFirst = types.BoolNull()
 	}
 }
 

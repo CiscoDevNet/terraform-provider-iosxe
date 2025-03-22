@@ -608,7 +608,7 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "autostate"); value.Exists() {
 		data.Autostate = types.BoolValue(value.Bool())
 	} else {
-		data.Autostate = types.BoolValue(false)
+		data.Autostate = types.BoolNull()
 	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
@@ -621,17 +621,17 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
-		data.IpProxyArp = types.BoolValue(false)
+		data.IpProxyArp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
 	} else {
-		data.IpRedirects = types.BoolValue(false)
+		data.IpRedirects = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
 		data.IpUnreachables = types.BoolValue(value.Bool())
 	} else {
-		data.IpUnreachables = types.BoolValue(false)
+		data.IpUnreachables = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -689,7 +689,7 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); value.Exists() {
 		data.BfdEnable = types.BoolValue(value.Bool())
 	} else {
-		data.BfdEnable = types.BoolValue(false)
+		data.BfdEnable = types.BoolNull()
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() {
 		data.BfdLocalAddress = types.StringValue(value.String())
@@ -706,7 +706,7 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); value.Exists() {
 		data.BfdEcho = types.BoolValue(value.Bool())
 	} else {
-		data.BfdEcho = types.BoolValue(false)
+		data.BfdEcho = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ipv6.enable"); value.Exists() {
 		data.Ipv6Enable = types.BoolValue(true)
@@ -776,7 +776,7 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "autostate"); value.Exists() {
 		data.Autostate = types.BoolValue(value.Bool())
 	} else {
-		data.Autostate = types.BoolValue(false)
+		data.Autostate = types.BoolNull()
 	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
@@ -789,17 +789,17 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
-		data.IpProxyArp = types.BoolValue(false)
+		data.IpProxyArp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.redirects"); value.Exists() {
 		data.IpRedirects = types.BoolValue(value.Bool())
 	} else {
-		data.IpRedirects = types.BoolValue(false)
+		data.IpRedirects = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-icmp:unreachables"); value.Exists() {
 		data.IpUnreachables = types.BoolValue(value.Bool())
 	} else {
-		data.IpUnreachables = types.BoolValue(false)
+		data.IpUnreachables = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vrf.forwarding"); value.Exists() {
 		data.VrfForwarding = types.StringValue(value.String())
@@ -857,7 +857,7 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:enable"); value.Exists() {
 		data.BfdEnable = types.BoolValue(value.Bool())
 	} else {
-		data.BfdEnable = types.BoolValue(false)
+		data.BfdEnable = types.BoolNull()
 	}
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:local-address"); value.Exists() {
 		data.BfdLocalAddress = types.StringValue(value.String())
@@ -874,7 +874,7 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bfd.Cisco-IOS-XE-bfd:echo"); value.Exists() {
 		data.BfdEcho = types.BoolValue(value.Bool())
 	} else {
-		data.BfdEcho = types.BoolValue(false)
+		data.BfdEcho = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ipv6.enable"); value.Exists() {
 		data.Ipv6Enable = types.BoolValue(true)

@@ -240,7 +240,7 @@ func (data *MDTSubscription) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "base.no-synch-on-start"); value.Exists() {
 		data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
 	} else {
-		data.UpdatePolicyOnChange = types.BoolValue(false)
+		data.UpdatePolicyOnChange = types.BoolNull()
 	}
 	if value := res.Get(prefix + "base.xpath"); value.Exists() {
 		data.FilterXpath = types.StringValue(value.String())
@@ -287,7 +287,7 @@ func (data *MDTSubscriptionData) fromBody(ctx context.Context, res gjson.Result)
 	if value := res.Get(prefix + "base.no-synch-on-start"); value.Exists() {
 		data.UpdatePolicyOnChange = types.BoolValue(value.Bool())
 	} else {
-		data.UpdatePolicyOnChange = types.BoolValue(false)
+		data.UpdatePolicyOnChange = types.BoolNull()
 	}
 	if value := res.Get(prefix + "base.xpath"); value.Exists() {
 		data.FilterXpath = types.StringValue(value.String())

@@ -419,7 +419,7 @@ func (data *CryptoIKEv2Profile) fromBody(ctx context.Context, res gjson.Result) 
 	if value := res.Get(prefix + "config-exchange.request-1"); value.Exists() {
 		data.ConfigExchangeRequest = types.BoolValue(value.Bool())
 	} else {
-		data.ConfigExchangeRequest = types.BoolValue(false)
+		data.ConfigExchangeRequest = types.BoolNull()
 	}
 }
 
@@ -505,7 +505,7 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 	if value := res.Get(prefix + "config-exchange.request-1"); value.Exists() {
 		data.ConfigExchangeRequest = types.BoolValue(value.Bool())
 	} else {
-		data.ConfigExchangeRequest = types.BoolValue(false)
+		data.ConfigExchangeRequest = types.BoolNull()
 	}
 }
 
@@ -713,5 +713,5 @@ func (data *CryptoIKEv2Profile) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(matches[1])
+	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

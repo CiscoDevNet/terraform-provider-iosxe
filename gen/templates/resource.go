@@ -378,10 +378,10 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 		
 			// After `terraform import` we switch to a full read.
 			if imp {
-				state.fromBody(ctx, res.Res)
 				{{- if hasId .Attributes}}
 				state.getIdsFromPath()
 				{{- end}}
+				state.fromBody(ctx, res.Res)
 			} else {
 				state.updateFromBody(ctx, res.Res)
 			}

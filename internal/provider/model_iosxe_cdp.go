@@ -247,7 +247,7 @@ func (data *CDP) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
 		data.Run = types.BoolValue(value.Bool())
 	} else {
-		data.Run = types.BoolValue(false)
+		data.Run = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
 		data.FilterTlvList = types.StringValue(value.String())
@@ -304,7 +304,7 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
 		data.Run = types.BoolValue(value.Bool())
 	} else {
-		data.Run = types.BoolValue(false)
+		data.Run = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
 		data.FilterTlvList = types.StringValue(value.String())

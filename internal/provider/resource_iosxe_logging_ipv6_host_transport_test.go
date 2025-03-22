@@ -36,17 +36,17 @@ func TestAccIosxeLoggingIPv6HostTransport(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeLoggingIPv6HostTransportConfig_minimum(),
+				Config: testAccIosxeLoggingIPv6HostTransportPrerequisitesConfig + testAccIosxeLoggingIPv6HostTransportConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeLoggingIPv6HostTransportConfig_all(),
+				Config: testAccIosxeLoggingIPv6HostTransportPrerequisitesConfig + testAccIosxeLoggingIPv6HostTransportConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
 				ResourceName:            "iosxe_logging_ipv6_host_transport.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-transport-list=2001::1",
+				ImportStateId:           "Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-transport-list=2001%3A%3A1",
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -54,9 +54,20 @@ func TestAccIosxeLoggingIPv6HostTransport(t *testing.T) {
 	})
 }
 
+const testAccIosxeLoggingIPv6HostTransportPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-list=2001::1"
+	attributes = {
+		"ipv6-host" = "2001::1"
+	}
+}
+
+`
+
 func testAccIosxeLoggingIPv6HostTransportConfig_minimum() string {
 	config := `resource "iosxe_logging_ipv6_host_transport" "test" {` + "\n"
 	config += `	ipv6_host = "2001::1"` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -73,6 +84,7 @@ func testAccIosxeLoggingIPv6HostTransportConfig_all() string {
 	config += `	transport_tls_ports = [{` + "\n"
 	config += `		port_number = 10002` + "\n"
 	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

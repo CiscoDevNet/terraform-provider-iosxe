@@ -431,6 +431,6 @@ func (data *LoggingIPv4HostVRFTransport) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Ipv4Host = types.StringValue(matches[1])
-	data.Vrf = types.StringValue(matches[2])
+	data.Ipv4Host = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
+	data.Vrf = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

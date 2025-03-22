@@ -384,7 +384,7 @@ func (data *PIM) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:autorp-container.autorp"); value.Exists() {
 		data.Autorp = types.BoolValue(value.Bool())
 	} else {
-		data.Autorp = types.BoolValue(false)
+		data.Autorp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:autorp-container.listener"); value.Exists() {
 		data.AutorpListener = types.BoolValue(true)
@@ -483,7 +483,7 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:autorp-container.autorp"); value.Exists() {
 		data.Autorp = types.BoolValue(value.Bool())
 	} else {
-		data.Autorp = types.BoolValue(false)
+		data.Autorp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:autorp-container.listener"); value.Exists() {
 		data.AutorpListener = types.BoolValue(true)

@@ -41,3 +41,9 @@ test_prerequisites:
         value: ""
       - name: address-family/ipv6
         value: ""
+  - path: Cisco-IOS-XE-native:native/logging/host/ipv4-host-vrf-list=2.2.2.2,VRF1
+    attributes:
+      - name: ipv4-host
+        value: 2.2.2.2
+      - name: vrf
+        value: VRF1

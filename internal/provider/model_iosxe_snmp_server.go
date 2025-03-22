@@ -2468,12 +2468,12 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.logging.getop"); value.Exists() {
 		data.EnableLoggingGetop = types.BoolValue(value.Bool())
 	} else {
-		data.EnableLoggingGetop = types.BoolValue(false)
+		data.EnableLoggingGetop = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.logging.setop"); value.Exists() {
 		data.EnableLoggingSetop = types.BoolValue(value.Bool())
 	} else {
-		data.EnableLoggingSetop = types.BoolValue(false)
+		data.EnableLoggingSetop = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.informs"); value.Exists() {
 		data.EnableInforms = types.BoolValue(true)
@@ -3206,12 +3206,12 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.logging.getop"); value.Exists() {
 		data.EnableLoggingGetop = types.BoolValue(value.Bool())
 	} else {
-		data.EnableLoggingGetop = types.BoolValue(false)
+		data.EnableLoggingGetop = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.logging.setop"); value.Exists() {
 		data.EnableLoggingSetop = types.BoolValue(value.Bool())
 	} else {
-		data.EnableLoggingSetop = types.BoolValue(false)
+		data.EnableLoggingSetop = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.informs"); value.Exists() {
 		data.EnableInforms = types.BoolValue(true)

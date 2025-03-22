@@ -411,7 +411,7 @@ func (data *PIMVRF) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "autorp-container.autorp"); value.Exists() {
 		data.Autorp = types.BoolValue(value.Bool())
 	} else {
-		data.Autorp = types.BoolValue(false)
+		data.Autorp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "autorp-container.listener"); value.Exists() {
 		data.AutorpListener = types.BoolValue(true)
@@ -515,7 +515,7 @@ func (data *PIMVRFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "autorp-container.autorp"); value.Exists() {
 		data.Autorp = types.BoolValue(value.Bool())
 	} else {
-		data.Autorp = types.BoolValue(false)
+		data.Autorp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "autorp-container.listener"); value.Exists() {
 		data.AutorpListener = types.BoolValue(true)
@@ -810,5 +810,5 @@ func (data *PIMVRF) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Vrf = types.StringValue(matches[1])
+	data.Vrf = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

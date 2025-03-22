@@ -29,3 +29,9 @@ attributes:
       - yang_name: profile
         example: PROF1
         exclude_test: true
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/logging/host/ipv4-host-list=2.2.2.2
+    attributes:
+      - name: ipv4-host
+        value: 2.2.2.2

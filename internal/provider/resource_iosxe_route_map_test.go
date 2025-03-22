@@ -59,6 +59,10 @@ func TestAccIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_community_lists_legacy.0", "COMM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_extcommunity_lists_legacy.0", "EXTCOMM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_local_preferences_legacy.0", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_as_paths.0", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_community_lists.0", "COMM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_extcommunity_lists.0", "EXTCOMM1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.match_local_preferences.0", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_default_interfaces.0", "Loopback1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_interfaces.0", "Loopback1"))
@@ -92,6 +96,15 @@ func TestAccIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_extcomunity_vpn_distinguisher_legacy", "10:10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_local_preference_legacy", "110"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_weight_legacy", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_as_path_prepend_as", "65001 65001"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_as_path_prepend_last_as", "5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_communities.0", "1:2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_community_list_name", "COMML1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_extcomunity_rt.0", "10:10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_extcomunity_soo", "10:10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_extcomunity_vpn_distinguisher", "10:10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_local_preference", "110"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_route_map.test", "entries.0.set_weight", "10000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -168,6 +181,10 @@ func testAccIosxeRouteMapConfig_all() string {
 	config += `		match_community_lists_legacy = ["COMM1"]` + "\n"
 	config += `		match_extcommunity_lists_legacy = ["EXTCOMM1"]` + "\n"
 	config += `		match_local_preferences_legacy = [100]` + "\n"
+	config += `		match_as_paths = [10]` + "\n"
+	config += `		match_community_lists = ["COMM1"]` + "\n"
+	config += `		match_extcommunity_lists = ["EXTCOMM1"]` + "\n"
+	config += `		match_local_preferences = [100]` + "\n"
 	config += `		set_default_interfaces = ["Loopback1"]` + "\n"
 	config += `		set_global = false` + "\n"
 	config += `		set_interfaces = ["Loopback1"]` + "\n"
@@ -201,6 +218,15 @@ func testAccIosxeRouteMapConfig_all() string {
 	config += `		set_extcomunity_vpn_distinguisher_legacy = "10:10"` + "\n"
 	config += `		set_local_preference_legacy = 110` + "\n"
 	config += `		set_weight_legacy = 10000` + "\n"
+	config += `		set_as_path_prepend_as = "65001 65001"` + "\n"
+	config += `		set_as_path_prepend_last_as = 5` + "\n"
+	config += `		set_communities = ["1:2"]` + "\n"
+	config += `		set_community_list_name = "COMML1"` + "\n"
+	config += `		set_extcomunity_rt = ["10:10"]` + "\n"
+	config += `		set_extcomunity_soo = "10:10"` + "\n"
+	config += `		set_extcomunity_vpn_distinguisher = "10:10"` + "\n"
+	config += `		set_local_preference = 110` + "\n"
+	config += `		set_weight = 10000` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"

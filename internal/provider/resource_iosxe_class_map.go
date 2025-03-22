@@ -269,8 +269,8 @@ func (r *ClassMapResource) Read(ctx context.Context, req resource.ReadRequest, r
 
 			// After `terraform import` we switch to a full read.
 			if imp {
-				state.fromBody(ctx, res.Res)
 				state.getIdsFromPath()
+				state.fromBody(ctx, res.Res)
 			} else {
 				state.updateFromBody(ctx, res.Res)
 			}

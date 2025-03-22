@@ -461,5 +461,5 @@ func (data *BFDTemplateSingleHop) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(matches[1])
+	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

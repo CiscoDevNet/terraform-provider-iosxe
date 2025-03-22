@@ -525,6 +525,6 @@ func (data *SNMPServerUser) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Username = types.StringValue(matches[1])
-	data.Grpname = types.StringValue(matches[2])
+	data.Username = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
+	data.Grpname = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

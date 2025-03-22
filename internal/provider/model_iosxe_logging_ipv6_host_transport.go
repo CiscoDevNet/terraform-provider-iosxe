@@ -421,5 +421,5 @@ func (data *LoggingIPv6HostTransport) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Ipv6Host = types.StringValue(matches[1])
+	data.Ipv6Host = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

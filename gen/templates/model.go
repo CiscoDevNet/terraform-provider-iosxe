@@ -476,7 +476,11 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 		data.{{toGoName .TfName}} = types.BoolValue(true)
 		{{- end}}
 	} else {
+		{{- if eq .TypeYangBool "boolean"}}
+		data.{{toGoName .TfName}} = types.BoolNull()
+		{{- else}}
 		data.{{toGoName .TfName}} = types.BoolValue(false)
+		{{- end}}
 	}
 	{{- else if eq .Type "String"}}
 	if value := res.Get(prefix+"{{toJsonPath .YangName .XPath}}"); value.Exists() {
@@ -517,7 +521,11 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 				item.{{toGoName .TfName}} = types.BoolValue(true)
 				{{- end}}
 			} else {
+				{{- if eq .TypeYangBool "boolean"}}
+				item.{{toGoName .TfName}} = types.BoolNull()
+				{{- else}}
 				item.{{toGoName .TfName}} = types.BoolValue(false)
+				{{- end}}
 			}
 			{{- else if eq .Type "String"}}
 			if cValue := v.Get("{{toJsonPath .YangName .XPath}}"); cValue.Exists() {
@@ -558,7 +566,11 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 						cItem.{{toGoName .TfName}} = types.BoolValue(true)
 						{{- end}}
 					} else {
+						{{- if eq .TypeYangBool "boolean"}}
+						cItem.{{toGoName .TfName}} = types.BoolNull()
+						{{- else}}
 						cItem.{{toGoName .TfName}} = types.BoolValue(false)
+						{{- end}}
 					}
 					{{- else if eq .Type "String"}}
 					if ccValue := cv.Get("{{toJsonPath .YangName .XPath}}"); ccValue.Exists() {
@@ -882,7 +894,7 @@ func (data *{{camelCase .Name}}) getIdsFromPath() {
 {{- $count := 1}}
 {{- range .Attributes}}
 {{- if or .Id .Reference}}
-	data.{{toGoName .TfName}} = types.{{.Type}}Value({{if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(matches[{{$count}}], 10, 0)){{else}}matches[{{$count}}]{{end}})
+	data.{{toGoName .TfName}} = types.{{.Type}}Value({{if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(matches[{{$count}}], 10, 0)){{else}}helpers.Must(url.QueryUnescape(matches[{{$count}}])){{end}})
 {{- $count = (add $count 1)}}
 {{- end}}
 {{- end}}

@@ -93,9 +93,11 @@ attributes:
   - yang_name: ip/Cisco-IOS-XE-http:http/server
     example: true
     exclude_test: true
+    allow_import_changes: true
   - yang_name: ip/Cisco-IOS-XE-http:http/secure-server
     example: true
     exclude_test: true
+    allow_import_changes: true
   - yang_name: ip/Cisco-IOS-XE-http:http/secure-trustpoint
     example: TP1
     exclude_test: true

@@ -120,6 +120,6 @@ func (data *BGPAddressFamilyL2VPN) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Asn = types.StringValue(matches[1])
-	data.AfName = types.StringValue(matches[2])
+	data.Asn = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
+	data.AfName = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

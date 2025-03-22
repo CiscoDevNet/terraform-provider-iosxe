@@ -66,13 +66,21 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/logging/host/ipv4-host-vrf-list=2.2.2.2,VRF1"
+	attributes = {
+		"ipv4-host" = "2.2.2.2"
+		"vrf" = "VRF1"
+	}
+}
+
 `
 
 func testAccIosxeLoggingIPv4HostVRFTransportConfig_minimum() string {
 	config := `resource "iosxe_logging_ipv4_host_vrf_transport" "test" {` + "\n"
 	config += `	ipv4_host = "2.2.2.2"` + "\n"
 	config += `	vrf = "VRF1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -90,7 +98,7 @@ func testAccIosxeLoggingIPv4HostVRFTransportConfig_all() string {
 	config += `	transport_tls_ports = [{` + "\n"
 	config += `		port_number = 10002` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

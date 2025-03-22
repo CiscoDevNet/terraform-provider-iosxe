@@ -343,6 +343,6 @@ func (data *StaticRoute) getIdsFromPath() {
 	reString = strings.ReplaceAll(reString, "%v", "(.+)")
 	re := regexp.MustCompile(reString)
 	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Prefix = types.StringValue(matches[1])
-	data.Mask = types.StringValue(matches[2])
+	data.Prefix = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
+	data.Mask = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

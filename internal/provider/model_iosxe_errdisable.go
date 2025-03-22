@@ -931,7 +931,7 @@ func (data *Errdisable) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "detect.cause.loopdetect"); value.Exists() {
 		data.DetectCauseLoopdetect = types.BoolValue(value.Bool())
 	} else {
-		data.DetectCauseLoopdetect = types.BoolValue(false)
+		data.DetectCauseLoopdetect = types.BoolNull()
 	}
 	if value := res.Get(prefix + "flap-setting.cause.dtp-flap.max-flaps"); value.Exists() {
 		data.FlapSettingCauseDtpFlapMaxFlaps = types.Int64Value(value.Int())
@@ -1179,7 +1179,7 @@ func (data *ErrdisableData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "detect.cause.loopdetect"); value.Exists() {
 		data.DetectCauseLoopdetect = types.BoolValue(value.Bool())
 	} else {
-		data.DetectCauseLoopdetect = types.BoolValue(false)
+		data.DetectCauseLoopdetect = types.BoolNull()
 	}
 	if value := res.Get(prefix + "flap-setting.cause.dtp-flap.max-flaps"); value.Exists() {
 		data.FlapSettingCauseDtpFlapMaxFlaps = types.Int64Value(value.Int())

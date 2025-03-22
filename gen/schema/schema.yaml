@@ -30,6 +30,7 @@ attribute:
   exclude_example: bool(required=False)
   description: str(required=False)
   example: any(str(), int(), bool(), required=False)
+  allow_import_changes: bool(required=False)
   enum_values: list(str(), required=False)
   min_int: int(required=False)
   max_int: int(required=False)

@@ -48,6 +48,10 @@ resource "iosxe_route_map" "example" {
       match_community_lists_legacy             = ["COMM1"]
       match_extcommunity_lists_legacy          = ["EXTCOMM1"]
       match_local_preferences_legacy           = [100]
+      match_as_paths                           = [10]
+      match_community_lists                    = ["COMM1"]
+      match_extcommunity_lists                 = ["EXTCOMM1"]
+      match_local_preferences                  = [100]
       set_default_interfaces                   = ["Loopback1"]
       set_global                               = false
       set_interfaces                           = ["Loopback1"]
@@ -81,6 +85,15 @@ resource "iosxe_route_map" "example" {
       set_extcomunity_vpn_distinguisher_legacy = "10:10"
       set_local_preference_legacy              = 110
       set_weight_legacy                        = 10000
+      set_as_path_prepend_as                   = "65001 65001"
+      set_as_path_prepend_last_as              = 5
+      set_communities                          = ["1:2"]
+      set_community_list_name                  = "COMML1"
+      set_extcomunity_rt                       = ["10:10"]
+      set_extcomunity_soo                      = "10:10"
+      set_extcomunity_vpn_distinguisher        = "10:10"
+      set_local_preference                     = 110
+      set_weight                               = 10000
     }
   ]
 }

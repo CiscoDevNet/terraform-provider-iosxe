@@ -211,8 +211,8 @@ func (r *ASPathAccessListResource) Read(ctx context.Context, req resource.ReadRe
 
 			// After `terraform import` we switch to a full read.
 			if imp {
-				state.fromBody(ctx, res.Res)
 				state.getIdsFromPath()
+				state.fromBody(ctx, res.Res)
 			} else {
 				state.updateFromBody(ctx, res.Res)
 			}

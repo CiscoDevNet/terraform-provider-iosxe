@@ -53,6 +53,14 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-vrf-list=2001::1,VRF1"
+	attributes = {
+		"ipv6-host" = "2001::1"
+		"vrf" = "VRF1"
+	}
+}
+
 `
 
 func testAccDataSourceIosxeLoggingIPv6HostVRFTransportConfig() string {
@@ -69,7 +77,7 @@ func testAccDataSourceIosxeLoggingIPv6HostVRFTransportConfig() string {
 	config += `	transport_tls_ports = [{` + "\n"
 	config += `		port_number = 10002` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

@@ -628,7 +628,7 @@ func (data *OSPF) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(value.Bool())
 	} else {
-		data.Shutdown = types.BoolValue(false)
+		data.Shutdown = types.BoolNull()
 	}
 	if value := res.Get(prefix + "summary-address"); value.Exists() {
 		data.SummaryAddresses = make([]OSPFSummaryAddresses, 0)
@@ -689,7 +689,7 @@ func (data *OSPF) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
 		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
 	} else {
-		data.PassiveInterfaceDefault = types.BoolValue(false)
+		data.PassiveInterfaceDefault = types.BoolNull()
 	}
 }
 
@@ -775,7 +775,7 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "shutdown"); value.Exists() {
 		data.Shutdown = types.BoolValue(value.Bool())
 	} else {
-		data.Shutdown = types.BoolValue(false)
+		data.Shutdown = types.BoolNull()
 	}
 	if value := res.Get(prefix + "summary-address"); value.Exists() {
 		data.SummaryAddresses = make([]OSPFSummaryAddresses, 0)
@@ -836,7 +836,7 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
 		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
 	} else {
-		data.PassiveInterfaceDefault = types.BoolValue(false)
+		data.PassiveInterfaceDefault = types.BoolNull()
 	}
 }
 
