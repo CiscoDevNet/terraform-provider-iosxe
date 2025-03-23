@@ -20,3 +20,4 @@ attributes:
     tf_name: key
     example: 123
     write_only: true
+    allow_import_changes: true

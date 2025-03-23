@@ -47,7 +47,7 @@ func TestAccIosxeTACACSServer(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=tacacs_10.10.15.13",
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"key"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
