@@ -11,6 +11,7 @@ description: |-
 
 - Fix idempotency issue with `secret` attribute of `iosxe_username` resource
 - Add `tunnel_vrf` attribute to `iosxe_interface_tunnel` resource and data source
+- Add `ip_http_secure_active_session_modules`, `ip_http_max_connections` and `ip_http_active_session_modules` attributes to `iosxe_system` resource and data source
 
 ## 0.5.8
 

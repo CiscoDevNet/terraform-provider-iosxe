@@ -65,6 +65,9 @@ type System struct {
 	IpHttpTlsVersion                            types.String                                        `tfsdk:"ip_http_tls_version"`
 	IpHttpClientSecureTrustpoint                types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
 	IpHttpClientSourceInterface                 types.String                                        `tfsdk:"ip_http_client_source_interface"`
+	IpHttpSecureActiveSessionModules            types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
+	IpHttpMaxConnections                        types.Int64                                         `tfsdk:"ip_http_max_connections"`
+	IpHttpActiveSessionModules                  types.String                                        `tfsdk:"ip_http_active_session_modules"`
 }
 
 type SystemData struct {
@@ -99,6 +102,9 @@ type SystemData struct {
 	IpHttpTlsVersion                            types.String                                        `tfsdk:"ip_http_tls_version"`
 	IpHttpClientSecureTrustpoint                types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
 	IpHttpClientSourceInterface                 types.String                                        `tfsdk:"ip_http_client_source_interface"`
+	IpHttpSecureActiveSessionModules            types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
+	IpHttpMaxConnections                        types.Int64                                         `tfsdk:"ip_http_max_connections"`
+	IpHttpActiveSessionModules                  types.String                                        `tfsdk:"ip_http_active_session_modules"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -232,6 +238,15 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.IpHttpClientSourceInterface.IsNull() && !data.IpHttpClientSourceInterface.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.client.source-interface", data.IpHttpClientSourceInterface.ValueString())
+	}
+	if !data.IpHttpSecureActiveSessionModules.IsNull() && !data.IpHttpSecureActiveSessionModules.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.secure-active-session-modules", data.IpHttpSecureActiveSessionModules.ValueString())
+	}
+	if !data.IpHttpMaxConnections.IsNull() && !data.IpHttpMaxConnections.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.max-connections", strconv.FormatInt(data.IpHttpMaxConnections.ValueInt64(), 10))
+	}
+	if !data.IpHttpActiveSessionModules.IsNull() && !data.IpHttpActiveSessionModules.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.active-session-modules", data.IpHttpActiveSessionModules.ValueString())
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -526,6 +541,21 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpHttpClientSourceInterface = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-active-session-modules"); value.Exists() && !data.IpHttpSecureActiveSessionModules.IsNull() {
+		data.IpHttpSecureActiveSessionModules = types.StringValue(value.String())
+	} else {
+		data.IpHttpSecureActiveSessionModules = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.max-connections"); value.Exists() && !data.IpHttpMaxConnections.IsNull() {
+		data.IpHttpMaxConnections = types.Int64Value(value.Int())
+	} else {
+		data.IpHttpMaxConnections = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.active-session-modules"); value.Exists() && !data.IpHttpActiveSessionModules.IsNull() {
+		data.IpHttpActiveSessionModules = types.StringValue(value.String())
+	} else {
+		data.IpHttpActiveSessionModules = types.StringNull()
+	}
 }
 
 func (data *System) fromBody(ctx context.Context, res gjson.Result) {
@@ -675,6 +705,15 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.client.source-interface"); value.Exists() {
 		data.IpHttpClientSourceInterface = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-active-session-modules"); value.Exists() {
+		data.IpHttpSecureActiveSessionModules = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.max-connections"); value.Exists() {
+		data.IpHttpMaxConnections = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.active-session-modules"); value.Exists() {
+		data.IpHttpActiveSessionModules = types.StringValue(value.String())
 	}
 }
 
@@ -826,6 +865,15 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.client.source-interface"); value.Exists() {
 		data.IpHttpClientSourceInterface = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.secure-active-session-modules"); value.Exists() {
+		data.IpHttpSecureActiveSessionModules = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.max-connections"); value.Exists() {
+		data.IpHttpMaxConnections = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.active-session-modules"); value.Exists() {
+		data.IpHttpActiveSessionModules = types.StringValue(value.String())
+	}
 }
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
@@ -966,6 +1014,15 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.IpHttpClientSourceInterface.IsNull() && data.IpHttpClientSourceInterface.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/source-interface", state.getPath()))
+	}
+	if !state.IpHttpSecureActiveSessionModules.IsNull() && data.IpHttpSecureActiveSessionModules.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-active-session-modules", state.getPath()))
+	}
+	if !state.IpHttpMaxConnections.IsNull() && data.IpHttpMaxConnections.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/max-connections", state.getPath()))
+	}
+	if !state.IpHttpActiveSessionModules.IsNull() && data.IpHttpActiveSessionModules.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/active-session-modules", state.getPath()))
 	}
 	return deletedItems
 }
@@ -1108,6 +1165,15 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpHttpClientSourceInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/source-interface", data.getPath()))
+	}
+	if !data.IpHttpSecureActiveSessionModules.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-active-session-modules", data.getPath()))
+	}
+	if !data.IpHttpMaxConnections.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/max-connections", data.getPath()))
+	}
+	if !data.IpHttpActiveSessionModules.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/active-session-modules", data.getPath()))
 	}
 	return deletePaths
 }

@@ -235,6 +235,21 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Specify interface for source address in all HTTP(S) client connections").String,
 				Optional:            true,
 			},
+			"ip_http_secure_active_session_modules": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set secure active session modules").String,
+				Optional:            true,
+			},
+			"ip_http_max_connections": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("max http connections").AddIntegerRangeDescription(1, 50).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 50),
+				},
+			},
+			"ip_http_active_session_modules": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set active session modules").String,
+				Optional:            true,
+			},
 		},
 	}
 }

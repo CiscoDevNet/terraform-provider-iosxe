@@ -202,6 +202,18 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Specify interface for source address in all HTTP(S) client connections",
 				Computed:            true,
 			},
+			"ip_http_secure_active_session_modules": schema.StringAttribute{
+				MarkdownDescription: "Set secure active session modules",
+				Computed:            true,
+			},
+			"ip_http_max_connections": schema.Int64Attribute{
+				MarkdownDescription: "max http connections",
+				Computed:            true,
+			},
+			"ip_http_active_session_modules": schema.StringAttribute{
+				MarkdownDescription: "Set active session modules",
+				Computed:            true,
+			},
 		},
 	}
 }

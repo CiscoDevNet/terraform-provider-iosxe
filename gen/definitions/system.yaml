@@ -111,6 +111,15 @@ attributes:
   - yang_name: ip/Cisco-IOS-XE-http:http/client/source-interface
     example: Loopback0
     exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/secure-active-session-modules
+    example: none
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/max-connections
+    example: 16
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-http:http/active-session-modules
+    example: none
+    exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

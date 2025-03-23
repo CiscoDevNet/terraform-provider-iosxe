@@ -45,6 +45,7 @@ resource "iosxe_system" "example" {
 - `ip_domain_name` (String) Define the default domain name
 - `ip_http_access_class` (Number) Restrict http server access by access-class
   - Range: `1`-`99`
+- `ip_http_active_session_modules` (String) Set active session modules
 - `ip_http_authentication_aaa` (Boolean) Use AAA access control methods
 - `ip_http_authentication_aaa_command_authorization` (Attributes List) Set method list for command authorization (see [below for nested schema](#nestedatt--ip_http_authentication_aaa_command_authorization))
 - `ip_http_authentication_aaa_exec_authorization` (String) Set method list for exec authorization
@@ -52,6 +53,9 @@ resource "iosxe_system" "example" {
 - `ip_http_authentication_local` (Boolean) Use local username and passwords
 - `ip_http_client_secure_trustpoint` (String) Set http client certificate secure trustpoint
 - `ip_http_client_source_interface` (String) Specify interface for source address in all HTTP(S) client connections
+- `ip_http_max_connections` (Number) max http connections
+  - Range: `1`-`50`
+- `ip_http_secure_active_session_modules` (String) Set secure active session modules
 - `ip_http_secure_server` (Boolean) Enable HTTP secure server
 - `ip_http_secure_trustpoint` (String) Set http secure server certificate trustpoint
 - `ip_http_server` (Boolean) Enable http server
