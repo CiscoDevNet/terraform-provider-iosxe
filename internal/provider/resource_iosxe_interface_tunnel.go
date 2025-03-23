@@ -329,6 +329,10 @@ func (r *InterfaceTunnelResource) Schema(ctx context.Context, req resource.Schem
 				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
 				Optional:            true,
 			},
+			"tunnel_vrf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
 		},
 	}
 }

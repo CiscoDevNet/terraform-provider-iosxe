@@ -262,6 +262,10 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "UPDOWN and CHANGE messages",
 				Computed:            true,
 			},
+			"tunnel_vrf": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

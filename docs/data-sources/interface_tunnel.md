@@ -69,6 +69,7 @@ data "iosxe_interface_tunnel" "example" {
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
 - `tunnel_protection_ipsec_profile` (String) Determine the ipsec policy profile to use.
 - `tunnel_source` (String) source of tunnel packets
+- `tunnel_vrf` (String)
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table
 

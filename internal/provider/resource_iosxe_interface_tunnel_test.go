@@ -68,6 +68,7 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "snmp_trap_link_status", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "logging_event_link_status_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_tunnel.test", "tunnel_vrf", "VRF1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -160,6 +161,7 @@ func testAccIosxeInterfaceTunnelConfig_all() string {
 	config += `	load_interval = 30` + "\n"
 	config += `	snmp_trap_link_status = false` + "\n"
 	config += `	logging_event_link_status_enable = true` + "\n"
+	config += `	tunnel_vrf = "VRF1"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

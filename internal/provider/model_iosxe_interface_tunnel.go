@@ -78,6 +78,7 @@ type InterfaceTunnel struct {
 	LoadInterval                 types.Int64                             `tfsdk:"load_interval"`
 	SnmpTrapLinkStatus           types.Bool                              `tfsdk:"snmp_trap_link_status"`
 	LoggingEventLinkStatusEnable types.Bool                              `tfsdk:"logging_event_link_status_enable"`
+	TunnelVrf                    types.String                            `tfsdk:"tunnel_vrf"`
 }
 
 type InterfaceTunnelData struct {
@@ -123,6 +124,7 @@ type InterfaceTunnelData struct {
 	LoadInterval                 types.Int64                             `tfsdk:"load_interval"`
 	SnmpTrapLinkStatus           types.Bool                              `tfsdk:"snmp_trap_link_status"`
 	LoggingEventLinkStatusEnable types.Bool                              `tfsdk:"logging_event_link_status_enable"`
+	TunnelVrf                    types.String                            `tfsdk:"tunnel_vrf"`
 }
 type InterfaceTunnelIpv6LinkLocalAddresses struct {
 	Address   types.String `tfsdk:"address"`
@@ -285,6 +287,9 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	}
 	if !data.LoggingEventLinkStatusEnable.IsNull() && !data.LoggingEventLinkStatusEnable.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"logging.event.link-status-enable", data.LoggingEventLinkStatusEnable.ValueBool())
+	}
+	if !data.TunnelVrf.IsNull() && !data.TunnelVrf.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-tunnel:tunnel.vrf-config.vrf-common.vrf", data.TunnelVrf.ValueString())
 	}
 	if len(data.Ipv6LinkLocalAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.link-local-address", []interface{}{})
@@ -686,6 +691,11 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.vrf-config.vrf-common.vrf"); value.Exists() && !data.TunnelVrf.IsNull() {
+		data.TunnelVrf = types.StringValue(value.String())
+	} else {
+		data.TunnelVrf = types.StringNull()
+	}
 }
 
 func (data *InterfaceTunnel) fromBody(ctx context.Context, res gjson.Result) {
@@ -882,6 +892,9 @@ func (data *InterfaceTunnel) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.vrf-config.vrf-common.vrf"); value.Exists() {
+		data.TunnelVrf = types.StringValue(value.String())
+	}
 }
 
 func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result) {
@@ -1077,6 +1090,9 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-tunnel:tunnel.vrf-config.vrf-common.vrf"); value.Exists() {
+		data.TunnelVrf = types.StringValue(value.String())
 	}
 }
 
@@ -1277,6 +1293,9 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	if !state.LoggingEventLinkStatusEnable.IsNull() && data.LoggingEventLinkStatusEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/event/link-status-enable", state.getPath()))
 	}
+	if !state.TunnelVrf.IsNull() && data.TunnelVrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/vrf-config/vrf-common/vrf", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -1454,6 +1473,9 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.LoggingEventLinkStatusEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/event/link-status-enable", data.getPath()))
+	}
+	if !data.TunnelVrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-tunnel:tunnel/vrf-config/vrf-common/vrf", data.getPath()))
 	}
 	return deletePaths
 }
