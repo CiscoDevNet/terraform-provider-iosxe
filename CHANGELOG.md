@@ -1,4 +1,4 @@
-## 0.5.8 (unreleased)
+## 0.5.8
 
 - Fix import of resources
 - Add `managed` flag to provider device configuration to allow temporarily skipping a device due to maintenance
