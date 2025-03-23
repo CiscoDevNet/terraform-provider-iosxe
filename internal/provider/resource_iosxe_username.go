@@ -109,6 +109,9 @@ func (r *UsernameResource) Schema(ctx context.Context, req resource.SchemaReques
 			"secret": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 		},
 	}

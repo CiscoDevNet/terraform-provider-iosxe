@@ -1,3 +1,7 @@
+## 0.5.9 (unreleased)
+
+- Fix idempotency issue with `secret` attribute of `iosxe_username` resource
+
 ## 0.5.8
 
 - Fix import of resources

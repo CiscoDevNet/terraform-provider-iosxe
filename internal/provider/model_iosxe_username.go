@@ -137,11 +137,6 @@ func (data *Username) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SecretEncryption = types.StringNull()
 	}
-	if value := res.Get(prefix + "secret.secret"); value.Exists() && !data.Secret.IsNull() {
-		data.Secret = types.StringValue(value.String())
-	} else {
-		data.Secret = types.StringNull()
-	}
 }
 
 func (data *Username) fromBody(ctx context.Context, res gjson.Result) {
@@ -164,9 +159,6 @@ func (data *Username) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "secret.encryption"); value.Exists() {
 		data.SecretEncryption = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "secret.secret"); value.Exists() {
-		data.Secret = types.StringValue(value.String())
-	}
 }
 
 func (data *UsernameData) fromBody(ctx context.Context, res gjson.Result) {
@@ -188,9 +180,6 @@ func (data *UsernameData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "secret.encryption"); value.Exists() {
 		data.SecretEncryption = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "secret.secret"); value.Exists() {
-		data.Secret = types.StringValue(value.String())
 	}
 }
 

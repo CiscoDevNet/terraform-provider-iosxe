@@ -22,3 +22,5 @@ attributes:
     tf_name: secret
     example: MySecretPassword
     exclude_test: true
+    write_only: true
+    requires_replace: true
