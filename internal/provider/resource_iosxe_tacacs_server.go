@@ -92,6 +92,16 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 					int64validator.Between(1, 1000),
 				},
 			},
+			"encryption": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow").AddStringEnumDescription("0", "6", "7").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("0", "6", "7"),
+				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
 			"key": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) server key").String,
 				Optional:            true,

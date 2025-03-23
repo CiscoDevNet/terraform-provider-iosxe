@@ -74,6 +74,10 @@ func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Time to wait for this TACACS server to reply (overrides default)",
 				Computed:            true,
 			},
+			"encryption": schema.StringAttribute{
+				MarkdownDescription: "0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow",
+				Computed:            true,
+			},
 			"key": schema.StringAttribute{
 				MarkdownDescription: "The UNENCRYPTED (cleartext) server key",
 				Computed:            true,

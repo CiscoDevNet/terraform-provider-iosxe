@@ -40,6 +40,7 @@ type TACACSServer struct {
 	Name        types.String `tfsdk:"name"`
 	AddressIpv4 types.String `tfsdk:"address_ipv4"`
 	Timeout     types.Int64  `tfsdk:"timeout"`
+	Encryption  types.String `tfsdk:"encryption"`
 	Key         types.String `tfsdk:"key"`
 }
 
@@ -49,6 +50,7 @@ type TACACSServerData struct {
 	Name        types.String `tfsdk:"name"`
 	AddressIpv4 types.String `tfsdk:"address_ipv4"`
 	Timeout     types.Int64  `tfsdk:"timeout"`
+	Encryption  types.String `tfsdk:"encryption"`
 	Key         types.String `tfsdk:"key"`
 }
 
@@ -82,6 +84,9 @@ func (data TACACSServer) toBody(ctx context.Context) string {
 	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
 	}
+	if !data.Encryption.IsNull() && !data.Encryption.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.encryption", data.Encryption.ValueString())
+	}
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
 	}
@@ -108,10 +113,10 @@ func (data *TACACSServer) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.Timeout = types.Int64Null()
 	}
-	if value := res.Get(prefix + "key.key"); value.Exists() && !data.Key.IsNull() {
-		data.Key = types.StringValue(value.String())
+	if value := res.Get(prefix + "key.encryption"); value.Exists() && !data.Encryption.IsNull() {
+		data.Encryption = types.StringValue(value.String())
 	} else {
-		data.Key = types.StringNull()
+		data.Encryption = types.StringNull()
 	}
 }
 
@@ -126,8 +131,8 @@ func (data *TACACSServer) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "timeout"); value.Exists() {
 		data.Timeout = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "key.key"); value.Exists() {
-		data.Key = types.StringValue(value.String())
+	if value := res.Get(prefix + "key.encryption"); value.Exists() {
+		data.Encryption = types.StringValue(value.String())
 	}
 }
 
@@ -142,8 +147,8 @@ func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "timeout"); value.Exists() {
 		data.Timeout = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "key.key"); value.Exists() {
-		data.Key = types.StringValue(value.String())
+	if value := res.Get(prefix + "key.encryption"); value.Exists() {
+		data.Encryption = types.StringValue(value.String())
 	}
 }
 
@@ -154,6 +159,9 @@ func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServe
 	}
 	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/timeout", state.getPath()))
+	}
+	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/encryption", state.getPath()))
 	}
 	if !state.Key.IsNull() && data.Key.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/key", state.getPath()))
@@ -173,6 +181,9 @@ func (data *TACACSServer) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Timeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/timeout", data.getPath()))
+	}
+	if !data.Encryption.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/encryption", data.getPath()))
 	}
 	if !data.Key.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))

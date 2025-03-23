@@ -12,6 +12,11 @@ attributes:
     example: 10.10.15.13
   - yang_name: timeout
     example: 4
+  - yang_name: key/encryption
+    tf_name: encryption
+    example: 0
+    requires_replace: true
   - yang_name: key/key
     tf_name: key
     example: 123
+    write_only: true

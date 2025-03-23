@@ -17,6 +17,7 @@ resource "iosxe_tacacs_server" "example" {
   name         = "tacacs_10.10.15.13"
   address_ipv4 = "10.10.15.13"
   timeout      = 4
+  encryption   = "0"
   key          = "123"
 }
 ```
@@ -34,6 +35,8 @@ resource "iosxe_tacacs_server" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
+  - Choices: `0`, `6`, `7`
 - `key` (String) The UNENCRYPTED (cleartext) server key
 - `timeout` (Number) Time to wait for this TACACS server to reply (overrides default)
   - Range: `1`-`1000`
