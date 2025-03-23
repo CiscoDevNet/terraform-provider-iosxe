@@ -12,6 +12,7 @@ attributes:
     tf_name: ip_routing
     exclude_test: true
     example: true
+    allow_import_changes: true
   - yang_name: ipv6/unicast-routing
     example: true
   - yang_name: system/Cisco-IOS-XE-switch:mtu/size
