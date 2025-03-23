@@ -50,6 +50,7 @@ data "iosxe_ntp" "example" {
 - `trap_source_port_channel_subinterface` (String)
 - `trap_source_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
 - `trap_source_vlan` (Number) Iosxr Vlans
+- `trusted_keys` (Attributes List) Key numbers for trusted time sources (see [below for nested schema](#nestedatt--trusted_keys))
 - `update_calendar` (Boolean) Periodically update calendar with NTP time
 
 <a id="nestedatt--authentication_keys"></a>
@@ -129,3 +130,11 @@ Read-Only:
 - `prefer` (Boolean) Prefer this peer when possible
 - `source` (String) Interface for source address
 - `version` (Number) Configure NTP version
+
+
+<a id="nestedatt--trusted_keys"></a>
+### Nested Schema for `trusted_keys`
+
+Read-Only:
+
+- `number` (Number)

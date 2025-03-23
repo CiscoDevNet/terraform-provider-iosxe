@@ -61,6 +61,7 @@ type NTP struct {
 	ServerVrfs                        []NTPServerVrfs         `tfsdk:"server_vrfs"`
 	Peers                             []NTPPeers              `tfsdk:"peers"`
 	PeerVrfs                          []NTPPeerVrfs           `tfsdk:"peer_vrfs"`
+	TrustedKeys                       []NTPTrustedKeys        `tfsdk:"trusted_keys"`
 }
 
 type NTPData struct {
@@ -90,6 +91,7 @@ type NTPData struct {
 	ServerVrfs                        []NTPServerVrfs         `tfsdk:"server_vrfs"`
 	Peers                             []NTPPeers              `tfsdk:"peers"`
 	PeerVrfs                          []NTPPeerVrfs           `tfsdk:"peer_vrfs"`
+	TrustedKeys                       []NTPTrustedKeys        `tfsdk:"trusted_keys"`
 }
 type NTPAuthenticationKeys struct {
 	Number         types.Int64  `tfsdk:"number"`
@@ -122,6 +124,9 @@ type NTPPeers struct {
 type NTPPeerVrfs struct {
 	Name  types.String       `tfsdk:"name"`
 	Peers []NTPPeerVrfsPeers `tfsdk:"peers"`
+}
+type NTPTrustedKeys struct {
+	Number types.Int64 `tfsdk:"number"`
 }
 type NTPServerVrfsServers struct {
 	IpAddress types.String `tfsdk:"ip_address"`
@@ -348,6 +353,14 @@ func (data NTP) toBody(ctx context.Context) string {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:peer.vrf"+"."+strconv.Itoa(index)+"."+"server-list"+"."+strconv.Itoa(cindex)+"."+"version", strconv.FormatInt(citem.Version.ValueInt64(), 10))
 					}
 				}
+			}
+		}
+	}
+	if len(data.TrustedKeys) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:trusted-key", []interface{}{})
+		for index, item := range data.TrustedKeys {
+			if !item.Number.IsNull() && !item.Number.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:trusted-key"+"."+strconv.Itoa(index)+"."+"number", strconv.FormatInt(item.Number.ValueInt64(), 10))
 			}
 		}
 	}
@@ -798,6 +811,35 @@ func (data *NTP) updateFromBody(ctx context.Context, res gjson.Result) {
 			}
 		}
 	}
+	for i := range data.TrustedKeys {
+		keys := [...]string{"number"}
+		keyValues := [...]string{strconv.FormatInt(data.TrustedKeys[i].Number.ValueInt64(), 10)}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-ntp:trusted-key").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("number"); value.Exists() && !data.TrustedKeys[i].Number.IsNull() {
+			data.TrustedKeys[i].Number = types.Int64Value(value.Int())
+		} else {
+			data.TrustedKeys[i].Number = types.Int64Null()
+		}
+	}
 }
 
 func (data *NTP) fromBody(ctx context.Context, res gjson.Result) {
@@ -1020,6 +1062,17 @@ func (data *NTP) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:trusted-key"); value.Exists() {
+		data.TrustedKeys = make([]NTPTrustedKeys, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := NTPTrustedKeys{}
+			if cValue := v.Get("number"); cValue.Exists() {
+				item.Number = types.Int64Value(cValue.Int())
+			}
+			data.TrustedKeys = append(data.TrustedKeys, item)
+			return true
+		})
+	}
 }
 
 func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
@@ -1239,6 +1292,17 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			data.PeerVrfs = append(data.PeerVrfs, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:trusted-key"); value.Exists() {
+		data.TrustedKeys = make([]NTPTrustedKeys, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := NTPTrustedKeys{}
+			if cValue := v.Get("number"); cValue.Exists() {
+				item.Number = types.Int64Value(cValue.Int())
+			}
+			data.TrustedKeys = append(data.TrustedKeys, item)
 			return true
 		})
 	}
@@ -1541,6 +1605,31 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.TrustedKeys {
+		stateKeyValues := [...]string{strconv.FormatInt(state.TrustedKeys[i].Number.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.TrustedKeys[i].Number.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.TrustedKeys {
+			found = true
+			if state.TrustedKeys[i].Number.ValueInt64() != data.TrustedKeys[j].Number.ValueInt64() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:trusted-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedItems
 }
 
@@ -1598,6 +1687,7 @@ func (data *NTP) getEmptyLeafsDelete(ctx context.Context) []string {
 			}
 		}
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -1684,6 +1774,11 @@ func (data *NTP) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.PeerVrfs[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:peer/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.TrustedKeys {
+		keyValues := [...]string{strconv.FormatInt(data.TrustedKeys[i].Number.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:trusted-key=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

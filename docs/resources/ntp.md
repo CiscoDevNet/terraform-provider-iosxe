@@ -76,6 +76,11 @@ resource "iosxe_ntp" "example" {
       ]
     }
   ]
+  trusted_keys = [
+    {
+      number = 1
+    }
+  ]
 }
 ```
 
@@ -114,6 +119,7 @@ resource "iosxe_ntp" "example" {
 - `trap_source_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
 - `trap_source_vlan` (Number) Iosxr Vlans
   - Range: `0`-`65535`
+- `trusted_keys` (Attributes List) Key numbers for trusted time sources (see [below for nested schema](#nestedatt--trusted_keys))
 - `update_calendar` (Boolean) Periodically update calendar with NTP time
 
 ### Read-Only
@@ -227,6 +233,14 @@ Optional:
 - `source` (String) Interface for source address
 - `version` (Number) Configure NTP version
   - Range: `1`-`4`
+
+
+<a id="nestedatt--trusted_keys"></a>
+### Nested Schema for `trusted_keys`
+
+Required:
+
+- `number` (Number) - Range: `1`-`65535`
 
 ## Import
 

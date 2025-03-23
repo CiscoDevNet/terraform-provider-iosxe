@@ -61,6 +61,7 @@ func TestAccDataSourceIosxeNTP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "peer_vrfs.0.peers.0.key", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "peer_vrfs.0.peers.0.prefer", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "peer_vrfs.0.peers.0.version", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "trusted_keys.0.number", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -149,6 +150,9 @@ func testAccDataSourceIosxeNTPConfig() string {
 	config += `			prefer = true` + "\n"
 	config += `			version = 2` + "\n"
 	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	trusted_keys = [{` + "\n"
+	config += `		number = 1` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"

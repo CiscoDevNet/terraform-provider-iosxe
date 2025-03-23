@@ -61,4 +61,9 @@ resource "iosxe_ntp" "example" {
       ]
     }
   ]
+  trusted_keys = [
+    {
+      number = 1
+    }
+  ]
 }

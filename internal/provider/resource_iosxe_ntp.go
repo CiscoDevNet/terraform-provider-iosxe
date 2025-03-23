@@ -368,6 +368,21 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
+			"trusted_keys": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Key numbers for trusted time sources").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"number": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 65535).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 65535),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

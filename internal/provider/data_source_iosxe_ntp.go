@@ -306,6 +306,18 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
+			"trusted_keys": schema.ListNestedAttribute{
+				MarkdownDescription: "Key numbers for trusted time sources",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"number": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }
