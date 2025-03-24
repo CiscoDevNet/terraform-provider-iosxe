@@ -1,4 +1,4 @@
-## 0.5.9 (unreleased)
+## 0.5.9
 
 - Fix idempotency issue with `secret` attribute of `iosxe_username` resource
 - Add `tunnel_vrf` attribute to `iosxe_interface_tunnel` resource and data source
