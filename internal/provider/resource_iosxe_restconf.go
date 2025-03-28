@@ -275,6 +275,10 @@ func (r *RestconfResource) Update(ctx context.Context, req resource.UpdateReques
 		}
 	}
 
+	if plan.Attributes.IsUnknown() {
+		plan.Attributes = types.MapNull(types.StringType)
+	}
+
 	tflog.Debug(ctx, fmt.Sprintf("%s: Update finished successfully", plan.getPath()))
 
 	diags = resp.State.Set(ctx, &plan)
