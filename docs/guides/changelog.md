@@ -7,6 +7,11 @@ description: |-
 
 # Changelog
 
+## 0.5.10 (unreleased)
+
+- Fix update issue with `iosxe_restconf` resource and empty `attributes` map
+- Fix issue with `iosxe_restconf` validation, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/223)
+
 ## 0.5.9
 
 - Fix idempotency issue with `secret` attribute of `iosxe_username` resource

@@ -116,9 +116,9 @@ func (r *RestconfResource) Schema(ctx context.Context, req resource.SchemaReques
 func (r *RestconfResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
 	var data Restconf
 
-	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+	diag := req.Config.Get(ctx, &data)
 
-	if resp.Diagnostics.HasError() {
+	if diag.HasError() {
 		return
 	}
 
