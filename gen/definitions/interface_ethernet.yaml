@@ -2,6 +2,7 @@
 name: Interface Ethernet
 path: Cisco-IOS-XE-native:native/interface/%s=%v
 augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v
+wait: true
 test_tags: [C8000V]
 no_delete: true
 doc_category: Interface
@@ -156,7 +157,6 @@ attributes:
   - yang_name: source/template/template-name
     tf_name: source_template
     type: List
-    exclude_test: true
     attributes:
       - yang_name: template-name
         example: TEMP1
@@ -434,9 +434,9 @@ attributes:
   - yang_name: load-interval
     example: 30
   - yang_name: Cisco-IOS-XE-snmp:snmp/trap/link-status
-    example: true
+    example: false
   - yang_name: logging/event/link-status-enable
-    example: true
+    example: false
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
@@ -465,3 +465,8 @@ test_prerequisites:
       - name: record/type
         value: REC1
     dependencies: [2]
+  - path: Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=TEMP1
+    attributes:
+      - name: template_name
+        value: TEMP1
+

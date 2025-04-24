@@ -5,6 +5,7 @@ augment_path: str(required=False)
 no_delete: bool(required=False)
 no_delete_attributes: bool(required=False)
 default_delete_attributes: bool(required=False)
+wait: bool(required=False)  # Wait for the DB lock to be released, this is required for operations that require a full-sync, eg. applying a source template to an interface
 test_tags: list(str(), required=False)
 skip_minimum_test: bool(required=False)
 no_augment_config: bool(required=False)

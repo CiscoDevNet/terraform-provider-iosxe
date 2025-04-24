@@ -104,6 +104,7 @@ type YamlConfig struct {
 	NoDelete                bool                  `yaml:"no_delete"`
 	NoDeleteAttributes      bool                  `yaml:"no_delete_attributes"`
 	DefaultDeleteAttributes bool                  `yaml:"default_delete_attributes"`
+	Wait                    bool                  `yaml:"wait"`
 	TestTags                []string              `yaml:"test_tags"`
 	SkipMinimumTest         bool                  `yaml:"skip_minimum_test"`
 	NoAugmentConfig         bool                  `yaml:"no_augment_config"`

@@ -2,6 +2,7 @@
 
 - Fix update issue with `iosxe_restconf` resource and empty `attributes` map
 - Fix issue with `iosxe_restconf` validation, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/223)
+- Fix issue with `iosxe_interface_ethernet` resource blocking the device database, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/201)
 
 ## 0.5.9
 
