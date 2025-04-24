@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.5.10 (unreleased)
+## 0.5.10
 
 - Fix update issue with `iosxe_restconf` resource and empty `attributes` map
 - Fix issue with `iosxe_restconf` validation, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/223)
