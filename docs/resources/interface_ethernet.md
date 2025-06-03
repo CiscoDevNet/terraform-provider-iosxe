@@ -201,6 +201,11 @@ resource "iosxe_interface_ethernet" "example" {
   - Choices: `loop`, `none`, `root`
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
   - Choices: `point-to-point`, `shared`
+- `spanning_tree_bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+- `spanning_tree_portfast` (Boolean) Portfast options for the interface
+- `spanning_tree_portfast_disable` (Boolean) Disable portfast for this interface
+- `spanning_tree_portfast_edge` (Boolean) Enable portfast edge on the interface
+- `spanning_tree_portfast_network` (Boolean) Enable portfast network on the interface
 - `spanning_tree_portfast_trunk` (Boolean) Enable portfast on the interface even in trunk mode
 - `speed_100` (Boolean) 100 Mbps operation
 - `speed_1000` (Boolean) 1000 Mbps operation
