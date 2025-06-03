@@ -230,6 +230,20 @@ attributes:
     example: 300
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
     example: point-to-point
+  - yang_name: spanning-tree/bpduguard/enable
+    example: true
+  - yang_name: spanning-tree/service-policy
+    exclude_test: true
+    example: true
+  - yang_name: spanning-tree/portfast
+    example: true
+    no_delete: true
+  - yang_name: spanning-tree/portfast/disable
+    example: false
+  - yang_name: spanning-tree/portfast/edge
+    example: false
+  - yang_name: spanning-tree/portfast/network
+    example: false
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk
     example: true
     exclude_test: true

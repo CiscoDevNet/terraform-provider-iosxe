@@ -407,6 +407,30 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					stringvalidator.OneOf("point-to-point", "shared"),
 				},
 			},
+			"spanning_tree_bpduguard_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BPDU guard for this interface").String,
+				Optional:            true,
+			},
+			"spanning_tree_service_policy": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("help").String,
+				Optional:            true,
+			},
+			"spanning_tree_portfast": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Portfast options for the interface").String,
+				Optional:            true,
+			},
+			"spanning_tree_portfast_disable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Disable portfast for this interface").String,
+				Optional:            true,
+			},
+			"spanning_tree_portfast_edge": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast edge on the interface").String,
+				Optional:            true,
+			},
+			"spanning_tree_portfast_network": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast network on the interface").String,
+				Optional:            true,
+			},
 			"spanning_tree_portfast_trunk": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable portfast on the interface even in trunk mode").String,
 				Optional:            true,
