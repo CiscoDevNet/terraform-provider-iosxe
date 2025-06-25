@@ -230,23 +230,22 @@ attributes:
     example: 300
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
     example: point-to-point
-  - yang_name: spanning-tree/bpduguard/enable
-    example: true
-  - yang_name: spanning-tree/service-policy
-    exclude_test: true
-    example: true
-  - yang_name: spanning-tree/portfast
-    example: true
-    no_delete: true
-  - yang_name: spanning-tree/portfast/disable
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/bpduguard-choice/enable/enable
+    xpath: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable
+    tf_name: bpduguard_enable
     example: false
-  - yang_name: spanning-tree/portfast/edge
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/bpduguard-choice/disable/disable
+    xpath: Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable
+    tf_name: bpduguard_disable
     example: false
-  - yang_name: spanning-tree/portfast/network
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast
+    example: false
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable
     example: false
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk
     example: true
-    exclude_test: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge
+    example: false
   - yang_name: ip/arp/inspection/trust
     example: true
     test_tags: [C9000V]
