@@ -158,7 +158,7 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Forty GigabitEthernet ",
 				Computed:            true,
 			},
-			"trap_source_hundred_gig_e": schema.StringAttribute{
+			"trap_source_hundred_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "Hundred GigabitEthernet",
 				Computed:            true,
 			},

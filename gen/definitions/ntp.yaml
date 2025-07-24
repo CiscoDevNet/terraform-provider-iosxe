@@ -82,7 +82,7 @@ attributes:
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/HundredGigE/HundredGigE
     xpath: Cisco-IOS-XE-ntp:source/HundredGigE
-    tf_name: trap_source_hundred_gig_e
+    tf_name: trap_source_hundred_gigabit_ethernet
     example: 1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Loopback/Loopback

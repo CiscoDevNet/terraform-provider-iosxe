@@ -110,7 +110,7 @@ resource "iosxe_ntp" "example" {
 - `servers` (Attributes List) (see [below for nested schema](#nestedatt--servers))
 - `trap_source_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `trap_source_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
-- `trap_source_hundred_gig_e` (String) Hundred GigabitEthernet
+- `trap_source_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
 - `trap_source_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 - `trap_source_port_channel` (Number) Ethernet Channel of interfaces
