@@ -26,7 +26,7 @@ resource "iosxe_crypto_ipsec_transform_set" "example" {
 
 ### Required
 
-- `esp` (String) - Choices: `esp-3des`, `esp-aes`, `esp-des`, `esp-gcm`, `esp-gmac`, `esp-null`, `esp-seal`
+- `esp` (String) - Choices: `esp-192-aes`, `esp-256-aes`, `esp-3des`, `esp-aes`, `esp-des`, `esp-gcm`, `esp-gmac`, `esp-null`, `esp-seal`
 - `esp_hmac` (String) - Choices: `esp-md5-hmac`, `esp-sha-hmac`, `esp-sha256-hmac`, `esp-sha384-hmac`, `esp-sha512-hmac`
 - `name` (String)
 

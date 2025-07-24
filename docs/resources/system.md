@@ -60,7 +60,7 @@ resource "iosxe_system" "example" {
 - `ip_http_secure_trustpoint` (String) Set http secure server certificate trustpoint
 - `ip_http_server` (Boolean) Enable http server
 - `ip_http_tls_version` (String) Set TLS version for HTTP secure server
-  - Choices: `TLSv1.0`, `TLSv1.1`, `TLSv1.2`
+  - Choices: `TLSv1.0`, `TLSv1.1`, `TLSv1.2`, `TLSv1.3`
 - `ip_multicast_routing` (Boolean) Enable IP multicast forwarding
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
 - `ip_routing` (Boolean) Enable or disable IP routing

@@ -89,7 +89,7 @@ func (r *SNMPServerUserResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"v3_auth_algorithm": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use HMAC SHA/MD5 algorithm for authentication").AddStringEnumDescription("md5", "sha").String,
-				Required:            true,
+				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("md5", "sha"),
 				},

@@ -201,7 +201,7 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							Computed:            true,
 						},
 						"match_tags": schema.ListAttribute{
-							MarkdownDescription: "Tag value",
+							MarkdownDescription: "Tag value (DEPRECATED - please use tag-val)",
 							ElementType:         types.Int64Type,
 							Computed:            true,
 						},
@@ -359,7 +359,7 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							Computed:            true,
 						},
 						"set_tag": schema.Int64Attribute{
-							MarkdownDescription: "Tag value",
+							MarkdownDescription: "Tag value (DEPRECATED - please use tag-val)",
 							Computed:            true,
 						},
 						"set_vrf": schema.StringAttribute{
@@ -429,7 +429,7 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							Computed:            true,
 						},
 						"set_as_path_prepend_as": schema.StringAttribute{
-							MarkdownDescription: "<1-65535>;;AS number",
+							MarkdownDescription: "BGP AS number",
 							Computed:            true,
 						},
 						"set_as_path_prepend_last_as": schema.Int64Attribute{

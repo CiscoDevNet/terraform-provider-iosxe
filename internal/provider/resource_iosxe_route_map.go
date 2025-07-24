@@ -224,7 +224,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_tags": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Tag value").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Tag value (DEPRECATED - please use tag-val)").String,
 							ElementType:         types.Int64Type,
 							Optional:            true,
 						},
@@ -413,7 +413,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_tag": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Tag value").AddIntegerRangeDescription(0, 4294967295).String,
+							MarkdownDescription: helpers.NewAttributeDescription("Tag value (DEPRECATED - please use tag-val)").AddIntegerRangeDescription(0, 4294967295).String,
 							Optional:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(0, 4294967295),
@@ -507,8 +507,11 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_as_path_prepend_as": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("<1-65535>;;AS number").String,
+							MarkdownDescription: helpers.NewAttributeDescription("BGP AS number").String,
 							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-9]+|[0-9]*\.[0-9]+)(\s+([0-9]+|[0-9]*\.[0-9]+))*`), ""),
+							},
 						},
 						"set_as_path_prepend_last_as": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 10).String,

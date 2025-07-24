@@ -71,9 +71,6 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_vlancreate", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_vlandelete", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_port_security", "true"))
-	if os.Getenv("IOSXE179") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_license", "true"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_smart_license", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_cpu_threshold", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_memory_bufferpeak", "true"))
@@ -261,9 +258,6 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `	enable_traps_vlancreate = true` + "\n"
 	config += `	enable_traps_vlandelete = true` + "\n"
 	config += `	enable_traps_port_security = true` + "\n"
-	if os.Getenv("IOSXE179") != "" {
-		config += `	enable_traps_license = true` + "\n"
-	}
 	config += `	enable_traps_smart_license = true` + "\n"
 	config += `	enable_traps_cpu_threshold = true` + "\n"
 	config += `	enable_traps_memory_bufferpeak = true` + "\n"
