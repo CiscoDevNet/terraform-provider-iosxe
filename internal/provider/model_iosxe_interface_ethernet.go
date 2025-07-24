@@ -91,7 +91,12 @@ type InterfaceEthernet struct {
 	Ipv6Addresses                           []InterfaceEthernetIpv6Addresses          `tfsdk:"ipv6_addresses"`
 	ArpTimeout                              types.Int64                               `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType                    types.String                              `tfsdk:"spanning_tree_link_type"`
+	BpduguardEnable                         types.Bool                                `tfsdk:"bpduguard_enable"`
+	BpduguardDisable                        types.Bool                                `tfsdk:"bpduguard_disable"`
+	SpanningTreePortfast                    types.Bool                                `tfsdk:"spanning_tree_portfast"`
+	SpanningTreePortfastDisable             types.Bool                                `tfsdk:"spanning_tree_portfast_disable"`
 	SpanningTreePortfastTrunk               types.Bool                                `tfsdk:"spanning_tree_portfast_trunk"`
+	SpanningTreePortfastEdge                types.Bool                                `tfsdk:"spanning_tree_portfast_edge"`
 	IpArpInspectionTrust                    types.Bool                                `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate                types.Int64                               `tfsdk:"ip_arp_inspection_limit_rate"`
 	IpDhcpSnoopingTrust                     types.Bool                                `tfsdk:"ip_dhcp_snooping_trust"`
@@ -202,7 +207,12 @@ type InterfaceEthernetData struct {
 	Ipv6Addresses                           []InterfaceEthernetIpv6Addresses          `tfsdk:"ipv6_addresses"`
 	ArpTimeout                              types.Int64                               `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType                    types.String                              `tfsdk:"spanning_tree_link_type"`
+	BpduguardEnable                         types.Bool                                `tfsdk:"bpduguard_enable"`
+	BpduguardDisable                        types.Bool                                `tfsdk:"bpduguard_disable"`
+	SpanningTreePortfast                    types.Bool                                `tfsdk:"spanning_tree_portfast"`
+	SpanningTreePortfastDisable             types.Bool                                `tfsdk:"spanning_tree_portfast_disable"`
 	SpanningTreePortfastTrunk               types.Bool                                `tfsdk:"spanning_tree_portfast_trunk"`
+	SpanningTreePortfastEdge                types.Bool                                `tfsdk:"spanning_tree_portfast_edge"`
 	IpArpInspectionTrust                    types.Bool                                `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate                types.Int64                               `tfsdk:"ip_arp_inspection_limit_rate"`
 	IpDhcpSnoopingTrust                     types.Bool                                `tfsdk:"ip_dhcp_snooping_trust"`
@@ -483,9 +493,34 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	if !data.SpanningTreeLinkType.IsNull() && !data.SpanningTreeLinkType.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.link-type", data.SpanningTreeLinkType.ValueString())
 	}
+	if !data.BpduguardEnable.IsNull() && !data.BpduguardEnable.IsUnknown() {
+		if data.BpduguardEnable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.bpduguard.enable", map[string]string{})
+		}
+	}
+	if !data.BpduguardDisable.IsNull() && !data.BpduguardDisable.IsUnknown() {
+		if data.BpduguardDisable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.bpduguard.disable", map[string]string{})
+		}
+	}
+	if !data.SpanningTreePortfast.IsNull() && !data.SpanningTreePortfast.IsUnknown() {
+		if data.SpanningTreePortfast.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.portfast", map[string]string{})
+		}
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() && !data.SpanningTreePortfastDisable.IsUnknown() {
+		if data.SpanningTreePortfastDisable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.disable", map[string]string{})
+		}
+	}
 	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.IsUnknown() {
 		if data.SpanningTreePortfastTrunk.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.trunk", map[string]string{})
+		}
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() && !data.SpanningTreePortfastEdge.IsUnknown() {
+		if data.SpanningTreePortfastEdge.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.edge", map[string]string{})
 		}
 	}
 	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.IsUnknown() {
@@ -1260,6 +1295,42 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.SpanningTreeLinkType = types.StringNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.bpduguard.enable"); !data.BpduguardEnable.IsNull() {
+		if value.Exists() {
+			data.BpduguardEnable = types.BoolValue(true)
+		} else {
+			data.BpduguardEnable = types.BoolValue(false)
+		}
+	} else {
+		data.BpduguardEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.bpduguard.disable"); !data.BpduguardDisable.IsNull() {
+		if value.Exists() {
+			data.BpduguardDisable = types.BoolValue(true)
+		} else {
+			data.BpduguardDisable = types.BoolValue(false)
+		}
+	} else {
+		data.BpduguardDisable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast"); !data.SpanningTreePortfast.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfast = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfast = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfast = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.disable"); !data.SpanningTreePortfastDisable.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastDisable = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastDisable = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.trunk"); !data.SpanningTreePortfastTrunk.IsNull() {
 		if value.Exists() {
 			data.SpanningTreePortfastTrunk = types.BoolValue(true)
@@ -1268,6 +1339,15 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 		}
 	} else {
 		data.SpanningTreePortfastTrunk = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.edge"); !data.SpanningTreePortfastEdge.IsNull() {
+		if value.Exists() {
+			data.SpanningTreePortfastEdge = types.BoolValue(true)
+		} else {
+			data.SpanningTreePortfastEdge = types.BoolValue(false)
+		}
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.arp.inspection.trust"); !data.IpArpInspectionTrust.IsNull() {
 		if value.Exists() {
@@ -1943,10 +2023,35 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.link-type"); value.Exists() {
 		data.SpanningTreeLinkType = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.bpduguard.enable"); value.Exists() {
+		data.BpduguardEnable = types.BoolValue(true)
+	} else {
+		data.BpduguardEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.bpduguard.disable"); value.Exists() {
+		data.BpduguardDisable = types.BoolValue(true)
+	} else {
+		data.BpduguardDisable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast"); value.Exists() {
+		data.SpanningTreePortfast = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.disable"); value.Exists() {
+		data.SpanningTreePortfastDisable = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.trunk"); value.Exists() {
 		data.SpanningTreePortfastTrunk = types.BoolValue(true)
 	} else {
 		data.SpanningTreePortfastTrunk = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.edge"); value.Exists() {
+		data.SpanningTreePortfastEdge = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.arp.inspection.trust"); value.Exists() {
 		data.IpArpInspectionTrust = types.BoolValue(true)
@@ -2444,10 +2549,35 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.link-type"); value.Exists() {
 		data.SpanningTreeLinkType = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.bpduguard.enable"); value.Exists() {
+		data.BpduguardEnable = types.BoolValue(true)
+	} else {
+		data.BpduguardEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.bpduguard.disable"); value.Exists() {
+		data.BpduguardDisable = types.BoolValue(true)
+	} else {
+		data.BpduguardDisable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast"); value.Exists() {
+		data.SpanningTreePortfast = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.disable"); value.Exists() {
+		data.SpanningTreePortfastDisable = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastDisable = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.trunk"); value.Exists() {
 		data.SpanningTreePortfastTrunk = types.BoolValue(true)
 	} else {
 		data.SpanningTreePortfastTrunk = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.portfast.edge"); value.Exists() {
+		data.SpanningTreePortfastEdge = types.BoolValue(true)
+	} else {
+		data.SpanningTreePortfastEdge = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "ip.arp.inspection.trust"); value.Exists() {
 		data.IpArpInspectionTrust = types.BoolValue(true)
@@ -2940,8 +3070,23 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	if !state.SpanningTreeLinkType.IsNull() && data.SpanningTreeLinkType.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", state.getPath()))
 	}
+	if !state.BpduguardEnable.IsNull() && data.BpduguardEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", state.getPath()))
+	}
+	if !state.BpduguardDisable.IsNull() && data.BpduguardDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", state.getPath()))
+	}
+	if !state.SpanningTreePortfast.IsNull() && data.SpanningTreePortfast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", state.getPath()))
+	}
+	if !state.SpanningTreePortfastDisable.IsNull() && data.SpanningTreePortfastDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", state.getPath()))
+	}
 	if !state.SpanningTreePortfastTrunk.IsNull() && data.SpanningTreePortfastTrunk.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", state.getPath()))
+	}
+	if !state.SpanningTreePortfastEdge.IsNull() && data.SpanningTreePortfastEdge.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", state.getPath()))
 	}
 	if !state.IpArpInspectionTrust.IsNull() && data.IpArpInspectionTrust.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/arp/inspection/trust", state.getPath()))
@@ -3214,8 +3359,23 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/prefix-list=%v/eui-64", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+	if !data.BpduguardEnable.IsNull() && !data.BpduguardEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", data.getPath()))
+	}
+	if !data.BpduguardDisable.IsNull() && !data.BpduguardDisable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", data.getPath()))
+	}
+	if !data.SpanningTreePortfast.IsNull() && !data.SpanningTreePortfast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", data.getPath()))
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() && !data.SpanningTreePortfastDisable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", data.getPath()))
+	}
 	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() && !data.SpanningTreePortfastEdge.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", data.getPath()))
 	}
 	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
@@ -3474,8 +3634,23 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	if !data.SpanningTreeLinkType.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", data.getPath()))
 	}
+	if !data.BpduguardEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", data.getPath()))
+	}
+	if !data.BpduguardDisable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", data.getPath()))
+	}
+	if !data.SpanningTreePortfast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", data.getPath()))
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", data.getPath()))
+	}
 	if !data.SpanningTreePortfastTrunk.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", data.getPath()))
 	}
 	if !data.IpArpInspectionTrust.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
