@@ -82,7 +82,7 @@ Optional:
 - `password` (String)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
-- `password_type` (String) - Choices: `0`, `7`
+- `password_type` (String) - Choices: `0`, `6`, `7`
 - `privilege_level` (Number) - Range: `0`-`15`
 - `stopbits` (String) Set async line stop bits
   - Choices: `1`, `1.5`, `2`
@@ -110,7 +110,7 @@ Optional:
 - `password` (String)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
-- `password_type` (String) - Choices: `0`, `7`
+- `password_type` (String) - Choices: `0`, `6`, `7`
 - `transport_input` (String) Define which protocols to use when connecting to the terminal server
 - `transport_input_all` (Boolean) All protocols
 - `transport_input_none` (Boolean) Define no transport protocols for line

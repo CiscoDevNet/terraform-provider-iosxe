@@ -32,8 +32,6 @@ resource "iosxe_snmp_server_user" "example" {
 
 - `grpname` (String) Group to which the user belongs
 - `username` (String) Name of the user
-- `v3_auth_algorithm` (String) Use HMAC SHA/MD5 algorithm for authentication
-  - Choices: `md5`, `sha`
 - `v3_auth_password` (String) Authentication password for user
 
 ### Optional
@@ -45,6 +43,8 @@ resource "iosxe_snmp_server_user" "example" {
 - `v3_auth_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
   - Range: `1`-`99`
+- `v3_auth_algorithm` (String) Use HMAC SHA/MD5 algorithm for authentication
+  - Choices: `md5`, `sha`
 - `v3_auth_priv_aes_access_acl_name` (String) Access-list name
 - `v3_auth_priv_aes_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_priv_aes_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string

@@ -128,7 +128,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/license
     tf_name: enable_traps_license
     example: true
-    test_tags: [IOSXE179]
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/smart-licenseing/smart-license
     tf_name: enable_traps_smart_license
     example: true

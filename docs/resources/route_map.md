@@ -162,11 +162,11 @@ Optional:
 - `match_source_protocol_ospfv3` (List of String) OSPFv3
 - `match_source_protocol_rip` (Boolean) Routing Information Protocol (RIP)
 - `match_source_protocol_static` (Boolean) Static routes
-- `match_tags` (List of Number) Tag value
+- `match_tags` (List of Number) Tag value (DEPRECATED - please use tag-val)
 - `match_track` (Number) tracking object
   - Range: `1`-`1000`
 - `operation` (String) - Choices: `deny`, `permit`
-- `set_as_path_prepend_as` (String) <1-65535>;;AS number
+- `set_as_path_prepend_as` (String) BGP AS number
 - `set_as_path_prepend_as_legacy` (String) <1-65535>;;AS number (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `set_as_path_prepend_last_as` (Number) - Range: `1`-`10`
 - `set_as_path_prepend_last_as_legacy` (Number) - Range: `1`-`10`
@@ -228,7 +228,7 @@ Optional:
   - Choices: `external`, `internal`, `type-1`, `type-2`
 - `set_metric_value` (Number) Metric value or Bandwidth in Kbits per second
   - Range: `0`-`4294967295`
-- `set_tag` (Number) Tag value
+- `set_tag` (Number) Tag value (DEPRECATED - please use tag-val)
   - Range: `0`-`4294967295`
 - `set_vrf` (String) VPN Routing/Forwarding instance name
 - `set_weight` (Number) BGP weight for routing table

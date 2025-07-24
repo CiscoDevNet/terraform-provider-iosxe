@@ -130,10 +130,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"password_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "7").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "6", "7").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("0", "7"),
+								stringvalidator.OneOf("0", "6", "7"),
 							},
 						},
 						"password": schema.StringAttribute{
@@ -210,10 +210,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"password_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "7").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "6", "7").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("0", "7"),
+								stringvalidator.OneOf("0", "6", "7"),
 							},
 						},
 						"password": schema.StringAttribute{

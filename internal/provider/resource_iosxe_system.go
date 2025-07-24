@@ -218,10 +218,10 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				},
 			},
 			"ip_http_tls_version": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set TLS version for HTTP secure server").AddStringEnumDescription("TLSv1.0", "TLSv1.1", "TLSv1.2").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set TLS version for HTTP secure server").AddStringEnumDescription("TLSv1.0", "TLSv1.1", "TLSv1.2", "TLSv1.3").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("TLSv1.0", "TLSv1.1", "TLSv1.2"),
+					stringvalidator.OneOf("TLSv1.0", "TLSv1.1", "TLSv1.2", "TLSv1.3"),
 				},
 			},
 			"ip_http_client_secure_trustpoint": schema.StringAttribute{

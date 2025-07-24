@@ -59,7 +59,6 @@ func testAccIosxeSNMPServerUserConfig_minimum() string {
 	config := `resource "iosxe_snmp_server_user" "test" {` + "\n"
 	config += `	username = "USER1"` + "\n"
 	config += `	grpname = "GROUP1"` + "\n"
-	config += `	v3_auth_algorithm = "sha"` + "\n"
 	config += `	v3_auth_password = "Cisco123"` + "\n"
 	config += `}` + "\n"
 	return config
