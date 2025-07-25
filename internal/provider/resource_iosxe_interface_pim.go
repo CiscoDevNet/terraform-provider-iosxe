@@ -116,10 +116,10 @@ func (r *InterfacePIMResource) Schema(ctx context.Context, req resource.SchemaRe
 				Optional:            true,
 			},
 			"dr_priority": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("PIM router DR priority").AddIntegerRangeDescription(0, 4294967295).String,
+				MarkdownDescription: helpers.NewAttributeDescription("PIM router DR priority").AddIntegerRangeDescription(0, 4294967294).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(0, 4294967295),
+					int64validator.Between(0, 4294967294),
 				},
 			},
 		},

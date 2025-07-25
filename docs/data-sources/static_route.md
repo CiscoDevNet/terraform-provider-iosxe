@@ -44,6 +44,6 @@ Read-Only:
 - `global` (Boolean) Next hop address is global
 - `metric` (Number)
 - `name` (String) Specify name of the next hop
-- `next_hop` (String)
+- `next_hop` (String) Specify the next hop as an ip-address or interface name
 - `permanent` (Boolean) permanent route
 - `tag` (Number) Set tag for this route

@@ -62,14 +62,16 @@ resource "iosxe_policy_map_event" "example" {
 
 ### Required
 
-- `event_type` (String) - Choices: `aaa-available`, `absolute-timeout`, `agent-found`, `authentication-failure`, `authentication-success`, `authorization-failure`, `authorization-success`, `identity-update`, `inactivity-timeout`, `remote-authentication-failure`, `remote-authentication-success`, `remote-update`, `session-disconnected`, `session-started`, `tag-added`, `tag-removed`, `template-activated`, `template-activation-failed`, `template-deactivated`, `template-deactivation-failed`, `timer-expiry`, `violation`
+- `event_type` (String) The event this control class-map triggers upon
+  - Choices: `aaa-available`, `absolute-timeout`, `agent-found`, `authentication-failure`, `authentication-success`, `authorization-failure`, `authorization-success`, `identity-update`, `inactivity-timeout`, `remote-authentication-failure`, `remote-authentication-success`, `remote-update`, `session-disconnected`, `session-started`, `tag-added`, `tag-removed`, `template-activated`, `template-activation-failed`, `template-deactivated`, `template-deactivation-failed`, `timer-expiry`, `violation`
 - `name` (String) Name of the policy map
 
 ### Optional
 
 - `class_numbers` (Attributes List) class number, 1 for 1st class, 2 for 2nd... (see [below for nested schema](#nestedatt--class_numbers))
 - `device` (String) A device name from the provider configuration.
-- `match_type` (String) - Choices: `match-all`, `match-first`
+- `match_type` (String) Matching criteria for first or all events.
+  - Choices: `match-all`, `match-first`
 
 ### Read-Only
 
@@ -80,20 +82,23 @@ resource "iosxe_policy_map_event" "example" {
 
 Required:
 
-- `number` (Number) - Range: `1`-`254`
+- `number` (Number) class number, 1 for 1st class, 2 for 2nd...
+  - Range: `1`-`254`
 
 Optional:
 
 - `action_numbers` (Attributes List) action number, 1 for 1st class, 2 for 2nd... (see [below for nested schema](#nestedatt--class_numbers--action_numbers))
 - `class` (String) The class type this control policy-map triggers upon
-- `execution_type` (String) - Choices: `do-all`, `do-until-failure`, `do-until-success`
+- `execution_type` (String) Policy execution strategy
+  - Choices: `do-all`, `do-until-failure`, `do-until-success`
 
 <a id="nestedatt--class_numbers--action_numbers"></a>
 ### Nested Schema for `class_numbers.action_numbers`
 
 Required:
 
-- `number` (Number) - Range: `1`-`254`
+- `number` (Number) action number, 1 for 1st class, 2 for 2nd...
+  - Range: `1`-`254`
 
 Optional:
 
@@ -107,7 +112,8 @@ Optional:
 - `authenticate_using_aaa_authc_list` (String) Specify authentication method list
 - `authenticate_using_aaa_authz_list` (String) Specify authorization method list
 - `authenticate_using_both` (Boolean) Enabling Dot1x Authenticator & Supplicant
-- `authenticate_using_method` (String) - Choices: `dot1x`, `mab`, `webauth`
+- `authenticate_using_method` (String) method/protocol to be used for authentication
+  - Choices: `dot1x`, `mab`, `webauth`
 - `authenticate_using_parameter_map` (String) Specify parameter map name
 - `authenticate_using_priority` (Number) Method priority
   - Range: `1`-`254`

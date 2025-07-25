@@ -20,12 +20,16 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestAccIosxeCommunityListStandard(t *testing.T) {
+	if os.Getenv("IOSXE1712") == "" {
+		t.Skip("skipping test, set environment variable IOSXE1712")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_community_list_standard.test", "name", "CLS1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_community_list_standard.test", "deny_entries.0", "65000:500"))

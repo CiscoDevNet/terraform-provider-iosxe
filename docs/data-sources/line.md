@@ -37,7 +37,7 @@ Read-Only:
 
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
-- `first` (String)
+- `first` (String) Console line number
 - `login_authentication` (String)
 - `login_local` (Boolean)
 - `password` (String)
@@ -52,15 +52,15 @@ Read-Only:
 
 Read-Only:
 
-- `access_classes` (Attributes List) (see [below for nested schema](#nestedatt--vty--access_classes))
+- `access_classes` (Attributes List) Choose direction of the access list (see [below for nested schema](#nestedatt--vty--access_classes))
 - `authorization_exec` (String) Use an authorization list with this name
 - `authorization_exec_default` (Boolean) Use the default authorization list
 - `escape_character` (String)
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
-- `first` (Number)
-- `last` (Number)
-- `login_authentication` (String)
+- `first` (Number) Vty first line number
+- `last` (Number) Vty last line number
+- `login_authentication` (String) Authentication list
 - `password` (String)
 - `password_level` (Number) Set exec level password
 - `password_type` (String)
@@ -75,5 +75,5 @@ Read-Only:
 Read-Only:
 
 - `access_list` (String)
-- `direction` (String)
+- `direction` (String) Filter connections based on the incoming/outgoing direction
 - `vrf_also` (Boolean) Same access list is applied for all VRFs

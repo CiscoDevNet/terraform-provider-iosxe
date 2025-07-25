@@ -61,8 +61,8 @@ resource "iosxe_logging" "example" {
 
 ### Optional
 
-- `buffered_severity` (String) Logging severity level
-- `buffered_size` (Number) Logging buffer size
+- `buffered_severity` (String) DEPRECATED. Logging severity level
+- `buffered_size` (Number) DEPRECATED. Logging buffer size
   - Range: `4096`-`2147483647`
 - `console_severity` (String)
 - `device` (String) A device name from the provider configuration.

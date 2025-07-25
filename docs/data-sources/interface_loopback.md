@@ -41,8 +41,8 @@ data "iosxe_interface_loopback" "example" {
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
-- `ipv4_address` (String)
-- `ipv4_address_mask` (String)
+- `ipv4_address` (String) Ip address
+- `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
@@ -59,7 +59,7 @@ data "iosxe_interface_loopback" "example" {
 Read-Only:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
-- `prefix` (String)
+- `prefix` (String) IPv6 prefix
 
 
 <a id="nestedatt--ipv6_link_local_addresses"></a>

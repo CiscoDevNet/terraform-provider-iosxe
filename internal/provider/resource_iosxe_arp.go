@@ -157,7 +157,7 @@ func (r *ARPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"inspection_vlan": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable ARP Inspection on vlans").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/Disable ARP Inspection on vlans(Deprecated)").String,
 				Optional:            true,
 			},
 		},

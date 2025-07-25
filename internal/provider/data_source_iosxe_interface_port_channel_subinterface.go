@@ -91,11 +91,11 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				Computed:            true,
 			},
 			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip address",
 				Computed:            true,
 			},
 			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
 			"encapsulation_dot1q_vlan_id": schema.Int64Attribute{
@@ -176,7 +176,7 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"address": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IP destination address",
 							Computed:            true,
 						},
 						"global": schema.BoolAttribute{
@@ -260,7 +260,7 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"prefix": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IPv6 prefix",
 							Computed:            true,
 						},
 						"eui_64": schema.BoolAttribute{

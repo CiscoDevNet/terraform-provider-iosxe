@@ -74,38 +74,38 @@ func (r *SNMPServerGroupResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"v3_security": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("group using security Level").String,
+				MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED group using security Level").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"security_level": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("security level type").AddStringEnumDescription("auth", "noauth", "priv").String,
+							MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED security level type").AddStringEnumDescription("auth", "noauth", "priv").String,
 							Required:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("auth", "noauth", "priv"),
 							},
 						},
 						"context_node": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("specify a context to associate these views for the group").String,
+							MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED specify a context to associate these views for the group").String,
 							Optional:            true,
 						},
 						"match_node": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("context name match criteria").AddStringEnumDescription("exact", "prefix").String,
+							MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED context name match criteria").AddStringEnumDescription("exact", "prefix").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("exact", "prefix"),
 							},
 						},
 						"read_node": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("specify a read view for the group").String,
+							MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED specify a read view for the group").String,
 							Optional:            true,
 						},
 						"write_node": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("specify a write view for the group").String,
+							MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED specify a write view for the group").String,
 							Optional:            true,
 						},
 						"notify_node": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("specify a notify view for the group").String,
+							MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED specify a notify view for the group").String,
 							Optional:            true,
 						},
 						"access_ipv6_acl": schema.StringAttribute{

@@ -68,7 +68,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"first": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Console line number",
 							Computed:            true,
 						},
 						"exec_timeout_minutes": schema.Int64Attribute{
@@ -116,20 +116,20 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"first": schema.Int64Attribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Vty first line number",
 							Computed:            true,
 						},
 						"last": schema.Int64Attribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Vty last line number",
 							Computed:            true,
 						},
 						"access_classes": schema.ListNestedAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Choose direction of the access list",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"direction": schema.StringAttribute{
-										MarkdownDescription: "",
+										MarkdownDescription: "Filter connections based on the incoming/outgoing direction",
 										Computed:            true,
 									},
 									"access_list": schema.StringAttribute{
@@ -164,7 +164,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							Computed:            true,
 						},
 						"login_authentication": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Authentication list",
 							Computed:            true,
 						},
 						"transport_preferred_protocol": schema.StringAttribute{

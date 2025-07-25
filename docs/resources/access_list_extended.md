@@ -77,7 +77,7 @@ Optional:
 - `destination_port_range_from` (String) Match only packets in the range of port numbers
 - `destination_port_range_to` (String) Match only packets in the range of port numbers
 - `destination_prefix` (String)
-- `destination_prefix_mask` (String)
+- `destination_prefix_mask` (String) Destination wildcard bits
 - `dscp` (String) Match packets with given dscp value
 - `established` (Boolean) Match established connections
 - `fin` (Boolean) Match on the FIN bit
@@ -98,7 +98,7 @@ Optional:
 - `source_port_range_from` (String) Match only packets in the range of port numbers
 - `source_port_range_to` (String) Match only packets in the range of port numbers
 - `source_prefix` (String)
-- `source_prefix_mask` (String)
+- `source_prefix_mask` (String) Source wildcard bits
 - `syn` (Boolean) Match on the SYN bit
 - `tos` (String) Match packets with given TOS value
 - `urg` (Boolean) Match on the URG bit

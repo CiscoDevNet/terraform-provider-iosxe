@@ -177,8 +177,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
-- `ipv4_address` (String)
-- `ipv4_address_mask` (String)
+- `ipv4_address` (String) Ip address
+- `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
@@ -204,7 +204,7 @@ resource "iosxe_interface_ethernet" "example" {
   - Choices: `loop`, `none`, `root`
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
   - Choices: `point-to-point`, `shared`
-- `spanning_tree_portfast_trunk` (Boolean) Enable portfast on the interface even in trunk mode
+- `spanning_tree_portfast_trunk` (Boolean) (DEPRECATED) Enable portfast on the interface even in trunk mode
 - `speed_100` (Boolean) 100 Mbps operation
 - `speed_1000` (Boolean) 1000 Mbps operation
 - `speed_10000` (Boolean) 10000 Mbps operation
@@ -229,7 +229,7 @@ resource "iosxe_interface_ethernet" "example" {
 
 Required:
 
-- `address` (String)
+- `address` (String) IP destination address
 
 Optional:
 
@@ -251,7 +251,7 @@ Required:
 
 Required:
 
-- `prefix` (String)
+- `prefix` (String) IPv6 prefix
 
 Optional:
 

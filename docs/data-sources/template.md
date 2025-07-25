@@ -39,7 +39,7 @@ data "iosxe_template" "example" {
 - `access_session_monitor` (Boolean) Apply template to monitor access sessions on the port
 - `access_session_port_control` (String) Set the port-control value
 - `authentication_periodic` (Boolean) Enable or Disable Reauthentication for this port
-- `authentication_timer_reauthenticate_range` (Number) Enter a value between 1 and 65535
+- `authentication_timer_reauthenticate_range` (Number) Enter a value between 1 and 1073741823
 - `authentication_timer_reauthenticate_server` (Boolean) Obtain re-authentication timeout value from the server
 - `cts_manual` (Boolean) Supply local configuration for CTS parameters
 - `cts_manual_policy_static_sgt` (Number) Source Security Group Tag to apply to untagged or non-trusted incoming traffic

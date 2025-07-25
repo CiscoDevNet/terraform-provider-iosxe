@@ -99,7 +99,7 @@ func (r *StaticRouteVRFResource) Schema(ctx context.Context, req resource.Schema
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"next_hop": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Specify the next hop as an ip-address or interface name").String,
 										Required:            true,
 									},
 									"metric": schema.Int64Attribute{

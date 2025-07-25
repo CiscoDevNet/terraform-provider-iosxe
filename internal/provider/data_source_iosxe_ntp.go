@@ -184,7 +184,7 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"ip_address": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Configure ip/ipv6 address/hostname of peer",
 							Computed:            true,
 						},
 						"source": schema.StringAttribute{
@@ -221,7 +221,7 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"ip_address": schema.StringAttribute{
-										MarkdownDescription: "",
+										MarkdownDescription: "Configure ip/ipv6 address/hostname of peer",
 										Computed:            true,
 									},
 									"key": schema.Int64Attribute{
@@ -248,7 +248,7 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"ip_address": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Configure ip/ipv6 address/hostname of peer",
 							Computed:            true,
 						},
 						"source": schema.StringAttribute{
@@ -285,7 +285,7 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"ip_address": schema.StringAttribute{
-										MarkdownDescription: "",
+										MarkdownDescription: "Configure ip/ipv6 address/hostname of peer",
 										Computed:            true,
 									},
 									"key": schema.Int64Attribute{

@@ -91,7 +91,7 @@ func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Computed:            true,
 			},
 			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: "DHCP Snooping vlan",
+				MarkdownDescription: "DHCP Snooping vlan (OBSOLETE)",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

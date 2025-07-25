@@ -45,7 +45,7 @@ data "iosxe_ospf" "example" {
 - `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
 - `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
 - `priority` (Number) OSPF topology priority
-- `router_id` (String) Override configured router identifier (peers will reset)
+- `router_id` (String) Configure router identifier. New router-id will take effect immediately (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
 - `summary_addresses` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_addresses))
 

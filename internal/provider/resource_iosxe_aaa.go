@@ -116,9 +116,6 @@ func (r *AAAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						"name": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Radius Server-group name with max string length 32").String,
 							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-zA-Z!->@^_~]*`), ""),
-							},
 						},
 						"server_names": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Name of radius server").String,

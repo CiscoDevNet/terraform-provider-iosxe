@@ -77,7 +77,7 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"event_type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("aaa-available", "absolute-timeout", "agent-found", "authentication-failure", "authentication-success", "authorization-failure", "authorization-success", "identity-update", "inactivity-timeout", "remote-authentication-failure", "remote-authentication-success", "remote-update", "session-disconnected", "session-started", "tag-added", "tag-removed", "template-activated", "template-activation-failed", "template-deactivated", "template-deactivation-failed", "timer-expiry", "violation").String,
+				MarkdownDescription: helpers.NewAttributeDescription("The event this control class-map triggers upon").AddStringEnumDescription("aaa-available", "absolute-timeout", "agent-found", "authentication-failure", "authentication-success", "authorization-failure", "authorization-success", "identity-update", "inactivity-timeout", "remote-authentication-failure", "remote-authentication-success", "remote-update", "session-disconnected", "session-started", "tag-added", "tag-removed", "template-activated", "template-activation-failed", "template-deactivated", "template-deactivation-failed", "timer-expiry", "violation").String,
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("aaa-available", "absolute-timeout", "agent-found", "authentication-failure", "authentication-success", "authorization-failure", "authorization-success", "identity-update", "inactivity-timeout", "remote-authentication-failure", "remote-authentication-success", "remote-update", "session-disconnected", "session-started", "tag-added", "tag-removed", "template-activated", "template-activation-failed", "template-deactivated", "template-deactivation-failed", "timer-expiry", "violation"),
@@ -87,7 +87,7 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"match_type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("match-all", "match-first").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Matching criteria for first or all events.").AddStringEnumDescription("match-all", "match-first").String,
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("match-all", "match-first"),
@@ -99,7 +99,7 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"number": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 254).String,
+							MarkdownDescription: helpers.NewAttributeDescription("class number, 1 for 1st class, 2 for 2nd...").AddIntegerRangeDescription(1, 254).String,
 							Required:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(1, 254),
@@ -110,7 +110,7 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 							Optional:            true,
 						},
 						"execution_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("do-all", "do-until-failure", "do-until-success").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Policy execution strategy").AddStringEnumDescription("do-all", "do-until-failure", "do-until-success").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("do-all", "do-until-failure", "do-until-success"),
@@ -122,7 +122,7 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"number": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 254).String,
+										MarkdownDescription: helpers.NewAttributeDescription("action number, 1 for 1st class, 2 for 2nd...").AddIntegerRangeDescription(1, 254).String,
 										Required:            true,
 										Validators: []validator.Int64{
 											int64validator.Between(1, 254),
@@ -186,7 +186,7 @@ func (r *PolicyMapEventResource) Schema(ctx context.Context, req resource.Schema
 										Optional:            true,
 									},
 									"authenticate_using_method": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("dot1x", "mab", "webauth").String,
+										MarkdownDescription: helpers.NewAttributeDescription("method/protocol to be used for authentication").AddStringEnumDescription("dot1x", "mab", "webauth").String,
 										Optional:            true,
 										Validators: []validator.String{
 											stringvalidator.OneOf("dot1x", "mab", "webauth"),

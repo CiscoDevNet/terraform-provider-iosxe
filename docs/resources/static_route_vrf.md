@@ -67,7 +67,7 @@ Optional:
 
 Required:
 
-- `next_hop` (String)
+- `next_hop` (String) Specify the next hop as an ip-address or interface name
 
 Optional:
 

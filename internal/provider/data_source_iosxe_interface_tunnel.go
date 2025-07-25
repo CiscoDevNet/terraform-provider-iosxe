@@ -132,7 +132,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"prefix": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IPv6 prefix",
 							Computed:            true,
 						},
 						"eui_64": schema.BoolAttribute{
@@ -151,7 +151,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				Computed:            true,
 			},
 			"tunnel_protection_ipsec_profile": schema.StringAttribute{
-				MarkdownDescription: "Determine the ipsec policy profile to use.",
+				MarkdownDescription: "Obsolete, use the other option profile-option to set ipsec policy profile",
 				Computed:            true,
 			},
 			"crypto_ipsec_df_bit": schema.StringAttribute{
@@ -163,11 +163,11 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				Computed:            true,
 			},
 			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip address",
 				Computed:            true,
 			},
 			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
 			"unnumbered": schema.StringAttribute{
@@ -204,7 +204,7 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"address": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IP destination address",
 							Computed:            true,
 						},
 						"global": schema.BoolAttribute{

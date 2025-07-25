@@ -491,23 +491,23 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed:            true,
 			},
 			"enable_traps_mpls_traffic_eng": schema.BoolAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Allow SNMP MPLS traffic engineering traps",
 				Computed:            true,
 			},
 			"enable_traps_mpls_vpn": schema.BoolAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Allow SNMP MPLS Virtual Private Network traps",
 				Computed:            true,
 			},
 			"enable_traps_mpls_rfc_ldp": schema.BoolAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Allow SNMP MPLS label distribution protocol RFC traps",
 				Computed:            true,
 			},
 			"enable_traps_mpls_ldp": schema.BoolAttribute{
-				MarkdownDescription: "SNMP MPLS label distribution protocol traps",
+				MarkdownDescription: "Allow SNMP MPLS label distribution protocol traps",
 				Computed:            true,
 			},
 			"enable_traps_fast_reroute_protected": schema.BoolAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Enable MPLS fast reroute protection traps",
 				Computed:            true,
 			},
 			"enable_traps_local_auth": schema.BoolAttribute{

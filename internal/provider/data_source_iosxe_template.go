@@ -247,7 +247,7 @@ func (d *TemplateDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				Computed:            true,
 			},
 			"authentication_timer_reauthenticate_range": schema.Int64Attribute{
-				MarkdownDescription: "Enter a value between 1 and 65535",
+				MarkdownDescription: "Enter a value between 1 and 1073741823",
 				Computed:            true,
 			},
 			"spanning_tree_bpduguard_enable": schema.BoolAttribute{

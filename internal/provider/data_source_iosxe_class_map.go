@@ -120,7 +120,7 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				Computed:            true,
 			},
 			"match_result_type_method_dot1x_method_timeout": schema.BoolAttribute{
-				MarkdownDescription: "method_timeout type",
+				MarkdownDescription: "method timeout type",
 				Computed:            true,
 			},
 			"match_method_mab": schema.BoolAttribute{

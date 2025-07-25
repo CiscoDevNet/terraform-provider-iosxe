@@ -32,7 +32,7 @@ data "iosxe_evpn_instance" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
-- `vlan_based_auto_route_target` (Boolean) Automatically set a route-target
+- `vlan_based_auto_route_target` (Boolean) Automatically set a route-target (OBSOLETE, use auto-route-target-boolean)
 - `vlan_based_default_gateway_advertise` (String) Advertise Default Gateway MAC/IP routes
 - `vlan_based_encapsulation` (String) Data encapsulation method
 - `vlan_based_ip_local_learning_disable` (Boolean) Disable IP local learning from dataplane
@@ -45,5 +45,5 @@ data "iosxe_evpn_instance" "example" {
 - `vlan_based_replication_type_static` (Boolean) Static replication
 - `vlan_based_route_target` (String) ASN:nn or IP-address:nn
 - `vlan_based_route_target_both` (String) ASN:nn or IP-address:nn
-- `vlan_based_route_target_export` (String) ASN:nn or IP-address:nn (DEPRECATED, use rt-value-entry)
-- `vlan_based_route_target_import` (String) ASN:nn or IP-address:nn (DEPRECATED, use rt-value-entry)
+- `vlan_based_route_target_export` (String) ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)
+- `vlan_based_route_target_import` (String) ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)

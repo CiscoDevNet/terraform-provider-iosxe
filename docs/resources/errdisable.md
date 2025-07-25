@@ -82,7 +82,7 @@ resource "iosxe_errdisable" "example" {
   - Range: `1`-`100`
 - `flap_setting_cause_pagp_flap_time` (Number) time period the flaps are counted
   - Range: `1`-`120`
-- `recovery_cause_all` (Boolean) Enable timer to recover from all error causes
+- `recovery_cause_all` (Boolean) Enable timer to recover from all error causes (DEPRECATED)
 - `recovery_cause_arp_inspection` (Boolean) Enable timer to recover from arp inspection error disable state
 - `recovery_cause_bpduguard` (Boolean) Enable timer to recover from BPDU Guard error
 - `recovery_cause_channel_misconfig` (Boolean) (STP)  Enable timer to recover from channel misconfiguration error

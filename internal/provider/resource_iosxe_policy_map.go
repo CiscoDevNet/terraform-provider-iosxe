@@ -77,10 +77,10 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("type of the policy-map").AddStringEnumDescription("access-control", "appnav", "control", "epbr", "inspect", "packet-service", "performance-monitor", "queueing", "service", "service-chain", "umbrella").String,
+				MarkdownDescription: helpers.NewAttributeDescription("type of the policy-map").AddStringEnumDescription("access-control", "appnav", "control", "epbr", "inspect", "ngsw-qos", "packet-service", "performance-monitor", "queueing", "service", "service-chain", "umbrella").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("access-control", "appnav", "control", "epbr", "inspect", "packet-service", "performance-monitor", "queueing", "service", "service-chain", "umbrella"),
+					stringvalidator.OneOf("access-control", "appnav", "control", "epbr", "inspect", "ngsw-qos", "packet-service", "performance-monitor", "queueing", "service", "service-chain", "umbrella"),
 				},
 			},
 			"subscriber": schema.BoolAttribute{
@@ -179,17 +179,17 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 										},
 									},
 									"shape_average_bit_rate": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Target Bit Rate (bits/sec)").AddIntegerRangeDescription(8000, 100000000000).String,
+										MarkdownDescription: helpers.NewAttributeDescription("Target Bit Rate (bits/sec)").AddIntegerRangeDescription(1000, 100000000000).String,
 										Optional:            true,
 										Validators: []validator.Int64{
-											int64validator.Between(8000, 100000000000),
+											int64validator.Between(1000, 100000000000),
 										},
 									},
 									"shape_average_bits_per_interval_sustained": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("bits per interval, sustained. Recommend not to configure, algo finds the best value").AddIntegerRangeDescription(256, 154400000).String,
+										MarkdownDescription: helpers.NewAttributeDescription("bits per interval, sustained. Recommend not to configure, algo finds the best value").AddIntegerRangeDescription(32, 800000000).String,
 										Optional:            true,
 										Validators: []validator.Int64{
-											int64validator.Between(256, 154400000),
+											int64validator.Between(32, 800000000),
 										},
 									},
 									"shape_average_bits_per_interval_excess": schema.Int64Attribute{

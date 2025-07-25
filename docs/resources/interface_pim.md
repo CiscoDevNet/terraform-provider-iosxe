@@ -44,7 +44,7 @@ resource "iosxe_interface_pim" "example" {
 - `dense_mode` (Boolean) Enable PIM dense-mode operation
 - `device` (String) A device name from the provider configuration.
 - `dr_priority` (Number) PIM router DR priority
-  - Range: `0`-`4294967295`
+  - Range: `0`-`4294967294`
 - `passive` (Boolean) Enable PIM passive interface operation
 - `sparse_dense_mode` (Boolean) Enable PIM sparse-dense-mode operation
 - `sparse_mode` (Boolean) Enable PIM sparse-mode operation

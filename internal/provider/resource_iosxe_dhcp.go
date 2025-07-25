@@ -108,7 +108,7 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional:            true,
 			},
 			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan").String,
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan (OBSOLETE)").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{

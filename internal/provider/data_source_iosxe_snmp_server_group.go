@@ -67,32 +67,32 @@ func (d *SNMPServerGroupDataSource) Schema(ctx context.Context, req datasource.S
 				Required:            true,
 			},
 			"v3_security": schema.ListNestedAttribute{
-				MarkdownDescription: "group using security Level",
+				MarkdownDescription: "DEPRECATED group using security Level",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"security_level": schema.StringAttribute{
-							MarkdownDescription: "security level type",
+							MarkdownDescription: "DEPRECATED security level type",
 							Computed:            true,
 						},
 						"context_node": schema.StringAttribute{
-							MarkdownDescription: "specify a context to associate these views for the group",
+							MarkdownDescription: "DEPRECATED specify a context to associate these views for the group",
 							Computed:            true,
 						},
 						"match_node": schema.StringAttribute{
-							MarkdownDescription: "context name match criteria",
+							MarkdownDescription: "DEPRECATED context name match criteria",
 							Computed:            true,
 						},
 						"read_node": schema.StringAttribute{
-							MarkdownDescription: "specify a read view for the group",
+							MarkdownDescription: "DEPRECATED specify a read view for the group",
 							Computed:            true,
 						},
 						"write_node": schema.StringAttribute{
-							MarkdownDescription: "specify a write view for the group",
+							MarkdownDescription: "DEPRECATED specify a write view for the group",
 							Computed:            true,
 						},
 						"notify_node": schema.StringAttribute{
-							MarkdownDescription: "specify a notify view for the group",
+							MarkdownDescription: "DEPRECATED specify a notify view for the group",
 							Computed:            true,
 						},
 						"access_ipv6_acl": schema.StringAttribute{

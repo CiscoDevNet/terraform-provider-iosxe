@@ -52,8 +52,8 @@ data "iosxe_interface_tunnel" "example" {
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
-- `ipv4_address` (String)
-- `ipv4_address_mask` (String)
+- `ipv4_address` (String) Ip address
+- `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
@@ -67,7 +67,7 @@ data "iosxe_interface_tunnel" "example" {
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `tunnel_destination_ipv4` (String) ip address or host name
 - `tunnel_mode_ipsec_ipv4` (Boolean) over IPv4
-- `tunnel_protection_ipsec_profile` (String) Determine the ipsec policy profile to use.
+- `tunnel_protection_ipsec_profile` (String) Obsolete, use the other option profile-option to set ipsec policy profile
 - `tunnel_source` (String) source of tunnel packets
 - `tunnel_vrf` (String)
 - `unnumbered` (String) Enable IP processing without an explicit address
@@ -78,7 +78,7 @@ data "iosxe_interface_tunnel" "example" {
 
 Read-Only:
 
-- `address` (String)
+- `address` (String) IP destination address
 - `global` (Boolean) Helper-address is global
 - `vrf` (String) VRF name for helper-address (if different from interface VRF)
 
@@ -89,7 +89,7 @@ Read-Only:
 Read-Only:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
-- `prefix` (String)
+- `prefix` (String) IPv6 prefix
 
 
 <a id="nestedatt--ipv6_link_local_addresses"></a>

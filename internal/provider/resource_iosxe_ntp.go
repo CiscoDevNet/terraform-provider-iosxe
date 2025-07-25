@@ -216,7 +216,7 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"ip_address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Configure ip/ipv6 address/hostname of peer").String,
 							Required:            true,
 						},
 						"source": schema.StringAttribute{
@@ -262,7 +262,7 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"ip_address": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Configure ip/ipv6 address/hostname of peer").String,
 										Required:            true,
 									},
 									"key": schema.Int64Attribute{
@@ -295,7 +295,7 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"ip_address": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Configure ip/ipv6 address/hostname of peer").String,
 							Required:            true,
 						},
 						"source": schema.StringAttribute{
@@ -341,7 +341,7 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"ip_address": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Configure ip/ipv6 address/hostname of peer").String,
 										Required:            true,
 									},
 									"key": schema.Int64Attribute{

@@ -75,7 +75,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"entries": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Sequence to insert to/delete from existing route-map entry").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -87,7 +87,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"operation": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("deny", "permit").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Route map permit/deny set operations").AddStringEnumDescription("deny", "permit").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("deny", "permit"),
@@ -134,25 +134,25 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_ipv6_address_access_lists": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 access-list name").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`[a-zA-Z].*`), ""),
 							},
 						},
 						"match_ipv6_address_prefix_lists": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix-list").String,
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix-list name").String,
 							Optional:            true,
 						},
 						"match_ipv6_next_hop_access_lists": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 access-list name").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`[a-zA-Z].*`), ""),
 							},
 						},
 						"match_ipv6_next_hop_prefix_lists": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix-list").String,
+							MarkdownDescription: helpers.NewAttributeDescription("IPv6 prefix-list name").String,
 							Optional:            true,
 						},
 						"match_route_type_external": schema.BoolAttribute{
@@ -180,7 +180,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"match_route_type_local": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("locally generated route (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("locally generated route (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
 							Optional:            true,
 						},
 						"match_source_protocol_bgp": schema.ListAttribute{
@@ -236,17 +236,17 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"match_as_paths_legacy": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("AS path access-list (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("AS path access-list (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
 							ElementType:         types.Int64Type,
 							Optional:            true,
 						},
 						"match_community_lists_legacy": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Named Access List (DEPRECATED- please use community-list in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Named Access List (OBSOLETE- please use community-list in Cisco-IOS-XE-bgp.yang)").String,
 							ElementType:         types.StringType,
 							Optional:            true,
 						},
 						"match_extcommunity_lists_legacy": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Named Access List (DEPRECATED- please use extcommunity-list in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Named Access List (OBSOLETE- please use extcommunity-list in Cisco-IOS-XE-bgp.yang)").String,
 							ElementType:         types.StringType,
 							Optional:            true,
 						},
@@ -313,7 +313,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_ip_next_hop_address": schema.ListAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("IP address of next hop").String,
 							ElementType:         types.StringType,
 							Optional:            true,
 						},
@@ -424,7 +424,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_as_path_prepend_as_legacy": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("<1-65535>;;AS number (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("<1-65535>;;AS number (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
 							Optional:            true,
 						},
 						"set_as_path_prepend_last_as_legacy": schema.Int64Attribute{
@@ -435,11 +435,11 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_as_path_tag_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Set the tag as an AS-path attribute (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Set the tag as an AS-path attribute (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
 							Optional:            true,
 						},
 						"set_community_none_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("No community attribute (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("No community attribute (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
 							Optional:            true,
 						},
 						"set_communities_legacy": schema.ListAttribute{
@@ -452,7 +452,7 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							Optional:            true,
 						},
 						"set_community_list_delete_legacy": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Delete matching communities (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Delete matching communities (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").String,
 							Optional:            true,
 						},
 						"set_community_list_standard_legacy": schema.Int64Attribute{
@@ -493,14 +493,14 @@ func (r *RouteMapResource) Schema(ctx context.Context, req resource.SchemaReques
 							},
 						},
 						"set_local_preference_legacy": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Preference value (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").AddIntegerRangeDescription(0, 4294967295).String,
+							MarkdownDescription: helpers.NewAttributeDescription("Preference value (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").AddIntegerRangeDescription(0, 4294967295).String,
 							Optional:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(0, 4294967295),
 							},
 						},
 						"set_weight_legacy": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("BGP weight for routing table (DEPRECATED - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").AddIntegerRangeDescription(0, 65535).String,
+							MarkdownDescription: helpers.NewAttributeDescription("BGP weight for routing table (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)").AddIntegerRangeDescription(0, 65535).String,
 							Optional:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(0, 65535),

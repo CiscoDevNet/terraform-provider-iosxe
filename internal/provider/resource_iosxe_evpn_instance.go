@@ -101,7 +101,7 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"vlan_based_auto_route_target": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target (OBSOLETE, use auto-route-target-boolean)").String,
 				Optional:            true,
 			},
 			"vlan_based_rd": schema.StringAttribute{
@@ -117,11 +117,11 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				Optional:            true,
 			},
 			"vlan_based_route_target_import": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn (DEPRECATED, use rt-value-entry)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)").String,
 				Optional:            true,
 			},
 			"vlan_based_route_target_export": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn (DEPRECATED, use rt-value-entry)").String,
+				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)").String,
 				Optional:            true,
 			},
 			"vlan_based_ip_local_learning_disable": schema.BoolAttribute{

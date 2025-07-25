@@ -161,7 +161,7 @@ Optional:
 
 Required:
 
-- `ip_address` (String)
+- `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 
 Optional:
 
@@ -178,7 +178,7 @@ Optional:
 
 Required:
 
-- `ip_address` (String)
+- `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 
 Optional:
 
@@ -206,7 +206,7 @@ Optional:
 
 Required:
 
-- `ip_address` (String)
+- `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 
 Optional:
 
@@ -223,7 +223,7 @@ Optional:
 
 Required:
 
-- `ip_address` (String)
+- `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 
 Optional:
 
