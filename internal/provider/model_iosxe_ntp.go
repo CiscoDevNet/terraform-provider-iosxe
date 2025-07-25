@@ -52,7 +52,7 @@ type NTP struct {
 	TrapSourceGigabitEthernet         types.String            `tfsdk:"trap_source_gigabit_ethernet"`
 	TrapSourceTenGigabitEthernet      types.String            `tfsdk:"trap_source_ten_gigabit_ethernet"`
 	TrapSourceFortyGigabitEthernet    types.String            `tfsdk:"trap_source_forty_gigabit_ethernet"`
-	TrapSourceHundredGigE             types.String            `tfsdk:"trap_source_hundred_gig_e"`
+	TrapSourceHundredGigabitEthernet  types.String            `tfsdk:"trap_source_hundred_gigabit_ethernet"`
 	TrapSourceLoopback                types.Int64             `tfsdk:"trap_source_loopback"`
 	TrapSourcePortChannel             types.Int64             `tfsdk:"trap_source_port_channel"`
 	TrapSourcePortChannelSubinterface types.String            `tfsdk:"trap_source_port_channel_subinterface"`
@@ -82,7 +82,7 @@ type NTPData struct {
 	TrapSourceGigabitEthernet         types.String            `tfsdk:"trap_source_gigabit_ethernet"`
 	TrapSourceTenGigabitEthernet      types.String            `tfsdk:"trap_source_ten_gigabit_ethernet"`
 	TrapSourceFortyGigabitEthernet    types.String            `tfsdk:"trap_source_forty_gigabit_ethernet"`
-	TrapSourceHundredGigE             types.String            `tfsdk:"trap_source_hundred_gig_e"`
+	TrapSourceHundredGigabitEthernet  types.String            `tfsdk:"trap_source_hundred_gigabit_ethernet"`
 	TrapSourceLoopback                types.Int64             `tfsdk:"trap_source_loopback"`
 	TrapSourcePortChannel             types.Int64             `tfsdk:"trap_source_port_channel"`
 	TrapSourcePortChannelSubinterface types.String            `tfsdk:"trap_source_port_channel_subinterface"`
@@ -214,8 +214,8 @@ func (data NTP) toBody(ctx context.Context) string {
 	if !data.TrapSourceFortyGigabitEthernet.IsNull() && !data.TrapSourceFortyGigabitEthernet.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.FortyGigabitEthernet", data.TrapSourceFortyGigabitEthernet.ValueString())
 	}
-	if !data.TrapSourceHundredGigE.IsNull() && !data.TrapSourceHundredGigE.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.HundredGigE", data.TrapSourceHundredGigE.ValueString())
+	if !data.TrapSourceHundredGigabitEthernet.IsNull() && !data.TrapSourceHundredGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.HundredGigE", data.TrapSourceHundredGigabitEthernet.ValueString())
 	}
 	if !data.TrapSourceLoopback.IsNull() && !data.TrapSourceLoopback.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Loopback", strconv.FormatInt(data.TrapSourceLoopback.ValueInt64(), 10))
@@ -526,10 +526,10 @@ func (data *NTP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.TrapSourceFortyGigabitEthernet = types.StringNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.HundredGigE"); value.Exists() && !data.TrapSourceHundredGigE.IsNull() {
-		data.TrapSourceHundredGigE = types.StringValue(value.String())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.HundredGigE"); value.Exists() && !data.TrapSourceHundredGigabitEthernet.IsNull() {
+		data.TrapSourceHundredGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.TrapSourceHundredGigE = types.StringNull()
+		data.TrapSourceHundredGigabitEthernet = types.StringNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Loopback"); value.Exists() && !data.TrapSourceLoopback.IsNull() {
 		data.TrapSourceLoopback = types.Int64Value(value.Int())
@@ -932,7 +932,7 @@ func (data *NTP) fromBody(ctx context.Context, res gjson.Result) {
 		data.TrapSourceFortyGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.HundredGigE"); value.Exists() {
-		data.TrapSourceHundredGigE = types.StringValue(value.String())
+		data.TrapSourceHundredGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Loopback"); value.Exists() {
 		data.TrapSourceLoopback = types.Int64Value(value.Int())
@@ -1165,7 +1165,7 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.TrapSourceFortyGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.HundredGigE"); value.Exists() {
-		data.TrapSourceHundredGigE = types.StringValue(value.String())
+		data.TrapSourceHundredGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Loopback"); value.Exists() {
 		data.TrapSourceLoopback = types.Int64Value(value.Int())
@@ -1398,7 +1398,7 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 	if !state.TrapSourceFortyGigabitEthernet.IsNull() && data.TrapSourceFortyGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/FortyGigabitEthernet", state.getPath()))
 	}
-	if !state.TrapSourceHundredGigE.IsNull() && data.TrapSourceHundredGigE.IsNull() {
+	if !state.TrapSourceHundredGigabitEthernet.IsNull() && data.TrapSourceHundredGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/HundredGigE", state.getPath()))
 	}
 	if !state.TrapSourceLoopback.IsNull() && data.TrapSourceLoopback.IsNull() {
@@ -1740,7 +1740,7 @@ func (data *NTP) getDeletePaths(ctx context.Context) []string {
 	if !data.TrapSourceFortyGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/FortyGigabitEthernet", data.getPath()))
 	}
-	if !data.TrapSourceHundredGigE.IsNull() {
+	if !data.TrapSourceHundredGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/HundredGigE", data.getPath()))
 	}
 	if !data.TrapSourceLoopback.IsNull() {

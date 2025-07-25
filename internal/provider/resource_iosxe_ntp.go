@@ -181,7 +181,7 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
 				Optional:            true,
 			},
-			"trap_source_hundred_gig_e": schema.StringAttribute{
+			"trap_source_hundred_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
 				Optional:            true,
 			},
