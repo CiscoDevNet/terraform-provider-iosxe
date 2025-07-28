@@ -28,7 +28,9 @@ import (
 
 func TestAccDataSourceIosxeErrdisable(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_all", "true"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_all", "true"))
+	}
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "detect_cause_arp_inspection", "true"))
 	}
@@ -48,7 +50,9 @@ func TestAccDataSourceIosxeErrdisable(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "flap_setting_cause_pagp_flap_max_flaps", "80"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "flap_setting_cause_pagp_flap_time", "90"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_interval", "855"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_all", "true"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_all", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_arp_inspection", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_errdisable.test", "recovery_cause_bpduguard", "true"))
 	if os.Getenv("C9000V") != "" {
@@ -104,7 +108,9 @@ func TestAccDataSourceIosxeErrdisable(t *testing.T) {
 func testAccDataSourceIosxeErrdisableConfig() string {
 	config := `resource "iosxe_errdisable" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	detect_cause_all = true` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	detect_cause_all = true` + "\n"
+	}
 	if os.Getenv("C9000V") != "" {
 		config += `	detect_cause_arp_inspection = true` + "\n"
 	}
@@ -124,7 +130,9 @@ func testAccDataSourceIosxeErrdisableConfig() string {
 	config += `	flap_setting_cause_pagp_flap_max_flaps = 80` + "\n"
 	config += `	flap_setting_cause_pagp_flap_time = 90` + "\n"
 	config += `	recovery_interval = 855` + "\n"
-	config += `	recovery_cause_all = true` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	recovery_cause_all = true` + "\n"
+	}
 	config += `	recovery_cause_arp_inspection = true` + "\n"
 	config += `	recovery_cause_bpduguard = true` + "\n"
 	if os.Getenv("C9000V") != "" {
