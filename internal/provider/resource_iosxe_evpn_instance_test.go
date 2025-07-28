@@ -37,10 +37,22 @@ func TestAccIosxeEVPNInstance(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_replication_type_p2mp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_replication_type_mp2mp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_encapsulation", "vxlan"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_auto_route_target", "false"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_auto_route_target_legacy", "false"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_rd", "10:10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_route_target_import", "10:10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_route_target_export", "10:10"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_route_target_import_legacy", "10:10"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_route_target_export_legacy", "10:10"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_route_target_exports.0.route_target", "10:10"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_route_target_imports.0.route_target", "10:10"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_ip_local_learning_disable", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_ip_local_learning_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_instance.test", "vlan_based_default_gateway_advertise", "enable"))
@@ -58,7 +70,7 @@ func TestAccIosxeEVPNInstance(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=10",
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"vlan_based_auto_route_target_legacy"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -80,10 +92,26 @@ func testAccIosxeEVPNInstanceConfig_all() string {
 	config += `	vlan_based_replication_type_p2mp = false` + "\n"
 	config += `	vlan_based_replication_type_mp2mp = false` + "\n"
 	config += `	vlan_based_encapsulation = "vxlan"` + "\n"
-	config += `	vlan_based_auto_route_target = false` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	vlan_based_auto_route_target_legacy = false` + "\n"
+	}
 	config += `	vlan_based_rd = "10:10"` + "\n"
-	config += `	vlan_based_route_target_import = "10:10"` + "\n"
-	config += `	vlan_based_route_target_export = "10:10"` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	vlan_based_route_target_import_legacy = "10:10"` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	vlan_based_route_target_export_legacy = "10:10"` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	vlan_based_route_target_exports = [{` + "\n"
+		config += `		route_target = "10:10"` + "\n"
+		config += `	}]` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	vlan_based_route_target_imports = [{` + "\n"
+		config += `		route_target = "10:10"` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `	vlan_based_ip_local_learning_disable = false` + "\n"
 	config += `	vlan_based_ip_local_learning_enable = true` + "\n"
 	config += `	vlan_based_default_gateway_advertise = "enable"` + "\n"

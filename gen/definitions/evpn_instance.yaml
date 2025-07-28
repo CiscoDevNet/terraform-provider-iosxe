@@ -30,30 +30,60 @@ attributes:
     example: vxlan
   - yang_name: evpn-service-type/vlan-based/vlan-based/auto-route-target_cont/auto-route-target
     xpath: vlan-based/auto-route-target_cont/auto-route-target
+    tf_name: vlan_based_auto_route_target_legacy
+    example: false
+    test_tags: [IOSXE1712]
+  - yang_name: evpn-service-type/vlan-based/vlan-based/auto-route-target_cont/auto-route-target-boolean
+    xpath: vlan-based/auto-route-target_cont/auto-route-target-boolean
     tf_name: vlan_based_auto_route_target
     example: false
+    exclude_test: true
   - yang_name: evpn-service-type/vlan-based/vlan-based/rd/rd-value
     xpath: vlan-based/rd/rd-value
     tf_name: vlan_based_rd
     example: 10:10
   - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/rt-value
     xpath: vlan-based/route-target/rt-value
-    tf_name: vlan_based_route_target
+    tf_name: vlan_based_route_target_legacy
     example: 10:10
     exclude_test: true
+    test_tags: [IOSXE1712]
   - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/both/rt-value
     xpath: vlan-based/route-target/both/rt-value
-    tf_name: vlan_based_route_target_both
+    tf_name: vlan_based_route_target_both_legacy
     example: 10:10
     exclude_test: true
+    test_tags: [IOSXE1712]
   - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/import/rt-value
     xpath: vlan-based/route-target/import/rt-value
-    tf_name: vlan_based_route_target_import
+    tf_name: vlan_based_route_target_import_legacy
     example: 10:10
+    test_tags: [IOSXE1712]
   - yang_name: evpn-service-type/vlan-based/vlan-based/route-target/export/rt-value
     xpath: vlan-based/route-target/export/rt-value
-    tf_name: vlan_based_route_target_export
+    tf_name: vlan_based_route_target_export_legacy
     example: 10:10
+    test_tags: [IOSXE1712]
+  - yang_name: evpn-service-type/vlan-based/vlan-based/route-target-v2/export
+    xpath: vlan-based/route-target-v2/export
+    tf_name: vlan_based_route_target_exports
+    type: List
+    test_tags: [IOSXE1715]
+    attributes:
+      - yang_name: rt-value
+        tf_name: route_target
+        id: true
+        example: 10:10
+  - yang_name: evpn-service-type/vlan-based/vlan-based/route-target-v2/import
+    xpath: vlan-based/route-target-v2/import
+    tf_name: vlan_based_route_target_imports
+    type: List
+    test_tags: [IOSXE1715]
+    attributes:
+      - yang_name: rt-value
+        tf_name: route_target
+        id: true
+        example: 10:10
   - yang_name: evpn-service-type/vlan-based/vlan-based/ip/local-learning/local-learning-choice/disable-case/disable
     xpath: vlan-based/ip/local-learning/disable
     tf_name: vlan_based_ip_local_learning_disable

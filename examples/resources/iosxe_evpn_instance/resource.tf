@@ -5,10 +5,7 @@ resource "iosxe_evpn_instance" "example" {
   vlan_based_replication_type_p2mp     = false
   vlan_based_replication_type_mp2mp    = false
   vlan_based_encapsulation             = "vxlan"
-  vlan_based_auto_route_target         = false
   vlan_based_rd                        = "10:10"
-  vlan_based_route_target_import       = "10:10"
-  vlan_based_route_target_export       = "10:10"
   vlan_based_ip_local_learning_disable = false
   vlan_based_ip_local_learning_enable  = true
   vlan_based_default_gateway_advertise = "enable"
