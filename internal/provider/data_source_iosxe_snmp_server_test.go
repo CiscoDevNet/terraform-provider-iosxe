@@ -89,9 +89,6 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flash_insertion", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flash_removal", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flash_lowspace", "true"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_energywise", "true"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pw_vc", "true"))
 	if os.Getenv("C9000V") != "" {
@@ -261,9 +258,6 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	enable_traps_flash_insertion = true` + "\n"
 	config += `	enable_traps_flash_removal = true` + "\n"
 	config += `	enable_traps_flash_lowspace = true` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `	enable_traps_energywise = true` + "\n"
-	}
 	config += `	enable_traps_entity = true` + "\n"
 	config += `	enable_traps_pw_vc = true` + "\n"
 	if os.Getenv("C9000V") != "" {
