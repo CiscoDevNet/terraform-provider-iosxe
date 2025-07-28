@@ -20,6 +20,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -35,7 +36,9 @@ func TestAccIosxeSNMPServerGroup(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server_group.test", "v3_security.0.write_node", "VIEW2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server_group.test", "v3_security.0.notify_node", "VIEW3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server_group.test", "v3_security.0.access_ipv6_acl", "V6ACL1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server_group.test", "v3_security.0.access_acl_name", "ACL1"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server_group.test", "v3_security.0.access_acl_name", "ACL1"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -74,7 +77,9 @@ func testAccIosxeSNMPServerGroupConfig_all() string {
 	config += `		write_node = "VIEW2"` + "\n"
 	config += `		notify_node = "VIEW3"` + "\n"
 	config += `		access_ipv6_acl = "V6ACL1"` + "\n"
-	config += `		access_acl_name = "ACL1"` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		access_acl_name = "ACL1"` + "\n"
+	}
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config

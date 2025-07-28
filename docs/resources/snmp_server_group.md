@@ -24,7 +24,6 @@ resource "iosxe_snmp_server_group" "example" {
       write_node      = "VIEW2"
       notify_node     = "VIEW3"
       access_ipv6_acl = "V6ACL1"
-      access_acl_name = "ACL1"
     }
   ]
 }
