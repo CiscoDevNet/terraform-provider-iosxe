@@ -47,7 +47,6 @@ func TestAccDataSourceIosxeSNMPServerUser(t *testing.T) {
 
 func testAccDataSourceIosxeSNMPServerUserConfig() string {
 	config := `resource "iosxe_snmp_server_user" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	username = "USER1"` + "\n"
 	config += `	grpname = "GROUP1"` + "\n"
 	config += `	v3_auth_algorithm = "sha"` + "\n"

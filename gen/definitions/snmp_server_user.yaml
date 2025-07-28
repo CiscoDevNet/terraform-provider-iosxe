@@ -2,6 +2,7 @@
 name: SNMP Server User
 path: Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:user/names=%s,%s
 skip_minimum_test: true
+no_delete_attributes: true
 doc_category: Management
 attributes:
   - yang_name: username

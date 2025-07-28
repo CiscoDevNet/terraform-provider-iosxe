@@ -36,7 +36,6 @@ import (
 type SNMPServerUser struct {
 	Device                          types.String `tfsdk:"device"`
 	Id                              types.String `tfsdk:"id"`
-	DeleteMode                      types.String `tfsdk:"delete_mode"`
 	Username                        types.String `tfsdk:"username"`
 	Grpname                         types.String `tfsdk:"grpname"`
 	V3AuthAlgorithm                 types.String `tfsdk:"v3_auth_algorithm"`

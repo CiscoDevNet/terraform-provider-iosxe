@@ -66,13 +66,6 @@ func (r *SNMPServerUserResource) Schema(ctx context.Context, req resource.Schema
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
-				},
-			},
 			"username": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Name of the user").String,
 				Required:            true,
@@ -427,11 +420,6 @@ func (r *SNMPServerUserResource) Delete(ctx context.Context, req resource.Delete
 
 	if device.Managed {
 		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
 
 		if deleteMode == "all" {
 			res, err := device.Client.DeleteData(state.Id.ValueString())
