@@ -16,7 +16,6 @@ This resource can manage the SNMP Server configuration.
 resource "iosxe_snmp_server" "example" {
   chassis_id                       = "R1"
   contact                          = "Contact1"
-  ifindex_persist                  = true
   location                         = "Location1"
   packetsize                       = 2000
   queue_length                     = 100

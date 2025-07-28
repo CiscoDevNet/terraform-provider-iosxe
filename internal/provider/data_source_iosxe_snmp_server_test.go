@@ -30,7 +30,9 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "chassis_id", "R1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "contact", "Contact1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "ifindex_persist", "true"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "ifindex_persist", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "location", "Location1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "packetsize", "2000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "queue_length", "100"))
@@ -198,7 +200,9 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	chassis_id = "R1"` + "\n"
 	config += `	contact = "Contact1"` + "\n"
-	config += `	ifindex_persist = true` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	ifindex_persist = true` + "\n"
+	}
 	config += `	location = "Location1"` + "\n"
 	config += `	packetsize = 2000` + "\n"
 	config += `	queue_length = 100` + "\n"

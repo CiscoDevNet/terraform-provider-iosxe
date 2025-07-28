@@ -30,7 +30,9 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "chassis_id", "R1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "contact", "Contact1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "ifindex_persist", "true"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "ifindex_persist", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "location", "Location1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "packetsize", "2000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "queue_length", "100"))
@@ -187,7 +189,7 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/snmp-server",
-				ImportStateVerifyIgnore: []string{"enable_informs", "enable_traps_rep", "enable_traps_license", "enable_traps_stackwise", "enable_traps_udld_link_fail_rpt", "enable_traps_udld_status_change", "enable_traps_energywise", "enable_traps_power_ethernet_police", "enable_traps_envmon", "enable_traps_cef_resource_failure", "enable_traps_cef_peer_state_change", "enable_traps_cef_peer_fib_state_change", "enable_traps_cef_inconsistency", "enable_traps_isis", "enable_traps_entity_diag_boot_up_fail", "enable_traps_entity_diag_hm_test_recover", "enable_traps_entity_diag_hm_thresh_reached", "enable_traps_entity_diag_scheduled_test_fail", "enable_traps_hsrp", "enable_traps_bridge_newroot", "enable_traps_bridge_topologychange", "enable_traps_stpx_inconsistency", "enable_traps_stpx_root_inconsistency", "enable_traps_stpx_loop_inconsistency", "enable_traps_bgp_cbgp2", "enable_traps_nhrp_nhs", "enable_traps_nhrp_nhc", "enable_traps_nhrp_nhp", "enable_traps_nhrp_quota_exceeded", "enable_traps_mpls_traffic_eng", "enable_traps_mpls_vpn", "enable_traps_mpls_rfc_ldp", "enable_traps_mpls_ldp", "enable_traps_fast_reroute_protected", "enable_traps_local_auth", "enable_traps_vlan_membership", "enable_traps_errdisable", "enable_traps_mac_notification_change", "enable_traps_mac_notification_move", "enable_traps_mac_notification_threshold"},
+				ImportStateVerifyIgnore: []string{"ifindex_persist", "enable_informs", "enable_traps_rep", "enable_traps_license", "enable_traps_stackwise", "enable_traps_udld_link_fail_rpt", "enable_traps_udld_status_change", "enable_traps_energywise", "enable_traps_power_ethernet_police", "enable_traps_envmon", "enable_traps_cef_resource_failure", "enable_traps_cef_peer_state_change", "enable_traps_cef_peer_fib_state_change", "enable_traps_cef_inconsistency", "enable_traps_isis", "enable_traps_entity_diag_boot_up_fail", "enable_traps_entity_diag_hm_test_recover", "enable_traps_entity_diag_hm_thresh_reached", "enable_traps_entity_diag_scheduled_test_fail", "enable_traps_hsrp", "enable_traps_bridge_newroot", "enable_traps_bridge_topologychange", "enable_traps_stpx_inconsistency", "enable_traps_stpx_root_inconsistency", "enable_traps_stpx_loop_inconsistency", "enable_traps_bgp_cbgp2", "enable_traps_nhrp_nhs", "enable_traps_nhrp_nhc", "enable_traps_nhrp_nhp", "enable_traps_nhrp_quota_exceeded", "enable_traps_mpls_traffic_eng", "enable_traps_mpls_vpn", "enable_traps_mpls_rfc_ldp", "enable_traps_mpls_ldp", "enable_traps_fast_reroute_protected", "enable_traps_local_auth", "enable_traps_vlan_membership", "enable_traps_errdisable", "enable_traps_mac_notification_change", "enable_traps_mac_notification_move", "enable_traps_mac_notification_threshold"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -215,7 +217,9 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config := `resource "iosxe_snmp_server" "test" {` + "\n"
 	config += `	chassis_id = "R1"` + "\n"
 	config += `	contact = "Contact1"` + "\n"
-	config += `	ifindex_persist = true` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	ifindex_persist = true` + "\n"
+	}
 	config += `	location = "Location1"` + "\n"
 	config += `	packetsize = 2000` + "\n"
 	config += `	queue_length = 100` + "\n"

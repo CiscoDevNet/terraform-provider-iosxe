@@ -9,6 +9,7 @@ attributes:
     example: Contact1
   - yang_name: Cisco-IOS-XE-snmp:ifindex/persist
     example: true
+    test_tags: [IOSXE1712]
   - yang_name: Cisco-IOS-XE-snmp:location
     example: Location1
   - yang_name: Cisco-IOS-XE-snmp:packetsize
