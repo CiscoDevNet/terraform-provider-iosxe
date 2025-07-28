@@ -2,7 +2,7 @@
 name: VTP
 path: Cisco-IOS-XE-native:native/vtp
 doc_category: Switching
-test_tags: [C9000V]
+test_tags: [VTP]
 attributes:
   - yang_name: Cisco-IOS-XE-vtp:file
     example: TEST

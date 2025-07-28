@@ -27,8 +27,8 @@ import (
 )
 
 func TestAccDataSourceIosxeVTP(t *testing.T) {
-	if os.Getenv("C9000V") == "" {
-		t.Skip("skipping test, set environment variable C9000V")
+	if os.Getenv("VTP") == "" {
+		t.Skip("skipping test, set environment variable VTP")
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "file", "TEST"))
