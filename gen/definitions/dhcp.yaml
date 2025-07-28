@@ -26,10 +26,22 @@ attributes:
     example: true
     exclude_test: true
   - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-list
-    tf_name: snooping_vlans
+    tf_name: snooping_vlans_legacy
+    description: DHCP Snooping vlan list. Use this for versions before `17.14`.
     type: List
+    test_tags: ["IOSXE1712"]
     attributes:
       - yang_name: id
         tf_name: vlan_id
         id: true
         example: 3-4
+  - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/vlan-v2
+    tf_name: snooping_vlans
+    description: DHCP Snooping vlan list. Use this for versions `17.14` and later.
+    type: List
+    test_tags: ["IOSXE1715"]
+    attributes:
+      - yang_name: id
+        tf_name: vlan_id
+        id: true
+        example: 3

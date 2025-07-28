@@ -90,13 +90,25 @@ func (d *DHCPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Use configured hostname for remote id",
 				Computed:            true,
 			},
-			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: "DHCP Snooping vlan (OBSOLETE)",
+			"snooping_vlans_legacy": schema.ListNestedAttribute{
+				MarkdownDescription: "DHCP Snooping vlan list. Use this for versions before `17.14`.",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"vlan_id": schema.StringAttribute{
 							MarkdownDescription: "DHCP Snooping vlan first number or vlan range,example: 1,3-5,7,9-11",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"snooping_vlans": schema.ListNestedAttribute{
+				MarkdownDescription: "DHCP Snooping vlan list. Use this for versions `17.14` and later.",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vlan_id": schema.Int64Attribute{
+							MarkdownDescription: "",
 							Computed:            true,
 						},
 					},

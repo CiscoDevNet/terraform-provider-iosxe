@@ -13,6 +13,7 @@ description: |-
 - Add `esp-192-aes` and `esp-256-aes` options to `iosxe_crypto_ipsec_transform_set` resource and data source
 - Make `v3_auth_algorithm` attribute of `iosxe_snmp_server_user` resource and data source optional
 - Add `TLSv1.3` option to `ip_http_tls_version` attribute of `iosxe_system` resource and data source
+- Rename `snooping_vlans` to `snooping_vlans_legacy` and add `snooping_vlans` attribute to `iosxe_dhcp` resource and data source to support versions >= `17.14`
 
 ## 0.5.10
 
