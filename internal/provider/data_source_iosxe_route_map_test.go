@@ -138,7 +138,7 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities.0", "1:2"))
 	}
-	if os.Getenv("IOSXE171") != "" {
+	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_community_list_name", "COMML1"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_rt.0", "10:10"))
@@ -282,7 +282,7 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	if os.Getenv("IOSXE1712") != "" {
 		config += `		set_communities = ["1:2"]` + "\n"
 	}
-	if os.Getenv("IOSXE171") != "" {
+	if os.Getenv("IOSXE1712") != "" {
 		config += `		set_community_list_name = "COMML1"` + "\n"
 	}
 	config += `		set_extcomunity_rt = ["10:10"]` + "\n"

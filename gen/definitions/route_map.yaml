@@ -333,7 +333,7 @@ attributes:
         xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-name
         tf_name: set_community_list_name
         example: COMML1
-        test_tags: [IOSXE171]
+        test_tags: [IOSXE1712]
       - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/rt/asn-nn
         tf_name: set_extcomunity_rt
         example: "10:10"
