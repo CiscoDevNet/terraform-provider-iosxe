@@ -98,6 +98,10 @@ func (d *VTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Set the name of the VTP administrative domain.",
 				Computed:            true,
 			},
+			"mode_client": schema.BoolAttribute{
+				MarkdownDescription: "Set the device to client mode",
+				Computed:            true,
+			},
 			"mode_client_mst": schema.BoolAttribute{
 				MarkdownDescription: "Set the mode for MST VTP instance",
 				Computed:            true,
@@ -108,6 +112,10 @@ func (d *VTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			},
 			"mode_client_vlan": schema.BoolAttribute{
 				MarkdownDescription: "Set the mode for VLAN VTP instance",
+				Computed:            true,
+			},
+			"mode_off": schema.BoolAttribute{
+				MarkdownDescription: "Set the device to off mode",
 				Computed:            true,
 			},
 			"mode_off_mst": schema.BoolAttribute{
@@ -122,6 +130,10 @@ func (d *VTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Set the mode for VLAN VTP instance",
 				Computed:            true,
 			},
+			"mode_server": schema.BoolAttribute{
+				MarkdownDescription: "Set the device to server mode",
+				Computed:            true,
+			},
 			"mode_server_mst": schema.BoolAttribute{
 				MarkdownDescription: "Set the mode for MST VTP instance",
 				Computed:            true,
@@ -132,6 +144,10 @@ func (d *VTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			},
 			"mode_server_vlan": schema.BoolAttribute{
 				MarkdownDescription: "Set the mode for VLAN VTP instance",
+				Computed:            true,
+			},
+			"mode_transparent": schema.BoolAttribute{
+				MarkdownDescription: "Set the device to transparent mode",
 				Computed:            true,
 			},
 			"mode_transparent_mst": schema.BoolAttribute{

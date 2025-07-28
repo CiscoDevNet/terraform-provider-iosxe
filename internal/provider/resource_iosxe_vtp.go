@@ -112,6 +112,10 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("Set the name of the VTP administrative domain.").String,
 				Optional:            true,
 			},
+			"mode_client": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the device to client mode").String,
+				Optional:            true,
+			},
 			"mode_client_mst": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
 				Optional:            true,
@@ -122,6 +126,10 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"mode_client_vlan": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				Optional:            true,
+			},
+			"mode_off": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the device to off mode").String,
 				Optional:            true,
 			},
 			"mode_off_mst": schema.BoolAttribute{
@@ -136,6 +144,10 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
 				Optional:            true,
 			},
+			"mode_server": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the device to server mode").String,
+				Optional:            true,
+			},
 			"mode_server_mst": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for MST VTP instance").String,
 				Optional:            true,
@@ -146,6 +158,10 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			},
 			"mode_server_vlan": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the mode for VLAN VTP instance").String,
+				Optional:            true,
+			},
+			"mode_transparent": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the device to transparent mode").String,
 				Optional:            true,
 			},
 			"mode_transparent_mst": schema.BoolAttribute{

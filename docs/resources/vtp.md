@@ -14,23 +14,13 @@ This resource can manage the VTP configuration.
 
 ```terraform
 resource "iosxe_vtp" "example" {
-  file                     = "TEST"
-  version                  = 3
-  interface                = "Gi1/0/1"
-  password                 = "test123"
-  password_hidden          = false
-  domain                   = "TESTDOMAIN"
-  mode_client_mst          = true
-  mode_client_unknown      = true
-  mode_client_vlan         = true
-  mode_off_mst             = true
-  mode_off_vlan            = true
-  mode_server_mst          = true
-  mode_server_unknown      = true
-  mode_server_vlan         = true
-  mode_transparent_mst     = true
-  mode_transparent_unknown = true
-  mode_transparent_vlan    = true
+  file             = "TEST"
+  version          = 3
+  interface        = "GigabitEthernet1/0/1"
+  password         = "test123"
+  password_hidden  = false
+  domain           = "TESTDOMAIN"
+  mode_transparent = true
 }
 ```
 
@@ -46,15 +36,19 @@ resource "iosxe_vtp" "example" {
 - `file` (String) Configure IFS filesystem file where VTP configuration is stored.
 - `interface` (String) The name of the interface providing the VTP updater ID for this device
 - `interface_only` (Boolean) Use only this interface's IP address as the VTP IP updater address
+- `mode_client` (Boolean) Set the device to client mode
 - `mode_client_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_client_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_client_vlan` (Boolean) Set the mode for VLAN VTP instance
+- `mode_off` (Boolean) Set the device to off mode
 - `mode_off_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_off_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_off_vlan` (Boolean) Set the mode for VLAN VTP instance
+- `mode_server` (Boolean) Set the device to server mode
 - `mode_server_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_server_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_server_vlan` (Boolean) Set the mode for VLAN VTP instance
+- `mode_transparent` (Boolean) Set the device to transparent mode
 - `mode_transparent_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_transparent_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_transparent_vlan` (Boolean) Set the mode for VLAN VTP instance
