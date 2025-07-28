@@ -24,8 +24,6 @@ resource "iosxe_radius" "example" {
   automate_tester_username         = "dummy"
   automate_tester_ignore_acct_port = true
   automate_tester_probe_on_config  = true
-  pac_key                          = "123"
-  pac_key_encryption               = "0"
 }
 ```
 
