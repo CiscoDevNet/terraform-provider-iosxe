@@ -68,6 +68,7 @@ type RouteMapEntries struct {
 	MatchRouteTypeInternal                 types.Bool                          `tfsdk:"match_route_type_internal"`
 	MatchRouteTypeLevel1                   types.Bool                          `tfsdk:"match_route_type_level_1"`
 	MatchRouteTypeLevel2                   types.Bool                          `tfsdk:"match_route_type_level_2"`
+	MatchRouteTypeLocalLegacy              types.Bool                          `tfsdk:"match_route_type_local_legacy"`
 	MatchRouteTypeLocal                    types.Bool                          `tfsdk:"match_route_type_local"`
 	MatchSourceProtocolBgp                 types.List                          `tfsdk:"match_source_protocol_bgp"`
 	MatchSourceProtocolConnected           types.Bool                          `tfsdk:"match_source_protocol_connected"`
@@ -264,9 +265,14 @@ func (data RouteMap) toBody(ctx context.Context) string {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"match.route-type.level-2", map[string]string{})
 				}
 			}
+			if !item.MatchRouteTypeLocalLegacy.IsNull() && !item.MatchRouteTypeLocalLegacy.IsUnknown() {
+				if item.MatchRouteTypeLocalLegacy.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"match.route-type.local", map[string]string{})
+				}
+			}
 			if !item.MatchRouteTypeLocal.IsNull() && !item.MatchRouteTypeLocal.IsUnknown() {
 				if item.MatchRouteTypeLocal.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"match.route-type.local", map[string]string{})
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"match.Cisco-IOS-XE-bgp:bgp-route-map-match.route-type.local", map[string]string{})
 				}
 			}
 			if !item.MatchSourceProtocolBgp.IsNull() && !item.MatchSourceProtocolBgp.IsUnknown() {
@@ -771,7 +777,16 @@ func (data *RouteMap) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Entries[i].MatchRouteTypeLevel2 = types.BoolNull()
 		}
-		if value := r.Get("match.route-type.local"); !data.Entries[i].MatchRouteTypeLocal.IsNull() {
+		if value := r.Get("match.route-type.local"); !data.Entries[i].MatchRouteTypeLocalLegacy.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchRouteTypeLocalLegacy = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchRouteTypeLocalLegacy = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchRouteTypeLocalLegacy = types.BoolNull()
+		}
+		if value := r.Get("match.Cisco-IOS-XE-bgp:bgp-route-map-match.route-type.local"); !data.Entries[i].MatchRouteTypeLocal.IsNull() {
 			if value.Exists() {
 				data.Entries[i].MatchRouteTypeLocal = types.BoolValue(true)
 			} else {
@@ -1380,6 +1395,11 @@ func (data *RouteMap) fromBody(ctx context.Context, res gjson.Result) {
 				item.MatchRouteTypeLevel2 = types.BoolValue(false)
 			}
 			if cValue := v.Get("match.route-type.local"); cValue.Exists() {
+				item.MatchRouteTypeLocalLegacy = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeLocalLegacy = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.Cisco-IOS-XE-bgp:bgp-route-map-match.route-type.local"); cValue.Exists() {
 				item.MatchRouteTypeLocal = types.BoolValue(true)
 			} else {
 				item.MatchRouteTypeLocal = types.BoolValue(false)
@@ -1823,6 +1843,11 @@ func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 				item.MatchRouteTypeLevel2 = types.BoolValue(false)
 			}
 			if cValue := v.Get("match.route-type.local"); cValue.Exists() {
+				item.MatchRouteTypeLocalLegacy = types.BoolValue(true)
+			} else {
+				item.MatchRouteTypeLocalLegacy = types.BoolValue(false)
+			}
+			if cValue := v.Get("match.Cisco-IOS-XE-bgp:bgp-route-map-match.route-type.local"); cValue.Exists() {
 				item.MatchRouteTypeLocal = types.BoolValue(true)
 			} else {
 				item.MatchRouteTypeLocal = types.BoolValue(false)
@@ -2339,8 +2364,11 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 				if !state.Entries[i].MatchRouteTypeLevel2.IsNull() && data.Entries[j].MatchRouteTypeLevel2.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/level-2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Entries[i].MatchRouteTypeLocal.IsNull() && data.Entries[j].MatchRouteTypeLocal.IsNull() {
+				if !state.Entries[i].MatchRouteTypeLocalLegacy.IsNull() && data.Entries[j].MatchRouteTypeLocalLegacy.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].MatchRouteTypeLocal.IsNull() && data.Entries[j].MatchRouteTypeLocal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/route-type/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Entries[i].MatchSourceProtocolBgp.IsNull() {
 					if data.Entries[j].MatchSourceProtocolBgp.IsNull() {
@@ -3105,8 +3133,11 @@ func (data *RouteMap) getEmptyLeafsDelete(ctx context.Context) []string {
 		if !data.Entries[i].MatchRouteTypeLevel2.IsNull() && !data.Entries[i].MatchRouteTypeLevel2.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/level-2", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Entries[i].MatchRouteTypeLocal.IsNull() && !data.Entries[i].MatchRouteTypeLocal.ValueBool() {
+		if !data.Entries[i].MatchRouteTypeLocalLegacy.IsNull() && !data.Entries[i].MatchRouteTypeLocalLegacy.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/route-type/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Entries[i].MatchRouteTypeLocal.IsNull() && !data.Entries[i].MatchRouteTypeLocal.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/Cisco-IOS-XE-bgp:bgp-route-map-match/route-type/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.Entries[i].MatchSourceProtocolConnected.IsNull() && !data.Entries[i].MatchSourceProtocolConnected.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/match/source-protocol/connected", data.getPath(), strings.Join(keyValues[:], ",")))

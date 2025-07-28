@@ -20,6 +20,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -42,7 +43,12 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_route_type_internal", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_route_type_level_1", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_route_type_level_2", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_route_type_local", "true"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_route_type_local_legacy", "true"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_route_type_local", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_source_protocol_bgp.0", "65000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_source_protocol_connected", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_source_protocol_eigrp.0", "10"))
@@ -54,10 +60,18 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_source_protocol_static", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_tags.0", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_track", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_as_paths_legacy.0", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_community_lists_legacy.0", "COMM1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_extcommunity_lists_legacy.0", "EXTCOMM1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_local_preferences_legacy.0", "100"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_as_paths_legacy.0", "10"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_community_lists_legacy.0", "COMM1"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_extcommunity_lists_legacy.0", "EXTCOMM1"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_local_preferences_legacy.0", "100"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_as_paths.0", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_community_lists.0", "COMM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.match_extcommunity_lists.0", "EXTCOMM1"))
@@ -83,22 +97,44 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_metric_mtu", "1500"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_metric_type", "external"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_tag", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_as_legacy", "65001 65001"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_last_as_legacy", "5"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_tag_legacy", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities_legacy.0", "1:2"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities_additive_legacy", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_community_list_delete_legacy", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_community_list_name_legacy", "COMML1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_rt_legacy.0", "10:10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_soo_legacy", "10:10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_vpn_distinguisher_legacy", "10:10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_local_preference_legacy", "110"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_weight_legacy", "10000"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_as_legacy", "65001 65001"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_last_as_legacy", "5"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_tag_legacy", "true"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities_legacy.0", "1:2"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities_additive_legacy", "true"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_community_list_delete_legacy", "true"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_community_list_name_legacy", "COMML1"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_rt_legacy.0", "10:10"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_soo_legacy", "10:10"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_vpn_distinguisher_legacy", "10:10"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_local_preference_legacy", "110"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_weight_legacy", "10000"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_as", "65001 65001"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_last_as", "5"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities.0", "1:2"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_community_list_name", "COMML1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_rt.0", "10:10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_soo", "10:10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_vpn_distinguisher", "10:10"))
@@ -145,7 +181,12 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	config += `		match_route_type_internal = true` + "\n"
 	config += `		match_route_type_level_1 = true` + "\n"
 	config += `		match_route_type_level_2 = true` + "\n"
-	config += `		match_route_type_local = true` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		match_route_type_local_legacy = true` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `		match_route_type_local = true` + "\n"
+	}
 	config += `		match_source_protocol_bgp = ["65000"]` + "\n"
 	config += `		match_source_protocol_connected = true` + "\n"
 	config += `		match_source_protocol_eigrp = ["10"]` + "\n"
@@ -157,10 +198,18 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	config += `		match_source_protocol_static = true` + "\n"
 	config += `		match_tags = [100]` + "\n"
 	config += `		match_track = 1` + "\n"
-	config += `		match_as_paths_legacy = [10]` + "\n"
-	config += `		match_community_lists_legacy = ["COMM1"]` + "\n"
-	config += `		match_extcommunity_lists_legacy = ["EXTCOMM1"]` + "\n"
-	config += `		match_local_preferences_legacy = [100]` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		match_as_paths_legacy = [10]` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		match_community_lists_legacy = ["COMM1"]` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		match_extcommunity_lists_legacy = ["EXTCOMM1"]` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		match_local_preferences_legacy = [100]` + "\n"
+	}
 	config += `		match_as_paths = [10]` + "\n"
 	config += `		match_community_lists = ["COMM1"]` + "\n"
 	config += `		match_extcommunity_lists = ["EXTCOMM1"]` + "\n"
@@ -186,22 +235,44 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	config += `		set_metric_mtu = 1500` + "\n"
 	config += `		set_metric_type = "external"` + "\n"
 	config += `		set_tag = 100` + "\n"
-	config += `		set_as_path_prepend_as_legacy = "65001 65001"` + "\n"
-	config += `		set_as_path_prepend_last_as_legacy = 5` + "\n"
-	config += `		set_as_path_tag_legacy = true` + "\n"
-	config += `		set_communities_legacy = ["1:2"]` + "\n"
-	config += `		set_communities_additive_legacy = true` + "\n"
-	config += `		set_community_list_delete_legacy = true` + "\n"
-	config += `		set_community_list_name_legacy = "COMML1"` + "\n"
-	config += `		set_extcomunity_rt_legacy = ["10:10"]` + "\n"
-	config += `		set_extcomunity_soo_legacy = "10:10"` + "\n"
-	config += `		set_extcomunity_vpn_distinguisher_legacy = "10:10"` + "\n"
-	config += `		set_local_preference_legacy = 110` + "\n"
-	config += `		set_weight_legacy = 10000` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_as_path_prepend_as_legacy = "65001 65001"` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_as_path_prepend_last_as_legacy = 5` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_as_path_tag_legacy = true` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_communities_legacy = ["1:2"]` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_communities_additive_legacy = true` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_community_list_delete_legacy = true` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_community_list_name_legacy = "COMML1"` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_extcomunity_rt_legacy = ["10:10"]` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_extcomunity_soo_legacy = "10:10"` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_extcomunity_vpn_distinguisher_legacy = "10:10"` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_local_preference_legacy = 110` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_weight_legacy = 10000` + "\n"
+	}
 	config += `		set_as_path_prepend_as = "65001 65001"` + "\n"
 	config += `		set_as_path_prepend_last_as = 5` + "\n"
-	config += `		set_communities = ["1:2"]` + "\n"
-	config += `		set_community_list_name = "COMML1"` + "\n"
 	config += `		set_extcomunity_rt = ["10:10"]` + "\n"
 	config += `		set_extcomunity_soo = "10:10"` + "\n"
 	config += `		set_extcomunity_vpn_distinguisher = "10:10"` + "\n"

@@ -66,7 +66,8 @@ Read-Only:
 - `match_route_type_internal` (Boolean) internal route (including OSPF intra/inter area)
 - `match_route_type_level_1` (Boolean) IS-IS level-1 route
 - `match_route_type_level_2` (Boolean) IS-IS level-2 route
-- `match_route_type_local` (Boolean) locally generated route (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
+- `match_route_type_local` (Boolean) locally generated route
+- `match_route_type_local_legacy` (Boolean) locally generated route (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
 - `match_source_protocol_bgp` (List of String) Border Gateway Protocol (BGP)
 - `match_source_protocol_connected` (Boolean) Connected
 - `match_source_protocol_eigrp` (List of String) Border Gateway Protocol (BGP)

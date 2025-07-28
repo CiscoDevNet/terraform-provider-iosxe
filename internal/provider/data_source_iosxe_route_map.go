@@ -156,8 +156,12 @@ func (d *RouteMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 							MarkdownDescription: "IS-IS level-2 route",
 							Computed:            true,
 						},
-						"match_route_type_local": schema.BoolAttribute{
+						"match_route_type_local_legacy": schema.BoolAttribute{
 							MarkdownDescription: "locally generated route (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)",
+							Computed:            true,
+						},
+						"match_route_type_local": schema.BoolAttribute{
+							MarkdownDescription: "locally generated route",
 							Computed:            true,
 						},
 						"match_source_protocol_bgp": schema.ListAttribute{
