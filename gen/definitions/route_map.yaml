@@ -309,7 +309,7 @@ attributes:
         xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list
         tf_name: set_communities
         example: "1:2"
-        exclude_test: true
+        test_tags: [IOSXE1712]
       - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/additive
         xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/additive
         tf_name: set_communities_additive
@@ -333,7 +333,7 @@ attributes:
         xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/comm-list/comm-list-name
         tf_name: set_community_list_name
         example: COMML1
-        exclude_test: true
+        test_tags: [IOSXE171]
       - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/rt/asn-nn
         tf_name: set_extcomunity_rt
         example: "10:10"

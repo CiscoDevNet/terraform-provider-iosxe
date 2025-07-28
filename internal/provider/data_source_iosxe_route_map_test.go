@@ -135,6 +135,12 @@ func TestAccDataSourceIosxeRouteMap(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_as", "65001 65001"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_as_path_prepend_last_as", "5"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_communities.0", "1:2"))
+	}
+	if os.Getenv("IOSXE171") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_community_list_name", "COMML1"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_rt.0", "10:10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_soo", "10:10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_route_map.test", "entries.0.set_extcomunity_vpn_distinguisher", "10:10"))
@@ -273,6 +279,12 @@ func testAccDataSourceIosxeRouteMapConfig() string {
 	}
 	config += `		set_as_path_prepend_as = "65001 65001"` + "\n"
 	config += `		set_as_path_prepend_last_as = 5` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `		set_communities = ["1:2"]` + "\n"
+	}
+	if os.Getenv("IOSXE171") != "" {
+		config += `		set_community_list_name = "COMML1"` + "\n"
+	}
 	config += `		set_extcomunity_rt = ["10:10"]` + "\n"
 	config += `		set_extcomunity_soo = "10:10"` + "\n"
 	config += `		set_extcomunity_vpn_distinguisher = "10:10"` + "\n"
