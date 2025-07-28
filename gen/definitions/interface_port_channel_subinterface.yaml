@@ -23,10 +23,12 @@ attributes:
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/address
     xpath: ip/address/primary/address
     tf_name: ipv4_address
+    delete_parent: true
     example: 192.0.2.2
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/mask
     xpath: ip/address/primary/mask
     tf_name: ipv4_address_mask
+    delete_parent: true
     example: 255.255.255.0
   - yang_name: encapsulation/encap-choice/dot1Q/dot1Q/vlan-id
     xpath: encapsulation/dot1Q/vlan-id
