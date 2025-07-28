@@ -68,10 +68,10 @@ type ARPData struct {
 	InspectionVlan                  types.String           `tfsdk:"inspection_vlan"`
 }
 type ARPInspectionFilters struct {
-	Name types.String               `tfsdk:"name"`
-	Vlan []ARPInspectionFiltersVlan `tfsdk:"vlan"`
+	Name  types.String                `tfsdk:"name"`
+	Vlans []ARPInspectionFiltersVlans `tfsdk:"vlans"`
 }
-type ARPInspectionFiltersVlan struct {
+type ARPInspectionFiltersVlans struct {
 	VlanRange types.String `tfsdk:"vlan_range"`
 	Static    types.Bool   `tfsdk:"static"`
 }
@@ -146,9 +146,9 @@ func (data ARP) toBody(ctx context.Context) string {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inspection.filter"+"."+strconv.Itoa(index)+"."+"arpacl", item.Name.ValueString())
 			}
-			if len(item.Vlan) > 0 {
+			if len(item.Vlans) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inspection.filter"+"."+strconv.Itoa(index)+"."+"vlan", []interface{}{})
-				for cindex, citem := range item.Vlan {
+				for cindex, citem := range item.Vlans {
 					if !citem.VlanRange.IsNull() && !citem.VlanRange.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inspection.filter"+"."+strconv.Itoa(index)+"."+"vlan"+"."+strconv.Itoa(cindex)+"."+"vlan-range", citem.VlanRange.ValueString())
 					}
@@ -216,9 +216,9 @@ func (data *ARP) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.InspectionFilters[i].Name = types.StringNull()
 		}
-		for ci := range data.InspectionFilters[i].Vlan {
+		for ci := range data.InspectionFilters[i].Vlans {
 			keys := [...]string{"vlan-range"}
-			keyValues := [...]string{data.InspectionFilters[i].Vlan[ci].VlanRange.ValueString()}
+			keyValues := [...]string{data.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()}
 
 			var cr gjson.Result
 			r.Get("vlan").ForEach(
@@ -239,19 +239,19 @@ func (data *ARP) updateFromBody(ctx context.Context, res gjson.Result) {
 					return true
 				},
 			)
-			if value := cr.Get("vlan-range"); value.Exists() && !data.InspectionFilters[i].Vlan[ci].VlanRange.IsNull() {
-				data.InspectionFilters[i].Vlan[ci].VlanRange = types.StringValue(value.String())
+			if value := cr.Get("vlan-range"); value.Exists() && !data.InspectionFilters[i].Vlans[ci].VlanRange.IsNull() {
+				data.InspectionFilters[i].Vlans[ci].VlanRange = types.StringValue(value.String())
 			} else {
-				data.InspectionFilters[i].Vlan[ci].VlanRange = types.StringNull()
+				data.InspectionFilters[i].Vlans[ci].VlanRange = types.StringNull()
 			}
-			if value := cr.Get("static"); !data.InspectionFilters[i].Vlan[ci].Static.IsNull() {
+			if value := cr.Get("static"); !data.InspectionFilters[i].Vlans[ci].Static.IsNull() {
 				if value.Exists() {
-					data.InspectionFilters[i].Vlan[ci].Static = types.BoolValue(true)
+					data.InspectionFilters[i].Vlans[ci].Static = types.BoolValue(true)
 				} else {
-					data.InspectionFilters[i].Vlan[ci].Static = types.BoolValue(false)
+					data.InspectionFilters[i].Vlans[ci].Static = types.BoolValue(false)
 				}
 			} else {
-				data.InspectionFilters[i].Vlan[ci].Static = types.BoolNull()
+				data.InspectionFilters[i].Vlans[ci].Static = types.BoolNull()
 			}
 		}
 	}
@@ -337,9 +337,9 @@ func (data *ARP) fromBody(ctx context.Context, res gjson.Result) {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("vlan"); cValue.Exists() {
-				item.Vlan = make([]ARPInspectionFiltersVlan, 0)
+				item.Vlans = make([]ARPInspectionFiltersVlans, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := ARPInspectionFiltersVlan{}
+					cItem := ARPInspectionFiltersVlans{}
 					if ccValue := cv.Get("vlan-range"); ccValue.Exists() {
 						cItem.VlanRange = types.StringValue(ccValue.String())
 					}
@@ -348,7 +348,7 @@ func (data *ARP) fromBody(ctx context.Context, res gjson.Result) {
 					} else {
 						cItem.Static = types.BoolValue(false)
 					}
-					item.Vlan = append(item.Vlan, cItem)
+					item.Vlans = append(item.Vlans, cItem)
 					return true
 				})
 			}
@@ -414,9 +414,9 @@ func (data *ARPData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("vlan"); cValue.Exists() {
-				item.Vlan = make([]ARPInspectionFiltersVlan, 0)
+				item.Vlans = make([]ARPInspectionFiltersVlans, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := ARPInspectionFiltersVlan{}
+					cItem := ARPInspectionFiltersVlans{}
 					if ccValue := cv.Get("vlan-range"); ccValue.Exists() {
 						cItem.VlanRange = types.StringValue(ccValue.String())
 					}
@@ -425,7 +425,7 @@ func (data *ARPData) fromBody(ctx context.Context, res gjson.Result) {
 					} else {
 						cItem.Static = types.BoolValue(false)
 					}
-					item.Vlan = append(item.Vlan, cItem)
+					item.Vlans = append(item.Vlans, cItem)
 					return true
 				})
 			}
@@ -496,11 +496,11 @@ func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 				found = false
 			}
 			if found {
-				for ci := range state.InspectionFilters[i].Vlan {
-					cstateKeyValues := [...]string{state.InspectionFilters[i].Vlan[ci].VlanRange.ValueString()}
+				for ci := range state.InspectionFilters[i].Vlans {
+					cstateKeyValues := [...]string{state.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.InspectionFilters[i].Vlan[ci].VlanRange.ValueString()).IsZero() {
+					if !reflect.ValueOf(state.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -508,13 +508,13 @@ func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 					}
 
 					found := false
-					for cj := range data.InspectionFilters[j].Vlan {
+					for cj := range data.InspectionFilters[j].Vlans {
 						found = true
-						if state.InspectionFilters[i].Vlan[ci].VlanRange.ValueString() != data.InspectionFilters[j].Vlan[cj].VlanRange.ValueString() {
+						if state.InspectionFilters[i].Vlans[ci].VlanRange.ValueString() != data.InspectionFilters[j].Vlans[cj].VlanRange.ValueString() {
 							found = false
 						}
 						if found {
-							if !state.InspectionFilters[i].Vlan[ci].Static.IsNull() && data.InspectionFilters[j].Vlan[cj].Static.IsNull() {
+							if !state.InspectionFilters[i].Vlans[ci].Static.IsNull() && data.InspectionFilters[j].Vlans[cj].Static.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/filter=%v/vlan=%v/static", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							break
@@ -567,9 +567,9 @@ func (data *ARP) getEmptyLeafsDelete(ctx context.Context) []string {
 	for i := range data.InspectionFilters {
 		keyValues := [...]string{data.InspectionFilters[i].Name.ValueString()}
 
-		for ci := range data.InspectionFilters[i].Vlan {
-			ckeyValues := [...]string{data.InspectionFilters[i].Vlan[ci].VlanRange.ValueString()}
-			if !data.InspectionFilters[i].Vlan[ci].Static.IsNull() && !data.InspectionFilters[i].Vlan[ci].Static.ValueBool() {
+		for ci := range data.InspectionFilters[i].Vlans {
+			ckeyValues := [...]string{data.InspectionFilters[i].Vlans[ci].VlanRange.ValueString()}
+			if !data.InspectionFilters[i].Vlans[ci].Static.IsNull() && !data.InspectionFilters[i].Vlans[ci].Static.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/filter=%v/vlan=%v/static", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 		}

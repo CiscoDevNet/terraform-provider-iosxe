@@ -83,7 +83,7 @@ func (d *ARPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"vlan": schema.ListNestedAttribute{
+						"vlans": schema.ListNestedAttribute{
 							MarkdownDescription: "Vlans to apply the filter",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{

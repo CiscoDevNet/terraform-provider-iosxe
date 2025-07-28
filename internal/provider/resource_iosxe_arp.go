@@ -100,7 +100,7 @@ func (r *ARPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"vlan": schema.ListNestedAttribute{
+						"vlans": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Vlans to apply the filter").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{

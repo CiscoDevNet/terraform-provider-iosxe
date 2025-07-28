@@ -1,12 +1,14 @@
 ## 0.6.0 (unreleased)
 
-- Drop support for IOS-XE 17.9
+- BREAKING_CHANGE: Drop support for IOS-XE 17.9
 - Add `esp-192-aes` and `esp-256-aes` options to `iosxe_crypto_ipsec_transform_set` resource and data source
 - Make `v3_auth_algorithm` attribute of `iosxe_snmp_server_user` resource and data source optional
 - Add `TLSv1.3` option to `ip_http_tls_version` attribute of `iosxe_system` resource and data source
-- Rename `snooping_vlans` to `snooping_vlans_legacy` and add `snooping_vlans` attribute to `iosxe_dhcp` resource and data source to support versions >= `17.14`
-- Rename `match_route_type_local` to `match_route_type_local_legacy` and add `match_route_type_local` attribute to `iosxe_route_map` resource and data source to support versions >= `17.15`
-- Remove `delete_mode` attribute from `iosxe_snmp_server_user` resource
+- BREAKING_CHANGE: Rename `snooping_vlans` to `snooping_vlans_legacy` and add `snooping_vlans` attribute to `iosxe_dhcp` resource and data source to support versions >= `17.14`
+- BREAKING_CHANGE: Rename `match_route_type_local` to `match_route_type_local_legacy` and add `match_route_type_local` attribute to `iosxe_route_map` resource and data source to support versions >= `17.15`
+- BREAKING_CHANGE: Remove `delete_mode` attribute from `iosxe_snmp_server_user` resource
+- BREAKING_CHANGE: Rename `inspection_filters.vlan` attribute of `iosxe_arp` resource and data source to `inspection_filters.vlans`
+
 
 ## 0.5.10
 

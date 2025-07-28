@@ -58,10 +58,10 @@ Required:
 
 Optional:
 
-- `vlan` (Attributes List) Vlans to apply the filter (see [below for nested schema](#nestedatt--inspection_filters--vlan))
+- `vlans` (Attributes List) Vlans to apply the filter (see [below for nested schema](#nestedatt--inspection_filters--vlans))
 
-<a id="nestedatt--inspection_filters--vlan"></a>
-### Nested Schema for `inspection_filters.vlan`
+<a id="nestedatt--inspection_filters--vlans"></a>
+### Nested Schema for `inspection_filters.vlans`
 
 Required:
 
