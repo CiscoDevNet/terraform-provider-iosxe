@@ -1426,13 +1426,13 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-icmp:unreachables", state.getPath()))
 	}
 	if !state.VrfForwarding.IsNull() && data.VrfForwarding.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf/forwarding", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf", state.getPath()))
 	}
 	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary/address", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
 	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary/mask", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
 	}
 	if !state.Switchport.IsNull() && data.Switchport.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport-conf/switchport", state.getPath()))
@@ -1751,13 +1751,13 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-icmp:unreachables", data.getPath()))
 	}
 	if !data.VrfForwarding.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/vrf/forwarding", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vrf", data.getPath()))
 	}
 	if !data.Ipv4Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary/address", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
 	}
 	if !data.Ipv4AddressMask.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary/mask", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
 	}
 	if !data.Switchport.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport-conf/switchport", data.getPath()))
