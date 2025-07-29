@@ -89,6 +89,8 @@ Required:
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import iosxe_logging_ipv6_host_vrf_transport.example "Cisco-IOS-XE-native:native/logging/host/ipv6/ipv6-host-vrf-transport-list=2001%3A%3A1,VRF1"
 ```

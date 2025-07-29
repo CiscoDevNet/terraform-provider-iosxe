@@ -73,6 +73,8 @@ data "iosxe_interface_ethernet" "example" {
 - `bfd_interval_multiplier` (Number) Multiplier value used to compute holddown
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
+- `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
+- `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
 - `channel_group_mode` (String) Etherchannel Mode of the interface
 - `channel_group_number` (Number)
 - `description` (String) Interface specific description
@@ -124,11 +126,9 @@ data "iosxe_interface_ethernet" "example" {
 - `source_template` (Attributes List) (see [below for nested schema](#nestedatt--source_template))
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
-- `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
-- `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
-- `spanning_tree_portfast` (Boolean) Portfast options for the interface
-- `spanning_tree_portfast_disable` (Boolean) Disable portfast for this interface
-- `spanning_tree_portfast_edge` (Boolean) Enable portfast edge on the interface
+- `spanning_tree_portfast` (Boolean) (DEPRECATED) Spanning tree portfast options
+- `spanning_tree_portfast_disable` (Boolean) (DEPRECATED) Disable portfast for this interface
+- `spanning_tree_portfast_edge` (Boolean) (DEPRECATED) Enable portfast edge on the interface
 - `spanning_tree_portfast_trunk` (Boolean) (DEPRECATED) Enable portfast on the interface even in trunk mode
 - `speed_100` (Boolean) 100 Mbps operation
 - `speed_1000` (Boolean) 1000 Mbps operation

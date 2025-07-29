@@ -339,11 +339,11 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				Computed:            true,
 			},
 			"spanning_tree_portfast": schema.BoolAttribute{
-				MarkdownDescription: "Spanning tree portfast options",
+				MarkdownDescription: "(DEPRECATED) Spanning tree portfast options",
 				Computed:            true,
 			},
 			"spanning_tree_portfast_disable": schema.BoolAttribute{
-				MarkdownDescription: "Disable portfast for this interface",
+				MarkdownDescription: "(DEPRECATED) Disable portfast for this interface",
 				Computed:            true,
 			},
 			"spanning_tree_portfast_trunk": schema.BoolAttribute{
@@ -351,7 +351,7 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				Computed:            true,
 			},
 			"spanning_tree_portfast_edge": schema.BoolAttribute{
-				MarkdownDescription: "Enable portfast edge on the interface",
+				MarkdownDescription: "(DEPRECATED) Enable portfast edge on the interface",
 				Computed:            true,
 			},
 			"ip_arp_inspection_trust": schema.BoolAttribute{

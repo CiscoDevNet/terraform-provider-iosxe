@@ -17,6 +17,7 @@
 - Add `vlan_based_route_target_exports` attribute to `iosxe_evpn_instance` resource and data source to support versions >= `17.15`
 - Add `vlan_based_route_target_imports` attribute to `iosxe_evpn_instance` resource and data source to support versions >= `17.15`
 - Add `vtp_mode_client`, `vtp_mode_off`, `vtp_mode_server`, `vtp_mode_transparent` attributes to `iosxe_vtp` resource and data source
+- Add `bpduguard_enable`, `bpduguard_disable`, `spanning_tree_portfast`, `spanning_tree_portfast_disable` and `spanning_tree_portfast_edge` attributes to `iosxe_interface_ethernet` resource and data source
 
 ## 0.5.10
 

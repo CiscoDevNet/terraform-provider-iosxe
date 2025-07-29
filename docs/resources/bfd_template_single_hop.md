@@ -71,6 +71,8 @@ resource "iosxe_bfd_template_single_hop" "example" {
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import iosxe_bfd_template_single_hop.example "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=SH-TEMPLATE-1"
 ```

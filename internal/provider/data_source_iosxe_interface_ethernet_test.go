@@ -62,6 +62,12 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "arp_timeout", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "spanning_tree_link_type", "point-to-point"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bpduguard_enable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bpduguard_disable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "spanning_tree_portfast", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "spanning_tree_portfast_disable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "spanning_tree_portfast_trunk", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "spanning_tree_portfast_edge", "false"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_arp_inspection_trust", "true"))
 	}
@@ -178,6 +184,12 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 300` + "\n"
 	config += `	spanning_tree_link_type = "point-to-point"` + "\n"
+	config += `	bpduguard_enable = false` + "\n"
+	config += `	bpduguard_disable = false` + "\n"
+	config += `	spanning_tree_portfast = true` + "\n"
+	config += `	spanning_tree_portfast_disable = false` + "\n"
+	config += `	spanning_tree_portfast_trunk = true` + "\n"
+	config += `	spanning_tree_portfast_edge = false` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_trust = true` + "\n"
 	}

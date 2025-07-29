@@ -61,11 +61,17 @@ resource "iosxe_interface_ethernet" "example" {
       eui_64 = true
     }
   ]
-  arp_timeout             = 300
-  spanning_tree_link_type = "point-to-point"
-  negotiation_auto        = false
-  service_policy_input    = "POLICY1"
-  service_policy_output   = "POLICY1"
+  arp_timeout                    = 300
+  spanning_tree_link_type        = "point-to-point"
+  bpduguard_enable               = false
+  bpduguard_disable              = false
+  spanning_tree_portfast         = true
+  spanning_tree_portfast_disable = false
+  spanning_tree_portfast_trunk   = true
+  spanning_tree_portfast_edge    = false
+  negotiation_auto               = false
+  service_policy_input           = "POLICY1"
+  service_policy_output          = "POLICY1"
   ip_flow_monitors = [
     {
       name      = "MON1"
@@ -135,6 +141,8 @@ resource "iosxe_interface_ethernet" "example" {
   - Range: `3`-`50`
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
+- `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
+- `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
 - `channel_group_mode` (String) Etherchannel Mode of the interface
   - Choices: `active`, `auto`, `desirable`, `on`, `passive`
 - `channel_group_number` (Number) - Range: `1`-`512`
@@ -204,11 +212,9 @@ resource "iosxe_interface_ethernet" "example" {
   - Choices: `loop`, `none`, `root`
 - `spanning_tree_link_type` (String) Specify a link type for spanning tree tree protocol use
   - Choices: `point-to-point`, `shared`
-- `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
-- `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
-- `spanning_tree_portfast` (Boolean) Portfast options for the interface
-- `spanning_tree_portfast_disable` (Boolean) Disable portfast for this interface
-- `spanning_tree_portfast_edge` (Boolean) Enable portfast edge on the interface
+- `spanning_tree_portfast` (Boolean) (DEPRECATED) Spanning tree portfast options
+- `spanning_tree_portfast_disable` (Boolean) (DEPRECATED) Disable portfast for this interface
+- `spanning_tree_portfast_edge` (Boolean) (DEPRECATED) Enable portfast edge on the interface
 - `spanning_tree_portfast_trunk` (Boolean) (DEPRECATED) Enable portfast on the interface even in trunk mode
 - `speed_100` (Boolean) 100 Mbps operation
 - `speed_1000` (Boolean) 1000 Mbps operation
@@ -289,6 +295,8 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import iosxe_interface_ethernet.example "Cisco-IOS-XE-native:native/interface/GigabitEthernet=3"

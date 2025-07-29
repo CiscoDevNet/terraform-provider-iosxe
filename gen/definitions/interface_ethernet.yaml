@@ -232,7 +232,7 @@ attributes:
     tf_name: bpduguard_disable
     example: false
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast
-    example: false
+    example: true
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable
     example: false
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk

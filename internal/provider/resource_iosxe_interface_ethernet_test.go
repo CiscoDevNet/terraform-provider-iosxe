@@ -63,6 +63,12 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ipv6_addresses.0.eui_64", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "arp_timeout", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "spanning_tree_link_type", "point-to-point"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bpduguard_enable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bpduguard_disable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "spanning_tree_portfast", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "spanning_tree_portfast_disable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "spanning_tree_portfast_trunk", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "spanning_tree_portfast_edge", "false"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_arp_inspection_trust", "true"))
 	}
@@ -96,7 +102,7 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/interface/GigabitEthernet=3",
-				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "spanning_tree_portfast_trunk", "ip_arp_inspection_trust", "ip_dhcp_snooping_trust", "speed_100", "speed_1000", "speed_2500", "speed_5000", "speed_10000", "speed_25000", "speed_40000", "speed_100000", "speed_nonegotiate", "authentication_order_dot1x", "authentication_order_dot1x_mab", "authentication_order_dot1x_webauth", "authentication_order_mab", "authentication_order_mab_dot1x", "authentication_order_mab_webauth", "authentication_order_webauth", "authentication_priority_dot1x", "authentication_priority_dot1x_mab", "authentication_priority_dot1x_webauth", "authentication_priority_mab", "authentication_priority_mab_dot1x", "authentication_priority_mab_webauth", "authentication_priority_webauth", "authentication_periodic", "authentication_timer_reauthenticate_server", "mab", "mab_eap"},
+				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust", "ip_dhcp_snooping_trust", "speed_100", "speed_1000", "speed_2500", "speed_5000", "speed_10000", "speed_25000", "speed_40000", "speed_100000", "speed_nonegotiate", "authentication_order_dot1x", "authentication_order_dot1x_mab", "authentication_order_dot1x_webauth", "authentication_order_mab", "authentication_order_mab_dot1x", "authentication_order_mab_webauth", "authentication_order_webauth", "authentication_priority_dot1x", "authentication_priority_dot1x_mab", "authentication_priority_dot1x_webauth", "authentication_priority_mab", "authentication_priority_mab_dot1x", "authentication_priority_mab_webauth", "authentication_priority_webauth", "authentication_periodic", "authentication_timer_reauthenticate_server", "mab", "mab_eap"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -199,6 +205,12 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `	}]` + "\n"
 	config += `	arp_timeout = 300` + "\n"
 	config += `	spanning_tree_link_type = "point-to-point"` + "\n"
+	config += `	bpduguard_enable = false` + "\n"
+	config += `	bpduguard_disable = false` + "\n"
+	config += `	spanning_tree_portfast = true` + "\n"
+	config += `	spanning_tree_portfast_disable = false` + "\n"
+	config += `	spanning_tree_portfast_trunk = true` + "\n"
+	config += `	spanning_tree_portfast_edge = false` + "\n"
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_trust = true` + "\n"
 	}

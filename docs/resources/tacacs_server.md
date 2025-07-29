@@ -49,6 +49,8 @@ resource "iosxe_tacacs_server" "example" {
 
 Import is supported using the following syntax:
 
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
 ```shell
 terraform import iosxe_tacacs_server.example "Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=tacacs_10.10.15.13"
 ```
