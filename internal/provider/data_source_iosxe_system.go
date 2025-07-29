@@ -214,6 +214,28 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Set active session modules",
 				Computed:            true,
 			},
+			"ip_name_servers": schema.ListAttribute{
+				MarkdownDescription: "Domain server IPv4/IPv6 address (maximum of 6)",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"ip_name_servers_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "Specify VRF Name",
+							Computed:            true,
+						},
+						"servers": schema.ListAttribute{
+							MarkdownDescription: "Domain server IPv4/IPv6 address (maximum of 6)",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

@@ -28,6 +28,7 @@ description: |-
 - Add `vtp_mode_client`, `vtp_mode_off`, `vtp_mode_server`, `vtp_mode_transparent` attributes to `iosxe_vtp` resource and data source
 - Add `bpduguard_enable`, `bpduguard_disable`, `spanning_tree_portfast`, `spanning_tree_portfast_disable` and `spanning_tree_portfast_edge` attributes to `iosxe_interface_ethernet` resource and data source
 - BREAKING CHANGE: Rename `trap_source_hundred_gig_e` attribute to `trap_source_hundred_gigabit_ethernet` of `iosxe_ntp` resource and data source
+- Add `ip_name_servers` and `ip_name_servers_vrf` attributes to `iosxe_system` resource and data source
 
 ## 0.5.10
 

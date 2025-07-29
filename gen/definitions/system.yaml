@@ -120,6 +120,21 @@ attributes:
   - yang_name: ip/Cisco-IOS-XE-http:http/active-session-modules
     example: none
     exclude_test: true
+  - yang_name: ip/name-server/no-vrf-ordered
+    tf_name: ip_name_servers
+    example: 1.2.3.4
+  - yang_name: ip/name-server/vrf
+    tf_name: ip_name_servers_vrf
+    type: List
+    attributes:
+      - yang_name: word
+        tf_name: vrf
+        example: VRF1
+        id: true
+      - yang_name: server-ip-list-ordered
+        tf_name: servers
+        example: 2.3.4.5
+    
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

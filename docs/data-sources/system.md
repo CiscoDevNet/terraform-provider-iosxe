@@ -48,6 +48,8 @@ data "iosxe_system" "example" {
 - `ip_http_tls_version` (String) Set TLS version for HTTP secure server
 - `ip_multicast_routing` (Boolean) Enable IP multicast forwarding
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
+- `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
+- `ip_name_servers_vrf` (Attributes List) (see [below for nested schema](#nestedatt--ip_name_servers_vrf))
 - `ip_routing` (Boolean) Enable or disable IP routing
 - `ip_source_route` (Boolean) Process packets with source routing header options
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
@@ -67,6 +69,15 @@ Read-Only:
 
 - `level` (Number) Enable level
 - `name` (String) Use an authorization list with this name
+
+
+<a id="nestedatt--ip_name_servers_vrf"></a>
+### Nested Schema for `ip_name_servers_vrf`
+
+Read-Only:
+
+- `servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
+- `vrf` (String) Specify VRF Name
 
 
 <a id="nestedatt--multicast_routing_vrfs"></a>

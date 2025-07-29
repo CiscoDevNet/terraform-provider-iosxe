@@ -52,6 +52,9 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "multicast_routing_vrfs.0.distributed", "true"))
 	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_name_servers.0", "1.2.3.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_name_servers_vrf.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_name_servers_vrf.0.servers.0", "2.3.4.5"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -103,6 +106,11 @@ func testAccDataSourceIosxeSystemConfig() string {
 	if os.Getenv("C8000V") != "" {
 		config += `		distributed = true` + "\n"
 	}
+	config += `	}]` + "\n"
+	config += `	ip_name_servers = ["1.2.3.4"]` + "\n"
+	config += `	ip_name_servers_vrf = [{` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `		servers = ["2.3.4.5"]` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"

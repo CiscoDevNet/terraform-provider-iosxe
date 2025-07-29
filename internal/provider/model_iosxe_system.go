@@ -68,6 +68,8 @@ type System struct {
 	IpHttpSecureActiveSessionModules            types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
 	IpHttpMaxConnections                        types.Int64                                         `tfsdk:"ip_http_max_connections"`
 	IpHttpActiveSessionModules                  types.String                                        `tfsdk:"ip_http_active_session_modules"`
+	IpNameServers                               types.List                                          `tfsdk:"ip_name_servers"`
+	IpNameServersVrf                            []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
 }
 
 type SystemData struct {
@@ -105,6 +107,8 @@ type SystemData struct {
 	IpHttpSecureActiveSessionModules            types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
 	IpHttpMaxConnections                        types.Int64                                         `tfsdk:"ip_http_max_connections"`
 	IpHttpActiveSessionModules                  types.String                                        `tfsdk:"ip_http_active_session_modules"`
+	IpNameServers                               types.List                                          `tfsdk:"ip_name_servers"`
+	IpNameServersVrf                            []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -113,6 +117,10 @@ type SystemMulticastRoutingVrfs struct {
 type SystemIpHttpAuthenticationAaaCommandAuthorization struct {
 	Level types.Int64  `tfsdk:"level"`
 	Name  types.String `tfsdk:"name"`
+}
+type SystemIpNameServersVrf struct {
+	Vrf     types.String `tfsdk:"vrf"`
+	Servers types.List   `tfsdk:"servers"`
 }
 
 func (data System) getPath() string {
@@ -248,6 +256,11 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.IpHttpActiveSessionModules.IsNull() && !data.IpHttpActiveSessionModules.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.active-session-modules", data.IpHttpActiveSessionModules.ValueString())
 	}
+	if !data.IpNameServers.IsNull() && !data.IpNameServers.IsUnknown() {
+		var values []string
+		data.IpNameServers.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.name-server.no-vrf-ordered", values)
+	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
 		for index, item := range data.MulticastRoutingVrfs {
@@ -269,6 +282,19 @@ func (data System) toBody(ctx context.Context) string {
 			}
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-http:http.authentication.aaa.command-authorization"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.IpNameServersVrf) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.name-server.vrf", []interface{}{})
+		for index, item := range data.IpNameServersVrf {
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.name-server.vrf"+"."+strconv.Itoa(index)+"."+"word", item.Vrf.ValueString())
+			}
+			if !item.Servers.IsNull() && !item.Servers.IsUnknown() {
+				var values []string
+				item.Servers.ElementsAs(ctx, &values, false)
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.name-server.vrf"+"."+strconv.Itoa(index)+"."+"server-ip-list-ordered", values)
 			}
 		}
 	}
@@ -556,6 +582,45 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpHttpActiveSessionModules = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.name-server.no-vrf-ordered"); value.Exists() && !data.IpNameServers.IsNull() {
+		data.IpNameServers = helpers.GetStringList(value.Array())
+	} else {
+		data.IpNameServers = types.ListNull(types.StringType)
+	}
+	for i := range data.IpNameServersVrf {
+		keys := [...]string{"word"}
+		keyValues := [...]string{data.IpNameServersVrf[i].Vrf.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "ip.name-server.vrf").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("word"); value.Exists() && !data.IpNameServersVrf[i].Vrf.IsNull() {
+			data.IpNameServersVrf[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.IpNameServersVrf[i].Vrf = types.StringNull()
+		}
+		if value := r.Get("server-ip-list-ordered"); value.Exists() && !data.IpNameServersVrf[i].Servers.IsNull() {
+			data.IpNameServersVrf[i].Servers = helpers.GetStringList(value.Array())
+		} else {
+			data.IpNameServersVrf[i].Servers = types.ListNull(types.StringType)
+		}
+	}
 }
 
 func (data *System) fromBody(ctx context.Context, res gjson.Result) {
@@ -714,6 +779,27 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.active-session-modules"); value.Exists() {
 		data.IpHttpActiveSessionModules = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.name-server.no-vrf-ordered"); value.Exists() {
+		data.IpNameServers = helpers.GetStringList(value.Array())
+	} else {
+		data.IpNameServers = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "ip.name-server.vrf"); value.Exists() {
+		data.IpNameServersVrf = make([]SystemIpNameServersVrf, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemIpNameServersVrf{}
+			if cValue := v.Get("word"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("server-ip-list-ordered"); cValue.Exists() {
+				item.Servers = helpers.GetStringList(cValue.Array())
+			} else {
+				item.Servers = types.ListNull(types.StringType)
+			}
+			data.IpNameServersVrf = append(data.IpNameServersVrf, item)
+			return true
+		})
 	}
 }
 
@@ -874,6 +960,27 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-http:http.active-session-modules"); value.Exists() {
 		data.IpHttpActiveSessionModules = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.name-server.no-vrf-ordered"); value.Exists() {
+		data.IpNameServers = helpers.GetStringList(value.Array())
+	} else {
+		data.IpNameServers = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "ip.name-server.vrf"); value.Exists() {
+		data.IpNameServersVrf = make([]SystemIpNameServersVrf, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemIpNameServersVrf{}
+			if cValue := v.Get("word"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("server-ip-list-ordered"); cValue.Exists() {
+				item.Servers = helpers.GetStringList(cValue.Array())
+			} else {
+				item.Servers = types.ListNull(types.StringType)
+			}
+			data.IpNameServersVrf = append(data.IpNameServersVrf, item)
+			return true
+		})
+	}
 }
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
@@ -1024,6 +1131,73 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	if !state.IpHttpActiveSessionModules.IsNull() && data.IpHttpActiveSessionModules.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/active-session-modules", state.getPath()))
 	}
+	if !state.IpNameServers.IsNull() {
+		if data.IpNameServers.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.IpNameServers.ElementsAs(ctx, &dataValues, false)
+			state.IpNameServers.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	for i := range state.IpNameServersVrf {
+		stateKeyValues := [...]string{state.IpNameServersVrf[i].Vrf.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.IpNameServersVrf[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.IpNameServersVrf {
+			found = true
+			if state.IpNameServersVrf[i].Vrf.ValueString() != data.IpNameServersVrf[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.IpNameServersVrf[i].Servers.IsNull() {
+					if data.IpNameServersVrf[j].Servers.IsNull() {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/vrf=%v/server-ip-list-ordered", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					} else {
+						var dataValues, stateValues []string
+						data.IpNameServersVrf[i].Servers.ElementsAs(ctx, &dataValues, false)
+						state.IpNameServersVrf[j].Servers.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/vrf=%v/server-ip-list-ordered=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+							}
+						}
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedItems
 }
 
@@ -1070,6 +1244,7 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", data.getPath()))
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -1174,6 +1349,14 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpHttpActiveSessionModules.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/active-session-modules", data.getPath()))
+	}
+	if !data.IpNameServers.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered", data.getPath()))
+	}
+	for i := range data.IpNameServersVrf {
+		keyValues := [...]string{data.IpNameServersVrf[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/name-server/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

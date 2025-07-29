@@ -250,6 +250,28 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Set active session modules").String,
 				Optional:            true,
 			},
+			"ip_name_servers": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Domain server IPv4/IPv6 address (maximum of 6)").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"ip_name_servers_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify VRF Name").String,
+							Required:            true,
+						},
+						"servers": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Domain server IPv4/IPv6 address (maximum of 6)").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

@@ -30,6 +30,13 @@ resource "iosxe_system" "example" {
       vrf = "VRF1"
     }
   ]
+  ip_name_servers = ["1.2.3.4"]
+  ip_name_servers_vrf = [
+    {
+      vrf     = "VRF1"
+      servers = ["2.3.4.5"]
+    }
+  ]
 }
 ```
 
@@ -63,6 +70,8 @@ resource "iosxe_system" "example" {
   - Choices: `TLSv1.0`, `TLSv1.1`, `TLSv1.2`, `TLSv1.3`
 - `ip_multicast_routing` (Boolean) Enable IP multicast forwarding
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
+- `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
+- `ip_name_servers_vrf` (Attributes List) (see [below for nested schema](#nestedatt--ip_name_servers_vrf))
 - `ip_routing` (Boolean) Enable or disable IP routing
 - `ip_source_route` (Boolean) Process packets with source routing header options
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
@@ -91,6 +100,18 @@ Required:
 Optional:
 
 - `name` (String) Use an authorization list with this name
+
+
+<a id="nestedatt--ip_name_servers_vrf"></a>
+### Nested Schema for `ip_name_servers_vrf`
+
+Required:
+
+- `vrf` (String) Specify VRF Name
+
+Optional:
+
+- `servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
 
 
 <a id="nestedatt--multicast_routing_vrfs"></a>

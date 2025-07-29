@@ -15,4 +15,11 @@ resource "iosxe_system" "example" {
       vrf = "VRF1"
     }
   ]
+  ip_name_servers = ["1.2.3.4"]
+  ip_name_servers_vrf = [
+    {
+      vrf     = "VRF1"
+      servers = ["2.3.4.5"]
+    }
+  ]
 }
