@@ -95,11 +95,11 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				Computed:            true,
 			},
 			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip address",
 				Computed:            true,
 			},
 			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
 			"unnumbered": schema.StringAttribute{
@@ -132,7 +132,7 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"address": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IP destination address",
 							Computed:            true,
 						},
 						"global": schema.BoolAttribute{
@@ -216,7 +216,7 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"prefix": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IPv6 prefix",
 							Computed:            true,
 						},
 						"eui_64": schema.BoolAttribute{

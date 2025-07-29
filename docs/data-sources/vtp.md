@@ -31,15 +31,19 @@ data "iosxe_vtp" "example" {
 - `id` (String) The path of the retrieved object.
 - `interface` (String) The name of the interface providing the VTP updater ID for this device
 - `interface_only` (Boolean) Use only this interface's IP address as the VTP IP updater address
+- `mode_client` (Boolean) Set the device to client mode
 - `mode_client_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_client_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_client_vlan` (Boolean) Set the mode for VLAN VTP instance
+- `mode_off` (Boolean) Set the device to off mode
 - `mode_off_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_off_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_off_vlan` (Boolean) Set the mode for VLAN VTP instance
+- `mode_server` (Boolean) Set the device to server mode
 - `mode_server_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_server_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_server_vlan` (Boolean) Set the mode for VLAN VTP instance
+- `mode_transparent` (Boolean) Set the device to transparent mode
 - `mode_transparent_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_transparent_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_transparent_vlan` (Boolean) Set the mode for VLAN VTP instance

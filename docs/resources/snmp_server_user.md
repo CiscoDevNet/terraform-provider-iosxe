@@ -32,19 +32,17 @@ resource "iosxe_snmp_server_user" "example" {
 
 - `grpname` (String) Group to which the user belongs
 - `username` (String) Name of the user
-- `v3_auth_algorithm` (String) Use HMAC SHA/MD5 algorithm for authentication
-  - Choices: `md5`, `sha`
 - `v3_auth_password` (String) Authentication password for user
 
 ### Optional
 
-- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
-  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `v3_auth_access_acl_name` (String) Access-list name
 - `v3_auth_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
   - Range: `1`-`99`
+- `v3_auth_algorithm` (String) Use HMAC SHA/MD5 algorithm for authentication
+  - Choices: `md5`, `sha`
 - `v3_auth_priv_aes_access_acl_name` (String) Access-list name
 - `v3_auth_priv_aes_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_priv_aes_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string

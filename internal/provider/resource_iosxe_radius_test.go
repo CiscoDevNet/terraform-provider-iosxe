@@ -20,6 +20,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -37,8 +38,12 @@ func TestAccIosxeRadius(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_username", "dummy"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_ignore_acct_port", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "automate_tester_probe_on_config", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "pac_key", "123"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "pac_key_encryption", "0"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "pac_key", "123"))
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_radius.test", "pac_key_encryption", "0"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -81,8 +86,12 @@ func testAccIosxeRadiusConfig_all() string {
 	config += `	automate_tester_username = "dummy"` + "\n"
 	config += `	automate_tester_ignore_acct_port = true` + "\n"
 	config += `	automate_tester_probe_on_config = true` + "\n"
-	config += `	pac_key = "123"` + "\n"
-	config += `	pac_key_encryption = "0"` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	pac_key = "123"` + "\n"
+	}
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	pac_key_encryption = "0"` + "\n"
+	}
 	config += `}` + "\n"
 	return config
 }

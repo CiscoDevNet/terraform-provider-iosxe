@@ -44,15 +44,19 @@ type VTP struct {
 	PasswordSecret         types.Bool   `tfsdk:"password_secret"`
 	Pruning                types.Bool   `tfsdk:"pruning"`
 	Domain                 types.String `tfsdk:"domain"`
+	ModeClient             types.Bool   `tfsdk:"mode_client"`
 	ModeClientMst          types.Bool   `tfsdk:"mode_client_mst"`
 	ModeClientUnknown      types.Bool   `tfsdk:"mode_client_unknown"`
 	ModeClientVlan         types.Bool   `tfsdk:"mode_client_vlan"`
+	ModeOff                types.Bool   `tfsdk:"mode_off"`
 	ModeOffMst             types.Bool   `tfsdk:"mode_off_mst"`
 	ModeOffUnknown         types.Bool   `tfsdk:"mode_off_unknown"`
 	ModeOffVlan            types.Bool   `tfsdk:"mode_off_vlan"`
+	ModeServer             types.Bool   `tfsdk:"mode_server"`
 	ModeServerMst          types.Bool   `tfsdk:"mode_server_mst"`
 	ModeServerUnknown      types.Bool   `tfsdk:"mode_server_unknown"`
 	ModeServerVlan         types.Bool   `tfsdk:"mode_server_vlan"`
+	ModeTransparent        types.Bool   `tfsdk:"mode_transparent"`
 	ModeTransparentMst     types.Bool   `tfsdk:"mode_transparent_mst"`
 	ModeTransparentUnknown types.Bool   `tfsdk:"mode_transparent_unknown"`
 	ModeTransparentVlan    types.Bool   `tfsdk:"mode_transparent_vlan"`
@@ -70,15 +74,19 @@ type VTPData struct {
 	PasswordSecret         types.Bool   `tfsdk:"password_secret"`
 	Pruning                types.Bool   `tfsdk:"pruning"`
 	Domain                 types.String `tfsdk:"domain"`
+	ModeClient             types.Bool   `tfsdk:"mode_client"`
 	ModeClientMst          types.Bool   `tfsdk:"mode_client_mst"`
 	ModeClientUnknown      types.Bool   `tfsdk:"mode_client_unknown"`
 	ModeClientVlan         types.Bool   `tfsdk:"mode_client_vlan"`
+	ModeOff                types.Bool   `tfsdk:"mode_off"`
 	ModeOffMst             types.Bool   `tfsdk:"mode_off_mst"`
 	ModeOffUnknown         types.Bool   `tfsdk:"mode_off_unknown"`
 	ModeOffVlan            types.Bool   `tfsdk:"mode_off_vlan"`
+	ModeServer             types.Bool   `tfsdk:"mode_server"`
 	ModeServerMst          types.Bool   `tfsdk:"mode_server_mst"`
 	ModeServerUnknown      types.Bool   `tfsdk:"mode_server_unknown"`
 	ModeServerVlan         types.Bool   `tfsdk:"mode_server_vlan"`
+	ModeTransparent        types.Bool   `tfsdk:"mode_transparent"`
 	ModeTransparentMst     types.Bool   `tfsdk:"mode_transparent_mst"`
 	ModeTransparentUnknown types.Bool   `tfsdk:"mode_transparent_unknown"`
 	ModeTransparentVlan    types.Bool   `tfsdk:"mode_transparent_vlan"`
@@ -140,6 +148,11 @@ func (data VTP) toBody(ctx context.Context) string {
 	if !data.Domain.IsNull() && !data.Domain.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:domain", data.Domain.ValueString())
 	}
+	if !data.ModeClient.IsNull() && !data.ModeClient.IsUnknown() {
+		if data.ModeClient.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.client", map[string]string{})
+		}
+	}
 	if !data.ModeClientMst.IsNull() && !data.ModeClientMst.IsUnknown() {
 		if data.ModeClientMst.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.client.mst", map[string]string{})
@@ -153,6 +166,11 @@ func (data VTP) toBody(ctx context.Context) string {
 	if !data.ModeClientVlan.IsNull() && !data.ModeClientVlan.IsUnknown() {
 		if data.ModeClientVlan.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.client.vlan", map[string]string{})
+		}
+	}
+	if !data.ModeOff.IsNull() && !data.ModeOff.IsUnknown() {
+		if data.ModeOff.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.off", map[string]string{})
 		}
 	}
 	if !data.ModeOffMst.IsNull() && !data.ModeOffMst.IsUnknown() {
@@ -170,6 +188,11 @@ func (data VTP) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.off.vlan", map[string]string{})
 		}
 	}
+	if !data.ModeServer.IsNull() && !data.ModeServer.IsUnknown() {
+		if data.ModeServer.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.server", map[string]string{})
+		}
+	}
 	if !data.ModeServerMst.IsNull() && !data.ModeServerMst.IsUnknown() {
 		if data.ModeServerMst.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.server.mst", map[string]string{})
@@ -183,6 +206,11 @@ func (data VTP) toBody(ctx context.Context) string {
 	if !data.ModeServerVlan.IsNull() && !data.ModeServerVlan.IsUnknown() {
 		if data.ModeServerVlan.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.server.vlan", map[string]string{})
+		}
+	}
+	if !data.ModeTransparent.IsNull() && !data.ModeTransparent.IsUnknown() {
+		if data.ModeTransparent.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-vtp:mode.transparent", map[string]string{})
 		}
 	}
 	if !data.ModeTransparentMst.IsNull() && !data.ModeTransparentMst.IsUnknown() {
@@ -269,6 +297,15 @@ func (data *VTP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Domain = types.StringNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client"); !data.ModeClient.IsNull() {
+		if value.Exists() {
+			data.ModeClient = types.BoolValue(true)
+		} else {
+			data.ModeClient = types.BoolValue(false)
+		}
+	} else {
+		data.ModeClient = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client.mst"); !data.ModeClientMst.IsNull() {
 		if value.Exists() {
 			data.ModeClientMst = types.BoolValue(true)
@@ -295,6 +332,15 @@ func (data *VTP) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.ModeClientVlan = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off"); !data.ModeOff.IsNull() {
+		if value.Exists() {
+			data.ModeOff = types.BoolValue(true)
+		} else {
+			data.ModeOff = types.BoolValue(false)
+		}
+	} else {
+		data.ModeOff = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off.mst"); !data.ModeOffMst.IsNull() {
 		if value.Exists() {
@@ -323,6 +369,15 @@ func (data *VTP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.ModeOffVlan = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server"); !data.ModeServer.IsNull() {
+		if value.Exists() {
+			data.ModeServer = types.BoolValue(true)
+		} else {
+			data.ModeServer = types.BoolValue(false)
+		}
+	} else {
+		data.ModeServer = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server.mst"); !data.ModeServerMst.IsNull() {
 		if value.Exists() {
 			data.ModeServerMst = types.BoolValue(true)
@@ -349,6 +404,15 @@ func (data *VTP) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.ModeServerVlan = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent"); !data.ModeTransparent.IsNull() {
+		if value.Exists() {
+			data.ModeTransparent = types.BoolValue(true)
+		} else {
+			data.ModeTransparent = types.BoolValue(false)
+		}
+	} else {
+		data.ModeTransparent = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent.mst"); !data.ModeTransparentMst.IsNull() {
 		if value.Exists() {
@@ -419,6 +483,11 @@ func (data *VTP) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:domain"); value.Exists() {
 		data.Domain = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client"); value.Exists() {
+		data.ModeClient = types.BoolValue(true)
+	} else {
+		data.ModeClient = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client.mst"); value.Exists() {
 		data.ModeClientMst = types.BoolValue(true)
 	} else {
@@ -433,6 +502,11 @@ func (data *VTP) fromBody(ctx context.Context, res gjson.Result) {
 		data.ModeClientVlan = types.BoolValue(true)
 	} else {
 		data.ModeClientVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off"); value.Exists() {
+		data.ModeOff = types.BoolValue(true)
+	} else {
+		data.ModeOff = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off.mst"); value.Exists() {
 		data.ModeOffMst = types.BoolValue(true)
@@ -449,6 +523,11 @@ func (data *VTP) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.ModeOffVlan = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server"); value.Exists() {
+		data.ModeServer = types.BoolValue(true)
+	} else {
+		data.ModeServer = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server.mst"); value.Exists() {
 		data.ModeServerMst = types.BoolValue(true)
 	} else {
@@ -463,6 +542,11 @@ func (data *VTP) fromBody(ctx context.Context, res gjson.Result) {
 		data.ModeServerVlan = types.BoolValue(true)
 	} else {
 		data.ModeServerVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent"); value.Exists() {
+		data.ModeTransparent = types.BoolValue(true)
+	} else {
+		data.ModeTransparent = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent.mst"); value.Exists() {
 		data.ModeTransparentMst = types.BoolValue(true)
@@ -521,6 +605,11 @@ func (data *VTPData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:domain"); value.Exists() {
 		data.Domain = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client"); value.Exists() {
+		data.ModeClient = types.BoolValue(true)
+	} else {
+		data.ModeClient = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.client.mst"); value.Exists() {
 		data.ModeClientMst = types.BoolValue(true)
 	} else {
@@ -535,6 +624,11 @@ func (data *VTPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.ModeClientVlan = types.BoolValue(true)
 	} else {
 		data.ModeClientVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off"); value.Exists() {
+		data.ModeOff = types.BoolValue(true)
+	} else {
+		data.ModeOff = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.off.mst"); value.Exists() {
 		data.ModeOffMst = types.BoolValue(true)
@@ -551,6 +645,11 @@ func (data *VTPData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.ModeOffVlan = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server"); value.Exists() {
+		data.ModeServer = types.BoolValue(true)
+	} else {
+		data.ModeServer = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.server.mst"); value.Exists() {
 		data.ModeServerMst = types.BoolValue(true)
 	} else {
@@ -565,6 +664,11 @@ func (data *VTPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.ModeServerVlan = types.BoolValue(true)
 	} else {
 		data.ModeServerVlan = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent"); value.Exists() {
+		data.ModeTransparent = types.BoolValue(true)
+	} else {
+		data.ModeTransparent = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:mode.transparent.mst"); value.Exists() {
 		data.ModeTransparentMst = types.BoolValue(true)
@@ -606,6 +710,9 @@ func (data *VTP) getDeletedItems(ctx context.Context, state VTP) []string {
 	if !state.Pruning.IsNull() && data.Pruning.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", state.getPath()))
 	}
+	if !state.ModeClient.IsNull() && data.ModeClient.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", state.getPath()))
+	}
 	if !state.ModeClientMst.IsNull() && data.ModeClientMst.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", state.getPath()))
 	}
@@ -614,6 +721,9 @@ func (data *VTP) getDeletedItems(ctx context.Context, state VTP) []string {
 	}
 	if !state.ModeClientVlan.IsNull() && data.ModeClientVlan.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", state.getPath()))
+	}
+	if !state.ModeOff.IsNull() && data.ModeOff.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", state.getPath()))
 	}
 	if !state.ModeOffMst.IsNull() && data.ModeOffMst.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", state.getPath()))
@@ -624,6 +734,9 @@ func (data *VTP) getDeletedItems(ctx context.Context, state VTP) []string {
 	if !state.ModeOffVlan.IsNull() && data.ModeOffVlan.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", state.getPath()))
 	}
+	if !state.ModeServer.IsNull() && data.ModeServer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", state.getPath()))
+	}
 	if !state.ModeServerMst.IsNull() && data.ModeServerMst.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", state.getPath()))
 	}
@@ -632,6 +745,9 @@ func (data *VTP) getDeletedItems(ctx context.Context, state VTP) []string {
 	}
 	if !state.ModeServerVlan.IsNull() && data.ModeServerVlan.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", state.getPath()))
+	}
+	if !state.ModeTransparent.IsNull() && data.ModeTransparent.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", state.getPath()))
 	}
 	if !state.ModeTransparentMst.IsNull() && data.ModeTransparentMst.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", state.getPath()))
@@ -659,6 +775,9 @@ func (data *VTP) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.Pruning.IsNull() && !data.Pruning.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", data.getPath()))
 	}
+	if !data.ModeClient.IsNull() && !data.ModeClient.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", data.getPath()))
+	}
 	if !data.ModeClientMst.IsNull() && !data.ModeClientMst.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", data.getPath()))
 	}
@@ -667,6 +786,9 @@ func (data *VTP) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.ModeClientVlan.IsNull() && !data.ModeClientVlan.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", data.getPath()))
+	}
+	if !data.ModeOff.IsNull() && !data.ModeOff.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", data.getPath()))
 	}
 	if !data.ModeOffMst.IsNull() && !data.ModeOffMst.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", data.getPath()))
@@ -677,6 +799,9 @@ func (data *VTP) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.ModeOffVlan.IsNull() && !data.ModeOffVlan.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", data.getPath()))
 	}
+	if !data.ModeServer.IsNull() && !data.ModeServer.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", data.getPath()))
+	}
 	if !data.ModeServerMst.IsNull() && !data.ModeServerMst.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", data.getPath()))
 	}
@@ -685,6 +810,9 @@ func (data *VTP) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.ModeServerVlan.IsNull() && !data.ModeServerVlan.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", data.getPath()))
+	}
+	if !data.ModeTransparent.IsNull() && !data.ModeTransparent.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", data.getPath()))
 	}
 	if !data.ModeTransparentMst.IsNull() && !data.ModeTransparentMst.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", data.getPath()))
@@ -721,6 +849,9 @@ func (data *VTP) getDeletePaths(ctx context.Context) []string {
 	if !data.Pruning.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", data.getPath()))
 	}
+	if !data.ModeClient.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", data.getPath()))
+	}
 	if !data.ModeClientMst.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", data.getPath()))
 	}
@@ -729,6 +860,9 @@ func (data *VTP) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.ModeClientVlan.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", data.getPath()))
+	}
+	if !data.ModeOff.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", data.getPath()))
 	}
 	if !data.ModeOffMst.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", data.getPath()))
@@ -739,6 +873,9 @@ func (data *VTP) getDeletePaths(ctx context.Context) []string {
 	if !data.ModeOffVlan.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", data.getPath()))
 	}
+	if !data.ModeServer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", data.getPath()))
+	}
 	if !data.ModeServerMst.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", data.getPath()))
 	}
@@ -747,6 +884,9 @@ func (data *VTP) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.ModeServerVlan.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", data.getPath()))
+	}
+	if !data.ModeTransparent.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", data.getPath()))
 	}
 	if !data.ModeTransparentMst.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", data.getPath()))

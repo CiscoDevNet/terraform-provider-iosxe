@@ -32,8 +32,8 @@ func TestAccIosxeARP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "proxy_disable", "true"))
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_filters.0.name", "FIL1"))
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_filters.0.vlan.0.vlan_range", "3-5"))
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_filters.0.vlan.0.static", "true"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_filters.0.vlans.0.vlan_range", "3"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_filters.0.vlans.0.static", "true"))
 	}
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_validate_src_mac", "true"))
@@ -57,7 +57,7 @@ func TestAccIosxeARP(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_log_buffer_logs_interval", "1000"))
 	}
 	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_vlan", "6-8"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_arp.test", "inspection_vlan", "6"))
 	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -95,8 +95,8 @@ func testAccIosxeARPConfig_all() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	inspection_filters = [{` + "\n"
 		config += `		name = "FIL1"` + "\n"
-		config += `		vlan = [{` + "\n"
-		config += `			vlan_range = "3-5"` + "\n"
+		config += `		vlans = [{` + "\n"
+		config += `			vlan_range = "3"` + "\n"
 		config += `			static = true` + "\n"
 		config += `		}]` + "\n"
 		config += `	}]` + "\n"
@@ -123,7 +123,7 @@ func testAccIosxeARPConfig_all() string {
 		config += `	inspection_log_buffer_logs_interval = 1000` + "\n"
 	}
 	if os.Getenv("C9000V") != "" {
-		config += `	inspection_vlan = "6-8"` + "\n"
+		config += `	inspection_vlan = "6"` + "\n"
 	}
 	config += `}` + "\n"
 	return config

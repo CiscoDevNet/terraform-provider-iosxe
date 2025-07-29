@@ -67,11 +67,11 @@ func (d *PolicyMapEventDataSource) Schema(ctx context.Context, req datasource.Sc
 				Required:            true,
 			},
 			"event_type": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "The event this control class-map triggers upon",
 				Required:            true,
 			},
 			"match_type": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Matching criteria for first or all events.",
 				Computed:            true,
 			},
 			"class_numbers": schema.ListNestedAttribute{
@@ -80,7 +80,7 @@ func (d *PolicyMapEventDataSource) Schema(ctx context.Context, req datasource.Sc
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"number": schema.Int64Attribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "class number, 1 for 1st class, 2 for 2nd...",
 							Computed:            true,
 						},
 						"class": schema.StringAttribute{
@@ -88,7 +88,7 @@ func (d *PolicyMapEventDataSource) Schema(ctx context.Context, req datasource.Sc
 							Computed:            true,
 						},
 						"execution_type": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Policy execution strategy",
 							Computed:            true,
 						},
 						"action_numbers": schema.ListNestedAttribute{
@@ -97,7 +97,7 @@ func (d *PolicyMapEventDataSource) Schema(ctx context.Context, req datasource.Sc
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"number": schema.Int64Attribute{
-										MarkdownDescription: "",
+										MarkdownDescription: "action number, 1 for 1st class, 2 for 2nd...",
 										Computed:            true,
 									},
 									"pause_reauthentication": schema.BoolAttribute{
@@ -149,7 +149,7 @@ func (d *PolicyMapEventDataSource) Schema(ctx context.Context, req datasource.Sc
 										Computed:            true,
 									},
 									"authenticate_using_method": schema.StringAttribute{
-										MarkdownDescription: "",
+										MarkdownDescription: "method/protocol to be used for authentication",
 										Computed:            true,
 									},
 									"authenticate_using_retries": schema.Int64Attribute{

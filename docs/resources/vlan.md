@@ -25,7 +25,7 @@ resource "iosxe_vlan" "example" {
 
 ### Required
 
-- `vlan_id` (Number) a single VLAN id (allowed value range 1-4094)or Comma-separated VLAN id range.e.g. 99 or 1-30 or  1-20,30,40-50
+- `vlan_id` (Number) VLAN ID
   - Range: `1`-`4094`
 
 ### Optional

@@ -69,7 +69,8 @@ resource "iosxe_line" "example" {
 
 Required:
 
-- `first` (String) - Choices: `0`
+- `first` (String) Console line number
+  - Choices: `0`
 
 Optional:
 
@@ -82,7 +83,7 @@ Optional:
 - `password` (String)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
-- `password_type` (String) - Choices: `0`, `7`
+- `password_type` (String) - Choices: `0`, `6`, `7`
 - `privilege_level` (Number) - Range: `0`-`15`
 - `stopbits` (String) Set async line stop bits
   - Choices: `1`, `1.5`, `2`
@@ -93,11 +94,12 @@ Optional:
 
 Required:
 
-- `first` (Number) - Range: `0`-`1869`
+- `first` (Number) Vty first line number
+  - Range: `0`-`1869`
 
 Optional:
 
-- `access_classes` (Attributes List) (see [below for nested schema](#nestedatt--vty--access_classes))
+- `access_classes` (Attributes List) Choose direction of the access list (see [below for nested schema](#nestedatt--vty--access_classes))
 - `authorization_exec` (String) Use an authorization list with this name
 - `authorization_exec_default` (Boolean) Use the default authorization list
 - `escape_character` (String)
@@ -105,12 +107,13 @@ Optional:
   - Range: `0`-`35791`
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
   - Range: `0`-`2147483`
-- `last` (Number) - Range: `1`-`1869`
-- `login_authentication` (String)
+- `last` (Number) Vty last line number
+  - Range: `1`-`1869`
+- `login_authentication` (String) Authentication list
 - `password` (String)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
-- `password_type` (String) - Choices: `0`, `7`
+- `password_type` (String) - Choices: `0`, `6`, `7`
 - `transport_input` (String) Define which protocols to use when connecting to the terminal server
 - `transport_input_all` (Boolean) All protocols
 - `transport_input_none` (Boolean) Define no transport protocols for line
@@ -122,7 +125,8 @@ Optional:
 Required:
 
 - `access_list` (String)
-- `direction` (String) - Choices: `in`, `out`
+- `direction` (String) Filter connections based on the incoming/outgoing direction
+  - Choices: `in`, `out`
 
 Optional:
 

@@ -24,7 +24,7 @@ data "iosxe_policy_map_event" "example" {
 
 ### Required
 
-- `event_type` (String)
+- `event_type` (String) The event this control class-map triggers upon
 - `name` (String) Name of the policy map
 
 ### Optional
@@ -35,7 +35,7 @@ data "iosxe_policy_map_event" "example" {
 
 - `class_numbers` (Attributes List) class number, 1 for 1st class, 2 for 2nd... (see [below for nested schema](#nestedatt--class_numbers))
 - `id` (String) The path of the retrieved object.
-- `match_type` (String)
+- `match_type` (String) Matching criteria for first or all events.
 
 <a id="nestedatt--class_numbers"></a>
 ### Nested Schema for `class_numbers`
@@ -44,8 +44,8 @@ Read-Only:
 
 - `action_numbers` (Attributes List) action number, 1 for 1st class, 2 for 2nd... (see [below for nested schema](#nestedatt--class_numbers--action_numbers))
 - `class` (String) The class type this control policy-map triggers upon
-- `execution_type` (String)
-- `number` (Number)
+- `execution_type` (String) Policy execution strategy
+- `number` (Number) class number, 1 for 1st class, 2 for 2nd...
 
 <a id="nestedatt--class_numbers--action_numbers"></a>
 ### Nested Schema for `class_numbers.action_numbers`
@@ -61,7 +61,7 @@ Read-Only:
 - `authenticate_using_aaa_authc_list` (String) Specify authentication method list
 - `authenticate_using_aaa_authz_list` (String) Specify authorization method list
 - `authenticate_using_both` (Boolean) Enabling Dot1x Authenticator & Supplicant
-- `authenticate_using_method` (String)
+- `authenticate_using_method` (String) method/protocol to be used for authentication
 - `authenticate_using_parameter_map` (String) Specify parameter map name
 - `authenticate_using_priority` (Number) Method priority
 - `authenticate_using_retries` (Number) Number of times to retry failed authentications
@@ -76,7 +76,7 @@ Read-Only:
 - `err_disable` (Boolean) temporarily disable port
 - `map_attribute_to_service_table` (String) map identity-update attribute to a auto-conf templates
 - `notify` (Boolean) notifies the session attributes
-- `number` (Number)
+- `number` (Number) action number, 1 for 1st class, 2 for 2nd...
 - `pause_reauthentication` (Boolean) pause reauthentication
 - `protect` (Boolean) silently drop violating packets
 - `replace` (Boolean) clear existing session and create session for violating host

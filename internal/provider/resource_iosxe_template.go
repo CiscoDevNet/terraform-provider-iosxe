@@ -307,10 +307,10 @@ func (r *TemplateResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 			},
 			"authentication_timer_reauthenticate_range": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enter a value between 1 and 65535").AddIntegerRangeDescription(1, 65535).String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enter a value between 1 and 1073741823").AddIntegerRangeDescription(1, 1073741823).String,
 				Optional:            true,
 				Validators: []validator.Int64{
-					int64validator.Between(1, 65535),
+					int64validator.Between(1, 1073741823),
 				},
 			},
 			"spanning_tree_bpduguard_enable": schema.BoolAttribute{

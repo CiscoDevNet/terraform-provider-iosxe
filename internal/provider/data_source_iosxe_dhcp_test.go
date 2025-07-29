@@ -20,6 +20,7 @@
 package provider
 
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,7 +32,12 @@ func TestAccDataSourceIosxeDHCP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "relay_information_option_default", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "relay_information_option_vpn", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "snooping", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "snooping_vlans.0.vlan_id", "3-4"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "snooping_vlans_legacy.0.vlan_id", "3-4"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dhcp.test", "snooping_vlans.0.vlan_id", "3"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -51,9 +57,16 @@ func testAccDataSourceIosxeDHCPConfig() string {
 	config += `	relay_information_option_default = false` + "\n"
 	config += `	relay_information_option_vpn = true` + "\n"
 	config += `	snooping = true` + "\n"
-	config += `	snooping_vlans = [{` + "\n"
-	config += `		vlan_id = "3-4"` + "\n"
-	config += `	}]` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	snooping_vlans_legacy = [{` + "\n"
+		config += `		vlan_id = "3-4"` + "\n"
+		config += `	}]` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	snooping_vlans = [{` + "\n"
+		config += `		vlan_id = 3` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `}` + "\n"
 
 	config += `

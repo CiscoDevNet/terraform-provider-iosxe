@@ -22,14 +22,17 @@ attributes:
     xpath: vrf/forwarding
     tf_name: vrf_forwarding
     example: VRF1
+    delete_parent: true
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/address
     xpath: ip/address/primary/address
     tf_name: ipv4_address
     example: 192.0.2.1
+    delete_parent: true
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/mask
     xpath: ip/address/primary/mask
     tf_name: ipv4_address_mask
     example: 255.255.255.0
+    delete_parent: true
   - yang_name: switchport-conf/switchport
     tf_name: switchport
     example: false

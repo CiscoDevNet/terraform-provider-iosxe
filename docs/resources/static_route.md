@@ -51,7 +51,7 @@ resource "iosxe_static_route" "example" {
 
 Required:
 
-- `next_hop` (String)
+- `next_hop` (String) Specify the next hop as an ip-address or interface name
 
 Optional:
 

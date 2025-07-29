@@ -159,7 +159,7 @@ func (d *ErrdisableDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed:            true,
 			},
 			"recovery_cause_all": schema.BoolAttribute{
-				MarkdownDescription: "Enable timer to recover from all error causes",
+				MarkdownDescription: "Enable timer to recover from all error causes (DEPRECATED)",
 				Computed:            true,
 			},
 			"recovery_cause_arp_inspection": schema.BoolAttribute{

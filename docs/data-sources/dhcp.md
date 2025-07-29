@@ -34,10 +34,19 @@ data "iosxe_dhcp" "example" {
 - `relay_information_trust_all` (Boolean) Received DHCP packets may contain relay info option with zero giaddr
 - `snooping` (Boolean) DHCP Snooping
 - `snooping_information_option_format_remote_id_hostname` (Boolean) Use configured hostname for remote id
-- `snooping_vlans` (Attributes List) DHCP Snooping vlan (see [below for nested schema](#nestedatt--snooping_vlans))
+- `snooping_vlans` (Attributes List) DHCP Snooping vlan list. Use this for versions `17.14` and later. (see [below for nested schema](#nestedatt--snooping_vlans))
+- `snooping_vlans_legacy` (Attributes List) DHCP Snooping vlan list. Use this for versions before `17.14`. (see [below for nested schema](#nestedatt--snooping_vlans_legacy))
 
 <a id="nestedatt--snooping_vlans"></a>
 ### Nested Schema for `snooping_vlans`
+
+Read-Only:
+
+- `vlan_id` (Number)
+
+
+<a id="nestedatt--snooping_vlans_legacy"></a>
+### Nested Schema for `snooping_vlans_legacy`
 
 Read-Only:
 

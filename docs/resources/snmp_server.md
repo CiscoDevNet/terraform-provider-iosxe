@@ -16,7 +16,6 @@ This resource can manage the SNMP Server configuration.
 resource "iosxe_snmp_server" "example" {
   chassis_id                       = "R1"
   contact                          = "Contact1"
-  ifindex_persist                  = true
   location                         = "Location1"
   packetsize                       = 2000
   queue_length                     = 100
@@ -172,7 +171,7 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_envmon` (Boolean) Enable SNMP environmental monitor traps
 - `enable_traps_errdisable` (Boolean) Enable SNMP errdisable notifications
 - `enable_traps_event_manager` (Boolean) Enable SNMP Embedded Event Manager traps
-- `enable_traps_fast_reroute_protected` (Boolean)
+- `enable_traps_fast_reroute_protected` (Boolean) Enable MPLS fast reroute protection traps
 - `enable_traps_flash_insertion` (Boolean) Enable SNMP Flash Insertion notifications
 - `enable_traps_flash_lowspace` (Boolean) Enable SNMP Flash Lowspace notifications
 - `enable_traps_flash_removal` (Boolean) Enable SNMP Flash Removal notifications
@@ -199,10 +198,10 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_mac_notification_move` (Boolean) Enable SNMP Move traps
 - `enable_traps_mac_notification_threshold` (Boolean) Enable SNMP Threshold traps
 - `enable_traps_memory_bufferpeak` (Boolean) Enable SNMP Memory Bufferpeak traps
-- `enable_traps_mpls_ldp` (Boolean) SNMP MPLS label distribution protocol traps
-- `enable_traps_mpls_rfc_ldp` (Boolean)
-- `enable_traps_mpls_traffic_eng` (Boolean)
-- `enable_traps_mpls_vpn` (Boolean)
+- `enable_traps_mpls_ldp` (Boolean) Allow SNMP MPLS label distribution protocol traps
+- `enable_traps_mpls_rfc_ldp` (Boolean) Allow SNMP MPLS label distribution protocol RFC traps
+- `enable_traps_mpls_traffic_eng` (Boolean) Allow SNMP MPLS traffic engineering traps
+- `enable_traps_mpls_vpn` (Boolean) Allow SNMP MPLS Virtual Private Network traps
 - `enable_traps_msdp` (Boolean) Enable SNMP MSDP traps
 - `enable_traps_nhrp_nhc` (Boolean)
 - `enable_traps_nhrp_nhp` (Boolean)

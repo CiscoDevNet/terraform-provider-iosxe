@@ -44,7 +44,7 @@ resource "iosxe_policy_map" "example" {
 - `device` (String) A device name from the provider configuration.
 - `subscriber` (Boolean) Domain name of the policy map
 - `type` (String) type of the policy-map
-  - Choices: `access-control`, `appnav`, `control`, `epbr`, `inspect`, `packet-service`, `performance-monitor`, `queueing`, `service`, `service-chain`, `umbrella`
+  - Choices: `access-control`, `appnav`, `control`, `epbr`, `inspect`, `ngsw-qos`, `packet-service`, `performance-monitor`, `queueing`, `service`, `service-chain`, `umbrella`
 
 ### Read-Only
 
@@ -84,11 +84,11 @@ Optional:
 - `queue_limit` (Number) - Range: `1`-`64000000`
 - `queue_limit_type` (String) - Choices: `bytes`, `ms`, `packets`, `us`
 - `shape_average_bit_rate` (Number) Target Bit Rate (bits/sec)
-  - Range: `8000`-`100000000000`
+  - Range: `1000`-`100000000000`
 - `shape_average_bits_per_interval_excess` (Number) bits per interval, excess.
   - Range: `0`-`154400000`
 - `shape_average_bits_per_interval_sustained` (Number) bits per interval, sustained. Recommend not to configure, algo finds the best value
-  - Range: `256`-`154400000`
+  - Range: `32`-`800000000`
 - `shape_average_burst_size_sustained` (Number) sustained burst in milliseconds. Recommend not to configure it, the algorithm will find out the best value
   - Range: `10`-`2000`
 - `shape_average_ms` (Boolean) milliseconds

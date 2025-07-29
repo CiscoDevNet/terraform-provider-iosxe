@@ -76,10 +76,10 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("type of the class-map").AddStringEnumDescription("access-control", "appnav", "control", "inspect", "multicast-flows", "site-manager", "stack", "traffic").String,
+				MarkdownDescription: helpers.NewAttributeDescription("type of the class-map").AddStringEnumDescription("access-control", "appnav", "control", "inspect", "multicast-flows", "ngsw-qos", "site-manager", "stack", "traffic").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("access-control", "appnav", "control", "inspect", "multicast-flows", "site-manager", "stack", "traffic"),
+					stringvalidator.OneOf("access-control", "appnav", "control", "inspect", "multicast-flows", "ngsw-qos", "site-manager", "stack", "traffic"),
 				},
 			},
 			"subscriber": schema.BoolAttribute{
@@ -135,7 +135,7 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 			},
 			"match_result_type_method_dot1x_method_timeout": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("method_timeout type").String,
+				MarkdownDescription: helpers.NewAttributeDescription("method timeout type").String,
 				Optional:            true,
 			},
 			"match_method_mab": schema.BoolAttribute{

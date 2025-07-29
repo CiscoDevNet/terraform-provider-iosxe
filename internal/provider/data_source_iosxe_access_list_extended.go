@@ -96,7 +96,7 @@ func (d *AccessListExtendedDataSource) Schema(ctx context.Context, req datasourc
 							Computed:            true,
 						},
 						"source_prefix_mask": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Source wildcard bits",
 							Computed:            true,
 						},
 						"source_any": schema.BoolAttribute{
@@ -136,7 +136,7 @@ func (d *AccessListExtendedDataSource) Schema(ctx context.Context, req datasourc
 							Computed:            true,
 						},
 						"destination_prefix_mask": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "Destination wildcard bits",
 							Computed:            true,
 						},
 						"destination_any": schema.BoolAttribute{

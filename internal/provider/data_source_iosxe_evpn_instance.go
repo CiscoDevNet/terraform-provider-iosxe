@@ -86,6 +86,10 @@ func (d *EVPNInstanceDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Data encapsulation method",
 				Computed:            true,
 			},
+			"vlan_based_auto_route_target_legacy": schema.BoolAttribute{
+				MarkdownDescription: "Automatically set a route-target (OBSOLETE, use auto-route-target-boolean)",
+				Computed:            true,
+			},
 			"vlan_based_auto_route_target": schema.BoolAttribute{
 				MarkdownDescription: "Automatically set a route-target",
 				Computed:            true,
@@ -94,21 +98,45 @@ func (d *EVPNInstanceDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "ASN:nn or IP-address:nn",
 				Computed:            true,
 			},
-			"vlan_based_route_target": schema.StringAttribute{
+			"vlan_based_route_target_legacy": schema.StringAttribute{
 				MarkdownDescription: "ASN:nn or IP-address:nn",
 				Computed:            true,
 			},
-			"vlan_based_route_target_both": schema.StringAttribute{
+			"vlan_based_route_target_both_legacy": schema.StringAttribute{
 				MarkdownDescription: "ASN:nn or IP-address:nn",
 				Computed:            true,
 			},
-			"vlan_based_route_target_import": schema.StringAttribute{
-				MarkdownDescription: "ASN:nn or IP-address:nn (DEPRECATED, use rt-value-entry)",
+			"vlan_based_route_target_import_legacy": schema.StringAttribute{
+				MarkdownDescription: "ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)",
 				Computed:            true,
 			},
-			"vlan_based_route_target_export": schema.StringAttribute{
-				MarkdownDescription: "ASN:nn or IP-address:nn (DEPRECATED, use rt-value-entry)",
+			"vlan_based_route_target_export_legacy": schema.StringAttribute{
+				MarkdownDescription: "ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)",
 				Computed:            true,
+			},
+			"vlan_based_route_target_exports": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"route_target": schema.StringAttribute{
+							MarkdownDescription: "ASN:nn or IP-address:nn",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"vlan_based_route_target_imports": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"route_target": schema.StringAttribute{
+							MarkdownDescription: "ASN:nn or IP-address:nn",
+							Computed:            true,
+						},
+					},
+				},
 			},
 			"vlan_based_ip_local_learning_disable": schema.BoolAttribute{
 				MarkdownDescription: "Disable IP local learning from dataplane",

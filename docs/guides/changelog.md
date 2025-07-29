@@ -7,6 +7,26 @@ description: |-
 
 # Changelog
 
+## 0.6.0 (unreleased)
+
+- BREAKING_CHANGE: Drop support for IOS-XE 17.9
+- Add `esp-192-aes` and `esp-256-aes` options to `iosxe_crypto_ipsec_transform_set` resource and data source
+- Make `v3_auth_algorithm` attribute of `iosxe_snmp_server_user` resource and data source optional
+- Add `TLSv1.3` option to `ip_http_tls_version` attribute of `iosxe_system` resource and data source
+- BREAKING_CHANGE: Rename `snooping_vlans` to `snooping_vlans_legacy` and add `snooping_vlans` attribute to `iosxe_dhcp` resource and data source to support versions >= `17.14`
+- BREAKING_CHANGE: Rename `match_route_type_local` to `match_route_type_local_legacy` and add `match_route_type_local` attribute to `iosxe_route_map` resource and data source to support versions >= `17.15`
+- BREAKING_CHANGE: Remove `delete_mode` attribute from `iosxe_snmp_server_user` resource
+- BREAKING_CHANGE: Rename `inspection_filters.vlan` attribute of `iosxe_arp` resource and data source to `inspection_filters.vlans`
+- BREAKING CHANGE: Rename `vlan_based_auto_route_target` to `vlan_based_auto_route_target_legacy` and add `vlan_based_auto_route_target` attribute to `iosxe_evpn_instance` resource and data source to support versions >= `17.15`
+- BREAKING CHANGE: Rename `vlan_based_route_target_import` to `vlan_based_route_target_import_legacy` and add `vlan_based_route_target_import` attribute to `iosxe_evpn_instance` resource and data source to support versions >= `17.15`
+- BREAKING CHANGE: Rename `vlan_based_route_target` attribute to `vlan_based_route_target_legacy` of `iosxe_evpn_instance` resource and data source
+- BREAKING CHANGE: Rename `vlan_based_route_target_both` attribute to `vlan_based_route_target_both_legacy` of `iosxe_evpn_instance` resource and data source
+- BREAKING CHANGE: Rename `vlan_based_route_target_export` attribute to `vlan_based_route_target_export_legacy` of `iosxe_evpn_instance` resource and data source
+- BREAKING CHANGE: Rename `vlan_based_route_target_import` attribute to `vlan_based_route_target_import_legacy` of `iosxe_evpn_instance` resource and data source
+- Add `vlan_based_route_target_exports` attribute to `iosxe_evpn_instance` resource and data source to support versions >= `17.15`
+- Add `vlan_based_route_target_imports` attribute to `iosxe_evpn_instance` resource and data source to support versions >= `17.15`
+- Add `vtp_mode_client`, `vtp_mode_off`, `vtp_mode_server`, `vtp_mode_transparent` attributes to `iosxe_vtp` resource and data source
+
 ## 0.5.10
 
 - Fix update issue with `iosxe_restconf` resource and empty `attributes` map

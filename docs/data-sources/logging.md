@@ -26,8 +26,8 @@ data "iosxe_logging" "example" {
 
 ### Read-Only
 
-- `buffered_severity` (String) Logging severity level
-- `buffered_size` (Number) Logging buffer size
+- `buffered_severity` (String) DEPRECATED. Logging severity level
+- `buffered_size` (Number) DEPRECATED. Logging buffer size
 - `console_severity` (String)
 - `facility` (String) Facility parameter for syslog messages
 - `file_max_size` (Number)

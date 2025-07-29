@@ -2,7 +2,7 @@
 name: VTP
 path: Cisco-IOS-XE-native:native/vtp
 doc_category: Switching
-test_tags: [C9000V]
+test_tags: [VTP]
 attributes:
   - yang_name: Cisco-IOS-XE-vtp:file
     example: TEST
@@ -11,7 +11,7 @@ attributes:
     no_delete: true
   - yang_name: Cisco-IOS-XE-vtp:interface/interface-name
     tf_name: interface
-    example: Gi1/0/1
+    example: GigabitEthernet1/0/1
   - yang_name: Cisco-IOS-XE-vtp:interface/only
     example: true
     exclude_test: true
@@ -29,28 +29,50 @@ attributes:
   - yang_name: Cisco-IOS-XE-vtp:domain
     example: TESTDOMAIN
     no_delete: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/client
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/client/mst
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/client/unknown
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/client/vlan
     example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/off
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/off/mst
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/off/unknown
     example: true
     exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/off/vlan
     example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/server
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/server/mst
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/server/unknown
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/server/vlan
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-vtp:mode/transparent
     example: true
   - yang_name: Cisco-IOS-XE-vtp:mode/transparent/mst
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/transparent/unknown
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:mode/transparent/vlan
     example: true
+    exclude_test: true

@@ -25,7 +25,7 @@ resource "iosxe_vlan_group" "example" {
 ### Required
 
 - `name` (String) Group name starts with alphabet
-- `vlan_lists` (List of Number) a single VLAN id (allowed value range 1-4094)or Comma-separated VLAN id range.e.g. 99 or 1-30 or  1-20,30,40-50
+- `vlan_lists` (List of Number) VLANs in the vlan group
 
 ### Optional
 

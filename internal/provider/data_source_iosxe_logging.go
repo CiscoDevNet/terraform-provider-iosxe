@@ -67,11 +67,11 @@ func (d *LoggingDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				Computed:            true,
 			},
 			"buffered_size": schema.Int64Attribute{
-				MarkdownDescription: "Logging buffer size",
+				MarkdownDescription: "DEPRECATED. Logging buffer size",
 				Computed:            true,
 			},
 			"buffered_severity": schema.StringAttribute{
-				MarkdownDescription: "Logging severity level",
+				MarkdownDescription: "DEPRECATED. Logging severity level",
 				Computed:            true,
 			},
 			"console_severity": schema.StringAttribute{

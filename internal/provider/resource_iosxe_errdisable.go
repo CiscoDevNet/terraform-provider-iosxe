@@ -191,7 +191,7 @@ func (r *ErrdisableResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"recovery_cause_all": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable timer to recover from all error causes").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable timer to recover from all error causes (DEPRECATED)").String,
 				Optional:            true,
 			},
 			"recovery_cause_arp_inspection": schema.BoolAttribute{

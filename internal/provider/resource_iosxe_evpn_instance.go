@@ -22,6 +22,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -100,6 +101,10 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 					stringvalidator.OneOf("mpls", "vxlan"),
 				},
 			},
+			"vlan_based_auto_route_target_legacy": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target (OBSOLETE, use auto-route-target-boolean)").String,
+				Optional:            true,
+			},
 			"vlan_based_auto_route_target": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Automatically set a route-target").String,
 				Optional:            true,
@@ -108,21 +113,51 @@ func (r *EVPNInstanceResource) Schema(ctx context.Context, req resource.SchemaRe
 				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn").String,
 				Optional:            true,
 			},
-			"vlan_based_route_target": schema.StringAttribute{
+			"vlan_based_route_target_legacy": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn").String,
 				Optional:            true,
 			},
-			"vlan_based_route_target_both": schema.StringAttribute{
+			"vlan_based_route_target_both_legacy": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn").String,
 				Optional:            true,
 			},
-			"vlan_based_route_target_import": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn (DEPRECATED, use rt-value-entry)").String,
+			"vlan_based_route_target_import_legacy": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)").String,
 				Optional:            true,
 			},
-			"vlan_based_route_target_export": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn (DEPRECATED, use rt-value-entry)").String,
+			"vlan_based_route_target_export_legacy": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn (Obsolete, use rt-value-entry)").String,
 				Optional:            true,
+			},
+			"vlan_based_route_target_exports": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"route_target": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9\.:]+[0-9]+`), ""),
+							},
+						},
+					},
+				},
+			},
+			"vlan_based_route_target_imports": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"route_target": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("ASN:nn or IP-address:nn").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9\.:]+[0-9]+`), ""),
+							},
+						},
+					},
+				},
 			},
 			"vlan_based_ip_local_learning_disable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Disable IP local learning from dataplane").String,

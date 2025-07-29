@@ -83,7 +83,7 @@ func (d *ARPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"vlan": schema.ListNestedAttribute{
+						"vlans": schema.ListNestedAttribute{
 							MarkdownDescription: "Vlans to apply the filter",
 							Computed:            true,
 							NestedObject: schema.NestedAttributeObject{
@@ -131,7 +131,7 @@ func (d *ARPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:            true,
 			},
 			"inspection_vlan": schema.StringAttribute{
-				MarkdownDescription: "Enable/Disable ARP Inspection on vlans",
+				MarkdownDescription: "Enable/Disable ARP Inspection on vlans(Deprecated)",
 				Computed:            true,
 			},
 		},

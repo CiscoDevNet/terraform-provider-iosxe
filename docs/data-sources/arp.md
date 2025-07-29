@@ -37,7 +37,7 @@ data "iosxe_arp" "example" {
 - `inspection_validate_dst_mac` (Boolean) Validate destination MAC address
 - `inspection_validate_ip` (Boolean) Validate IP addresses
 - `inspection_validate_src_mac` (Boolean) Validate source MAC address
-- `inspection_vlan` (String) Enable/Disable ARP Inspection on vlans
+- `inspection_vlan` (String) Enable/Disable ARP Inspection on vlans(Deprecated)
 - `proxy_disable` (Boolean) Disable proxy ARP on all interfaces
 
 <a id="nestedatt--inspection_filters"></a>
@@ -46,10 +46,10 @@ data "iosxe_arp" "example" {
 Read-Only:
 
 - `name` (String)
-- `vlan` (Attributes List) Vlans to apply the filter (see [below for nested schema](#nestedatt--inspection_filters--vlan))
+- `vlans` (Attributes List) Vlans to apply the filter (see [below for nested schema](#nestedatt--inspection_filters--vlans))
 
-<a id="nestedatt--inspection_filters--vlan"></a>
-### Nested Schema for `inspection_filters.vlan`
+<a id="nestedatt--inspection_filters--vlans"></a>
+### Nested Schema for `inspection_filters.vlans`
 
 Read-Only:
 

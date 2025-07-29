@@ -514,23 +514,23 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:            true,
 			},
 			"enable_traps_mpls_traffic_eng": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP MPLS traffic engineering traps").String,
 				Optional:            true,
 			},
 			"enable_traps_mpls_vpn": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP MPLS Virtual Private Network traps").String,
 				Optional:            true,
 			},
 			"enable_traps_mpls_rfc_ldp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP MPLS label distribution protocol RFC traps").String,
 				Optional:            true,
 			},
 			"enable_traps_mpls_ldp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("SNMP MPLS label distribution protocol traps").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP MPLS label distribution protocol traps").String,
 				Optional:            true,
 			},
 			"enable_traps_fast_reroute_protected": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Enable MPLS fast reroute protection traps").String,
 				Optional:            true,
 			},
 			"enable_traps_local_auth": schema.BoolAttribute{

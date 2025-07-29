@@ -43,7 +43,7 @@ data "iosxe_class_map" "example" {
 - `match_result_type_aaa_timeout` (Boolean) aaa timeout type
 - `match_result_type_method_dot1x_agent_not_found` (Boolean) agent not found type
 - `match_result_type_method_dot1x_authoritative` (Boolean) failure type
-- `match_result_type_method_dot1x_method_timeout` (Boolean) method_timeout type
+- `match_result_type_method_dot1x_method_timeout` (Boolean) method timeout type
 - `match_result_type_method_mab_authoritative` (Boolean) failure type
 - `prematch` (String) Logical-AND/Logical-OR of all matching statements under this class map
 - `subscriber` (Boolean) Domain name of the class map

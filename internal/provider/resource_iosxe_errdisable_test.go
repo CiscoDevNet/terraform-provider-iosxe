@@ -28,7 +28,9 @@ import (
 
 func TestAccIosxeErrdisable(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "detect_cause_all", "true"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "detect_cause_all", "true"))
+	}
 	if os.Getenv("C9000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "detect_cause_arp_inspection", "true"))
 	}
@@ -48,7 +50,9 @@ func TestAccIosxeErrdisable(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "flap_setting_cause_pagp_flap_max_flaps", "80"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "flap_setting_cause_pagp_flap_time", "90"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "recovery_interval", "855"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "recovery_cause_all", "true"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "recovery_cause_all", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "recovery_cause_arp_inspection", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_errdisable.test", "recovery_cause_bpduguard", "true"))
 	if os.Getenv("C9000V") != "" {
@@ -105,7 +109,7 @@ func TestAccIosxeErrdisable(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/errdisable",
-				ImportStateVerifyIgnore: []string{"detect_cause_arp_inspection", "detect_cause_bpduguard", "detect_cause_gbic_invalid", "detect_cause_inline_power", "detect_cause_loopback", "detect_cause_mlacp_minlink", "detect_cause_pagp_flap", "detect_cause_security_violation_shutdown_vlan", "detect_cause_sfp_config_mismatch", "detect_cause_small_frame", "recovery_cause_channel_misconfig", "recovery_cause_gbic_invalid", "recovery_cause_inline_power", "recovery_cause_link_monitor_failure", "recovery_cause_loopback", "recovery_cause_mac_limit", "recovery_cause_mlacp_minlink", "recovery_cause_pagp_flap", "recovery_cause_sfp_config_mismatch", "recovery_cause_small_frame", "recovery_cause_storm_control", "recovery_cause_unicast_flood", "recovery_cause_vmps"},
+				ImportStateVerifyIgnore: []string{"detect_cause_all", "detect_cause_arp_inspection", "detect_cause_bpduguard", "detect_cause_gbic_invalid", "detect_cause_inline_power", "detect_cause_loopback", "detect_cause_mlacp_minlink", "detect_cause_pagp_flap", "detect_cause_security_violation_shutdown_vlan", "detect_cause_sfp_config_mismatch", "detect_cause_small_frame", "recovery_cause_all", "recovery_cause_channel_misconfig", "recovery_cause_gbic_invalid", "recovery_cause_inline_power", "recovery_cause_link_monitor_failure", "recovery_cause_loopback", "recovery_cause_mac_limit", "recovery_cause_mlacp_minlink", "recovery_cause_pagp_flap", "recovery_cause_sfp_config_mismatch", "recovery_cause_small_frame", "recovery_cause_storm_control", "recovery_cause_unicast_flood", "recovery_cause_vmps"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -120,7 +124,9 @@ func testAccIosxeErrdisableConfig_minimum() string {
 
 func testAccIosxeErrdisableConfig_all() string {
 	config := `resource "iosxe_errdisable" "test" {` + "\n"
-	config += `	detect_cause_all = true` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	detect_cause_all = true` + "\n"
+	}
 	if os.Getenv("C9000V") != "" {
 		config += `	detect_cause_arp_inspection = true` + "\n"
 	}
@@ -140,7 +146,9 @@ func testAccIosxeErrdisableConfig_all() string {
 	config += `	flap_setting_cause_pagp_flap_max_flaps = 80` + "\n"
 	config += `	flap_setting_cause_pagp_flap_time = 90` + "\n"
 	config += `	recovery_interval = 855` + "\n"
-	config += `	recovery_cause_all = true` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	recovery_cause_all = true` + "\n"
+	}
 	config += `	recovery_cause_arp_inspection = true` + "\n"
 	config += `	recovery_cause_bpduguard = true` + "\n"
 	if os.Getenv("C9000V") != "" {

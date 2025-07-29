@@ -1,5 +1,4 @@
 resource "iosxe_errdisable" "example" {
-  detect_cause_all                       = true
   detect_cause_dhcp_rate_limit           = true
   detect_cause_dtp_flap                  = true
   detect_cause_l2ptguard                 = true
@@ -13,7 +12,6 @@ resource "iosxe_errdisable" "example" {
   flap_setting_cause_pagp_flap_max_flaps = 80
   flap_setting_cause_pagp_flap_time      = 90
   recovery_interval                      = 855
-  recovery_cause_all                     = true
   recovery_cause_arp_inspection          = true
   recovery_cause_bpduguard               = true
   recovery_cause_dhcp_rate_limit         = true

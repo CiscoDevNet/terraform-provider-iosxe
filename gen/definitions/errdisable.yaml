@@ -5,6 +5,7 @@ doc_category: System
 attributes:
   - yang_name: detect/cause/all
     example: true
+    test_tags: [IOSXE1712]
   - yang_name: detect/cause/arp-inspection
     example: true
     test_tags: [C9000V]
@@ -69,6 +70,7 @@ attributes:
     example: 855
   - yang_name: recovery/cause/all
     example: true
+    test_tags: [IOSXE1712]
   - yang_name: recovery/cause/arp-inspection
     example: true
   - yang_name: recovery/cause/bpduguard

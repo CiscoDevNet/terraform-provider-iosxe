@@ -23,6 +23,7 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -34,45 +35,57 @@ import (
 )
 
 type EVPNInstance struct {
-	Device                           types.String `tfsdk:"device"`
-	Id                               types.String `tfsdk:"id"`
-	EvpnInstanceNum                  types.Int64  `tfsdk:"evpn_instance_num"`
-	VlanBasedReplicationTypeIngress  types.Bool   `tfsdk:"vlan_based_replication_type_ingress"`
-	VlanBasedReplicationTypeStatic   types.Bool   `tfsdk:"vlan_based_replication_type_static"`
-	VlanBasedReplicationTypeP2mp     types.Bool   `tfsdk:"vlan_based_replication_type_p2mp"`
-	VlanBasedReplicationTypeMp2mp    types.Bool   `tfsdk:"vlan_based_replication_type_mp2mp"`
-	VlanBasedEncapsulation           types.String `tfsdk:"vlan_based_encapsulation"`
-	VlanBasedAutoRouteTarget         types.Bool   `tfsdk:"vlan_based_auto_route_target"`
-	VlanBasedRd                      types.String `tfsdk:"vlan_based_rd"`
-	VlanBasedRouteTarget             types.String `tfsdk:"vlan_based_route_target"`
-	VlanBasedRouteTargetBoth         types.String `tfsdk:"vlan_based_route_target_both"`
-	VlanBasedRouteTargetImport       types.String `tfsdk:"vlan_based_route_target_import"`
-	VlanBasedRouteTargetExport       types.String `tfsdk:"vlan_based_route_target_export"`
-	VlanBasedIpLocalLearningDisable  types.Bool   `tfsdk:"vlan_based_ip_local_learning_disable"`
-	VlanBasedIpLocalLearningEnable   types.Bool   `tfsdk:"vlan_based_ip_local_learning_enable"`
-	VlanBasedDefaultGatewayAdvertise types.String `tfsdk:"vlan_based_default_gateway_advertise"`
-	VlanBasedReOriginateRouteType5   types.Bool   `tfsdk:"vlan_based_re_originate_route_type5"`
+	Device                           types.String                              `tfsdk:"device"`
+	Id                               types.String                              `tfsdk:"id"`
+	EvpnInstanceNum                  types.Int64                               `tfsdk:"evpn_instance_num"`
+	VlanBasedReplicationTypeIngress  types.Bool                                `tfsdk:"vlan_based_replication_type_ingress"`
+	VlanBasedReplicationTypeStatic   types.Bool                                `tfsdk:"vlan_based_replication_type_static"`
+	VlanBasedReplicationTypeP2mp     types.Bool                                `tfsdk:"vlan_based_replication_type_p2mp"`
+	VlanBasedReplicationTypeMp2mp    types.Bool                                `tfsdk:"vlan_based_replication_type_mp2mp"`
+	VlanBasedEncapsulation           types.String                              `tfsdk:"vlan_based_encapsulation"`
+	VlanBasedAutoRouteTargetLegacy   types.Bool                                `tfsdk:"vlan_based_auto_route_target_legacy"`
+	VlanBasedAutoRouteTarget         types.Bool                                `tfsdk:"vlan_based_auto_route_target"`
+	VlanBasedRd                      types.String                              `tfsdk:"vlan_based_rd"`
+	VlanBasedRouteTargetLegacy       types.String                              `tfsdk:"vlan_based_route_target_legacy"`
+	VlanBasedRouteTargetBothLegacy   types.String                              `tfsdk:"vlan_based_route_target_both_legacy"`
+	VlanBasedRouteTargetImportLegacy types.String                              `tfsdk:"vlan_based_route_target_import_legacy"`
+	VlanBasedRouteTargetExportLegacy types.String                              `tfsdk:"vlan_based_route_target_export_legacy"`
+	VlanBasedRouteTargetExports      []EVPNInstanceVlanBasedRouteTargetExports `tfsdk:"vlan_based_route_target_exports"`
+	VlanBasedRouteTargetImports      []EVPNInstanceVlanBasedRouteTargetImports `tfsdk:"vlan_based_route_target_imports"`
+	VlanBasedIpLocalLearningDisable  types.Bool                                `tfsdk:"vlan_based_ip_local_learning_disable"`
+	VlanBasedIpLocalLearningEnable   types.Bool                                `tfsdk:"vlan_based_ip_local_learning_enable"`
+	VlanBasedDefaultGatewayAdvertise types.String                              `tfsdk:"vlan_based_default_gateway_advertise"`
+	VlanBasedReOriginateRouteType5   types.Bool                                `tfsdk:"vlan_based_re_originate_route_type5"`
 }
 
 type EVPNInstanceData struct {
-	Device                           types.String `tfsdk:"device"`
-	Id                               types.String `tfsdk:"id"`
-	EvpnInstanceNum                  types.Int64  `tfsdk:"evpn_instance_num"`
-	VlanBasedReplicationTypeIngress  types.Bool   `tfsdk:"vlan_based_replication_type_ingress"`
-	VlanBasedReplicationTypeStatic   types.Bool   `tfsdk:"vlan_based_replication_type_static"`
-	VlanBasedReplicationTypeP2mp     types.Bool   `tfsdk:"vlan_based_replication_type_p2mp"`
-	VlanBasedReplicationTypeMp2mp    types.Bool   `tfsdk:"vlan_based_replication_type_mp2mp"`
-	VlanBasedEncapsulation           types.String `tfsdk:"vlan_based_encapsulation"`
-	VlanBasedAutoRouteTarget         types.Bool   `tfsdk:"vlan_based_auto_route_target"`
-	VlanBasedRd                      types.String `tfsdk:"vlan_based_rd"`
-	VlanBasedRouteTarget             types.String `tfsdk:"vlan_based_route_target"`
-	VlanBasedRouteTargetBoth         types.String `tfsdk:"vlan_based_route_target_both"`
-	VlanBasedRouteTargetImport       types.String `tfsdk:"vlan_based_route_target_import"`
-	VlanBasedRouteTargetExport       types.String `tfsdk:"vlan_based_route_target_export"`
-	VlanBasedIpLocalLearningDisable  types.Bool   `tfsdk:"vlan_based_ip_local_learning_disable"`
-	VlanBasedIpLocalLearningEnable   types.Bool   `tfsdk:"vlan_based_ip_local_learning_enable"`
-	VlanBasedDefaultGatewayAdvertise types.String `tfsdk:"vlan_based_default_gateway_advertise"`
-	VlanBasedReOriginateRouteType5   types.Bool   `tfsdk:"vlan_based_re_originate_route_type5"`
+	Device                           types.String                              `tfsdk:"device"`
+	Id                               types.String                              `tfsdk:"id"`
+	EvpnInstanceNum                  types.Int64                               `tfsdk:"evpn_instance_num"`
+	VlanBasedReplicationTypeIngress  types.Bool                                `tfsdk:"vlan_based_replication_type_ingress"`
+	VlanBasedReplicationTypeStatic   types.Bool                                `tfsdk:"vlan_based_replication_type_static"`
+	VlanBasedReplicationTypeP2mp     types.Bool                                `tfsdk:"vlan_based_replication_type_p2mp"`
+	VlanBasedReplicationTypeMp2mp    types.Bool                                `tfsdk:"vlan_based_replication_type_mp2mp"`
+	VlanBasedEncapsulation           types.String                              `tfsdk:"vlan_based_encapsulation"`
+	VlanBasedAutoRouteTargetLegacy   types.Bool                                `tfsdk:"vlan_based_auto_route_target_legacy"`
+	VlanBasedAutoRouteTarget         types.Bool                                `tfsdk:"vlan_based_auto_route_target"`
+	VlanBasedRd                      types.String                              `tfsdk:"vlan_based_rd"`
+	VlanBasedRouteTargetLegacy       types.String                              `tfsdk:"vlan_based_route_target_legacy"`
+	VlanBasedRouteTargetBothLegacy   types.String                              `tfsdk:"vlan_based_route_target_both_legacy"`
+	VlanBasedRouteTargetImportLegacy types.String                              `tfsdk:"vlan_based_route_target_import_legacy"`
+	VlanBasedRouteTargetExportLegacy types.String                              `tfsdk:"vlan_based_route_target_export_legacy"`
+	VlanBasedRouteTargetExports      []EVPNInstanceVlanBasedRouteTargetExports `tfsdk:"vlan_based_route_target_exports"`
+	VlanBasedRouteTargetImports      []EVPNInstanceVlanBasedRouteTargetImports `tfsdk:"vlan_based_route_target_imports"`
+	VlanBasedIpLocalLearningDisable  types.Bool                                `tfsdk:"vlan_based_ip_local_learning_disable"`
+	VlanBasedIpLocalLearningEnable   types.Bool                                `tfsdk:"vlan_based_ip_local_learning_enable"`
+	VlanBasedDefaultGatewayAdvertise types.String                              `tfsdk:"vlan_based_default_gateway_advertise"`
+	VlanBasedReOriginateRouteType5   types.Bool                                `tfsdk:"vlan_based_re_originate_route_type5"`
+}
+type EVPNInstanceVlanBasedRouteTargetExports struct {
+	RouteTarget types.String `tfsdk:"route_target"`
+}
+type EVPNInstanceVlanBasedRouteTargetImports struct {
+	RouteTarget types.String `tfsdk:"route_target"`
 }
 
 func (data EVPNInstance) getPath() string {
@@ -122,25 +135,28 @@ func (data EVPNInstance) toBody(ctx context.Context) string {
 	if !data.VlanBasedEncapsulation.IsNull() && !data.VlanBasedEncapsulation.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.encapsulation", data.VlanBasedEncapsulation.ValueString())
 	}
-	if !data.VlanBasedAutoRouteTarget.IsNull() && !data.VlanBasedAutoRouteTarget.IsUnknown() {
-		if data.VlanBasedAutoRouteTarget.ValueBool() {
+	if !data.VlanBasedAutoRouteTargetLegacy.IsNull() && !data.VlanBasedAutoRouteTargetLegacy.IsUnknown() {
+		if data.VlanBasedAutoRouteTargetLegacy.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.auto-route-target_cont.auto-route-target", map[string]string{})
 		}
+	}
+	if !data.VlanBasedAutoRouteTarget.IsNull() && !data.VlanBasedAutoRouteTarget.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.auto-route-target_cont.auto-route-target-boolean", data.VlanBasedAutoRouteTarget.ValueBool())
 	}
 	if !data.VlanBasedRd.IsNull() && !data.VlanBasedRd.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.rd.rd-value", data.VlanBasedRd.ValueString())
 	}
-	if !data.VlanBasedRouteTarget.IsNull() && !data.VlanBasedRouteTarget.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target.rt-value", data.VlanBasedRouteTarget.ValueString())
+	if !data.VlanBasedRouteTargetLegacy.IsNull() && !data.VlanBasedRouteTargetLegacy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target.rt-value", data.VlanBasedRouteTargetLegacy.ValueString())
 	}
-	if !data.VlanBasedRouteTargetBoth.IsNull() && !data.VlanBasedRouteTargetBoth.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target.both.rt-value", data.VlanBasedRouteTargetBoth.ValueString())
+	if !data.VlanBasedRouteTargetBothLegacy.IsNull() && !data.VlanBasedRouteTargetBothLegacy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target.both.rt-value", data.VlanBasedRouteTargetBothLegacy.ValueString())
 	}
-	if !data.VlanBasedRouteTargetImport.IsNull() && !data.VlanBasedRouteTargetImport.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target.import.rt-value", data.VlanBasedRouteTargetImport.ValueString())
+	if !data.VlanBasedRouteTargetImportLegacy.IsNull() && !data.VlanBasedRouteTargetImportLegacy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target.import.rt-value", data.VlanBasedRouteTargetImportLegacy.ValueString())
 	}
-	if !data.VlanBasedRouteTargetExport.IsNull() && !data.VlanBasedRouteTargetExport.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target.export.rt-value", data.VlanBasedRouteTargetExport.ValueString())
+	if !data.VlanBasedRouteTargetExportLegacy.IsNull() && !data.VlanBasedRouteTargetExportLegacy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target.export.rt-value", data.VlanBasedRouteTargetExportLegacy.ValueString())
 	}
 	if !data.VlanBasedIpLocalLearningDisable.IsNull() && !data.VlanBasedIpLocalLearningDisable.IsUnknown() {
 		if data.VlanBasedIpLocalLearningDisable.ValueBool() {
@@ -158,6 +174,22 @@ func (data EVPNInstance) toBody(ctx context.Context) string {
 	if !data.VlanBasedReOriginateRouteType5.IsNull() && !data.VlanBasedReOriginateRouteType5.IsUnknown() {
 		if data.VlanBasedReOriginateRouteType5.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.re-originate.route-type5", map[string]string{})
+		}
+	}
+	if len(data.VlanBasedRouteTargetExports) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target-v2.export", []interface{}{})
+		for index, item := range data.VlanBasedRouteTargetExports {
+			if !item.RouteTarget.IsNull() && !item.RouteTarget.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target-v2.export"+"."+strconv.Itoa(index)+"."+"rt-value", item.RouteTarget.ValueString())
+			}
+		}
+	}
+	if len(data.VlanBasedRouteTargetImports) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target-v2.import", []interface{}{})
+		for index, item := range data.VlanBasedRouteTargetImports {
+			if !item.RouteTarget.IsNull() && !item.RouteTarget.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vlan-based.route-target-v2.import"+"."+strconv.Itoa(index)+"."+"rt-value", item.RouteTarget.ValueString())
+			}
 		}
 	}
 	return body
@@ -214,11 +246,18 @@ func (data *EVPNInstance) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.VlanBasedEncapsulation = types.StringNull()
 	}
-	if value := res.Get(prefix + "vlan-based.auto-route-target_cont.auto-route-target"); !data.VlanBasedAutoRouteTarget.IsNull() {
+	if value := res.Get(prefix + "vlan-based.auto-route-target_cont.auto-route-target"); !data.VlanBasedAutoRouteTargetLegacy.IsNull() {
 		if value.Exists() {
-			data.VlanBasedAutoRouteTarget = types.BoolValue(true)
+			data.VlanBasedAutoRouteTargetLegacy = types.BoolValue(true)
 		} else {
-			data.VlanBasedAutoRouteTarget = types.BoolValue(false)
+			data.VlanBasedAutoRouteTargetLegacy = types.BoolValue(false)
+		}
+	} else {
+		data.VlanBasedAutoRouteTargetLegacy = types.BoolNull()
+	}
+	if value := res.Get(prefix + "vlan-based.auto-route-target_cont.auto-route-target-boolean"); !data.VlanBasedAutoRouteTarget.IsNull() {
+		if value.Exists() {
+			data.VlanBasedAutoRouteTarget = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.VlanBasedAutoRouteTarget = types.BoolNull()
@@ -228,25 +267,83 @@ func (data *EVPNInstance) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.VlanBasedRd = types.StringNull()
 	}
-	if value := res.Get(prefix + "vlan-based.route-target.rt-value"); value.Exists() && !data.VlanBasedRouteTarget.IsNull() {
-		data.VlanBasedRouteTarget = types.StringValue(value.String())
+	if value := res.Get(prefix + "vlan-based.route-target.rt-value"); value.Exists() && !data.VlanBasedRouteTargetLegacy.IsNull() {
+		data.VlanBasedRouteTargetLegacy = types.StringValue(value.String())
 	} else {
-		data.VlanBasedRouteTarget = types.StringNull()
+		data.VlanBasedRouteTargetLegacy = types.StringNull()
 	}
-	if value := res.Get(prefix + "vlan-based.route-target.both.rt-value"); value.Exists() && !data.VlanBasedRouteTargetBoth.IsNull() {
-		data.VlanBasedRouteTargetBoth = types.StringValue(value.String())
+	if value := res.Get(prefix + "vlan-based.route-target.both.rt-value"); value.Exists() && !data.VlanBasedRouteTargetBothLegacy.IsNull() {
+		data.VlanBasedRouteTargetBothLegacy = types.StringValue(value.String())
 	} else {
-		data.VlanBasedRouteTargetBoth = types.StringNull()
+		data.VlanBasedRouteTargetBothLegacy = types.StringNull()
 	}
-	if value := res.Get(prefix + "vlan-based.route-target.import.rt-value"); value.Exists() && !data.VlanBasedRouteTargetImport.IsNull() {
-		data.VlanBasedRouteTargetImport = types.StringValue(value.String())
+	if value := res.Get(prefix + "vlan-based.route-target.import.rt-value"); value.Exists() && !data.VlanBasedRouteTargetImportLegacy.IsNull() {
+		data.VlanBasedRouteTargetImportLegacy = types.StringValue(value.String())
 	} else {
-		data.VlanBasedRouteTargetImport = types.StringNull()
+		data.VlanBasedRouteTargetImportLegacy = types.StringNull()
 	}
-	if value := res.Get(prefix + "vlan-based.route-target.export.rt-value"); value.Exists() && !data.VlanBasedRouteTargetExport.IsNull() {
-		data.VlanBasedRouteTargetExport = types.StringValue(value.String())
+	if value := res.Get(prefix + "vlan-based.route-target.export.rt-value"); value.Exists() && !data.VlanBasedRouteTargetExportLegacy.IsNull() {
+		data.VlanBasedRouteTargetExportLegacy = types.StringValue(value.String())
 	} else {
-		data.VlanBasedRouteTargetExport = types.StringNull()
+		data.VlanBasedRouteTargetExportLegacy = types.StringNull()
+	}
+	for i := range data.VlanBasedRouteTargetExports {
+		keys := [...]string{"rt-value"}
+		keyValues := [...]string{data.VlanBasedRouteTargetExports[i].RouteTarget.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "vlan-based.route-target-v2.export").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("rt-value"); value.Exists() && !data.VlanBasedRouteTargetExports[i].RouteTarget.IsNull() {
+			data.VlanBasedRouteTargetExports[i].RouteTarget = types.StringValue(value.String())
+		} else {
+			data.VlanBasedRouteTargetExports[i].RouteTarget = types.StringNull()
+		}
+	}
+	for i := range data.VlanBasedRouteTargetImports {
+		keys := [...]string{"rt-value"}
+		keyValues := [...]string{data.VlanBasedRouteTargetImports[i].RouteTarget.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "vlan-based.route-target-v2.import").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("rt-value"); value.Exists() && !data.VlanBasedRouteTargetImports[i].RouteTarget.IsNull() {
+			data.VlanBasedRouteTargetImports[i].RouteTarget = types.StringValue(value.String())
+		} else {
+			data.VlanBasedRouteTargetImports[i].RouteTarget = types.StringNull()
+		}
 	}
 	if value := res.Get(prefix + "vlan-based.ip.local-learning.disable"); !data.VlanBasedIpLocalLearningDisable.IsNull() {
 		if value.Exists() {
@@ -311,24 +408,51 @@ func (data *EVPNInstance) fromBody(ctx context.Context, res gjson.Result) {
 		data.VlanBasedEncapsulation = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.auto-route-target_cont.auto-route-target"); value.Exists() {
-		data.VlanBasedAutoRouteTarget = types.BoolValue(true)
+		data.VlanBasedAutoRouteTargetLegacy = types.BoolValue(true)
 	} else {
-		data.VlanBasedAutoRouteTarget = types.BoolValue(false)
+		data.VlanBasedAutoRouteTargetLegacy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "vlan-based.auto-route-target_cont.auto-route-target-boolean"); value.Exists() {
+		data.VlanBasedAutoRouteTarget = types.BoolValue(value.Bool())
+	} else {
+		data.VlanBasedAutoRouteTarget = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vlan-based.rd.rd-value"); value.Exists() {
 		data.VlanBasedRd = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target.rt-value"); value.Exists() {
-		data.VlanBasedRouteTarget = types.StringValue(value.String())
+		data.VlanBasedRouteTargetLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target.both.rt-value"); value.Exists() {
-		data.VlanBasedRouteTargetBoth = types.StringValue(value.String())
+		data.VlanBasedRouteTargetBothLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target.import.rt-value"); value.Exists() {
-		data.VlanBasedRouteTargetImport = types.StringValue(value.String())
+		data.VlanBasedRouteTargetImportLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target.export.rt-value"); value.Exists() {
-		data.VlanBasedRouteTargetExport = types.StringValue(value.String())
+		data.VlanBasedRouteTargetExportLegacy = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "vlan-based.route-target-v2.export"); value.Exists() {
+		data.VlanBasedRouteTargetExports = make([]EVPNInstanceVlanBasedRouteTargetExports, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := EVPNInstanceVlanBasedRouteTargetExports{}
+			if cValue := v.Get("rt-value"); cValue.Exists() {
+				item.RouteTarget = types.StringValue(cValue.String())
+			}
+			data.VlanBasedRouteTargetExports = append(data.VlanBasedRouteTargetExports, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "vlan-based.route-target-v2.import"); value.Exists() {
+		data.VlanBasedRouteTargetImports = make([]EVPNInstanceVlanBasedRouteTargetImports, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := EVPNInstanceVlanBasedRouteTargetImports{}
+			if cValue := v.Get("rt-value"); cValue.Exists() {
+				item.RouteTarget = types.StringValue(cValue.String())
+			}
+			data.VlanBasedRouteTargetImports = append(data.VlanBasedRouteTargetImports, item)
+			return true
+		})
 	}
 	if value := res.Get(prefix + "vlan-based.ip.local-learning.disable"); value.Exists() {
 		data.VlanBasedIpLocalLearningDisable = types.BoolValue(true)
@@ -379,24 +503,51 @@ func (data *EVPNInstanceData) fromBody(ctx context.Context, res gjson.Result) {
 		data.VlanBasedEncapsulation = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.auto-route-target_cont.auto-route-target"); value.Exists() {
-		data.VlanBasedAutoRouteTarget = types.BoolValue(true)
+		data.VlanBasedAutoRouteTargetLegacy = types.BoolValue(true)
 	} else {
-		data.VlanBasedAutoRouteTarget = types.BoolValue(false)
+		data.VlanBasedAutoRouteTargetLegacy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "vlan-based.auto-route-target_cont.auto-route-target-boolean"); value.Exists() {
+		data.VlanBasedAutoRouteTarget = types.BoolValue(value.Bool())
+	} else {
+		data.VlanBasedAutoRouteTarget = types.BoolNull()
 	}
 	if value := res.Get(prefix + "vlan-based.rd.rd-value"); value.Exists() {
 		data.VlanBasedRd = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target.rt-value"); value.Exists() {
-		data.VlanBasedRouteTarget = types.StringValue(value.String())
+		data.VlanBasedRouteTargetLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target.both.rt-value"); value.Exists() {
-		data.VlanBasedRouteTargetBoth = types.StringValue(value.String())
+		data.VlanBasedRouteTargetBothLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target.import.rt-value"); value.Exists() {
-		data.VlanBasedRouteTargetImport = types.StringValue(value.String())
+		data.VlanBasedRouteTargetImportLegacy = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "vlan-based.route-target.export.rt-value"); value.Exists() {
-		data.VlanBasedRouteTargetExport = types.StringValue(value.String())
+		data.VlanBasedRouteTargetExportLegacy = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "vlan-based.route-target-v2.export"); value.Exists() {
+		data.VlanBasedRouteTargetExports = make([]EVPNInstanceVlanBasedRouteTargetExports, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := EVPNInstanceVlanBasedRouteTargetExports{}
+			if cValue := v.Get("rt-value"); cValue.Exists() {
+				item.RouteTarget = types.StringValue(cValue.String())
+			}
+			data.VlanBasedRouteTargetExports = append(data.VlanBasedRouteTargetExports, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "vlan-based.route-target-v2.import"); value.Exists() {
+		data.VlanBasedRouteTargetImports = make([]EVPNInstanceVlanBasedRouteTargetImports, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := EVPNInstanceVlanBasedRouteTargetImports{}
+			if cValue := v.Get("rt-value"); cValue.Exists() {
+				item.RouteTarget = types.StringValue(cValue.String())
+			}
+			data.VlanBasedRouteTargetImports = append(data.VlanBasedRouteTargetImports, item)
+			return true
+		})
 	}
 	if value := res.Get(prefix + "vlan-based.ip.local-learning.disable"); value.Exists() {
 		data.VlanBasedIpLocalLearningDisable = types.BoolValue(true)
@@ -435,23 +586,76 @@ func (data *EVPNInstance) getDeletedItems(ctx context.Context, state EVPNInstanc
 	if !state.VlanBasedEncapsulation.IsNull() && data.VlanBasedEncapsulation.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/encapsulation", state.getPath()))
 	}
-	if !state.VlanBasedAutoRouteTarget.IsNull() && data.VlanBasedAutoRouteTarget.IsNull() {
+	if !state.VlanBasedAutoRouteTargetLegacy.IsNull() && data.VlanBasedAutoRouteTargetLegacy.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/auto-route-target_cont/auto-route-target", state.getPath()))
+	}
+	if !state.VlanBasedAutoRouteTarget.IsNull() && data.VlanBasedAutoRouteTarget.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/auto-route-target_cont/auto-route-target-boolean", state.getPath()))
 	}
 	if !state.VlanBasedRd.IsNull() && data.VlanBasedRd.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/rd/rd-value", state.getPath()))
 	}
-	if !state.VlanBasedRouteTarget.IsNull() && data.VlanBasedRouteTarget.IsNull() {
+	if !state.VlanBasedRouteTargetLegacy.IsNull() && data.VlanBasedRouteTargetLegacy.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target/rt-value", state.getPath()))
 	}
-	if !state.VlanBasedRouteTargetBoth.IsNull() && data.VlanBasedRouteTargetBoth.IsNull() {
+	if !state.VlanBasedRouteTargetBothLegacy.IsNull() && data.VlanBasedRouteTargetBothLegacy.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target/both/rt-value", state.getPath()))
 	}
-	if !state.VlanBasedRouteTargetImport.IsNull() && data.VlanBasedRouteTargetImport.IsNull() {
+	if !state.VlanBasedRouteTargetImportLegacy.IsNull() && data.VlanBasedRouteTargetImportLegacy.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target/import/rt-value", state.getPath()))
 	}
-	if !state.VlanBasedRouteTargetExport.IsNull() && data.VlanBasedRouteTargetExport.IsNull() {
+	if !state.VlanBasedRouteTargetExportLegacy.IsNull() && data.VlanBasedRouteTargetExportLegacy.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target/export/rt-value", state.getPath()))
+	}
+	for i := range state.VlanBasedRouteTargetExports {
+		stateKeyValues := [...]string{state.VlanBasedRouteTargetExports[i].RouteTarget.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.VlanBasedRouteTargetExports[i].RouteTarget.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.VlanBasedRouteTargetExports {
+			found = true
+			if state.VlanBasedRouteTargetExports[i].RouteTarget.ValueString() != data.VlanBasedRouteTargetExports[j].RouteTarget.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target-v2/export=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.VlanBasedRouteTargetImports {
+		stateKeyValues := [...]string{state.VlanBasedRouteTargetImports[i].RouteTarget.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.VlanBasedRouteTargetImports[i].RouteTarget.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.VlanBasedRouteTargetImports {
+			found = true
+			if state.VlanBasedRouteTargetImports[i].RouteTarget.ValueString() != data.VlanBasedRouteTargetImports[j].RouteTarget.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/route-target-v2/import=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
 	if !state.VlanBasedIpLocalLearningDisable.IsNull() && data.VlanBasedIpLocalLearningDisable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan-based/ip/local-learning/disable", state.getPath()))
@@ -482,9 +686,10 @@ func (data *EVPNInstance) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.VlanBasedReplicationTypeMp2mp.IsNull() && !data.VlanBasedReplicationTypeMp2mp.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vlan-based/replication-type/mp2mp", data.getPath()))
 	}
-	if !data.VlanBasedAutoRouteTarget.IsNull() && !data.VlanBasedAutoRouteTarget.ValueBool() {
+	if !data.VlanBasedAutoRouteTargetLegacy.IsNull() && !data.VlanBasedAutoRouteTargetLegacy.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vlan-based/auto-route-target_cont/auto-route-target", data.getPath()))
 	}
+
 	if !data.VlanBasedIpLocalLearningDisable.IsNull() && !data.VlanBasedIpLocalLearningDisable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vlan-based/ip/local-learning/disable", data.getPath()))
 	}
@@ -514,23 +719,36 @@ func (data *EVPNInstance) getDeletePaths(ctx context.Context) []string {
 	if !data.VlanBasedEncapsulation.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/encapsulation", data.getPath()))
 	}
-	if !data.VlanBasedAutoRouteTarget.IsNull() {
+	if !data.VlanBasedAutoRouteTargetLegacy.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/auto-route-target_cont/auto-route-target", data.getPath()))
+	}
+	if !data.VlanBasedAutoRouteTarget.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/auto-route-target_cont/auto-route-target-boolean", data.getPath()))
 	}
 	if !data.VlanBasedRd.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/rd/rd-value", data.getPath()))
 	}
-	if !data.VlanBasedRouteTarget.IsNull() {
+	if !data.VlanBasedRouteTargetLegacy.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/route-target/rt-value", data.getPath()))
 	}
-	if !data.VlanBasedRouteTargetBoth.IsNull() {
+	if !data.VlanBasedRouteTargetBothLegacy.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/route-target/both/rt-value", data.getPath()))
 	}
-	if !data.VlanBasedRouteTargetImport.IsNull() {
+	if !data.VlanBasedRouteTargetImportLegacy.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/route-target/import/rt-value", data.getPath()))
 	}
-	if !data.VlanBasedRouteTargetExport.IsNull() {
+	if !data.VlanBasedRouteTargetExportLegacy.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/route-target/export/rt-value", data.getPath()))
+	}
+	for i := range data.VlanBasedRouteTargetExports {
+		keyValues := [...]string{data.VlanBasedRouteTargetExports[i].RouteTarget.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/route-target-v2/export=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.VlanBasedRouteTargetImports {
+		keyValues := [...]string{data.VlanBasedRouteTargetImports[i].RouteTarget.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/route-target-v2/import=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.VlanBasedIpLocalLearningDisable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-based/ip/local-learning/disable", data.getPath()))

@@ -214,21 +214,21 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Set http secure server certificate trustpoint").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 229),
+					stringvalidator.LengthBetween(1, 226),
 				},
 			},
 			"ip_http_tls_version": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set TLS version for HTTP secure server").AddStringEnumDescription("TLSv1.0", "TLSv1.1", "TLSv1.2").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Set TLS version for HTTP secure server").AddStringEnumDescription("TLSv1.0", "TLSv1.1", "TLSv1.2", "TLSv1.3").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("TLSv1.0", "TLSv1.1", "TLSv1.2"),
+					stringvalidator.OneOf("TLSv1.0", "TLSv1.1", "TLSv1.2", "TLSv1.3"),
 				},
 			},
 			"ip_http_client_secure_trustpoint": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set http client certificate secure trustpoint").String,
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 222),
+					stringvalidator.LengthBetween(1, 219),
 				},
 			},
 			"ip_http_client_source_interface": schema.StringAttribute{

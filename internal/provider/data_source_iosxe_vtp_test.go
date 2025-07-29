@@ -27,27 +27,17 @@ import (
 )
 
 func TestAccDataSourceIosxeVTP(t *testing.T) {
-	if os.Getenv("C9000V") == "" {
-		t.Skip("skipping test, set environment variable C9000V")
+	if os.Getenv("VTP") == "" {
+		t.Skip("skipping test, set environment variable VTP")
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "file", "TEST"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "version", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "interface", "Gi1/0/1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "interface", "GigabitEthernet1/0/1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "password", "test123"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "password_hidden", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "domain", "TESTDOMAIN"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_client_mst", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_client_unknown", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_client_vlan", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_off_mst", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_off_vlan", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_server_mst", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_server_unknown", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_server_vlan", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_transparent_mst", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_transparent_unknown", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_transparent_vlan", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_transparent", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -65,21 +55,11 @@ func testAccDataSourceIosxeVTPConfig() string {
 	config += `	delete_mode = "attributes"` + "\n"
 	config += `	file = "TEST"` + "\n"
 	config += `	version = 3` + "\n"
-	config += `	interface = "Gi1/0/1"` + "\n"
+	config += `	interface = "GigabitEthernet1/0/1"` + "\n"
 	config += `	password = "test123"` + "\n"
 	config += `	password_hidden = false` + "\n"
 	config += `	domain = "TESTDOMAIN"` + "\n"
-	config += `	mode_client_mst = true` + "\n"
-	config += `	mode_client_unknown = true` + "\n"
-	config += `	mode_client_vlan = true` + "\n"
-	config += `	mode_off_mst = true` + "\n"
-	config += `	mode_off_vlan = true` + "\n"
-	config += `	mode_server_mst = true` + "\n"
-	config += `	mode_server_unknown = true` + "\n"
-	config += `	mode_server_vlan = true` + "\n"
-	config += `	mode_transparent_mst = true` + "\n"
-	config += `	mode_transparent_unknown = true` + "\n"
-	config += `	mode_transparent_vlan = true` + "\n"
+	config += `	mode_transparent = true` + "\n"
 	config += `}` + "\n"
 
 	config += `

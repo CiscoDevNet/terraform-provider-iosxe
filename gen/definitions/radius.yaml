@@ -36,5 +36,7 @@ attributes:
   - yang_name: pac/key/key
     tf_name: pac_key
     example: 123
+    test_tags: [IOSXE1712]
   - yang_name: pac/key/encryption
     example: 0
+    test_tags: [IOSXE1712]

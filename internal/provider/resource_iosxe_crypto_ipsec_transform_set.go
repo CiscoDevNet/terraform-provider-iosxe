@@ -73,10 +73,10 @@ func (r *CryptoIPSecTransformSetResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"esp": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("esp-3des", "esp-aes", "esp-des", "esp-gcm", "esp-gmac", "esp-null", "esp-seal").String,
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("esp-192-aes", "esp-256-aes", "esp-3des", "esp-aes", "esp-des", "esp-gcm", "esp-gmac", "esp-null", "esp-seal").String,
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("esp-3des", "esp-aes", "esp-des", "esp-gcm", "esp-gmac", "esp-null", "esp-seal"),
+					stringvalidator.OneOf("esp-192-aes", "esp-256-aes", "esp-3des", "esp-aes", "esp-des", "esp-gcm", "esp-gmac", "esp-null", "esp-seal"),
 				},
 			},
 			"esp_hmac": schema.StringAttribute{

@@ -68,7 +68,7 @@ func (r *VLANResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"vlan_id": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("a single VLAN id (allowed value range 1-4094)or Comma-separated VLAN id range.e.g. 99 or 1-30 or  1-20,30,40-50").AddIntegerRangeDescription(1, 4094).String,
+				MarkdownDescription: helpers.NewAttributeDescription("VLAN ID").AddIntegerRangeDescription(1, 4094).String,
 				Required:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(1, 4094),

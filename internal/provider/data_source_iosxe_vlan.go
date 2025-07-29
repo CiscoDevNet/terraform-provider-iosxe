@@ -63,7 +63,7 @@ func (d *VLANDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Computed:            true,
 			},
 			"vlan_id": schema.Int64Attribute{
-				MarkdownDescription: "a single VLAN id (allowed value range 1-4094)or Comma-separated VLAN id range.e.g. 99 or 1-30 or  1-20,30,40-50",
+				MarkdownDescription: "VLAN ID",
 				Required:            true,
 			},
 			"remote_span": schema.BoolAttribute{

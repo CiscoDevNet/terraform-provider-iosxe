@@ -81,7 +81,7 @@ Read-Only:
 
 Read-Only:
 
-- `ip_address` (String)
+- `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 - `key` (Number) Configure peer authentication key
 - `prefer` (Boolean) Prefer this peer when possible
 - `version` (Number) Configure NTP version
@@ -93,7 +93,7 @@ Read-Only:
 
 Read-Only:
 
-- `ip_address` (String)
+- `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 - `key` (Number) Configure peer authentication key
 - `prefer` (Boolean) Prefer this peer when possible
 - `source` (String) Interface for source address
@@ -113,7 +113,7 @@ Read-Only:
 
 Read-Only:
 
-- `ip_address` (String)
+- `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 - `key` (Number) Configure peer authentication key
 - `prefer` (Boolean) Prefer this peer when possible
 - `version` (Number) Configure NTP version
@@ -125,7 +125,7 @@ Read-Only:
 
 Read-Only:
 
-- `ip_address` (String)
+- `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 - `key` (Number) Configure peer authentication key
 - `prefer` (Boolean) Prefer this peer when possible
 - `source` (String) Interface for source address

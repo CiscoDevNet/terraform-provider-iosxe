@@ -14,7 +14,6 @@ This resource can manage the Errdisable configuration.
 
 ```terraform
 resource "iosxe_errdisable" "example" {
-  detect_cause_all                       = true
   detect_cause_dhcp_rate_limit           = true
   detect_cause_dtp_flap                  = true
   detect_cause_l2ptguard                 = true
@@ -28,7 +27,6 @@ resource "iosxe_errdisable" "example" {
   flap_setting_cause_pagp_flap_max_flaps = 80
   flap_setting_cause_pagp_flap_time      = 90
   recovery_interval                      = 855
-  recovery_cause_all                     = true
   recovery_cause_arp_inspection          = true
   recovery_cause_bpduguard               = true
   recovery_cause_dhcp_rate_limit         = true
@@ -82,7 +80,7 @@ resource "iosxe_errdisable" "example" {
   - Range: `1`-`100`
 - `flap_setting_cause_pagp_flap_time` (Number) time period the flaps are counted
   - Range: `1`-`120`
-- `recovery_cause_all` (Boolean) Enable timer to recover from all error causes
+- `recovery_cause_all` (Boolean) Enable timer to recover from all error causes (DEPRECATED)
 - `recovery_cause_arp_inspection` (Boolean) Enable timer to recover from arp inspection error disable state
 - `recovery_cause_bpduguard` (Boolean) Enable timer to recover from BPDU Guard error
 - `recovery_cause_channel_misconfig` (Boolean) (STP)  Enable timer to recover from channel misconfiguration error

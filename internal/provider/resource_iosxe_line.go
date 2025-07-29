@@ -80,7 +80,7 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"first": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Console line number").AddStringEnumDescription("0").String,
 							Required:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("0"),
@@ -130,10 +130,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"password_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "7").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "6", "7").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("0", "7"),
+								stringvalidator.OneOf("0", "6", "7"),
 							},
 						},
 						"password": schema.StringAttribute{
@@ -152,26 +152,26 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"first": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 1869).String,
+							MarkdownDescription: helpers.NewAttributeDescription("Vty first line number").AddIntegerRangeDescription(0, 1869).String,
 							Required:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(0, 1869),
 							},
 						},
 						"last": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 1869).String,
+							MarkdownDescription: helpers.NewAttributeDescription("Vty last line number").AddIntegerRangeDescription(1, 1869).String,
 							Optional:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(1, 1869),
 							},
 						},
 						"access_classes": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Choose direction of the access list").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									"direction": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("in", "out").String,
+										MarkdownDescription: helpers.NewAttributeDescription("Filter connections based on the incoming/outgoing direction").AddStringEnumDescription("in", "out").String,
 										Required:            true,
 										Validators: []validator.String{
 											stringvalidator.OneOf("in", "out"),
@@ -210,10 +210,10 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"password_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "7").String,
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "6", "7").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf("0", "7"),
+								stringvalidator.OneOf("0", "6", "7"),
 							},
 						},
 						"password": schema.StringAttribute{
@@ -224,7 +224,7 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 						},
 						"login_authentication": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Authentication list").String,
 							Optional:            true,
 						},
 						"transport_preferred_protocol": schema.StringAttribute{

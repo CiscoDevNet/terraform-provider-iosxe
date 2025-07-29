@@ -91,11 +91,11 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 				Computed:            true,
 			},
 			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip address",
 				Computed:            true,
 			},
 			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
 			"ip_access_group_in": schema.StringAttribute{
@@ -156,7 +156,7 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"prefix": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IPv6 prefix",
 							Computed:            true,
 						},
 						"eui_64": schema.BoolAttribute{

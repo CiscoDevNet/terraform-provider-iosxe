@@ -32,7 +32,7 @@ data "iosxe_snmp_server_group" "example" {
 ### Read-Only
 
 - `id` (String) The path of the retrieved object.
-- `v3_security` (Attributes List) group using security Level (see [below for nested schema](#nestedatt--v3_security))
+- `v3_security` (Attributes List) DEPRECATED group using security Level (see [below for nested schema](#nestedatt--v3_security))
 
 <a id="nestedatt--v3_security"></a>
 ### Nested Schema for `v3_security`
@@ -42,9 +42,9 @@ Read-Only:
 - `access_acl_name` (String) Access-list name
 - `access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
-- `context_node` (String) specify a context to associate these views for the group
-- `match_node` (String) context name match criteria
-- `notify_node` (String) specify a notify view for the group
-- `read_node` (String) specify a read view for the group
-- `security_level` (String) security level type
-- `write_node` (String) specify a write view for the group
+- `context_node` (String) DEPRECATED specify a context to associate these views for the group
+- `match_node` (String) DEPRECATED context name match criteria
+- `notify_node` (String) DEPRECATED specify a notify view for the group
+- `read_node` (String) DEPRECATED specify a read view for the group
+- `security_level` (String) DEPRECATED security level type
+- `write_node` (String) DEPRECATED specify a write view for the group

@@ -42,6 +42,9 @@ resource "iosxe_interface_ethernet" "example" {
       merge         = false
     }
   ]
+  bfd_template            = "bfd_template1"
+  bfd_enable              = false
+  bfd_local_address       = "1.2.3.4"
   ipv6_enable             = true
   ipv6_mtu                = 1300
   ipv6_nd_ra_suppress_all = true
@@ -174,8 +177,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
-- `ipv4_address` (String)
-- `ipv4_address_mask` (String)
+- `ipv4_address` (String) Ip address
+- `ipv4_address_mask` (String) Ip subnet mask
 - `ipv6_address_autoconfig_default` (Boolean) Insert default route
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
@@ -206,7 +209,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `spanning_tree_portfast` (Boolean) Portfast options for the interface
 - `spanning_tree_portfast_disable` (Boolean) Disable portfast for this interface
 - `spanning_tree_portfast_edge` (Boolean) Enable portfast edge on the interface
-- `spanning_tree_portfast_trunk` (Boolean) Enable portfast on the interface even in trunk mode
+- `spanning_tree_portfast_trunk` (Boolean) (DEPRECATED) Enable portfast on the interface even in trunk mode
 - `speed_100` (Boolean) 100 Mbps operation
 - `speed_1000` (Boolean) 1000 Mbps operation
 - `speed_10000` (Boolean) 10000 Mbps operation
@@ -231,7 +234,7 @@ resource "iosxe_interface_ethernet" "example" {
 
 Required:
 
-- `address` (String)
+- `address` (String) IP destination address
 
 Optional:
 
@@ -253,7 +256,7 @@ Required:
 
 Required:
 
-- `prefix` (String)
+- `prefix` (String) IPv6 prefix
 
 Optional:
 

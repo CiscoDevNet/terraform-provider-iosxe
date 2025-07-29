@@ -23,10 +23,12 @@ attributes:
     xpath: ip/address/primary/address
     tf_name: ipv4_address
     example: 200.1.1.1
+    delete_parent: true
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/mask
     xpath: ip/address/primary/mask
     tf_name: ipv4_address_mask
     example: 255.255.255.255
+    delete_parent: true
   - yang_name: ip/access-group/in/apply-type/apply-intf/acl/acl-name
     xpath: ip/access-group/in/acl/acl-name
     tf_name: ip_access_group_in

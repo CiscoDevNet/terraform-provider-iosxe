@@ -36,16 +36,22 @@ func TestAccDataSourceIosxeEVPNInstance(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_replication_type_p2mp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_replication_type_mp2mp", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_encapsulation", "vxlan"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_auto_route_target", "false"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_auto_route_target_legacy", "false"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_rd", "10:10"))
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target", "10:10"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_import_legacy", "10:10"))
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_both", "10:10"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_export_legacy", "10:10"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_import", "10:10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_export", "10:10"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_exports.0.route_target", "10:10"))
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_route_target_imports.0.route_target", "10:10"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_ip_local_learning_disable", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_ip_local_learning_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_instance.test", "vlan_based_default_gateway_advertise", "enable"))
@@ -70,16 +76,26 @@ func testAccDataSourceIosxeEVPNInstanceConfig() string {
 	config += `	vlan_based_replication_type_p2mp = false` + "\n"
 	config += `	vlan_based_replication_type_mp2mp = false` + "\n"
 	config += `	vlan_based_encapsulation = "vxlan"` + "\n"
-	config += `	vlan_based_auto_route_target = false` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	vlan_based_auto_route_target_legacy = false` + "\n"
+	}
 	config += `	vlan_based_rd = "10:10"` + "\n"
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
-		config += `	vlan_based_route_target = "10:10"` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	vlan_based_route_target_import_legacy = "10:10"` + "\n"
 	}
-	if os.Getenv("IOSXE179") != "" || os.Getenv("IOSXE1712") != "" {
-		config += `	vlan_based_route_target_both = "10:10"` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `	vlan_based_route_target_export_legacy = "10:10"` + "\n"
 	}
-	config += `	vlan_based_route_target_import = "10:10"` + "\n"
-	config += `	vlan_based_route_target_export = "10:10"` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	vlan_based_route_target_exports = [{` + "\n"
+		config += `		route_target = "10:10"` + "\n"
+		config += `	}]` + "\n"
+	}
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	vlan_based_route_target_imports = [{` + "\n"
+		config += `		route_target = "10:10"` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `	vlan_based_ip_local_learning_disable = false` + "\n"
 	config += `	vlan_based_ip_local_learning_enable = true` + "\n"
 	config += `	vlan_based_default_gateway_advertise = "enable"` + "\n"

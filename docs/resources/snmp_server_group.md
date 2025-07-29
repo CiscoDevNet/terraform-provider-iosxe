@@ -24,7 +24,6 @@ resource "iosxe_snmp_server_group" "example" {
       write_node      = "VIEW2"
       notify_node     = "VIEW3"
       access_ipv6_acl = "V6ACL1"
-      access_acl_name = "ACL1"
     }
   ]
 }
@@ -40,7 +39,7 @@ resource "iosxe_snmp_server_group" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `v3_security` (Attributes List) group using security Level (see [below for nested schema](#nestedatt--v3_security))
+- `v3_security` (Attributes List) DEPRECATED group using security Level (see [below for nested schema](#nestedatt--v3_security))
 
 ### Read-Only
 
@@ -51,7 +50,7 @@ resource "iosxe_snmp_server_group" "example" {
 
 Required:
 
-- `security_level` (String) security level type
+- `security_level` (String) DEPRECATED security level type
   - Choices: `auth`, `noauth`, `priv`
 
 Optional:
@@ -60,12 +59,12 @@ Optional:
 - `access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
   - Range: `1`-`99`
-- `context_node` (String) specify a context to associate these views for the group
-- `match_node` (String) context name match criteria
+- `context_node` (String) DEPRECATED specify a context to associate these views for the group
+- `match_node` (String) DEPRECATED context name match criteria
   - Choices: `exact`, `prefix`
-- `notify_node` (String) specify a notify view for the group
-- `read_node` (String) specify a read view for the group
-- `write_node` (String) specify a write view for the group
+- `notify_node` (String) DEPRECATED specify a notify view for the group
+- `read_node` (String) DEPRECATED specify a read view for the group
+- `write_node` (String) DEPRECATED specify a write view for the group
 
 ## Import
 

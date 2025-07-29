@@ -38,3 +38,4 @@ attributes:
         xpath: access-config/acl-name
         tf_name: access_acl_name
         example: ACL1
+        test_tags: [IOSXE1712]

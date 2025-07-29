@@ -107,11 +107,11 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				Computed:            true,
 			},
 			"ipv4_address": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip address",
 				Computed:            true,
 			},
 			"ipv4_address_mask": schema.StringAttribute{
-				MarkdownDescription: "",
+				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
 			"unnumbered": schema.StringAttribute{
@@ -212,7 +212,7 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"address": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IP destination address",
 							Computed:            true,
 						},
 						"global": schema.BoolAttribute{
@@ -312,7 +312,7 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"prefix": schema.StringAttribute{
-							MarkdownDescription: "",
+							MarkdownDescription: "IPv6 prefix",
 							Computed:            true,
 						},
 						"eui_64": schema.BoolAttribute{
@@ -347,7 +347,7 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				Computed:            true,
 			},
 			"spanning_tree_portfast_trunk": schema.BoolAttribute{
-				MarkdownDescription: "Enable portfast on the interface even in trunk mode",
+				MarkdownDescription: "(DEPRECATED) Enable portfast on the interface even in trunk mode",
 				Computed:            true,
 			},
 			"spanning_tree_portfast_edge": schema.BoolAttribute{

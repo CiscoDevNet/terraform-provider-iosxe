@@ -4,6 +4,7 @@ path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard=%v
 no_delete_attributes: true
 skip_minimum_test: true
 doc_category: BGP
+test_tags: [IOSXE1712] # 17.15 converts entries to numbers
 attributes:
   - yang_name: name
     example: CLS1

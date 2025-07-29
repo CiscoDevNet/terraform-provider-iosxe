@@ -25,6 +25,7 @@ import (
 	"regexp"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -107,8 +108,8 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: helpers.NewAttributeDescription("Use configured hostname for remote id").String,
 				Optional:            true,
 			},
-			"snooping_vlans": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan").String,
+			"snooping_vlans_legacy": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan list. Use this for versions before `17.14`.").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -117,6 +118,21 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							Required:            true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`(((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?)(,((409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9])(\-(409[0-4]|40[0-8][0-9]|[1-3][0-9]{3}|[1-9][0-9]{1,2}|[1-9]))?))*)`), ""),
+							},
+						},
+					},
+				},
+			},
+			"snooping_vlans": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping vlan list. Use this for versions `17.14` and later.").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vlan_id": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 4094),
 							},
 						},
 					},

@@ -67,7 +67,7 @@ func (d *VLANGroupDataSource) Schema(ctx context.Context, req datasource.SchemaR
 				Required:            true,
 			},
 			"vlan_lists": schema.ListAttribute{
-				MarkdownDescription: "a single VLAN id (allowed value range 1-4094)or Comma-separated VLAN id range.e.g. 99 or 1-30 or  1-20,30,40-50",
+				MarkdownDescription: "VLANs in the vlan group",
 				ElementType:         types.Int64Type,
 				Computed:            true,
 			},

@@ -143,7 +143,7 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				Computed:            true,
 			},
 			"router_id": schema.StringAttribute{
-				MarkdownDescription: "Override configured router identifier (peers will reset)",
+				MarkdownDescription: "Configure router identifier. New router-id will take effect immediately (peers will reset)",
 				Computed:            true,
 			},
 			"shutdown": schema.BoolAttribute{

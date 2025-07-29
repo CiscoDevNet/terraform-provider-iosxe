@@ -71,14 +71,14 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Optional:            true,
 			},
 			"buffered_size": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Logging buffer size").AddIntegerRangeDescription(4096, 2147483647).String,
+				MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED. Logging buffer size").AddIntegerRangeDescription(4096, 2147483647).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(4096, 2147483647),
 				},
 			},
 			"buffered_severity": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Logging severity level").String,
+				MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED. Logging severity level").String,
 				Optional:            true,
 			},
 			"console_severity": schema.StringAttribute{
