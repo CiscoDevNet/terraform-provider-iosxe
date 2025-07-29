@@ -330,8 +330,28 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Specify a link type for spanning tree tree protocol use",
 				Computed:            true,
 			},
+			"bpduguard_enable": schema.BoolAttribute{
+				MarkdownDescription: "Enable BPDU guard for this interface",
+				Computed:            true,
+			},
+			"bpduguard_disable": schema.BoolAttribute{
+				MarkdownDescription: "Disable BPDU guard for this interface",
+				Computed:            true,
+			},
+			"spanning_tree_portfast": schema.BoolAttribute{
+				MarkdownDescription: "Spanning tree portfast options",
+				Computed:            true,
+			},
+			"spanning_tree_portfast_disable": schema.BoolAttribute{
+				MarkdownDescription: "Disable portfast for this interface",
+				Computed:            true,
+			},
 			"spanning_tree_portfast_trunk": schema.BoolAttribute{
 				MarkdownDescription: "(DEPRECATED) Enable portfast on the interface even in trunk mode",
+				Computed:            true,
+			},
+			"spanning_tree_portfast_edge": schema.BoolAttribute{
+				MarkdownDescription: "Enable portfast edge on the interface",
 				Computed:            true,
 			},
 			"ip_arp_inspection_trust": schema.BoolAttribute{
