@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.6.0 (unreleased)
+## 0.6.0
 
 - BREAKING_CHANGE: Drop support for IOS-XE 17.9
 - Add `esp-192-aes` and `esp-256-aes` options to `iosxe_crypto_ipsec_transform_set` resource and data source
