@@ -14,6 +14,7 @@
 - Add `device_tracking`, `device_tracking_attached_policies` attributes to `iosxe_interface_ethernet` and `iosxe_interface_port_channel` resources and data sources
 - Add `ip_tacacs_source_interface_x`, `ip_radius_source_interface_x` attributes to `iosxe_system` resource and data source
 - Add `iosxe_spanning_tree` resource and data source
+- Add `iosxe_device_sensor` resource and data source
 
 ## 0.6.0
 
