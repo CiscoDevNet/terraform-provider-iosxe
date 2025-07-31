@@ -415,9 +415,11 @@ attributes:
     write_only: true
     example: MySecretPassword
   - yang_name: enable/secret/type
+    type: Int64
     exclude_test: true
     example: 0
   - yang_name: enable/secret/level
+    type: Int64
     exclude_test: true
     example: 15
 

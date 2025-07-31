@@ -136,6 +136,11 @@ type System struct {
 	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
+	BootSystemFlashFiles                                   []SystemBootSystemFlashFiles                        `tfsdk:"boot_system_flash_files"`
+	BootSystemBootfiles                                    []SystemBootSystemBootfiles                         `tfsdk:"boot_system_bootfiles"`
+	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
+	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
+	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
 }
 
 type SystemData struct {
@@ -237,6 +242,11 @@ type SystemData struct {
 	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
+	BootSystemFlashFiles                                   []SystemBootSystemFlashFiles                        `tfsdk:"boot_system_flash_files"`
+	BootSystemBootfiles                                    []SystemBootSystemBootfiles                         `tfsdk:"boot_system_bootfiles"`
+	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
+	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
+	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -261,10 +271,6 @@ type SystemBootSystemFlashFiles struct {
 type SystemBootSystemBootfiles struct {
 	Path types.String `tfsdk:"path"`
 }
-
-// End of section. //template:end types
-
-// Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data System) getPath() string {
 	return "Cisco-IOS-XE-native:native"
@@ -601,6 +607,15 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.EnableSecretLevel.IsNull() && !data.EnableSecretLevel.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.level", strconv.FormatInt(data.EnableSecretLevel.ValueInt64(), 10))
 	}
+	if !data.EnableSecret.IsNull() && !data.EnableSecret.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.secret", data.EnableSecret.ValueString())
+	}
+	if !data.EnableSecretType.IsNull() && !data.EnableSecretType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.type", data.EnableSecretType.ValueString())
+	}
+	if !data.EnableSecretLevel.IsNull() && !data.EnableSecretLevel.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.level", strconv.FormatInt(data.EnableSecretLevel.ValueInt64(), 10))
+	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
 		for index, item := range data.MulticastRoutingVrfs {
@@ -649,6 +664,22 @@ func (data System) toBody(ctx context.Context) string {
 			}
 			if !item.TransportHttpsIpv4Port.IsNull() && !item.TransportHttpsIpv4Port.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-pnp:pnp.profile"+"."+strconv.Itoa(index)+"."+"transport.https.ipv4.port", strconv.FormatInt(item.TransportHttpsIpv4Port.ValueInt64(), 10))
+			}
+		}
+	}
+	if len(data.BootSystemFlashFiles) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"boot.system.flash.flash-list-ordered-by-user", []interface{}{})
+		for index, item := range data.BootSystemFlashFiles {
+			if !item.Path.IsNull() && !item.Path.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"boot.system.flash.flash-list-ordered-by-user"+"."+strconv.Itoa(index)+"."+"flash-leaf", item.Path.ValueString())
+			}
+		}
+	}
+	if len(data.BootSystemBootfiles) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"boot.system.bootfile.filename-list-ordered-by-user", []interface{}{})
+		for index, item := range data.BootSystemBootfiles {
+			if !item.Path.IsNull() && !item.Path.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"boot.system.bootfile.filename-list-ordered-by-user"+"."+strconv.Itoa(index)+"."+"filename", item.Path.ValueString())
 			}
 		}
 	}
@@ -1418,10 +1449,6 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-// End of section. //template:end updateFromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
-
 func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -1833,10 +1860,6 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
-// End of section. //template:end fromBody
-
-// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
-
 func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -2228,6 +2251,36 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 			data.BootSystemFlashFiles = append(data.BootSystemFlashFiles, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "boot.system.bootfile.filename-list-ordered-by-user"); value.Exists() {
+		data.BootSystemBootfiles = make([]SystemBootSystemBootfiles, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemBootSystemBootfiles{}
+			if cValue := v.Get("filename"); cValue.Exists() {
+				item.Path = types.StringValue(cValue.String())
+			}
+			data.BootSystemBootfiles = append(data.BootSystemBootfiles, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "enable.secret.type"); value.Exists() {
+		data.EnableSecretType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "enable.secret.level"); value.Exists() {
+		data.EnableSecretLevel = types.Int64Value(value.Int())
+	}
+}
+
+func (data *System) getDeletedItems(ctx context.Context, state System) []string {
+	deletedItems := make([]string, 0)
+	if !state.Hostname.IsNull() && data.Hostname.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/hostname", state.getPath()))
+	}
+	if !state.IpBgpCommunityNewFormat.IsNull() && data.IpBgpCommunityNewFormat.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/bgp-community/new-format", state.getPath()))
+	}
+	if !state.IpRouting.IsNull() && data.IpRouting.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-conf/routing", state.getPath()))
 	}
 	if value := res.Get(prefix + "boot.system.bootfile.filename-list-ordered-by-user"); value.Exists() {
 		data.BootSystemBootfiles = make([]SystemBootSystemBootfiles, 0)
@@ -2689,8 +2742,11 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	if !state.LoginOnSuccessLog.IsNull() && data.LoginOnSuccessLog.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-success/log", state.getPath()))
 	}
-	if !state.LoginOnSuccess.IsNull() && data.LoginOnSuccess.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-success", state.getPath()))
+	if !state.IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FiveGigabitEthernet", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TenGigabitEthernet", state.getPath()))
 	}
 	if !state.LoginOnFailureLog.IsNull() && data.LoginOnFailureLog.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-failure/log", state.getPath()))
@@ -2724,6 +2780,65 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.Hostname.IsNull() && data.Hostname.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/hostname", state.getPath()))
+	}
+	for i := range state.BootSystemFlashFiles {
+		stateKeyValues := [...]string{state.BootSystemFlashFiles[i].Path.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.BootSystemFlashFiles[i].Path.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.BootSystemFlashFiles {
+			found = true
+			if state.BootSystemFlashFiles[i].Path.ValueString() != data.BootSystemFlashFiles[j].Path.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/system/flash/flash-list-ordered-by-user=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.BootSystemBootfiles {
+		stateKeyValues := [...]string{state.BootSystemBootfiles[i].Path.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.BootSystemBootfiles[i].Path.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.BootSystemBootfiles {
+			found = true
+			if state.BootSystemBootfiles[i].Path.ValueString() != data.BootSystemBootfiles[j].Path.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/system/bootfile/filename-list-ordered-by-user=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.EnableSecret.IsNull() && data.EnableSecret.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret", state.getPath()))
+	}
+	if !state.EnableSecretType.IsNull() && data.EnableSecretType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/type", state.getPath()))
+	}
+	if !state.EnableSecretLevel.IsNull() && data.EnableSecretLevel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/level", state.getPath()))
 	}
 
 	return deletedItems
@@ -3112,7 +3227,25 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	if !data.Hostname.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/hostname", data.getPath()))
 	}
+	for i := range data.BootSystemFlashFiles {
+		keyValues := [...]string{data.BootSystemFlashFiles[i].Path.ValueString()}
 
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/system/flash/flash-list-ordered-by-user=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.BootSystemBootfiles {
+		keyValues := [...]string{data.BootSystemBootfiles[i].Path.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/system/bootfile/filename-list-ordered-by-user=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.EnableSecret.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret", data.getPath()))
+	}
+	if !data.EnableSecretType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/type", data.getPath()))
+	}
+	if !data.EnableSecretLevel.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/level", data.getPath()))
+	}
 	return deletePaths
 }
 
