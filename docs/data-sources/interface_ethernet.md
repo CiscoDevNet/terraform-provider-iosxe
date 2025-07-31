@@ -101,6 +101,7 @@ data "iosxe_interface_ethernet" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
+- `ip_nbar_protocol_discovery` (Boolean) Enable protocol discovery for both ipv4 and ipv6
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
 - `ip_unreachables` (Boolean) Enable sending ICMP Unreachable messages
@@ -110,6 +111,7 @@ data "iosxe_interface_ethernet" "example" {
 - `ipv6_address_dhcp` (Boolean) Obtain IPv6 address from DHCP server
 - `ipv6_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_addresses))
 - `ipv6_enable` (Boolean) Enable IPv6 on interface
+- `ipv6_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ipv6_flow_monitors))
 - `ipv6_link_local_addresses` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_link_local_addresses))
 - `ipv6_mtu` (Number) Set IPv6 Maximum Transmission Unit
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
@@ -118,6 +120,7 @@ data "iosxe_interface_ethernet" "example" {
 - `mab` (Boolean) MAC Authentication Bypass Interface Config Commands
 - `mab_eap` (Boolean) Use EAP authentication for MAC Auth Bypass
 - `media_type` (String) Media type
+- `mtu` (Number) Set the interface Maximum Transmission Unit (MTU)
 - `negotiation_auto` (Boolean) Enable link autonegotiation
 - `service_policy_input` (String) Assign policy-map to the input of an interface
 - `service_policy_output` (String) Assign policy-map to the output of an interface
@@ -170,6 +173,15 @@ Read-Only:
 
 - `eui_64` (Boolean) Use eui-64 interface identifier
 - `prefix` (String) IPv6 prefix
+
+
+<a id="nestedatt--ipv6_flow_monitors"></a>
+### Nested Schema for `ipv6_flow_monitors`
+
+Read-Only:
+
+- `direction` (String)
+- `name` (String) User defined
 
 
 <a id="nestedatt--ipv6_link_local_addresses"></a>

@@ -40,6 +40,7 @@ type InterfaceEthernet struct {
 	Type                                    types.String                              `tfsdk:"type"`
 	Name                                    types.String                              `tfsdk:"name"`
 	MediaType                               types.String                              `tfsdk:"media_type"`
+	Mtu                                     types.Int64                               `tfsdk:"mtu"`
 	Bandwidth                               types.Int64                               `tfsdk:"bandwidth"`
 	Switchport                              types.Bool                                `tfsdk:"switchport"`
 	Description                             types.String                              `tfsdk:"description"`
@@ -89,6 +90,7 @@ type InterfaceEthernet struct {
 	Ipv6AddressDhcp                         types.Bool                                `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses                  []InterfaceEthernetIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                           []InterfaceEthernetIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	Ipv6FlowMonitors                        []InterfaceEthernetIpv6FlowMonitors       `tfsdk:"ipv6_flow_monitors"`
 	ArpTimeout                              types.Int64                               `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType                    types.String                              `tfsdk:"spanning_tree_link_type"`
 	BpduguardEnable                         types.Bool                                `tfsdk:"bpduguard_enable"`
@@ -148,6 +150,7 @@ type InterfaceEthernet struct {
 	LoadInterval                            types.Int64                               `tfsdk:"load_interval"`
 	SnmpTrapLinkStatus                      types.Bool                                `tfsdk:"snmp_trap_link_status"`
 	LoggingEventLinkStatusEnable            types.Bool                                `tfsdk:"logging_event_link_status_enable"`
+	IpNbarProtocolDiscovery                 types.Bool                                `tfsdk:"ip_nbar_protocol_discovery"`
 }
 
 type InterfaceEthernetData struct {
@@ -156,6 +159,7 @@ type InterfaceEthernetData struct {
 	Type                                    types.String                              `tfsdk:"type"`
 	Name                                    types.String                              `tfsdk:"name"`
 	MediaType                               types.String                              `tfsdk:"media_type"`
+	Mtu                                     types.Int64                               `tfsdk:"mtu"`
 	Bandwidth                               types.Int64                               `tfsdk:"bandwidth"`
 	Switchport                              types.Bool                                `tfsdk:"switchport"`
 	Description                             types.String                              `tfsdk:"description"`
@@ -205,6 +209,7 @@ type InterfaceEthernetData struct {
 	Ipv6AddressDhcp                         types.Bool                                `tfsdk:"ipv6_address_dhcp"`
 	Ipv6LinkLocalAddresses                  []InterfaceEthernetIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                           []InterfaceEthernetIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	Ipv6FlowMonitors                        []InterfaceEthernetIpv6FlowMonitors       `tfsdk:"ipv6_flow_monitors"`
 	ArpTimeout                              types.Int64                               `tfsdk:"arp_timeout"`
 	SpanningTreeLinkType                    types.String                              `tfsdk:"spanning_tree_link_type"`
 	BpduguardEnable                         types.Bool                                `tfsdk:"bpduguard_enable"`
@@ -264,6 +269,7 @@ type InterfaceEthernetData struct {
 	LoadInterval                            types.Int64                               `tfsdk:"load_interval"`
 	SnmpTrapLinkStatus                      types.Bool                                `tfsdk:"snmp_trap_link_status"`
 	LoggingEventLinkStatusEnable            types.Bool                                `tfsdk:"logging_event_link_status_enable"`
+	IpNbarProtocolDiscovery                 types.Bool                                `tfsdk:"ip_nbar_protocol_discovery"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -281,6 +287,10 @@ type InterfaceEthernetIpv6LinkLocalAddresses struct {
 type InterfaceEthernetIpv6Addresses struct {
 	Prefix types.String `tfsdk:"prefix"`
 	Eui64  types.Bool   `tfsdk:"eui_64"`
+}
+type InterfaceEthernetIpv6FlowMonitors struct {
+	Name      types.String `tfsdk:"name"`
+	Direction types.String `tfsdk:"direction"`
 }
 type InterfaceEthernetIpFlowMonitors struct {
 	Name      types.String `tfsdk:"name"`
@@ -313,6 +323,9 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	}
 	if !data.MediaType.IsNull() && !data.MediaType.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"media-type", data.MediaType.ValueString())
+	}
+	if !data.Mtu.IsNull() && !data.Mtu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mtu", strconv.FormatInt(data.Mtu.ValueInt64(), 10))
 	}
 	if !data.Bandwidth.IsNull() && !data.Bandwidth.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bandwidth.kilobits", strconv.FormatInt(data.Bandwidth.ValueInt64(), 10))
@@ -731,6 +744,11 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	if !data.LoggingEventLinkStatusEnable.IsNull() && !data.LoggingEventLinkStatusEnable.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"logging.event.link-status-enable", data.LoggingEventLinkStatusEnable.ValueBool())
 	}
+	if !data.IpNbarProtocolDiscovery.IsNull() && !data.IpNbarProtocolDiscovery.IsUnknown() {
+		if data.IpNbarProtocolDiscovery.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nbar:nbar.protocol-discovery", map[string]string{})
+		}
+	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
 		for index, item := range data.HelperAddresses {
@@ -786,6 +804,17 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.Ipv6FlowMonitors) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-flow:flow.monitor-new", []interface{}{})
+		for index, item := range data.Ipv6FlowMonitors {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-flow:flow.monitor-new"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Direction.IsNull() && !item.Direction.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.Cisco-IOS-XE-flow:flow.monitor-new"+"."+strconv.Itoa(index)+"."+"direction", item.Direction.ValueString())
+			}
+		}
+	}
 	if len(data.IpFlowMonitors) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-flow:flow.monitor-new", []interface{}{})
 		for index, item := range data.IpFlowMonitors {
@@ -814,6 +843,11 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 		data.MediaType = types.StringValue(value.String())
 	} else {
 		data.MediaType = types.StringNull()
+	}
+	if value := res.Get(prefix + "mtu"); value.Exists() && !data.Mtu.IsNull() {
+		data.Mtu = types.Int64Value(value.Int())
+	} else {
+		data.Mtu = types.Int64Null()
 	}
 	if value := res.Get(prefix + "bandwidth.kilobits"); value.Exists() && !data.Bandwidth.IsNull() {
 		data.Bandwidth = types.Int64Value(value.Int())
@@ -1283,6 +1317,40 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 			}
 		} else {
 			data.Ipv6Addresses[i].Eui64 = types.BoolNull()
+		}
+	}
+	for i := range data.Ipv6FlowMonitors {
+		keys := [...]string{"name", "direction"}
+		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "ipv6.Cisco-IOS-XE-flow:flow.monitor-new").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Ipv6FlowMonitors[i].Name.IsNull() {
+			data.Ipv6FlowMonitors[i].Name = types.StringValue(value.String())
+		} else {
+			data.Ipv6FlowMonitors[i].Name = types.StringNull()
+		}
+		if value := r.Get("direction"); value.Exists() && !data.Ipv6FlowMonitors[i].Direction.IsNull() {
+			data.Ipv6FlowMonitors[i].Direction = types.StringValue(value.String())
+		} else {
+			data.Ipv6FlowMonitors[i].Direction = types.StringNull()
 		}
 	}
 	if value := res.Get(prefix + "arp.timeout"); value.Exists() && !data.ArpTimeout.IsNull() {
@@ -1755,6 +1823,15 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nbar:nbar.protocol-discovery"); !data.IpNbarProtocolDiscovery.IsNull() {
+		if value.Exists() {
+			data.IpNbarProtocolDiscovery = types.BoolValue(true)
+		} else {
+			data.IpNbarProtocolDiscovery = types.BoolValue(false)
+		}
+	} else {
+		data.IpNbarProtocolDiscovery = types.BoolNull()
+	}
 }
 
 func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
@@ -1764,6 +1841,9 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "media-type"); value.Exists() {
 		data.MediaType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "bandwidth.kilobits"); value.Exists() {
 		data.Bandwidth = types.Int64Value(value.Int())
@@ -2014,6 +2094,20 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 				item.Eui64 = types.BoolValue(false)
 			}
 			data.Ipv6Addresses = append(data.Ipv6Addresses, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
+		data.Ipv6FlowMonitors = make([]InterfaceEthernetIpv6FlowMonitors, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceEthernetIpv6FlowMonitors{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
 			return true
 		})
 	}
@@ -2280,6 +2374,11 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 		data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nbar:nbar.protocol-discovery"); value.Exists() {
+		data.IpNbarProtocolDiscovery = types.BoolValue(true)
+	} else {
+		data.IpNbarProtocolDiscovery = types.BoolValue(false)
 	}
 }
 
@@ -2291,6 +2390,9 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "media-type"); value.Exists() {
 		data.MediaType = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "mtu"); value.Exists() {
+		data.Mtu = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "bandwidth.kilobits"); value.Exists() {
 		data.Bandwidth = types.Int64Value(value.Int())
 	}
@@ -2540,6 +2642,20 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 				item.Eui64 = types.BoolValue(false)
 			}
 			data.Ipv6Addresses = append(data.Ipv6Addresses, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ipv6.Cisco-IOS-XE-flow:flow.monitor-new"); value.Exists() {
+		data.Ipv6FlowMonitors = make([]InterfaceEthernetIpv6FlowMonitors, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceEthernetIpv6FlowMonitors{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("direction"); cValue.Exists() {
+				item.Direction = types.StringValue(cValue.String())
+			}
+			data.Ipv6FlowMonitors = append(data.Ipv6FlowMonitors, item)
 			return true
 		})
 	}
@@ -2807,12 +2923,20 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nbar:nbar.protocol-discovery"); value.Exists() {
+		data.IpNbarProtocolDiscovery = types.BoolValue(true)
+	} else {
+		data.IpNbarProtocolDiscovery = types.BoolValue(false)
+	}
 }
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
 	deletedItems := make([]string, 0)
 	if !state.MediaType.IsNull() && data.MediaType.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/media-type", state.getPath()))
+	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu", state.getPath()))
 	}
 	if !state.Bandwidth.IsNull() && data.Bandwidth.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bandwidth/kilobits", state.getPath()))
@@ -3064,6 +3188,37 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Ipv6FlowMonitors {
+		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Direction.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6FlowMonitors {
+			found = true
+			if state.Ipv6FlowMonitors[i].Name.ValueString() != data.Ipv6FlowMonitors[j].Name.ValueString() {
+				found = false
+			}
+			if state.Ipv6FlowMonitors[i].Direction.ValueString() != data.Ipv6FlowMonitors[j].Direction.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-flow:flow/monitor-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/arp/timeout", state.getPath()))
 	}
@@ -3269,6 +3424,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	if !state.LoggingEventLinkStatusEnable.IsNull() && data.LoggingEventLinkStatusEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/event/link-status-enable", state.getPath()))
 	}
+	if !state.IpNbarProtocolDiscovery.IsNull() && data.IpNbarProtocolDiscovery.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -3359,6 +3517,7 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/prefix-list=%v/eui-64", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
 	if !data.BpduguardEnable.IsNull() && !data.BpduguardEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", data.getPath()))
 	}
@@ -3465,6 +3624,9 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab/eap", data.getPath()))
 	}
 
+	if !data.IpNbarProtocolDiscovery.IsNull() && !data.IpNbarProtocolDiscovery.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -3472,6 +3634,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.MediaType.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/media-type", data.getPath()))
+	}
+	if !data.Mtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu", data.getPath()))
 	}
 	if !data.Bandwidth.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bandwidth/kilobits", data.getPath()))
@@ -3627,6 +3792,11 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv6FlowMonitors {
+		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.ArpTimeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
@@ -3806,6 +3976,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.LoggingEventLinkStatusEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/event/link-status-enable", data.getPath()))
+	}
+	if !data.IpNbarProtocolDiscovery.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", data.getPath()))
 	}
 	return deletePaths
 }

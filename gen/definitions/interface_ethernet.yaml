@@ -28,6 +28,8 @@ attributes:
   - yang_name: media-type
     exclude_test: true
     example: sfp
+  - yang_name: mtu
+    example: 1500
   - yang_name: bandwidth/kilobits
     tf_name: bandwidth
     example: 1000000
@@ -219,6 +221,17 @@ attributes:
         example: 2001:DB8::/32
       - yang_name: eui-64
         example: true
+  - yang_name: ipv6/Cisco-IOS-XE-flow:flow/monitor-new
+    tf_name: ipv6_flow_monitors
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: MON1
+      - yang_name: direction
+        id: true
+        example: input
   - yang_name: arp/timeout
     example: 300
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
@@ -443,6 +456,9 @@ attributes:
     example: false
   - yang_name: logging/event/link-status-enable
     example: false
+  - yang_name: ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery
+    example: true
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

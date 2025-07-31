@@ -94,6 +94,13 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					stringvalidator.OneOf("auto-select", "rj45", "sfp"),
 				},
 			},
+			"mtu": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the interface Maximum Transmission Unit (MTU)").AddIntegerRangeDescription(64, 18000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(64, 18000),
+				},
+			},
 			"bandwidth": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 200000000).String,
 				Optional:            true,
@@ -389,6 +396,25 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 						"eui_64": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use eui-64 interface identifier").String,
 							Optional:            true,
+						},
+					},
+				},
+			},
+			"ipv6_flow_monitors": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Apply a Flow Monitor").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("User defined").String,
+							Required:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("input", "output").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("input", "output"),
+							},
 						},
 					},
 				},
@@ -696,6 +722,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"logging_event_link_status_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("UPDOWN and CHANGE messages").String,
+				Optional:            true,
+			},
+			"ip_nbar_protocol_discovery": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable protocol discovery for both ipv4 and ipv6").String,
 				Optional:            true,
 			},
 		},

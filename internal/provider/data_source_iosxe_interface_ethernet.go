@@ -74,6 +74,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Media type",
 				Computed:            true,
 			},
+			"mtu": schema.Int64Attribute{
+				MarkdownDescription: "Set the interface Maximum Transmission Unit (MTU)",
+				Computed:            true,
+			},
 			"bandwidth": schema.Int64Attribute{
 				MarkdownDescription: "",
 				Computed:            true,
@@ -317,6 +321,22 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 						},
 						"eui_64": schema.BoolAttribute{
 							MarkdownDescription: "Use eui-64 interface identifier",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_flow_monitors": schema.ListNestedAttribute{
+				MarkdownDescription: "Apply a Flow Monitor",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "User defined",
+							Computed:            true,
+						},
+						"direction": schema.StringAttribute{
+							MarkdownDescription: "",
 							Computed:            true,
 						},
 					},
@@ -568,6 +588,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 			},
 			"logging_event_link_status_enable": schema.BoolAttribute{
 				MarkdownDescription: "UPDOWN and CHANGE messages",
+				Computed:            true,
+			},
+			"ip_nbar_protocol_discovery": schema.BoolAttribute{
+				MarkdownDescription: "Enable protocol discovery for both ipv4 and ipv6",
 				Computed:            true,
 			},
 		},

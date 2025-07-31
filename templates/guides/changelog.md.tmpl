@@ -15,6 +15,7 @@ description: |-
 - Add `recovery_cause_oam_remote_failure`, `recovery_cause_mrp_miscabling` attributes to `iosxe_errdisable` resource and data source
 - Add `enable_traps_mvpn`, `enable_traps_lisp`, `enable_traps_mpls`, `enable_traps_mpls_rfc` attributes to `iosxe_snmp_server` resource and data source
 - Add `anycast_gateway_mac_auto` attribute to `iosxe_evpn` resource and data source
+- Add `mtu`, `ipv6_flow_monitors`, `ip_nbar_protocol_discovery` attributes to `iosxe_interface_ethernet` resource and data source
 
 ## 0.6.0
 
