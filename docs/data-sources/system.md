@@ -71,6 +71,16 @@ data "iosxe_system" "example" {
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
 - `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
 - `ip_name_servers_vrf` (Attributes List) (see [below for nested schema](#nestedatt--ip_name_servers_vrf))
+- `ip_radius_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `ip_radius_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `ip_radius_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `ip_radius_source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `ip_radius_source_interface_loopback` (Number) Loopback interface
+- `ip_radius_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `ip_radius_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `ip_radius_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `ip_radius_source_interface_vlan` (Number) Iosxr Vlans
+- `ip_radius_source_interface_vrf` (String) VPN Routing/Forwarding parameters
 - `ip_routing` (Boolean) Enable or disable IP routing
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
 - `ip_source_route` (Boolean) Process packets with source routing header options
@@ -84,6 +94,16 @@ data "iosxe_system" "example" {
 - `ip_ssh_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
 - `ip_ssh_source_interface_vlan` (Number) Iosxr Vlans
 - `ip_ssh_version` (String) Specify protocol version supported
+- `ip_tacacs_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `ip_tacacs_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `ip_tacacs_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `ip_tacacs_source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `ip_tacacs_source_interface_loopback` (Number) Loopback interface
+- `ip_tacacs_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `ip_tacacs_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `ip_tacacs_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `ip_tacacs_source_interface_vlan` (Number) Iosxr Vlans
+- `ip_tacacs_source_interface_vrf` (String) VPN Routing/Forwarding parameters
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
 - `login_delay` (Number) Set delay between successive fail login
 - `login_on_failure` (Boolean) Set options for failed login attempt

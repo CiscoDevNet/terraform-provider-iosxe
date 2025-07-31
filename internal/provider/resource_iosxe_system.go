@@ -475,6 +475,98 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
+			"ip_tacacs_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483647),
+				},
+			},
+			"ip_tacacs_source_interface_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Iosxr Vlans").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"ip_tacacs_source_interface_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
+				Optional:            true,
+			},
+			"ip_tacacs_source_interface_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Two GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_tacacs_source_interface_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_tacacs_source_interface_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ten Gigabit Ethernet").String,
+				Optional:            true,
+			},
+			"ip_tacacs_source_interface_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Twenty Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_tacacs_source_interface_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_tacacs_source_interface_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
+				Optional:            true,
+			},
+			"ip_tacacs_source_interface_vrf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("VPN Routing/Forwarding parameters").String,
+				Optional:            true,
+			},
+			"ip_radius_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483647),
+				},
+			},
+			"ip_radius_source_interface_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Iosxr Vlans").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"ip_radius_source_interface_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
+				Optional:            true,
+			},
+			"ip_radius_source_interface_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Two GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_radius_source_interface_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_radius_source_interface_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ten Gigabit Ethernet").String,
+				Optional:            true,
+			},
+			"ip_radius_source_interface_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Twenty Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_radius_source_interface_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_radius_source_interface_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
+				Optional:            true,
+			},
+			"ip_radius_source_interface_vrf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("VPN Routing/Forwarding parameters").String,
+				Optional:            true,
+			},
 		},
 	}
 }

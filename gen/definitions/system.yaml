@@ -292,6 +292,103 @@ attributes:
         example: 1.1.1.1
       - yang_name: transport/https/ipv4/port
         example: 443
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/Loopback/Loopback
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Loopback
+    tf_name: ip_tacacs_source_interface_loopback
+    example: 0
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/Vlan/Vlan
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Vlan
+    tf_name: ip_tacacs_source_interface_vlan
+    example: 500
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/GigabitEthernet
+    tf_name: ip_tacacs_source_interface_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwoGigabitEthernet
+    tf_name: ip_tacacs_source_interface_two_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FiveGigabitEthernet
+    tf_name: ip_tacacs_source_interface_five_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TenGigabitEthernet
+    tf_name: ip_tacacs_source_interface_ten_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/TwentyFiveGigE/TwentyFiveGigE
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwentyFiveGigE
+    tf_name: ip_tacacs_source_interface_twenty_five_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FortyGigabitEthernet
+    tf_name: ip_tacacs_source_interface_forty_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/interface-choice/HundredGigE/HundredGigE
+    xpath: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/HundredGigE
+    tf_name: ip_tacacs_source_interface_hundred_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:tacacs/source-interface/vrf
+    example: VRF1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/Loopback/Loopback
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/Loopback
+    tf_name: ip_radius_source_interface_loopback
+    example: 0
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/Vlan/Vlan
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/Vlan
+    tf_name: ip_radius_source_interface_vlan
+    example: 500
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/GigabitEthernet
+    tf_name: ip_radius_source_interface_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/TwoGigabitEthernet
+    tf_name: ip_radius_source_interface_two_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/FiveGigabitEthernet
+    tf_name: ip_radius_source_interface_five_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/TenGigabitEthernet
+    tf_name: ip_radius_source_interface_ten_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/TwentyFiveGigE/TwentyFiveGigE
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/TwentyFiveGigE
+    tf_name: ip_radius_source_interface_twenty_five_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/FortyGigabitEthernet
+    tf_name: ip_radius_source_interface_forty_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/interface-choice/HundredGigE/HundredGigE
+    xpath: ip/Cisco-IOS-XE-aaa:radius/source-interface/HundredGigE
+    tf_name: ip_radius_source_interface_hundred_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/Cisco-IOS-XE-aaa:radius/source-interface/vrf
+    tf_name: ip_radius_source_interface_vrf
+    example: VRF1
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
