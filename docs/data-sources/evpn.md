@@ -26,6 +26,7 @@ data "iosxe_evpn" "example" {
 
 ### Read-Only
 
+- `anycast_gateway_mac_auto` (Boolean) Enable Auto Anycast Gateway MAC
 - `default_gateway_advertise` (Boolean) Advertise Default Gateway MAC/IP routes
 - `id` (String) The path of the retrieved object.
 - `ip_duplication_limit` (Number) Number of IP moves within specified time interval

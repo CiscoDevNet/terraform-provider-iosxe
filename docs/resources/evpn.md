@@ -26,6 +26,7 @@ resource "iosxe_evpn" "example" {
   default_gateway_advertise = true
   logging_peer_state        = true
   route_target_auto_vni     = true
+  anycast_gateway_mac_auto  = true
 }
 ```
 
@@ -34,6 +35,7 @@ resource "iosxe_evpn" "example" {
 
 ### Optional
 
+- `anycast_gateway_mac_auto` (Boolean) Enable Auto Anycast Gateway MAC
 - `default_gateway_advertise` (Boolean) Advertise Default Gateway MAC/IP routes
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`

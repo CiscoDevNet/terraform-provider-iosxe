@@ -136,6 +136,10 @@ func (r *EVPNResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: helpers.NewAttributeDescription("Set vni-based route-target").String,
 				Optional:            true,
 			},
+			"anycast_gateway_mac_auto": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Auto Anycast Gateway MAC").String,
+				Optional:            true,
+			},
 		},
 	}
 }

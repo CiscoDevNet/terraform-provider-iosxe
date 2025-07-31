@@ -14,6 +14,7 @@ description: |-
 - Add `ip_domain_lookup_source_interface_x` attributes to `iosxe_system` resource and data source
 - Add `recovery_cause_oam_remote_failure`, `recovery_cause_mrp_miscabling` attributes to `iosxe_errdisable` resource and data source
 - Add `enable_traps_mvpn`, `enable_traps_lisp`, `enable_traps_mpls`, `enable_traps_mpls_rfc` attributes to `iosxe_snmp_server` resource and data source
+- Add `anycast_gateway_mac_auto` attribute to `iosxe_evpn` resource and data source
 
 ## 0.6.0
 

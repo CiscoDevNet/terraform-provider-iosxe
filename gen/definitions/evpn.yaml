@@ -42,3 +42,5 @@ attributes:
     example: true
   - yang_name: route-target/auto/vni
     example: true
+  - yang_name: anycast-gateway/mac/auto
+    example: true

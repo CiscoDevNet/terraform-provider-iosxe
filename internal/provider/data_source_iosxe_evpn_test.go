@@ -43,6 +43,7 @@ func TestAccDataSourceIosxeEVPN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn.test", "default_gateway_advertise", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn.test", "logging_peer_state", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn.test", "route_target_auto_vni", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn.test", "anycast_gateway_mac_auto", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -70,6 +71,7 @@ func testAccDataSourceIosxeEVPNConfig() string {
 	config += `	default_gateway_advertise = true` + "\n"
 	config += `	logging_peer_state = true` + "\n"
 	config += `	route_target_auto_vni = true` + "\n"
+	config += `	anycast_gateway_mac_auto = true` + "\n"
 	config += `}` + "\n"
 
 	config += `

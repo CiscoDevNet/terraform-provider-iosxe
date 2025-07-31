@@ -11,4 +11,5 @@ resource "iosxe_evpn" "example" {
   default_gateway_advertise = true
   logging_peer_state        = true
   route_target_auto_vni     = true
+  anycast_gateway_mac_auto  = true
 }

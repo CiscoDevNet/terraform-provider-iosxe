@@ -47,6 +47,7 @@ type EVPN struct {
 	DefaultGatewayAdvertise types.Bool   `tfsdk:"default_gateway_advertise"`
 	LoggingPeerState        types.Bool   `tfsdk:"logging_peer_state"`
 	RouteTargetAutoVni      types.Bool   `tfsdk:"route_target_auto_vni"`
+	AnycastGatewayMacAuto   types.Bool   `tfsdk:"anycast_gateway_mac_auto"`
 }
 
 type EVPNData struct {
@@ -64,6 +65,7 @@ type EVPNData struct {
 	DefaultGatewayAdvertise types.Bool   `tfsdk:"default_gateway_advertise"`
 	LoggingPeerState        types.Bool   `tfsdk:"logging_peer_state"`
 	RouteTargetAutoVni      types.Bool   `tfsdk:"route_target_auto_vni"`
+	AnycastGatewayMacAuto   types.Bool   `tfsdk:"anycast_gateway_mac_auto"`
 }
 
 func (data EVPN) getPath() string {
@@ -135,6 +137,11 @@ func (data EVPN) toBody(ctx context.Context) string {
 	if !data.RouteTargetAutoVni.IsNull() && !data.RouteTargetAutoVni.IsUnknown() {
 		if data.RouteTargetAutoVni.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-target.auto.vni", map[string]string{})
+		}
+	}
+	if !data.AnycastGatewayMacAuto.IsNull() && !data.AnycastGatewayMacAuto.IsUnknown() {
+		if data.AnycastGatewayMacAuto.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"anycast-gateway.mac.auto", map[string]string{})
 		}
 	}
 	return body
@@ -233,6 +240,15 @@ func (data *EVPN) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.RouteTargetAutoVni = types.BoolNull()
 	}
+	if value := res.Get(prefix + "anycast-gateway.mac.auto"); !data.AnycastGatewayMacAuto.IsNull() {
+		if value.Exists() {
+			data.AnycastGatewayMacAuto = types.BoolValue(true)
+		} else {
+			data.AnycastGatewayMacAuto = types.BoolValue(false)
+		}
+	} else {
+		data.AnycastGatewayMacAuto = types.BoolNull()
+	}
 }
 
 func (data *EVPN) fromBody(ctx context.Context, res gjson.Result) {
@@ -289,6 +305,11 @@ func (data *EVPN) fromBody(ctx context.Context, res gjson.Result) {
 		data.RouteTargetAutoVni = types.BoolValue(true)
 	} else {
 		data.RouteTargetAutoVni = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "anycast-gateway.mac.auto"); value.Exists() {
+		data.AnycastGatewayMacAuto = types.BoolValue(true)
+	} else {
+		data.AnycastGatewayMacAuto = types.BoolValue(false)
 	}
 }
 
@@ -347,6 +368,11 @@ func (data *EVPNData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.RouteTargetAutoVni = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "anycast-gateway.mac.auto"); value.Exists() {
+		data.AnycastGatewayMacAuto = types.BoolValue(true)
+	} else {
+		data.AnycastGatewayMacAuto = types.BoolValue(false)
+	}
 }
 
 func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
@@ -387,6 +413,9 @@ func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 	if !state.RouteTargetAutoVni.IsNull() && data.RouteTargetAutoVni.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-target/auto/vni", state.getPath()))
 	}
+	if !state.AnycastGatewayMacAuto.IsNull() && data.AnycastGatewayMacAuto.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/anycast-gateway/mac/auto", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -412,6 +441,9 @@ func (data *EVPN) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.RouteTargetAutoVni.IsNull() && !data.RouteTargetAutoVni.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-target/auto/vni", data.getPath()))
+	}
+	if !data.AnycastGatewayMacAuto.IsNull() && !data.AnycastGatewayMacAuto.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/anycast-gateway/mac/auto", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -453,6 +485,9 @@ func (data *EVPN) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.RouteTargetAutoVni.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-target/auto/vni", data.getPath()))
+	}
+	if !data.AnycastGatewayMacAuto.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/anycast-gateway/mac/auto", data.getPath()))
 	}
 	return deletePaths
 }
