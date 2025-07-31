@@ -475,6 +475,48 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
+			"boot_system_flash_files": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"path": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"boot_system_bootfiles": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"path": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("WORD - TFTP filename or URL").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"enable_secret": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_secret_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "4", "5", "8", "9").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("0", "4", "5", "8", "9"),
+				},
+			},
+			"enable_secret_level": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set exec level password").AddIntegerRangeDescription(0, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 255),
+				},
+			},
 		},
 	}
 }
