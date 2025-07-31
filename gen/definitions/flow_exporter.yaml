@@ -19,3 +19,21 @@ attributes:
     example: 655
   - yang_name: template/data/timeout
     example: 60
+  - yang_name: export-protocol
+    example: ipfix
+    exclude_test: true
+  - yang_name: option/interface-table/timeout
+    example: 300
+    exclude_test: true
+  - yang_name: option/vrf-table/timeout
+    example: 300
+    exclude_test: true
+  - yang_name: option/sampler-table
+    example: true
+    exclude_test: true
+  - yang_name: option/application-table/timeout
+    example: 300
+    exclude_test: true
+  - yang_name: option/application-attributes/timeout
+    example: 300
+    exclude_test: true

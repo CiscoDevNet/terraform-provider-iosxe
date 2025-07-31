@@ -86,6 +86,30 @@ func (d *FlowExporterDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Resend data based on a timeout",
 				Computed:            true,
 			},
+			"export_protocol": schema.StringAttribute{
+				MarkdownDescription: "Export protocol version",
+				Computed:            true,
+			},
+			"option_interface_table_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Option resend time",
+				Computed:            true,
+			},
+			"option_vrf_table_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Option resend time",
+				Computed:            true,
+			},
+			"option_sampler_table": schema.BoolAttribute{
+				MarkdownDescription: "Export Sampler Option",
+				Computed:            true,
+			},
+			"option_application_table_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Option resend time",
+				Computed:            true,
+			},
+			"option_application_attributes_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Option resend time",
+				Computed:            true,
+			},
 		},
 	}
 }

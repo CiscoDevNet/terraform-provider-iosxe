@@ -113,6 +113,45 @@ func (r *FlowExporterResource) Schema(ctx context.Context, req resource.SchemaRe
 					int64validator.Between(1, 86400),
 				},
 			},
+			"export_protocol": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Export protocol version").AddStringEnumDescription("ipfix", "netflow-v5", "netflow-v9").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("ipfix", "netflow-v5", "netflow-v9"),
+				},
+			},
+			"option_interface_table_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Option resend time").AddIntegerRangeDescription(1, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 86400),
+				},
+			},
+			"option_vrf_table_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Option resend time").AddIntegerRangeDescription(1, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 86400),
+				},
+			},
+			"option_sampler_table": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Export Sampler Option").String,
+				Optional:            true,
+			},
+			"option_application_table_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Option resend time").AddIntegerRangeDescription(1, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 86400),
+				},
+			},
+			"option_application_attributes_timeout": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Option resend time").AddIntegerRangeDescription(1, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 86400),
+				},
+			},
 		},
 	}
 }

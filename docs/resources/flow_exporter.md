@@ -37,6 +37,17 @@ resource "iosxe_flow_exporter" "example" {
 - `description` (String) Provide a description for this Flow Exporter
 - `destination_ip` (String)
 - `device` (String) A device name from the provider configuration.
+- `export_protocol` (String) Export protocol version
+  - Choices: `ipfix`, `netflow-v5`, `netflow-v9`
+- `option_application_attributes_timeout` (Number) Option resend time
+  - Range: `1`-`86400`
+- `option_application_table_timeout` (Number) Option resend time
+  - Range: `1`-`86400`
+- `option_interface_table_timeout` (Number) Option resend time
+  - Range: `1`-`86400`
+- `option_sampler_table` (Boolean) Export Sampler Option
+- `option_vrf_table_timeout` (Number) Option resend time
+  - Range: `1`-`86400`
 - `source_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 - `template_data_timeout` (Number) Resend data based on a timeout

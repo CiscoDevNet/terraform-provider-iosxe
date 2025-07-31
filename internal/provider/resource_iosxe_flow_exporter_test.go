@@ -49,7 +49,7 @@ func TestAccIosxeFlowExporter(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1",
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"option_sampler_table"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

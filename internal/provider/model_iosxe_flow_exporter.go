@@ -34,26 +34,38 @@ import (
 )
 
 type FlowExporter struct {
-	Device              types.String `tfsdk:"device"`
-	Id                  types.String `tfsdk:"id"`
-	DeleteMode          types.String `tfsdk:"delete_mode"`
-	Name                types.String `tfsdk:"name"`
-	Description         types.String `tfsdk:"description"`
-	DestinationIp       types.String `tfsdk:"destination_ip"`
-	SourceLoopback      types.Int64  `tfsdk:"source_loopback"`
-	TransportUdp        types.Int64  `tfsdk:"transport_udp"`
-	TemplateDataTimeout types.Int64  `tfsdk:"template_data_timeout"`
+	Device                             types.String `tfsdk:"device"`
+	Id                                 types.String `tfsdk:"id"`
+	DeleteMode                         types.String `tfsdk:"delete_mode"`
+	Name                               types.String `tfsdk:"name"`
+	Description                        types.String `tfsdk:"description"`
+	DestinationIp                      types.String `tfsdk:"destination_ip"`
+	SourceLoopback                     types.Int64  `tfsdk:"source_loopback"`
+	TransportUdp                       types.Int64  `tfsdk:"transport_udp"`
+	TemplateDataTimeout                types.Int64  `tfsdk:"template_data_timeout"`
+	ExportProtocol                     types.String `tfsdk:"export_protocol"`
+	OptionInterfaceTableTimeout        types.Int64  `tfsdk:"option_interface_table_timeout"`
+	OptionVrfTableTimeout              types.Int64  `tfsdk:"option_vrf_table_timeout"`
+	OptionSamplerTable                 types.Bool   `tfsdk:"option_sampler_table"`
+	OptionApplicationTableTimeout      types.Int64  `tfsdk:"option_application_table_timeout"`
+	OptionApplicationAttributesTimeout types.Int64  `tfsdk:"option_application_attributes_timeout"`
 }
 
 type FlowExporterData struct {
-	Device              types.String `tfsdk:"device"`
-	Id                  types.String `tfsdk:"id"`
-	Name                types.String `tfsdk:"name"`
-	Description         types.String `tfsdk:"description"`
-	DestinationIp       types.String `tfsdk:"destination_ip"`
-	SourceLoopback      types.Int64  `tfsdk:"source_loopback"`
-	TransportUdp        types.Int64  `tfsdk:"transport_udp"`
-	TemplateDataTimeout types.Int64  `tfsdk:"template_data_timeout"`
+	Device                             types.String `tfsdk:"device"`
+	Id                                 types.String `tfsdk:"id"`
+	Name                               types.String `tfsdk:"name"`
+	Description                        types.String `tfsdk:"description"`
+	DestinationIp                      types.String `tfsdk:"destination_ip"`
+	SourceLoopback                     types.Int64  `tfsdk:"source_loopback"`
+	TransportUdp                       types.Int64  `tfsdk:"transport_udp"`
+	TemplateDataTimeout                types.Int64  `tfsdk:"template_data_timeout"`
+	ExportProtocol                     types.String `tfsdk:"export_protocol"`
+	OptionInterfaceTableTimeout        types.Int64  `tfsdk:"option_interface_table_timeout"`
+	OptionVrfTableTimeout              types.Int64  `tfsdk:"option_vrf_table_timeout"`
+	OptionSamplerTable                 types.Bool   `tfsdk:"option_sampler_table"`
+	OptionApplicationTableTimeout      types.Int64  `tfsdk:"option_application_table_timeout"`
+	OptionApplicationAttributesTimeout types.Int64  `tfsdk:"option_application_attributes_timeout"`
 }
 
 func (data FlowExporter) getPath() string {
@@ -95,6 +107,26 @@ func (data FlowExporter) toBody(ctx context.Context) string {
 	if !data.TemplateDataTimeout.IsNull() && !data.TemplateDataTimeout.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"template.data.timeout", strconv.FormatInt(data.TemplateDataTimeout.ValueInt64(), 10))
 	}
+	if !data.ExportProtocol.IsNull() && !data.ExportProtocol.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"export-protocol", data.ExportProtocol.ValueString())
+	}
+	if !data.OptionInterfaceTableTimeout.IsNull() && !data.OptionInterfaceTableTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"option.interface-table.timeout", strconv.FormatInt(data.OptionInterfaceTableTimeout.ValueInt64(), 10))
+	}
+	if !data.OptionVrfTableTimeout.IsNull() && !data.OptionVrfTableTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"option.vrf-table.timeout", strconv.FormatInt(data.OptionVrfTableTimeout.ValueInt64(), 10))
+	}
+	if !data.OptionSamplerTable.IsNull() && !data.OptionSamplerTable.IsUnknown() {
+		if data.OptionSamplerTable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"option.sampler-table", map[string]string{})
+		}
+	}
+	if !data.OptionApplicationTableTimeout.IsNull() && !data.OptionApplicationTableTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"option.application-table.timeout", strconv.FormatInt(data.OptionApplicationTableTimeout.ValueInt64(), 10))
+	}
+	if !data.OptionApplicationAttributesTimeout.IsNull() && !data.OptionApplicationAttributesTimeout.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"option.application-attributes.timeout", strconv.FormatInt(data.OptionApplicationAttributesTimeout.ValueInt64(), 10))
+	}
 	return body
 }
 
@@ -133,6 +165,40 @@ func (data *FlowExporter) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.TemplateDataTimeout = types.Int64Null()
 	}
+	if value := res.Get(prefix + "export-protocol"); value.Exists() && !data.ExportProtocol.IsNull() {
+		data.ExportProtocol = types.StringValue(value.String())
+	} else {
+		data.ExportProtocol = types.StringNull()
+	}
+	if value := res.Get(prefix + "option.interface-table.timeout"); value.Exists() && !data.OptionInterfaceTableTimeout.IsNull() {
+		data.OptionInterfaceTableTimeout = types.Int64Value(value.Int())
+	} else {
+		data.OptionInterfaceTableTimeout = types.Int64Null()
+	}
+	if value := res.Get(prefix + "option.vrf-table.timeout"); value.Exists() && !data.OptionVrfTableTimeout.IsNull() {
+		data.OptionVrfTableTimeout = types.Int64Value(value.Int())
+	} else {
+		data.OptionVrfTableTimeout = types.Int64Null()
+	}
+	if value := res.Get(prefix + "option.sampler-table"); !data.OptionSamplerTable.IsNull() {
+		if value.Exists() {
+			data.OptionSamplerTable = types.BoolValue(true)
+		} else {
+			data.OptionSamplerTable = types.BoolValue(false)
+		}
+	} else {
+		data.OptionSamplerTable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "option.application-table.timeout"); value.Exists() && !data.OptionApplicationTableTimeout.IsNull() {
+		data.OptionApplicationTableTimeout = types.Int64Value(value.Int())
+	} else {
+		data.OptionApplicationTableTimeout = types.Int64Null()
+	}
+	if value := res.Get(prefix + "option.application-attributes.timeout"); value.Exists() && !data.OptionApplicationAttributesTimeout.IsNull() {
+		data.OptionApplicationAttributesTimeout = types.Int64Value(value.Int())
+	} else {
+		data.OptionApplicationAttributesTimeout = types.Int64Null()
+	}
 }
 
 func (data *FlowExporter) fromBody(ctx context.Context, res gjson.Result) {
@@ -154,6 +220,26 @@ func (data *FlowExporter) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "template.data.timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "export-protocol"); value.Exists() {
+		data.ExportProtocol = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "option.interface-table.timeout"); value.Exists() {
+		data.OptionInterfaceTableTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "option.vrf-table.timeout"); value.Exists() {
+		data.OptionVrfTableTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "option.sampler-table"); value.Exists() {
+		data.OptionSamplerTable = types.BoolValue(true)
+	} else {
+		data.OptionSamplerTable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "option.application-table.timeout"); value.Exists() {
+		data.OptionApplicationTableTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "option.application-attributes.timeout"); value.Exists() {
+		data.OptionApplicationAttributesTimeout = types.Int64Value(value.Int())
 	}
 }
 
@@ -177,6 +263,26 @@ func (data *FlowExporterData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "template.data.timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "export-protocol"); value.Exists() {
+		data.ExportProtocol = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "option.interface-table.timeout"); value.Exists() {
+		data.OptionInterfaceTableTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "option.vrf-table.timeout"); value.Exists() {
+		data.OptionVrfTableTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "option.sampler-table"); value.Exists() {
+		data.OptionSamplerTable = types.BoolValue(true)
+	} else {
+		data.OptionSamplerTable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "option.application-table.timeout"); value.Exists() {
+		data.OptionApplicationTableTimeout = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "option.application-attributes.timeout"); value.Exists() {
+		data.OptionApplicationAttributesTimeout = types.Int64Value(value.Int())
+	}
 }
 
 func (data *FlowExporter) getDeletedItems(ctx context.Context, state FlowExporter) []string {
@@ -196,11 +302,32 @@ func (data *FlowExporter) getDeletedItems(ctx context.Context, state FlowExporte
 	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/template/data/timeout", state.getPath()))
 	}
+	if !state.ExportProtocol.IsNull() && data.ExportProtocol.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/export-protocol", state.getPath()))
+	}
+	if !state.OptionInterfaceTableTimeout.IsNull() && data.OptionInterfaceTableTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/interface-table/timeout", state.getPath()))
+	}
+	if !state.OptionVrfTableTimeout.IsNull() && data.OptionVrfTableTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/vrf-table/timeout", state.getPath()))
+	}
+	if !state.OptionSamplerTable.IsNull() && data.OptionSamplerTable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/sampler-table", state.getPath()))
+	}
+	if !state.OptionApplicationTableTimeout.IsNull() && data.OptionApplicationTableTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/application-table/timeout", state.getPath()))
+	}
+	if !state.OptionApplicationAttributesTimeout.IsNull() && data.OptionApplicationAttributesTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/application-attributes/timeout", state.getPath()))
+	}
 	return deletedItems
 }
 
 func (data *FlowExporter) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.OptionSamplerTable.IsNull() && !data.OptionSamplerTable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/option/sampler-table", data.getPath()))
+	}
 	return emptyLeafsDelete
 }
 
@@ -220,6 +347,24 @@ func (data *FlowExporter) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.TemplateDataTimeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/template/data/timeout", data.getPath()))
+	}
+	if !data.ExportProtocol.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/export-protocol", data.getPath()))
+	}
+	if !data.OptionInterfaceTableTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/interface-table/timeout", data.getPath()))
+	}
+	if !data.OptionVrfTableTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/vrf-table/timeout", data.getPath()))
+	}
+	if !data.OptionSamplerTable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/sampler-table", data.getPath()))
+	}
+	if !data.OptionApplicationTableTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/application-table/timeout", data.getPath()))
+	}
+	if !data.OptionApplicationAttributesTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/application-attributes/timeout", data.getPath()))
 	}
 	return deletePaths
 }
