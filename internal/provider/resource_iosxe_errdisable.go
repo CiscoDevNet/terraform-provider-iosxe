@@ -298,6 +298,14 @@ func (r *ErrdisableResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Enable timer to recover from loop detect error").String,
 				Optional:            true,
 			},
+			"recovery_cause_oam_remote_failure": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"recovery_cause_mrp_miscabling": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable timer to recover from mrp miscabling disable state").String,
+				Optional:            true,
+			},
 		},
 	}
 }

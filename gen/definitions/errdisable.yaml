@@ -136,3 +136,9 @@ attributes:
     exclude_test: true
   - yang_name: recovery/cause/loopdetect
     example: true
+  - yang_name: recovery/cause/oam-remote-failure
+    example: true
+    exclude_test: true
+  - yang_name: recovery/cause/mrp-miscabling
+    example: true
+    exclude_test: true

@@ -266,6 +266,14 @@ func (d *ErrdisableDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Enable timer to recover from loop detect error",
 				Computed:            true,
 			},
+			"recovery_cause_oam_remote_failure": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"recovery_cause_mrp_miscabling": schema.BoolAttribute{
+				MarkdownDescription: "Enable timer to recover from mrp miscabling disable state",
+				Computed:            true,
+			},
 		},
 	}
 }

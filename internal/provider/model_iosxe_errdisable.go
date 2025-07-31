@@ -86,6 +86,8 @@ type Errdisable struct {
 	RecoveryCauseUnicastFlood                types.Bool   `tfsdk:"recovery_cause_unicast_flood"`
 	RecoveryCauseVmps                        types.Bool   `tfsdk:"recovery_cause_vmps"`
 	RecoveryCauseLoopdetect                  types.Bool   `tfsdk:"recovery_cause_loopdetect"`
+	RecoveryCauseOamRemoteFailure            types.Bool   `tfsdk:"recovery_cause_oam_remote_failure"`
+	RecoveryCauseMrpMiscabling               types.Bool   `tfsdk:"recovery_cause_mrp_miscabling"`
 }
 
 type ErrdisableData struct {
@@ -142,6 +144,8 @@ type ErrdisableData struct {
 	RecoveryCauseUnicastFlood                types.Bool   `tfsdk:"recovery_cause_unicast_flood"`
 	RecoveryCauseVmps                        types.Bool   `tfsdk:"recovery_cause_vmps"`
 	RecoveryCauseLoopdetect                  types.Bool   `tfsdk:"recovery_cause_loopdetect"`
+	RecoveryCauseOamRemoteFailure            types.Bool   `tfsdk:"recovery_cause_oam_remote_failure"`
+	RecoveryCauseMrpMiscabling               types.Bool   `tfsdk:"recovery_cause_mrp_miscabling"`
 }
 
 func (data Errdisable) getPath() string {
@@ -402,6 +406,16 @@ func (data Errdisable) toBody(ctx context.Context) string {
 	if !data.RecoveryCauseLoopdetect.IsNull() && !data.RecoveryCauseLoopdetect.IsUnknown() {
 		if data.RecoveryCauseLoopdetect.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"recovery.cause.loopdetect", map[string]string{})
+		}
+	}
+	if !data.RecoveryCauseOamRemoteFailure.IsNull() && !data.RecoveryCauseOamRemoteFailure.IsUnknown() {
+		if data.RecoveryCauseOamRemoteFailure.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"recovery.cause.oam-remote-failure", map[string]string{})
+		}
+	}
+	if !data.RecoveryCauseMrpMiscabling.IsNull() && !data.RecoveryCauseMrpMiscabling.IsUnknown() {
+		if data.RecoveryCauseMrpMiscabling.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"recovery.cause.mrp-miscabling", map[string]string{})
 		}
 	}
 	return body
@@ -841,6 +855,24 @@ func (data *Errdisable) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.RecoveryCauseLoopdetect = types.BoolNull()
 	}
+	if value := res.Get(prefix + "recovery.cause.oam-remote-failure"); !data.RecoveryCauseOamRemoteFailure.IsNull() {
+		if value.Exists() {
+			data.RecoveryCauseOamRemoteFailure = types.BoolValue(true)
+		} else {
+			data.RecoveryCauseOamRemoteFailure = types.BoolValue(false)
+		}
+	} else {
+		data.RecoveryCauseOamRemoteFailure = types.BoolNull()
+	}
+	if value := res.Get(prefix + "recovery.cause.mrp-miscabling"); !data.RecoveryCauseMrpMiscabling.IsNull() {
+		if value.Exists() {
+			data.RecoveryCauseMrpMiscabling = types.BoolValue(true)
+		} else {
+			data.RecoveryCauseMrpMiscabling = types.BoolValue(false)
+		}
+	} else {
+		data.RecoveryCauseMrpMiscabling = types.BoolNull()
+	}
 }
 
 func (data *Errdisable) fromBody(ctx context.Context, res gjson.Result) {
@@ -1088,6 +1120,16 @@ func (data *Errdisable) fromBody(ctx context.Context, res gjson.Result) {
 		data.RecoveryCauseLoopdetect = types.BoolValue(true)
 	} else {
 		data.RecoveryCauseLoopdetect = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.oam-remote-failure"); value.Exists() {
+		data.RecoveryCauseOamRemoteFailure = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseOamRemoteFailure = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.mrp-miscabling"); value.Exists() {
+		data.RecoveryCauseMrpMiscabling = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseMrpMiscabling = types.BoolValue(false)
 	}
 }
 
@@ -1337,6 +1379,16 @@ func (data *ErrdisableData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.RecoveryCauseLoopdetect = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "recovery.cause.oam-remote-failure"); value.Exists() {
+		data.RecoveryCauseOamRemoteFailure = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseOamRemoteFailure = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "recovery.cause.mrp-miscabling"); value.Exists() {
+		data.RecoveryCauseMrpMiscabling = types.BoolValue(true)
+	} else {
+		data.RecoveryCauseMrpMiscabling = types.BoolValue(false)
+	}
 }
 
 func (data *Errdisable) getDeletedItems(ctx context.Context, state Errdisable) []string {
@@ -1494,6 +1546,12 @@ func (data *Errdisable) getDeletedItems(ctx context.Context, state Errdisable) [
 	if !state.RecoveryCauseLoopdetect.IsNull() && data.RecoveryCauseLoopdetect.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/loopdetect", state.getPath()))
 	}
+	if !state.RecoveryCauseOamRemoteFailure.IsNull() && data.RecoveryCauseOamRemoteFailure.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/oam-remote-failure", state.getPath()))
+	}
+	if !state.RecoveryCauseMrpMiscabling.IsNull() && data.RecoveryCauseMrpMiscabling.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/recovery/cause/mrp-miscabling", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -1627,6 +1685,12 @@ func (data *Errdisable) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.RecoveryCauseLoopdetect.IsNull() && !data.RecoveryCauseLoopdetect.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/recovery/cause/loopdetect", data.getPath()))
+	}
+	if !data.RecoveryCauseOamRemoteFailure.IsNull() && !data.RecoveryCauseOamRemoteFailure.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/recovery/cause/oam-remote-failure", data.getPath()))
+	}
+	if !data.RecoveryCauseMrpMiscabling.IsNull() && !data.RecoveryCauseMrpMiscabling.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/recovery/cause/mrp-miscabling", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -1785,6 +1849,12 @@ func (data *Errdisable) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.RecoveryCauseLoopdetect.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/recovery/cause/loopdetect", data.getPath()))
+	}
+	if !data.RecoveryCauseOamRemoteFailure.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/recovery/cause/oam-remote-failure", data.getPath()))
+	}
+	if !data.RecoveryCauseMrpMiscabling.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/recovery/cause/mrp-miscabling", data.getPath()))
 	}
 	return deletePaths
 }

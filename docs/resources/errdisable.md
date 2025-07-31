@@ -95,6 +95,8 @@ resource "iosxe_errdisable" "example" {
 - `recovery_cause_loopdetect` (Boolean) Enable timer to recover from loop detect error
 - `recovery_cause_mac_limit` (Boolean) Enable timer to recover from mac limit disable state
 - `recovery_cause_mlacp_minlink` (Boolean)
+- `recovery_cause_mrp_miscabling` (Boolean) Enable timer to recover from mrp miscabling disable state
+- `recovery_cause_oam_remote_failure` (Boolean)
 - `recovery_cause_pagp_flap` (Boolean) Enable timer to recover from pagp-flap error
 - `recovery_cause_port_mode_failure` (Boolean) Enable timer to recover from port mode change failure
 - `recovery_cause_pppoe_ia_rate_limit` (Boolean) Enable timer to recover from PPPoE IA rate-limit error
