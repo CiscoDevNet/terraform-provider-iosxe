@@ -29,7 +29,7 @@ attributes:
     exclude_test: true
     example: sfp
   - yang_name: mtu
-    example: 1400
+    example: 1600
   - yang_name: bandwidth/kilobits
     tf_name: bandwidth
     example: 1000000

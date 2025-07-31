@@ -32,7 +32,7 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "name", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "mtu", "1400"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "mtu", "1600"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "bandwidth", "1000000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "shutdown", "false"))
@@ -167,7 +167,7 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config := `resource "iosxe_interface_ethernet" "test" {` + "\n"
 	config += `	type = "GigabitEthernet"` + "\n"
 	config += `	name = "3"` + "\n"
-	config += `	mtu = 1400` + "\n"
+	config += `	mtu = 1600` + "\n"
 	config += `	bandwidth = 1000000` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"

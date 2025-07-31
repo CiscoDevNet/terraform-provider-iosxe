@@ -1,7 +1,7 @@
 resource "iosxe_interface_ethernet" "example" {
   type                           = "GigabitEthernet"
   name                           = "3"
-  mtu                            = 1400
+  mtu                            = 1600
   bandwidth                      = 1000000
   description                    = "My Interface Description"
   shutdown                       = false
