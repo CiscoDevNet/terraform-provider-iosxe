@@ -149,6 +149,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `channel_group_number` (Number) - Range: `1`-`512`
 - `description` (String) Interface specific description
 - `device` (String) A device name from the provider configuration.
+- `device_tracking` (Boolean) Configure device-tracking on the interface
+- `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
 - `dot1x_max_reauth_req` (Number) Max No. of Reauthentication Attempts
   - Range: `1`-`10`
 - `dot1x_max_req` (Number) Max No. of Retries
@@ -239,6 +241,14 @@ resource "iosxe_interface_ethernet" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--device_tracking_attached_policies"></a>
+### Nested Schema for `device_tracking_attached_policies`
+
+Required:
+
+- `name` (String) Apply a policy for feature device-tracking
+
 
 <a id="nestedatt--helper_addresses"></a>
 ### Nested Schema for `helper_addresses`

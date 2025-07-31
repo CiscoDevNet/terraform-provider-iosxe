@@ -192,6 +192,17 @@ attributes:
     example: true
   - yang_name: logging/event/link-status-enable
     example: false
+  - yang_name: Cisco-IOS-XE-switch:device-tracking
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:device-tracking/attached-policies
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: attach-policy
+        tf_name: name
+        id: true
+        example: POLICY1
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

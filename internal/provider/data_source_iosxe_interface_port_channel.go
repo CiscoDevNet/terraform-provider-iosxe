@@ -310,6 +310,22 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "UPDOWN and CHANGE messages",
 				Computed:            true,
 			},
+			"device_tracking": schema.BoolAttribute{
+				MarkdownDescription: "Configure device-tracking on the interface",
+				Computed:            true,
+			},
+			"device_tracking_attached_policies": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Apply a policy for feature device-tracking",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

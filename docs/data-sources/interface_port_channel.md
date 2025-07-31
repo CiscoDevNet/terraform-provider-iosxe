@@ -52,6 +52,8 @@ data "iosxe_interface_port_channel" "example" {
 - `bfd_local_address` (String) The Source IP address to be used for BFD sessions over this interface.
 - `bfd_template` (String) BFD template
 - `description` (String) Interface specific description
+- `device_tracking` (Boolean) Configure device-tracking on the interface
+- `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.
 - `ip_access_group_in` (String)
@@ -83,6 +85,14 @@ data "iosxe_interface_port_channel" "example" {
 - `switchport` (Boolean)
 - `trust_device` (String) trusted device class
 - `vrf_forwarding` (String) Configure forwarding table
+
+<a id="nestedatt--device_tracking_attached_policies"></a>
+### Nested Schema for `device_tracking_attached_policies`
+
+Read-Only:
+
+- `name` (String) Apply a policy for feature device-tracking
+
 
 <a id="nestedatt--helper_addresses"></a>
 ### Nested Schema for `helper_addresses`

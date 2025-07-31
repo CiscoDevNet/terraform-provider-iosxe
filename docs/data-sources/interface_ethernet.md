@@ -78,6 +78,8 @@ data "iosxe_interface_ethernet" "example" {
 - `channel_group_mode` (String) Etherchannel Mode of the interface
 - `channel_group_number` (Number)
 - `description` (String) Interface specific description
+- `device_tracking` (Boolean) Configure device-tracking on the interface
+- `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
 - `dot1x_max_reauth_req` (Number) Max No. of Reauthentication Attempts
 - `dot1x_max_req` (Number) Max No. of Retries
 - `dot1x_pae` (String) Set 802.1x interface pae type
@@ -146,6 +148,14 @@ data "iosxe_interface_ethernet" "example" {
 - `trust_device` (String) trusted device class
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table
+
+<a id="nestedatt--device_tracking_attached_policies"></a>
+### Nested Schema for `device_tracking_attached_policies`
+
+Read-Only:
+
+- `name` (String) Apply a policy for feature device-tracking
+
 
 <a id="nestedatt--helper_addresses"></a>
 ### Nested Schema for `helper_addresses`

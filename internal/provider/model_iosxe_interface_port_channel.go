@@ -35,118 +35,122 @@ import (
 )
 
 type InterfacePortChannel struct {
-	Device                       types.String                                 `tfsdk:"device"`
-	Id                           types.String                                 `tfsdk:"id"`
-	DeleteMode                   types.String                                 `tfsdk:"delete_mode"`
-	Name                         types.Int64                                  `tfsdk:"name"`
-	Description                  types.String                                 `tfsdk:"description"`
-	Shutdown                     types.Bool                                   `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                                   `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                                   `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                                   `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                                 `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                                 `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                                 `tfsdk:"ipv4_address_mask"`
-	Switchport                   types.Bool                                   `tfsdk:"switchport"`
-	IpAccessGroupIn              types.String                                 `tfsdk:"ip_access_group_in"`
-	IpAccessGroupInEnable        types.Bool                                   `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut             types.String                                 `tfsdk:"ip_access_group_out"`
-	IpAccessGroupOutEnable       types.Bool                                   `tfsdk:"ip_access_group_out_enable"`
-	IpDhcpRelaySourceInterface   types.String                                 `tfsdk:"ip_dhcp_relay_source_interface"`
-	SpanningTreeGuard            types.String                                 `tfsdk:"spanning_tree_guard"`
-	AutoQosClassify              types.Bool                                   `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice        types.Bool                                   `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust                 types.Bool                                   `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos              types.Bool                                   `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp             types.Bool                                   `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts              types.Bool                                   `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera         types.Bool                                   `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer      types.Bool                                   `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip                  types.Bool                                   `tfsdk:"auto_qos_voip"`
-	AutoQosVoipCiscoPhone        types.Bool                                   `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone    types.Bool                                   `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust             types.Bool                                   `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice                  types.String                                 `tfsdk:"trust_device"`
-	HelperAddresses              []InterfacePortChannelHelperAddresses        `tfsdk:"helper_addresses"`
-	BfdTemplate                  types.String                                 `tfsdk:"bfd_template"`
-	BfdEnable                    types.Bool                                   `tfsdk:"bfd_enable"`
-	BfdLocalAddress              types.String                                 `tfsdk:"bfd_local_address"`
-	BfdInterval                  types.Int64                                  `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx             types.Int64                                  `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier        types.Int64                                  `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                      types.Bool                                   `tfsdk:"bfd_echo"`
-	Ipv6Enable                   types.Bool                                   `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                                  `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                                   `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                                   `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                                   `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfacePortChannelIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfacePortChannelIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	ArpTimeout                   types.Int64                                  `tfsdk:"arp_timeout"`
-	IpArpInspectionTrust         types.Bool                                   `tfsdk:"ip_arp_inspection_trust"`
-	IpArpInspectionLimitRate     types.Int64                                  `tfsdk:"ip_arp_inspection_limit_rate"`
-	SpanningTreeLinkType         types.String                                 `tfsdk:"spanning_tree_link_type"`
-	IpDhcpSnoopingTrust          types.Bool                                   `tfsdk:"ip_dhcp_snooping_trust"`
-	LoadInterval                 types.Int64                                  `tfsdk:"load_interval"`
-	SnmpTrapLinkStatus           types.Bool                                   `tfsdk:"snmp_trap_link_status"`
-	LoggingEventLinkStatusEnable types.Bool                                   `tfsdk:"logging_event_link_status_enable"`
+	Device                         types.String                                         `tfsdk:"device"`
+	Id                             types.String                                         `tfsdk:"id"`
+	DeleteMode                     types.String                                         `tfsdk:"delete_mode"`
+	Name                           types.Int64                                          `tfsdk:"name"`
+	Description                    types.String                                         `tfsdk:"description"`
+	Shutdown                       types.Bool                                           `tfsdk:"shutdown"`
+	IpProxyArp                     types.Bool                                           `tfsdk:"ip_proxy_arp"`
+	IpRedirects                    types.Bool                                           `tfsdk:"ip_redirects"`
+	IpUnreachables                 types.Bool                                           `tfsdk:"ip_unreachables"`
+	VrfForwarding                  types.String                                         `tfsdk:"vrf_forwarding"`
+	Ipv4Address                    types.String                                         `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                types.String                                         `tfsdk:"ipv4_address_mask"`
+	Switchport                     types.Bool                                           `tfsdk:"switchport"`
+	IpAccessGroupIn                types.String                                         `tfsdk:"ip_access_group_in"`
+	IpAccessGroupInEnable          types.Bool                                           `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupOut               types.String                                         `tfsdk:"ip_access_group_out"`
+	IpAccessGroupOutEnable         types.Bool                                           `tfsdk:"ip_access_group_out_enable"`
+	IpDhcpRelaySourceInterface     types.String                                         `tfsdk:"ip_dhcp_relay_source_interface"`
+	SpanningTreeGuard              types.String                                         `tfsdk:"spanning_tree_guard"`
+	AutoQosClassify                types.Bool                                           `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice          types.Bool                                           `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                   types.Bool                                           `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos                types.Bool                                           `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp               types.Bool                                           `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts                types.Bool                                           `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera           types.Bool                                           `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer        types.Bool                                           `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                    types.Bool                                           `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone          types.Bool                                           `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone      types.Bool                                           `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust               types.Bool                                           `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                    types.String                                         `tfsdk:"trust_device"`
+	HelperAddresses                []InterfacePortChannelHelperAddresses                `tfsdk:"helper_addresses"`
+	BfdTemplate                    types.String                                         `tfsdk:"bfd_template"`
+	BfdEnable                      types.Bool                                           `tfsdk:"bfd_enable"`
+	BfdLocalAddress                types.String                                         `tfsdk:"bfd_local_address"`
+	BfdInterval                    types.Int64                                          `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx               types.Int64                                          `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier          types.Int64                                          `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                        types.Bool                                           `tfsdk:"bfd_echo"`
+	Ipv6Enable                     types.Bool                                           `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                        types.Int64                                          `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll            types.Bool                                           `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault   types.Bool                                           `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                types.Bool                                           `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses         []InterfacePortChannelIpv6LinkLocalAddresses         `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                  []InterfacePortChannelIpv6Addresses                  `tfsdk:"ipv6_addresses"`
+	ArpTimeout                     types.Int64                                          `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust           types.Bool                                           `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate       types.Int64                                          `tfsdk:"ip_arp_inspection_limit_rate"`
+	SpanningTreeLinkType           types.String                                         `tfsdk:"spanning_tree_link_type"`
+	IpDhcpSnoopingTrust            types.Bool                                           `tfsdk:"ip_dhcp_snooping_trust"`
+	LoadInterval                   types.Int64                                          `tfsdk:"load_interval"`
+	SnmpTrapLinkStatus             types.Bool                                           `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable   types.Bool                                           `tfsdk:"logging_event_link_status_enable"`
+	DeviceTracking                 types.Bool                                           `tfsdk:"device_tracking"`
+	DeviceTrackingAttachedPolicies []InterfacePortChannelDeviceTrackingAttachedPolicies `tfsdk:"device_tracking_attached_policies"`
 }
 
 type InterfacePortChannelData struct {
-	Device                       types.String                                 `tfsdk:"device"`
-	Id                           types.String                                 `tfsdk:"id"`
-	Name                         types.Int64                                  `tfsdk:"name"`
-	Description                  types.String                                 `tfsdk:"description"`
-	Shutdown                     types.Bool                                   `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                                   `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                                   `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                                   `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                                 `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                                 `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                                 `tfsdk:"ipv4_address_mask"`
-	Switchport                   types.Bool                                   `tfsdk:"switchport"`
-	IpAccessGroupIn              types.String                                 `tfsdk:"ip_access_group_in"`
-	IpAccessGroupInEnable        types.Bool                                   `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut             types.String                                 `tfsdk:"ip_access_group_out"`
-	IpAccessGroupOutEnable       types.Bool                                   `tfsdk:"ip_access_group_out_enable"`
-	IpDhcpRelaySourceInterface   types.String                                 `tfsdk:"ip_dhcp_relay_source_interface"`
-	SpanningTreeGuard            types.String                                 `tfsdk:"spanning_tree_guard"`
-	AutoQosClassify              types.Bool                                   `tfsdk:"auto_qos_classify"`
-	AutoQosClassifyPolice        types.Bool                                   `tfsdk:"auto_qos_classify_police"`
-	AutoQosTrust                 types.Bool                                   `tfsdk:"auto_qos_trust"`
-	AutoQosTrustCos              types.Bool                                   `tfsdk:"auto_qos_trust_cos"`
-	AutoQosTrustDscp             types.Bool                                   `tfsdk:"auto_qos_trust_dscp"`
-	AutoQosVideoCts              types.Bool                                   `tfsdk:"auto_qos_video_cts"`
-	AutoQosVideoIpCamera         types.Bool                                   `tfsdk:"auto_qos_video_ip_camera"`
-	AutoQosVideoMediaPlayer      types.Bool                                   `tfsdk:"auto_qos_video_media_player"`
-	AutoQosVoip                  types.Bool                                   `tfsdk:"auto_qos_voip"`
-	AutoQosVoipCiscoPhone        types.Bool                                   `tfsdk:"auto_qos_voip_cisco_phone"`
-	AutoQosVoipCiscoSoftphone    types.Bool                                   `tfsdk:"auto_qos_voip_cisco_softphone"`
-	AutoQosVoipTrust             types.Bool                                   `tfsdk:"auto_qos_voip_trust"`
-	TrustDevice                  types.String                                 `tfsdk:"trust_device"`
-	HelperAddresses              []InterfacePortChannelHelperAddresses        `tfsdk:"helper_addresses"`
-	BfdTemplate                  types.String                                 `tfsdk:"bfd_template"`
-	BfdEnable                    types.Bool                                   `tfsdk:"bfd_enable"`
-	BfdLocalAddress              types.String                                 `tfsdk:"bfd_local_address"`
-	BfdInterval                  types.Int64                                  `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx             types.Int64                                  `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier        types.Int64                                  `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                      types.Bool                                   `tfsdk:"bfd_echo"`
-	Ipv6Enable                   types.Bool                                   `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                                  `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                                   `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                                   `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                                   `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfacePortChannelIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfacePortChannelIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	ArpTimeout                   types.Int64                                  `tfsdk:"arp_timeout"`
-	IpArpInspectionTrust         types.Bool                                   `tfsdk:"ip_arp_inspection_trust"`
-	IpArpInspectionLimitRate     types.Int64                                  `tfsdk:"ip_arp_inspection_limit_rate"`
-	SpanningTreeLinkType         types.String                                 `tfsdk:"spanning_tree_link_type"`
-	IpDhcpSnoopingTrust          types.Bool                                   `tfsdk:"ip_dhcp_snooping_trust"`
-	LoadInterval                 types.Int64                                  `tfsdk:"load_interval"`
-	SnmpTrapLinkStatus           types.Bool                                   `tfsdk:"snmp_trap_link_status"`
-	LoggingEventLinkStatusEnable types.Bool                                   `tfsdk:"logging_event_link_status_enable"`
+	Device                         types.String                                         `tfsdk:"device"`
+	Id                             types.String                                         `tfsdk:"id"`
+	Name                           types.Int64                                          `tfsdk:"name"`
+	Description                    types.String                                         `tfsdk:"description"`
+	Shutdown                       types.Bool                                           `tfsdk:"shutdown"`
+	IpProxyArp                     types.Bool                                           `tfsdk:"ip_proxy_arp"`
+	IpRedirects                    types.Bool                                           `tfsdk:"ip_redirects"`
+	IpUnreachables                 types.Bool                                           `tfsdk:"ip_unreachables"`
+	VrfForwarding                  types.String                                         `tfsdk:"vrf_forwarding"`
+	Ipv4Address                    types.String                                         `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                types.String                                         `tfsdk:"ipv4_address_mask"`
+	Switchport                     types.Bool                                           `tfsdk:"switchport"`
+	IpAccessGroupIn                types.String                                         `tfsdk:"ip_access_group_in"`
+	IpAccessGroupInEnable          types.Bool                                           `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupOut               types.String                                         `tfsdk:"ip_access_group_out"`
+	IpAccessGroupOutEnable         types.Bool                                           `tfsdk:"ip_access_group_out_enable"`
+	IpDhcpRelaySourceInterface     types.String                                         `tfsdk:"ip_dhcp_relay_source_interface"`
+	SpanningTreeGuard              types.String                                         `tfsdk:"spanning_tree_guard"`
+	AutoQosClassify                types.Bool                                           `tfsdk:"auto_qos_classify"`
+	AutoQosClassifyPolice          types.Bool                                           `tfsdk:"auto_qos_classify_police"`
+	AutoQosTrust                   types.Bool                                           `tfsdk:"auto_qos_trust"`
+	AutoQosTrustCos                types.Bool                                           `tfsdk:"auto_qos_trust_cos"`
+	AutoQosTrustDscp               types.Bool                                           `tfsdk:"auto_qos_trust_dscp"`
+	AutoQosVideoCts                types.Bool                                           `tfsdk:"auto_qos_video_cts"`
+	AutoQosVideoIpCamera           types.Bool                                           `tfsdk:"auto_qos_video_ip_camera"`
+	AutoQosVideoMediaPlayer        types.Bool                                           `tfsdk:"auto_qos_video_media_player"`
+	AutoQosVoip                    types.Bool                                           `tfsdk:"auto_qos_voip"`
+	AutoQosVoipCiscoPhone          types.Bool                                           `tfsdk:"auto_qos_voip_cisco_phone"`
+	AutoQosVoipCiscoSoftphone      types.Bool                                           `tfsdk:"auto_qos_voip_cisco_softphone"`
+	AutoQosVoipTrust               types.Bool                                           `tfsdk:"auto_qos_voip_trust"`
+	TrustDevice                    types.String                                         `tfsdk:"trust_device"`
+	HelperAddresses                []InterfacePortChannelHelperAddresses                `tfsdk:"helper_addresses"`
+	BfdTemplate                    types.String                                         `tfsdk:"bfd_template"`
+	BfdEnable                      types.Bool                                           `tfsdk:"bfd_enable"`
+	BfdLocalAddress                types.String                                         `tfsdk:"bfd_local_address"`
+	BfdInterval                    types.Int64                                          `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx               types.Int64                                          `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier          types.Int64                                          `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                        types.Bool                                           `tfsdk:"bfd_echo"`
+	Ipv6Enable                     types.Bool                                           `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                        types.Int64                                          `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll            types.Bool                                           `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault   types.Bool                                           `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                types.Bool                                           `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses         []InterfacePortChannelIpv6LinkLocalAddresses         `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                  []InterfacePortChannelIpv6Addresses                  `tfsdk:"ipv6_addresses"`
+	ArpTimeout                     types.Int64                                          `tfsdk:"arp_timeout"`
+	IpArpInspectionTrust           types.Bool                                           `tfsdk:"ip_arp_inspection_trust"`
+	IpArpInspectionLimitRate       types.Int64                                          `tfsdk:"ip_arp_inspection_limit_rate"`
+	SpanningTreeLinkType           types.String                                         `tfsdk:"spanning_tree_link_type"`
+	IpDhcpSnoopingTrust            types.Bool                                           `tfsdk:"ip_dhcp_snooping_trust"`
+	LoadInterval                   types.Int64                                          `tfsdk:"load_interval"`
+	SnmpTrapLinkStatus             types.Bool                                           `tfsdk:"snmp_trap_link_status"`
+	LoggingEventLinkStatusEnable   types.Bool                                           `tfsdk:"logging_event_link_status_enable"`
+	DeviceTracking                 types.Bool                                           `tfsdk:"device_tracking"`
+	DeviceTrackingAttachedPolicies []InterfacePortChannelDeviceTrackingAttachedPolicies `tfsdk:"device_tracking_attached_policies"`
 }
 type InterfacePortChannelHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -160,6 +164,9 @@ type InterfacePortChannelIpv6LinkLocalAddresses struct {
 type InterfacePortChannelIpv6Addresses struct {
 	Prefix types.String `tfsdk:"prefix"`
 	Eui64  types.Bool   `tfsdk:"eui_64"`
+}
+type InterfacePortChannelDeviceTrackingAttachedPolicies struct {
+	Name types.String `tfsdk:"name"`
 }
 
 func (data InterfacePortChannel) getPath() string {
@@ -372,6 +379,11 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 	if !data.LoggingEventLinkStatusEnable.IsNull() && !data.LoggingEventLinkStatusEnable.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"logging.event.link-status-enable", data.LoggingEventLinkStatusEnable.ValueBool())
 	}
+	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.IsUnknown() {
+		if data.DeviceTracking.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:device-tracking", map[string]string{})
+		}
+	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
 		for index, item := range data.HelperAddresses {
@@ -411,6 +423,14 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 				if item.Eui64.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv6.address.prefix-list"+"."+strconv.Itoa(index)+"."+"eui-64", map[string]string{})
 				}
+			}
+		}
+	}
+	if len(data.DeviceTrackingAttachedPolicies) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:device-tracking.attached-policies", []interface{}{})
+		for index, item := range data.DeviceTrackingAttachedPolicies {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:device-tracking.attached-policies"+"."+strconv.Itoa(index)+"."+"attach-policy", item.Name.ValueString())
 			}
 		}
 	}
@@ -886,6 +906,44 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:device-tracking"); !data.DeviceTracking.IsNull() {
+		if value.Exists() {
+			data.DeviceTracking = types.BoolValue(true)
+		} else {
+			data.DeviceTracking = types.BoolValue(false)
+		}
+	} else {
+		data.DeviceTracking = types.BoolNull()
+	}
+	for i := range data.DeviceTrackingAttachedPolicies {
+		keys := [...]string{"attach-policy"}
+		keyValues := [...]string{data.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-switch:device-tracking.attached-policies").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("attach-policy"); value.Exists() && !data.DeviceTrackingAttachedPolicies[i].Name.IsNull() {
+			data.DeviceTrackingAttachedPolicies[i].Name = types.StringValue(value.String())
+		} else {
+			data.DeviceTrackingAttachedPolicies[i].Name = types.StringNull()
+		}
+	}
 }
 
 func (data *InterfacePortChannel) fromBody(ctx context.Context, res gjson.Result) {
@@ -1145,6 +1203,22 @@ func (data *InterfacePortChannel) fromBody(ctx context.Context, res gjson.Result
 		data.LoggingEventLinkStatusEnable = types.BoolValue(value.Bool())
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:device-tracking"); value.Exists() {
+		data.DeviceTracking = types.BoolValue(true)
+	} else {
+		data.DeviceTracking = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:device-tracking.attached-policies"); value.Exists() {
+		data.DeviceTrackingAttachedPolicies = make([]InterfacePortChannelDeviceTrackingAttachedPolicies, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfacePortChannelDeviceTrackingAttachedPolicies{}
+			if cValue := v.Get("attach-policy"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.DeviceTrackingAttachedPolicies = append(data.DeviceTrackingAttachedPolicies, item)
+			return true
+		})
 	}
 }
 
@@ -1406,6 +1480,22 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.LoggingEventLinkStatusEnable = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:device-tracking"); value.Exists() {
+		data.DeviceTracking = types.BoolValue(true)
+	} else {
+		data.DeviceTracking = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-switch:device-tracking.attached-policies"); value.Exists() {
+		data.DeviceTrackingAttachedPolicies = make([]InterfacePortChannelDeviceTrackingAttachedPolicies, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfacePortChannelDeviceTrackingAttachedPolicies{}
+			if cValue := v.Get("attach-policy"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.DeviceTrackingAttachedPolicies = append(data.DeviceTrackingAttachedPolicies, item)
+			return true
+		})
+	}
 }
 
 func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state InterfacePortChannel) []string {
@@ -1641,6 +1731,34 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 	if !state.LoggingEventLinkStatusEnable.IsNull() && data.LoggingEventLinkStatusEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/event/link-status-enable", state.getPath()))
 	}
+	if !state.DeviceTracking.IsNull() && data.DeviceTracking.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", state.getPath()))
+	}
+	for i := range state.DeviceTrackingAttachedPolicies {
+		stateKeyValues := [...]string{state.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.DeviceTrackingAttachedPolicies[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.DeviceTrackingAttachedPolicies {
+			found = true
+			if state.DeviceTrackingAttachedPolicies[i].Name.ValueString() != data.DeviceTrackingAttachedPolicies[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking/attached-policies=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedItems
 }
 
@@ -1730,6 +1848,10 @@ func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []str
 	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
 	}
+	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -1893,6 +2015,14 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.LoggingEventLinkStatusEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/event/link-status-enable", data.getPath()))
+	}
+	if !data.DeviceTracking.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", data.getPath()))
+	}
+	for i := range data.DeviceTrackingAttachedPolicies {
+		keyValues := [...]string{data.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking/attached-policies=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

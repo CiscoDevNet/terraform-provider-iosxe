@@ -594,6 +594,22 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Enable protocol discovery for both ipv4 and ipv6",
 				Computed:            true,
 			},
+			"device_tracking": schema.BoolAttribute{
+				MarkdownDescription: "Configure device-tracking on the interface",
+				Computed:            true,
+			},
+			"device_tracking_attached_policies": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Apply a policy for feature device-tracking",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

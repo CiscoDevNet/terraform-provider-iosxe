@@ -728,6 +728,22 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Enable protocol discovery for both ipv4 and ipv6").String,
 				Optional:            true,
 			},
+			"device_tracking": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure device-tracking on the interface").String,
+				Optional:            true,
+			},
+			"device_tracking_attached_policies": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Apply a policy for feature device-tracking").String,
+							Required:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }
