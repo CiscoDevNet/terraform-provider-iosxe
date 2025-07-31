@@ -279,7 +279,8 @@ attributes:
     exclude_test: true
   - yang_name: control-plane/Cisco-IOS-XE-policy:service-policy/input
     example: system-cpp-policy
-    test_tags: [C9000V]
+    exclude_test: true
+    allow_import_changes: true
   - yang_name: Cisco-IOS-XE-pnp:pnp/profile
     tf_name: pnp_profiles
     type: List

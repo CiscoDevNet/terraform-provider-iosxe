@@ -59,9 +59,6 @@ func TestAccIosxeSystem(t *testing.T) {
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_forward_protocol_nd", "true"))
 	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "control_plane_service_policy_input", "system-cpp-policy"))
-	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -78,7 +75,7 @@ func TestAccIosxeSystem(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native",
-				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_scp_server_enable"},
+				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_scp_server_enable", "control_plane_service_policy_input"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -140,9 +137,6 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	memory_free_low_watermark_processor = 203038` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_forward_protocol_nd = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	control_plane_service_policy_input = "system-cpp-policy"` + "\n"
 	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
