@@ -1,0 +1,45 @@
+---
+name: Crypto PKI
+path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki
+doc_category: Crypto
+test_tags: [CRYPTO_PKI]
+attributes:
+  - yang_name: trustpoint
+    tf_name: trustpoints
+    type: List
+    allow_import_changes: true
+    attributes:
+      - yang_name: id
+        id: true
+        example: trustpoint1
+      - yang_name: enrollment/enrollment-method/method/pkcs12-case/pkcs12
+        xpath: enrollment/enrollment-method/pkcs12
+        tf_name: enrollment_pkcs12
+        example: true
+      - yang_name: enrollment/enrollment-method/method/selfsigned-case/selfsigned
+        xpath: enrollment/enrollment-method/selfsigned
+        tf_name: enrollment_selfsigned
+        example: true
+        exclude_test: true
+      - yang_name: enrollment/mode/ra
+        example: true
+        exclude_test: true
+      - yang_name: enrollment/terminal
+        example: true
+        exclude_test: true
+      - yang_name: revocation-check
+        example: none
+      - yang_name: subject-name
+        tf_name: subject_name
+        example: cn=ABC
+        exclude_test: true
+      - yang_name: rsakeypair/key-label
+        tf_name: rsakeypair
+        example: ABC
+        exclude_test: true
+      - yang_name: usage
+        example: ssl-client
+        exclude_test: true
+      - yang_name: source/interface
+        example: Loopback0
+        exclude_test: true

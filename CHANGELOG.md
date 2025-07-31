@@ -15,6 +15,7 @@
 - Add `ip_tacacs_source_interface_x`, `ip_radius_source_interface_x` attributes to `iosxe_system` resource and data source
 - Add `iosxe_spanning_tree` resource and data source
 - Add `iosxe_device_sensor` resource and data source
+- Add `iosxe_crypto_pki` resource and data source
 
 ## 0.6.0
 
