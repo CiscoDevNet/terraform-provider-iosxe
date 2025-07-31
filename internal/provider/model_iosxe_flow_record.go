@@ -33,46 +33,82 @@ import (
 )
 
 type FlowRecord struct {
-	Device                        types.String `tfsdk:"device"`
-	Id                            types.String `tfsdk:"id"`
-	DeleteMode                    types.String `tfsdk:"delete_mode"`
-	Name                          types.String `tfsdk:"name"`
-	Description                   types.String `tfsdk:"description"`
-	MatchIpv4SourceAddress        types.Bool   `tfsdk:"match_ipv4_source_address"`
-	MatchIpv4DestinationAddress   types.Bool   `tfsdk:"match_ipv4_destination_address"`
-	MatchIpv4Protocol             types.Bool   `tfsdk:"match_ipv4_protocol"`
-	MatchIpv4Tos                  types.Bool   `tfsdk:"match_ipv4_tos"`
-	MatchTransportSourcePort      types.Bool   `tfsdk:"match_transport_source_port"`
-	MatchTransportDestinationPort types.Bool   `tfsdk:"match_transport_destination_port"`
-	MatchInterfaceInput           types.Bool   `tfsdk:"match_interface_input"`
-	MatchFlowDirection            types.Bool   `tfsdk:"match_flow_direction"`
-	CollectInterfaceOutput        types.Bool   `tfsdk:"collect_interface_output"`
-	CollectCounterBytesLong       types.Bool   `tfsdk:"collect_counter_bytes_long"`
-	CollectCounterPacketsLong     types.Bool   `tfsdk:"collect_counter_packets_long"`
-	CollectTransportTcpFlags      types.Bool   `tfsdk:"collect_transport_tcp_flags"`
-	CollectTimestampAbsoluteFirst types.Bool   `tfsdk:"collect_timestamp_absolute_first"`
-	CollectTimestampAbsoluteLast  types.Bool   `tfsdk:"collect_timestamp_absolute_last"`
+	Device                                         types.String `tfsdk:"device"`
+	Id                                             types.String `tfsdk:"id"`
+	DeleteMode                                     types.String `tfsdk:"delete_mode"`
+	Name                                           types.String `tfsdk:"name"`
+	Description                                    types.String `tfsdk:"description"`
+	MatchIpv4SourceAddress                         types.Bool   `tfsdk:"match_ipv4_source_address"`
+	MatchIpv4DestinationAddress                    types.Bool   `tfsdk:"match_ipv4_destination_address"`
+	MatchIpv4Protocol                              types.Bool   `tfsdk:"match_ipv4_protocol"`
+	MatchIpv4Tos                                   types.Bool   `tfsdk:"match_ipv4_tos"`
+	MatchIpv6SourceAddress                         types.Bool   `tfsdk:"match_ipv6_source_address"`
+	MatchIpv6DestinationAddress                    types.Bool   `tfsdk:"match_ipv6_destination_address"`
+	MatchTransportSourcePort                       types.Bool   `tfsdk:"match_transport_source_port"`
+	MatchTransportDestinationPort                  types.Bool   `tfsdk:"match_transport_destination_port"`
+	MatchInterfaceInput                            types.Bool   `tfsdk:"match_interface_input"`
+	MatchFlowDirection                             types.Bool   `tfsdk:"match_flow_direction"`
+	MatchApplicationName                           types.Bool   `tfsdk:"match_application_name"`
+	MatchFlowObservationPoint                      types.Bool   `tfsdk:"match_flow_observation_point"`
+	MatchIpv4Version                               types.Bool   `tfsdk:"match_ipv4_version"`
+	MatchIpv6Version                               types.Bool   `tfsdk:"match_ipv6_version"`
+	MatchIpv6Protocol                              types.Bool   `tfsdk:"match_ipv6_protocol"`
+	MatchConnectionClientIpv4Address               types.Bool   `tfsdk:"match_connection_client_ipv4_address"`
+	MatchConnectionServerIpv4Address               types.Bool   `tfsdk:"match_connection_server_ipv4_address"`
+	MatchConnectionClientIpv6Address               types.Bool   `tfsdk:"match_connection_client_ipv6_address"`
+	MatchConnectionServerIpv6Address               types.Bool   `tfsdk:"match_connection_server_ipv6_address"`
+	MatchConnectionServerTransportPort             types.Bool   `tfsdk:"match_connection_server_transport_port"`
+	CollectInterfaceOutput                         types.Bool   `tfsdk:"collect_interface_output"`
+	CollectCounterBytesLong                        types.Bool   `tfsdk:"collect_counter_bytes_long"`
+	CollectCounterPacketsLong                      types.Bool   `tfsdk:"collect_counter_packets_long"`
+	CollectTransportTcpFlags                       types.Bool   `tfsdk:"collect_transport_tcp_flags"`
+	CollectTimestampAbsoluteFirst                  types.Bool   `tfsdk:"collect_timestamp_absolute_first"`
+	CollectTimestampAbsoluteLast                   types.Bool   `tfsdk:"collect_timestamp_absolute_last"`
+	CollectConnectionInitiator                     types.Bool   `tfsdk:"collect_connection_initiator"`
+	CollectConnectionNewConnections                types.Bool   `tfsdk:"collect_connection_new_connections"`
+	CollectConnectionServerCounterBytesNetworkLong types.Bool   `tfsdk:"collect_connection_server_counter_bytes_network_long"`
+	CollectConnectionServerCounterPacketsLong      types.Bool   `tfsdk:"collect_connection_server_counter_packets_long"`
+	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
+	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
 }
 
 type FlowRecordData struct {
-	Device                        types.String `tfsdk:"device"`
-	Id                            types.String `tfsdk:"id"`
-	Name                          types.String `tfsdk:"name"`
-	Description                   types.String `tfsdk:"description"`
-	MatchIpv4SourceAddress        types.Bool   `tfsdk:"match_ipv4_source_address"`
-	MatchIpv4DestinationAddress   types.Bool   `tfsdk:"match_ipv4_destination_address"`
-	MatchIpv4Protocol             types.Bool   `tfsdk:"match_ipv4_protocol"`
-	MatchIpv4Tos                  types.Bool   `tfsdk:"match_ipv4_tos"`
-	MatchTransportSourcePort      types.Bool   `tfsdk:"match_transport_source_port"`
-	MatchTransportDestinationPort types.Bool   `tfsdk:"match_transport_destination_port"`
-	MatchInterfaceInput           types.Bool   `tfsdk:"match_interface_input"`
-	MatchFlowDirection            types.Bool   `tfsdk:"match_flow_direction"`
-	CollectInterfaceOutput        types.Bool   `tfsdk:"collect_interface_output"`
-	CollectCounterBytesLong       types.Bool   `tfsdk:"collect_counter_bytes_long"`
-	CollectCounterPacketsLong     types.Bool   `tfsdk:"collect_counter_packets_long"`
-	CollectTransportTcpFlags      types.Bool   `tfsdk:"collect_transport_tcp_flags"`
-	CollectTimestampAbsoluteFirst types.Bool   `tfsdk:"collect_timestamp_absolute_first"`
-	CollectTimestampAbsoluteLast  types.Bool   `tfsdk:"collect_timestamp_absolute_last"`
+	Device                                         types.String `tfsdk:"device"`
+	Id                                             types.String `tfsdk:"id"`
+	Name                                           types.String `tfsdk:"name"`
+	Description                                    types.String `tfsdk:"description"`
+	MatchIpv4SourceAddress                         types.Bool   `tfsdk:"match_ipv4_source_address"`
+	MatchIpv4DestinationAddress                    types.Bool   `tfsdk:"match_ipv4_destination_address"`
+	MatchIpv4Protocol                              types.Bool   `tfsdk:"match_ipv4_protocol"`
+	MatchIpv4Tos                                   types.Bool   `tfsdk:"match_ipv4_tos"`
+	MatchIpv6SourceAddress                         types.Bool   `tfsdk:"match_ipv6_source_address"`
+	MatchIpv6DestinationAddress                    types.Bool   `tfsdk:"match_ipv6_destination_address"`
+	MatchTransportSourcePort                       types.Bool   `tfsdk:"match_transport_source_port"`
+	MatchTransportDestinationPort                  types.Bool   `tfsdk:"match_transport_destination_port"`
+	MatchInterfaceInput                            types.Bool   `tfsdk:"match_interface_input"`
+	MatchFlowDirection                             types.Bool   `tfsdk:"match_flow_direction"`
+	MatchApplicationName                           types.Bool   `tfsdk:"match_application_name"`
+	MatchFlowObservationPoint                      types.Bool   `tfsdk:"match_flow_observation_point"`
+	MatchIpv4Version                               types.Bool   `tfsdk:"match_ipv4_version"`
+	MatchIpv6Version                               types.Bool   `tfsdk:"match_ipv6_version"`
+	MatchIpv6Protocol                              types.Bool   `tfsdk:"match_ipv6_protocol"`
+	MatchConnectionClientIpv4Address               types.Bool   `tfsdk:"match_connection_client_ipv4_address"`
+	MatchConnectionServerIpv4Address               types.Bool   `tfsdk:"match_connection_server_ipv4_address"`
+	MatchConnectionClientIpv6Address               types.Bool   `tfsdk:"match_connection_client_ipv6_address"`
+	MatchConnectionServerIpv6Address               types.Bool   `tfsdk:"match_connection_server_ipv6_address"`
+	MatchConnectionServerTransportPort             types.Bool   `tfsdk:"match_connection_server_transport_port"`
+	CollectInterfaceOutput                         types.Bool   `tfsdk:"collect_interface_output"`
+	CollectCounterBytesLong                        types.Bool   `tfsdk:"collect_counter_bytes_long"`
+	CollectCounterPacketsLong                      types.Bool   `tfsdk:"collect_counter_packets_long"`
+	CollectTransportTcpFlags                       types.Bool   `tfsdk:"collect_transport_tcp_flags"`
+	CollectTimestampAbsoluteFirst                  types.Bool   `tfsdk:"collect_timestamp_absolute_first"`
+	CollectTimestampAbsoluteLast                   types.Bool   `tfsdk:"collect_timestamp_absolute_last"`
+	CollectConnectionInitiator                     types.Bool   `tfsdk:"collect_connection_initiator"`
+	CollectConnectionNewConnections                types.Bool   `tfsdk:"collect_connection_new_connections"`
+	CollectConnectionServerCounterBytesNetworkLong types.Bool   `tfsdk:"collect_connection_server_counter_bytes_network_long"`
+	CollectConnectionServerCounterPacketsLong      types.Bool   `tfsdk:"collect_connection_server_counter_packets_long"`
+	CollectDatalinkMacSourceAddressInput           types.Bool   `tfsdk:"collect_datalink_mac_source_address_input"`
+	CollectFlowDirection                           types.Bool   `tfsdk:"collect_flow_direction"`
 }
 
 func (data FlowRecord) getPath() string {
@@ -122,6 +158,16 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv4.tos", map[string]string{})
 		}
 	}
+	if !data.MatchIpv6SourceAddress.IsNull() && !data.MatchIpv6SourceAddress.IsUnknown() {
+		if data.MatchIpv6SourceAddress.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv6.source.address", map[string]string{})
+		}
+	}
+	if !data.MatchIpv6DestinationAddress.IsNull() && !data.MatchIpv6DestinationAddress.IsUnknown() {
+		if data.MatchIpv6DestinationAddress.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv6.destination.address", map[string]string{})
+		}
+	}
 	if !data.MatchTransportSourcePort.IsNull() && !data.MatchTransportSourcePort.IsUnknown() {
 		if data.MatchTransportSourcePort.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.transport.source-port", map[string]string{})
@@ -140,6 +186,56 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 	if !data.MatchFlowDirection.IsNull() && !data.MatchFlowDirection.IsUnknown() {
 		if data.MatchFlowDirection.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.flow.direction", map[string]string{})
+		}
+	}
+	if !data.MatchApplicationName.IsNull() && !data.MatchApplicationName.IsUnknown() {
+		if data.MatchApplicationName.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.application.name", map[string]string{})
+		}
+	}
+	if !data.MatchFlowObservationPoint.IsNull() && !data.MatchFlowObservationPoint.IsUnknown() {
+		if data.MatchFlowObservationPoint.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.flow.observation.point", map[string]string{})
+		}
+	}
+	if !data.MatchIpv4Version.IsNull() && !data.MatchIpv4Version.IsUnknown() {
+		if data.MatchIpv4Version.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv4.version", map[string]string{})
+		}
+	}
+	if !data.MatchIpv6Version.IsNull() && !data.MatchIpv6Version.IsUnknown() {
+		if data.MatchIpv6Version.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv6.version", map[string]string{})
+		}
+	}
+	if !data.MatchIpv6Protocol.IsNull() && !data.MatchIpv6Protocol.IsUnknown() {
+		if data.MatchIpv6Protocol.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ipv6.protocol", map[string]string{})
+		}
+	}
+	if !data.MatchConnectionClientIpv4Address.IsNull() && !data.MatchConnectionClientIpv4Address.IsUnknown() {
+		if data.MatchConnectionClientIpv4Address.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.connection.client.ipv4.address", map[string]string{})
+		}
+	}
+	if !data.MatchConnectionServerIpv4Address.IsNull() && !data.MatchConnectionServerIpv4Address.IsUnknown() {
+		if data.MatchConnectionServerIpv4Address.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.connection.server.ipv4.address", map[string]string{})
+		}
+	}
+	if !data.MatchConnectionClientIpv6Address.IsNull() && !data.MatchConnectionClientIpv6Address.IsUnknown() {
+		if data.MatchConnectionClientIpv6Address.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.connection.client.ipv6.address", map[string]string{})
+		}
+	}
+	if !data.MatchConnectionServerIpv6Address.IsNull() && !data.MatchConnectionServerIpv6Address.IsUnknown() {
+		if data.MatchConnectionServerIpv6Address.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.connection.server.ipv6.address", map[string]string{})
+		}
+	}
+	if !data.MatchConnectionServerTransportPort.IsNull() && !data.MatchConnectionServerTransportPort.IsUnknown() {
+		if data.MatchConnectionServerTransportPort.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.connection.server.transport.port", map[string]string{})
 		}
 	}
 	if !data.CollectInterfaceOutput.IsNull() && !data.CollectInterfaceOutput.IsUnknown() {
@@ -170,6 +266,36 @@ func (data FlowRecord) toBody(ctx context.Context) string {
 	if !data.CollectTimestampAbsoluteLast.IsNull() && !data.CollectTimestampAbsoluteLast.IsUnknown() {
 		if data.CollectTimestampAbsoluteLast.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.timestamp.absolute.last", map[string]string{})
+		}
+	}
+	if !data.CollectConnectionInitiator.IsNull() && !data.CollectConnectionInitiator.IsUnknown() {
+		if data.CollectConnectionInitiator.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.connection.initiator", map[string]string{})
+		}
+	}
+	if !data.CollectConnectionNewConnections.IsNull() && !data.CollectConnectionNewConnections.IsUnknown() {
+		if data.CollectConnectionNewConnections.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.connection.new-connections", map[string]string{})
+		}
+	}
+	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() && !data.CollectConnectionServerCounterBytesNetworkLong.IsUnknown() {
+		if data.CollectConnectionServerCounterBytesNetworkLong.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.connection.server.counter.bytes.network.long", map[string]string{})
+		}
+	}
+	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.IsUnknown() {
+		if data.CollectConnectionServerCounterPacketsLong.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.connection.server.counter.packets.long", map[string]string{})
+		}
+	}
+	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.IsUnknown() {
+		if data.CollectDatalinkMacSourceAddressInput.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.datalink.mac.source.address.input", map[string]string{})
+		}
+	}
+	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.IsUnknown() {
+		if data.CollectFlowDirection.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"collect.flow.direction", map[string]string{})
 		}
 	}
 	return body
@@ -226,6 +352,24 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchIpv4Tos = types.BoolNull()
 	}
+	if value := res.Get(prefix + "match.ipv6.source.address"); !data.MatchIpv6SourceAddress.IsNull() {
+		if value.Exists() {
+			data.MatchIpv6SourceAddress = types.BoolValue(true)
+		} else {
+			data.MatchIpv6SourceAddress = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv6SourceAddress = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.ipv6.destination.address"); !data.MatchIpv6DestinationAddress.IsNull() {
+		if value.Exists() {
+			data.MatchIpv6DestinationAddress = types.BoolValue(true)
+		} else {
+			data.MatchIpv6DestinationAddress = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv6DestinationAddress = types.BoolNull()
+	}
 	if value := res.Get(prefix + "match.transport.source-port"); !data.MatchTransportSourcePort.IsNull() {
 		if value.Exists() {
 			data.MatchTransportSourcePort = types.BoolValue(true)
@@ -261,6 +405,96 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.MatchFlowDirection = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.application.name"); !data.MatchApplicationName.IsNull() {
+		if value.Exists() {
+			data.MatchApplicationName = types.BoolValue(true)
+		} else {
+			data.MatchApplicationName = types.BoolValue(false)
+		}
+	} else {
+		data.MatchApplicationName = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.flow.observation.point"); !data.MatchFlowObservationPoint.IsNull() {
+		if value.Exists() {
+			data.MatchFlowObservationPoint = types.BoolValue(true)
+		} else {
+			data.MatchFlowObservationPoint = types.BoolValue(false)
+		}
+	} else {
+		data.MatchFlowObservationPoint = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.ipv4.version"); !data.MatchIpv4Version.IsNull() {
+		if value.Exists() {
+			data.MatchIpv4Version = types.BoolValue(true)
+		} else {
+			data.MatchIpv4Version = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv4Version = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.ipv6.version"); !data.MatchIpv6Version.IsNull() {
+		if value.Exists() {
+			data.MatchIpv6Version = types.BoolValue(true)
+		} else {
+			data.MatchIpv6Version = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv6Version = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.ipv6.protocol"); !data.MatchIpv6Protocol.IsNull() {
+		if value.Exists() {
+			data.MatchIpv6Protocol = types.BoolValue(true)
+		} else {
+			data.MatchIpv6Protocol = types.BoolValue(false)
+		}
+	} else {
+		data.MatchIpv6Protocol = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.connection.client.ipv4.address"); !data.MatchConnectionClientIpv4Address.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionClientIpv4Address = types.BoolValue(true)
+		} else {
+			data.MatchConnectionClientIpv4Address = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionClientIpv4Address = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.connection.server.ipv4.address"); !data.MatchConnectionServerIpv4Address.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionServerIpv4Address = types.BoolValue(true)
+		} else {
+			data.MatchConnectionServerIpv4Address = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionServerIpv4Address = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.connection.client.ipv6.address"); !data.MatchConnectionClientIpv6Address.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionClientIpv6Address = types.BoolValue(true)
+		} else {
+			data.MatchConnectionClientIpv6Address = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionClientIpv6Address = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.connection.server.ipv6.address"); !data.MatchConnectionServerIpv6Address.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionServerIpv6Address = types.BoolValue(true)
+		} else {
+			data.MatchConnectionServerIpv6Address = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionServerIpv6Address = types.BoolNull()
+	}
+	if value := res.Get(prefix + "match.connection.server.transport.port"); !data.MatchConnectionServerTransportPort.IsNull() {
+		if value.Exists() {
+			data.MatchConnectionServerTransportPort = types.BoolValue(true)
+		} else {
+			data.MatchConnectionServerTransportPort = types.BoolValue(false)
+		}
+	} else {
+		data.MatchConnectionServerTransportPort = types.BoolNull()
 	}
 	if value := res.Get(prefix + "collect.interface.output"); !data.CollectInterfaceOutput.IsNull() {
 		if value.Exists() {
@@ -316,6 +550,60 @@ func (data *FlowRecord) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectTimestampAbsoluteLast = types.BoolNull()
 	}
+	if value := res.Get(prefix + "collect.connection.initiator"); !data.CollectConnectionInitiator.IsNull() {
+		if value.Exists() {
+			data.CollectConnectionInitiator = types.BoolValue(true)
+		} else {
+			data.CollectConnectionInitiator = types.BoolValue(false)
+		}
+	} else {
+		data.CollectConnectionInitiator = types.BoolNull()
+	}
+	if value := res.Get(prefix + "collect.connection.new-connections"); !data.CollectConnectionNewConnections.IsNull() {
+		if value.Exists() {
+			data.CollectConnectionNewConnections = types.BoolValue(true)
+		} else {
+			data.CollectConnectionNewConnections = types.BoolValue(false)
+		}
+	} else {
+		data.CollectConnectionNewConnections = types.BoolNull()
+	}
+	if value := res.Get(prefix + "collect.connection.server.counter.bytes.network.long"); !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+		if value.Exists() {
+			data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(true)
+		} else {
+			data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(false)
+		}
+	} else {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolNull()
+	}
+	if value := res.Get(prefix + "collect.connection.server.counter.packets.long"); !data.CollectConnectionServerCounterPacketsLong.IsNull() {
+		if value.Exists() {
+			data.CollectConnectionServerCounterPacketsLong = types.BoolValue(true)
+		} else {
+			data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
+		}
+	} else {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolNull()
+	}
+	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); !data.CollectDatalinkMacSourceAddressInput.IsNull() {
+		if value.Exists() {
+			data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
+		} else {
+			data.CollectDatalinkMacSourceAddressInput = types.BoolValue(false)
+		}
+	} else {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolNull()
+	}
+	if value := res.Get(prefix + "collect.flow.direction"); !data.CollectFlowDirection.IsNull() {
+		if value.Exists() {
+			data.CollectFlowDirection = types.BoolValue(true)
+		} else {
+			data.CollectFlowDirection = types.BoolValue(false)
+		}
+	} else {
+		data.CollectFlowDirection = types.BoolNull()
+	}
 }
 
 func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
@@ -346,6 +634,16 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchIpv4Tos = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.ipv6.source.address"); value.Exists() {
+		data.MatchIpv6SourceAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv6SourceAddress = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv6.destination.address"); value.Exists() {
+		data.MatchIpv6DestinationAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv6DestinationAddress = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "match.transport.source-port"); value.Exists() {
 		data.MatchTransportSourcePort = types.BoolValue(true)
 	} else {
@@ -365,6 +663,56 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 		data.MatchFlowDirection = types.BoolValue(true)
 	} else {
 		data.MatchFlowDirection = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.application.name"); value.Exists() {
+		data.MatchApplicationName = types.BoolValue(true)
+	} else {
+		data.MatchApplicationName = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.flow.observation.point"); value.Exists() {
+		data.MatchFlowObservationPoint = types.BoolValue(true)
+	} else {
+		data.MatchFlowObservationPoint = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.version"); value.Exists() {
+		data.MatchIpv4Version = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Version = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv6.version"); value.Exists() {
+		data.MatchIpv6Version = types.BoolValue(true)
+	} else {
+		data.MatchIpv6Version = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv6.protocol"); value.Exists() {
+		data.MatchIpv6Protocol = types.BoolValue(true)
+	} else {
+		data.MatchIpv6Protocol = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.client.ipv4.address"); value.Exists() {
+		data.MatchConnectionClientIpv4Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionClientIpv4Address = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.server.ipv4.address"); value.Exists() {
+		data.MatchConnectionServerIpv4Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerIpv4Address = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.client.ipv6.address"); value.Exists() {
+		data.MatchConnectionClientIpv6Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionClientIpv6Address = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.server.ipv6.address"); value.Exists() {
+		data.MatchConnectionServerIpv6Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerIpv6Address = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.server.transport.port"); value.Exists() {
+		data.MatchConnectionServerTransportPort = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerTransportPort = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "collect.interface.output"); value.Exists() {
 		data.CollectInterfaceOutput = types.BoolValue(true)
@@ -395,6 +743,36 @@ func (data *FlowRecord) fromBody(ctx context.Context, res gjson.Result) {
 		data.CollectTimestampAbsoluteLast = types.BoolValue(true)
 	} else {
 		data.CollectTimestampAbsoluteLast = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.connection.initiator"); value.Exists() {
+		data.CollectConnectionInitiator = types.BoolValue(true)
+	} else {
+		data.CollectConnectionInitiator = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.connection.new-connections"); value.Exists() {
+		data.CollectConnectionNewConnections = types.BoolValue(true)
+	} else {
+		data.CollectConnectionNewConnections = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.connection.server.counter.bytes.network.long"); value.Exists() {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(true)
+	} else {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.connection.server.counter.packets.long"); value.Exists() {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(true)
+	} else {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); value.Exists() {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.flow.direction"); value.Exists() {
+		data.CollectFlowDirection = types.BoolValue(true)
+	} else {
+		data.CollectFlowDirection = types.BoolValue(false)
 	}
 }
 
@@ -426,6 +804,16 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.MatchIpv4Tos = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "match.ipv6.source.address"); value.Exists() {
+		data.MatchIpv6SourceAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv6SourceAddress = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv6.destination.address"); value.Exists() {
+		data.MatchIpv6DestinationAddress = types.BoolValue(true)
+	} else {
+		data.MatchIpv6DestinationAddress = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "match.transport.source-port"); value.Exists() {
 		data.MatchTransportSourcePort = types.BoolValue(true)
 	} else {
@@ -445,6 +833,56 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 		data.MatchFlowDirection = types.BoolValue(true)
 	} else {
 		data.MatchFlowDirection = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.application.name"); value.Exists() {
+		data.MatchApplicationName = types.BoolValue(true)
+	} else {
+		data.MatchApplicationName = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.flow.observation.point"); value.Exists() {
+		data.MatchFlowObservationPoint = types.BoolValue(true)
+	} else {
+		data.MatchFlowObservationPoint = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv4.version"); value.Exists() {
+		data.MatchIpv4Version = types.BoolValue(true)
+	} else {
+		data.MatchIpv4Version = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv6.version"); value.Exists() {
+		data.MatchIpv6Version = types.BoolValue(true)
+	} else {
+		data.MatchIpv6Version = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.ipv6.protocol"); value.Exists() {
+		data.MatchIpv6Protocol = types.BoolValue(true)
+	} else {
+		data.MatchIpv6Protocol = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.client.ipv4.address"); value.Exists() {
+		data.MatchConnectionClientIpv4Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionClientIpv4Address = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.server.ipv4.address"); value.Exists() {
+		data.MatchConnectionServerIpv4Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerIpv4Address = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.client.ipv6.address"); value.Exists() {
+		data.MatchConnectionClientIpv6Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionClientIpv6Address = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.server.ipv6.address"); value.Exists() {
+		data.MatchConnectionServerIpv6Address = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerIpv6Address = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "match.connection.server.transport.port"); value.Exists() {
+		data.MatchConnectionServerTransportPort = types.BoolValue(true)
+	} else {
+		data.MatchConnectionServerTransportPort = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "collect.interface.output"); value.Exists() {
 		data.CollectInterfaceOutput = types.BoolValue(true)
@@ -476,6 +914,36 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CollectTimestampAbsoluteLast = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "collect.connection.initiator"); value.Exists() {
+		data.CollectConnectionInitiator = types.BoolValue(true)
+	} else {
+		data.CollectConnectionInitiator = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.connection.new-connections"); value.Exists() {
+		data.CollectConnectionNewConnections = types.BoolValue(true)
+	} else {
+		data.CollectConnectionNewConnections = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.connection.server.counter.bytes.network.long"); value.Exists() {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(true)
+	} else {
+		data.CollectConnectionServerCounterBytesNetworkLong = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.connection.server.counter.packets.long"); value.Exists() {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(true)
+	} else {
+		data.CollectConnectionServerCounterPacketsLong = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.datalink.mac.source.address.input"); value.Exists() {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(true)
+	} else {
+		data.CollectDatalinkMacSourceAddressInput = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "collect.flow.direction"); value.Exists() {
+		data.CollectFlowDirection = types.BoolValue(true)
+	} else {
+		data.CollectFlowDirection = types.BoolValue(false)
+	}
 }
 
 func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) []string {
@@ -495,6 +963,12 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 	if !state.MatchIpv4Tos.IsNull() && data.MatchIpv4Tos.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/tos", state.getPath()))
 	}
+	if !state.MatchIpv6SourceAddress.IsNull() && data.MatchIpv6SourceAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/source/address", state.getPath()))
+	}
+	if !state.MatchIpv6DestinationAddress.IsNull() && data.MatchIpv6DestinationAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/destination/address", state.getPath()))
+	}
 	if !state.MatchTransportSourcePort.IsNull() && data.MatchTransportSourcePort.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/transport/source-port", state.getPath()))
 	}
@@ -506,6 +980,36 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 	}
 	if !state.MatchFlowDirection.IsNull() && data.MatchFlowDirection.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/direction", state.getPath()))
+	}
+	if !state.MatchApplicationName.IsNull() && data.MatchApplicationName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/application/name", state.getPath()))
+	}
+	if !state.MatchFlowObservationPoint.IsNull() && data.MatchFlowObservationPoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/observation/point", state.getPath()))
+	}
+	if !state.MatchIpv4Version.IsNull() && data.MatchIpv4Version.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/version", state.getPath()))
+	}
+	if !state.MatchIpv6Version.IsNull() && data.MatchIpv6Version.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/version", state.getPath()))
+	}
+	if !state.MatchIpv6Protocol.IsNull() && data.MatchIpv6Protocol.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/protocol", state.getPath()))
+	}
+	if !state.MatchConnectionClientIpv4Address.IsNull() && data.MatchConnectionClientIpv4Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/client/ipv4/address", state.getPath()))
+	}
+	if !state.MatchConnectionServerIpv4Address.IsNull() && data.MatchConnectionServerIpv4Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/ipv4/address", state.getPath()))
+	}
+	if !state.MatchConnectionClientIpv6Address.IsNull() && data.MatchConnectionClientIpv6Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/client/ipv6/address", state.getPath()))
+	}
+	if !state.MatchConnectionServerIpv6Address.IsNull() && data.MatchConnectionServerIpv6Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/ipv6/address", state.getPath()))
+	}
+	if !state.MatchConnectionServerTransportPort.IsNull() && data.MatchConnectionServerTransportPort.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/transport/port", state.getPath()))
 	}
 	if !state.CollectInterfaceOutput.IsNull() && data.CollectInterfaceOutput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/interface/output", state.getPath()))
@@ -525,6 +1029,24 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 	if !state.CollectTimestampAbsoluteLast.IsNull() && data.CollectTimestampAbsoluteLast.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/timestamp/absolute/last", state.getPath()))
 	}
+	if !state.CollectConnectionInitiator.IsNull() && data.CollectConnectionInitiator.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/initiator", state.getPath()))
+	}
+	if !state.CollectConnectionNewConnections.IsNull() && data.CollectConnectionNewConnections.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/new-connections", state.getPath()))
+	}
+	if !state.CollectConnectionServerCounterBytesNetworkLong.IsNull() && data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", state.getPath()))
+	}
+	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", state.getPath()))
+	}
+	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && data.CollectDatalinkMacSourceAddressInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", state.getPath()))
+	}
+	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/flow/direction", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -542,6 +1064,12 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.MatchIpv4Tos.IsNull() && !data.MatchIpv4Tos.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/tos", data.getPath()))
 	}
+	if !data.MatchIpv6SourceAddress.IsNull() && !data.MatchIpv6SourceAddress.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/source/address", data.getPath()))
+	}
+	if !data.MatchIpv6DestinationAddress.IsNull() && !data.MatchIpv6DestinationAddress.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/destination/address", data.getPath()))
+	}
 	if !data.MatchTransportSourcePort.IsNull() && !data.MatchTransportSourcePort.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/transport/source-port", data.getPath()))
 	}
@@ -553,6 +1081,36 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.MatchFlowDirection.IsNull() && !data.MatchFlowDirection.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/direction", data.getPath()))
+	}
+	if !data.MatchApplicationName.IsNull() && !data.MatchApplicationName.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/application/name", data.getPath()))
+	}
+	if !data.MatchFlowObservationPoint.IsNull() && !data.MatchFlowObservationPoint.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/observation/point", data.getPath()))
+	}
+	if !data.MatchIpv4Version.IsNull() && !data.MatchIpv4Version.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/version", data.getPath()))
+	}
+	if !data.MatchIpv6Version.IsNull() && !data.MatchIpv6Version.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/version", data.getPath()))
+	}
+	if !data.MatchIpv6Protocol.IsNull() && !data.MatchIpv6Protocol.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/protocol", data.getPath()))
+	}
+	if !data.MatchConnectionClientIpv4Address.IsNull() && !data.MatchConnectionClientIpv4Address.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/client/ipv4/address", data.getPath()))
+	}
+	if !data.MatchConnectionServerIpv4Address.IsNull() && !data.MatchConnectionServerIpv4Address.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/ipv4/address", data.getPath()))
+	}
+	if !data.MatchConnectionClientIpv6Address.IsNull() && !data.MatchConnectionClientIpv6Address.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/client/ipv6/address", data.getPath()))
+	}
+	if !data.MatchConnectionServerIpv6Address.IsNull() && !data.MatchConnectionServerIpv6Address.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/ipv6/address", data.getPath()))
+	}
+	if !data.MatchConnectionServerTransportPort.IsNull() && !data.MatchConnectionServerTransportPort.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/transport/port", data.getPath()))
 	}
 	if !data.CollectInterfaceOutput.IsNull() && !data.CollectInterfaceOutput.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
@@ -571,6 +1129,24 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.CollectTimestampAbsoluteLast.IsNull() && !data.CollectTimestampAbsoluteLast.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/timestamp/absolute/last", data.getPath()))
+	}
+	if !data.CollectConnectionInitiator.IsNull() && !data.CollectConnectionInitiator.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/initiator", data.getPath()))
+	}
+	if !data.CollectConnectionNewConnections.IsNull() && !data.CollectConnectionNewConnections.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/new-connections", data.getPath()))
+	}
+	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() && !data.CollectConnectionServerCounterBytesNetworkLong.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", data.getPath()))
+	}
+	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
+	}
+	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
+	}
+	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
 	return emptyLeafsDelete
 }
@@ -592,6 +1168,12 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	if !data.MatchIpv4Tos.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/tos", data.getPath()))
 	}
+	if !data.MatchIpv6SourceAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/source/address", data.getPath()))
+	}
+	if !data.MatchIpv6DestinationAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/destination/address", data.getPath()))
+	}
 	if !data.MatchTransportSourcePort.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/transport/source-port", data.getPath()))
 	}
@@ -603,6 +1185,36 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.MatchFlowDirection.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/direction", data.getPath()))
+	}
+	if !data.MatchApplicationName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/application/name", data.getPath()))
+	}
+	if !data.MatchFlowObservationPoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/observation/point", data.getPath()))
+	}
+	if !data.MatchIpv4Version.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/version", data.getPath()))
+	}
+	if !data.MatchIpv6Version.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/version", data.getPath()))
+	}
+	if !data.MatchIpv6Protocol.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/protocol", data.getPath()))
+	}
+	if !data.MatchConnectionClientIpv4Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/client/ipv4/address", data.getPath()))
+	}
+	if !data.MatchConnectionServerIpv4Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/ipv4/address", data.getPath()))
+	}
+	if !data.MatchConnectionClientIpv6Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/client/ipv6/address", data.getPath()))
+	}
+	if !data.MatchConnectionServerIpv6Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/ipv6/address", data.getPath()))
+	}
+	if !data.MatchConnectionServerTransportPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/transport/port", data.getPath()))
 	}
 	if !data.CollectInterfaceOutput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
@@ -621,6 +1233,24 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.CollectTimestampAbsoluteLast.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/timestamp/absolute/last", data.getPath()))
+	}
+	if !data.CollectConnectionInitiator.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/initiator", data.getPath()))
+	}
+	if !data.CollectConnectionNewConnections.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/new-connections", data.getPath()))
+	}
+	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", data.getPath()))
+	}
+	if !data.CollectConnectionServerCounterPacketsLong.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
+	}
+	if !data.CollectDatalinkMacSourceAddressInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
+	}
+	if !data.CollectFlowDirection.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
 	return deletePaths
 }

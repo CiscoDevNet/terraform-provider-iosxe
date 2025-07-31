@@ -86,6 +86,14 @@ func (d *FlowRecordDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "IPv4 type of service",
 				Computed:            true,
 			},
+			"match_ipv6_source_address": schema.BoolAttribute{
+				MarkdownDescription: "IPv6 source address",
+				Computed:            true,
+			},
+			"match_ipv6_destination_address": schema.BoolAttribute{
+				MarkdownDescription: "IPv6 destination address",
+				Computed:            true,
+			},
 			"match_transport_source_port": schema.BoolAttribute{
 				MarkdownDescription: "Transport source port",
 				Computed:            true,
@@ -100,6 +108,46 @@ func (d *FlowRecordDataSource) Schema(ctx context.Context, req datasource.Schema
 			},
 			"match_flow_direction": schema.BoolAttribute{
 				MarkdownDescription: "Direction the flow was monitored in",
+				Computed:            true,
+			},
+			"match_application_name": schema.BoolAttribute{
+				MarkdownDescription: "Application name",
+				Computed:            true,
+			},
+			"match_flow_observation_point": schema.BoolAttribute{
+				MarkdownDescription: "Observation point ID",
+				Computed:            true,
+			},
+			"match_ipv4_version": schema.BoolAttribute{
+				MarkdownDescription: "IP version from IPv4 header",
+				Computed:            true,
+			},
+			"match_ipv6_version": schema.BoolAttribute{
+				MarkdownDescription: "IP version from IPv6 header",
+				Computed:            true,
+			},
+			"match_ipv6_protocol": schema.BoolAttribute{
+				MarkdownDescription: "IPv6 payload protocol",
+				Computed:            true,
+			},
+			"match_connection_client_ipv4_address": schema.BoolAttribute{
+				MarkdownDescription: "IPv4 address of the flow initiator",
+				Computed:            true,
+			},
+			"match_connection_server_ipv4_address": schema.BoolAttribute{
+				MarkdownDescription: "IPv4 address of the flow responder",
+				Computed:            true,
+			},
+			"match_connection_client_ipv6_address": schema.BoolAttribute{
+				MarkdownDescription: "IPv6 address of the flow initiator",
+				Computed:            true,
+			},
+			"match_connection_server_ipv6_address": schema.BoolAttribute{
+				MarkdownDescription: "IPv6 address of the flow responder",
+				Computed:            true,
+			},
+			"match_connection_server_transport_port": schema.BoolAttribute{
+				MarkdownDescription: "Transport port of the flow responder",
 				Computed:            true,
 			},
 			"collect_interface_output": schema.BoolAttribute{
@@ -124,6 +172,30 @@ func (d *FlowRecordDataSource) Schema(ctx context.Context, req datasource.Schema
 			},
 			"collect_timestamp_absolute_last": schema.BoolAttribute{
 				MarkdownDescription: "Absolute time the most recent packet was seen (milliseconds)",
+				Computed:            true,
+			},
+			"collect_connection_initiator": schema.BoolAttribute{
+				MarkdownDescription: "The direction of the flow",
+				Computed:            true,
+			},
+			"collect_connection_new_connections": schema.BoolAttribute{
+				MarkdownDescription: "The number of connection initiations observed",
+				Computed:            true,
+			},
+			"collect_connection_server_counter_bytes_network_long": schema.BoolAttribute{
+				MarkdownDescription: "Total number of bytes transmitted by the server",
+				Computed:            true,
+			},
+			"collect_connection_server_counter_packets_long": schema.BoolAttribute{
+				MarkdownDescription: "64 bits counter",
+				Computed:            true,
+			},
+			"collect_datalink_mac_source_address_input": schema.BoolAttribute{
+				MarkdownDescription: "Source MAC address from packet at input",
+				Computed:            true,
+			},
+			"collect_flow_direction": schema.BoolAttribute{
+				MarkdownDescription: "Direction the flow was monitored in",
 				Computed:            true,
 			},
 		},

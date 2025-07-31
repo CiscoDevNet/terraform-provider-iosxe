@@ -15,6 +15,12 @@ attributes:
     example: true
   - yang_name: match/ipv4/tos
     example: true
+  - yang_name: match/ipv6/source/address
+    example: true
+    exclude_test: true
+  - yang_name: match/ipv6/destination/address
+    example: true
+    exclude_test: true
   - yang_name: match/transport/source-port
     example: true
   - yang_name: match/transport/destination-port
@@ -23,6 +29,36 @@ attributes:
     example: true
   - yang_name: match/flow/direction
     example: true
+  - yang_name: match/application/name
+    example: true
+    exclude_test: true
+  - yang_name: match/flow/observation/point
+    example: true
+    exclude_test: true
+  - yang_name: match/ipv4/version
+    example: true
+    exclude_test: true
+  - yang_name: match/ipv6/version
+    example: true
+    exclude_test: true
+  - yang_name: match/ipv6/protocol
+    example: true
+    exclude_test: true
+  - yang_name: match/connection/client/ipv4/address
+    example: true
+    exclude_test: true
+  - yang_name: match/connection/server/ipv4/address
+    example: true
+    exclude_test: true
+  - yang_name: match/connection/client/ipv6/address
+    example: true
+    exclude_test: true
+  - yang_name: match/connection/server/ipv6/address
+    example: true
+    exclude_test: true
+  - yang_name: match/connection/server/transport/port
+    example: true
+    exclude_test: true
   - yang_name: collect/interface/output
     example: true
   - yang_name: collect/counter/bytes/long
@@ -37,3 +73,21 @@ attributes:
     example: true
   - yang_name: collect/timestamp/absolute/last
     example: true
+  - yang_name: collect/connection/initiator
+    example: true
+    exclude_test: true
+  - yang_name: collect/connection/new-connections
+    example: true
+    exclude_test: true
+  - yang_name: collect/connection/server/counter/bytes/network/long
+    example: true
+    exclude_test: true
+  - yang_name: collect/connection/server/counter/packets/long
+    example: true
+    exclude_test: true
+  - yang_name: collect/datalink/mac/source/address/input
+    example: true
+    exclude_test: true
+  - yang_name: collect/flow/direction
+    example: true
+    exclude_test: true

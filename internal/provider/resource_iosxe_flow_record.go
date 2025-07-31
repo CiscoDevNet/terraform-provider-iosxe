@@ -103,6 +103,14 @@ func (r *FlowRecordResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("IPv4 type of service").String,
 				Optional:            true,
 			},
+			"match_ipv6_source_address": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 source address").String,
+				Optional:            true,
+			},
+			"match_ipv6_destination_address": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 destination address").String,
+				Optional:            true,
+			},
 			"match_transport_source_port": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Transport source port").String,
 				Optional:            true,
@@ -117,6 +125,46 @@ func (r *FlowRecordResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"match_flow_direction": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Direction the flow was monitored in").String,
+				Optional:            true,
+			},
+			"match_application_name": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Application name").String,
+				Optional:            true,
+			},
+			"match_flow_observation_point": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Observation point ID").String,
+				Optional:            true,
+			},
+			"match_ipv4_version": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IP version from IPv4 header").String,
+				Optional:            true,
+			},
+			"match_ipv6_version": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IP version from IPv6 header").String,
+				Optional:            true,
+			},
+			"match_ipv6_protocol": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 payload protocol").String,
+				Optional:            true,
+			},
+			"match_connection_client_ipv4_address": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv4 address of the flow initiator").String,
+				Optional:            true,
+			},
+			"match_connection_server_ipv4_address": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv4 address of the flow responder").String,
+				Optional:            true,
+			},
+			"match_connection_client_ipv6_address": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 address of the flow initiator").String,
+				Optional:            true,
+			},
+			"match_connection_server_ipv6_address": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv6 address of the flow responder").String,
+				Optional:            true,
+			},
+			"match_connection_server_transport_port": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Transport port of the flow responder").String,
 				Optional:            true,
 			},
 			"collect_interface_output": schema.BoolAttribute{
@@ -141,6 +189,30 @@ func (r *FlowRecordResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"collect_timestamp_absolute_last": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Absolute time the most recent packet was seen (milliseconds)").String,
+				Optional:            true,
+			},
+			"collect_connection_initiator": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The direction of the flow").String,
+				Optional:            true,
+			},
+			"collect_connection_new_connections": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("The number of connection initiations observed").String,
+				Optional:            true,
+			},
+			"collect_connection_server_counter_bytes_network_long": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Total number of bytes transmitted by the server").String,
+				Optional:            true,
+			},
+			"collect_connection_server_counter_packets_long": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("64 bits counter").String,
+				Optional:            true,
+			},
+			"collect_datalink_mac_source_address_input": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Source MAC address from packet at input").String,
+				Optional:            true,
+			},
+			"collect_flow_direction": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Direction the flow was monitored in").String,
 				Optional:            true,
 			},
 		},

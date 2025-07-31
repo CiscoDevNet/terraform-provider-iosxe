@@ -42,8 +42,14 @@ resource "iosxe_flow_record" "example" {
 
 ### Optional
 
+- `collect_connection_initiator` (Boolean) The direction of the flow
+- `collect_connection_new_connections` (Boolean) The number of connection initiations observed
+- `collect_connection_server_counter_bytes_network_long` (Boolean) Total number of bytes transmitted by the server
+- `collect_connection_server_counter_packets_long` (Boolean) 64 bits counter
 - `collect_counter_bytes_long` (Boolean) Total number of bytes (64 bit counter)
 - `collect_counter_packets_long` (Boolean) Total number of packets (64 bit counter)
+- `collect_datalink_mac_source_address_input` (Boolean) Source MAC address from packet at input
+- `collect_flow_direction` (Boolean) Direction the flow was monitored in
 - `collect_interface_output` (Boolean) The output interface
 - `collect_timestamp_absolute_first` (Boolean) Absolute time the first packet was seen (milliseconds)
 - `collect_timestamp_absolute_last` (Boolean) Absolute time the most recent packet was seen (milliseconds)
@@ -52,12 +58,24 @@ resource "iosxe_flow_record" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) Provide a description for this Flow Record
 - `device` (String) A device name from the provider configuration.
+- `match_application_name` (Boolean) Application name
+- `match_connection_client_ipv4_address` (Boolean) IPv4 address of the flow initiator
+- `match_connection_client_ipv6_address` (Boolean) IPv6 address of the flow initiator
+- `match_connection_server_ipv4_address` (Boolean) IPv4 address of the flow responder
+- `match_connection_server_ipv6_address` (Boolean) IPv6 address of the flow responder
+- `match_connection_server_transport_port` (Boolean) Transport port of the flow responder
 - `match_flow_direction` (Boolean) Direction the flow was monitored in
+- `match_flow_observation_point` (Boolean) Observation point ID
 - `match_interface_input` (Boolean) The input interface
 - `match_ipv4_destination_address` (Boolean) IPv4 destination address
 - `match_ipv4_protocol` (Boolean) IPv4 protocol
 - `match_ipv4_source_address` (Boolean) IPv4 source address
 - `match_ipv4_tos` (Boolean) IPv4 type of service
+- `match_ipv4_version` (Boolean) IP version from IPv4 header
+- `match_ipv6_destination_address` (Boolean) IPv6 destination address
+- `match_ipv6_protocol` (Boolean) IPv6 payload protocol
+- `match_ipv6_source_address` (Boolean) IPv6 source address
+- `match_ipv6_version` (Boolean) IP version from IPv6 header
 - `match_transport_destination_port` (Boolean) Transport destination port
 - `match_transport_source_port` (Boolean) Transport source port
 

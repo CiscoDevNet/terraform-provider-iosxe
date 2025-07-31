@@ -59,7 +59,7 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateId:           "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=FNF1",
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"match_ipv6_source_address", "match_ipv6_destination_address", "match_application_name", "match_flow_observation_point", "match_ipv4_version", "match_ipv6_version", "match_ipv6_protocol", "match_connection_client_ipv4_address", "match_connection_server_ipv4_address", "match_connection_client_ipv6_address", "match_connection_server_ipv6_address", "match_connection_server_transport_port", "collect_connection_initiator", "collect_connection_new_connections", "collect_connection_server_counter_bytes_network_long", "collect_connection_server_counter_packets_long", "collect_datalink_mac_source_address_input", "collect_flow_direction"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
