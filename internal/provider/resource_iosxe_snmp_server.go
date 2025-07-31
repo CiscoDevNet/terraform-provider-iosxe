@@ -517,8 +517,16 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP MPLS traffic engineering traps").String,
 				Optional:            true,
 			},
+			"enable_traps_mpls": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP MPLS traps").String,
+				Optional:            true,
+			},
 			"enable_traps_mpls_vpn": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP MPLS Virtual Private Network traps").String,
+				Optional:            true,
+			},
+			"enable_traps_mpls_rfc": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP MPLS RFC traps").String,
 				Optional:            true,
 			},
 			"enable_traps_mpls_rfc_ldp": schema.BoolAttribute{
@@ -587,6 +595,14 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"enable_traps_vrfmib_vnet_trunk_down": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_mvpn": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Multicast Virtual Private Networks traps").String,
+				Optional:            true,
+			},
+			"enable_traps_lisp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LISP MIB traps").String,
 				Optional:            true,
 			},
 			"source_interface_informs_gigabit_ethernet": schema.StringAttribute{

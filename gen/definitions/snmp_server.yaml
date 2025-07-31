@@ -351,8 +351,16 @@ attributes:
     tf_name: enable_traps_mpls_traffic_eng
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls
+    tf_name: enable_traps_mpls
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/vpn
     tf_name: enable_traps_mpls_vpn
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc
+    tf_name: enable_traps_mpls_rfc
     example: true
     exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc/ldp
@@ -415,6 +423,14 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vnet-trunk-down
     tf_name: enable_traps_vrfmib_vnet_trunk_down
     example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/mvpn
+    tf_name: enable_traps_mvpn
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/lisp
+    tf_name: enable_traps_lisp
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/GigabitEthernet/GigabitEthernet
     xpath: Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet
     tf_name: source_interface_informs_gigabit_ethernet

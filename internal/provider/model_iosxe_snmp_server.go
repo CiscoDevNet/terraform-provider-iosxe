@@ -140,7 +140,9 @@ type SNMPServer struct {
 	EnableTrapsNhrpNhp                            types.Bool                  `tfsdk:"enable_traps_nhrp_nhp"`
 	EnableTrapsNhrpQuotaExceeded                  types.Bool                  `tfsdk:"enable_traps_nhrp_quota_exceeded"`
 	EnableTrapsMplsTrafficEng                     types.Bool                  `tfsdk:"enable_traps_mpls_traffic_eng"`
+	EnableTrapsMpls                               types.Bool                  `tfsdk:"enable_traps_mpls"`
 	EnableTrapsMplsVpn                            types.Bool                  `tfsdk:"enable_traps_mpls_vpn"`
+	EnableTrapsMplsRfc                            types.Bool                  `tfsdk:"enable_traps_mpls_rfc"`
 	EnableTrapsMplsRfcLdp                         types.Bool                  `tfsdk:"enable_traps_mpls_rfc_ldp"`
 	EnableTrapsMplsLdp                            types.Bool                  `tfsdk:"enable_traps_mpls_ldp"`
 	EnableTrapsFastRerouteProtected               types.Bool                  `tfsdk:"enable_traps_fast_reroute_protected"`
@@ -158,6 +160,8 @@ type SNMPServer struct {
 	EnableTrapsVrfmibVrfDown                      types.Bool                  `tfsdk:"enable_traps_vrfmib_vrf_down"`
 	EnableTrapsVrfmibVnetTrunkUp                  types.Bool                  `tfsdk:"enable_traps_vrfmib_vnet_trunk_up"`
 	EnableTrapsVrfmibVnetTrunkDown                types.Bool                  `tfsdk:"enable_traps_vrfmib_vnet_trunk_down"`
+	EnableTrapsMvpn                               types.Bool                  `tfsdk:"enable_traps_mvpn"`
+	EnableTrapsLisp                               types.Bool                  `tfsdk:"enable_traps_lisp"`
 	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
 	SourceInterfaceInformsTenGigabitEthernet      types.String                `tfsdk:"source_interface_informs_ten_gigabit_ethernet"`
 	SourceInterfaceInformsFortyGigabitEthernet    types.String                `tfsdk:"source_interface_informs_forty_gigabit_ethernet"`
@@ -293,7 +297,9 @@ type SNMPServerData struct {
 	EnableTrapsNhrpNhp                            types.Bool                  `tfsdk:"enable_traps_nhrp_nhp"`
 	EnableTrapsNhrpQuotaExceeded                  types.Bool                  `tfsdk:"enable_traps_nhrp_quota_exceeded"`
 	EnableTrapsMplsTrafficEng                     types.Bool                  `tfsdk:"enable_traps_mpls_traffic_eng"`
+	EnableTrapsMpls                               types.Bool                  `tfsdk:"enable_traps_mpls"`
 	EnableTrapsMplsVpn                            types.Bool                  `tfsdk:"enable_traps_mpls_vpn"`
+	EnableTrapsMplsRfc                            types.Bool                  `tfsdk:"enable_traps_mpls_rfc"`
 	EnableTrapsMplsRfcLdp                         types.Bool                  `tfsdk:"enable_traps_mpls_rfc_ldp"`
 	EnableTrapsMplsLdp                            types.Bool                  `tfsdk:"enable_traps_mpls_ldp"`
 	EnableTrapsFastRerouteProtected               types.Bool                  `tfsdk:"enable_traps_fast_reroute_protected"`
@@ -311,6 +317,8 @@ type SNMPServerData struct {
 	EnableTrapsVrfmibVrfDown                      types.Bool                  `tfsdk:"enable_traps_vrfmib_vrf_down"`
 	EnableTrapsVrfmibVnetTrunkUp                  types.Bool                  `tfsdk:"enable_traps_vrfmib_vnet_trunk_up"`
 	EnableTrapsVrfmibVnetTrunkDown                types.Bool                  `tfsdk:"enable_traps_vrfmib_vnet_trunk_down"`
+	EnableTrapsMvpn                               types.Bool                  `tfsdk:"enable_traps_mvpn"`
+	EnableTrapsLisp                               types.Bool                  `tfsdk:"enable_traps_lisp"`
 	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
 	SourceInterfaceInformsTenGigabitEthernet      types.String                `tfsdk:"source_interface_informs_ten_gigabit_ethernet"`
 	SourceInterfaceInformsFortyGigabitEthernet    types.String                `tfsdk:"source_interface_informs_forty_gigabit_ethernet"`
@@ -876,9 +884,19 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.traffic-eng", map[string]string{})
 		}
 	}
+	if !data.EnableTrapsMpls.IsNull() && !data.EnableTrapsMpls.IsUnknown() {
+		if data.EnableTrapsMpls.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls", map[string]string{})
+		}
+	}
 	if !data.EnableTrapsMplsVpn.IsNull() && !data.EnableTrapsMplsVpn.IsUnknown() {
 		if data.EnableTrapsMplsVpn.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.vpn", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsMplsRfc.IsNull() && !data.EnableTrapsMplsRfc.IsUnknown() {
+		if data.EnableTrapsMplsRfc.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.rfc", map[string]string{})
 		}
 	}
 	if !data.EnableTrapsMplsRfcLdp.IsNull() && !data.EnableTrapsMplsRfcLdp.IsUnknown() {
@@ -964,6 +982,16 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 	if !data.EnableTrapsVrfmibVnetTrunkDown.IsNull() && !data.EnableTrapsVrfmibVnetTrunkDown.IsUnknown() {
 		if data.EnableTrapsVrfmibVnetTrunkDown.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.vrfmib.vnet-trunk-down", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsMvpn.IsNull() && !data.EnableTrapsMvpn.IsUnknown() {
+		if data.EnableTrapsMvpn.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.mvpn", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsLisp.IsNull() && !data.EnableTrapsLisp.IsUnknown() {
+		if data.EnableTrapsLisp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.lisp", map[string]string{})
 		}
 	}
 	if !data.SourceInterfaceInformsGigabitEthernet.IsNull() && !data.SourceInterfaceInformsGigabitEthernet.IsUnknown() {
@@ -2039,6 +2067,15 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsMplsTrafficEng = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls"); !data.EnableTrapsMpls.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsMpls = types.BoolValue(true)
+		} else {
+			data.EnableTrapsMpls = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsMpls = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.vpn"); !data.EnableTrapsMplsVpn.IsNull() {
 		if value.Exists() {
 			data.EnableTrapsMplsVpn = types.BoolValue(true)
@@ -2047,6 +2084,15 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.EnableTrapsMplsVpn = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.rfc"); !data.EnableTrapsMplsRfc.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsMplsRfc = types.BoolValue(true)
+		} else {
+			data.EnableTrapsMplsRfc = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsMplsRfc = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.rfc.ldp"); !data.EnableTrapsMplsRfcLdp.IsNull() {
 		if value.Exists() {
@@ -2200,6 +2246,24 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.EnableTrapsVrfmibVnetTrunkDown = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mvpn"); !data.EnableTrapsMvpn.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsMvpn = types.BoolValue(true)
+		} else {
+			data.EnableTrapsMvpn = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsMvpn = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.lisp"); !data.EnableTrapsLisp.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsLisp = types.BoolValue(true)
+		} else {
+			data.EnableTrapsLisp = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsLisp = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() && !data.SourceInterfaceInformsGigabitEthernet.IsNull() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
@@ -2963,10 +3027,20 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsMplsTrafficEng = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls"); value.Exists() {
+		data.EnableTrapsMpls = types.BoolValue(true)
+	} else {
+		data.EnableTrapsMpls = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.vpn"); value.Exists() {
 		data.EnableTrapsMplsVpn = types.BoolValue(true)
 	} else {
 		data.EnableTrapsMplsVpn = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.rfc"); value.Exists() {
+		data.EnableTrapsMplsRfc = types.BoolValue(true)
+	} else {
+		data.EnableTrapsMplsRfc = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.rfc.ldp"); value.Exists() {
 		data.EnableTrapsMplsRfcLdp = types.BoolValue(true)
@@ -3052,6 +3126,16 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableTrapsVrfmibVnetTrunkDown = types.BoolValue(true)
 	} else {
 		data.EnableTrapsVrfmibVnetTrunkDown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mvpn"); value.Exists() {
+		data.EnableTrapsMvpn = types.BoolValue(true)
+	} else {
+		data.EnableTrapsMvpn = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.lisp"); value.Exists() {
+		data.EnableTrapsLisp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsLisp = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
@@ -3701,10 +3785,20 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsMplsTrafficEng = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls"); value.Exists() {
+		data.EnableTrapsMpls = types.BoolValue(true)
+	} else {
+		data.EnableTrapsMpls = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.vpn"); value.Exists() {
 		data.EnableTrapsMplsVpn = types.BoolValue(true)
 	} else {
 		data.EnableTrapsMplsVpn = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.rfc"); value.Exists() {
+		data.EnableTrapsMplsRfc = types.BoolValue(true)
+	} else {
+		data.EnableTrapsMplsRfc = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mpls.rfc.ldp"); value.Exists() {
 		data.EnableTrapsMplsRfcLdp = types.BoolValue(true)
@@ -3790,6 +3884,16 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableTrapsVrfmibVnetTrunkDown = types.BoolValue(true)
 	} else {
 		data.EnableTrapsVrfmibVnetTrunkDown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.mvpn"); value.Exists() {
+		data.EnableTrapsMvpn = types.BoolValue(true)
+	} else {
+		data.EnableTrapsMvpn = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.lisp"); value.Exists() {
+		data.EnableTrapsLisp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsLisp = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
@@ -4258,8 +4362,14 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 	if !state.EnableTrapsMplsTrafficEng.IsNull() && data.EnableTrapsMplsTrafficEng.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/traffic-eng", state.getPath()))
 	}
+	if !state.EnableTrapsMpls.IsNull() && data.EnableTrapsMpls.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls", state.getPath()))
+	}
 	if !state.EnableTrapsMplsVpn.IsNull() && data.EnableTrapsMplsVpn.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/vpn", state.getPath()))
+	}
+	if !state.EnableTrapsMplsRfc.IsNull() && data.EnableTrapsMplsRfc.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc", state.getPath()))
 	}
 	if !state.EnableTrapsMplsRfcLdp.IsNull() && data.EnableTrapsMplsRfcLdp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc/ldp", state.getPath()))
@@ -4311,6 +4421,12 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 	}
 	if !state.EnableTrapsVrfmibVnetTrunkDown.IsNull() && data.EnableTrapsVrfmibVnetTrunkDown.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vnet-trunk-down", state.getPath()))
+	}
+	if !state.EnableTrapsMvpn.IsNull() && data.EnableTrapsMvpn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mvpn", state.getPath()))
+	}
+	if !state.EnableTrapsLisp.IsNull() && data.EnableTrapsLisp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/lisp", state.getPath()))
 	}
 	if !state.SourceInterfaceInformsGigabitEthernet.IsNull() && data.SourceInterfaceInformsGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet", state.getPath()))
@@ -4768,8 +4884,14 @@ func (data *SNMPServer) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.EnableTrapsMplsTrafficEng.IsNull() && !data.EnableTrapsMplsTrafficEng.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/traffic-eng", data.getPath()))
 	}
+	if !data.EnableTrapsMpls.IsNull() && !data.EnableTrapsMpls.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls", data.getPath()))
+	}
 	if !data.EnableTrapsMplsVpn.IsNull() && !data.EnableTrapsMplsVpn.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/vpn", data.getPath()))
+	}
+	if !data.EnableTrapsMplsRfc.IsNull() && !data.EnableTrapsMplsRfc.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc", data.getPath()))
 	}
 	if !data.EnableTrapsMplsRfcLdp.IsNull() && !data.EnableTrapsMplsRfcLdp.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc/ldp", data.getPath()))
@@ -4821,6 +4943,12 @@ func (data *SNMPServer) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	if !data.EnableTrapsVrfmibVnetTrunkDown.IsNull() && !data.EnableTrapsVrfmibVnetTrunkDown.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vnet-trunk-down", data.getPath()))
+	}
+	if !data.EnableTrapsMvpn.IsNull() && !data.EnableTrapsMvpn.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mvpn", data.getPath()))
+	}
+	if !data.EnableTrapsLisp.IsNull() && !data.EnableTrapsLisp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/lisp", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -5139,8 +5267,14 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 	if !data.EnableTrapsMplsTrafficEng.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/traffic-eng", data.getPath()))
 	}
+	if !data.EnableTrapsMpls.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls", data.getPath()))
+	}
 	if !data.EnableTrapsMplsVpn.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/vpn", data.getPath()))
+	}
+	if !data.EnableTrapsMplsRfc.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc", data.getPath()))
 	}
 	if !data.EnableTrapsMplsRfcLdp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mpls/rfc/ldp", data.getPath()))
@@ -5192,6 +5326,12 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.EnableTrapsVrfmibVnetTrunkDown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrfmib/vnet-trunk-down", data.getPath()))
+	}
+	if !data.EnableTrapsMvpn.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/mvpn", data.getPath()))
+	}
+	if !data.EnableTrapsLisp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/lisp", data.getPath()))
 	}
 	if !data.SourceInterfaceInformsGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet", data.getPath()))

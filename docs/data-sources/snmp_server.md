@@ -84,16 +84,20 @@ data "iosxe_snmp_server" "example" {
 - `enable_traps_ipsla` (Boolean) Enable IPSLA traps traps
 - `enable_traps_isis` (Boolean) Enable ISIS traps traps
 - `enable_traps_license` (Boolean) Enable license traps
+- `enable_traps_lisp` (Boolean) Allow SNMP LISP MIB traps
 - `enable_traps_local_auth` (Boolean) Enable SNMP local auth traps
 - `enable_traps_mac_notification_change` (Boolean) Enable SNMP Change traps
 - `enable_traps_mac_notification_move` (Boolean) Enable SNMP Move traps
 - `enable_traps_mac_notification_threshold` (Boolean) Enable SNMP Threshold traps
 - `enable_traps_memory_bufferpeak` (Boolean) Enable SNMP Memory Bufferpeak traps
+- `enable_traps_mpls` (Boolean) Enable SNMP MPLS traps
 - `enable_traps_mpls_ldp` (Boolean) Allow SNMP MPLS label distribution protocol traps
+- `enable_traps_mpls_rfc` (Boolean) Enable SNMP MPLS RFC traps
 - `enable_traps_mpls_rfc_ldp` (Boolean) Allow SNMP MPLS label distribution protocol RFC traps
 - `enable_traps_mpls_traffic_eng` (Boolean) Allow SNMP MPLS traffic engineering traps
 - `enable_traps_mpls_vpn` (Boolean) Allow SNMP MPLS Virtual Private Network traps
 - `enable_traps_msdp` (Boolean) Enable SNMP MSDP traps
+- `enable_traps_mvpn` (Boolean) Enable Multicast Virtual Private Networks traps
 - `enable_traps_nhrp_nhc` (Boolean)
 - `enable_traps_nhrp_nhp` (Boolean)
 - `enable_traps_nhrp_nhs` (Boolean)
