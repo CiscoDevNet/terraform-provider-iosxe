@@ -192,8 +192,7 @@ attributes:
     example: minimal
     exclude_test: true
   - yang_name: memory/free/low-watermark/processor
-    example: 184655
-    exclude_test: true
+    example: 203038
   - yang_name: archive/path
     example: tftp://1.1.1.1/config
     exclude_test: true
@@ -225,7 +224,7 @@ attributes:
   - yang_name: ip/forward-protocol-v2/nd
     tf_name: ip_forward_protocol_nd
     example: true
-    exclude_test: true
+    test_tags: [IOSXE1715]
   - yang_name: ip/scp/server/enable
     example: true
     exclude_test: true
@@ -280,7 +279,7 @@ attributes:
     exclude_test: true
   - yang_name: control-plane/Cisco-IOS-XE-policy:service-policy/input
     example: system-cpp-policy
-    exclude_test: true
+    test_tags: [C9000V]
   - yang_name: Cisco-IOS-XE-pnp:pnp/profile
     tf_name: pnp_profiles
     type: List

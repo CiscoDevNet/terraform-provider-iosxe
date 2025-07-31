@@ -22,4 +22,5 @@ resource "iosxe_system" "example" {
       servers = ["2.3.4.5"]
     }
   ]
+  memory_free_low_watermark_processor = 203038
 }

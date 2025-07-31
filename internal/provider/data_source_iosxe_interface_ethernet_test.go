@@ -31,7 +31,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 		t.Skip("skipping test, set environment variable C8000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "mtu", "1500"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "mtu", "1400"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "bandwidth", "1000000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "shutdown", "false"))
@@ -146,7 +146,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config := `resource "iosxe_interface_ethernet" "test" {` + "\n"
 	config += `	type = "GigabitEthernet"` + "\n"
 	config += `	name = "3"` + "\n"
-	config += `	mtu = 1500` + "\n"
+	config += `	mtu = 1400` + "\n"
 	config += `	bandwidth = 1000000` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"

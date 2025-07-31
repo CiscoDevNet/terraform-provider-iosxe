@@ -16,7 +16,7 @@ This resource can manage the Interface Ethernet configuration.
 resource "iosxe_interface_ethernet" "example" {
   type                           = "GigabitEthernet"
   name                           = "3"
-  mtu                            = 1500
+  mtu                            = 1400
   bandwidth                      = 1000000
   description                    = "My Interface Description"
   shutdown                       = false
