@@ -54,6 +54,7 @@ func TestAccIosxeOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "areas.0.nssa_no_summary", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "areas.0.nssa_no_redistribution", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "passive_interface_default", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ospf.test", "auto_cost_reference_bandwidth", "40000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -121,6 +122,7 @@ func testAccIosxeOSPFConfig_all() string {
 	config += `		nssa_no_redistribution = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	passive_interface_default = true` + "\n"
+	config += `	auto_cost_reference_bandwidth = 40000` + "\n"
 	config += `}` + "\n"
 	return config
 }

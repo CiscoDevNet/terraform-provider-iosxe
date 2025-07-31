@@ -92,3 +92,10 @@ attributes:
     xpath: passive-interface/default
     tf_name: passive_interface_default
     example: true
+  - yang_name: passive-interface/passive-interface-choice/interface/interface
+    xpath: passive-interface/interface
+    tf_name: passive_interface
+    example: Loopback0
+    exclude_test: true
+  - yang_name: auto-cost/reference-bandwidth
+    example: 40000

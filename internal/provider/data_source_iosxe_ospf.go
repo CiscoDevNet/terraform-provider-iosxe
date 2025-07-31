@@ -210,6 +210,15 @@ func (d *OSPFDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Suppress routing updates on all interfaces",
 				Computed:            true,
 			},
+			"passive_interface": schema.ListAttribute{
+				MarkdownDescription: "",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"auto_cost_reference_bandwidth": schema.Int64Attribute{
+				MarkdownDescription: "Use reference bandwidth method to assign OSPF cost",
+				Computed:            true,
+			},
 		},
 	}
 }

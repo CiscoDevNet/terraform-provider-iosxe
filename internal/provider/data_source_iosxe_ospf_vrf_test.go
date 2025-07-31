@@ -53,6 +53,7 @@ func TestAccDataSourceIosxeOSPFVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "areas.0.nssa_no_summary", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "areas.0.nssa_no_redistribution", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "passive_interface_default", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ospf_vrf.test", "auto_cost_reference_bandwidth", "40000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -116,6 +117,7 @@ func testAccDataSourceIosxeOSPFVRFConfig() string {
 	config += `		nssa_no_redistribution = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	passive_interface_default = true` + "\n"
+	config += `	auto_cost_reference_bandwidth = 40000` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

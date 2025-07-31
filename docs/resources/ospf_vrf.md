@@ -57,7 +57,8 @@ resource "iosxe_ospf_vrf" "example" {
       nssa_no_redistribution                         = true
     }
   ]
-  passive_interface_default = true
+  passive_interface_default     = true
+  auto_cost_reference_bandwidth = 40000
 }
 ```
 
@@ -73,6 +74,8 @@ resource "iosxe_ospf_vrf" "example" {
 ### Optional
 
 - `areas` (Attributes List) OSPF area parameters (see [below for nested schema](#nestedatt--areas))
+- `auto_cost_reference_bandwidth` (Number) Use reference bandwidth method to assign OSPF cost
+  - Range: `1`-`4294967`
 - `bfd_all_interfaces` (Boolean) Enable BFD on all interfaces
 - `default_information_originate` (Boolean) Distribute a default route
 - `default_information_originate_always` (Boolean) Always advertise default route
@@ -89,6 +92,7 @@ resource "iosxe_ospf_vrf" "example" {
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
 - `neighbor` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbor))
 - `network` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--network))
+- `passive_interface` (List of String)
 - `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
 - `priority` (Number) OSPF topology priority
   - Range: `0`-`127`

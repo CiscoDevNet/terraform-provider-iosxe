@@ -278,6 +278,18 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").String,
 				Optional:            true,
 			},
+			"passive_interface": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"auto_cost_reference_bandwidth": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use reference bandwidth method to assign OSPF cost").AddIntegerRangeDescription(1, 4294967).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4294967),
+				},
+			},
 		},
 	}
 }

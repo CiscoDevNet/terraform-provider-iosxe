@@ -55,6 +55,8 @@ type OSPF struct {
 	SummaryAddresses                  []OSPFSummaryAddresses `tfsdk:"summary_addresses"`
 	Areas                             []OSPFAreas            `tfsdk:"areas"`
 	PassiveInterfaceDefault           types.Bool             `tfsdk:"passive_interface_default"`
+	PassiveInterface                  types.List             `tfsdk:"passive_interface"`
+	AutoCostReferenceBandwidth        types.Int64            `tfsdk:"auto_cost_reference_bandwidth"`
 }
 
 type OSPFData struct {
@@ -77,6 +79,8 @@ type OSPFData struct {
 	SummaryAddresses                  []OSPFSummaryAddresses `tfsdk:"summary_addresses"`
 	Areas                             []OSPFAreas            `tfsdk:"areas"`
 	PassiveInterfaceDefault           types.Bool             `tfsdk:"passive_interface_default"`
+	PassiveInterface                  types.List             `tfsdk:"passive_interface"`
+	AutoCostReferenceBandwidth        types.Int64            `tfsdk:"auto_cost_reference_bandwidth"`
 }
 type OSPFNeighbors struct {
 	Ip       types.String `tfsdk:"ip"`
@@ -172,6 +176,14 @@ func (data OSPF) toBody(ctx context.Context) string {
 	}
 	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.default", data.PassiveInterfaceDefault.ValueBool())
+	}
+	if !data.PassiveInterface.IsNull() && !data.PassiveInterface.IsUnknown() {
+		var values []string
+		data.PassiveInterface.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.interface", values)
+	}
+	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"auto-cost.reference-bandwidth", strconv.FormatInt(data.AutoCostReferenceBandwidth.ValueInt64(), 10))
 	}
 	if len(data.Neighbors) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor", []interface{}{})
@@ -544,6 +556,16 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.PassiveInterfaceDefault = types.BoolNull()
 	}
+	if value := res.Get(prefix + "passive-interface.interface"); value.Exists() && !data.PassiveInterface.IsNull() {
+		data.PassiveInterface = helpers.GetStringList(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() && !data.AutoCostReferenceBandwidth.IsNull() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	} else {
+		data.AutoCostReferenceBandwidth = types.Int64Null()
+	}
 }
 
 func (data *OSPF) fromBody(ctx context.Context, res gjson.Result) {
@@ -691,6 +713,14 @@ func (data *OSPF) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.PassiveInterfaceDefault = types.BoolNull()
 	}
+	if value := res.Get(prefix + "passive-interface.interface"); value.Exists() {
+		data.PassiveInterface = helpers.GetStringList(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	}
 }
 
 func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
@@ -837,6 +867,14 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
 	} else {
 		data.PassiveInterfaceDefault = types.BoolNull()
+	}
+	if value := res.Get(prefix + "passive-interface.interface"); value.Exists() {
+		data.PassiveInterface = helpers.GetStringList(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
 	}
 }
 
@@ -1014,6 +1052,30 @@ func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/default", state.getPath()))
 	}
+	if !state.PassiveInterface.IsNull() {
+		if data.PassiveInterface.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/interface", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.PassiveInterface.ElementsAs(ctx, &dataValues, false)
+			state.PassiveInterface.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/interface=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/auto-cost/reference-bandwidth", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -1113,6 +1175,12 @@ func (data *OSPF) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.PassiveInterfaceDefault.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
+	}
+	if !data.PassiveInterface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/interface", data.getPath()))
+	}
+	if !data.AutoCostReferenceBandwidth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/auto-cost/reference-bandwidth", data.getPath()))
 	}
 	return deletePaths
 }
