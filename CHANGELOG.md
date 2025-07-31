@@ -10,6 +10,7 @@
 - Add `auto_cost_reference_bandwidth`, `passive_interface` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Add `match_application_name`, `match_flow_observation_point`, `match_ipv4_version`, `collect_connection_initiator`, `collect_connection_new_connections`, `collect_connection_server_counter_bytes_network_long`, `collect_connection_server_counter_packets_long`, `collect_datalink_mac_source_address_input`, `collect_flow_direction`, `match_ipv6_destination_address`, `match_ipv6_source_address`, `match_ipv6_version`, `match_ipv6_protocol`, `match_connection_client_ipv4_address`, `match_connection_server_ipv4_address`, `match_connection_client_ipv6_address`, `match_connection_server_ipv6_address`, `match_connection_server_transport_port` attributes to `iosxe_flow_record` resource and data source
 - Add `export_protocol`, `option_interface_table_timeout`, `option_vrf_table_timeout`, `option_sampler_table`, `option_application_table_timeout`, `option_application_attributes_timeout` attributes to `iosxe_flow_exporter` resource and data source
+- Add `cache_timeout_inactive` attribute to `iosxe_flow_monitor` resource and data source
 
 ## 0.6.0
 

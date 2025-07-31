@@ -110,6 +110,13 @@ func (r *FlowMonitorResource) Schema(ctx context.Context, req resource.SchemaReq
 					int64validator.Between(1, 604800),
 				},
 			},
+			"cache_timeout_inactive": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Inactive timeout").AddIntegerRangeDescription(1, 604800).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 604800),
+				},
+			},
 			"record": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,

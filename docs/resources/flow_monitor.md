@@ -21,8 +21,9 @@ resource "iosxe_flow_monitor" "example" {
       name = "EXPORTER1"
     }
   ]
-  cache_timeout_active = 60
-  record               = "FNF1"
+  cache_timeout_active   = 60
+  cache_timeout_inactive = 10
+  record                 = "FNF1"
 }
 ```
 
@@ -36,6 +37,8 @@ resource "iosxe_flow_monitor" "example" {
 ### Optional
 
 - `cache_timeout_active` (Number) Active timeout
+  - Range: `1`-`604800`
+- `cache_timeout_inactive` (Number) Inactive timeout
   - Range: `1`-`604800`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`

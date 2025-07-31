@@ -86,6 +86,10 @@ func (d *FlowMonitorDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "Active timeout",
 				Computed:            true,
 			},
+			"cache_timeout_inactive": schema.Int64Attribute{
+				MarkdownDescription: "Inactive timeout",
+				Computed:            true,
+			},
 			"record": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,

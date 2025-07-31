@@ -35,24 +35,26 @@ import (
 )
 
 type FlowMonitor struct {
-	Device             types.String           `tfsdk:"device"`
-	Id                 types.String           `tfsdk:"id"`
-	DeleteMode         types.String           `tfsdk:"delete_mode"`
-	Name               types.String           `tfsdk:"name"`
-	Description        types.String           `tfsdk:"description"`
-	Exporters          []FlowMonitorExporters `tfsdk:"exporters"`
-	CacheTimeoutActive types.Int64            `tfsdk:"cache_timeout_active"`
-	Record             types.String           `tfsdk:"record"`
+	Device               types.String           `tfsdk:"device"`
+	Id                   types.String           `tfsdk:"id"`
+	DeleteMode           types.String           `tfsdk:"delete_mode"`
+	Name                 types.String           `tfsdk:"name"`
+	Description          types.String           `tfsdk:"description"`
+	Exporters            []FlowMonitorExporters `tfsdk:"exporters"`
+	CacheTimeoutActive   types.Int64            `tfsdk:"cache_timeout_active"`
+	CacheTimeoutInactive types.Int64            `tfsdk:"cache_timeout_inactive"`
+	Record               types.String           `tfsdk:"record"`
 }
 
 type FlowMonitorData struct {
-	Device             types.String           `tfsdk:"device"`
-	Id                 types.String           `tfsdk:"id"`
-	Name               types.String           `tfsdk:"name"`
-	Description        types.String           `tfsdk:"description"`
-	Exporters          []FlowMonitorExporters `tfsdk:"exporters"`
-	CacheTimeoutActive types.Int64            `tfsdk:"cache_timeout_active"`
-	Record             types.String           `tfsdk:"record"`
+	Device               types.String           `tfsdk:"device"`
+	Id                   types.String           `tfsdk:"id"`
+	Name                 types.String           `tfsdk:"name"`
+	Description          types.String           `tfsdk:"description"`
+	Exporters            []FlowMonitorExporters `tfsdk:"exporters"`
+	CacheTimeoutActive   types.Int64            `tfsdk:"cache_timeout_active"`
+	CacheTimeoutInactive types.Int64            `tfsdk:"cache_timeout_inactive"`
+	Record               types.String           `tfsdk:"record"`
 }
 type FlowMonitorExporters struct {
 	Name types.String `tfsdk:"name"`
@@ -87,6 +89,9 @@ func (data FlowMonitor) toBody(ctx context.Context) string {
 	}
 	if !data.CacheTimeoutActive.IsNull() && !data.CacheTimeoutActive.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"cache.timeout.active", strconv.FormatInt(data.CacheTimeoutActive.ValueInt64(), 10))
+	}
+	if !data.CacheTimeoutInactive.IsNull() && !data.CacheTimeoutInactive.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"cache.timeout.inactive", strconv.FormatInt(data.CacheTimeoutInactive.ValueInt64(), 10))
 	}
 	if !data.Record.IsNull() && !data.Record.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"record.type", data.Record.ValueString())
@@ -151,6 +156,11 @@ func (data *FlowMonitor) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CacheTimeoutActive = types.Int64Null()
 	}
+	if value := res.Get(prefix + "cache.timeout.inactive"); value.Exists() && !data.CacheTimeoutInactive.IsNull() {
+		data.CacheTimeoutInactive = types.Int64Value(value.Int())
+	} else {
+		data.CacheTimeoutInactive = types.Int64Null()
+	}
 	if value := res.Get(prefix + "record.type"); value.Exists() && !data.Record.IsNull() {
 		data.Record = types.StringValue(value.String())
 	} else {
@@ -180,6 +190,9 @@ func (data *FlowMonitor) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "cache.timeout.active"); value.Exists() {
 		data.CacheTimeoutActive = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "cache.timeout.inactive"); value.Exists() {
+		data.CacheTimeoutInactive = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "record.type"); value.Exists() {
 		data.Record = types.StringValue(value.String())
 	}
@@ -206,6 +219,9 @@ func (data *FlowMonitorData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "cache.timeout.active"); value.Exists() {
 		data.CacheTimeoutActive = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "cache.timeout.inactive"); value.Exists() {
+		data.CacheTimeoutInactive = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "record.type"); value.Exists() {
 		data.Record = types.StringValue(value.String())
@@ -245,6 +261,9 @@ func (data *FlowMonitor) getDeletedItems(ctx context.Context, state FlowMonitor)
 	if !state.CacheTimeoutActive.IsNull() && data.CacheTimeoutActive.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/cache/timeout/active", state.getPath()))
 	}
+	if !state.CacheTimeoutInactive.IsNull() && data.CacheTimeoutInactive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cache/timeout/inactive", state.getPath()))
+	}
 	if !state.Record.IsNull() && data.Record.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/record/type", state.getPath()))
 	}
@@ -269,6 +288,9 @@ func (data *FlowMonitor) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.CacheTimeoutActive.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/cache/timeout/active", data.getPath()))
+	}
+	if !data.CacheTimeoutInactive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/cache/timeout/inactive", data.getPath()))
 	}
 	if !data.Record.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/record/type", data.getPath()))

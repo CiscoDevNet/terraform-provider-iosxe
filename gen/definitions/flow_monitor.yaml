@@ -17,6 +17,8 @@ attributes:
         example: EXPORTER1
   - yang_name: cache/timeout/active
     example: 60
+  - yang_name: cache/timeout/inactive
+    example: 10
   - yang_name: record/type
     tf_name: record
     example: FNF1

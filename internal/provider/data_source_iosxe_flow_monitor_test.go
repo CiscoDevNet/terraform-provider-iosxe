@@ -30,6 +30,7 @@ func TestAccDataSourceIosxeFlowMonitor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_monitor.test", "description", "My monitor"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_monitor.test", "exporters.0.name", "EXPORTER1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_monitor.test", "cache_timeout_active", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_monitor.test", "cache_timeout_inactive", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_flow_monitor.test", "record", "FNF1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -69,6 +70,7 @@ func testAccDataSourceIosxeFlowMonitorConfig() string {
 	config += `		name = "EXPORTER1"` + "\n"
 	config += `	}]` + "\n"
 	config += `	cache_timeout_active = 60` + "\n"
+	config += `	cache_timeout_inactive = 10` + "\n"
 	config += `	record = "FNF1"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
