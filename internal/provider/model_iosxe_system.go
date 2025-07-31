@@ -34,81 +34,155 @@ import (
 )
 
 type System struct {
-	Device                                      types.String                                        `tfsdk:"device"`
-	Id                                          types.String                                        `tfsdk:"id"`
-	Hostname                                    types.String                                        `tfsdk:"hostname"`
-	IpBgpCommunityNewFormat                     types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
-	IpRouting                                   types.Bool                                          `tfsdk:"ip_routing"`
-	Ipv6UnicastRouting                          types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
-	Mtu                                         types.Int64                                         `tfsdk:"mtu"`
-	IpSourceRoute                               types.Bool                                          `tfsdk:"ip_source_route"`
-	IpDomainLookup                              types.Bool                                          `tfsdk:"ip_domain_lookup"`
-	IpDomainName                                types.String                                        `tfsdk:"ip_domain_name"`
-	LoginDelay                                  types.Int64                                         `tfsdk:"login_delay"`
-	LoginOnFailure                              types.Bool                                          `tfsdk:"login_on_failure"`
-	LoginOnFailureLog                           types.Bool                                          `tfsdk:"login_on_failure_log"`
-	LoginOnSuccess                              types.Bool                                          `tfsdk:"login_on_success"`
-	LoginOnSuccessLog                           types.Bool                                          `tfsdk:"login_on_success_log"`
-	IpMulticastRouting                          types.Bool                                          `tfsdk:"ip_multicast_routing"`
-	MulticastRoutingSwitch                      types.Bool                                          `tfsdk:"multicast_routing_switch"`
-	IpMulticastRoutingDistributed               types.Bool                                          `tfsdk:"ip_multicast_routing_distributed"`
-	MulticastRoutingVrfs                        []SystemMulticastRoutingVrfs                        `tfsdk:"multicast_routing_vrfs"`
-	IpHttpAccessClass                           types.Int64                                         `tfsdk:"ip_http_access_class"`
-	IpHttpAuthenticationAaa                     types.Bool                                          `tfsdk:"ip_http_authentication_aaa"`
-	IpHttpAuthenticationAaaExecAuthorization    types.String                                        `tfsdk:"ip_http_authentication_aaa_exec_authorization"`
-	IpHttpAuthenticationAaaLoginAuthentication  types.String                                        `tfsdk:"ip_http_authentication_aaa_login_authentication"`
-	IpHttpAuthenticationAaaCommandAuthorization []SystemIpHttpAuthenticationAaaCommandAuthorization `tfsdk:"ip_http_authentication_aaa_command_authorization"`
-	IpHttpAuthenticationLocal                   types.Bool                                          `tfsdk:"ip_http_authentication_local"`
-	IpHttpServer                                types.Bool                                          `tfsdk:"ip_http_server"`
-	IpHttpSecureServer                          types.Bool                                          `tfsdk:"ip_http_secure_server"`
-	IpHttpSecureTrustpoint                      types.String                                        `tfsdk:"ip_http_secure_trustpoint"`
-	IpHttpTlsVersion                            types.String                                        `tfsdk:"ip_http_tls_version"`
-	IpHttpClientSecureTrustpoint                types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
-	IpHttpClientSourceInterface                 types.String                                        `tfsdk:"ip_http_client_source_interface"`
-	IpHttpSecureActiveSessionModules            types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
-	IpHttpMaxConnections                        types.Int64                                         `tfsdk:"ip_http_max_connections"`
-	IpHttpActiveSessionModules                  types.String                                        `tfsdk:"ip_http_active_session_modules"`
-	IpNameServers                               types.List                                          `tfsdk:"ip_name_servers"`
-	IpNameServersVrf                            []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
+	Device                                                 types.String                                        `tfsdk:"device"`
+	Id                                                     types.String                                        `tfsdk:"id"`
+	Hostname                                               types.String                                        `tfsdk:"hostname"`
+	IpBgpCommunityNewFormat                                types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
+	IpRouting                                              types.Bool                                          `tfsdk:"ip_routing"`
+	Ipv6UnicastRouting                                     types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
+	Mtu                                                    types.Int64                                         `tfsdk:"mtu"`
+	IpSourceRoute                                          types.Bool                                          `tfsdk:"ip_source_route"`
+	IpDomainLookup                                         types.Bool                                          `tfsdk:"ip_domain_lookup"`
+	IpDomainName                                           types.String                                        `tfsdk:"ip_domain_name"`
+	LoginDelay                                             types.Int64                                         `tfsdk:"login_delay"`
+	LoginOnFailure                                         types.Bool                                          `tfsdk:"login_on_failure"`
+	LoginOnFailureLog                                      types.Bool                                          `tfsdk:"login_on_failure_log"`
+	LoginOnSuccess                                         types.Bool                                          `tfsdk:"login_on_success"`
+	LoginOnSuccessLog                                      types.Bool                                          `tfsdk:"login_on_success_log"`
+	IpMulticastRouting                                     types.Bool                                          `tfsdk:"ip_multicast_routing"`
+	MulticastRoutingSwitch                                 types.Bool                                          `tfsdk:"multicast_routing_switch"`
+	IpMulticastRoutingDistributed                          types.Bool                                          `tfsdk:"ip_multicast_routing_distributed"`
+	MulticastRoutingVrfs                                   []SystemMulticastRoutingVrfs                        `tfsdk:"multicast_routing_vrfs"`
+	IpHttpAccessClass                                      types.Int64                                         `tfsdk:"ip_http_access_class"`
+	IpHttpAuthenticationAaa                                types.Bool                                          `tfsdk:"ip_http_authentication_aaa"`
+	IpHttpAuthenticationAaaExecAuthorization               types.String                                        `tfsdk:"ip_http_authentication_aaa_exec_authorization"`
+	IpHttpAuthenticationAaaLoginAuthentication             types.String                                        `tfsdk:"ip_http_authentication_aaa_login_authentication"`
+	IpHttpAuthenticationAaaCommandAuthorization            []SystemIpHttpAuthenticationAaaCommandAuthorization `tfsdk:"ip_http_authentication_aaa_command_authorization"`
+	IpHttpAuthenticationLocal                              types.Bool                                          `tfsdk:"ip_http_authentication_local"`
+	IpHttpServer                                           types.Bool                                          `tfsdk:"ip_http_server"`
+	IpHttpSecureServer                                     types.Bool                                          `tfsdk:"ip_http_secure_server"`
+	IpHttpSecureTrustpoint                                 types.String                                        `tfsdk:"ip_http_secure_trustpoint"`
+	IpHttpTlsVersion                                       types.String                                        `tfsdk:"ip_http_tls_version"`
+	IpHttpClientSecureTrustpoint                           types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
+	IpHttpClientSourceInterface                            types.String                                        `tfsdk:"ip_http_client_source_interface"`
+	IpHttpSecureActiveSessionModules                       types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
+	IpHttpMaxConnections                                   types.Int64                                         `tfsdk:"ip_http_max_connections"`
+	IpHttpActiveSessionModules                             types.String                                        `tfsdk:"ip_http_active_session_modules"`
+	IpNameServers                                          types.List                                          `tfsdk:"ip_name_servers"`
+	IpNameServersVrf                                       []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
+	IpDomainLookupSourceInterfaceLoopback                  types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_loopback"`
+	IpDomainLookupSourceInterfaceVlan                      types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_vlan"`
+	IpDomainLookupSourceInterfaceGigabitEthernet           types.String                                        `tfsdk:"ip_domain_lookup_source_interface_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTwoGigabitEthernet        types.String                                        `tfsdk:"ip_domain_lookup_source_interface_two_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceFiveGigabitEthernet       types.String                                        `tfsdk:"ip_domain_lookup_source_interface_five_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTenGigabitEthernet        types.String                                        `tfsdk:"ip_domain_lookup_source_interface_ten_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet types.String                                        `tfsdk:"ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceFortyGigabitEthernet      types.String                                        `tfsdk:"ip_domain_lookup_source_interface_forty_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceHundredGigabitEthernet    types.String                                        `tfsdk:"ip_domain_lookup_source_interface_hundred_gigabit_ethernet"`
+	CispEnable                                             types.Bool                                          `tfsdk:"cisp_enable"`
+	EpmLogging                                             types.Bool                                          `tfsdk:"epm_logging"`
+	AccessSessionMacMoveDeny                               types.Bool                                          `tfsdk:"access_session_mac_move_deny"`
+	DiagnosticBootupLevel                                  types.String                                        `tfsdk:"diagnostic_bootup_level"`
+	MemoryFreeLowWatermarkProcessor                        types.Int64                                         `tfsdk:"memory_free_low_watermark_processor"`
+	ArchivePath                                            types.String                                        `tfsdk:"archive_path"`
+	ArchiveMaximum                                         types.Int64                                         `tfsdk:"archive_maximum"`
+	ArchiveWriteMemory                                     types.Bool                                          `tfsdk:"archive_write_memory"`
+	ArchiveTimePeriod                                      types.Int64                                         `tfsdk:"archive_time_period"`
+	ArchiveLogConfigLoggingEnable                          types.Bool                                          `tfsdk:"archive_log_config_logging_enable"`
+	ArchiveLogConfigLoggingSize                            types.Int64                                         `tfsdk:"archive_log_config_logging_size"`
+	Redundancy                                             types.Bool                                          `tfsdk:"redundancy"`
+	RedundancyMode                                         types.String                                        `tfsdk:"redundancy_mode"`
+	TransceiverTypeAllMonitoring                           types.Bool                                          `tfsdk:"transceiver_type_all_monitoring"`
+	IpForwardProtocolNd                                    types.Bool                                          `tfsdk:"ip_forward_protocol_nd"`
+	IpScpServerEnable                                      types.Bool                                          `tfsdk:"ip_scp_server_enable"`
+	IpSshVersion                                           types.String                                        `tfsdk:"ip_ssh_version"`
+	IpSshSourceInterfaceLoopback                           types.Int64                                         `tfsdk:"ip_ssh_source_interface_loopback"`
+	IpSshSourceInterfaceVlan                               types.Int64                                         `tfsdk:"ip_ssh_source_interface_vlan"`
+	IpSshSourceInterfaceGigabitEthernet                    types.String                                        `tfsdk:"ip_ssh_source_interface_gigabit_ethernet"`
+	IpSshSourceInterfaceTwoGigabitEthernet                 types.String                                        `tfsdk:"ip_ssh_source_interface_two_gigabit_ethernet"`
+	IpSshSourceInterfaceFiveGigabitEthernet                types.String                                        `tfsdk:"ip_ssh_source_interface_five_gigabit_ethernet"`
+	IpSshSourceInterfaceTenGigabitEthernet                 types.String                                        `tfsdk:"ip_ssh_source_interface_ten_gigabit_ethernet"`
+	IpSshSourceInterfaceTwentyFiveGigabitEthernet          types.String                                        `tfsdk:"ip_ssh_source_interface_twenty_five_gigabit_ethernet"`
+	IpSshSourceInterfaceFortyGigabitEthernet               types.String                                        `tfsdk:"ip_ssh_source_interface_forty_gigabit_ethernet"`
+	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                        `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
+	ControlPlaneServicePolicyInput                         types.String                                        `tfsdk:"control_plane_service_policy_input"`
+	PnpProfiles                                            []SystemPnpProfiles                                 `tfsdk:"pnp_profiles"`
 }
 
 type SystemData struct {
-	Device                                      types.String                                        `tfsdk:"device"`
-	Id                                          types.String                                        `tfsdk:"id"`
-	Hostname                                    types.String                                        `tfsdk:"hostname"`
-	IpBgpCommunityNewFormat                     types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
-	IpRouting                                   types.Bool                                          `tfsdk:"ip_routing"`
-	Ipv6UnicastRouting                          types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
-	Mtu                                         types.Int64                                         `tfsdk:"mtu"`
-	IpSourceRoute                               types.Bool                                          `tfsdk:"ip_source_route"`
-	IpDomainLookup                              types.Bool                                          `tfsdk:"ip_domain_lookup"`
-	IpDomainName                                types.String                                        `tfsdk:"ip_domain_name"`
-	LoginDelay                                  types.Int64                                         `tfsdk:"login_delay"`
-	LoginOnFailure                              types.Bool                                          `tfsdk:"login_on_failure"`
-	LoginOnFailureLog                           types.Bool                                          `tfsdk:"login_on_failure_log"`
-	LoginOnSuccess                              types.Bool                                          `tfsdk:"login_on_success"`
-	LoginOnSuccessLog                           types.Bool                                          `tfsdk:"login_on_success_log"`
-	IpMulticastRouting                          types.Bool                                          `tfsdk:"ip_multicast_routing"`
-	MulticastRoutingSwitch                      types.Bool                                          `tfsdk:"multicast_routing_switch"`
-	IpMulticastRoutingDistributed               types.Bool                                          `tfsdk:"ip_multicast_routing_distributed"`
-	MulticastRoutingVrfs                        []SystemMulticastRoutingVrfs                        `tfsdk:"multicast_routing_vrfs"`
-	IpHttpAccessClass                           types.Int64                                         `tfsdk:"ip_http_access_class"`
-	IpHttpAuthenticationAaa                     types.Bool                                          `tfsdk:"ip_http_authentication_aaa"`
-	IpHttpAuthenticationAaaExecAuthorization    types.String                                        `tfsdk:"ip_http_authentication_aaa_exec_authorization"`
-	IpHttpAuthenticationAaaLoginAuthentication  types.String                                        `tfsdk:"ip_http_authentication_aaa_login_authentication"`
-	IpHttpAuthenticationAaaCommandAuthorization []SystemIpHttpAuthenticationAaaCommandAuthorization `tfsdk:"ip_http_authentication_aaa_command_authorization"`
-	IpHttpAuthenticationLocal                   types.Bool                                          `tfsdk:"ip_http_authentication_local"`
-	IpHttpServer                                types.Bool                                          `tfsdk:"ip_http_server"`
-	IpHttpSecureServer                          types.Bool                                          `tfsdk:"ip_http_secure_server"`
-	IpHttpSecureTrustpoint                      types.String                                        `tfsdk:"ip_http_secure_trustpoint"`
-	IpHttpTlsVersion                            types.String                                        `tfsdk:"ip_http_tls_version"`
-	IpHttpClientSecureTrustpoint                types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
-	IpHttpClientSourceInterface                 types.String                                        `tfsdk:"ip_http_client_source_interface"`
-	IpHttpSecureActiveSessionModules            types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
-	IpHttpMaxConnections                        types.Int64                                         `tfsdk:"ip_http_max_connections"`
-	IpHttpActiveSessionModules                  types.String                                        `tfsdk:"ip_http_active_session_modules"`
-	IpNameServers                               types.List                                          `tfsdk:"ip_name_servers"`
-	IpNameServersVrf                            []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
+	Device                                                 types.String                                        `tfsdk:"device"`
+	Id                                                     types.String                                        `tfsdk:"id"`
+	Hostname                                               types.String                                        `tfsdk:"hostname"`
+	IpBgpCommunityNewFormat                                types.Bool                                          `tfsdk:"ip_bgp_community_new_format"`
+	IpRouting                                              types.Bool                                          `tfsdk:"ip_routing"`
+	Ipv6UnicastRouting                                     types.Bool                                          `tfsdk:"ipv6_unicast_routing"`
+	Mtu                                                    types.Int64                                         `tfsdk:"mtu"`
+	IpSourceRoute                                          types.Bool                                          `tfsdk:"ip_source_route"`
+	IpDomainLookup                                         types.Bool                                          `tfsdk:"ip_domain_lookup"`
+	IpDomainName                                           types.String                                        `tfsdk:"ip_domain_name"`
+	LoginDelay                                             types.Int64                                         `tfsdk:"login_delay"`
+	LoginOnFailure                                         types.Bool                                          `tfsdk:"login_on_failure"`
+	LoginOnFailureLog                                      types.Bool                                          `tfsdk:"login_on_failure_log"`
+	LoginOnSuccess                                         types.Bool                                          `tfsdk:"login_on_success"`
+	LoginOnSuccessLog                                      types.Bool                                          `tfsdk:"login_on_success_log"`
+	IpMulticastRouting                                     types.Bool                                          `tfsdk:"ip_multicast_routing"`
+	MulticastRoutingSwitch                                 types.Bool                                          `tfsdk:"multicast_routing_switch"`
+	IpMulticastRoutingDistributed                          types.Bool                                          `tfsdk:"ip_multicast_routing_distributed"`
+	MulticastRoutingVrfs                                   []SystemMulticastRoutingVrfs                        `tfsdk:"multicast_routing_vrfs"`
+	IpHttpAccessClass                                      types.Int64                                         `tfsdk:"ip_http_access_class"`
+	IpHttpAuthenticationAaa                                types.Bool                                          `tfsdk:"ip_http_authentication_aaa"`
+	IpHttpAuthenticationAaaExecAuthorization               types.String                                        `tfsdk:"ip_http_authentication_aaa_exec_authorization"`
+	IpHttpAuthenticationAaaLoginAuthentication             types.String                                        `tfsdk:"ip_http_authentication_aaa_login_authentication"`
+	IpHttpAuthenticationAaaCommandAuthorization            []SystemIpHttpAuthenticationAaaCommandAuthorization `tfsdk:"ip_http_authentication_aaa_command_authorization"`
+	IpHttpAuthenticationLocal                              types.Bool                                          `tfsdk:"ip_http_authentication_local"`
+	IpHttpServer                                           types.Bool                                          `tfsdk:"ip_http_server"`
+	IpHttpSecureServer                                     types.Bool                                          `tfsdk:"ip_http_secure_server"`
+	IpHttpSecureTrustpoint                                 types.String                                        `tfsdk:"ip_http_secure_trustpoint"`
+	IpHttpTlsVersion                                       types.String                                        `tfsdk:"ip_http_tls_version"`
+	IpHttpClientSecureTrustpoint                           types.String                                        `tfsdk:"ip_http_client_secure_trustpoint"`
+	IpHttpClientSourceInterface                            types.String                                        `tfsdk:"ip_http_client_source_interface"`
+	IpHttpSecureActiveSessionModules                       types.String                                        `tfsdk:"ip_http_secure_active_session_modules"`
+	IpHttpMaxConnections                                   types.Int64                                         `tfsdk:"ip_http_max_connections"`
+	IpHttpActiveSessionModules                             types.String                                        `tfsdk:"ip_http_active_session_modules"`
+	IpNameServers                                          types.List                                          `tfsdk:"ip_name_servers"`
+	IpNameServersVrf                                       []SystemIpNameServersVrf                            `tfsdk:"ip_name_servers_vrf"`
+	IpDomainLookupSourceInterfaceLoopback                  types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_loopback"`
+	IpDomainLookupSourceInterfaceVlan                      types.Int64                                         `tfsdk:"ip_domain_lookup_source_interface_vlan"`
+	IpDomainLookupSourceInterfaceGigabitEthernet           types.String                                        `tfsdk:"ip_domain_lookup_source_interface_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTwoGigabitEthernet        types.String                                        `tfsdk:"ip_domain_lookup_source_interface_two_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceFiveGigabitEthernet       types.String                                        `tfsdk:"ip_domain_lookup_source_interface_five_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTenGigabitEthernet        types.String                                        `tfsdk:"ip_domain_lookup_source_interface_ten_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet types.String                                        `tfsdk:"ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceFortyGigabitEthernet      types.String                                        `tfsdk:"ip_domain_lookup_source_interface_forty_gigabit_ethernet"`
+	IpDomainLookupSourceInterfaceHundredGigabitEthernet    types.String                                        `tfsdk:"ip_domain_lookup_source_interface_hundred_gigabit_ethernet"`
+	CispEnable                                             types.Bool                                          `tfsdk:"cisp_enable"`
+	EpmLogging                                             types.Bool                                          `tfsdk:"epm_logging"`
+	AccessSessionMacMoveDeny                               types.Bool                                          `tfsdk:"access_session_mac_move_deny"`
+	DiagnosticBootupLevel                                  types.String                                        `tfsdk:"diagnostic_bootup_level"`
+	MemoryFreeLowWatermarkProcessor                        types.Int64                                         `tfsdk:"memory_free_low_watermark_processor"`
+	ArchivePath                                            types.String                                        `tfsdk:"archive_path"`
+	ArchiveMaximum                                         types.Int64                                         `tfsdk:"archive_maximum"`
+	ArchiveWriteMemory                                     types.Bool                                          `tfsdk:"archive_write_memory"`
+	ArchiveTimePeriod                                      types.Int64                                         `tfsdk:"archive_time_period"`
+	ArchiveLogConfigLoggingEnable                          types.Bool                                          `tfsdk:"archive_log_config_logging_enable"`
+	ArchiveLogConfigLoggingSize                            types.Int64                                         `tfsdk:"archive_log_config_logging_size"`
+	Redundancy                                             types.Bool                                          `tfsdk:"redundancy"`
+	RedundancyMode                                         types.String                                        `tfsdk:"redundancy_mode"`
+	TransceiverTypeAllMonitoring                           types.Bool                                          `tfsdk:"transceiver_type_all_monitoring"`
+	IpForwardProtocolNd                                    types.Bool                                          `tfsdk:"ip_forward_protocol_nd"`
+	IpScpServerEnable                                      types.Bool                                          `tfsdk:"ip_scp_server_enable"`
+	IpSshVersion                                           types.String                                        `tfsdk:"ip_ssh_version"`
+	IpSshSourceInterfaceLoopback                           types.Int64                                         `tfsdk:"ip_ssh_source_interface_loopback"`
+	IpSshSourceInterfaceVlan                               types.Int64                                         `tfsdk:"ip_ssh_source_interface_vlan"`
+	IpSshSourceInterfaceGigabitEthernet                    types.String                                        `tfsdk:"ip_ssh_source_interface_gigabit_ethernet"`
+	IpSshSourceInterfaceTwoGigabitEthernet                 types.String                                        `tfsdk:"ip_ssh_source_interface_two_gigabit_ethernet"`
+	IpSshSourceInterfaceFiveGigabitEthernet                types.String                                        `tfsdk:"ip_ssh_source_interface_five_gigabit_ethernet"`
+	IpSshSourceInterfaceTenGigabitEthernet                 types.String                                        `tfsdk:"ip_ssh_source_interface_ten_gigabit_ethernet"`
+	IpSshSourceInterfaceTwentyFiveGigabitEthernet          types.String                                        `tfsdk:"ip_ssh_source_interface_twenty_five_gigabit_ethernet"`
+	IpSshSourceInterfaceFortyGigabitEthernet               types.String                                        `tfsdk:"ip_ssh_source_interface_forty_gigabit_ethernet"`
+	IpSshSourceInterfaceHundredGigabitEthernet             types.String                                        `tfsdk:"ip_ssh_source_interface_hundred_gigabit_ethernet"`
+	ControlPlaneServicePolicyInput                         types.String                                        `tfsdk:"control_plane_service_policy_input"`
+	PnpProfiles                                            []SystemPnpProfiles                                 `tfsdk:"pnp_profiles"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -121,6 +195,11 @@ type SystemIpHttpAuthenticationAaaCommandAuthorization struct {
 type SystemIpNameServersVrf struct {
 	Vrf     types.String `tfsdk:"vrf"`
 	Servers types.List   `tfsdk:"servers"`
+}
+type SystemPnpProfiles struct {
+	Name                          types.String `tfsdk:"name"`
+	TransportHttpsIpv4Ipv4Address types.String `tfsdk:"transport_https_ipv4_ipv4_address"`
+	TransportHttpsIpv4Port        types.Int64  `tfsdk:"transport_https_ipv4_port"`
 }
 
 func (data System) getPath() string {
@@ -261,6 +340,130 @@ func (data System) toBody(ctx context.Context) string {
 		data.IpNameServers.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.name-server.no-vrf-ordered", values)
 	}
+	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() && !data.IpDomainLookupSourceInterfaceLoopback.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.Loopback", strconv.FormatInt(data.IpDomainLookupSourceInterfaceLoopback.ValueInt64(), 10))
+	}
+	if !data.IpDomainLookupSourceInterfaceVlan.IsNull() && !data.IpDomainLookupSourceInterfaceVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.Vlan", strconv.FormatInt(data.IpDomainLookupSourceInterfaceVlan.ValueInt64(), 10))
+	}
+	if !data.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() && !data.IpDomainLookupSourceInterfaceGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.GigabitEthernet", data.IpDomainLookupSourceInterfaceGigabitEthernet.ValueString())
+	}
+	if !data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() && !data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.TwoGigabitEthernet", data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.ValueString())
+	}
+	if !data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() && !data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.FiveGigabitEthernet", data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.ValueString())
+	}
+	if !data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() && !data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.TenGigabitEthernet", data.IpDomainLookupSourceInterfaceTenGigabitEthernet.ValueString())
+	}
+	if !data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && !data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.TwentyFiveGigE", data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.ValueString())
+	}
+	if !data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() && !data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.FortyGigabitEthernet", data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.ValueString())
+	}
+	if !data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() && !data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.lookup-settings.lookup.source-interface.HundredGigE", data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.ValueString())
+	}
+	if !data.CispEnable.IsNull() && !data.CispEnable.IsUnknown() {
+		if data.CispEnable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"cisp.enable", map[string]string{})
+		}
+	}
+	if !data.EpmLogging.IsNull() && !data.EpmLogging.IsUnknown() {
+		if data.EpmLogging.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"epm.logging", map[string]string{})
+		}
+	}
+	if !data.AccessSessionMacMoveDeny.IsNull() && !data.AccessSessionMacMoveDeny.IsUnknown() {
+		if data.AccessSessionMacMoveDeny.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-session.mac-move.deny", map[string]string{})
+		}
+	}
+	if !data.DiagnosticBootupLevel.IsNull() && !data.DiagnosticBootupLevel.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-diagnostics:diagnostic.bootup.level", data.DiagnosticBootupLevel.ValueString())
+	}
+	if !data.MemoryFreeLowWatermarkProcessor.IsNull() && !data.MemoryFreeLowWatermarkProcessor.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"memory.free.low-watermark.processor", strconv.FormatInt(data.MemoryFreeLowWatermarkProcessor.ValueInt64(), 10))
+	}
+	if !data.ArchivePath.IsNull() && !data.ArchivePath.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"archive.path", data.ArchivePath.ValueString())
+	}
+	if !data.ArchiveMaximum.IsNull() && !data.ArchiveMaximum.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"archive.maximum", strconv.FormatInt(data.ArchiveMaximum.ValueInt64(), 10))
+	}
+	if !data.ArchiveWriteMemory.IsNull() && !data.ArchiveWriteMemory.IsUnknown() {
+		if data.ArchiveWriteMemory.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"archive.write-memory", map[string]string{})
+		}
+	}
+	if !data.ArchiveTimePeriod.IsNull() && !data.ArchiveTimePeriod.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"archive.time-period", strconv.FormatInt(data.ArchiveTimePeriod.ValueInt64(), 10))
+	}
+	if !data.ArchiveLogConfigLoggingEnable.IsNull() && !data.ArchiveLogConfigLoggingEnable.IsUnknown() {
+		if data.ArchiveLogConfigLoggingEnable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"archive.log.config.logging.enable", map[string]string{})
+		}
+	}
+	if !data.ArchiveLogConfigLoggingSize.IsNull() && !data.ArchiveLogConfigLoggingSize.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"archive.log.config.logging.size", strconv.FormatInt(data.ArchiveLogConfigLoggingSize.ValueInt64(), 10))
+	}
+	if !data.Redundancy.IsNull() && !data.Redundancy.IsUnknown() {
+		if data.Redundancy.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redundancy", map[string]string{})
+		}
+	}
+	if !data.RedundancyMode.IsNull() && !data.RedundancyMode.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redundancy.mode", data.RedundancyMode.ValueString())
+	}
+	if !data.TransceiverTypeAllMonitoring.IsNull() && !data.TransceiverTypeAllMonitoring.IsUnknown() {
+		if data.TransceiverTypeAllMonitoring.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"transceivers.type.all.monitoring-enable.monitoring", map[string]string{})
+		}
+	}
+	if !data.IpForwardProtocolNd.IsNull() && !data.IpForwardProtocolNd.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.forward-protocol-v2.nd", data.IpForwardProtocolNd.ValueBool())
+	}
+	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.IsUnknown() {
+		if data.IpScpServerEnable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.scp.server.enable", map[string]string{})
+		}
+	}
+	if !data.IpSshVersion.IsNull() && !data.IpSshVersion.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.ssh-version", data.IpSshVersion.ValueString())
+	}
+	if !data.IpSshSourceInterfaceLoopback.IsNull() && !data.IpSshSourceInterfaceLoopback.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.Loopback", strconv.FormatInt(data.IpSshSourceInterfaceLoopback.ValueInt64(), 10))
+	}
+	if !data.IpSshSourceInterfaceVlan.IsNull() && !data.IpSshSourceInterfaceVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.Vlan", strconv.FormatInt(data.IpSshSourceInterfaceVlan.ValueInt64(), 10))
+	}
+	if !data.IpSshSourceInterfaceGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.GigabitEthernet", data.IpSshSourceInterfaceGigabitEthernet.ValueString())
+	}
+	if !data.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceTwoGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.TwoGigabitEthernet", data.IpSshSourceInterfaceTwoGigabitEthernet.ValueString())
+	}
+	if !data.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceFiveGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.FiveGigabitEthernet", data.IpSshSourceInterfaceFiveGigabitEthernet.ValueString())
+	}
+	if !data.IpSshSourceInterfaceTenGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceTenGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.TenGigabitEthernet", data.IpSshSourceInterfaceTenGigabitEthernet.ValueString())
+	}
+	if !data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.TwentyFiveGigE", data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.ValueString())
+	}
+	if !data.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceFortyGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.FortyGigabitEthernet", data.IpSshSourceInterfaceFortyGigabitEthernet.ValueString())
+	}
+	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && !data.IpSshSourceInterfaceHundredGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.HundredGigE", data.IpSshSourceInterfaceHundredGigabitEthernet.ValueString())
+	}
+	if !data.ControlPlaneServicePolicyInput.IsNull() && !data.ControlPlaneServicePolicyInput.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"control-plane.Cisco-IOS-XE-policy:service-policy.input", data.ControlPlaneServicePolicyInput.ValueString())
+	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
 		for index, item := range data.MulticastRoutingVrfs {
@@ -295,6 +498,20 @@ func (data System) toBody(ctx context.Context) string {
 				var values []string
 				item.Servers.ElementsAs(ctx, &values, false)
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.name-server.vrf"+"."+strconv.Itoa(index)+"."+"server-ip-list-ordered", values)
+			}
+		}
+	}
+	if len(data.PnpProfiles) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-pnp:pnp.profile", []interface{}{})
+		for index, item := range data.PnpProfiles {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-pnp:pnp.profile"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.TransportHttpsIpv4Ipv4Address.IsNull() && !item.TransportHttpsIpv4Ipv4Address.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-pnp:pnp.profile"+"."+strconv.Itoa(index)+"."+"transport.https.ipv4.ipv4-address", item.TransportHttpsIpv4Ipv4Address.ValueString())
+			}
+			if !item.TransportHttpsIpv4Port.IsNull() && !item.TransportHttpsIpv4Port.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-pnp:pnp.profile"+"."+strconv.Itoa(index)+"."+"transport.https.ipv4.port", strconv.FormatInt(item.TransportHttpsIpv4Port.ValueInt64(), 10))
 			}
 		}
 	}
@@ -621,6 +838,259 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.IpNameServersVrf[i].Servers = types.ListNull(types.StringType)
 		}
 	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Loopback"); value.Exists() && !data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
+		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
+	} else {
+		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Vlan"); value.Exists() && !data.IpDomainLookupSourceInterfaceVlan.IsNull() {
+		data.IpDomainLookupSourceInterfaceVlan = types.Int64Value(value.Int())
+	} else {
+		data.IpDomainLookupSourceInterfaceVlan = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.GigabitEthernet"); value.Exists() && !data.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() {
+		data.IpDomainLookupSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpDomainLookupSourceInterfaceGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TwoGigabitEthernet"); value.Exists() && !data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() {
+		data.IpDomainLookupSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpDomainLookupSourceInterfaceTwoGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.FiveGigabitEthernet"); value.Exists() && !data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() {
+		data.IpDomainLookupSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpDomainLookupSourceInterfaceFiveGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TenGigabitEthernet"); value.Exists() && !data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() {
+		data.IpDomainLookupSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpDomainLookupSourceInterfaceTenGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TwentyFiveGigE"); value.Exists() && !data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.FortyGigabitEthernet"); value.Exists() && !data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() {
+		data.IpDomainLookupSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpDomainLookupSourceInterfaceFortyGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.HundredGigE"); value.Exists() && !data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() {
+		data.IpDomainLookupSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpDomainLookupSourceInterfaceHundredGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "cisp.enable"); !data.CispEnable.IsNull() {
+		if value.Exists() {
+			data.CispEnable = types.BoolValue(true)
+		} else {
+			data.CispEnable = types.BoolValue(false)
+		}
+	} else {
+		data.CispEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "epm.logging"); !data.EpmLogging.IsNull() {
+		if value.Exists() {
+			data.EpmLogging = types.BoolValue(true)
+		} else {
+			data.EpmLogging = types.BoolValue(false)
+		}
+	} else {
+		data.EpmLogging = types.BoolNull()
+	}
+	if value := res.Get(prefix + "access-session.mac-move.deny"); !data.AccessSessionMacMoveDeny.IsNull() {
+		if value.Exists() {
+			data.AccessSessionMacMoveDeny = types.BoolValue(true)
+		} else {
+			data.AccessSessionMacMoveDeny = types.BoolValue(false)
+		}
+	} else {
+		data.AccessSessionMacMoveDeny = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-diagnostics:diagnostic.bootup.level"); value.Exists() && !data.DiagnosticBootupLevel.IsNull() {
+		data.DiagnosticBootupLevel = types.StringValue(value.String())
+	} else {
+		data.DiagnosticBootupLevel = types.StringNull()
+	}
+	if value := res.Get(prefix + "memory.free.low-watermark.processor"); value.Exists() && !data.MemoryFreeLowWatermarkProcessor.IsNull() {
+		data.MemoryFreeLowWatermarkProcessor = types.Int64Value(value.Int())
+	} else {
+		data.MemoryFreeLowWatermarkProcessor = types.Int64Null()
+	}
+	if value := res.Get(prefix + "archive.path"); value.Exists() && !data.ArchivePath.IsNull() {
+		data.ArchivePath = types.StringValue(value.String())
+	} else {
+		data.ArchivePath = types.StringNull()
+	}
+	if value := res.Get(prefix + "archive.maximum"); value.Exists() && !data.ArchiveMaximum.IsNull() {
+		data.ArchiveMaximum = types.Int64Value(value.Int())
+	} else {
+		data.ArchiveMaximum = types.Int64Null()
+	}
+	if value := res.Get(prefix + "archive.write-memory"); !data.ArchiveWriteMemory.IsNull() {
+		if value.Exists() {
+			data.ArchiveWriteMemory = types.BoolValue(true)
+		} else {
+			data.ArchiveWriteMemory = types.BoolValue(false)
+		}
+	} else {
+		data.ArchiveWriteMemory = types.BoolNull()
+	}
+	if value := res.Get(prefix + "archive.time-period"); value.Exists() && !data.ArchiveTimePeriod.IsNull() {
+		data.ArchiveTimePeriod = types.Int64Value(value.Int())
+	} else {
+		data.ArchiveTimePeriod = types.Int64Null()
+	}
+	if value := res.Get(prefix + "archive.log.config.logging.enable"); !data.ArchiveLogConfigLoggingEnable.IsNull() {
+		if value.Exists() {
+			data.ArchiveLogConfigLoggingEnable = types.BoolValue(true)
+		} else {
+			data.ArchiveLogConfigLoggingEnable = types.BoolValue(false)
+		}
+	} else {
+		data.ArchiveLogConfigLoggingEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "archive.log.config.logging.size"); value.Exists() && !data.ArchiveLogConfigLoggingSize.IsNull() {
+		data.ArchiveLogConfigLoggingSize = types.Int64Value(value.Int())
+	} else {
+		data.ArchiveLogConfigLoggingSize = types.Int64Null()
+	}
+	if value := res.Get(prefix + "redundancy"); !data.Redundancy.IsNull() {
+		if value.Exists() {
+			data.Redundancy = types.BoolValue(true)
+		} else {
+			data.Redundancy = types.BoolValue(false)
+		}
+	} else {
+		data.Redundancy = types.BoolNull()
+	}
+	if value := res.Get(prefix + "redundancy.mode"); value.Exists() && !data.RedundancyMode.IsNull() {
+		data.RedundancyMode = types.StringValue(value.String())
+	} else {
+		data.RedundancyMode = types.StringNull()
+	}
+	if value := res.Get(prefix + "transceivers.type.all.monitoring-enable.monitoring"); !data.TransceiverTypeAllMonitoring.IsNull() {
+		if value.Exists() {
+			data.TransceiverTypeAllMonitoring = types.BoolValue(true)
+		} else {
+			data.TransceiverTypeAllMonitoring = types.BoolValue(false)
+		}
+	} else {
+		data.TransceiverTypeAllMonitoring = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.forward-protocol-v2.nd"); !data.IpForwardProtocolNd.IsNull() {
+		if value.Exists() {
+			data.IpForwardProtocolNd = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpForwardProtocolNd = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.scp.server.enable"); !data.IpScpServerEnable.IsNull() {
+		if value.Exists() {
+			data.IpScpServerEnable = types.BoolValue(true)
+		} else {
+			data.IpScpServerEnable = types.BoolValue(false)
+		}
+	} else {
+		data.IpScpServerEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.ssh-version"); value.Exists() && !data.IpSshVersion.IsNull() {
+		data.IpSshVersion = types.StringValue(value.String())
+	} else {
+		data.IpSshVersion = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.Loopback"); value.Exists() && !data.IpSshSourceInterfaceLoopback.IsNull() {
+		data.IpSshSourceInterfaceLoopback = types.Int64Value(value.Int())
+	} else {
+		data.IpSshSourceInterfaceLoopback = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.Vlan"); value.Exists() && !data.IpSshSourceInterfaceVlan.IsNull() {
+		data.IpSshSourceInterfaceVlan = types.Int64Value(value.Int())
+	} else {
+		data.IpSshSourceInterfaceVlan = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.GigabitEthernet"); value.Exists() && !data.IpSshSourceInterfaceGigabitEthernet.IsNull() {
+		data.IpSshSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpSshSourceInterfaceGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TwoGigabitEthernet"); value.Exists() && !data.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() {
+		data.IpSshSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpSshSourceInterfaceTwoGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.FiveGigabitEthernet"); value.Exists() && !data.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() {
+		data.IpSshSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpSshSourceInterfaceFiveGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TenGigabitEthernet"); value.Exists() && !data.IpSshSourceInterfaceTenGigabitEthernet.IsNull() {
+		data.IpSshSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpSshSourceInterfaceTenGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TwentyFiveGigE"); value.Exists() && !data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		data.IpSshSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpSshSourceInterfaceTwentyFiveGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.FortyGigabitEthernet"); value.Exists() && !data.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() {
+		data.IpSshSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpSshSourceInterfaceFortyGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.HundredGigE"); value.Exists() && !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
+		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() && !data.ControlPlaneServicePolicyInput.IsNull() {
+		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
+	} else {
+		data.ControlPlaneServicePolicyInput = types.StringNull()
+	}
+	for i := range data.PnpProfiles {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PnpProfiles[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-pnp:pnp.profile").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PnpProfiles[i].Name.IsNull() {
+			data.PnpProfiles[i].Name = types.StringValue(value.String())
+		} else {
+			data.PnpProfiles[i].Name = types.StringNull()
+		}
+		if value := r.Get("transport.https.ipv4.ipv4-address"); value.Exists() && !data.PnpProfiles[i].TransportHttpsIpv4Ipv4Address.IsNull() {
+			data.PnpProfiles[i].TransportHttpsIpv4Ipv4Address = types.StringValue(value.String())
+		} else {
+			data.PnpProfiles[i].TransportHttpsIpv4Ipv4Address = types.StringNull()
+		}
+		if value := r.Get("transport.https.ipv4.port"); value.Exists() && !data.PnpProfiles[i].TransportHttpsIpv4Port.IsNull() {
+			data.PnpProfiles[i].TransportHttpsIpv4Port = types.Int64Value(value.Int())
+		} else {
+			data.PnpProfiles[i].TransportHttpsIpv4Port = types.Int64Null()
+		}
+	}
 }
 
 func (data *System) fromBody(ctx context.Context, res gjson.Result) {
@@ -801,6 +1271,149 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Loopback"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Vlan"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.GigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TwoGigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.FiveGigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TenGigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TwentyFiveGigE"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.FortyGigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.HundredGigE"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "cisp.enable"); value.Exists() {
+		data.CispEnable = types.BoolValue(true)
+	} else {
+		data.CispEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "epm.logging"); value.Exists() {
+		data.EpmLogging = types.BoolValue(true)
+	} else {
+		data.EpmLogging = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "access-session.mac-move.deny"); value.Exists() {
+		data.AccessSessionMacMoveDeny = types.BoolValue(true)
+	} else {
+		data.AccessSessionMacMoveDeny = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-diagnostics:diagnostic.bootup.level"); value.Exists() {
+		data.DiagnosticBootupLevel = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "memory.free.low-watermark.processor"); value.Exists() {
+		data.MemoryFreeLowWatermarkProcessor = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "archive.path"); value.Exists() {
+		data.ArchivePath = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "archive.maximum"); value.Exists() {
+		data.ArchiveMaximum = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "archive.write-memory"); value.Exists() {
+		data.ArchiveWriteMemory = types.BoolValue(true)
+	} else {
+		data.ArchiveWriteMemory = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "archive.time-period"); value.Exists() {
+		data.ArchiveTimePeriod = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "archive.log.config.logging.enable"); value.Exists() {
+		data.ArchiveLogConfigLoggingEnable = types.BoolValue(true)
+	} else {
+		data.ArchiveLogConfigLoggingEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "archive.log.config.logging.size"); value.Exists() {
+		data.ArchiveLogConfigLoggingSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "redundancy"); value.Exists() {
+		data.Redundancy = types.BoolValue(true)
+	} else {
+		data.Redundancy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "redundancy.mode"); value.Exists() {
+		data.RedundancyMode = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "transceivers.type.all.monitoring-enable.monitoring"); value.Exists() {
+		data.TransceiverTypeAllMonitoring = types.BoolValue(true)
+	} else {
+		data.TransceiverTypeAllMonitoring = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.forward-protocol-v2.nd"); value.Exists() {
+		data.IpForwardProtocolNd = types.BoolValue(value.Bool())
+	} else {
+		data.IpForwardProtocolNd = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.scp.server.enable"); value.Exists() {
+		data.IpScpServerEnable = types.BoolValue(true)
+	} else {
+		data.IpScpServerEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.ssh.ssh-version"); value.Exists() {
+		data.IpSshVersion = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.Loopback"); value.Exists() {
+		data.IpSshSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.Vlan"); value.Exists() {
+		data.IpSshSourceInterfaceVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.GigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TwoGigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.FiveGigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TenGigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TwentyFiveGigE"); value.Exists() {
+		data.IpSshSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.FortyGigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.HundredGigE"); value.Exists() {
+		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
+		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-pnp:pnp.profile"); value.Exists() {
+		data.PnpProfiles = make([]SystemPnpProfiles, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemPnpProfiles{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.https.ipv4.ipv4-address"); cValue.Exists() {
+				item.TransportHttpsIpv4Ipv4Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.https.ipv4.port"); cValue.Exists() {
+				item.TransportHttpsIpv4Port = types.Int64Value(cValue.Int())
+			}
+			data.PnpProfiles = append(data.PnpProfiles, item)
+			return true
+		})
+	}
 }
 
 func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
@@ -978,6 +1591,149 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Servers = types.ListNull(types.StringType)
 			}
 			data.IpNameServersVrf = append(data.IpNameServersVrf, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Loopback"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.Vlan"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.GigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TwoGigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.FiveGigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TenGigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.TwentyFiveGigE"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.FortyGigabitEthernet"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.lookup-settings.lookup.source-interface.HundredGigE"); value.Exists() {
+		data.IpDomainLookupSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "cisp.enable"); value.Exists() {
+		data.CispEnable = types.BoolValue(true)
+	} else {
+		data.CispEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "epm.logging"); value.Exists() {
+		data.EpmLogging = types.BoolValue(true)
+	} else {
+		data.EpmLogging = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "access-session.mac-move.deny"); value.Exists() {
+		data.AccessSessionMacMoveDeny = types.BoolValue(true)
+	} else {
+		data.AccessSessionMacMoveDeny = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-diagnostics:diagnostic.bootup.level"); value.Exists() {
+		data.DiagnosticBootupLevel = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "memory.free.low-watermark.processor"); value.Exists() {
+		data.MemoryFreeLowWatermarkProcessor = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "archive.path"); value.Exists() {
+		data.ArchivePath = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "archive.maximum"); value.Exists() {
+		data.ArchiveMaximum = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "archive.write-memory"); value.Exists() {
+		data.ArchiveWriteMemory = types.BoolValue(true)
+	} else {
+		data.ArchiveWriteMemory = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "archive.time-period"); value.Exists() {
+		data.ArchiveTimePeriod = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "archive.log.config.logging.enable"); value.Exists() {
+		data.ArchiveLogConfigLoggingEnable = types.BoolValue(true)
+	} else {
+		data.ArchiveLogConfigLoggingEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "archive.log.config.logging.size"); value.Exists() {
+		data.ArchiveLogConfigLoggingSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "redundancy"); value.Exists() {
+		data.Redundancy = types.BoolValue(true)
+	} else {
+		data.Redundancy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "redundancy.mode"); value.Exists() {
+		data.RedundancyMode = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "transceivers.type.all.monitoring-enable.monitoring"); value.Exists() {
+		data.TransceiverTypeAllMonitoring = types.BoolValue(true)
+	} else {
+		data.TransceiverTypeAllMonitoring = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.forward-protocol-v2.nd"); value.Exists() {
+		data.IpForwardProtocolNd = types.BoolValue(value.Bool())
+	} else {
+		data.IpForwardProtocolNd = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.scp.server.enable"); value.Exists() {
+		data.IpScpServerEnable = types.BoolValue(true)
+	} else {
+		data.IpScpServerEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.ssh.ssh-version"); value.Exists() {
+		data.IpSshVersion = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.Loopback"); value.Exists() {
+		data.IpSshSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.Vlan"); value.Exists() {
+		data.IpSshSourceInterfaceVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.GigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TwoGigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.FiveGigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TenGigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.TwentyFiveGigE"); value.Exists() {
+		data.IpSshSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.FortyGigabitEthernet"); value.Exists() {
+		data.IpSshSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ssh.source-interface-config.HundredGigE"); value.Exists() {
+		data.IpSshSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "control-plane.Cisco-IOS-XE-policy:service-policy.input"); value.Exists() {
+		data.ControlPlaneServicePolicyInput = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-pnp:pnp.profile"); value.Exists() {
+		data.PnpProfiles = make([]SystemPnpProfiles, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemPnpProfiles{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.https.ipv4.ipv4-address"); cValue.Exists() {
+				item.TransportHttpsIpv4Ipv4Address = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.https.ipv4.port"); cValue.Exists() {
+				item.TransportHttpsIpv4Port = types.Int64Value(cValue.Int())
+			}
+			data.PnpProfiles = append(data.PnpProfiles, item)
 			return true
 		})
 	}
@@ -1198,6 +1954,145 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.IpDomainLookupSourceInterfaceLoopback.IsNull() && data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Loopback", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceVlan.IsNull() && data.IpDomainLookupSourceInterfaceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Vlan", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/GigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwoGigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FiveGigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwentyFiveGigE", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/HundredGigE", state.getPath()))
+	}
+	if !state.CispEnable.IsNull() && data.CispEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cisp/enable", state.getPath()))
+	}
+	if !state.EpmLogging.IsNull() && data.EpmLogging.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/epm/logging", state.getPath()))
+	}
+	if !state.AccessSessionMacMoveDeny.IsNull() && data.AccessSessionMacMoveDeny.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/mac-move/deny", state.getPath()))
+	}
+	if !state.DiagnosticBootupLevel.IsNull() && data.DiagnosticBootupLevel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", state.getPath()))
+	}
+	if !state.MemoryFreeLowWatermarkProcessor.IsNull() && data.MemoryFreeLowWatermarkProcessor.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/memory/free/low-watermark/processor", state.getPath()))
+	}
+	if !state.ArchivePath.IsNull() && data.ArchivePath.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/path", state.getPath()))
+	}
+	if !state.ArchiveMaximum.IsNull() && data.ArchiveMaximum.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/maximum", state.getPath()))
+	}
+	if !state.ArchiveWriteMemory.IsNull() && data.ArchiveWriteMemory.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/write-memory", state.getPath()))
+	}
+	if !state.ArchiveTimePeriod.IsNull() && data.ArchiveTimePeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/time-period", state.getPath()))
+	}
+	if !state.ArchiveLogConfigLoggingEnable.IsNull() && data.ArchiveLogConfigLoggingEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/log/config/logging/enable", state.getPath()))
+	}
+	if !state.ArchiveLogConfigLoggingSize.IsNull() && data.ArchiveLogConfigLoggingSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/log/config/logging/size", state.getPath()))
+	}
+	if !state.Redundancy.IsNull() && data.Redundancy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redundancy", state.getPath()))
+	}
+	if !state.RedundancyMode.IsNull() && data.RedundancyMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redundancy/mode", state.getPath()))
+	}
+	if !state.TransceiverTypeAllMonitoring.IsNull() && data.TransceiverTypeAllMonitoring.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", state.getPath()))
+	}
+	if !state.IpForwardProtocolNd.IsNull() && data.IpForwardProtocolNd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/forward-protocol-v2/nd", state.getPath()))
+	}
+	if !state.IpScpServerEnable.IsNull() && data.IpScpServerEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/scp/server/enable", state.getPath()))
+	}
+	if !state.IpSshVersion.IsNull() && data.IpSshVersion.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/ssh-version", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceLoopback.IsNull() && data.IpSshSourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/Loopback", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceVlan.IsNull() && data.IpSshSourceInterfaceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/Vlan", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceGigabitEthernet.IsNull() && data.IpSshSourceInterfaceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/GigabitEthernet", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwoGigabitEthernet", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/FiveGigabitEthernet", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceTenGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwentyFiveGigE", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", state.getPath()))
+	}
+	if !state.ControlPlaneServicePolicyInput.IsNull() && data.ControlPlaneServicePolicyInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
+	}
+	for i := range state.PnpProfiles {
+		stateKeyValues := [...]string{state.PnpProfiles[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PnpProfiles[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PnpProfiles {
+			found = true
+			if state.PnpProfiles[i].Name.ValueString() != data.PnpProfiles[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.PnpProfiles[i].TransportHttpsIpv4Ipv4Address.IsNull() && data.PnpProfiles[j].TransportHttpsIpv4Ipv4Address.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v/transport/https/ipv4/ipv4-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.PnpProfiles[i].TransportHttpsIpv4Port.IsNull() && data.PnpProfiles[j].TransportHttpsIpv4Port.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v/transport/https/ipv4/port", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedItems
 }
 
@@ -1243,6 +2138,31 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", data.getPath()))
+	}
+
+	if !data.CispEnable.IsNull() && !data.CispEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/cisp/enable", data.getPath()))
+	}
+	if !data.EpmLogging.IsNull() && !data.EpmLogging.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/epm/logging", data.getPath()))
+	}
+	if !data.AccessSessionMacMoveDeny.IsNull() && !data.AccessSessionMacMoveDeny.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-session/mac-move/deny", data.getPath()))
+	}
+	if !data.ArchiveWriteMemory.IsNull() && !data.ArchiveWriteMemory.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/archive/write-memory", data.getPath()))
+	}
+	if !data.ArchiveLogConfigLoggingEnable.IsNull() && !data.ArchiveLogConfigLoggingEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/archive/log/config/logging/enable", data.getPath()))
+	}
+	if !data.Redundancy.IsNull() && !data.Redundancy.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redundancy", data.getPath()))
+	}
+	if !data.TransceiverTypeAllMonitoring.IsNull() && !data.TransceiverTypeAllMonitoring.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", data.getPath()))
+	}
+	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -1357,6 +2277,119 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.IpNameServersVrf[i].Vrf.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/name-server/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Loopback", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Vlan", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/GigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwoGigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FiveGigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TenGigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwentyFiveGigE", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FortyGigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/HundredGigE", data.getPath()))
+	}
+	if !data.CispEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/cisp/enable", data.getPath()))
+	}
+	if !data.EpmLogging.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/epm/logging", data.getPath()))
+	}
+	if !data.AccessSessionMacMoveDeny.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-session/mac-move/deny", data.getPath()))
+	}
+	if !data.DiagnosticBootupLevel.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", data.getPath()))
+	}
+	if !data.MemoryFreeLowWatermarkProcessor.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/memory/free/low-watermark/processor", data.getPath()))
+	}
+	if !data.ArchivePath.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/path", data.getPath()))
+	}
+	if !data.ArchiveMaximum.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/maximum", data.getPath()))
+	}
+	if !data.ArchiveWriteMemory.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/write-memory", data.getPath()))
+	}
+	if !data.ArchiveTimePeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/time-period", data.getPath()))
+	}
+	if !data.ArchiveLogConfigLoggingEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/log/config/logging/enable", data.getPath()))
+	}
+	if !data.ArchiveLogConfigLoggingSize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/log/config/logging/size", data.getPath()))
+	}
+	if !data.Redundancy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redundancy", data.getPath()))
+	}
+	if !data.RedundancyMode.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redundancy/mode", data.getPath()))
+	}
+	if !data.TransceiverTypeAllMonitoring.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", data.getPath()))
+	}
+	if !data.IpForwardProtocolNd.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/forward-protocol-v2/nd", data.getPath()))
+	}
+	if !data.IpScpServerEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
+	}
+	if !data.IpSshVersion.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/ssh-version", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/Loopback", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/Vlan", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/GigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwoGigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/FiveGigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TenGigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwentyFiveGigE", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/FortyGigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", data.getPath()))
+	}
+	if !data.ControlPlaneServicePolicyInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
+	}
+	for i := range data.PnpProfiles {
+		keyValues := [...]string{data.PnpProfiles[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

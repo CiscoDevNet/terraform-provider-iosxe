@@ -26,11 +26,32 @@ data "iosxe_system" "example" {
 
 ### Read-Only
 
+- `access_session_mac_move_deny` (Boolean) Deny MAC moves (clears existing session)
+- `archive_log_config_logging_enable` (Boolean) Enable the config logger
+- `archive_log_config_logging_size` (Number) Maximum number of logged commands that will be kept by the config log
+- `archive_maximum` (Number) maximum number of backup copies
+- `archive_path` (String) path for backups
+- `archive_time_period` (Number) Period of time in minutes to automatically archive the running-config
+- `archive_write_memory` (Boolean) Enable automatic backup generation during write memory
+- `cisp_enable` (Boolean) Enable CISP
+- `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
+- `diagnostic_bootup_level` (String) Select diagnostic level
+- `epm_logging` (Boolean) Enable EPM logging
 - `hostname` (String) Set system's network name
 - `id` (String) The path of the retrieved object.
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
+- `ip_domain_lookup_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `ip_domain_lookup_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `ip_domain_lookup_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `ip_domain_lookup_source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `ip_domain_lookup_source_interface_loopback` (Number) Loopback interface
+- `ip_domain_lookup_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `ip_domain_lookup_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `ip_domain_lookup_source_interface_vlan` (Number) Iosxr Vlans
 - `ip_domain_name` (String) Define the default domain name
+- `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
 - `ip_http_access_class` (Number) Restrict http server access by access-class
 - `ip_http_active_session_modules` (String) Set active session modules
 - `ip_http_authentication_aaa` (Boolean) Use AAA access control methods
@@ -51,16 +72,32 @@ data "iosxe_system" "example" {
 - `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
 - `ip_name_servers_vrf` (Attributes List) (see [below for nested schema](#nestedatt--ip_name_servers_vrf))
 - `ip_routing` (Boolean) Enable or disable IP routing
+- `ip_scp_server_enable` (Boolean) Enable server side of SCP
 - `ip_source_route` (Boolean) Process packets with source routing header options
+- `ip_ssh_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `ip_ssh_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `ip_ssh_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `ip_ssh_source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `ip_ssh_source_interface_loopback` (Number) Loopback interface
+- `ip_ssh_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `ip_ssh_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `ip_ssh_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `ip_ssh_source_interface_vlan` (Number) Iosxr Vlans
+- `ip_ssh_version` (String) Specify protocol version supported
 - `ipv6_unicast_routing` (Boolean) Enable unicast routing
 - `login_delay` (Number) Set delay between successive fail login
 - `login_on_failure` (Boolean) Set options for failed login attempt
 - `login_on_failure_log` (Boolean) Generate syslogs on failure logins
 - `login_on_success` (Boolean) Set options for successful login attempt
 - `login_on_success_log` (Boolean) Generate syslogs on successful logins
+- `memory_free_low_watermark_processor` (Number) low water mark of memory in KB
 - `mtu` (Number)
 - `multicast_routing_switch` (Boolean) Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.
 - `multicast_routing_vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--multicast_routing_vrfs))
+- `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
+- `redundancy` (Boolean) Enter redundancy mode
+- `redundancy_mode` (String) redundancy mode for this chassis
+- `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
 
 <a id="nestedatt--ip_http_authentication_aaa_command_authorization"></a>
 ### Nested Schema for `ip_http_authentication_aaa_command_authorization`
@@ -87,3 +124,13 @@ Read-Only:
 
 - `distributed` (Boolean) Distributed multicast switching
 - `vrf` (String)
+
+
+<a id="nestedatt--pnp_profiles"></a>
+### Nested Schema for `pnp_profiles`
+
+Read-Only:
+
+- `name` (String)
+- `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
+- `transport_https_ipv4_port` (Number) port number

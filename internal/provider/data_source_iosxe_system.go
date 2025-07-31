@@ -236,6 +236,170 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					},
 				},
 			},
+			"ip_domain_lookup_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: "Loopback interface",
+				Computed:            true,
+			},
+			"ip_domain_lookup_source_interface_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Iosxr Vlans",
+				Computed:            true,
+			},
+			"ip_domain_lookup_source_interface_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "GigabitEthernet IEEE 802.3z",
+				Computed:            true,
+			},
+			"ip_domain_lookup_source_interface_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Two GigabitEthernet ",
+				Computed:            true,
+			},
+			"ip_domain_lookup_source_interface_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Five GigabitEthernet ",
+				Computed:            true,
+			},
+			"ip_domain_lookup_source_interface_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Ten Gigabit Ethernet",
+				Computed:            true,
+			},
+			"ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Twenty Five GigabitEthernet ",
+				Computed:            true,
+			},
+			"ip_domain_lookup_source_interface_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Forty GigabitEthernet ",
+				Computed:            true,
+			},
+			"ip_domain_lookup_source_interface_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Hundred GigabitEthernet",
+				Computed:            true,
+			},
+			"cisp_enable": schema.BoolAttribute{
+				MarkdownDescription: "Enable CISP",
+				Computed:            true,
+			},
+			"epm_logging": schema.BoolAttribute{
+				MarkdownDescription: "Enable EPM logging",
+				Computed:            true,
+			},
+			"access_session_mac_move_deny": schema.BoolAttribute{
+				MarkdownDescription: "Deny MAC moves (clears existing session)",
+				Computed:            true,
+			},
+			"diagnostic_bootup_level": schema.StringAttribute{
+				MarkdownDescription: "Select diagnostic level",
+				Computed:            true,
+			},
+			"memory_free_low_watermark_processor": schema.Int64Attribute{
+				MarkdownDescription: "low water mark of memory in KB",
+				Computed:            true,
+			},
+			"archive_path": schema.StringAttribute{
+				MarkdownDescription: "path for backups",
+				Computed:            true,
+			},
+			"archive_maximum": schema.Int64Attribute{
+				MarkdownDescription: "maximum number of backup copies",
+				Computed:            true,
+			},
+			"archive_write_memory": schema.BoolAttribute{
+				MarkdownDescription: "Enable automatic backup generation during write memory",
+				Computed:            true,
+			},
+			"archive_time_period": schema.Int64Attribute{
+				MarkdownDescription: "Period of time in minutes to automatically archive the running-config",
+				Computed:            true,
+			},
+			"archive_log_config_logging_enable": schema.BoolAttribute{
+				MarkdownDescription: "Enable the config logger",
+				Computed:            true,
+			},
+			"archive_log_config_logging_size": schema.Int64Attribute{
+				MarkdownDescription: "Maximum number of logged commands that will be kept by the config log",
+				Computed:            true,
+			},
+			"redundancy": schema.BoolAttribute{
+				MarkdownDescription: "Enter redundancy mode",
+				Computed:            true,
+			},
+			"redundancy_mode": schema.StringAttribute{
+				MarkdownDescription: "redundancy mode for this chassis",
+				Computed:            true,
+			},
+			"transceiver_type_all_monitoring": schema.BoolAttribute{
+				MarkdownDescription: "Enable/disable monitoring",
+				Computed:            true,
+			},
+			"ip_forward_protocol_nd": schema.BoolAttribute{
+				MarkdownDescription: "Sun's Network Disk protocol",
+				Computed:            true,
+			},
+			"ip_scp_server_enable": schema.BoolAttribute{
+				MarkdownDescription: "Enable server side of SCP",
+				Computed:            true,
+			},
+			"ip_ssh_version": schema.StringAttribute{
+				MarkdownDescription: "Specify protocol version supported",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: "Loopback interface",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Iosxr Vlans",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "GigabitEthernet IEEE 802.3z",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Two GigabitEthernet ",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Five GigabitEthernet ",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Ten Gigabit Ethernet",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Twenty Five GigabitEthernet ",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Forty GigabitEthernet ",
+				Computed:            true,
+			},
+			"ip_ssh_source_interface_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Hundred GigabitEthernet",
+				Computed:            true,
+			},
+			"control_plane_service_policy_input": schema.StringAttribute{
+				MarkdownDescription: "Assign policy-map to the input of an interface",
+				Computed:            true,
+			},
+			"pnp_profiles": schema.ListNestedAttribute{
+				MarkdownDescription: "PNP profile",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"transport_https_ipv4_ipv4_address": schema.StringAttribute{
+							MarkdownDescription: "IPv4 address of the server",
+							Computed:            true,
+						},
+						"transport_https_ipv4_port": schema.Int64Attribute{
+							MarkdownDescription: "port number",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

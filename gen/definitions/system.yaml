@@ -134,7 +134,166 @@ attributes:
       - yang_name: server-ip-list-ordered
         tf_name: servers
         example: 2.3.4.5
-    
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/Loopback/Loopback
+    xpath: ip/domain/lookup-settings/lookup/source-interface/Loopback
+    tf_name: ip_domain_lookup_source_interface_loopback
+    example: 0
+    exclude_test: true
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/Vlan/Vlan
+    xpath: ip/domain/lookup-settings/lookup/source-interface/Vlan
+    tf_name: ip_domain_lookup_source_interface_vlan
+    example: 500
+    exclude_test: true
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: ip/domain/lookup-settings/lookup/source-interface/GigabitEthernet
+    tf_name: ip_domain_lookup_source_interface_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+    xpath: ip/domain/lookup-settings/lookup/source-interface/TwoGigabitEthernet
+    tf_name: ip_domain_lookup_source_interface_two_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+    xpath: ip/domain/lookup-settings/lookup/source-interface/FiveGigabitEthernet
+    tf_name: ip_domain_lookup_source_interface_five_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: ip/domain/lookup-settings/lookup/source-interface/TenGigabitEthernet
+    tf_name: ip_domain_lookup_source_interface_ten_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/TwentyFiveGigE/TwentyFiveGigE
+    xpath: ip/domain/lookup-settings/lookup/source-interface/TwentyFiveGigE
+    tf_name: ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: ip/domain/lookup-settings/lookup/source-interface/FortyGigabitEthernet
+    tf_name: ip_domain_lookup_source_interface_forty_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/HundredGigE/HundredGigE
+    xpath: ip/domain/lookup-settings/lookup/source-interface/HundredGigE
+    tf_name: ip_domain_lookup_source_interface_hundred_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: cisp/enable
+    example: true
+    exclude_test: true
+  - yang_name: epm/logging
+    example: true
+    exclude_test: true
+  - yang_name: access-session/mac-move/deny
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-diagnostics:diagnostic/bootup/level
+    example: minimal
+    exclude_test: true
+  - yang_name: memory/free/low-watermark/processor
+    example: 184655
+    exclude_test: true
+  - yang_name: archive/path
+    example: tftp://1.1.1.1/config
+    exclude_test: true
+  - yang_name: archive/maximum
+    example: 2
+    exclude_test: true
+  - yang_name: archive/write-memory
+    example: true
+    exclude_test: true
+  - yang_name: archive/time-period
+    example: 100
+    exclude_test: true
+  - yang_name: archive/log/config/logging/enable
+    example: true
+    exclude_test: true
+  - yang_name: archive/log/config/logging/size
+    example: 500
+    exclude_test: true
+  - yang_name: redundancy
+    example: true
+    exclude_test: true
+  - yang_name: redundancy/mode
+    example: sso
+    exclude_test: true
+  - yang_name: transceivers/type/all/monitoring-enable/monitoring
+    tf_name: transceiver_type_all_monitoring
+    example: true
+    exclude_test: true
+  - yang_name: ip/forward-protocol-v2/nd
+    tf_name: ip_forward_protocol_nd
+    example: true
+    exclude_test: true
+  - yang_name: ip/scp/server/enable
+    example: true
+    exclude_test: true
+  - yang_name: ip/ssh/ssh-version
+    tf_name: ip_ssh_version
+    example: 2
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/Loopback/Loopback
+    xpath: ip/ssh/source-interface-config/Loopback
+    tf_name: ip_ssh_source_interface_loopback
+    example: 0
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/Vlan/Vlan
+    xpath: ip/ssh/source-interface-config/Vlan
+    tf_name: ip_ssh_source_interface_vlan
+    example: 500
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: ip/ssh/source-interface-config/GigabitEthernet
+    tf_name: ip_ssh_source_interface_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+    xpath: ip/ssh/source-interface-config/TwoGigabitEthernet
+    tf_name: ip_ssh_source_interface_two_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+    xpath: ip/ssh/source-interface-config/FiveGigabitEthernet
+    tf_name: ip_ssh_source_interface_five_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: ip/ssh/source-interface-config/TenGigabitEthernet
+    tf_name: ip_ssh_source_interface_ten_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/TwentyFiveGigE/TwentyFiveGigE
+    xpath: ip/ssh/source-interface-config/TwentyFiveGigE
+    tf_name: ip_ssh_source_interface_twenty_five_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: ip/ssh/source-interface-config/FortyGigabitEthernet
+    tf_name: ip_ssh_source_interface_forty_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: ip/ssh/source-interface-config/interface-choice/HundredGigE/HundredGigE
+    xpath: ip/ssh/source-interface-config/HundredGigE
+    tf_name: ip_ssh_source_interface_hundred_gigabit_ethernet
+    example: 1
+    exclude_test: true
+  - yang_name: control-plane/Cisco-IOS-XE-policy:service-policy/input
+    example: system-cpp-policy
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-pnp:pnp/profile
+    tf_name: pnp_profiles
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: pnp-zero-touch
+      - yang_name: transport/https/ipv4/ipv4-address
+        example: 1.1.1.1
+      - yang_name: transport/https/ipv4/port
+        example: 443
+
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

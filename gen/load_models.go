@@ -98,6 +98,8 @@ var models = []string{
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-sanet.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-http.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-flow.yang",
+	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-diagnostics.yang",
+	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-pnp.yang",
 }
 
 const (

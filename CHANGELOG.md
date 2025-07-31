@@ -1,3 +1,9 @@
+## 0.6.1 (unreleased)
+
+- Add `cisp_enable`, `access_session_mac_move_deny`, `diagnostic_bootup_level`, `memory_free_low_watermark_processor`, `archive_path`, `archive_maximum`, `archive_write_memory`, `archive_time_period`, `archive_log_config_logging_enable`, `archive_log_config_logging_size`, `redundancy`, `redundancy_mode`, `transceiver_type_all_monitoring`, `ip_forward_protocol_nd`, `ip_scp_server_enable`, `ip_ssh_version`, `control_plane_service_policy_input`, `pnp_profiles` attributes to `iosxe_system` resource and data source
+- Add `ip_ssh_source_interface_x` attributes to `iosxe_system` resource and data source
+- Add `ip_domain_lookup_source_interface_x` attributes to `iosxe_system` resource and data source
+
 ## 0.6.0
 
 - BREAKING_CHANGE: Drop support for IOS-XE 17.9

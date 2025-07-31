@@ -272,6 +272,209 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
+			"ip_domain_lookup_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483647),
+				},
+			},
+			"ip_domain_lookup_source_interface_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Iosxr Vlans").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"ip_domain_lookup_source_interface_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
+				Optional:            true,
+			},
+			"ip_domain_lookup_source_interface_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Two GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_domain_lookup_source_interface_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_domain_lookup_source_interface_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ten Gigabit Ethernet").String,
+				Optional:            true,
+			},
+			"ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Twenty Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_domain_lookup_source_interface_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_domain_lookup_source_interface_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
+				Optional:            true,
+			},
+			"cisp_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable CISP").String,
+				Optional:            true,
+			},
+			"epm_logging": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable EPM logging").String,
+				Optional:            true,
+			},
+			"access_session_mac_move_deny": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Deny MAC moves (clears existing session)").String,
+				Optional:            true,
+			},
+			"diagnostic_bootup_level": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Select diagnostic level").AddStringEnumDescription("complete", "minimal").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("complete", "minimal"),
+				},
+			},
+			"memory_free_low_watermark_processor": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("low water mark of memory in KB").AddIntegerRangeDescription(1, 3994575).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3994575),
+				},
+			},
+			"archive_path": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("path for backups").String,
+				Optional:            true,
+			},
+			"archive_maximum": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("maximum number of backup copies").AddIntegerRangeDescription(1, 14).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 14),
+				},
+			},
+			"archive_write_memory": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable automatic backup generation during write memory").String,
+				Optional:            true,
+			},
+			"archive_time_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Period of time in minutes to automatically archive the running-config").AddIntegerRangeDescription(1, 525600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 525600),
+				},
+			},
+			"archive_log_config_logging_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable the config logger").String,
+				Optional:            true,
+			},
+			"archive_log_config_logging_size": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum number of logged commands that will be kept by the config log").AddIntegerRangeDescription(1, 1000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1000),
+				},
+			},
+			"redundancy": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enter redundancy mode").String,
+				Optional:            true,
+			},
+			"redundancy_mode": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("redundancy mode for this chassis").AddStringEnumDescription("none", "rpr", "rpr-plus", "sso").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("none", "rpr", "rpr-plus", "sso"),
+				},
+			},
+			"transceiver_type_all_monitoring": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/disable monitoring").String,
+				Optional:            true,
+			},
+			"ip_forward_protocol_nd": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Sun's Network Disk protocol").String,
+				Optional:            true,
+			},
+			"ip_scp_server_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable server side of SCP").String,
+				Optional:            true,
+			},
+			"ip_ssh_version": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify protocol version supported").AddStringEnumDescription("2").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("2"),
+				},
+			},
+			"ip_ssh_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483647),
+				},
+			},
+			"ip_ssh_source_interface_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Iosxr Vlans").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"ip_ssh_source_interface_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
+				Optional:            true,
+			},
+			"ip_ssh_source_interface_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Two GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_ssh_source_interface_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_ssh_source_interface_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ten Gigabit Ethernet").String,
+				Optional:            true,
+			},
+			"ip_ssh_source_interface_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Twenty Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_ssh_source_interface_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"ip_ssh_source_interface_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
+				Optional:            true,
+			},
+			"control_plane_service_policy_input": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the input of an interface").String,
+				Optional:            true,
+			},
+			"pnp_profiles": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("PNP profile").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"transport_https_ipv4_ipv4_address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("IPv4 address of the server").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"transport_https_ipv4_port": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("port number").AddIntegerRangeDescription(1, 65535).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 65535),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
