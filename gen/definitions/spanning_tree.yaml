@@ -1,0 +1,27 @@
+---
+name: Spanning Tree
+path: Cisco-IOS-XE-native:native/spanning-tree
+test_tags: [C9000V]
+doc_category: Switching
+attributes:
+  - yang_name: Cisco-IOS-XE-spanning-tree:mode
+    example: mst
+  - yang_name: Cisco-IOS-XE-spanning-tree:loopguard/default
+    example: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:portfast/default
+    example: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default
+    example: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:extend/system-id
+    example: true
+    no_delete: true
+  - yang_name: Cisco-IOS-XE-spanning-tree:mst/configuration/instance
+    tf_name: mst_instances
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: 1
+      - yang_name: vlan-ids
+        example: 10
+    
