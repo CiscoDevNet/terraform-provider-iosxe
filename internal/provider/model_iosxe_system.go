@@ -127,6 +127,11 @@ type System struct {
 	IpRadiusSourceInterfaceFortyGigabitEthernet            types.String                                        `tfsdk:"ip_radius_source_interface_forty_gigabit_ethernet"`
 	IpRadiusSourceInterfaceHundredGigabitEthernet          types.String                                        `tfsdk:"ip_radius_source_interface_hundred_gigabit_ethernet"`
 	IpRadiusSourceInterfaceVrf                             types.String                                        `tfsdk:"ip_radius_source_interface_vrf"`
+	BootSystemFlashFiles                                   []SystemBootSystemFlashFiles                        `tfsdk:"boot_system_flash_files"`
+	BootSystemBootfiles                                    []SystemBootSystemBootfiles                         `tfsdk:"boot_system_bootfiles"`
+	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
+	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
+	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
 }
 
 type SystemData struct {
@@ -223,6 +228,11 @@ type SystemData struct {
 	IpRadiusSourceInterfaceFortyGigabitEthernet            types.String                                        `tfsdk:"ip_radius_source_interface_forty_gigabit_ethernet"`
 	IpRadiusSourceInterfaceHundredGigabitEthernet          types.String                                        `tfsdk:"ip_radius_source_interface_hundred_gigabit_ethernet"`
 	IpRadiusSourceInterfaceVrf                             types.String                                        `tfsdk:"ip_radius_source_interface_vrf"`
+	BootSystemFlashFiles                                   []SystemBootSystemFlashFiles                        `tfsdk:"boot_system_flash_files"`
+	BootSystemBootfiles                                    []SystemBootSystemBootfiles                         `tfsdk:"boot_system_bootfiles"`
+	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
+	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
+	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -240,6 +250,12 @@ type SystemPnpProfiles struct {
 	Name                          types.String `tfsdk:"name"`
 	TransportHttpsIpv4Ipv4Address types.String `tfsdk:"transport_https_ipv4_ipv4_address"`
 	TransportHttpsIpv4Port        types.Int64  `tfsdk:"transport_https_ipv4_port"`
+}
+type SystemBootSystemFlashFiles struct {
+	Path types.String `tfsdk:"path"`
+}
+type SystemBootSystemBootfiles struct {
+	Path types.String `tfsdk:"path"`
 }
 
 func (data System) getPath() string {
@@ -564,6 +580,15 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.IpRadiusSourceInterfaceVrf.IsNull() && !data.IpRadiusSourceInterfaceVrf.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-aaa:radius.source-interface.vrf", data.IpRadiusSourceInterfaceVrf.ValueString())
 	}
+	if !data.EnableSecret.IsNull() && !data.EnableSecret.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.secret", data.EnableSecret.ValueString())
+	}
+	if !data.EnableSecretType.IsNull() && !data.EnableSecretType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.type", data.EnableSecretType.ValueString())
+	}
+	if !data.EnableSecretLevel.IsNull() && !data.EnableSecretLevel.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.level", strconv.FormatInt(data.EnableSecretLevel.ValueInt64(), 10))
+	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
 		for index, item := range data.MulticastRoutingVrfs {
@@ -612,6 +637,22 @@ func (data System) toBody(ctx context.Context) string {
 			}
 			if !item.TransportHttpsIpv4Port.IsNull() && !item.TransportHttpsIpv4Port.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-pnp:pnp.profile"+"."+strconv.Itoa(index)+"."+"transport.https.ipv4.port", strconv.FormatInt(item.TransportHttpsIpv4Port.ValueInt64(), 10))
+			}
+		}
+	}
+	if len(data.BootSystemFlashFiles) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"boot.system.flash.flash-list-ordered-by-user", []interface{}{})
+		for index, item := range data.BootSystemFlashFiles {
+			if !item.Path.IsNull() && !item.Path.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"boot.system.flash.flash-list-ordered-by-user"+"."+strconv.Itoa(index)+"."+"flash-leaf", item.Path.ValueString())
+			}
+		}
+	}
+	if len(data.BootSystemBootfiles) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"boot.system.bootfile.filename-list-ordered-by-user", []interface{}{})
+		for index, item := range data.BootSystemBootfiles {
+			if !item.Path.IsNull() && !item.Path.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"boot.system.bootfile.filename-list-ordered-by-user"+"."+strconv.Itoa(index)+"."+"filename", item.Path.ValueString())
 			}
 		}
 	}
@@ -1291,6 +1332,74 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpRadiusSourceInterfaceVrf = types.StringNull()
 	}
+	for i := range data.BootSystemFlashFiles {
+		keys := [...]string{"flash-leaf"}
+		keyValues := [...]string{data.BootSystemFlashFiles[i].Path.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "boot.system.flash.flash-list-ordered-by-user").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("flash-leaf"); value.Exists() && !data.BootSystemFlashFiles[i].Path.IsNull() {
+			data.BootSystemFlashFiles[i].Path = types.StringValue(value.String())
+		} else {
+			data.BootSystemFlashFiles[i].Path = types.StringNull()
+		}
+	}
+	for i := range data.BootSystemBootfiles {
+		keys := [...]string{"filename"}
+		keyValues := [...]string{data.BootSystemBootfiles[i].Path.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "boot.system.bootfile.filename-list-ordered-by-user").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("filename"); value.Exists() && !data.BootSystemBootfiles[i].Path.IsNull() {
+			data.BootSystemBootfiles[i].Path = types.StringValue(value.String())
+		} else {
+			data.BootSystemBootfiles[i].Path = types.StringNull()
+		}
+	}
+	if value := res.Get(prefix + "enable.secret.type"); value.Exists() && !data.EnableSecretType.IsNull() {
+		data.EnableSecretType = types.StringValue(value.String())
+	} else {
+		data.EnableSecretType = types.StringNull()
+	}
+	if value := res.Get(prefix + "enable.secret.level"); value.Exists() && !data.EnableSecretLevel.IsNull() {
+		data.EnableSecretLevel = types.Int64Value(value.Int())
+	} else {
+		data.EnableSecretLevel = types.Int64Null()
+	}
 }
 
 func (data *System) fromBody(ctx context.Context, res gjson.Result) {
@@ -1674,6 +1783,34 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-aaa:radius.source-interface.vrf"); value.Exists() {
 		data.IpRadiusSourceInterfaceVrf = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "boot.system.flash.flash-list-ordered-by-user"); value.Exists() {
+		data.BootSystemFlashFiles = make([]SystemBootSystemFlashFiles, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemBootSystemFlashFiles{}
+			if cValue := v.Get("flash-leaf"); cValue.Exists() {
+				item.Path = types.StringValue(cValue.String())
+			}
+			data.BootSystemFlashFiles = append(data.BootSystemFlashFiles, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "boot.system.bootfile.filename-list-ordered-by-user"); value.Exists() {
+		data.BootSystemBootfiles = make([]SystemBootSystemBootfiles, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemBootSystemBootfiles{}
+			if cValue := v.Get("filename"); cValue.Exists() {
+				item.Path = types.StringValue(cValue.String())
+			}
+			data.BootSystemBootfiles = append(data.BootSystemBootfiles, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "enable.secret.type"); value.Exists() {
+		data.EnableSecretType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "enable.secret.level"); value.Exists() {
+		data.EnableSecretLevel = types.Int64Value(value.Int())
+	}
 }
 
 func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
@@ -2056,6 +2193,34 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-aaa:radius.source-interface.vrf"); value.Exists() {
 		data.IpRadiusSourceInterfaceVrf = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "boot.system.flash.flash-list-ordered-by-user"); value.Exists() {
+		data.BootSystemFlashFiles = make([]SystemBootSystemFlashFiles, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemBootSystemFlashFiles{}
+			if cValue := v.Get("flash-leaf"); cValue.Exists() {
+				item.Path = types.StringValue(cValue.String())
+			}
+			data.BootSystemFlashFiles = append(data.BootSystemFlashFiles, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "boot.system.bootfile.filename-list-ordered-by-user"); value.Exists() {
+		data.BootSystemBootfiles = make([]SystemBootSystemBootfiles, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemBootSystemBootfiles{}
+			if cValue := v.Get("filename"); cValue.Exists() {
+				item.Path = types.StringValue(cValue.String())
+			}
+			data.BootSystemBootfiles = append(data.BootSystemBootfiles, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "enable.secret.type"); value.Exists() {
+		data.EnableSecretType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "enable.secret.level"); value.Exists() {
+		data.EnableSecretLevel = types.Int64Value(value.Int())
 	}
 }
 
@@ -2473,6 +2638,65 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	if !state.IpRadiusSourceInterfaceVrf.IsNull() && data.IpRadiusSourceInterfaceVrf.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/vrf", state.getPath()))
 	}
+	for i := range state.BootSystemFlashFiles {
+		stateKeyValues := [...]string{state.BootSystemFlashFiles[i].Path.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.BootSystemFlashFiles[i].Path.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.BootSystemFlashFiles {
+			found = true
+			if state.BootSystemFlashFiles[i].Path.ValueString() != data.BootSystemFlashFiles[j].Path.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/system/flash/flash-list-ordered-by-user=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.BootSystemBootfiles {
+		stateKeyValues := [...]string{state.BootSystemBootfiles[i].Path.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.BootSystemBootfiles[i].Path.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.BootSystemBootfiles {
+			found = true
+			if state.BootSystemBootfiles[i].Path.ValueString() != data.BootSystemBootfiles[j].Path.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/system/bootfile/filename-list-ordered-by-user=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.EnableSecret.IsNull() && data.EnableSecret.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret", state.getPath()))
+	}
+	if !state.EnableSecretType.IsNull() && data.EnableSecretType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/type", state.getPath()))
+	}
+	if !state.EnableSecretLevel.IsNull() && data.EnableSecretLevel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/level", state.getPath()))
+	}
 	return deletedItems
 }
 
@@ -2830,6 +3054,25 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpRadiusSourceInterfaceVrf.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/vrf", data.getPath()))
+	}
+	for i := range data.BootSystemFlashFiles {
+		keyValues := [...]string{data.BootSystemFlashFiles[i].Path.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/system/flash/flash-list-ordered-by-user=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.BootSystemBootfiles {
+		keyValues := [...]string{data.BootSystemBootfiles[i].Path.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/system/bootfile/filename-list-ordered-by-user=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.EnableSecret.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret", data.getPath()))
+	}
+	if !data.EnableSecretType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/type", data.getPath()))
+	}
+	if !data.EnableSecretLevel.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/level", data.getPath()))
 	}
 	return deletePaths
 }
