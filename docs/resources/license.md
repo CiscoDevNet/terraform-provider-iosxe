@@ -36,6 +36,7 @@ resource "iosxe_license" "example" {
 - `device` (String) A device name from the provider configuration.
 - `smart_transport_type` (String) The transport type. If transport-type is set to        callhome then any additional transport settings must        be done from the callhome CLI.        If the transport-type is set to smart, additional        settings are available below.        If the transport-type is set to cslu,        url needs to be set for cisco smart license utility.        If the transport-type is set to off, user has to manually        upload the usage reports.
   - Choices: `Off`, `automatic`, `callhome`, `cslu`, `smart`
+- `smart_url_cslu` (String) Specify the URL to be used for sending utility usage reports.
 
 ### Read-Only
 

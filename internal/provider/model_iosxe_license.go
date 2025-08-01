@@ -39,6 +39,7 @@ type License struct {
 	BootLevelNetworkEssentials      types.Bool   `tfsdk:"boot_level_network_essentials"`
 	BootLevelNetworkEssentialsAddon types.String `tfsdk:"boot_level_network_essentials_addon"`
 	SmartTransportType              types.String `tfsdk:"smart_transport_type"`
+	SmartUrlCslu                    types.String `tfsdk:"smart_url_cslu"`
 }
 
 type LicenseData struct {
@@ -49,6 +50,7 @@ type LicenseData struct {
 	BootLevelNetworkEssentials      types.Bool   `tfsdk:"boot_level_network_essentials"`
 	BootLevelNetworkEssentialsAddon types.String `tfsdk:"boot_level_network_essentials_addon"`
 	SmartTransportType              types.String `tfsdk:"smart_transport_type"`
+	SmartUrlCslu                    types.String `tfsdk:"smart_url_cslu"`
 }
 
 func (data License) getPath() string {
@@ -91,6 +93,9 @@ func (data License) toBody(ctx context.Context) string {
 	if !data.SmartTransportType.IsNull() && !data.SmartTransportType.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"smart.transport-type", data.SmartTransportType.ValueString())
 	}
+	if !data.SmartUrlCslu.IsNull() && !data.SmartUrlCslu.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"smart.url.cslu", data.SmartUrlCslu.ValueString())
+	}
 	return body
 }
 
@@ -132,6 +137,11 @@ func (data *License) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SmartTransportType = types.StringNull()
 	}
+	if value := res.Get(prefix + "smart.url.cslu"); value.Exists() && !data.SmartUrlCslu.IsNull() {
+		data.SmartUrlCslu = types.StringValue(value.String())
+	} else {
+		data.SmartUrlCslu = types.StringNull()
+	}
 }
 
 func (data *License) fromBody(ctx context.Context, res gjson.Result) {
@@ -157,6 +167,9 @@ func (data *License) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "smart.transport-type"); value.Exists() {
 		data.SmartTransportType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "smart.url.cslu"); value.Exists() {
+		data.SmartUrlCslu = types.StringValue(value.String())
 	}
 }
 
@@ -184,6 +197,9 @@ func (data *LicenseData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "smart.transport-type"); value.Exists() {
 		data.SmartTransportType = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "smart.url.cslu"); value.Exists() {
+		data.SmartUrlCslu = types.StringValue(value.String())
+	}
 }
 
 func (data *License) getDeletedItems(ctx context.Context, state License) []string {
@@ -202,6 +218,9 @@ func (data *License) getDeletedItems(ctx context.Context, state License) []strin
 	}
 	if !state.SmartTransportType.IsNull() && data.SmartTransportType.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/smart/transport-type", state.getPath()))
+	}
+	if !state.SmartUrlCslu.IsNull() && data.SmartUrlCslu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/smart/url/cslu", state.getPath()))
 	}
 	return deletedItems
 }
@@ -233,6 +252,9 @@ func (data *License) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.SmartTransportType.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/smart/transport-type", data.getPath()))
+	}
+	if !data.SmartUrlCslu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/smart/url/cslu", data.getPath()))
 	}
 	return deletePaths
 }

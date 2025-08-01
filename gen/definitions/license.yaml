@@ -24,3 +24,6 @@ attributes:
     exclude_test: true
   - yang_name: smart/transport-type
     example: Off
+  - yang_name: smart/url/cslu
+    example: https://licensing.corporate/cslu/v1/pi/corporate.onprem
+    exclude_test: true

@@ -82,6 +82,10 @@ func (d *LicenseDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				MarkdownDescription: "The transport type. If transport-type is set to        callhome then any additional transport settings must        be done from the callhome CLI.        If the transport-type is set to smart, additional        settings are available below.        If the transport-type is set to cslu,        url needs to be set for cisco smart license utility.        If the transport-type is set to off, user has to manually        upload the usage reports.",
 				Computed:            true,
 			},
+			"smart_url_cslu": schema.StringAttribute{
+				MarkdownDescription: "Specify the URL to be used for sending utility usage reports.",
+				Computed:            true,
+			},
 		},
 	}
 }

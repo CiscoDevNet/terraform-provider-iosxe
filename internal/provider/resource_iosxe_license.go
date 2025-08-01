@@ -101,6 +101,10 @@ func (r *LicenseResource) Schema(ctx context.Context, req resource.SchemaRequest
 					stringvalidator.OneOf("Off", "automatic", "callhome", "cslu", "smart"),
 				},
 			},
+			"smart_url_cslu": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify the URL to be used for sending utility usage reports.").String,
+				Optional:            true,
+			},
 		},
 	}
 }
