@@ -390,6 +390,36 @@ attributes:
     tf_name: ip_radius_source_interface_vrf
     example: VRF1
     exclude_test: true
+  - yang_name: boot/system/flash/flash-list-ordered-by-user
+    tf_name: boot_system_flash_files
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: flash-leaf
+        tf_name: path
+        id: true
+        example: bootflash:c8000v-rpboot.17.15.01a.SPA.pkg
+  - yang_name: boot/system/bootfile/filename-list-ordered-by-user
+    tf_name: boot_system_bootfiles
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: filename
+        tf_name: path
+        id: true
+        example: bootflash:c8000v-rpboot.17.15.01a.SPA.pkg
+  - yang_name: enable/secret/secret
+    tf_name: enable_secret
+    delete_parent: true
+    exclude_test: true
+    write_only: true
+    example: MySecretPassword
+  - yang_name: enable/secret/type
+    exclude_test: true
+    example: 0
+  - yang_name: enable/secret/level
+    exclude_test: true
+    example: 15
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

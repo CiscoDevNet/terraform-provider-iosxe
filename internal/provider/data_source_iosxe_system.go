@@ -480,6 +480,42 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "VPN Routing/Forwarding parameters",
 				Computed:            true,
 			},
+			"boot_system_flash_files": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"path": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"boot_system_bootfiles": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"path": schema.StringAttribute{
+							MarkdownDescription: "WORD - TFTP filename or URL",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"enable_secret": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_secret_type": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_secret_level": schema.Int64Attribute{
+				MarkdownDescription: "Set exec level password",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -33,9 +33,14 @@ data "iosxe_system" "example" {
 - `archive_path` (String) path for backups
 - `archive_time_period` (Number) Period of time in minutes to automatically archive the running-config
 - `archive_write_memory` (Boolean) Enable automatic backup generation during write memory
+- `boot_system_bootfiles` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_bootfiles))
+- `boot_system_flash_files` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_flash_files))
 - `cisp_enable` (Boolean) Enable CISP
 - `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
 - `diagnostic_bootup_level` (String) Select diagnostic level
+- `enable_secret` (String)
+- `enable_secret_level` (Number) Set exec level password
+- `enable_secret_type` (String)
 - `epm_logging` (Boolean) Enable EPM logging
 - `hostname` (String) Set system's network name
 - `id` (String) The path of the retrieved object.
@@ -118,6 +123,22 @@ data "iosxe_system" "example" {
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
+
+<a id="nestedatt--boot_system_bootfiles"></a>
+### Nested Schema for `boot_system_bootfiles`
+
+Read-Only:
+
+- `path` (String) WORD - TFTP filename or URL
+
+
+<a id="nestedatt--boot_system_flash_files"></a>
+### Nested Schema for `boot_system_flash_files`
+
+Read-Only:
+
+- `path` (String)
+
 
 <a id="nestedatt--ip_http_authentication_aaa_command_authorization"></a>
 ### Nested Schema for `ip_http_authentication_aaa_command_authorization`

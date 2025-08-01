@@ -56,11 +56,17 @@ resource "iosxe_system" "example" {
 - `archive_time_period` (Number) Period of time in minutes to automatically archive the running-config
   - Range: `1`-`525600`
 - `archive_write_memory` (Boolean) Enable automatic backup generation during write memory
+- `boot_system_bootfiles` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_bootfiles))
+- `boot_system_flash_files` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_flash_files))
 - `cisp_enable` (Boolean) Enable CISP
 - `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
 - `device` (String) A device name from the provider configuration.
 - `diagnostic_bootup_level` (String) Select diagnostic level
   - Choices: `complete`, `minimal`
+- `enable_secret` (String)
+- `enable_secret_level` (Number) Set exec level password
+  - Range: `0`-`255`
+- `enable_secret_type` (String) - Choices: `0`, `4`, `5`, `8`, `9`
 - `epm_logging` (Boolean) Enable EPM logging
 - `hostname` (String) Set system's network name
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
@@ -161,6 +167,22 @@ resource "iosxe_system" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--boot_system_bootfiles"></a>
+### Nested Schema for `boot_system_bootfiles`
+
+Required:
+
+- `path` (String) WORD - TFTP filename or URL
+
+
+<a id="nestedatt--boot_system_flash_files"></a>
+### Nested Schema for `boot_system_flash_files`
+
+Required:
+
+- `path` (String)
+
 
 <a id="nestedatt--ip_http_authentication_aaa_command_authorization"></a>
 ### Nested Schema for `ip_http_authentication_aaa_command_authorization`
