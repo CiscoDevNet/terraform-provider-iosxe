@@ -27,6 +27,7 @@ description: |-
 - Add `iosxe_crypto_pki` resource and data source
 - Add `boot_system_flash_files`, `boot_system_bootfiles`, `enable_secret` attributes to `iosxe_system` resource and data source
 - Add `iosxe_license` resource and data source
+- Add `iosxe_lldp` resource and data source
 
 ## 0.6.0
 
