@@ -34,73 +34,147 @@ import (
 )
 
 type Logging struct {
-	Device              types.String                 `tfsdk:"device"`
-	Id                  types.String                 `tfsdk:"id"`
-	MonitorSeverity     types.String                 `tfsdk:"monitor_severity"`
-	BufferedSize        types.Int64                  `tfsdk:"buffered_size"`
-	BufferedSeverity    types.String                 `tfsdk:"buffered_severity"`
-	ConsoleSeverity     types.String                 `tfsdk:"console_severity"`
-	Facility            types.String                 `tfsdk:"facility"`
-	HistorySize         types.Int64                  `tfsdk:"history_size"`
-	HistorySeverity     types.String                 `tfsdk:"history_severity"`
-	Trap                types.Bool                   `tfsdk:"trap"`
-	TrapSeverity        types.String                 `tfsdk:"trap_severity"`
-	OriginIdType        types.String                 `tfsdk:"origin_id_type"`
-	OriginIdName        types.String                 `tfsdk:"origin_id_name"`
-	FileName            types.String                 `tfsdk:"file_name"`
-	FileMaxSize         types.Int64                  `tfsdk:"file_max_size"`
-	FileMinSize         types.Int64                  `tfsdk:"file_min_size"`
-	FileSeverity        types.String                 `tfsdk:"file_severity"`
-	SourceInterface     types.String                 `tfsdk:"source_interface"`
-	SourceInterfacesVrf []LoggingSourceInterfacesVrf `tfsdk:"source_interfaces_vrf"`
-	Ipv4Hosts           []LoggingIpv4Hosts           `tfsdk:"ipv4_hosts"`
-	Ipv4VrfHosts        []LoggingIpv4VrfHosts        `tfsdk:"ipv4_vrf_hosts"`
-	Ipv6Hosts           []LoggingIpv6Hosts           `tfsdk:"ipv6_hosts"`
-	Ipv6VrfHosts        []LoggingIpv6VrfHosts        `tfsdk:"ipv6_vrf_hosts"`
+	Device                types.String                   `tfsdk:"device"`
+	Id                    types.String                   `tfsdk:"id"`
+	MonitorSeverity       types.String                   `tfsdk:"monitor_severity"`
+	BufferedSize          types.Int64                    `tfsdk:"buffered_size"`
+	BufferedSeverity      types.String                   `tfsdk:"buffered_severity"`
+	ConsoleSeverity       types.String                   `tfsdk:"console_severity"`
+	Facility              types.String                   `tfsdk:"facility"`
+	HistorySize           types.Int64                    `tfsdk:"history_size"`
+	HistorySeverity       types.String                   `tfsdk:"history_severity"`
+	Trap                  types.Bool                     `tfsdk:"trap"`
+	TrapSeverity          types.String                   `tfsdk:"trap_severity"`
+	OriginIdType          types.String                   `tfsdk:"origin_id_type"`
+	OriginIdName          types.String                   `tfsdk:"origin_id_name"`
+	FileName              types.String                   `tfsdk:"file_name"`
+	FileMaxSize           types.Int64                    `tfsdk:"file_max_size"`
+	FileMinSize           types.Int64                    `tfsdk:"file_min_size"`
+	FileSeverity          types.String                   `tfsdk:"file_severity"`
+	SourceInterface       types.String                   `tfsdk:"source_interface"`
+	SourceInterfacesVrf   []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
+	Ipv4HostsTransport    []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
+	Ipv4Hosts             []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
+	Ipv4VrfHostsTransport []LoggingIpv4VrfHostsTransport `tfsdk:"ipv4_vrf_hosts_transport"`
+	Ipv4VrfHosts          []LoggingIpv4VrfHosts          `tfsdk:"ipv4_vrf_hosts"`
+	Ipv6HostsTransport    []LoggingIpv6HostsTransport    `tfsdk:"ipv6_hosts_transport"`
+	Ipv6Hosts             []LoggingIpv6Hosts             `tfsdk:"ipv6_hosts"`
+	Ipv6VrfHostsTransport []LoggingIpv6VrfHostsTransport `tfsdk:"ipv6_vrf_hosts_transport"`
+	Ipv6VrfHosts          []LoggingIpv6VrfHosts          `tfsdk:"ipv6_vrf_hosts"`
 }
 
 type LoggingData struct {
-	Device              types.String                 `tfsdk:"device"`
-	Id                  types.String                 `tfsdk:"id"`
-	MonitorSeverity     types.String                 `tfsdk:"monitor_severity"`
-	BufferedSize        types.Int64                  `tfsdk:"buffered_size"`
-	BufferedSeverity    types.String                 `tfsdk:"buffered_severity"`
-	ConsoleSeverity     types.String                 `tfsdk:"console_severity"`
-	Facility            types.String                 `tfsdk:"facility"`
-	HistorySize         types.Int64                  `tfsdk:"history_size"`
-	HistorySeverity     types.String                 `tfsdk:"history_severity"`
-	Trap                types.Bool                   `tfsdk:"trap"`
-	TrapSeverity        types.String                 `tfsdk:"trap_severity"`
-	OriginIdType        types.String                 `tfsdk:"origin_id_type"`
-	OriginIdName        types.String                 `tfsdk:"origin_id_name"`
-	FileName            types.String                 `tfsdk:"file_name"`
-	FileMaxSize         types.Int64                  `tfsdk:"file_max_size"`
-	FileMinSize         types.Int64                  `tfsdk:"file_min_size"`
-	FileSeverity        types.String                 `tfsdk:"file_severity"`
-	SourceInterface     types.String                 `tfsdk:"source_interface"`
-	SourceInterfacesVrf []LoggingSourceInterfacesVrf `tfsdk:"source_interfaces_vrf"`
-	Ipv4Hosts           []LoggingIpv4Hosts           `tfsdk:"ipv4_hosts"`
-	Ipv4VrfHosts        []LoggingIpv4VrfHosts        `tfsdk:"ipv4_vrf_hosts"`
-	Ipv6Hosts           []LoggingIpv6Hosts           `tfsdk:"ipv6_hosts"`
-	Ipv6VrfHosts        []LoggingIpv6VrfHosts        `tfsdk:"ipv6_vrf_hosts"`
+	Device                types.String                   `tfsdk:"device"`
+	Id                    types.String                   `tfsdk:"id"`
+	MonitorSeverity       types.String                   `tfsdk:"monitor_severity"`
+	BufferedSize          types.Int64                    `tfsdk:"buffered_size"`
+	BufferedSeverity      types.String                   `tfsdk:"buffered_severity"`
+	ConsoleSeverity       types.String                   `tfsdk:"console_severity"`
+	Facility              types.String                   `tfsdk:"facility"`
+	HistorySize           types.Int64                    `tfsdk:"history_size"`
+	HistorySeverity       types.String                   `tfsdk:"history_severity"`
+	Trap                  types.Bool                     `tfsdk:"trap"`
+	TrapSeverity          types.String                   `tfsdk:"trap_severity"`
+	OriginIdType          types.String                   `tfsdk:"origin_id_type"`
+	OriginIdName          types.String                   `tfsdk:"origin_id_name"`
+	FileName              types.String                   `tfsdk:"file_name"`
+	FileMaxSize           types.Int64                    `tfsdk:"file_max_size"`
+	FileMinSize           types.Int64                    `tfsdk:"file_min_size"`
+	FileSeverity          types.String                   `tfsdk:"file_severity"`
+	SourceInterface       types.String                   `tfsdk:"source_interface"`
+	SourceInterfacesVrf   []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
+	Ipv4HostsTransport    []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
+	Ipv4Hosts             []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
+	Ipv4VrfHostsTransport []LoggingIpv4VrfHostsTransport `tfsdk:"ipv4_vrf_hosts_transport"`
+	Ipv4VrfHosts          []LoggingIpv4VrfHosts          `tfsdk:"ipv4_vrf_hosts"`
+	Ipv6HostsTransport    []LoggingIpv6HostsTransport    `tfsdk:"ipv6_hosts_transport"`
+	Ipv6Hosts             []LoggingIpv6Hosts             `tfsdk:"ipv6_hosts"`
+	Ipv6VrfHostsTransport []LoggingIpv6VrfHostsTransport `tfsdk:"ipv6_vrf_hosts_transport"`
+	Ipv6VrfHosts          []LoggingIpv6VrfHosts          `tfsdk:"ipv6_vrf_hosts"`
 }
 type LoggingSourceInterfacesVrf struct {
 	Vrf           types.String `tfsdk:"vrf"`
 	InterfaceName types.String `tfsdk:"interface_name"`
 }
+type LoggingIpv4HostsTransport struct {
+	Ipv4Host          types.String                                 `tfsdk:"ipv4_host"`
+	TransportUdpPorts []LoggingIpv4HostsTransportTransportUdpPorts `tfsdk:"transport_udp_ports"`
+	TransportTcpPorts []LoggingIpv4HostsTransportTransportTcpPorts `tfsdk:"transport_tcp_ports"`
+	TransportTlsPorts []LoggingIpv4HostsTransportTransportTlsPorts `tfsdk:"transport_tls_ports"`
+}
 type LoggingIpv4Hosts struct {
 	Ipv4Host types.String `tfsdk:"ipv4_host"`
+}
+type LoggingIpv4VrfHostsTransport struct {
+	Ipv4Host          types.String                                    `tfsdk:"ipv4_host"`
+	Vrf               types.String                                    `tfsdk:"vrf"`
+	TransportUdpPorts []LoggingIpv4VrfHostsTransportTransportUdpPorts `tfsdk:"transport_udp_ports"`
+	TransportTcpPorts []LoggingIpv4VrfHostsTransportTransportTcpPorts `tfsdk:"transport_tcp_ports"`
+	TransportTlsPorts []LoggingIpv4VrfHostsTransportTransportTlsPorts `tfsdk:"transport_tls_ports"`
 }
 type LoggingIpv4VrfHosts struct {
 	Ipv4Host types.String `tfsdk:"ipv4_host"`
 	Vrf      types.String `tfsdk:"vrf"`
 }
+type LoggingIpv6HostsTransport struct {
+	Ipv6Host          types.String                                 `tfsdk:"ipv6_host"`
+	TransportUdpPorts []LoggingIpv6HostsTransportTransportUdpPorts `tfsdk:"transport_udp_ports"`
+	TransportTcpPorts []LoggingIpv6HostsTransportTransportTcpPorts `tfsdk:"transport_tcp_ports"`
+	TransportTlsPorts []LoggingIpv6HostsTransportTransportTlsPorts `tfsdk:"transport_tls_ports"`
+}
 type LoggingIpv6Hosts struct {
 	Ipv6Host types.String `tfsdk:"ipv6_host"`
+}
+type LoggingIpv6VrfHostsTransport struct {
+	Ipv6Host          types.String                                    `tfsdk:"ipv6_host"`
+	Vrf               types.String                                    `tfsdk:"vrf"`
+	TransportUdpPorts []LoggingIpv6VrfHostsTransportTransportUdpPorts `tfsdk:"transport_udp_ports"`
+	TransportTcpPorts []LoggingIpv6VrfHostsTransportTransportTcpPorts `tfsdk:"transport_tcp_ports"`
+	TransportTlsPorts []LoggingIpv6VrfHostsTransportTransportTlsPorts `tfsdk:"transport_tls_ports"`
 }
 type LoggingIpv6VrfHosts struct {
 	Ipv6Host types.String `tfsdk:"ipv6_host"`
 	Vrf      types.String `tfsdk:"vrf"`
+}
+type LoggingIpv4HostsTransportTransportUdpPorts struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv4HostsTransportTransportTcpPorts struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv4HostsTransportTransportTlsPorts struct {
+	PortNumber types.Int64  `tfsdk:"port_number"`
+	Profile    types.String `tfsdk:"profile"`
+}
+type LoggingIpv4VrfHostsTransportTransportUdpPorts struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv4VrfHostsTransportTransportTcpPorts struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv4VrfHostsTransportTransportTlsPorts struct {
+	PortNumber types.Int64  `tfsdk:"port_number"`
+	Profile    types.String `tfsdk:"profile"`
+}
+type LoggingIpv6HostsTransportTransportUdpPorts struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv6HostsTransportTransportTcpPorts struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv6HostsTransportTransportTlsPorts struct {
+	PortNumber types.Int64  `tfsdk:"port_number"`
+	Profile    types.String `tfsdk:"profile"`
+}
+type LoggingIpv6VrfHostsTransportTransportUdpPorts struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv6VrfHostsTransportTransportTcpPorts struct {
+	PortNumber types.Int64 `tfsdk:"port_number"`
+}
+type LoggingIpv6VrfHostsTransportTransportTlsPorts struct {
+	PortNumber types.Int64  `tfsdk:"port_number"`
+	Profile    types.String `tfsdk:"profile"`
 }
 
 func (data Logging) getPath() string {
@@ -185,11 +259,84 @@ func (data Logging) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.Ipv4HostsTransport) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list", []interface{}{})
+		for index, item := range data.Ipv4HostsTransport {
+			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list"+"."+strconv.Itoa(index)+"."+"ipv4-host", item.Ipv4Host.ValueString())
+			}
+			if len(item.TransportUdpPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.udp.port-config", []interface{}{})
+				for cindex, citem := range item.TransportUdpPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.udp.port-config"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.TransportTcpPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tcp.port-config", []interface{}{})
+				for cindex, citem := range item.TransportTcpPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tcp.port-config"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.TransportTlsPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port", []interface{}{})
+				for cindex, citem := range item.TransportTlsPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port"+"."+strconv.Itoa(cindex)+"."+"profile", citem.Profile.ValueString())
+					}
+				}
+			}
+		}
+	}
 	if len(data.Ipv4Hosts) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-list", []interface{}{})
 		for index, item := range data.Ipv4Hosts {
 			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-list"+"."+strconv.Itoa(index)+"."+"ipv4-host", item.Ipv4Host.ValueString())
+			}
+		}
+	}
+	if len(data.Ipv4VrfHostsTransport) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list", []interface{}{})
+		for index, item := range data.Ipv4VrfHostsTransport {
+			if !item.Ipv4Host.IsNull() && !item.Ipv4Host.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"ipv4-host", item.Ipv4Host.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"vrf", item.Vrf.ValueString())
+			}
+			if len(item.TransportUdpPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.udp.port-config", []interface{}{})
+				for cindex, citem := range item.TransportUdpPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.udp.port-config"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.TransportTcpPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tcp.port-config", []interface{}{})
+				for cindex, citem := range item.TransportTcpPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tcp.port-config"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.TransportTlsPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port", []interface{}{})
+				for cindex, citem := range item.TransportTlsPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv4-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port"+"."+strconv.Itoa(cindex)+"."+"profile", citem.Profile.ValueString())
+					}
+				}
 			}
 		}
 	}
@@ -204,11 +351,84 @@ func (data Logging) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.Ipv6HostsTransport) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list", []interface{}{})
+		for index, item := range data.Ipv6HostsTransport {
+			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list"+"."+strconv.Itoa(index)+"."+"ipv6-host", item.Ipv6Host.ValueString())
+			}
+			if len(item.TransportUdpPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.udp.port-config", []interface{}{})
+				for cindex, citem := range item.TransportUdpPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.udp.port-config"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.TransportTcpPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tcp.port-config", []interface{}{})
+				for cindex, citem := range item.TransportTcpPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tcp.port-config"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.TransportTlsPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port", []interface{}{})
+				for cindex, citem := range item.TransportTlsPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port"+"."+strconv.Itoa(cindex)+"."+"profile", citem.Profile.ValueString())
+					}
+				}
+			}
+		}
+	}
 	if len(data.Ipv6Hosts) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-list", []interface{}{})
 		for index, item := range data.Ipv6Hosts {
 			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-list"+"."+strconv.Itoa(index)+"."+"ipv6-host", item.Ipv6Host.ValueString())
+			}
+		}
+	}
+	if len(data.Ipv6VrfHostsTransport) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list", []interface{}{})
+		for index, item := range data.Ipv6VrfHostsTransport {
+			if !item.Ipv6Host.IsNull() && !item.Ipv6Host.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"ipv6-host", item.Ipv6Host.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"vrf", item.Vrf.ValueString())
+			}
+			if len(item.TransportUdpPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.udp.port-config", []interface{}{})
+				for cindex, citem := range item.TransportUdpPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.udp.port-config"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.TransportTcpPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tcp.port-config", []interface{}{})
+				for cindex, citem := range item.TransportTcpPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tcp.port-config"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.TransportTlsPorts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port", []interface{}{})
+				for cindex, citem := range item.TransportTlsPorts {
+					if !citem.PortNumber.IsNull() && !citem.PortNumber.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port"+"."+strconv.Itoa(cindex)+"."+"port-number", strconv.FormatInt(citem.PortNumber.ValueInt64(), 10))
+					}
+					if !citem.Profile.IsNull() && !citem.Profile.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"host.ipv6.ipv6-host-vrf-transport-list"+"."+strconv.Itoa(index)+"."+"transport.tls.port"+"."+strconv.Itoa(cindex)+"."+"profile", citem.Profile.ValueString())
+					}
+				}
 			}
 		}
 	}
@@ -349,6 +569,127 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.SourceInterfacesVrf[i].InterfaceName = types.StringNull()
 		}
 	}
+	for i := range data.Ipv4HostsTransport {
+		keys := [...]string{"ipv4-host"}
+		keyValues := [...]string{data.Ipv4HostsTransport[i].Ipv4Host.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "host.ipv4-host-transport-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("ipv4-host"); value.Exists() && !data.Ipv4HostsTransport[i].Ipv4Host.IsNull() {
+			data.Ipv4HostsTransport[i].Ipv4Host = types.StringValue(value.String())
+		} else {
+			data.Ipv4HostsTransport[i].Ipv4Host = types.StringNull()
+		}
+		for ci := range data.Ipv4HostsTransport[i].TransportUdpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.udp.port-config").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
+				data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv4HostsTransport[i].TransportTcpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.tcp.port-config").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
+				data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv4HostsTransport[i].TransportTlsPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.tls.port").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
+				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Null()
+			}
+			if value := cr.Get("profile"); value.Exists() && !data.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() {
+				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile = types.StringValue(value.String())
+			} else {
+				data.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile = types.StringNull()
+			}
+		}
+	}
 	for i := range data.Ipv4Hosts {
 		keys := [...]string{"ipv4-host"}
 		keyValues := [...]string{data.Ipv4Hosts[i].Ipv4Host.ValueString()}
@@ -376,6 +717,132 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Ipv4Hosts[i].Ipv4Host = types.StringValue(value.String())
 		} else {
 			data.Ipv4Hosts[i].Ipv4Host = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4VrfHostsTransport {
+		keys := [...]string{"ipv4-host", "vrf"}
+		keyValues := [...]string{data.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString(), data.Ipv4VrfHostsTransport[i].Vrf.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "host.ipv4-host-vrf-transport-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("ipv4-host"); value.Exists() && !data.Ipv4VrfHostsTransport[i].Ipv4Host.IsNull() {
+			data.Ipv4VrfHostsTransport[i].Ipv4Host = types.StringValue(value.String())
+		} else {
+			data.Ipv4VrfHostsTransport[i].Ipv4Host = types.StringNull()
+		}
+		if value := r.Get("vrf"); value.Exists() && !data.Ipv4VrfHostsTransport[i].Vrf.IsNull() {
+			data.Ipv4VrfHostsTransport[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Ipv4VrfHostsTransport[i].Vrf = types.StringNull()
+		}
+		for ci := range data.Ipv4VrfHostsTransport[i].TransportUdpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.udp.port-config").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
+				data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv4VrfHostsTransport[i].TransportTcpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.tcp.port-config").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
+				data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv4VrfHostsTransport[i].TransportTlsPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.tls.port").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
+				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Null()
+			}
+			if value := cr.Get("profile"); value.Exists() && !data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() {
+				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile = types.StringValue(value.String())
+			} else {
+				data.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile = types.StringNull()
+			}
 		}
 	}
 	for i := range data.Ipv4VrfHosts {
@@ -412,6 +879,127 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Ipv4VrfHosts[i].Vrf = types.StringNull()
 		}
 	}
+	for i := range data.Ipv6HostsTransport {
+		keys := [...]string{"ipv6-host"}
+		keyValues := [...]string{data.Ipv6HostsTransport[i].Ipv6Host.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "host.ipv6.ipv6-host-transport-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("ipv6-host"); value.Exists() && !data.Ipv6HostsTransport[i].Ipv6Host.IsNull() {
+			data.Ipv6HostsTransport[i].Ipv6Host = types.StringValue(value.String())
+		} else {
+			data.Ipv6HostsTransport[i].Ipv6Host = types.StringNull()
+		}
+		for ci := range data.Ipv6HostsTransport[i].TransportUdpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.udp.port-config").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
+				data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv6HostsTransport[i].TransportTcpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.tcp.port-config").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
+				data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv6HostsTransport[i].TransportTlsPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.tls.port").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
+				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Null()
+			}
+			if value := cr.Get("profile"); value.Exists() && !data.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() {
+				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile = types.StringValue(value.String())
+			} else {
+				data.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile = types.StringNull()
+			}
+		}
+	}
 	for i := range data.Ipv6Hosts {
 		keys := [...]string{"ipv6-host"}
 		keyValues := [...]string{data.Ipv6Hosts[i].Ipv6Host.ValueString()}
@@ -439,6 +1027,132 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Ipv6Hosts[i].Ipv6Host = types.StringValue(value.String())
 		} else {
 			data.Ipv6Hosts[i].Ipv6Host = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6VrfHostsTransport {
+		keys := [...]string{"ipv6-host", "vrf"}
+		keyValues := [...]string{data.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), data.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "host.ipv6.ipv6-host-vrf-transport-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("ipv6-host"); value.Exists() && !data.Ipv6VrfHostsTransport[i].Ipv6Host.IsNull() {
+			data.Ipv6VrfHostsTransport[i].Ipv6Host = types.StringValue(value.String())
+		} else {
+			data.Ipv6VrfHostsTransport[i].Ipv6Host = types.StringNull()
+		}
+		if value := r.Get("vrf"); value.Exists() && !data.Ipv6VrfHostsTransport[i].Vrf.IsNull() {
+			data.Ipv6VrfHostsTransport[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Ipv6VrfHostsTransport[i].Vrf = types.StringNull()
+		}
+		for ci := range data.Ipv6VrfHostsTransport[i].TransportUdpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.udp.port-config").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.IsNull() {
+				data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv6VrfHostsTransport[i].TransportTcpPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.tcp.port-config").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.IsNull() {
+				data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber = types.Int64Null()
+			}
+		}
+		for ci := range data.Ipv6VrfHostsTransport[i].TransportTlsPorts {
+			keys := [...]string{"port-number"}
+			keyValues := [...]string{strconv.FormatInt(data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+			var cr gjson.Result
+			r.Get("transport.tls.port").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("port-number"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.IsNull() {
+				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Value(value.Int())
+			} else {
+				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber = types.Int64Null()
+			}
+			if value := cr.Get("profile"); value.Exists() && !data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() {
+				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile = types.StringValue(value.String())
+			} else {
+				data.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile = types.StringNull()
+			}
 		}
 	}
 	for i := range data.Ipv6VrfHosts {
@@ -546,6 +1260,53 @@ func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "host.ipv4-host-transport-list"); value.Exists() {
+		data.Ipv4HostsTransport = make([]LoggingIpv4HostsTransport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv4HostsTransport{}
+			if cValue := v.Get("ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv4HostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportUdpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv4HostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportTcpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv4HostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportTlsPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv4HostsTransport = append(data.Ipv4HostsTransport, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "host.ipv4-host-list"); value.Exists() {
 		data.Ipv4Hosts = make([]LoggingIpv4Hosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -554,6 +1315,56 @@ func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
 			data.Ipv4Hosts = append(data.Ipv4Hosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "host.ipv4-host-vrf-transport-list"); value.Exists() {
+		data.Ipv4VrfHostsTransport = make([]LoggingIpv4VrfHostsTransport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv4VrfHostsTransport{}
+			if cValue := v.Get("ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv4VrfHostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportUdpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv4VrfHostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportTcpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv4VrfHostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportTlsPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv4VrfHostsTransport = append(data.Ipv4VrfHostsTransport, item)
 			return true
 		})
 	}
@@ -571,6 +1382,53 @@ func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "host.ipv6.ipv6-host-transport-list"); value.Exists() {
+		data.Ipv6HostsTransport = make([]LoggingIpv6HostsTransport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv6HostsTransport{}
+			if cValue := v.Get("ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv6HostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportUdpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv6HostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportTcpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv6HostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportTlsPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv6HostsTransport = append(data.Ipv6HostsTransport, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "host.ipv6.ipv6-host-list"); value.Exists() {
 		data.Ipv6Hosts = make([]LoggingIpv6Hosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -579,6 +1437,56 @@ func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
 			data.Ipv6Hosts = append(data.Ipv6Hosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "host.ipv6.ipv6-host-vrf-transport-list"); value.Exists() {
+		data.Ipv6VrfHostsTransport = make([]LoggingIpv6VrfHostsTransport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv6VrfHostsTransport{}
+			if cValue := v.Get("ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv6VrfHostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportUdpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv6VrfHostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportTcpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv6VrfHostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportTlsPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv6VrfHostsTransport = append(data.Ipv6VrfHostsTransport, item)
 			return true
 		})
 	}
@@ -667,6 +1575,53 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "host.ipv4-host-transport-list"); value.Exists() {
+		data.Ipv4HostsTransport = make([]LoggingIpv4HostsTransport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv4HostsTransport{}
+			if cValue := v.Get("ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv4HostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportUdpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv4HostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportTcpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv4HostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4HostsTransportTransportTlsPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv4HostsTransport = append(data.Ipv4HostsTransport, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "host.ipv4-host-list"); value.Exists() {
 		data.Ipv4Hosts = make([]LoggingIpv4Hosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -675,6 +1630,56 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Ipv4Host = types.StringValue(cValue.String())
 			}
 			data.Ipv4Hosts = append(data.Ipv4Hosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "host.ipv4-host-vrf-transport-list"); value.Exists() {
+		data.Ipv4VrfHostsTransport = make([]LoggingIpv4VrfHostsTransport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv4VrfHostsTransport{}
+			if cValue := v.Get("ipv4-host"); cValue.Exists() {
+				item.Ipv4Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv4VrfHostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportUdpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv4VrfHostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportTcpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv4VrfHostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv4VrfHostsTransportTransportTlsPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv4VrfHostsTransport = append(data.Ipv4VrfHostsTransport, item)
 			return true
 		})
 	}
@@ -692,6 +1697,53 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "host.ipv6.ipv6-host-transport-list"); value.Exists() {
+		data.Ipv6HostsTransport = make([]LoggingIpv6HostsTransport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv6HostsTransport{}
+			if cValue := v.Get("ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv6HostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportUdpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv6HostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportTcpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv6HostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6HostsTransportTransportTlsPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv6HostsTransport = append(data.Ipv6HostsTransport, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "host.ipv6.ipv6-host-list"); value.Exists() {
 		data.Ipv6Hosts = make([]LoggingIpv6Hosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -700,6 +1752,56 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Ipv6Host = types.StringValue(cValue.String())
 			}
 			data.Ipv6Hosts = append(data.Ipv6Hosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "host.ipv6.ipv6-host-vrf-transport-list"); value.Exists() {
+		data.Ipv6VrfHostsTransport = make([]LoggingIpv6VrfHostsTransport, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LoggingIpv6VrfHostsTransport{}
+			if cValue := v.Get("ipv6-host"); cValue.Exists() {
+				item.Ipv6Host = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("transport.udp.port-config"); cValue.Exists() {
+				item.TransportUdpPorts = make([]LoggingIpv6VrfHostsTransportTransportUdpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportUdpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportUdpPorts = append(item.TransportUdpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tcp.port-config"); cValue.Exists() {
+				item.TransportTcpPorts = make([]LoggingIpv6VrfHostsTransportTransportTcpPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportTcpPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					item.TransportTcpPorts = append(item.TransportTcpPorts, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("transport.tls.port"); cValue.Exists() {
+				item.TransportTlsPorts = make([]LoggingIpv6VrfHostsTransportTransportTlsPorts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := LoggingIpv6VrfHostsTransportTransportTlsPorts{}
+					if ccValue := cv.Get("port-number"); ccValue.Exists() {
+						cItem.PortNumber = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("profile"); ccValue.Exists() {
+						cItem.Profile = types.StringValue(ccValue.String())
+					}
+					item.TransportTlsPorts = append(item.TransportTlsPorts, cItem)
+					return true
+				})
+			}
+			data.Ipv6VrfHostsTransport = append(data.Ipv6VrfHostsTransport, item)
 			return true
 		})
 	}
@@ -797,6 +1899,109 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface-conf/source-interface-vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Ipv4HostsTransport {
+		stateKeyValues := [...]string{state.Ipv4HostsTransport[i].Ipv4Host.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4HostsTransport[i].Ipv4Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4HostsTransport {
+			found = true
+			if state.Ipv4HostsTransport[i].Ipv4Host.ValueString() != data.Ipv4HostsTransport[j].Ipv4Host.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Ipv4HostsTransport[i].TransportUdpPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4HostsTransport[j].TransportUdpPorts {
+						found = true
+						if state.Ipv4HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64() != data.Ipv4HostsTransport[j].TransportUdpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-transport-list=%v/transport/udp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Ipv4HostsTransport[i].TransportTcpPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4HostsTransport[j].TransportTcpPorts {
+						found = true
+						if state.Ipv4HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64() != data.Ipv4HostsTransport[j].TransportTcpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-transport-list=%v/transport/tcp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Ipv4HostsTransport[i].TransportTlsPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4HostsTransport[j].TransportTlsPorts {
+						found = true
+						if state.Ipv4HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64() != data.Ipv4HostsTransport[j].TransportTlsPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Ipv4HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv4HostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-transport-list=%v/transport/tls/port=%v/profile", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-transport-list=%v/transport/tls/port=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-transport-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Ipv4Hosts {
 		stateKeyValues := [...]string{state.Ipv4Hosts[i].Ipv4Host.ValueString()}
 
@@ -820,6 +2025,115 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Ipv4VrfHostsTransport {
+		stateKeyValues := [...]string{state.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString(), state.Ipv4VrfHostsTransport[i].Vrf.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4VrfHostsTransport {
+			found = true
+			if state.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString() != data.Ipv4VrfHostsTransport[j].Ipv4Host.ValueString() {
+				found = false
+			}
+			if state.Ipv4VrfHostsTransport[i].Vrf.ValueString() != data.Ipv4VrfHostsTransport[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Ipv4VrfHostsTransport[i].TransportUdpPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4VrfHostsTransport[j].TransportUdpPorts {
+						found = true
+						if state.Ipv4VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64() != data.Ipv4VrfHostsTransport[j].TransportUdpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-vrf-transport-list=%v/transport/udp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Ipv4VrfHostsTransport[i].TransportTcpPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4VrfHostsTransport[j].TransportTcpPorts {
+						found = true
+						if state.Ipv4VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64() != data.Ipv4VrfHostsTransport[j].TransportTcpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-vrf-transport-list=%v/transport/tcp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Ipv4VrfHostsTransport[i].TransportTlsPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv4VrfHostsTransport[j].TransportTlsPorts {
+						found = true
+						if state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64() != data.Ipv4VrfHostsTransport[j].TransportTlsPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Ipv4VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv4VrfHostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-vrf-transport-list=%v/transport/tls/port=%v/profile", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-vrf-transport-list=%v/transport/tls/port=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-vrf-transport-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv4VrfHosts {
@@ -853,6 +2167,109 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv4-host-vrf-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Ipv6HostsTransport {
+		stateKeyValues := [...]string{state.Ipv6HostsTransport[i].Ipv6Host.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6HostsTransport[i].Ipv6Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6HostsTransport {
+			found = true
+			if state.Ipv6HostsTransport[i].Ipv6Host.ValueString() != data.Ipv6HostsTransport[j].Ipv6Host.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Ipv6HostsTransport[i].TransportUdpPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6HostsTransport[j].TransportUdpPorts {
+						found = true
+						if state.Ipv6HostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64() != data.Ipv6HostsTransport[j].TransportUdpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-transport-list=%v/transport/udp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Ipv6HostsTransport[i].TransportTcpPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6HostsTransport[j].TransportTcpPorts {
+						found = true
+						if state.Ipv6HostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64() != data.Ipv6HostsTransport[j].TransportTcpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-transport-list=%v/transport/tcp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Ipv6HostsTransport[i].TransportTlsPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6HostsTransport[j].TransportTlsPorts {
+						found = true
+						if state.Ipv6HostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64() != data.Ipv6HostsTransport[j].TransportTlsPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Ipv6HostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv6HostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-transport-list=%v/transport/tls/port=%v/profile", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-transport-list=%v/transport/tls/port=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-transport-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Ipv6Hosts {
 		stateKeyValues := [...]string{state.Ipv6Hosts[i].Ipv6Host.ValueString()}
 
@@ -876,6 +2293,115 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Ipv6VrfHostsTransport {
+		stateKeyValues := [...]string{state.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), state.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6VrfHostsTransport {
+			found = true
+			if state.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString() != data.Ipv6VrfHostsTransport[j].Ipv6Host.ValueString() {
+				found = false
+			}
+			if state.Ipv6VrfHostsTransport[i].Vrf.ValueString() != data.Ipv6VrfHostsTransport[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Ipv6VrfHostsTransport[i].TransportUdpPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6VrfHostsTransport[j].TransportUdpPorts {
+						found = true
+						if state.Ipv6VrfHostsTransport[i].TransportUdpPorts[ci].PortNumber.ValueInt64() != data.Ipv6VrfHostsTransport[j].TransportUdpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-vrf-transport-list=%v/transport/udp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Ipv6VrfHostsTransport[i].TransportTcpPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6VrfHostsTransport[j].TransportTcpPorts {
+						found = true
+						if state.Ipv6VrfHostsTransport[i].TransportTcpPorts[ci].PortNumber.ValueInt64() != data.Ipv6VrfHostsTransport[j].TransportTcpPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-vrf-transport-list=%v/transport/tcp/port-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Ipv6VrfHostsTransport[i].TransportTlsPorts {
+					cstateKeyValues := [...]string{strconv.FormatInt(state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64(), 10)}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Ipv6VrfHostsTransport[j].TransportTlsPorts {
+						found = true
+						if state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].PortNumber.ValueInt64() != data.Ipv6VrfHostsTransport[j].TransportTlsPorts[cj].PortNumber.ValueInt64() {
+							found = false
+						}
+						if found {
+							if !state.Ipv6VrfHostsTransport[i].TransportTlsPorts[ci].Profile.IsNull() && data.Ipv6VrfHostsTransport[j].TransportTlsPorts[cj].Profile.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-vrf-transport-list=%v/transport/tls/port=%v/profile", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-vrf-transport-list=%v/transport/tls/port=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/host/ipv6/ipv6-host-vrf-transport-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6VrfHosts {
@@ -976,20 +2502,40 @@ func (data *Logging) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source-interface-conf/source-interface-vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.Ipv4HostsTransport {
+		keyValues := [...]string{data.Ipv4HostsTransport[i].Ipv4Host.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/host/ipv4-host-transport-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.Ipv4Hosts {
 		keyValues := [...]string{data.Ipv4Hosts[i].Ipv4Host.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/host/ipv4-host-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv4VrfHostsTransport {
+		keyValues := [...]string{data.Ipv4VrfHostsTransport[i].Ipv4Host.ValueString(), data.Ipv4VrfHostsTransport[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/host/ipv4-host-vrf-transport-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.Ipv4VrfHosts {
 		keyValues := [...]string{data.Ipv4VrfHosts[i].Ipv4Host.ValueString(), data.Ipv4VrfHosts[i].Vrf.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/host/ipv4-host-vrf-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.Ipv6HostsTransport {
+		keyValues := [...]string{data.Ipv6HostsTransport[i].Ipv6Host.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/host/ipv6/ipv6-host-transport-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.Ipv6Hosts {
 		keyValues := [...]string{data.Ipv6Hosts[i].Ipv6Host.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/host/ipv6/ipv6-host-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv6VrfHostsTransport {
+		keyValues := [...]string{data.Ipv6VrfHostsTransport[i].Ipv6Host.ValueString(), data.Ipv6VrfHostsTransport[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/host/ipv6/ipv6-host-vrf-transport-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.Ipv6VrfHosts {
 		keyValues := [...]string{data.Ipv6VrfHosts[i].Ipv6Host.ValueString(), data.Ipv6VrfHosts[i].Vrf.ValueString()}

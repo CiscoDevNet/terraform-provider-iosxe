@@ -31,9 +31,50 @@ resource "iosxe_logging" "example" {
       interface_name = "Loopback100"
     }
   ]
+  ipv4_hosts_transport = [
+    {
+      ipv4_host = "1.1.1.1"
+      transport_udp_ports = [
+        {
+          port_number = 10000
+        }
+      ]
+      transport_tcp_ports = [
+        {
+          port_number = 10001
+        }
+      ]
+      transport_tls_ports = [
+        {
+          port_number = 10002
+        }
+      ]
+    }
+  ]
   ipv4_hosts = [
     {
       ipv4_host = "1.1.1.1"
+    }
+  ]
+  ipv4_vrf_hosts_transport = [
+    {
+      ipv4_host = "1.1.1.1"
+      vrf       = "VRF1"
+      transport_udp_ports = [
+        {
+          port_number = 10000
+        }
+      ]
+      transport_tcp_ports = [
+        {
+          port_number = 10001
+        }
+      ]
+      transport_tls_ports = [
+        {
+          port_number = 10002
+        }
+      ]
     }
   ]
   ipv4_vrf_hosts = [
@@ -42,9 +83,50 @@ resource "iosxe_logging" "example" {
       vrf       = "VRF1"
     }
   ]
+  ipv6_hosts_transport = [
+    {
+      ipv6_host = "2001::1"
+      transport_udp_ports = [
+        {
+          port_number = 10000
+        }
+      ]
+      transport_tcp_ports = [
+        {
+          port_number = 10001
+        }
+      ]
+      transport_tls_ports = [
+        {
+          port_number = 10002
+        }
+      ]
+    }
+  ]
   ipv6_hosts = [
     {
       ipv6_host = "2001::1"
+    }
+  ]
+  ipv6_vrf_hosts_transport = [
+    {
+      ipv6_host = "2001::1"
+      vrf       = "VRF1"
+      transport_udp_ports = [
+        {
+          port_number = 10000
+        }
+      ]
+      transport_tcp_ports = [
+        {
+          port_number = 10001
+        }
+      ]
+      transport_tls_ports = [
+        {
+          port_number = 10002
+        }
+      ]
     }
   ]
   ipv6_vrf_hosts = [
@@ -76,9 +158,13 @@ resource "iosxe_logging" "example" {
 - `history_size` (Number) Set history table size
   - Range: `0`-`65535`
 - `ipv4_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_hosts))
+- `ipv4_hosts_transport` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_hosts_transport))
 - `ipv4_vrf_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_vrf_hosts))
+- `ipv4_vrf_hosts_transport` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_vrf_hosts_transport))
 - `ipv6_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_hosts))
+- `ipv6_hosts_transport` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_hosts_transport))
 - `ipv6_vrf_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_vrf_hosts))
+- `ipv6_vrf_hosts_transport` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_vrf_hosts_transport))
 - `monitor_severity` (String)
 - `origin_id_name` (String) Define a unique text string as ID
 - `origin_id_type` (String) Use origin hostname/ip/ipv6 as ID
@@ -100,6 +186,51 @@ Required:
 - `ipv4_host` (String)
 
 
+<a id="nestedatt--ipv4_hosts_transport"></a>
+### Nested Schema for `ipv4_hosts_transport`
+
+Required:
+
+- `ipv4_host` (String)
+
+Optional:
+
+- `transport_tcp_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv4_hosts_transport--transport_tcp_ports))
+- `transport_tls_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv4_hosts_transport--transport_tls_ports))
+- `transport_udp_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv4_hosts_transport--transport_udp_ports))
+
+<a id="nestedatt--ipv4_hosts_transport--transport_tcp_ports"></a>
+### Nested Schema for `ipv4_hosts_transport.transport_tcp_ports`
+
+Required:
+
+- `port_number` (Number) Specify the TCP port number (default=601)
+  - Range: `1`-`65535`
+
+
+<a id="nestedatt--ipv4_hosts_transport--transport_tls_ports"></a>
+### Nested Schema for `ipv4_hosts_transport.transport_tls_ports`
+
+Required:
+
+- `port_number` (Number) Specify the TLS port number (default=6514)
+  - Range: `1025`-`65535`
+
+Optional:
+
+- `profile` (String) Specify the TLS profile
+
+
+<a id="nestedatt--ipv4_hosts_transport--transport_udp_ports"></a>
+### Nested Schema for `ipv4_hosts_transport.transport_udp_ports`
+
+Required:
+
+- `port_number` (Number) Specify the UDP port number (default=514)
+  - Range: `1`-`65535`
+
+
+
 <a id="nestedatt--ipv4_vrf_hosts"></a>
 ### Nested Schema for `ipv4_vrf_hosts`
 
@@ -107,6 +238,52 @@ Required:
 
 - `ipv4_host` (String)
 - `vrf` (String) Set VRF option
+
+
+<a id="nestedatt--ipv4_vrf_hosts_transport"></a>
+### Nested Schema for `ipv4_vrf_hosts_transport`
+
+Required:
+
+- `ipv4_host` (String)
+- `vrf` (String) Set VRF option
+
+Optional:
+
+- `transport_tcp_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv4_vrf_hosts_transport--transport_tcp_ports))
+- `transport_tls_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv4_vrf_hosts_transport--transport_tls_ports))
+- `transport_udp_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv4_vrf_hosts_transport--transport_udp_ports))
+
+<a id="nestedatt--ipv4_vrf_hosts_transport--transport_tcp_ports"></a>
+### Nested Schema for `ipv4_vrf_hosts_transport.transport_tcp_ports`
+
+Required:
+
+- `port_number` (Number) Specify the TCP port number (default=601)
+  - Range: `1`-`65535`
+
+
+<a id="nestedatt--ipv4_vrf_hosts_transport--transport_tls_ports"></a>
+### Nested Schema for `ipv4_vrf_hosts_transport.transport_tls_ports`
+
+Required:
+
+- `port_number` (Number) Specify the TLS port number (default=6514)
+  - Range: `1025`-`65535`
+
+Optional:
+
+- `profile` (String) Specify the TLS profile
+
+
+<a id="nestedatt--ipv4_vrf_hosts_transport--transport_udp_ports"></a>
+### Nested Schema for `ipv4_vrf_hosts_transport.transport_udp_ports`
+
+Required:
+
+- `port_number` (Number) Specify the UDP port number (default=514)
+  - Range: `1`-`65535`
+
 
 
 <a id="nestedatt--ipv6_hosts"></a>
@@ -117,6 +294,51 @@ Required:
 - `ipv6_host` (String)
 
 
+<a id="nestedatt--ipv6_hosts_transport"></a>
+### Nested Schema for `ipv6_hosts_transport`
+
+Required:
+
+- `ipv6_host` (String)
+
+Optional:
+
+- `transport_tcp_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv6_hosts_transport--transport_tcp_ports))
+- `transport_tls_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv6_hosts_transport--transport_tls_ports))
+- `transport_udp_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv6_hosts_transport--transport_udp_ports))
+
+<a id="nestedatt--ipv6_hosts_transport--transport_tcp_ports"></a>
+### Nested Schema for `ipv6_hosts_transport.transport_tcp_ports`
+
+Required:
+
+- `port_number` (Number) Specify the TCP port number (default=601)
+  - Range: `1`-`65535`
+
+
+<a id="nestedatt--ipv6_hosts_transport--transport_tls_ports"></a>
+### Nested Schema for `ipv6_hosts_transport.transport_tls_ports`
+
+Required:
+
+- `port_number` (Number) Specify the TLS port number (default=6514)
+  - Range: `1025`-`65535`
+
+Optional:
+
+- `profile` (String) Specify the TLS profile
+
+
+<a id="nestedatt--ipv6_hosts_transport--transport_udp_ports"></a>
+### Nested Schema for `ipv6_hosts_transport.transport_udp_ports`
+
+Required:
+
+- `port_number` (Number) Specify the UDP port number (default=514)
+  - Range: `1`-`65535`
+
+
+
 <a id="nestedatt--ipv6_vrf_hosts"></a>
 ### Nested Schema for `ipv6_vrf_hosts`
 
@@ -124,6 +346,52 @@ Required:
 
 - `ipv6_host` (String)
 - `vrf` (String) Set VRF option
+
+
+<a id="nestedatt--ipv6_vrf_hosts_transport"></a>
+### Nested Schema for `ipv6_vrf_hosts_transport`
+
+Required:
+
+- `ipv6_host` (String)
+- `vrf` (String) Set VRF option
+
+Optional:
+
+- `transport_tcp_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv6_vrf_hosts_transport--transport_tcp_ports))
+- `transport_tls_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv6_vrf_hosts_transport--transport_tls_ports))
+- `transport_udp_ports` (Attributes List) Port Number List (see [below for nested schema](#nestedatt--ipv6_vrf_hosts_transport--transport_udp_ports))
+
+<a id="nestedatt--ipv6_vrf_hosts_transport--transport_tcp_ports"></a>
+### Nested Schema for `ipv6_vrf_hosts_transport.transport_tcp_ports`
+
+Required:
+
+- `port_number` (Number) Specify the TCP port number (default=601)
+  - Range: `1`-`65535`
+
+
+<a id="nestedatt--ipv6_vrf_hosts_transport--transport_tls_ports"></a>
+### Nested Schema for `ipv6_vrf_hosts_transport.transport_tls_ports`
+
+Required:
+
+- `port_number` (Number) Specify the TLS port number (default=6514)
+  - Range: `1025`-`65535`
+
+Optional:
+
+- `profile` (String) Specify the TLS profile
+
+
+<a id="nestedatt--ipv6_vrf_hosts_transport--transport_udp_ports"></a>
+### Nested Schema for `ipv6_vrf_hosts_transport.transport_udp_ports`
+
+Required:
+
+- `port_number` (Number) Specify the UDP port number (default=514)
+  - Range: `1`-`65535`
+
 
 
 <a id="nestedatt--source_interfaces_vrf"></a>

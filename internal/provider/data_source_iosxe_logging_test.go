@@ -40,10 +40,28 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "source_interface", "Loopback0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "source_interfaces_vrf.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "source_interfaces_vrf.0.interface_name", "Loopback100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts_transport.0.ipv4_host", "1.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_hosts.0.ipv4_host", "1.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.ipv4_host", "1.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts.0.ipv4_host", "1.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv4_vrf_hosts.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts_transport.0.ipv6_host", "2001::1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_hosts.0.ipv6_host", "2001::1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.ipv6_host", "2001::1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts.0.ipv6_host", "2001::1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts.0.vrf", "VRF1"))
 	resource.Test(t, resource.TestCase{
@@ -97,15 +115,65 @@ func testAccDataSourceIosxeLoggingConfig() string {
 	config += `		vrf = "VRF1"` + "\n"
 	config += `		interface_name = "Loopback100"` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv4_hosts_transport = [{` + "\n"
+	config += `		ipv4_host = "1.1.1.1"` + "\n"
+	config += `		transport_udp_ports = [{` + "\n"
+	config += `			port_number = 10000` + "\n"
+	config += `		}]` + "\n"
+	config += `		transport_tcp_ports = [{` + "\n"
+	config += `			port_number = 10001` + "\n"
+	config += `		}]` + "\n"
+	config += `		transport_tls_ports = [{` + "\n"
+	config += `			port_number = 10002` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
 	config += `	ipv4_hosts = [{` + "\n"
 	config += `		ipv4_host = "1.1.1.1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	ipv4_vrf_hosts_transport = [{` + "\n"
+	config += `		ipv4_host = "1.1.1.1"` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `		transport_udp_ports = [{` + "\n"
+	config += `			port_number = 10000` + "\n"
+	config += `		}]` + "\n"
+	config += `		transport_tcp_ports = [{` + "\n"
+	config += `			port_number = 10001` + "\n"
+	config += `		}]` + "\n"
+	config += `		transport_tls_ports = [{` + "\n"
+	config += `			port_number = 10002` + "\n"
+	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv4_vrf_hosts = [{` + "\n"
 	config += `		ipv4_host = "1.1.1.1"` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
+	config += `	ipv6_hosts_transport = [{` + "\n"
+	config += `		ipv6_host = "2001::1"` + "\n"
+	config += `		transport_udp_ports = [{` + "\n"
+	config += `			port_number = 10000` + "\n"
+	config += `		}]` + "\n"
+	config += `		transport_tcp_ports = [{` + "\n"
+	config += `			port_number = 10001` + "\n"
+	config += `		}]` + "\n"
+	config += `		transport_tls_ports = [{` + "\n"
+	config += `			port_number = 10002` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
 	config += `	ipv6_hosts = [{` + "\n"
 	config += `		ipv6_host = "2001::1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	ipv6_vrf_hosts_transport = [{` + "\n"
+	config += `		ipv6_host = "2001::1"` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `		transport_udp_ports = [{` + "\n"
+	config += `			port_number = 10000` + "\n"
+	config += `		}]` + "\n"
+	config += `		transport_tcp_ports = [{` + "\n"
+	config += `			port_number = 10001` + "\n"
+	config += `		}]` + "\n"
+	config += `		transport_tls_ports = [{` + "\n"
+	config += `			port_number = 10002` + "\n"
+	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	ipv6_vrf_hosts = [{` + "\n"
 	config += `		ipv6_host = "2001::1"` + "\n"
