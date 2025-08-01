@@ -142,6 +142,58 @@ func (d *LoggingDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
+			"ipv4_hosts_transport": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv4_host": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"transport_udp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the UDP port number (default=514)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"transport_tcp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the TCP port number (default=601)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"transport_tls_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the TLS port number (default=6514)",
+										Computed:            true,
+									},
+									"profile": schema.StringAttribute{
+										MarkdownDescription: "Specify the TLS profile",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 			"ipv4_hosts": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
@@ -150,6 +202,62 @@ func (d *LoggingDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 						"ipv4_host": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv4_vrf_hosts_transport": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv4_host": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "Set VRF option",
+							Computed:            true,
+						},
+						"transport_udp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the UDP port number (default=514)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"transport_tcp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the TCP port number (default=601)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"transport_tls_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the TLS port number (default=6514)",
+										Computed:            true,
+									},
+									"profile": schema.StringAttribute{
+										MarkdownDescription: "Specify the TLS profile",
+										Computed:            true,
+									},
+								},
+							},
 						},
 					},
 				},
@@ -170,6 +278,58 @@ func (d *LoggingDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
+			"ipv6_hosts_transport": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv6_host": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"transport_udp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the UDP port number (default=514)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"transport_tcp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the TCP port number (default=601)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"transport_tls_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the TLS port number (default=6514)",
+										Computed:            true,
+									},
+									"profile": schema.StringAttribute{
+										MarkdownDescription: "Specify the TLS profile",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 			"ipv6_hosts": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
@@ -178,6 +338,62 @@ func (d *LoggingDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 						"ipv6_host": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_vrf_hosts_transport": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv6_host": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "Set VRF option",
+							Computed:            true,
+						},
+						"transport_udp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the UDP port number (default=514)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"transport_tcp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the TCP port number (default=601)",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"transport_tls_ports": schema.ListNestedAttribute{
+							MarkdownDescription: "Port Number List",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: "Specify the TLS port number (default=6514)",
+										Computed:            true,
+									},
+									"profile": schema.StringAttribute{
+										MarkdownDescription: "Specify the TLS profile",
+										Computed:            true,
+									},
+								},
+							},
 						},
 					},
 				},

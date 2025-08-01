@@ -1,0 +1,32 @@
+---
+name: LLDP
+path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp
+doc_category: System
+attributes:
+  - yang_name: run
+    example: true
+  - yang_name: holdtime
+    example: 60
+  - yang_name: management-vlan
+    example: 1
+    exclude_test: true
+  - yang_name: timer
+    example: 60 
+  - yang_name: management-address/ipv4
+    tf_name: ipv4_management_addresses
+    example: 1.2.3.4
+    exclude_test: true
+  - yang_name: management-address/ipv6
+    tf_name: ipv6_management_addresses
+    example: 2001:db8::1
+    exclude_test: true
+  - yang_name: system-name
+    tf_name: system_names
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: switch-id
+        id: true
+        example: 0
+      - yang_name: name
+        example: switch1

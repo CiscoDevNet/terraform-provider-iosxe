@@ -59,9 +59,6 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_forward_protocol_nd", "true"))
 	}
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "control_plane_service_policy_input", "system-cpp-policy"))
-	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -122,9 +119,6 @@ func testAccDataSourceIosxeSystemConfig() string {
 	config += `	memory_free_low_watermark_processor = 203038` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_forward_protocol_nd = true` + "\n"
-	}
-	if os.Getenv("C9000V") != "" {
-		config += `	control_plane_service_policy_input = "system-cpp-policy"` + "\n"
 	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
