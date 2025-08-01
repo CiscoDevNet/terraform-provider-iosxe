@@ -25,6 +25,7 @@ description: |-
 - Add `iosxe_spanning_tree` resource and data source
 - Add `iosxe_device_sensor` resource and data source
 - Add `iosxe_crypto_pki` resource and data source
+- Add `boot_system_flash_files`, `boot_system_bootfiles`, `enable_secret` attributes to `iosxe_system` resource and data source
 
 ## 0.6.0
 
