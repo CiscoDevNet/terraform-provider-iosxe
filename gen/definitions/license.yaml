@@ -1,0 +1,26 @@
+---
+name: License
+path: Cisco-IOS-XE-native:native/license
+doc_category: System
+test_tags: [LICENSE]
+attributes:
+  - yang_name: boot/level/license-choice/network-advantage-case/network-advantage
+    xpath: boot/level/network-advantage
+    tf_name: boot_level_network_advantage
+    example: true
+  - yang_name: boot/level/license-choice/network-advantage-case/network-advantage/addon
+    xpath: boot/level/network-advantage/addon
+    tf_name: boot_level_network_advantage_addon
+    example: dna-advantage
+  - yang_name: boot/level/license-choice/network-essentials-case/network-essentials
+    xpath: boot/level/network-essentials
+    tf_name: boot_level_network_essentials
+    example: true
+    exclude_test: true
+  - yang_name: boot/level/license-choice/network-essentials-case/network-essentials/addon
+    xpath: boot/level/network-essentials/addon
+    tf_name: boot_level_network_essentials_addon
+    example: dna-advantage
+    exclude_test: true
+  - yang_name: smart/transport-type
+    example: Off
