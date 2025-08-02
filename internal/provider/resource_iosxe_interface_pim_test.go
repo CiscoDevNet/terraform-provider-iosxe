@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeInterfacePIM(t *testing.T) {
@@ -50,12 +52,22 @@ func TestAccIosxeInterfacePIM(t *testing.T) {
 				ResourceName:            "iosxe_interface_pim.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Loopback=100/ip/pim",
+				ImportStateIdFunc:       iosxeInterfacePIMImportStateIdFunc("iosxe_interface_pim.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeInterfacePIMImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Type := primary.Attributes["type"]
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s,%s", Type, Name), nil
+	}
 }
 
 const testAccIosxeInterfacePIMPrerequisitesConfig = `

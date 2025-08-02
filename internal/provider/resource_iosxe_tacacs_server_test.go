@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeTACACSServer(t *testing.T) {
@@ -46,12 +48,21 @@ func TestAccIosxeTACACSServer(t *testing.T) {
 				ResourceName:            "iosxe_tacacs_server.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=tacacs_10.10.15.13",
+				ImportStateIdFunc:       iosxeTACACSServerImportStateIdFunc("iosxe_tacacs_server.test"),
 				ImportStateVerifyIgnore: []string{"key"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeTACACSServerImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeTACACSServerConfig_minimum() string {

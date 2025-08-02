@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeRadius(t *testing.T) {
@@ -59,12 +61,21 @@ func TestAccIosxeRadius(t *testing.T) {
 				ResourceName:            "iosxe_radius.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=radius_10.10.15.12",
+				ImportStateIdFunc:       iosxeRadiusImportStateIdFunc("iosxe_radius.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeRadiusImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeRadiusConfig_minimum() string {

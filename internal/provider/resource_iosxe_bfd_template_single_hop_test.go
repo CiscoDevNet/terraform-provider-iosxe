@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
@@ -52,12 +54,21 @@ func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
 				ResourceName:            "iosxe_bfd_template_single_hop.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=SH-TEMPLATE-1",
+				ImportStateIdFunc:       iosxeBFDTemplateSingleHopImportStateIdFunc("iosxe_bfd_template_single_hop.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBFDTemplateSingleHopImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeBFDTemplateSingleHopConfig_minimum() string {

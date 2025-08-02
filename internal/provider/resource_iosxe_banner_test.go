@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBanner(t *testing.T) {
@@ -46,12 +48,19 @@ func TestAccIosxeBanner(t *testing.T) {
 				ResourceName:            "iosxe_banner.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/banner",
+				ImportStateIdFunc:       iosxeBannerImportStateIdFunc("iosxe_banner.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBannerImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeBannerConfig_minimum() string {

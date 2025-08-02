@@ -2443,11 +2443,3 @@ func (data *Template) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
-
-func (data *Template) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.TemplateName = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-}

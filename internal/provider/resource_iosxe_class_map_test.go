@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeClassMap(t *testing.T) {
@@ -56,12 +58,21 @@ func TestAccIosxeClassMap(t *testing.T) {
 				ResourceName:            "iosxe_class_map.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CM1",
+				ImportStateIdFunc:       iosxeClassMapImportStateIdFunc("iosxe_class_map.test"),
 				ImportStateVerifyIgnore: []string{"match_authorization_status_unauthorized"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeClassMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeClassMapConfig_minimum() string {

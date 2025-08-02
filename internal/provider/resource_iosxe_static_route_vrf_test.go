@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeStaticRouteVRF(t *testing.T) {
@@ -48,12 +50,21 @@ func TestAccIosxeStaticRouteVRF(t *testing.T) {
 				ResourceName:            "iosxe_static_route_vrf.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/route/vrf=VRF1",
+				ImportStateIdFunc:       iosxeStaticRouteVRFImportStateIdFunc("iosxe_static_route_vrf.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeStaticRouteVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Vrf := primary.Attributes["vrf"]
+
+		return fmt.Sprintf("%s", Vrf), nil
+	}
 }
 
 const testAccIosxeStaticRouteVRFPrerequisitesConfig = `

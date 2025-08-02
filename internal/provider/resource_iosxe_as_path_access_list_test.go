@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeASPathAccessList(t *testing.T) {
@@ -42,12 +44,21 @@ func TestAccIosxeASPathAccessList(t *testing.T) {
 				ResourceName:            "iosxe_as_path_access_list.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=10",
+				ImportStateIdFunc:       iosxeASPathAccessListImportStateIdFunc("iosxe_as_path_access_list.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeASPathAccessListImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeASPathAccessListConfig_minimum() string {

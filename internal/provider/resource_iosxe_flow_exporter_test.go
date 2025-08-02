@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeFlowExporter(t *testing.T) {
@@ -48,12 +50,21 @@ func TestAccIosxeFlowExporter(t *testing.T) {
 				ResourceName:            "iosxe_flow_exporter.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1",
+				ImportStateIdFunc:       iosxeFlowExporterImportStateIdFunc("iosxe_flow_exporter.test"),
 				ImportStateVerifyIgnore: []string{"option_sampler_table"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeFlowExporterImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeFlowExporterConfig_minimum() string {

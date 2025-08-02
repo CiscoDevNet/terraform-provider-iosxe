@@ -68,5 +68,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_crypto_ikev2_proposal.example "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=PROPOSAL1"
+terraform import iosxe_crypto_ikev2_proposal.example "<name>"
 ```

@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeStaticRoute(t *testing.T) {
@@ -47,12 +49,22 @@ func TestAccIosxeStaticRoute(t *testing.T) {
 				ResourceName:            "iosxe_static_route.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list=5.5.5.5,255.255.255.255",
+				ImportStateIdFunc:       iosxeStaticRouteImportStateIdFunc("iosxe_static_route.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeStaticRouteImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Prefix := primary.Attributes["prefix"]
+		Mask := primary.Attributes["mask"]
+
+		return fmt.Sprintf("%s,%s", Prefix, Mask), nil
+	}
 }
 
 func testAccIosxeStaticRouteConfig_minimum() string {

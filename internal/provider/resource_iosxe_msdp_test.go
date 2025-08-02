@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeMSDP(t *testing.T) {
@@ -49,12 +51,19 @@ func TestAccIosxeMSDP(t *testing.T) {
 				ResourceName:            "iosxe_msdp.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp",
+				ImportStateIdFunc:       iosxeMSDPImportStateIdFunc("iosxe_msdp.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeMSDPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 const testAccIosxeMSDPPrerequisitesConfig = `

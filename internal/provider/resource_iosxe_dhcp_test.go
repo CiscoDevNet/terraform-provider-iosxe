@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeDHCP(t *testing.T) {
@@ -53,12 +55,19 @@ func TestAccIosxeDHCP(t *testing.T) {
 				ResourceName:            "iosxe_dhcp.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/dhcp",
+				ImportStateIdFunc:       iosxeDHCPImportStateIdFunc("iosxe_dhcp.test"),
 				ImportStateVerifyIgnore: []string{"snooping_information_option_format_remote_id_hostname"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeDHCPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeDHCPConfig_minimum() string {

@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeCryptoIKEv2Keyring(t *testing.T) {
@@ -52,12 +54,21 @@ func TestAccIosxeCryptoIKEv2Keyring(t *testing.T) {
 				ResourceName:            "iosxe_crypto_ikev2_keyring.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=keyring1",
+				ImportStateIdFunc:       iosxeCryptoIKEv2KeyringImportStateIdFunc("iosxe_crypto_ikev2_keyring.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeCryptoIKEv2KeyringImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeCryptoIKEv2KeyringConfig_minimum() string {

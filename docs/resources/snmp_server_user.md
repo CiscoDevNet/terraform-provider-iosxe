@@ -71,5 +71,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_snmp_server_user.example "Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:user/names=USER1,GROUP1"
+terraform import iosxe_snmp_server_user.example "<username>,<grpname>"
 ```

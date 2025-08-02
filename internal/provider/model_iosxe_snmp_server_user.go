@@ -25,7 +25,6 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -517,13 +516,4 @@ func (data *SNMPServerUser) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/access-config/acl-name", data.getPath()))
 	}
 	return deletePaths
-}
-
-func (data *SNMPServerUser) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:user/names=%s,%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Username = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.Grpname = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

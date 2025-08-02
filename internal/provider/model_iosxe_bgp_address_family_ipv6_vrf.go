@@ -479,12 +479,3 @@ func (data *BGPAddressFamilyIPv6VRF) getDeletePaths(ctx context.Context) []strin
 	}
 	return deletePaths
 }
-
-func (data *BGPAddressFamilyIPv6VRF) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv6=%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Asn = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.AfName = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
-}

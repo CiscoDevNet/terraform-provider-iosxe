@@ -323,5 +323,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_interface_ethernet.example "Cisco-IOS-XE-native:native/interface/GigabitEthernet=3"
+terraform import iosxe_interface_ethernet.example "<type>,<name>"
 ```

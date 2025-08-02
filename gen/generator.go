@@ -300,6 +300,18 @@ func GetImportExcludes(attributes []YamlConfigAttribute) []string {
 	return excludes
 }
 
+// Templating helper function to return all import attributes
+func ImportAttributes(config YamlConfig) []YamlConfigAttribute {
+	attributes := []YamlConfigAttribute{}
+	for _, attr := range config.Attributes {
+		if attr.Reference || attr.Id {
+			attributes = append(attributes, attr)
+		}
+	}
+
+	return attributes
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
 	"toGoName":              ToGoName,
@@ -315,6 +327,7 @@ var functions = template.FuncMap{
 	"contains":              contains,
 	"add":                   Add,
 	"getImportExcludes":     GetImportExcludes,
+	"importAttributes":      ImportAttributes,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {

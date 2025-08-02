@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeMDTSubscription(t *testing.T) {
@@ -52,12 +54,21 @@ func TestAccIosxeMDTSubscription(t *testing.T) {
 				ResourceName:            "iosxe_mdt_subscription.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=101",
+				ImportStateIdFunc:       iosxeMDTSubscriptionImportStateIdFunc("iosxe_mdt_subscription.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeMDTSubscriptionImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		SubscriptionId := primary.Attributes["subscription_id"]
+
+		return fmt.Sprintf("%s", SubscriptionId), nil
+	}
 }
 
 func testAccIosxeMDTSubscriptionConfig_minimum() string {

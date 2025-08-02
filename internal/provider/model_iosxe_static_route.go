@@ -337,12 +337,3 @@ func (data *StaticRoute) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
-
-func (data *StaticRoute) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list=%s,%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Prefix = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.Mask = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
-}

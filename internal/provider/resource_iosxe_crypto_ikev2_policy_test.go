@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeCryptoIKEv2Policy(t *testing.T) {
@@ -46,12 +48,21 @@ func TestAccIosxeCryptoIKEv2Policy(t *testing.T) {
 				ResourceName:            "iosxe_crypto_ikev2_policy.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy=policy1",
+				ImportStateIdFunc:       iosxeCryptoIKEv2PolicyImportStateIdFunc("iosxe_crypto_ikev2_policy.test"),
 				ImportStateVerifyIgnore: []string{"match_inbound_only"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeCryptoIKEv2PolicyImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 const testAccIosxeCryptoIKEv2PolicyPrerequisitesConfig = `

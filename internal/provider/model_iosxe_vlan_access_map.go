@@ -25,7 +25,6 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -235,13 +234,4 @@ func (data *VLANAccessMap) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/action", data.getPath()))
 	}
 	return deletePaths
-}
-
-func (data *VLANAccessMap) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=%v,%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.Sequence = types.Int64Value(helpers.Must(strconv.ParseInt(matches[2], 10, 0)))
 }

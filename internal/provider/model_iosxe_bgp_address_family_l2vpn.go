@@ -24,7 +24,6 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -113,13 +112,4 @@ func (data *BGPAddressFamilyL2VPN) getEmptyLeafsDelete(ctx context.Context) []st
 func (data *BGPAddressFamilyL2VPN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	return deletePaths
-}
-
-func (data *BGPAddressFamilyL2VPN) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/l2vpn=%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Asn = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.AfName = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

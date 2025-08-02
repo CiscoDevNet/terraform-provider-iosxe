@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeSpanningTree(t *testing.T) {
@@ -53,12 +55,19 @@ func TestAccIosxeSpanningTree(t *testing.T) {
 				ResourceName:            "iosxe_spanning_tree.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/spanning-tree",
+				ImportStateIdFunc:       iosxeSpanningTreeImportStateIdFunc("iosxe_spanning_tree.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeSpanningTreeImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeSpanningTreeConfig_minimum() string {

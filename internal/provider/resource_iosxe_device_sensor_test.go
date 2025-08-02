@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeDeviceSensor(t *testing.T) {
@@ -62,12 +64,19 @@ func TestAccIosxeDeviceSensor(t *testing.T) {
 				ResourceName:            "iosxe_device_sensor.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor",
+				ImportStateIdFunc:       iosxeDeviceSensorImportStateIdFunc("iosxe_device_sensor.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeDeviceSensorImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeDeviceSensorConfig_minimum() string {

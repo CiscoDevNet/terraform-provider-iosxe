@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBGPNeighbor(t *testing.T) {
@@ -60,12 +62,22 @@ func TestAccIosxeBGPNeighbor(t *testing.T) {
 				ResourceName:            "iosxe_bgp_neighbor.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/neighbor=3.3.3.3",
+				ImportStateIdFunc:       iosxeBGPNeighborImportStateIdFunc("iosxe_bgp_neighbor.test"),
 				ImportStateVerifyIgnore: []string{"fall_over_bfd_multi_hop", "local_as_no_prepend", "local_as_replace_as", "local_as_dual_as", "ebgp_multihop"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBGPNeighborImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		Ip := primary.Attributes["ip"]
+
+		return fmt.Sprintf("%s,%s", Asn, Ip), nil
+	}
 }
 
 const testAccIosxeBGPNeighborPrerequisitesConfig = `

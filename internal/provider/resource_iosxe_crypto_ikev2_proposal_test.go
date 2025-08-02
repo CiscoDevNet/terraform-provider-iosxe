@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
@@ -46,12 +48,21 @@ func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
 				ResourceName:            "iosxe_crypto_ikev2_proposal.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=PROPOSAL1",
+				ImportStateIdFunc:       iosxeCryptoIKEv2ProposalImportStateIdFunc("iosxe_crypto_ikev2_proposal.test"),
 				ImportStateVerifyIgnore: []string{"encryption_en_3des", "encryption_aes_cbc_128", "encryption_aes_cbc_192", "encryption_aes_gcm_128", "encryption_aes_gcm_256", "group_one", "group_two", "group_fourteen", "group_fifteen", "group_nineteen", "group_twenty", "group_twenty_one", "group_twenty_four", "integrity_md5", "integrity_sha1", "integrity_sha384", "integrity_sha512", "prf_md5", "prf_sha1", "prf_sha256", "prf_sha384", "prf_sha512"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeCryptoIKEv2ProposalImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeCryptoIKEv2ProposalConfig_minimum() string {

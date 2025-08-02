@@ -24,7 +24,6 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -202,12 +201,4 @@ func (data *CommunityListStandard) getDeletePaths(ctx context.Context) []string 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/permit/permit-list", data.getPath()))
 	}
 	return deletePaths
-}
-
-func (data *CommunityListStandard) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

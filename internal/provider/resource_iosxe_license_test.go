@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeLicense(t *testing.T) {
@@ -49,12 +51,19 @@ func TestAccIosxeLicense(t *testing.T) {
 				ResourceName:            "iosxe_license.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/license",
+				ImportStateIdFunc:       iosxeLicenseImportStateIdFunc("iosxe_license.test"),
 				ImportStateVerifyIgnore: []string{"boot_level_network_essentials"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeLicenseImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeLicenseConfig_minimum() string {

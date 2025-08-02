@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeRouteMap(t *testing.T) {
@@ -162,12 +164,21 @@ func TestAccIosxeRouteMap(t *testing.T) {
 				ResourceName:            "iosxe_route_map.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/route-map=RM1",
+				ImportStateIdFunc:       iosxeRouteMapImportStateIdFunc("iosxe_route_map.test"),
 				ImportStateVerifyIgnore: []string{"entries.0.match_route_type_local_legacy", "entries.0.match_route_type_local", "entries.0.match_community_list_exact_match", "entries.0.set_ip_next_hop_self", "entries.0.set_level_1_2", "entries.0.set_level_2", "entries.0.set_as_path_tag_legacy", "entries.0.set_community_none_legacy", "entries.0.set_communities_additive_legacy", "entries.0.set_community_list_delete_legacy", "entries.0.set_as_path_tag", "entries.0.set_as_path_replace_any", "entries.0.set_community_none", "entries.0.set_communities_additive", "entries.0.set_community_list_delete", "entries.0.set_extcomunity_vpn_distinguisher_additive"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeRouteMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 const testAccIosxeRouteMapPrerequisitesConfig = `

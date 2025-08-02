@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeInterfaceNVE(t *testing.T) {
@@ -53,12 +55,21 @@ func TestAccIosxeInterfaceNVE(t *testing.T) {
 				ResourceName:            "iosxe_interface_nve.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/nve=1",
+				ImportStateIdFunc:       iosxeInterfaceNVEImportStateIdFunc("iosxe_interface_nve.test"),
 				ImportStateVerifyIgnore: []string{"vnis.0.ingress_replication"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeInterfaceNVEImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeInterfaceNVEConfig_minimum() string {

@@ -54,5 +54,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_bgp_l2vpn_evpn_neighbor.example "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/l2vpn=evpn/l2vpn-evpn/neighbor=3.3.3.3"
+terraform import iosxe_bgp_l2vpn_evpn_neighbor.example "<asn>,<ip>"
 ```

@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
@@ -69,12 +71,23 @@ func TestAccIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 				ResourceName:            "iosxe_bgp_ipv4_unicast_vrf_neighbor.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/with-vrf/ipv4=unicast/vrf=VRF1/ipv4-unicast/neighbor=3.3.3.3",
+				ImportStateIdFunc:       iosxeBGPIPv4UnicastVRFNeighborImportStateIdFunc("iosxe_bgp_ipv4_unicast_vrf_neighbor.test"),
 				ImportStateVerifyIgnore: []string{"fall_over_bfd_multi_hop", "disable_connected_check", "local_as_no_prepend", "local_as_replace_as", "local_as_dual_as", "ebgp_multihop"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBGPIPv4UnicastVRFNeighborImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		Vrf := primary.Attributes["vrf"]
+		Ip := primary.Attributes["ip"]
+
+		return fmt.Sprintf("%s,%s,%s", Asn, Vrf, Ip), nil
+	}
 }
 
 const testAccIosxeBGPIPv4UnicastVRFNeighborPrerequisitesConfig = `

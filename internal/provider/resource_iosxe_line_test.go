@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeLine(t *testing.T) {
@@ -66,12 +68,19 @@ func TestAccIosxeLine(t *testing.T) {
 				ResourceName:            "iosxe_line.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/line",
+				ImportStateIdFunc:       iosxeLineImportStateIdFunc("iosxe_line.test"),
 				ImportStateVerifyIgnore: []string{"console.0.login_local", "vty.0.transport_input_all", "vty.0.transport_input_none"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeLineImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeLineConfig_minimum() string {

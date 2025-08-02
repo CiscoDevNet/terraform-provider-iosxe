@@ -346,11 +346,3 @@ func (data *CryptoIKEv2Policy) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
-
-func (data *CryptoIKEv2Policy) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-}

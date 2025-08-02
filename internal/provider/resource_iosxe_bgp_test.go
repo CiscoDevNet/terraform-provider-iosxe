@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBGP(t *testing.T) {
@@ -46,12 +48,21 @@ func TestAccIosxeBGP(t *testing.T) {
 				ResourceName:            "iosxe_bgp.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000",
+				ImportStateIdFunc:       iosxeBGPImportStateIdFunc("iosxe_bgp.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBGPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+
+		return fmt.Sprintf("%s", Asn), nil
+	}
 }
 
 const testAccIosxeBGPPrerequisitesConfig = `

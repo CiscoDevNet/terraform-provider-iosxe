@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeCryptoIPSecProfile(t *testing.T) {
@@ -45,12 +47,21 @@ func TestAccIosxeCryptoIPSecProfile(t *testing.T) {
 				ResourceName:            "iosxe_crypto_ipsec_profile.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=vpn200",
+				ImportStateIdFunc:       iosxeCryptoIPSecProfileImportStateIdFunc("iosxe_crypto_ipsec_profile.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeCryptoIPSecProfileImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 const testAccIosxeCryptoIPSecProfilePrerequisitesConfig = `

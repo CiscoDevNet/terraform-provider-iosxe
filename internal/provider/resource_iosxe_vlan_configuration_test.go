@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeVLANConfiguration(t *testing.T) {
@@ -49,12 +51,21 @@ func TestAccIosxeVLANConfiguration(t *testing.T) {
 				ResourceName:            "iosxe_vlan_configuration.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration=123",
+				ImportStateIdFunc:       iosxeVLANConfigurationImportStateIdFunc("iosxe_vlan_configuration.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeVLANConfigurationImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		VlanId := primary.Attributes["vlan_id"]
+
+		return fmt.Sprintf("%s", VlanId), nil
+	}
 }
 
 func testAccIosxeVLANConfigurationConfig_minimum() string {

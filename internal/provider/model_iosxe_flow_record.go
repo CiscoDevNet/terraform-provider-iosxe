@@ -24,7 +24,6 @@ import (
 	"fmt"
 	"net/url"
 	"regexp"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -1253,12 +1252,4 @@ func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
 	return deletePaths
-}
-
-func (data *FlowRecord) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
 }

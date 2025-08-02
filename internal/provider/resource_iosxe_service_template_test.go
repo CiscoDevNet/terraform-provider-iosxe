@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeServiceTemplate(t *testing.T) {
@@ -64,12 +66,21 @@ func TestAccIosxeServiceTemplate(t *testing.T) {
 				ResourceName:            "iosxe_service_template.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=MY_TEMPLATE",
+				ImportStateIdFunc:       iosxeServiceTemplateImportStateIdFunc("iosxe_service_template.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeServiceTemplateImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeServiceTemplateConfig_minimum() string {

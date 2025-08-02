@@ -24,6 +24,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
@@ -104,12 +105,26 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 				ResourceName:  "iosxe_{{snakeCase $name}}.test",
 				ImportState:   true,
 				ImportStateVerify: true,
-				ImportStateId: "{{getExamplePath .Path .Attributes}}",
+				ImportStateIdFunc: iosxe{{camelCase .Name}}ImportStateIdFunc("iosxe_{{snakeCase $name}}.test"),
 				ImportStateVerifyIgnore: []string{ {{range getImportExcludes .Attributes}}"{{.}}",{{end}} },
 				Check: resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxe{{camelCase .Name}}ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		{{- if importAttributes .}}
+		primary := s.RootModule().Resources[resourceName].Primary
+		{{- end}}
+
+		{{- range (importAttributes .)}}
+		{{toGoName .TfName}} := primary.Attributes["{{.TfName}}"]
+		{{- end}}
+
+		return fmt.Sprintf("{{range $i, $e := (importAttributes .)}}{{if $i}},{{end}}%s{{end}}", {{range $i, $e := (importAttributes .)}}{{if $i}},{{end}}{{toGoName .TfName}}{{end}}), nil
+	}
 }
 
 {{- if .TestPrerequisites}}

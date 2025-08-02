@@ -407,11 +407,3 @@ func (data *MDTSubscription) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
-
-func (data *MDTSubscription) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.SubscriptionId = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
-}

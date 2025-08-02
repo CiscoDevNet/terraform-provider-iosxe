@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeInterfaceTunnel(t *testing.T) {
@@ -84,12 +86,21 @@ func TestAccIosxeInterfaceTunnel(t *testing.T) {
 				ResourceName:            "iosxe_interface_tunnel.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Tunnel=90",
+				ImportStateIdFunc:       iosxeInterfaceTunnelImportStateIdFunc("iosxe_interface_tunnel.test"),
 				ImportStateVerifyIgnore: []string{"ipv6_address_autoconfig_default", "tunnel_mode_ipsec_ipv4"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeInterfaceTunnelImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 const testAccIosxeInterfaceTunnelPrerequisitesConfig = `

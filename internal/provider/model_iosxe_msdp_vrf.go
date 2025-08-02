@@ -392,11 +392,3 @@ func (data *MSDPVRF) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
-
-func (data *MSDPVRF) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp/vrf=%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Vrf = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-}

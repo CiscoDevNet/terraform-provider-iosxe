@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBGPAddressFamilyIPv6VRF(t *testing.T) {
@@ -48,12 +50,22 @@ func TestAccIosxeBGPAddressFamilyIPv6VRF(t *testing.T) {
 				ResourceName:            "iosxe_bgp_address_family_ipv6_vrf.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/with-vrf/ipv6=unicast",
+				ImportStateIdFunc:       iosxeBGPAddressFamilyIPv6VRFImportStateIdFunc("iosxe_bgp_address_family_ipv6_vrf.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBGPAddressFamilyIPv6VRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		AfName := primary.Attributes["af_name"]
+
+		return fmt.Sprintf("%s,%s", Asn, AfName), nil
+	}
 }
 
 const testAccIosxeBGPAddressFamilyIPv6VRFPrerequisitesConfig = `

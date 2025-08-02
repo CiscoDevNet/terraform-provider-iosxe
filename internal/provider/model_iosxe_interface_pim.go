@@ -25,7 +25,6 @@ import (
 	"net/url"
 	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -372,13 +371,4 @@ func (data *InterfacePIM) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:dr-priority", data.getPath()))
 	}
 	return deletePaths
-}
-
-func (data *InterfacePIM) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/%s=%v/ip/pim", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Type = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
 }

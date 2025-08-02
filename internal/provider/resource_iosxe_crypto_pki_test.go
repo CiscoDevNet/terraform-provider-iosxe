@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeCryptoPKI(t *testing.T) {
@@ -49,12 +51,19 @@ func TestAccIosxeCryptoPKI(t *testing.T) {
 				ResourceName:            "iosxe_crypto_pki.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki",
+				ImportStateIdFunc:       iosxeCryptoPKIImportStateIdFunc("iosxe_crypto_pki.test"),
 				ImportStateVerifyIgnore: []string{"trustpoints", "trustpoints.0.enrollment_selfsigned", "trustpoints.0.enrollment_mode_ra", "trustpoints.0.enrollment_terminal"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeCryptoPKIImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeCryptoPKIConfig_minimum() string {

@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBFDTemplateMultiHop(t *testing.T) {
@@ -52,12 +54,21 @@ func TestAccIosxeBFDTemplateMultiHop(t *testing.T) {
 				ResourceName:            "iosxe_bfd_template_multi_hop.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=T11",
+				ImportStateIdFunc:       iosxeBFDTemplateMultiHopImportStateIdFunc("iosxe_bfd_template_multi_hop.test"),
 				ImportStateVerifyIgnore: []string{"interval_microseconds", "dampening_down_monitoring"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBFDTemplateMultiHopImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeBFDTemplateMultiHopConfig_minimum() string {

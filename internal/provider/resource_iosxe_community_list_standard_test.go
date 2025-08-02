@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeCommunityListStandard(t *testing.T) {
@@ -46,12 +48,21 @@ func TestAccIosxeCommunityListStandard(t *testing.T) {
 				ResourceName:            "iosxe_community_list_standard.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/standard=CLS1",
+				ImportStateIdFunc:       iosxeCommunityListStandardImportStateIdFunc("iosxe_community_list_standard.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeCommunityListStandardImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeCommunityListStandardConfig_minimum() string {

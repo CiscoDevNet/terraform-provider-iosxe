@@ -4,6 +4,7 @@
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv6_host_transport` resource and data source into `iosxe_logging` resource and data source
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv4_host_vrf_transport` resource and data source into `iosxe_logging` resource and data source
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv6_host_vrf_transport` resource and data source into `iosxe_logging` resource and data source
+- BREAKING CHANGE: Refactor import logic of resources to use list of attributes instead of YANG paths
 
 ## 0.6.1
 

@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeClock(t *testing.T) {
@@ -54,12 +56,19 @@ func TestAccIosxeClock(t *testing.T) {
 				ResourceName:            "iosxe_clock.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/clock",
+				ImportStateIdFunc:       iosxeClockImportStateIdFunc("iosxe_clock.test"),
 				ImportStateVerifyIgnore: []string{"summer_time_date"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeClockImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeClockConfig_minimum() string {

@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeAAAAccounting(t *testing.T) {
@@ -61,12 +63,19 @@ func TestAccIosxeAAAAccounting(t *testing.T) {
 				ResourceName:            "iosxe_aaa_accounting.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:accounting",
+				ImportStateIdFunc:       iosxeAAAAccountingImportStateIdFunc("iosxe_aaa_accounting.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeAAAAccountingImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeAAAAccountingConfig_minimum() string {

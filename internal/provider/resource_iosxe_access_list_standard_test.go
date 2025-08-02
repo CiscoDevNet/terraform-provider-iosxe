@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeAccessListStandard(t *testing.T) {
@@ -48,12 +50,21 @@ func TestAccIosxeAccessListStandard(t *testing.T) {
 				ResourceName:            "iosxe_access_list_standard.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=SACL1",
+				ImportStateIdFunc:       iosxeAccessListStandardImportStateIdFunc("iosxe_access_list_standard.test"),
 				ImportStateVerifyIgnore: []string{"entries.0.deny_any", "entries.0.permit_any", "entries.0.permit_log"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeAccessListStandardImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeAccessListStandardConfig_minimum() string {

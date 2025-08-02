@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeVTP(t *testing.T) {
@@ -53,12 +55,19 @@ func TestAccIosxeVTP(t *testing.T) {
 				ResourceName:            "iosxe_vtp.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/vtp",
+				ImportStateIdFunc:       iosxeVTPImportStateIdFunc("iosxe_vtp.test"),
 				ImportStateVerifyIgnore: []string{"interface_only", "password_secret", "pruning", "mode_client", "mode_client_mst", "mode_client_unknown", "mode_client_vlan", "mode_off", "mode_off_mst", "mode_off_unknown", "mode_off_vlan", "mode_server", "mode_server_mst", "mode_server_unknown", "mode_server_vlan", "mode_transparent_mst", "mode_transparent_unknown", "mode_transparent_vlan"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeVTPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeVTPConfig_minimum() string {

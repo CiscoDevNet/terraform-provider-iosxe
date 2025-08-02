@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeOSPF(t *testing.T) {
@@ -70,12 +72,21 @@ func TestAccIosxeOSPF(t *testing.T) {
 				ResourceName:            "iosxe_ospf.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=1",
+				ImportStateIdFunc:       iosxeOSPFImportStateIdFunc("iosxe_ospf.test"),
 				ImportStateVerifyIgnore: []string{"mpls_ldp_autoconfig", "mpls_ldp_sync"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeOSPFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		ProcessId := primary.Attributes["process_id"]
+
+		return fmt.Sprintf("%s", ProcessId), nil
+	}
 }
 
 func testAccIosxeOSPFConfig_minimum() string {

@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeFlowMonitor(t *testing.T) {
@@ -48,12 +50,21 @@ func TestAccIosxeFlowMonitor(t *testing.T) {
 				ResourceName:            "iosxe_flow_monitor.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1",
+				ImportStateIdFunc:       iosxeFlowMonitorImportStateIdFunc("iosxe_flow_monitor.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeFlowMonitorImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 const testAccIosxeFlowMonitorPrerequisitesConfig = `

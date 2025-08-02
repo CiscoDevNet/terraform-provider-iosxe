@@ -1033,11 +1033,3 @@ func (data *AccessListExtended) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
-
-func (data *AccessListExtended) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:extended=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-}

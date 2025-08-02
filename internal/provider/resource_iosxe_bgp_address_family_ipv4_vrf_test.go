@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
@@ -54,12 +56,22 @@ func TestAccIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
 				ResourceName:            "iosxe_bgp_address_family_ipv4_vrf.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/with-vrf/ipv4=unicast",
+				ImportStateIdFunc:       iosxeBGPAddressFamilyIPv4VRFImportStateIdFunc("iosxe_bgp_address_family_ipv4_vrf.test"),
 				ImportStateVerifyIgnore: []string{"vrfs.0.ipv4_unicast_networks_mask.0.evpn", "vrfs.0.ipv4_unicast_networks.0.evpn"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBGPAddressFamilyIPv4VRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		AfName := primary.Attributes["af_name"]
+
+		return fmt.Sprintf("%s,%s", Asn, AfName), nil
+	}
 }
 
 const testAccIosxeBGPAddressFamilyIPv4VRFPrerequisitesConfig = `

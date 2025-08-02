@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeInterfaceSwitchport(t *testing.T) {
@@ -57,12 +59,22 @@ func TestAccIosxeInterfaceSwitchport(t *testing.T) {
 				ResourceName:            "iosxe_interface_switchport.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2F0%2F3/switchport-config/switchport",
+				ImportStateIdFunc:       iosxeInterfaceSwitchportImportStateIdFunc("iosxe_interface_switchport.test"),
 				ImportStateVerifyIgnore: []string{"trunk_allowed_vlans_none"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeInterfaceSwitchportImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Type := primary.Attributes["type"]
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s,%s", Type, Name), nil
+	}
 }
 
 func testAccIosxeInterfaceSwitchportConfig_minimum() string {

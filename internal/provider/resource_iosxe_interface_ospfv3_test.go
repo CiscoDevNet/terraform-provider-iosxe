@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeInterfaceOSPFv3(t *testing.T) {
@@ -47,12 +49,22 @@ func TestAccIosxeInterfaceOSPFv3(t *testing.T) {
 				ResourceName:            "iosxe_interface_ospfv3.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Loopback=1/Cisco-IOS-XE-ospfv3:ospfv3",
+				ImportStateIdFunc:       iosxeInterfaceOSPFv3ImportStateIdFunc("iosxe_interface_ospfv3.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeInterfaceOSPFv3ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Type := primary.Attributes["type"]
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s,%s", Type, Name), nil
+	}
 }
 
 const testAccIosxeInterfaceOSPFv3PrerequisitesConfig = `

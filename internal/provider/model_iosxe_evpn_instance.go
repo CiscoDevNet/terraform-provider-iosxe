@@ -764,11 +764,3 @@ func (data *EVPNInstance) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
-
-func (data *EVPNInstance) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.EvpnInstanceNum = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
-}

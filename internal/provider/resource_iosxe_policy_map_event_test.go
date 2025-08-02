@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxePolicyMapEvent(t *testing.T) {
@@ -73,12 +75,22 @@ func TestAccIosxePolicyMapEvent(t *testing.T) {
 				ResourceName:            "iosxe_policy_map_event.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy/event=authentication-success",
+				ImportStateIdFunc:       iosxePolicyMapEventImportStateIdFunc("iosxe_policy_map_event.test"),
 				ImportStateVerifyIgnore: []string{"class_numbers.0.action_numbers.0.pause_reauthentication", "class_numbers.0.action_numbers.0.authorize", "class_numbers.0.action_numbers.0.activate_service_template_config_replace_all"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxePolicyMapEventImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+		EventType := primary.Attributes["event_type"]
+
+		return fmt.Sprintf("%s,%s", Name, EventType), nil
+	}
 }
 
 const testAccIosxePolicyMapEventPrerequisitesConfig = `

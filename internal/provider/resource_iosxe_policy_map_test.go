@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxePolicyMap(t *testing.T) {
@@ -47,12 +49,21 @@ func TestAccIosxePolicyMap(t *testing.T) {
 				ResourceName:            "iosxe_policy_map.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1",
+				ImportStateIdFunc:       iosxePolicyMapImportStateIdFunc("iosxe_policy_map.test"),
 				ImportStateVerifyIgnore: []string{"subscriber", "classes.0.actions.0.shape_average_ms"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxePolicyMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 const testAccIosxePolicyMapPrerequisitesConfig = `

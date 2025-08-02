@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeEVPNInstance(t *testing.T) {
@@ -69,12 +71,21 @@ func TestAccIosxeEVPNInstance(t *testing.T) {
 				ResourceName:            "iosxe_evpn_instance.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=10",
+				ImportStateIdFunc:       iosxeEVPNInstanceImportStateIdFunc("iosxe_evpn_instance.test"),
 				ImportStateVerifyIgnore: []string{"vlan_based_auto_route_target_legacy"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeEVPNInstanceImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		EvpnInstanceNum := primary.Attributes["evpn_instance_num"]
+
+		return fmt.Sprintf("%s", EvpnInstanceNum), nil
+	}
 }
 
 func testAccIosxeEVPNInstanceConfig_minimum() string {

@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeSNMPServerGroup(t *testing.T) {
@@ -51,12 +53,21 @@ func TestAccIosxeSNMPServerGroup(t *testing.T) {
 				ResourceName:            "iosxe_snmp_server_group.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:group=GROUP1",
+				ImportStateIdFunc:       iosxeSNMPServerGroupImportStateIdFunc("iosxe_snmp_server_group.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeSNMPServerGroupImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeSNMPServerGroupConfig_minimum() string {

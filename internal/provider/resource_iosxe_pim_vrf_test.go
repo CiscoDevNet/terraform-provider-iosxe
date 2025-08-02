@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxePIMVRF(t *testing.T) {
@@ -59,12 +61,21 @@ func TestAccIosxePIMVRF(t *testing.T) {
 				ResourceName:            "iosxe_pim_vrf.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/pim/Cisco-IOS-XE-multicast:vrf=VRF1",
+				ImportStateIdFunc:       iosxePIMVRFImportStateIdFunc("iosxe_pim_vrf.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxePIMVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Vrf := primary.Attributes["vrf"]
+
+		return fmt.Sprintf("%s", Vrf), nil
+	}
 }
 
 const testAccIosxePIMVRFPrerequisitesConfig = `

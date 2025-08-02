@@ -153,5 +153,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_policy_map_event.example "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy/event=authentication-success"
+terraform import iosxe_policy_map_event.example "<name>,<event_type>"
 ```

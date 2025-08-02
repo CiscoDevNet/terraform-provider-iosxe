@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeInterfaceMPLS(t *testing.T) {
@@ -44,12 +46,22 @@ func TestAccIosxeInterfaceMPLS(t *testing.T) {
 				ResourceName:            "iosxe_interface_mpls.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Loopback=1/mpls",
+				ImportStateIdFunc:       iosxeInterfaceMPLSImportStateIdFunc("iosxe_interface_mpls.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeInterfaceMPLSImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Type := primary.Attributes["type"]
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s,%s", Type, Name), nil
+	}
 }
 
 const testAccIosxeInterfaceMPLSPrerequisitesConfig = `

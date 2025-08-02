@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeVLANAccessMap(t *testing.T) {
@@ -51,12 +53,22 @@ func TestAccIosxeVLANAccessMap(t *testing.T) {
 				ResourceName:            "iosxe_vlan_access_map.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10",
+				ImportStateIdFunc:       iosxeVLANAccessMapImportStateIdFunc("iosxe_vlan_access_map.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeVLANAccessMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+		Sequence := primary.Attributes["sequence"]
+
+		return fmt.Sprintf("%s,%s", Name, Sequence), nil
+	}
 }
 
 func testAccIosxeVLANAccessMapConfig_minimum() string {

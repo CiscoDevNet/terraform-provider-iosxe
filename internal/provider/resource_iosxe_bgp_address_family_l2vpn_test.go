@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBGPAddressFamilyL2VPN(t *testing.T) {
@@ -47,12 +49,22 @@ func TestAccIosxeBGPAddressFamilyL2VPN(t *testing.T) {
 				ResourceName:            "iosxe_bgp_address_family_l2vpn.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/l2vpn=evpn",
+				ImportStateIdFunc:       iosxeBGPAddressFamilyL2VPNImportStateIdFunc("iosxe_bgp_address_family_l2vpn.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBGPAddressFamilyL2VPNImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		AfName := primary.Attributes["af_name"]
+
+		return fmt.Sprintf("%s,%s", Asn, AfName), nil
+	}
 }
 
 const testAccIosxeBGPAddressFamilyL2VPNPrerequisitesConfig = `

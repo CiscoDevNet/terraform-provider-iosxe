@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeVRF(t *testing.T) {
@@ -60,12 +62,21 @@ func TestAccIosxeVRF(t *testing.T) {
 				ResourceName:            "iosxe_vrf.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/vrf/definition=VRF22",
+				ImportStateIdFunc:       iosxeVRFImportStateIdFunc("iosxe_vrf.test"),
 				ImportStateVerifyIgnore: []string{"ipv4_route_target_import_stitching.0.stitching", "ipv4_route_target_export_stitching.0.stitching", "ipv6_route_target_import_stitching.0.stitching", "ipv6_route_target_export_stitching.0.stitching"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
 }
 
 func testAccIosxeVRFConfig_minimum() string {

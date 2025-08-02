@@ -20,9 +20,11 @@
 package provider
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeBGPIPv6UnicastNeighbor(t *testing.T) {
@@ -51,12 +53,22 @@ func TestAccIosxeBGPIPv6UnicastNeighbor(t *testing.T) {
 				ResourceName:            "iosxe_bgp_ipv6_unicast_neighbor.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv6=unicast/ipv6-unicast/neighbor=3.3.3.3",
+				ImportStateIdFunc:       iosxeBGPIPv6UnicastNeighborImportStateIdFunc("iosxe_bgp_ipv6_unicast_neighbor.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeBGPIPv6UnicastNeighborImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		Ip := primary.Attributes["ip"]
+
+		return fmt.Sprintf("%s,%s", Asn, Ip), nil
+	}
 }
 
 const testAccIosxeBGPIPv6UnicastNeighborPrerequisitesConfig = `

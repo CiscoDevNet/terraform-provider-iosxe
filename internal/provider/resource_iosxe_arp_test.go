@@ -20,10 +20,12 @@
 package provider
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func TestAccIosxeARP(t *testing.T) {
@@ -74,12 +76,19 @@ func TestAccIosxeARP(t *testing.T) {
 				ResourceName:            "iosxe_arp.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/arp",
+				ImportStateIdFunc:       iosxeARPImportStateIdFunc("iosxe_arp.test"),
 				ImportStateVerifyIgnore: []string{"inspection_validate_src_mac", "inspection_validate_dst_mac", "inspection_validate_ip", "inspection_validate_allow_zeros"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
+}
+
+func iosxeARPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
 }
 
 func testAccIosxeARPConfig_minimum() string {
