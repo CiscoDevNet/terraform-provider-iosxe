@@ -448,11 +448,6 @@ func (r *ARPResource) ImportState(ctx context.Context, req resource.ImportStateR
 
 	// construct path for 'id' attribute
 	var state ARP
-	diags := resp.State.Get(ctx, &state)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

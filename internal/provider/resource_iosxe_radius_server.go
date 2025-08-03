@@ -428,11 +428,6 @@ func (r *RadiusServerResource) ImportState(ctx context.Context, req resource.Imp
 
 	// construct path for 'id' attribute
 	var state RadiusServer
-	diags := resp.State.Get(ctx, &state)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

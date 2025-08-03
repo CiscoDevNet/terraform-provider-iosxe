@@ -564,11 +564,13 @@ func (r *{{camelCase .Name}}Resource) ImportState(ctx context.Context, req resou
 
 	// construct path for 'id' attribute
 	var state {{camelCase .Name}}
+	{{- if importAttributes .}}
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+	{{- end}}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

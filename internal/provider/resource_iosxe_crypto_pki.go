@@ -412,11 +412,6 @@ func (r *CryptoPKIResource) ImportState(ctx context.Context, req resource.Import
 
 	// construct path for 'id' attribute
 	var state CryptoPKI
-	diags := resp.State.Get(ctx, &state)
-	resp.Diagnostics.Append(diags...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
