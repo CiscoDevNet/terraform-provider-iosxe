@@ -368,16 +368,23 @@ func (r *VLANConfigurationResource) Delete(ctx context.Context, req resource.Del
 
 func (r *VLANConfigurationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
+	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 1 || idParts[0] == "" {
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<vlan_id>'"
+		expectedIdentifier += " or '<vlan_id>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
-			fmt.Sprintf("Expected import identifier with format: <vlan_id>. Got: %q", req.ID),
+			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("vlan_id"), helpers.Must(strconv.ParseInt(idParts[0], 10, 64)))...)
+	if len(idParts) == 2 {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
+	}
 
+	// construct path for 'id' attribute
 	var state VLANConfiguration
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)

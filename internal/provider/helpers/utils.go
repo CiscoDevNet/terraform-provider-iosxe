@@ -82,3 +82,13 @@ func Must[T any](v T, err error) T {
 	}
 	return v
 }
+
+func RemoveEmptyStrings(s []string) []string {
+	var r []string
+	for _, v := range s {
+		if v != "" {
+			r = append(r, v)
+		}
+	}
+	return r
+}

@@ -562,17 +562,24 @@ func (r *OSPFVRFResource) Delete(ctx context.Context, req resource.DeleteRequest
 
 func (r *OSPFVRFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
+	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 2 || idParts[0] == "" || idParts[1] == "" {
+	if len(idParts) != 2 && len(idParts) != 3 {
+		expectedIdentifier := "Expected import identifier with format: '<process_id>,<vrf>'"
+		expectedIdentifier += " or '<process_id>,<vrf>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
-			fmt.Sprintf("Expected import identifier with format: <process_id>,<vrf>. Got: %q", req.ID),
+			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("process_id"), helpers.Must(strconv.ParseInt(idParts[0], 10, 64)))...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("vrf"), idParts[1])...)
+	if len(idParts) == 3 {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
+	}
 
+	// construct path for 'id' attribute
 	var state OSPFVRF
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)

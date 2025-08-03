@@ -570,18 +570,25 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Delete(ctx context.Context, req reso
 
 func (r *BGPIPv4UnicastVRFNeighborResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
+	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 3 || idParts[0] == "" || idParts[1] == "" || idParts[2] == "" {
+	if len(idParts) != 3 && len(idParts) != 4 {
+		expectedIdentifier := "Expected import identifier with format: '<asn>,<vrf>,<ip>'"
+		expectedIdentifier += " or '<asn>,<vrf>,<ip>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
-			fmt.Sprintf("Expected import identifier with format: <asn>,<vrf>,<ip>. Got: %q", req.ID),
+			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("asn"), idParts[0])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("vrf"), idParts[1])...)
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ip"), idParts[2])...)
+	if len(idParts) == 4 {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
+	}
 
+	// construct path for 'id' attribute
 	var state BGPIPv4UnicastVRFNeighbor
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
