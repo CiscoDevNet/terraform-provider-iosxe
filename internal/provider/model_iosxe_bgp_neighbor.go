@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -32,6 +33,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type BGPNeighbor struct {
 	Device                              types.String `tfsdk:"device"`
 	Id                                  types.String `tfsdk:"id"`
@@ -105,6 +109,10 @@ type BGPNeighborData struct {
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data BGPNeighbor) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
 }
@@ -123,6 +131,10 @@ func (data BGPNeighbor) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data BGPNeighbor) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -244,6 +256,10 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -454,6 +470,10 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *BGPNeighbor) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -573,6 +593,10 @@ func (data *BGPNeighbor) fromBody(ctx context.Context, res gjson.Result) {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -694,6 +718,10 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *BGPNeighbor) getDeletedItems(ctx context.Context, state BGPNeighbor) []string {
 	deletedItems := make([]string, 0)
 	if !state.Description.IsNull() && data.Description.IsNull() {
@@ -783,6 +811,10 @@ func (data *BGPNeighbor) getDeletedItems(ctx context.Context, state BGPNeighbor)
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *BGPNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
@@ -826,6 +858,10 @@ func (data *BGPNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *BGPNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -915,3 +951,5 @@ func (data *BGPNeighbor) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

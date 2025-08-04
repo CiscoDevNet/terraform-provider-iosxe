@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -33,6 +34,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type Dot1x struct {
 	Device                        types.String       `tfsdk:"device"`
 	Id                            types.String       `tfsdk:"id"`
@@ -71,6 +75,10 @@ type Dot1xCredentials struct {
 	AnonymousId   types.String `tfsdk:"anonymous_id"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data Dot1x) getPath() string {
 	return "Cisco-IOS-XE-native:native/dot1x"
 }
@@ -89,6 +97,10 @@ func (data Dot1x) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data Dot1x) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -156,6 +168,10 @@ func (data Dot1x) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *Dot1x) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -287,6 +303,10 @@ func (data *Dot1x) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *Dot1x) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -358,6 +378,10 @@ func (data *Dot1x) fromBody(ctx context.Context, res gjson.Result) {
 		data.SystemAuthControl = types.BoolValue(false)
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *Dot1xData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -431,6 +455,10 @@ func (data *Dot1xData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
 	deletedItems := make([]string, 0)
 	if !state.AuthFailEapol.IsNull() && data.AuthFailEapol.IsNull() {
@@ -503,6 +531,10 @@ func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *Dot1x) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.AuthFailEapol.IsNull() && !data.AuthFailEapol.ValueBool() {
@@ -526,6 +558,10 @@ func (data *Dot1x) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *Dot1x) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -560,3 +596,5 @@ func (data *Dot1x) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

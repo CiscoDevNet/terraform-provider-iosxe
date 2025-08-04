@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeUsername(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -43,6 +48,13 @@ func TestAccDataSourceIosxeUsername(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
+
 func testAccDataSourceIosxeUsernameConfig() string {
 	config := `resource "iosxe_username" "test" {` + "\n"
 	config += `	name = "user1"` + "\n"
@@ -60,3 +72,5 @@ func testAccDataSourceIosxeUsernameConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

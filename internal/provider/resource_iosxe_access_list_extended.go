@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -37,6 +38,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
+)
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
+
+// Ensure provider defined types fully satisfy framework interfaces
+var (
+	_ resource.Resource                = &AccessListExtendedResource{}
+	_ resource.ResourceWithImportState = &AccessListExtendedResource{}
 )
 
 func NewAccessListExtendedResource() resource.Resource {
@@ -274,6 +285,10 @@ func (r *AccessListExtendedResource) Configure(_ context.Context, req resource.C
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
+
 func (r *AccessListExtendedResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan AccessListExtended
 
@@ -338,6 +353,10 @@ func (r *AccessListExtendedResource) Create(ctx context.Context, req resource.Cr
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// End of section. //template:end create
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (r *AccessListExtendedResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state AccessListExtended
 
@@ -387,6 +406,10 @@ func (r *AccessListExtendedResource) Read(ctx context.Context, req resource.Read
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end read
+
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *AccessListExtendedResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state AccessListExtended
@@ -468,6 +491,10 @@ func (r *AccessListExtendedResource) Update(ctx context.Context, req resource.Up
 	resp.Diagnostics.Append(diags...)
 }
 
+// End of section. //template:end update
+
+// Section below is generated&owned by "gen/generator.go". //template:begin delete
+
 func (r *AccessListExtendedResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state AccessListExtended
 
@@ -526,6 +553,10 @@ func (r *AccessListExtendedResource) Delete(ctx context.Context, req resource.De
 	resp.State.RemoveResource(ctx)
 }
 
+// End of section. //template:end delete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin import
+
 func (r *AccessListExtendedResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
@@ -555,3 +586,5 @@ func (r *AccessListExtendedResource) ImportState(ctx context.Context, req resour
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end import

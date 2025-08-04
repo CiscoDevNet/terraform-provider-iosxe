@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxePolicyMap(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -57,6 +62,10 @@ func TestAccIosxePolicyMap(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxePolicyMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -66,6 +75,9 @@ func iosxePolicyMapImportStateIdFunc(resourceName string) resource.ImportStateId
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxePolicyMapPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CLASS1"
@@ -77,6 +89,10 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxePolicyMapConfig_minimum() string {
 	config := `resource "iosxe_policy_map" "test" {` + "\n"
 	config += `	name = "POLICY1"` + "\n"
@@ -84,6 +100,10 @@ func testAccIosxePolicyMapConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxePolicyMapConfig_all() string {
 	config := `resource "iosxe_policy_map" "test" {` + "\n"
@@ -100,3 +120,5 @@ func testAccIosxePolicyMapConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

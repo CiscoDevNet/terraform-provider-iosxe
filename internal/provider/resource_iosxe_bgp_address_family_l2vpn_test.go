@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"os"
@@ -27,6 +28,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeBGPAddressFamilyL2VPN(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -57,6 +62,10 @@ func TestAccIosxeBGPAddressFamilyL2VPN(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeBGPAddressFamilyL2VPNImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -67,6 +76,9 @@ func iosxeBGPAddressFamilyL2VPNImportStateIdFunc(resourceName string) resource.I
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPAddressFamilyL2VPNPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
@@ -77,6 +89,10 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeBGPAddressFamilyL2VPNConfig_minimum() string {
 	config := `resource "iosxe_bgp_address_family_l2vpn" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
@@ -86,6 +102,10 @@ func testAccIosxeBGPAddressFamilyL2VPNConfig_minimum() string {
 	return config
 }
 
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
+
 func testAccIosxeBGPAddressFamilyL2VPNConfig_all() string {
 	config := `resource "iosxe_bgp_address_family_l2vpn" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
@@ -94,3 +114,5 @@ func testAccIosxeBGPAddressFamilyL2VPNConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

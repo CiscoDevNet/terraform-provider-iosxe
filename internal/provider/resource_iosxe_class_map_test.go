@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeClassMap(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -66,6 +71,10 @@ func TestAccIosxeClassMap(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeClassMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -75,6 +84,13 @@ func iosxeClassMapImportStateIdFunc(resourceName string) resource.ImportStateIdF
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeClassMapConfig_minimum() string {
 	config := `resource "iosxe_class_map" "test" {` + "\n"
 	config += `	name = "CM1"` + "\n"
@@ -82,6 +98,10 @@ func testAccIosxeClassMapConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeClassMapConfig_all() string {
 	config := `resource "iosxe_class_map" "test" {` + "\n"
@@ -104,3 +124,5 @@ func testAccIosxeClassMapConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

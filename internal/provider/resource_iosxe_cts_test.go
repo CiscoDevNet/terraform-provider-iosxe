@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeCTS(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -53,6 +58,10 @@ func TestAccIosxeCTS(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeCTSImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 
@@ -60,11 +69,22 @@ func iosxeCTSImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeCTSConfig_minimum() string {
 	config := `resource "iosxe_cts" "test" {` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeCTSConfig_all() string {
 	config := `resource "iosxe_cts" "test" {` + "\n"
@@ -72,3 +92,5 @@ func testAccIosxeCTSConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

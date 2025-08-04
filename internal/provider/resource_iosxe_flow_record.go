@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -36,6 +37,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
+)
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
+
+// Ensure provider defined types fully satisfy framework interfaces
+var (
+	_ resource.Resource                = &FlowRecordResource{}
+	_ resource.ResourceWithImportState = &FlowRecordResource{}
 )
 
 func NewFlowRecordResource() resource.Resource {
@@ -228,6 +239,10 @@ func (r *FlowRecordResource) Configure(_ context.Context, req resource.Configure
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
+
 func (r *FlowRecordResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan FlowRecord
 
@@ -292,6 +307,10 @@ func (r *FlowRecordResource) Create(ctx context.Context, req resource.CreateRequ
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// End of section. //template:end create
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (r *FlowRecordResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state FlowRecord
 
@@ -341,6 +360,10 @@ func (r *FlowRecordResource) Read(ctx context.Context, req resource.ReadRequest,
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end read
+
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *FlowRecordResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state FlowRecord
@@ -422,6 +445,10 @@ func (r *FlowRecordResource) Update(ctx context.Context, req resource.UpdateRequ
 	resp.Diagnostics.Append(diags...)
 }
 
+// End of section. //template:end update
+
+// Section below is generated&owned by "gen/generator.go". //template:begin delete
+
 func (r *FlowRecordResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state FlowRecord
 
@@ -485,6 +512,10 @@ func (r *FlowRecordResource) Delete(ctx context.Context, req resource.DeleteRequ
 	resp.State.RemoveResource(ctx)
 }
 
+// End of section. //template:end delete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin import
+
 func (r *FlowRecordResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
@@ -514,3 +545,5 @@ func (r *FlowRecordResource) ImportState(ctx context.Context, req resource.Impor
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end import

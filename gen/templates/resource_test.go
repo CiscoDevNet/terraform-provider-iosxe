@@ -20,12 +20,17 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if len .TestTags}}
@@ -113,6 +118,10 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxe{{camelCase .Name}}ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		{{- if importAttributes .}}
@@ -127,6 +136,9 @@ func iosxe{{camelCase .Name}}ImportStateIdFunc(resourceName string) resource.Imp
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 {{- if .TestPrerequisites}}
 const testAccIosxe{{camelCase .Name}}PrerequisitesConfig = `
 {{- range $index, $item := .TestPrerequisites}}
@@ -166,6 +178,9 @@ resource "iosxe_restconf" "PreReq{{$index}}" {
 {{ end}}
 `
 {{- end}}
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
 func testAccIosxe{{camelCase .Name}}Config_minimum() string {
 	config := `resource "iosxe_{{snakeCase $name}}" "test" {` + "\n"
@@ -230,6 +245,10 @@ func testAccIosxe{{camelCase .Name}}Config_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxe{{camelCase .Name}}Config_all() string {
 	config := `resource "iosxe_{{snakeCase $name}}" "test" {` + "\n"
@@ -297,3 +316,5 @@ func testAccIosxe{{camelCase .Name}}Config_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

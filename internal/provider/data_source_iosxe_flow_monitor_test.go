@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeFlowMonitor(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -44,6 +49,9 @@ func TestAccDataSourceIosxeFlowMonitor(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeFlowMonitorPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1"
@@ -60,6 +68,10 @@ resource "iosxe_restconf" "PreReq1" {
 }
 
 `
+
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeFlowMonitorConfig() string {
 	config := `resource "iosxe_flow_monitor" "test" {` + "\n"
@@ -83,3 +95,5 @@ func testAccDataSourceIosxeFlowMonitorConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

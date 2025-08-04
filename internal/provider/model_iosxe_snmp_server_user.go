@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -32,6 +33,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type SNMPServerUser struct {
 	Device                          types.String `tfsdk:"device"`
 	Id                              types.String `tfsdk:"id"`
@@ -82,6 +86,10 @@ type SNMPServerUserData struct {
 	V3AuthAccessAclName             types.String `tfsdk:"v3_auth_access_acl_name"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data SNMPServerUser) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/snmp-server/Cisco-IOS-XE-snmp:user/names=%s,%s", url.QueryEscape(fmt.Sprintf("%v", data.Username.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Grpname.ValueString())))
 }
@@ -100,6 +108,10 @@ func (data SNMPServerUser) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data SNMPServerUser) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -165,6 +177,10 @@ func (data SNMPServerUser) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *SNMPServerUser) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -273,6 +289,10 @@ func (data *SNMPServerUser) updateFromBody(ctx context.Context, res gjson.Result
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *SNMPServerUser) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -333,6 +353,10 @@ func (data *SNMPServerUser) fromBody(ctx context.Context, res gjson.Result) {
 		data.V3AuthAccessAclName = types.StringValue(value.String())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *SNMPServerUserData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -395,6 +419,10 @@ func (data *SNMPServerUserData) fromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *SNMPServerUser) getDeletedItems(ctx context.Context, state SNMPServerUser) []string {
 	deletedItems := make([]string, 0)
 	if !state.V3AuthAlgorithm.IsNull() && data.V3AuthAlgorithm.IsNull() {
@@ -454,10 +482,18 @@ func (data *SNMPServerUser) getDeletedItems(ctx context.Context, state SNMPServe
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *SNMPServerUser) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *SNMPServerUser) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -517,3 +553,5 @@ func (data *SNMPServerUser) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

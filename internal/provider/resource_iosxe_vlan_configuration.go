@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -37,6 +38,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
+)
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
+
+// Ensure provider defined types fully satisfy framework interfaces
+var (
+	_ resource.Resource                = &VLANConfigurationResource{}
+	_ resource.ResourceWithImportState = &VLANConfigurationResource{}
 )
 
 func NewVLANConfigurationResource() resource.Resource {
@@ -115,6 +126,10 @@ func (r *VLANConfigurationResource) Configure(_ context.Context, req resource.Co
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
+
 func (r *VLANConfigurationResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan VLANConfiguration
 
@@ -179,6 +194,10 @@ func (r *VLANConfigurationResource) Create(ctx context.Context, req resource.Cre
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// End of section. //template:end create
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (r *VLANConfigurationResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state VLANConfiguration
 
@@ -228,6 +247,10 @@ func (r *VLANConfigurationResource) Read(ctx context.Context, req resource.ReadR
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end read
+
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *VLANConfigurationResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state VLANConfiguration
@@ -309,6 +332,10 @@ func (r *VLANConfigurationResource) Update(ctx context.Context, req resource.Upd
 	resp.Diagnostics.Append(diags...)
 }
 
+// End of section. //template:end update
+
+// Section below is generated&owned by "gen/generator.go". //template:begin delete
+
 func (r *VLANConfigurationResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state VLANConfiguration
 
@@ -367,6 +394,10 @@ func (r *VLANConfigurationResource) Delete(ctx context.Context, req resource.Del
 	resp.State.RemoveResource(ctx)
 }
 
+// End of section. //template:end delete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin import
+
 func (r *VLANConfigurationResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
@@ -396,3 +427,5 @@ func (r *VLANConfigurationResource) ImportState(ctx context.Context, req resourc
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end import

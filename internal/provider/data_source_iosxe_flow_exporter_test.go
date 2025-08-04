@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeFlowExporter(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -44,6 +49,13 @@ func TestAccDataSourceIosxeFlowExporter(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
+
 func testAccDataSourceIosxeFlowExporterConfig() string {
 	config := `resource "iosxe_flow_exporter" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
@@ -63,3 +75,5 @@ func testAccDataSourceIosxeFlowExporterConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

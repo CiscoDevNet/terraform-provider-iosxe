@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"os"
@@ -27,6 +28,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -99,6 +104,10 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeInterfacePortChannelImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -108,6 +117,9 @@ func iosxeInterfacePortChannelImportStateIdFunc(resourceName string) resource.Im
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePortChannelPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -120,6 +132,10 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeInterfacePortChannelConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel" "test" {` + "\n"
 	config += `	name = 10` + "\n"
@@ -127,6 +143,10 @@ func testAccIosxeInterfacePortChannelConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeInterfacePortChannelConfig_all() string {
 	config := `resource "iosxe_interface_port_channel" "test" {` + "\n"
@@ -186,3 +206,5 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

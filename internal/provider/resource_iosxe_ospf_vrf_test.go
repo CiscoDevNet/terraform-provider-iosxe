@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeOSPFVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -81,6 +86,10 @@ func TestAccIosxeOSPFVRF(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeOSPFVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -91,6 +100,9 @@ func iosxeOSPFVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFu
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeOSPFVRFPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -103,6 +115,10 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeOSPFVRFConfig_minimum() string {
 	config := `resource "iosxe_ospf_vrf" "test" {` + "\n"
 	config += `	process_id = 2` + "\n"
@@ -111,6 +127,10 @@ func testAccIosxeOSPFVRFConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeOSPFVRFConfig_all() string {
 	config := `resource "iosxe_ospf_vrf" "test" {` + "\n"
@@ -155,3 +175,5 @@ func testAccIosxeOSPFVRFConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

@@ -19,12 +19,17 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeBGPL2VPNEVPNNeighbor(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -47,6 +52,9 @@ func TestAccDataSourceIosxeBGPL2VPNEVPNNeighbor(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPL2VPNEVPNNeighborPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
@@ -74,6 +82,10 @@ resource "iosxe_restconf" "PreReq2" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
+
 func testAccDataSourceIosxeBGPL2VPNEVPNNeighborConfig() string {
 	config := `resource "iosxe_bgp_l2vpn_evpn_neighbor" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
@@ -95,3 +107,5 @@ func testAccDataSourceIosxeBGPL2VPNEVPNNeighborConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

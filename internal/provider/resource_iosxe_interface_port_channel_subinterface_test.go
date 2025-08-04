@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"os"
@@ -27,6 +28,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	if os.Getenv("C8000V") == "" {
@@ -90,6 +95,10 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeInterfacePortChannelSubinterfaceImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -99,6 +108,9 @@ func iosxeInterfacePortChannelSubinterfaceImportStateIdFunc(resourceName string)
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePortChannelSubinterfacePrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -126,6 +138,10 @@ resource "iosxe_restconf" "PreReq2" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
 	config += `	name = "10.666"` + "\n"
@@ -133,6 +149,10 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
@@ -180,3 +200,5 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

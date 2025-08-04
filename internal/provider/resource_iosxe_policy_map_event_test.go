@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxePolicyMapEvent(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -83,6 +88,10 @@ func TestAccIosxePolicyMapEvent(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxePolicyMapEventImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -93,6 +102,9 @@ func iosxePolicyMapEventImportStateIdFunc(resourceName string) resource.ImportSt
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxePolicyMapEventPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy"
@@ -115,6 +127,10 @@ resource "iosxe_restconf" "PreReq1" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxePolicyMapEventConfig_minimum() string {
 	config := `resource "iosxe_policy_map_event" "test" {` + "\n"
 	config += `	name = "dot1x_policy"` + "\n"
@@ -123,6 +139,10 @@ func testAccIosxePolicyMapEventConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxePolicyMapEventConfig_all() string {
 	config := `resource "iosxe_policy_map_event" "test" {` + "\n"
@@ -166,3 +186,5 @@ func testAccIosxePolicyMapEventConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

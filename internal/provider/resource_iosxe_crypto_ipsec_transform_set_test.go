@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeCryptoIPSecTransformSet(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -56,6 +61,10 @@ func TestAccIosxeCryptoIPSecTransformSet(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeCryptoIPSecTransformSetImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -64,6 +73,13 @@ func iosxeCryptoIPSecTransformSetImportStateIdFunc(resourceName string) resource
 		return fmt.Sprintf("%s", Name), nil
 	}
 }
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
 func testAccIosxeCryptoIPSecTransformSetConfig_minimum() string {
 	config := `resource "iosxe_crypto_ipsec_transform_set" "test" {` + "\n"
@@ -74,6 +90,10 @@ func testAccIosxeCryptoIPSecTransformSetConfig_minimum() string {
 	return config
 }
 
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
+
 func testAccIosxeCryptoIPSecTransformSetConfig_all() string {
 	config := `resource "iosxe_crypto_ipsec_transform_set" "test" {` + "\n"
 	config += `	name = "TEST"` + "\n"
@@ -83,3 +103,5 @@ func testAccIosxeCryptoIPSecTransformSetConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

@@ -19,12 +19,17 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeCommunityListStandard(t *testing.T) {
 	if os.Getenv("IOSXE1712") == "" {
@@ -45,6 +50,13 @@ func TestAccDataSourceIosxeCommunityListStandard(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
+
 func testAccDataSourceIosxeCommunityListStandardConfig() string {
 	config := `resource "iosxe_community_list_standard" "test" {` + "\n"
 	config += `	name = "CLS1"` + "\n"
@@ -60,3 +72,5 @@ func testAccDataSourceIosxeCommunityListStandardConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

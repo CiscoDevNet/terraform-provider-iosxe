@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -33,6 +34,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type DeviceSensor struct {
 	Device                 types.String                         `tfsdk:"device"`
 	Id                     types.String                         `tfsdk:"id"`
@@ -82,6 +86,10 @@ type DeviceSensorFilterListsDhcp struct {
 	OptionNameClientFqdn           types.Bool   `tfsdk:"option_name_client_fqdn"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data DeviceSensor) getPath() string {
 	return "Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor"
 }
@@ -100,6 +108,10 @@ func (data DeviceSensor) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data DeviceSensor) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -205,6 +217,10 @@ func (data DeviceSensor) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -466,6 +482,10 @@ func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -588,6 +608,10 @@ func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -709,6 +733,10 @@ func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 		data.NotifyAllChanges = types.BoolValue(false)
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSensor) []string {
 	deletedItems := make([]string, 0)
@@ -876,6 +904,10 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
@@ -925,6 +957,10 @@ func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
 	return emptyLeafsDelete
 }
 
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
+
 func (data *DeviceSensor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	for i := range data.FilterSpecDhcpIncludes {
@@ -957,3 +993,5 @@ func (data *DeviceSensor) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

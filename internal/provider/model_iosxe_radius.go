@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -32,6 +33,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type Radius struct {
 	Device                       types.String `tfsdk:"device"`
 	Id                           types.String `tfsdk:"id"`
@@ -66,6 +70,10 @@ type RadiusData struct {
 	PacKeyEncryption             types.String `tfsdk:"pac_key_encryption"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data Radius) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
@@ -84,6 +92,10 @@ func (data Radius) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data Radius) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -129,6 +141,10 @@ func (data Radius) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -205,6 +221,10 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *Radius) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -248,6 +268,10 @@ func (data *Radius) fromBody(ctx context.Context, res gjson.Result) {
 		data.PacKeyEncryption = types.StringValue(value.String())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -293,6 +317,10 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string {
 	deletedItems := make([]string, 0)
 	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
@@ -331,6 +359,10 @@ func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string 
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.ValueBool() {
@@ -341,6 +373,10 @@ func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -379,3 +415,5 @@ func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

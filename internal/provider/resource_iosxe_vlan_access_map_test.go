@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"os"
@@ -27,6 +28,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeVLANAccessMap(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -61,6 +66,10 @@ func TestAccIosxeVLANAccessMap(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeVLANAccessMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -71,6 +80,13 @@ func iosxeVLANAccessMapImportStateIdFunc(resourceName string) resource.ImportSta
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeVLANAccessMapConfig_minimum() string {
 	config := `resource "iosxe_vlan_access_map" "test" {` + "\n"
 	config += `	name = "VAM1"` + "\n"
@@ -78,6 +94,10 @@ func testAccIosxeVLANAccessMapConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeVLANAccessMapConfig_all() string {
 	config := `resource "iosxe_vlan_access_map" "test" {` + "\n"
@@ -89,3 +109,5 @@ func testAccIosxeVLANAccessMapConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

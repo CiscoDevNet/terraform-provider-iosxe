@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeStaticRoute(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -57,6 +62,10 @@ func TestAccIosxeStaticRoute(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeStaticRouteImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -67,6 +76,13 @@ func iosxeStaticRouteImportStateIdFunc(resourceName string) resource.ImportState
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeStaticRouteConfig_minimum() string {
 	config := `resource "iosxe_static_route" "test" {` + "\n"
 	config += `	prefix = "5.5.5.5"` + "\n"
@@ -74,6 +90,10 @@ func testAccIosxeStaticRouteConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeStaticRouteConfig_all() string {
 	config := `resource "iosxe_static_route" "test" {` + "\n"
@@ -90,3 +110,5 @@ func testAccIosxeStaticRouteConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

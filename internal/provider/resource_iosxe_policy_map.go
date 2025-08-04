@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -36,6 +37,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
+)
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
+
+// Ensure provider defined types fully satisfy framework interfaces
+var (
+	_ resource.Resource                = &PolicyMapResource{}
+	_ resource.ResourceWithImportState = &PolicyMapResource{}
 )
 
 func NewPolicyMapResource() resource.Resource {
@@ -236,6 +247,10 @@ func (r *PolicyMapResource) Configure(_ context.Context, req resource.ConfigureR
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
+
 func (r *PolicyMapResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan PolicyMap
 
@@ -300,6 +315,10 @@ func (r *PolicyMapResource) Create(ctx context.Context, req resource.CreateReque
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// End of section. //template:end create
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (r *PolicyMapResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state PolicyMap
 
@@ -349,6 +368,10 @@ func (r *PolicyMapResource) Read(ctx context.Context, req resource.ReadRequest, 
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end read
+
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *PolicyMapResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state PolicyMap
@@ -430,6 +453,10 @@ func (r *PolicyMapResource) Update(ctx context.Context, req resource.UpdateReque
 	resp.Diagnostics.Append(diags...)
 }
 
+// End of section. //template:end update
+
+// Section below is generated&owned by "gen/generator.go". //template:begin delete
+
 func (r *PolicyMapResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state PolicyMap
 
@@ -488,6 +515,10 @@ func (r *PolicyMapResource) Delete(ctx context.Context, req resource.DeleteReque
 	resp.State.RemoveResource(ctx)
 }
 
+// End of section. //template:end delete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin import
+
 func (r *PolicyMapResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
@@ -517,3 +548,5 @@ func (r *PolicyMapResource) ImportState(ctx context.Context, req resource.Import
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end import

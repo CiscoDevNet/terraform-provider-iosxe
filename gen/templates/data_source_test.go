@@ -20,11 +20,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- if len .TestTags}}
@@ -99,6 +104,9 @@ func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 {{- if .TestPrerequisites}}
 const testAccDataSourceIosxe{{camelCase .Name}}PrerequisitesConfig = `
 {{- range $index, $item := .TestPrerequisites}}
@@ -138,6 +146,9 @@ resource "iosxe_restconf" "PreReq{{$index}}" {
 {{ end}}
 `
 {{- end}}
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxe{{camelCase .Name}}Config() string {
 	config := `resource "iosxe_{{snakeCase $name}}" "test" {` + "\n"
@@ -216,3 +227,5 @@ func testAccDataSourceIosxe{{camelCase .Name}}Config() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

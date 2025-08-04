@@ -19,12 +19,17 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeLine(t *testing.T) {
 	if os.Getenv("LINE") == "" {
@@ -62,6 +67,13 @@ func TestAccDataSourceIosxeLine(t *testing.T) {
 		},
 	})
 }
+
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeLineConfig() string {
 	config := `resource "iosxe_line" "test" {` + "\n"
@@ -101,3 +113,5 @@ func testAccDataSourceIosxeLineConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

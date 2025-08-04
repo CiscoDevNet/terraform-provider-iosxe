@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -32,6 +33,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type BFDTemplateMultiHop struct {
 	Device                               types.String `tfsdk:"device"`
 	Id                                   types.String `tfsdk:"id"`
@@ -84,6 +88,10 @@ type BFDTemplateMultiHopData struct {
 	DampeningDownMonitoring              types.Bool   `tfsdk:"dampening_down_monitoring"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data BFDTemplateMultiHop) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
@@ -102,6 +110,10 @@ func (data BFDTemplateMultiHop) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data BFDTemplateMultiHop) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -176,6 +188,10 @@ func (data BFDTemplateMultiHop) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *BFDTemplateMultiHop) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -301,6 +317,10 @@ func (data *BFDTemplateMultiHop) updateFromBody(ctx context.Context, res gjson.R
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *BFDTemplateMultiHop) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -373,6 +393,10 @@ func (data *BFDTemplateMultiHop) fromBody(ctx context.Context, res gjson.Result)
 		data.DampeningDownMonitoring = types.BoolValue(false)
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *BFDTemplateMultiHopData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -447,6 +471,10 @@ func (data *BFDTemplateMultiHopData) fromBody(ctx context.Context, res gjson.Res
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *BFDTemplateMultiHop) getDeletedItems(ctx context.Context, state BFDTemplateMultiHop) []string {
 	deletedItems := make([]string, 0)
 	if !state.Echo.IsNull() && data.Echo.IsNull() {
@@ -512,6 +540,10 @@ func (data *BFDTemplateMultiHop) getDeletedItems(ctx context.Context, state BFDT
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *BFDTemplateMultiHop) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.Echo.IsNull() && !data.Echo.ValueBool() {
@@ -525,6 +557,10 @@ func (data *BFDTemplateMultiHop) getEmptyLeafsDelete(ctx context.Context) []stri
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *BFDTemplateMultiHop) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -590,3 +626,5 @@ func (data *BFDTemplateMultiHop) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

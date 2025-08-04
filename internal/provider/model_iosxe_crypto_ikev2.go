@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -31,6 +32,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type CryptoIKEv2 struct {
 	Device           types.String `tfsdk:"device"`
 	Id               types.String `tfsdk:"id"`
@@ -49,6 +53,10 @@ type CryptoIKEv2Data struct {
 	DpdRetryInterval types.Int64  `tfsdk:"dpd_retry_interval"`
 	DpdQuery         types.String `tfsdk:"dpd_query"`
 }
+
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data CryptoIKEv2) getPath() string {
 	return "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2"
@@ -69,6 +77,10 @@ func (data CryptoIKEv2) getPathShort() string {
 	return matches[1]
 }
 
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
+
 func (data CryptoIKEv2) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.NatKeepalive.IsNull() && !data.NatKeepalive.IsUnknown() {
@@ -85,6 +97,10 @@ func (data CryptoIKEv2) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *CryptoIKEv2) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -113,6 +129,10 @@ func (data *CryptoIKEv2) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *CryptoIKEv2) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -131,6 +151,10 @@ func (data *CryptoIKEv2) fromBody(ctx context.Context, res gjson.Result) {
 		data.DpdQuery = types.StringValue(value.String())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -151,6 +175,10 @@ func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2) []string {
 	deletedItems := make([]string, 0)
 	if !state.NatKeepalive.IsNull() && data.NatKeepalive.IsNull() {
@@ -168,10 +196,18 @@ func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2)
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *CryptoIKEv2) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *CryptoIKEv2) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -189,3 +225,5 @@ func (data *CryptoIKEv2) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

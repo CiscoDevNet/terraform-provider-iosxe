@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -33,6 +34,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type AAAAuthentication struct {
 	Device              types.String              `tfsdk:"device"`
 	Id                  types.String              `tfsdk:"id"`
@@ -106,6 +110,10 @@ type AAAAuthenticationDot1x struct {
 	A4Radius types.Bool   `tfsdk:"a4_radius"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data AAAAuthentication) getPath() string {
 	return "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authentication"
 }
@@ -124,6 +132,10 @@ func (data AAAAuthentication) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data AAAAuthentication) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -333,6 +345,10 @@ func (data AAAAuthentication) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *AAAAuthentication) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -731,6 +747,10 @@ func (data *AAAAuthentication) updateFromBody(ctx context.Context, res gjson.Res
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *AAAAuthentication) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -947,6 +967,10 @@ func (data *AAAAuthentication) fromBody(ctx context.Context, res gjson.Result) {
 		data.Dot1xDefaultA4Local = types.BoolValue(false)
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -1165,6 +1189,10 @@ func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *AAAAuthentication) getDeletedItems(ctx context.Context, state AAAAuthentication) []string {
 	deletedItems := make([]string, 0)
 	for i := range state.Logins {
@@ -1352,6 +1380,10 @@ func (data *AAAAuthentication) getDeletedItems(ctx context.Context, state AAAAut
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *AAAAuthentication) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
@@ -1449,6 +1481,10 @@ func (data *AAAAuthentication) getEmptyLeafsDelete(ctx context.Context) []string
 	return emptyLeafsDelete
 }
 
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
+
 func (data *AAAAuthentication) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	for i := range data.Logins {
@@ -1487,3 +1523,5 @@ func (data *AAAAuthentication) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

@@ -20,6 +20,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -41,6 +42,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+)
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
+
+// Ensure provider defined types fully satisfy framework interfaces
+var (
+	_ resource.Resource                = &{{camelCase .Name}}Resource{}
+	_ resource.ResourceWithImportState = &{{camelCase .Name}}Resource{}
 )
 
 func New{{camelCase .Name}}Resource() resource.Resource {
@@ -279,6 +290,10 @@ func (r *{{camelCase .Name}}Resource) Configure(_ context.Context, req resource.
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
+
 func (r *{{camelCase .Name}}Resource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan {{camelCase .Name}}
 
@@ -343,6 +358,10 @@ func (r *{{camelCase .Name}}Resource) Create(ctx context.Context, req resource.C
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// End of section. //template:end create
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state {{camelCase .Name}}
 
@@ -392,6 +411,10 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end read
+
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state {{camelCase .Name}}
@@ -473,6 +496,10 @@ func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.U
 	resp.Diagnostics.Append(diags...)
 }
 
+// End of section. //template:end update
+
+// Section below is generated&owned by "gen/generator.go". //template:begin delete
+
 func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state {{camelCase .Name}}
 
@@ -542,6 +569,10 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 	resp.State.RemoveResource(ctx)
 }
 
+// End of section. //template:end delete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin import
+
 func (r *{{camelCase .Name}}Resource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
@@ -576,3 +607,5 @@ func (r *{{camelCase .Name}}Resource) ImportState(ctx context.Context, req resou
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end import

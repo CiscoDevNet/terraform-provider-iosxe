@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeBGPAddressFamilyIPv6(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -58,6 +63,10 @@ func TestAccIosxeBGPAddressFamilyIPv6(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeBGPAddressFamilyIPv6ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -68,6 +77,9 @@ func iosxeBGPAddressFamilyIPv6ImportStateIdFunc(resourceName string) resource.Im
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPAddressFamilyIPv6PrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/ipv6"
@@ -85,6 +97,10 @@ resource "iosxe_restconf" "PreReq1" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeBGPAddressFamilyIPv6Config_minimum() string {
 	config := `resource "iosxe_bgp_address_family_ipv6" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
@@ -93,6 +109,10 @@ func testAccIosxeBGPAddressFamilyIPv6Config_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeBGPAddressFamilyIPv6Config_all() string {
 	config := `resource "iosxe_bgp_address_family_ipv6" "test" {` + "\n"
@@ -109,3 +129,5 @@ func testAccIosxeBGPAddressFamilyIPv6Config_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

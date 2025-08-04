@@ -19,12 +19,17 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeVLANAccessMap(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -46,6 +51,13 @@ func TestAccDataSourceIosxeVLANAccessMap(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
+
 func testAccDataSourceIosxeVLANAccessMapConfig() string {
 	config := `resource "iosxe_vlan_access_map" "test" {` + "\n"
 	config += `	name = "VAM1"` + "\n"
@@ -64,3 +76,5 @@ func testAccDataSourceIosxeVLANAccessMapConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

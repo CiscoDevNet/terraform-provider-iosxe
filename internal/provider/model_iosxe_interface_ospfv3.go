@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -32,6 +33,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceOSPFv3 struct {
 	Device                       types.String `tfsdk:"device"`
 	Id                           types.String `tfsdk:"id"`
@@ -57,6 +61,10 @@ type InterfaceOSPFv3Data struct {
 	Cost                         types.Int64  `tfsdk:"cost"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data InterfaceOSPFv3) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/Cisco-IOS-XE-ospfv3:ospfv3", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
@@ -75,6 +83,10 @@ func (data InterfaceOSPFv3) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data InterfaceOSPFv3) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -103,6 +115,10 @@ func (data InterfaceOSPFv3) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *InterfaceOSPFv3) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -152,6 +168,10 @@ func (data *InterfaceOSPFv3) updateFromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *InterfaceOSPFv3) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -181,6 +201,10 @@ func (data *InterfaceOSPFv3) fromBody(ctx context.Context, res gjson.Result) {
 		data.Cost = types.Int64Value(value.Int())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *InterfaceOSPFv3Data) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -212,6 +236,10 @@ func (data *InterfaceOSPFv3Data) fromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *InterfaceOSPFv3) getDeletedItems(ctx context.Context, state InterfaceOSPFv3) []string {
 	deletedItems := make([]string, 0)
 	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
@@ -232,6 +260,10 @@ func (data *InterfaceOSPFv3) getDeletedItems(ctx context.Context, state Interfac
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *InterfaceOSPFv3) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.ValueBool() {
@@ -248,6 +280,10 @@ func (data *InterfaceOSPFv3) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *InterfaceOSPFv3) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -268,3 +304,5 @@ func (data *InterfaceOSPFv3) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

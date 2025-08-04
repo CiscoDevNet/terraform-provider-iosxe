@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxePIMVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -69,6 +74,10 @@ func TestAccIosxePIMVRF(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxePIMVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -78,6 +87,9 @@ func iosxePIMVRFImportStateIdFunc(resourceName string) resource.ImportStateIdFun
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxePIMVRFPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -101,6 +113,10 @@ resource "iosxe_restconf" "PreReq1" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxePIMVRFConfig_minimum() string {
 	config := `resource "iosxe_pim_vrf" "test" {` + "\n"
 	config += `	vrf = "VRF1"` + "\n"
@@ -108,6 +124,10 @@ func testAccIosxePIMVRFConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxePIMVRFConfig_all() string {
 	config := `resource "iosxe_pim_vrf" "test" {` + "\n"
@@ -139,3 +159,5 @@ func testAccIosxePIMVRFConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

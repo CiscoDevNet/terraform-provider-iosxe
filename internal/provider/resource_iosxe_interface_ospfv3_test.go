@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfaceOSPFv3(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -57,6 +62,10 @@ func TestAccIosxeInterfaceOSPFv3(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeInterfaceOSPFv3ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -67,6 +76,9 @@ func iosxeInterfaceOSPFv3ImportStateIdFunc(resourceName string) resource.ImportS
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfaceOSPFv3PrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
@@ -77,6 +89,10 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeInterfaceOSPFv3Config_minimum() string {
 	config := `resource "iosxe_interface_ospfv3" "test" {` + "\n"
 	config += `	type = "Loopback"` + "\n"
@@ -85,6 +101,10 @@ func testAccIosxeInterfaceOSPFv3Config_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeInterfaceOSPFv3Config_all() string {
 	config := `resource "iosxe_interface_ospfv3" "test" {` + "\n"
@@ -99,3 +119,5 @@ func testAccIosxeInterfaceOSPFv3Config_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

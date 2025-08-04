@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeCryptoIKEv2Profile(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -54,6 +59,9 @@ func TestAccDataSourceIosxeCryptoIKEv2Profile(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeCryptoIKEv2ProfilePrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=test"
@@ -72,6 +80,10 @@ resource "iosxe_restconf" "PreReq1" {
 }
 
 `
+
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeCryptoIKEv2ProfileConfig() string {
 	config := `resource "iosxe_crypto_ikev2_profile" "test" {` + "\n"
@@ -105,3 +117,5 @@ func testAccDataSourceIosxeCryptoIKEv2ProfileConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

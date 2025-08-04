@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
 	"testing"
@@ -26,6 +27,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -56,6 +61,10 @@ func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
 func iosxeCryptoIKEv2ProposalImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
 		primary := s.RootModule().Resources[resourceName].Primary
@@ -65,12 +74,23 @@ func iosxeCryptoIKEv2ProposalImportStateIdFunc(resourceName string) resource.Imp
 	}
 }
 
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeCryptoIKEv2ProposalConfig_minimum() string {
 	config := `resource "iosxe_crypto_ikev2_proposal" "test" {` + "\n"
 	config += `	name = "PROPOSAL1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeCryptoIKEv2ProposalConfig_all() string {
 	config := `resource "iosxe_crypto_ikev2_proposal" "test" {` + "\n"
@@ -81,3 +101,5 @@ func testAccIosxeCryptoIKEv2ProposalConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll
