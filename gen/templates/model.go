@@ -619,11 +619,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 	{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 	if !state.{{toGoName .TfName}}.IsNull() {
 		if data.{{toGoName .TfName}}.IsNull() {
-			{{- if .DeleteParent}}
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath()))
-			{{- else}}
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}", state.getPath()))
-			{{- end}}
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}", state.getPath()))
 		} else {
 			var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
 			data.{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -637,22 +633,14 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 					}
 				}
 				if !found {
-					{{- if .DeleteParent}}
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), v))
-					{{- else}}
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), v))
-					{{- end}}
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}=%v", state.getPath(), v))
 				}
 			}
 		}
 	}
 	{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 	if !state.{{toGoName .TfName}}.IsNull() && data.{{toGoName .TfName}}.IsNull() {
-		{{- if .DeleteParent}}
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath()))
-		{{- else}}
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}", state.getPath()))
-		{{- end}}
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}", state.getPath()))
 	}
 	{{- else if eq .Type "List"}}
 	{{- $xpath := getXPath .YangName .XPath}}
@@ -687,11 +675,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 				{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
 					if data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
-						{{- if .DeleteParent}}
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-						{{- else}}
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-						{{- end}}
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
 						data.{{$list}}[i].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -705,22 +689,14 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 								}
 							}
 							if !found {
-								{{- if .DeleteParent}}
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
-								{{- else}}
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
-								{{- end}}
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
 							}
 						}
 					}
 				}
 				{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
-					{{- if .DeleteParent}}
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-					{{- else}}
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-					{{- end}}
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				{{- else if eq .Type "List"}}
 				{{- $cXpath := getXPath .YangName .XPath}}
@@ -755,11 +731,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 							{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
 								if data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
-									{{- if .DeleteParent}}
-									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-									{{- else}}
-									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-									{{- end}}
+									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 								} else {
 									var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
 									data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -773,22 +745,14 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 											}
 										}
 										if !found {
-											{{- if .DeleteParent}}
-											deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
-											{{- else}}
-											deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v{{$cXpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
-											{{- end}}
+											deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getDeletePath .}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
 										}
 									}
 								}
 							}
 							{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
-								{{- if .DeleteParent}}
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-								{{- else}}
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-								{{- end}}
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							{{- end}}
 							{{- end}}
@@ -796,7 +760,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 						}
 					}
 					if !found {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				{{- end}}
@@ -805,7 +769,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	{{- end}}
@@ -833,7 +797,7 @@ func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []stri
 		{{- range .Attributes}}
 		{{- if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
 		if !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() && !data.{{$list}}[i].{{toGoName .TfName}}.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/{{$yangName}}=%v/{{getXPath .YangName .XPath}}", data.getPath(), strings.Join(keyValues[:], ",")))
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/{{$yangName}}=%v/{{getDeletePath .}}", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		{{- end}}
 		{{- if eq .Type "List"}}
@@ -867,11 +831,7 @@ func (data *{{camelCase .Name}}) getDeletePaths(ctx context.Context) []string {
 	{{- range .Attributes}}
 	{{- if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 	if !data.{{toGoName .TfName}}.IsNull() {
-		{{- if .DeleteParent}}
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", data.getPath()))
-		{{- else}}
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}", data.getPath()))
-		{{- end}}
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/{{getDeletePath .}}", data.getPath()))
 	}
 	{{- else if and (eq .Type "List") (not .NoDelete)}}
 	for i := range data.{{toGoName .TfName}} {

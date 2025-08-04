@@ -312,6 +312,14 @@ func ImportAttributes(config YamlConfig) []YamlConfigAttribute {
 	return attributes
 }
 
+func GetDeletePath(attribute YamlConfigAttribute) string {
+	path := GetXPath(attribute.YangName, attribute.XPath)
+	if attribute.DeleteParent {
+		return RemoveLastPathElement(path)
+	}
+	return path
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
 	"toGoName":              ToGoName,
@@ -328,6 +336,7 @@ var functions = template.FuncMap{
 	"add":                   Add,
 	"getImportExcludes":     GetImportExcludes,
 	"importAttributes":      ImportAttributes,
+	"getDeletePath":         GetDeletePath,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {
@@ -615,7 +624,7 @@ func main() {
 			augmentConfig(&configs[i], yangModules)
 		}
 
-		fmt.Printf("Augumented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
+		fmt.Printf("Augmented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
 
 		if writeFlag {
 			// Write full definitions

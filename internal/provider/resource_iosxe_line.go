@@ -423,10 +423,11 @@ func (r *LineResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
 		if YangPatch {
-			edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
+			var edits []restconf.YangPatchEdit
 			for _, i := range deletedItems {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
+			edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
 			for _, i := range emptyLeafsDelete {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
@@ -436,6 +437,13 @@ func (r *LineResource) Update(ctx context.Context, req resource.UpdateRequest, r
 				return
 			}
 		} else {
+			for _, i := range deletedItems {
+				res, err := device.Client.DeleteData(i)
+				if err != nil && res.StatusCode != 404 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					return
+				}
+			}
 			res, err := device.Client.PatchData(plan.getPathShort(), body)
 			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
 				_, err = device.Client.PutData(plan.getPath(), body)
@@ -443,13 +451,6 @@ func (r *LineResource) Update(ctx context.Context, req resource.UpdateRequest, r
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
 				return
-			}
-			for _, i := range deletedItems {
-				res, err := device.Client.DeleteData(i)
-				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-					return
-				}
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
