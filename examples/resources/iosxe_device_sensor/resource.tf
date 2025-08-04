@@ -11,11 +11,12 @@ resource "iosxe_device_sensor" "example" {
   ]
   filter_lists_lldp = [
     {
-      name                        = "lldp1"
-      tlv_name_port_id            = true
-      tlv_name_port_description   = true
-      tlv_name_system_name        = true
-      tlv_name_system_description = true
+      name                         = "lldp1"
+      tlv_name_port_id             = true
+      tlv_name_port_description    = true
+      tlv_name_system_name         = true
+      tlv_name_system_description  = true
+      tlv_name_system_capabilities = true
     }
   ]
   filter_lists_dhcp = [

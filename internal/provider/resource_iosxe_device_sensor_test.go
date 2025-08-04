@@ -45,6 +45,7 @@ func TestAccIosxeDeviceSensor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_port_description", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_name", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_description", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_capabilities", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.name", "dhcp1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_host_name", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_default_ip_ttl", "true"))
@@ -119,6 +120,7 @@ func testAccIosxeDeviceSensorConfig_all() string {
 	config += `		tlv_name_port_description = true` + "\n"
 	config += `		tlv_name_system_name = true` + "\n"
 	config += `		tlv_name_system_description = true` + "\n"
+	config += `		tlv_name_system_capabilities = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	filter_lists_dhcp = [{` + "\n"
 	config += `		name = "dhcp1"` + "\n"

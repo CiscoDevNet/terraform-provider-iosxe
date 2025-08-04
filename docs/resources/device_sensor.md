@@ -26,11 +26,12 @@ resource "iosxe_device_sensor" "example" {
   ]
   filter_lists_lldp = [
     {
-      name                        = "lldp1"
-      tlv_name_port_id            = true
-      tlv_name_port_description   = true
-      tlv_name_system_name        = true
-      tlv_name_system_description = true
+      name                         = "lldp1"
+      tlv_name_port_id             = true
+      tlv_name_port_description    = true
+      tlv_name_system_name         = true
+      tlv_name_system_description  = true
+      tlv_name_system_capabilities = true
     }
   ]
   filter_lists_dhcp = [
@@ -60,7 +61,10 @@ resource "iosxe_device_sensor" "example" {
 - `filter_lists_dhcp` (Attributes List) Protocol Filter List (see [below for nested schema](#nestedatt--filter_lists_dhcp))
 - `filter_lists_lldp` (Attributes List) Protocol Filter List (see [below for nested schema](#nestedatt--filter_lists_lldp))
 - `filter_spec_cdp_excludes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_cdp_excludes))
+- `filter_spec_cdp_includes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_cdp_includes))
+- `filter_spec_dhcp_excludes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_dhcp_excludes))
 - `filter_spec_dhcp_includes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_dhcp_includes))
+- `filter_spec_lldp_excludes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_lldp_excludes))
 - `filter_spec_lldp_includes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_lldp_includes))
 - `notify_all_changes` (Boolean) Trigger identity update when TLVs are added/modified/removed
 
@@ -97,6 +101,7 @@ Optional:
 
 - `tlv_name_port_description` (Boolean) Port Description
 - `tlv_name_port_id` (Boolean) Port Id
+- `tlv_name_system_capabilities` (Boolean) System Capabilities
 - `tlv_name_system_description` (Boolean) System Description
 - `tlv_name_system_name` (Boolean) System Name
 
@@ -109,8 +114,32 @@ Required:
 - `name` (String)
 
 
+<a id="nestedatt--filter_spec_cdp_includes"></a>
+### Nested Schema for `filter_spec_cdp_includes`
+
+Required:
+
+- `name` (String)
+
+
+<a id="nestedatt--filter_spec_dhcp_excludes"></a>
+### Nested Schema for `filter_spec_dhcp_excludes`
+
+Required:
+
+- `name` (String)
+
+
 <a id="nestedatt--filter_spec_dhcp_includes"></a>
 ### Nested Schema for `filter_spec_dhcp_includes`
+
+Required:
+
+- `name` (String)
+
+
+<a id="nestedatt--filter_spec_lldp_excludes"></a>
+### Nested Schema for `filter_spec_lldp_excludes`
 
 Required:
 

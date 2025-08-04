@@ -96,7 +96,43 @@ func (r *DeviceSensorResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 				},
 			},
+			"filter_spec_dhcp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Protocol Filter Spec list").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
 			"filter_spec_lldp_includes": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Protocol Filter Spec list").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_lldp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Protocol Filter Spec list").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_cdp_includes": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Protocol Filter Spec list").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -143,6 +179,10 @@ func (r *DeviceSensorResource) Schema(ctx context.Context, req resource.SchemaRe
 						},
 						"tlv_name_system_description": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("System Description").String,
+							Optional:            true,
+						},
+						"tlv_name_system_capabilities": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("System Capabilities").String,
 							Optional:            true,
 						},
 					},

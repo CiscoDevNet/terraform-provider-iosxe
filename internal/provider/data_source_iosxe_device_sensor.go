@@ -79,7 +79,43 @@ func (d *DeviceSensorDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 			},
+			"filter_spec_dhcp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"filter_spec_lldp_includes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_lldp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_cdp_includes": schema.ListNestedAttribute{
 				MarkdownDescription: "Protocol Filter Spec list",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -126,6 +162,10 @@ func (d *DeviceSensorDataSource) Schema(ctx context.Context, req datasource.Sche
 						},
 						"tlv_name_system_description": schema.BoolAttribute{
 							MarkdownDescription: "System Description",
+							Computed:            true,
+						},
+						"tlv_name_system_capabilities": schema.BoolAttribute{
+							MarkdownDescription: "System Capabilities",
 							Computed:            true,
 						},
 					},
