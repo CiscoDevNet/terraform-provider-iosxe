@@ -33,7 +33,7 @@ import (
 func TestAccDataSourceIosxeCryptoIPSecProfile(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ipsec_profile.test", "set_transform_set.0", "TS1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ipsec_profile.test", "set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile", "vpn300"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ipsec_profile.test", "set_ikev2_profile", "vpn300"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -77,7 +77,7 @@ func testAccDataSourceIosxeCryptoIPSecProfileConfig() string {
 	config := `resource "iosxe_crypto_ipsec_profile" "test" {` + "\n"
 	config += `	name = "vpn200"` + "\n"
 	config += `	set_transform_set = ["TS1"]` + "\n"
-	config += `	set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile = "vpn300"` + "\n"
+	config += `	set_ikev2_profile = "vpn300"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 

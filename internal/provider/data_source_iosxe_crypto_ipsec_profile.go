@@ -76,11 +76,11 @@ func (d *CryptoIPSecProfileDataSource) Schema(ctx context.Context, req datasourc
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
-			"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile": schema.StringAttribute{
+			"set_ikev2_profile": schema.StringAttribute{
 				MarkdownDescription: "Specify ikev2 Profile",
 				Computed:            true,
 			},
-			"set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile": schema.StringAttribute{
+			"set_isakmp_profile": schema.StringAttribute{
 				MarkdownDescription: "Specify isakmp Profile",
 				Computed:            true,
 			},

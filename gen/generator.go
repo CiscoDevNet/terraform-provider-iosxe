@@ -464,8 +464,11 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 		attr.TypeYangBool = "presence"
 		attr.Type = "Bool"
 	}
+	if attr.XPath == "" {
+		attr.XPath = attr.YangName
+	}
 	if attr.TfName == "" {
-		tfName := strings.ReplaceAll(ToYangShortName(attr.YangName), "-", "_")
+		tfName := strings.ReplaceAll(ToYangShortName(attr.XPath), "-", "_")
 		tfName = strings.ReplaceAll(tfName, "/", "_")
 		attr.TfName = tfName
 	}

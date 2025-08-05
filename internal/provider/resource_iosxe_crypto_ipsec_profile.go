@@ -87,11 +87,11 @@ func (r *CryptoIPSecProfileResource) Schema(ctx context.Context, req resource.Sc
 				ElementType:         types.StringType,
 				Optional:            true,
 			},
-			"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile": schema.StringAttribute{
+			"set_ikev2_profile": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify ikev2 Profile").String,
 				Optional:            true,
 			},
-			"set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile": schema.StringAttribute{
+			"set_isakmp_profile": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify isakmp Profile").String,
 				Optional:            true,
 			},
