@@ -11,6 +11,14 @@ attributes:
       - yang_name: name
         id: true
         example: dhcp1
+  - yang_name: filter-spec/dhcp/exclude/list
+    tf_name: filter_spec_dhcp_excludes
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: dhcp1
   - yang_name: filter-spec/lldp/include/list
     tf_name: filter_spec_lldp_includes
     type: List
@@ -18,6 +26,22 @@ attributes:
       - yang_name: name
         id: true
         example: lldp1
+  - yang_name: filter-spec/lldp/exclude/list
+    tf_name: filter_spec_lldp_excludes
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: lldp1
+  - yang_name: filter-spec/cdp/include/list
+    tf_name: filter_spec_cdp_includes
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: cdp1
   - yang_name: filter-spec/cdp/exclude/list
     tf_name: filter_spec_cdp_excludes
     type: List
@@ -40,6 +64,8 @@ attributes:
       - yang_name: tlv/name/system-name
         example: true
       - yang_name: tlv/name/system-description
+        example: true
+      - yang_name: tlv/name/system-capabilities
         example: true
   - yang_name: filter-list/dhcp/list
     tf_name: filter_lists_dhcp

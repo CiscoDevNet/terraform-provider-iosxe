@@ -122,5 +122,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_aaa_authentication.example "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authentication"
+terraform import iosxe_aaa_authentication.example ""
 ```

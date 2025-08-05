@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -34,6 +35,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type Template struct {
 	Device                                             types.String                                 `tfsdk:"device"`
 	Id                                                 types.String                                 `tfsdk:"id"`
@@ -202,6 +206,10 @@ type TemplateDeviceTrackingAttachPolicy struct {
 	VlanRange  types.String `tfsdk:"vlan_range"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data Template) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=%v", url.QueryEscape(fmt.Sprintf("%v", data.TemplateName.ValueString())))
 }
@@ -220,6 +228,10 @@ func (data Template) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data Template) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -538,6 +550,10 @@ func (data Template) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *Template) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -1146,6 +1162,10 @@ func (data *Template) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *Template) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -1479,6 +1499,10 @@ func (data *Template) fromBody(ctx context.Context, res gjson.Result) {
 		data.CtsRoleBasedEnforcement = types.BoolNull()
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -1814,6 +1838,10 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *Template) getDeletedItems(ctx context.Context, state Template) []string {
 	deletedItems := make([]string, 0)
 	if !state.Dot1xPae.IsNull() && data.Dot1xPae.IsNull() {
@@ -2107,6 +2135,10 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *Template) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.SwitchportModeTrunk.IsNull() && !data.SwitchportModeTrunk.ValueBool() {
@@ -2222,6 +2254,10 @@ func (data *Template) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *Template) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -2444,10 +2480,4 @@ func (data *Template) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-func (data *Template) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.TemplateName = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-}
+// End of section. //template:end getDeletePaths

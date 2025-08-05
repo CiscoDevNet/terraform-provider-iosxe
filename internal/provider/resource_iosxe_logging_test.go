@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeLogging(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -79,7 +86,7 @@ func TestAccIosxeLogging(t *testing.T) {
 				ResourceName:            "iosxe_logging.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/logging",
+				ImportStateIdFunc:       iosxeLoggingImportStateIdFunc("iosxe_logging.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -87,6 +94,20 @@ func TestAccIosxeLogging(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeLoggingImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeLoggingPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -109,12 +130,20 @@ resource "iosxe_restconf" "PreReq1" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeLoggingConfig_minimum() string {
 	config := `resource "iosxe_logging" "test" {` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeLoggingConfig_all() string {
 	config := `resource "iosxe_logging" "test" {` + "\n"
@@ -201,3 +230,5 @@ func testAccIosxeLoggingConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

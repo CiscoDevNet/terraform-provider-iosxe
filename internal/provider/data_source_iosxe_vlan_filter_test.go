@@ -19,12 +19,17 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeVLANFilter(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -44,6 +49,9 @@ func TestAccDataSourceIosxeVLANFilter(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeVLANFilterPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10"
@@ -54,6 +62,10 @@ resource "iosxe_restconf" "PreReq0" {
 }
 
 `
+
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeVLANFilterConfig() string {
 	config := `resource "iosxe_vlan_filter" "test" {` + "\n"
@@ -70,3 +82,5 @@ func testAccDataSourceIosxeVLANFilterConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

@@ -69,5 +69,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_interface_switchport.example "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1%2F0%2F3/switchport-config/switchport"
+terraform import iosxe_interface_switchport.example "<type>,<name>"
 ```

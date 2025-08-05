@@ -19,12 +19,17 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeEVPNInstance(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -68,6 +73,13 @@ func TestAccDataSourceIosxeEVPNInstance(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
+
 func testAccDataSourceIosxeEVPNInstanceConfig() string {
 	config := `resource "iosxe_evpn_instance" "test" {` + "\n"
 	config += `	evpn_instance_num = 10` + "\n"
@@ -110,3 +122,5 @@ func testAccDataSourceIosxeEVPNInstanceConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

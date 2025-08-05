@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeBGPIPv6UnicastNeighbor(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -47,6 +52,9 @@ func TestAccDataSourceIosxeBGPIPv6UnicastNeighbor(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPIPv6UnicastNeighborPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/ipv6"
@@ -88,6 +96,10 @@ resource "iosxe_restconf" "PreReq4" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
+
 func testAccDataSourceIosxeBGPIPv6UnicastNeighborConfig() string {
 	config := `resource "iosxe_bgp_ipv6_unicast_neighbor" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
@@ -115,3 +127,5 @@ func testAccDataSourceIosxeBGPIPv6UnicastNeighborConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

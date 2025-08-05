@@ -1,1 +1,1 @@
-terraform import iosxe_vtp.example "Cisco-IOS-XE-native:native/vtp"
+terraform import iosxe_vtp.example ""

@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeUsername(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -47,7 +54,7 @@ func TestAccIosxeUsername(t *testing.T) {
 				ResourceName:            "iosxe_username.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/username=user1",
+				ImportStateIdFunc:       iosxeUsernameImportStateIdFunc("iosxe_username.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -55,12 +62,36 @@ func TestAccIosxeUsername(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeUsernameImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeUsernameConfig_minimum() string {
 	config := `resource "iosxe_username" "test" {` + "\n"
 	config += `	name = "user1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeUsernameConfig_all() string {
 	config := `resource "iosxe_username" "test" {` + "\n"
@@ -72,3 +103,5 @@ func testAccIosxeUsernameConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

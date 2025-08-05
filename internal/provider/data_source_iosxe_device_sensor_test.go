@@ -19,12 +19,17 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeDeviceSensor(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -38,6 +43,7 @@ func TestAccDataSourceIosxeDeviceSensor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_port_description", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_name", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_description", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_capabilities", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_dhcp.0.name", "dhcp1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_host_name", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_default_ip_ttl", "true"))
@@ -59,6 +65,13 @@ func TestAccDataSourceIosxeDeviceSensor(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
+
 func testAccDataSourceIosxeDeviceSensorConfig() string {
 	config := `resource "iosxe_device_sensor" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
@@ -74,6 +87,7 @@ func testAccDataSourceIosxeDeviceSensorConfig() string {
 	config += `		tlv_name_port_description = true` + "\n"
 	config += `		tlv_name_system_name = true` + "\n"
 	config += `		tlv_name_system_description = true` + "\n"
+	config += `		tlv_name_system_capabilities = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	filter_lists_dhcp = [{` + "\n"
 	config += `		name = "dhcp1"` + "\n"
@@ -95,3 +109,5 @@ func testAccDataSourceIosxeDeviceSensorConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

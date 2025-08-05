@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -29,6 +30,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
@@ -74,7 +79,43 @@ func (d *DeviceSensorDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 			},
+			"filter_spec_dhcp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"filter_spec_lldp_includes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_lldp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_cdp_includes": schema.ListNestedAttribute{
 				MarkdownDescription: "Protocol Filter Spec list",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -121,6 +162,10 @@ func (d *DeviceSensorDataSource) Schema(ctx context.Context, req datasource.Sche
 						},
 						"tlv_name_system_description": schema.BoolAttribute{
 							MarkdownDescription: "System Description",
+							Computed:            true,
+						},
+						"tlv_name_system_capabilities": schema.BoolAttribute{
+							MarkdownDescription: "System Capabilities",
 							Computed:            true,
 						},
 					},
@@ -182,6 +227,10 @@ func (d *DeviceSensorDataSource) Configure(_ context.Context, req datasource.Con
 	d.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (d *DeviceSensorDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var config DeviceSensorData
 
@@ -219,3 +268,5 @@ func (d *DeviceSensorDataSource) Read(ctx context.Context, req datasource.ReadRe
 	diags = resp.State.Set(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 }
+
+// End of section. //template:end read

@@ -19,12 +19,12 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
 	"net/url"
 	"regexp"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -32,23 +32,30 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type CryptoIPSecProfile struct {
-	Device                                                     types.String `tfsdk:"device"`
-	Id                                                         types.String `tfsdk:"id"`
-	Name                                                       types.String `tfsdk:"name"`
-	SetTransformSet                                            types.List   `tfsdk:"set_transform_set"`
-	SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile   types.String `tfsdk:"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile"`
-	SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile types.String `tfsdk:"set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile"`
+	Device           types.String `tfsdk:"device"`
+	Id               types.String `tfsdk:"id"`
+	Name             types.String `tfsdk:"name"`
+	SetTransformSet  types.List   `tfsdk:"set_transform_set"`
+	SetIkev2Profile  types.String `tfsdk:"set_ikev2_profile"`
+	SetIsakmpProfile types.String `tfsdk:"set_isakmp_profile"`
 }
 
 type CryptoIPSecProfileData struct {
-	Device                                                     types.String `tfsdk:"device"`
-	Id                                                         types.String `tfsdk:"id"`
-	Name                                                       types.String `tfsdk:"name"`
-	SetTransformSet                                            types.List   `tfsdk:"set_transform_set"`
-	SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile   types.String `tfsdk:"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile"`
-	SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile types.String `tfsdk:"set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile"`
+	Device           types.String `tfsdk:"device"`
+	Id               types.String `tfsdk:"id"`
+	Name             types.String `tfsdk:"name"`
+	SetTransformSet  types.List   `tfsdk:"set_transform_set"`
+	SetIkev2Profile  types.String `tfsdk:"set_ikev2_profile"`
+	SetIsakmpProfile types.String `tfsdk:"set_isakmp_profile"`
 }
+
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data CryptoIPSecProfile) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
@@ -69,6 +76,10 @@ func (data CryptoIPSecProfile) getPathShort() string {
 	return matches[1]
 }
 
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
+
 func (data CryptoIPSecProfile) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
@@ -79,14 +90,18 @@ func (data CryptoIPSecProfile) toBody(ctx context.Context) string {
 		data.SetTransformSet.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.transform-set", values)
 	}
-	if !data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.IsNull() && !data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.ikev2-profile", data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.ValueString())
+	if !data.SetIkev2Profile.IsNull() && !data.SetIkev2Profile.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.ikev2-profile", data.SetIkev2Profile.ValueString())
 	}
-	if !data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile.IsNull() && !data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.isakmp-profile", data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile.ValueString())
+	if !data.SetIsakmpProfile.IsNull() && !data.SetIsakmpProfile.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"set.isakmp-profile", data.SetIsakmpProfile.ValueString())
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *CryptoIPSecProfile) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -103,17 +118,21 @@ func (data *CryptoIPSecProfile) updateFromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.SetTransformSet = types.ListNull(types.StringType)
 	}
-	if value := res.Get(prefix + "set.ikev2-profile"); value.Exists() && !data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.IsNull() {
-		data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile = types.StringValue(value.String())
+	if value := res.Get(prefix + "set.ikev2-profile"); value.Exists() && !data.SetIkev2Profile.IsNull() {
+		data.SetIkev2Profile = types.StringValue(value.String())
 	} else {
-		data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile = types.StringNull()
+		data.SetIkev2Profile = types.StringNull()
 	}
-	if value := res.Get(prefix + "set.isakmp-profile"); value.Exists() && !data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile.IsNull() {
-		data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile = types.StringValue(value.String())
+	if value := res.Get(prefix + "set.isakmp-profile"); value.Exists() && !data.SetIsakmpProfile.IsNull() {
+		data.SetIsakmpProfile = types.StringValue(value.String())
 	} else {
-		data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile = types.StringNull()
+		data.SetIsakmpProfile = types.StringNull()
 	}
 }
+
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *CryptoIPSecProfile) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -126,12 +145,16 @@ func (data *CryptoIPSecProfile) fromBody(ctx context.Context, res gjson.Result) 
 		data.SetTransformSet = types.ListNull(types.StringType)
 	}
 	if value := res.Get(prefix + "set.ikev2-profile"); value.Exists() {
-		data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile = types.StringValue(value.String())
+		data.SetIkev2Profile = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "set.isakmp-profile"); value.Exists() {
-		data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile = types.StringValue(value.String())
+		data.SetIsakmpProfile = types.StringValue(value.String())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -144,12 +167,16 @@ func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Resu
 		data.SetTransformSet = types.ListNull(types.StringType)
 	}
 	if value := res.Get(prefix + "set.ikev2-profile"); value.Exists() {
-		data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile = types.StringValue(value.String())
+		data.SetIkev2Profile = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "set.isakmp-profile"); value.Exists() {
-		data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile = types.StringValue(value.String())
+		data.SetIsakmpProfile = types.StringValue(value.String())
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state CryptoIPSecProfile) []string {
 	deletedItems := make([]string, 0)
@@ -174,38 +201,40 @@ func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state Crypt
 			}
 		}
 	}
-	if !state.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.IsNull() && data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.IsNull() {
+	if !state.SetIkev2Profile.IsNull() && data.SetIkev2Profile.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/ikev2-profile", state.getPath()))
 	}
-	if !state.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile.IsNull() && data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile.IsNull() {
+	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/isakmp-profile", state.getPath()))
 	}
 	return deletedItems
 }
+
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *CryptoIPSecProfile) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	return emptyLeafsDelete
 }
 
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
+
 func (data *CryptoIPSecProfile) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.SetTransformSet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/transform-set", data.getPath()))
 	}
-	if !data.SetIsakmpProfileIkev2ProfileIkev2ProfileCaseIkev2Profile.IsNull() {
+	if !data.SetIkev2Profile.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/ikev2-profile", data.getPath()))
 	}
-	if !data.SetIsakmpProfileIkev2ProfileIsakmpProfileCaseIsakmpProfile.IsNull() {
+	if !data.SetIsakmpProfile.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/isakmp-profile", data.getPath()))
 	}
 	return deletePaths
 }
 
-func (data *CryptoIPSecProfile) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-}
+// End of section. //template:end getDeletePaths

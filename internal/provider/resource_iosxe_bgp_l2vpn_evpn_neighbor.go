@@ -19,9 +19,11 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -35,6 +37,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
+)
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
+
+// Ensure provider defined types fully satisfy framework interfaces
+var (
+	_ resource.Resource                = &BGPL2VPNEVPNNeighborResource{}
+	_ resource.ResourceWithImportState = &BGPL2VPNEVPNNeighborResource{}
 )
 
 func NewBGPL2VPNEVPNNeighborResource() resource.Resource {
@@ -123,6 +135,10 @@ func (r *BGPL2VPNEVPNNeighborResource) Configure(_ context.Context, req resource
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
+
 func (r *BGPL2VPNEVPNNeighborResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan BGPL2VPNEVPNNeighbor
 
@@ -187,6 +203,10 @@ func (r *BGPL2VPNEVPNNeighborResource) Create(ctx context.Context, req resource.
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// End of section. //template:end create
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (r *BGPL2VPNEVPNNeighborResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state BGPL2VPNEVPNNeighbor
 
@@ -222,7 +242,6 @@ func (r *BGPL2VPNEVPNNeighborResource) Read(ctx context.Context, req resource.Re
 
 			// After `terraform import` we switch to a full read.
 			if imp {
-				state.getIdsFromPath()
 				state.fromBody(ctx, res.Res)
 			} else {
 				state.updateFromBody(ctx, res.Res)
@@ -237,6 +256,10 @@ func (r *BGPL2VPNEVPNNeighborResource) Read(ctx context.Context, req resource.Re
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end read
+
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *BGPL2VPNEVPNNeighborResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state BGPL2VPNEVPNNeighbor
@@ -273,10 +296,11 @@ func (r *BGPL2VPNEVPNNeighborResource) Update(ctx context.Context, req resource.
 		tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
 		if YangPatch {
-			edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
+			var edits []restconf.YangPatchEdit
 			for _, i := range deletedItems {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
+			edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
 			for _, i := range emptyLeafsDelete {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
@@ -286,6 +310,13 @@ func (r *BGPL2VPNEVPNNeighborResource) Update(ctx context.Context, req resource.
 				return
 			}
 		} else {
+			for _, i := range deletedItems {
+				res, err := device.Client.DeleteData(i)
+				if err != nil && res.StatusCode != 404 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					return
+				}
+			}
 			res, err := device.Client.PatchData(plan.getPathShort(), body)
 			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
 				_, err = device.Client.PutData(plan.getPath(), body)
@@ -293,13 +324,6 @@ func (r *BGPL2VPNEVPNNeighborResource) Update(ctx context.Context, req resource.
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
 				return
-			}
-			for _, i := range deletedItems {
-				res, err := device.Client.DeleteData(i)
-				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-					return
-				}
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
@@ -316,6 +340,10 @@ func (r *BGPL2VPNEVPNNeighborResource) Update(ctx context.Context, req resource.
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 }
+
+// End of section. //template:end update
+
+// Section below is generated&owned by "gen/generator.go". //template:begin delete
 
 func (r *BGPL2VPNEVPNNeighborResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state BGPL2VPNEVPNNeighbor
@@ -380,8 +408,39 @@ func (r *BGPL2VPNEVPNNeighborResource) Delete(ctx context.Context, req resource.
 	resp.State.RemoveResource(ctx)
 }
 
+// End of section. //template:end delete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin import
+
 func (r *BGPL2VPNEVPNNeighborResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	idParts := strings.Split(req.ID, ",")
+	idParts = helpers.RemoveEmptyStrings(idParts)
+
+	if len(idParts) != 2 && len(idParts) != 3 {
+		expectedIdentifier := "Expected import identifier with format: '<asn>,<ip>'"
+		expectedIdentifier += " or '<asn>,<ip>,<device>'"
+		resp.Diagnostics.AddError(
+			"Unexpected Import Identifier",
+			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
+		)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("asn"), idParts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ip"), idParts[1])...)
+	if len(idParts) == 3 {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
+	}
+
+	// construct path for 'id' attribute
+	var state BGPL2VPNEVPNNeighbor
+	diags := resp.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end import

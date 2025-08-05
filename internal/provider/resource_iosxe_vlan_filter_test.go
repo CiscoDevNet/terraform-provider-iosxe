@@ -19,12 +19,19 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeVLANFilter(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -48,7 +55,7 @@ func TestAccIosxeVLANFilter(t *testing.T) {
 				ResourceName:            "iosxe_vlan_filter.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:filter=VAM1",
+				ImportStateIdFunc:       iosxeVLANFilterImportStateIdFunc("iosxe_vlan_filter.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -56,6 +63,22 @@ func TestAccIosxeVLANFilter(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeVLANFilterImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Word := primary.Attributes["word"]
+
+		return fmt.Sprintf("%s", Word), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeVLANFilterPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10"
@@ -67,6 +90,10 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeVLANFilterConfig_minimum() string {
 	config := `resource "iosxe_vlan_filter" "test" {` + "\n"
 	config += `	word = "VAM1"` + "\n"
@@ -76,6 +103,10 @@ func testAccIosxeVLANFilterConfig_minimum() string {
 	return config
 }
 
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
+
 func testAccIosxeVLANFilterConfig_all() string {
 	config := `resource "iosxe_vlan_filter" "test" {` + "\n"
 	config += `	word = "VAM1"` + "\n"
@@ -84,3 +115,5 @@ func testAccIosxeVLANFilterConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

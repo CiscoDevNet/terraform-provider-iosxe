@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -34,6 +35,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type BGPIPv4UnicastNeighbor struct {
 	Device                   types.String                      `tfsdk:"device"`
 	Id                       types.String                      `tfsdk:"id"`
@@ -67,6 +71,10 @@ type BGPIPv4UnicastNeighborRouteMaps struct {
 	RouteMapName types.String `tfsdk:"route_map_name"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data BGPIPv4UnicastNeighbor) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=%s", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
 }
@@ -85,6 +93,10 @@ func (data BGPIPv4UnicastNeighbor) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data BGPIPv4UnicastNeighbor) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -128,6 +140,10 @@ func (data BGPIPv4UnicastNeighbor) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *BGPIPv4UnicastNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -217,6 +233,10 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBody(ctx context.Context, res gjso
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *BGPIPv4UnicastNeighbor) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -262,6 +282,10 @@ func (data *BGPIPv4UnicastNeighbor) fromBody(ctx context.Context, res gjson.Resu
 	}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *BGPIPv4UnicastNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -306,6 +330,10 @@ func (data *BGPIPv4UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 		})
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *BGPIPv4UnicastNeighbor) getDeletedItems(ctx context.Context, state BGPIPv4UnicastNeighbor) []string {
 	deletedItems := make([]string, 0)
@@ -355,6 +383,10 @@ func (data *BGPIPv4UnicastNeighbor) getDeletedItems(ctx context.Context, state B
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *BGPIPv4UnicastNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
@@ -369,6 +401,10 @@ func (data *BGPIPv4UnicastNeighbor) getEmptyLeafsDelete(ctx context.Context) []s
 
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *BGPIPv4UnicastNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -395,11 +431,4 @@ func (data *BGPIPv4UnicastNeighbor) getDeletePaths(ctx context.Context) []string
 	return deletePaths
 }
 
-func (data *BGPIPv4UnicastNeighbor) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Asn = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.Ip = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
-}
+// End of section. //template:end getDeletePaths

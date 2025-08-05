@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeMSDP(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -46,6 +51,9 @@ func TestAccDataSourceIosxeMSDP(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeMSDPPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
@@ -55,6 +63,10 @@ resource "iosxe_restconf" "PreReq0" {
 }
 
 `
+
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeMSDPConfig() string {
 	config := `resource "iosxe_msdp" "test" {` + "\n"
@@ -80,3 +92,5 @@ func testAccDataSourceIosxeMSDPConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

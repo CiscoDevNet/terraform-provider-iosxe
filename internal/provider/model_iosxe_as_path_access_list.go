@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -34,6 +35,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type ASPathAccessList struct {
 	Device  types.String              `tfsdk:"device"`
 	Id      types.String              `tfsdk:"id"`
@@ -51,6 +55,10 @@ type ASPathAccessListEntries struct {
 	Action types.String `tfsdk:"action"`
 	Regex  types.String `tfsdk:"regex"`
 }
+
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data ASPathAccessList) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=%v", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
@@ -71,6 +79,10 @@ func (data ASPathAccessList) getPathShort() string {
 	return matches[1]
 }
 
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
+
 func (data ASPathAccessList) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
@@ -89,6 +101,10 @@ func (data ASPathAccessList) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *ASPathAccessList) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -136,6 +152,10 @@ func (data *ASPathAccessList) updateFromBody(ctx context.Context, res gjson.Resu
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *ASPathAccessList) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -157,6 +177,10 @@ func (data *ASPathAccessList) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *ASPathAccessListData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -177,6 +201,10 @@ func (data *ASPathAccessListData) fromBody(ctx context.Context, res gjson.Result
 		})
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *ASPathAccessList) getDeletedItems(ctx context.Context, state ASPathAccessList) []string {
 	deletedItems := make([]string, 0)
@@ -214,11 +242,19 @@ func (data *ASPathAccessList) getDeletedItems(ctx context.Context, state ASPathA
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *ASPathAccessList) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *ASPathAccessList) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -230,10 +266,4 @@ func (data *ASPathAccessList) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-func (data *ASPathAccessList) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=%v", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
-}
+// End of section. //template:end getDeletePaths

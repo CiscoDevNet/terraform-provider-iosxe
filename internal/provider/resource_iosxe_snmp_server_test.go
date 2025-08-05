@@ -19,12 +19,19 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeSNMPServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -185,7 +192,7 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 				ResourceName:            "iosxe_snmp_server.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/snmp-server",
+				ImportStateIdFunc:       iosxeSNMPServerImportStateIdFunc("iosxe_snmp_server.test"),
 				ImportStateVerifyIgnore: []string{"ifindex_persist", "enable_informs", "enable_traps_rep", "enable_traps_license", "enable_traps_stackwise", "enable_traps_udld_link_fail_rpt", "enable_traps_udld_status_change", "enable_traps_energywise", "enable_traps_power_ethernet_police", "enable_traps_envmon", "enable_traps_cef_resource_failure", "enable_traps_cef_peer_state_change", "enable_traps_cef_peer_fib_state_change", "enable_traps_cef_inconsistency", "enable_traps_isis", "enable_traps_entity_diag_boot_up_fail", "enable_traps_entity_diag_hm_test_recover", "enable_traps_entity_diag_hm_thresh_reached", "enable_traps_entity_diag_scheduled_test_fail", "enable_traps_hsrp", "enable_traps_bridge_newroot", "enable_traps_bridge_topologychange", "enable_traps_stpx_inconsistency", "enable_traps_stpx_root_inconsistency", "enable_traps_stpx_loop_inconsistency", "enable_traps_bgp_cbgp2", "enable_traps_nhrp_nhs", "enable_traps_nhrp_nhc", "enable_traps_nhrp_nhp", "enable_traps_nhrp_quota_exceeded", "enable_traps_mpls_traffic_eng", "enable_traps_mpls", "enable_traps_mpls_vpn", "enable_traps_mpls_rfc", "enable_traps_mpls_rfc_ldp", "enable_traps_mpls_ldp", "enable_traps_fast_reroute_protected", "enable_traps_local_auth", "enable_traps_vlan_membership", "enable_traps_errdisable", "enable_traps_mac_notification_change", "enable_traps_mac_notification_move", "enable_traps_mac_notification_threshold", "enable_traps_mvpn", "enable_traps_lisp"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -193,6 +200,20 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeSNMPServerImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeSNMPServerPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
@@ -203,12 +224,20 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeSNMPServerConfig_minimum() string {
 	config := `resource "iosxe_snmp_server" "test" {` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeSNMPServerConfig_all() string {
 	config := `resource "iosxe_snmp_server" "test" {` + "\n"
@@ -366,3 +395,5 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

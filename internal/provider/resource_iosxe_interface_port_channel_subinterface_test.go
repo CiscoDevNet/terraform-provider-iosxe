@@ -19,12 +19,19 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	if os.Getenv("C8000V") == "" {
@@ -80,7 +87,7 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 				ResourceName:            "iosxe_interface_port_channel_subinterface.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=10.666",
+				ImportStateIdFunc:       iosxeInterfacePortChannelSubinterfaceImportStateIdFunc("iosxe_interface_port_channel_subinterface.test"),
 				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -88,6 +95,22 @@ func TestAccIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeInterfacePortChannelSubinterfaceImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePortChannelSubinterfacePrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -115,6 +138,10 @@ resource "iosxe_restconf" "PreReq2" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
 	config += `	name = "10.666"` + "\n"
@@ -122,6 +149,10 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
@@ -169,3 +200,5 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

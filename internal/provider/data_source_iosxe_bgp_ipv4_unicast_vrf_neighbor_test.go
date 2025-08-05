@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -68,6 +73,9 @@ func TestAccDataSourceIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPIPv4UnicastVRFNeighborPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -113,6 +121,10 @@ resource "iosxe_restconf" "PreReq3" {
 }
 
 `
+
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeBGPIPv4UnicastVRFNeighborConfig() string {
 	config := `resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "test" {` + "\n"
@@ -164,3 +176,5 @@ func testAccDataSourceIosxeBGPIPv4UnicastVRFNeighborConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

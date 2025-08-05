@@ -13,6 +13,12 @@ description: |-
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv6_host_transport` resource and data source into `iosxe_logging` resource and data source
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv4_host_vrf_transport` resource and data source into `iosxe_logging` resource and data source
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv6_host_vrf_transport` resource and data source into `iosxe_logging` resource and data source
+- BREAKING CHANGE: Refactor import logic of resources to use list of attributes instead of YANG paths
+- Add support for specifying device name in import identifier
+- Add `filter_spec_dhcp_excludes`, `filter_spec_lldp_excludes`, `filter_spec_cdp_includes`, `tlv_name_system_capabilities` attributes to `iosxe_device_sensor` resource and data source
+- Extend timeout to wait for device configuration database lock release, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/201)
+- BREAKING CHANGE: Rename `set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile` to `set_ikev2_profile` of `iosxe_crypto_ipsec_profile` resource and data source
+- BREAKING CHANGE: Rename `set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile` to `set_isakmp_profile` of `iosxe_crypto_ipsec_profile` resource and data source
 
 ## 0.6.1
 

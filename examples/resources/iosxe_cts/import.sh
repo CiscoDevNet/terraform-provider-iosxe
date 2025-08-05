@@ -1,1 +1,1 @@
-terraform import iosxe_cts.example "Cisco-IOS-XE-native:native/cts"
+terraform import iosxe_cts.example ""

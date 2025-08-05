@@ -19,13 +19,13 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
 	"net/url"
 	"regexp"
 	"strconv"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -33,6 +33,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfacePIM struct {
 	Device          types.String `tfsdk:"device"`
 	Id              types.String `tfsdk:"id"`
@@ -63,6 +66,10 @@ type InterfacePIMData struct {
 	DrPriority      types.Int64  `tfsdk:"dr_priority"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data InterfacePIM) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/ip/pim", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
@@ -81,6 +88,10 @@ func (data InterfacePIM) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data InterfacePIM) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -124,6 +135,10 @@ func (data InterfacePIM) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *InterfacePIM) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -200,6 +215,10 @@ func (data *InterfacePIM) updateFromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *InterfacePIM) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -244,6 +263,10 @@ func (data *InterfacePIM) fromBody(ctx context.Context, res gjson.Result) {
 		data.DrPriority = types.Int64Value(value.Int())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *InterfacePIMData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -290,6 +313,10 @@ func (data *InterfacePIMData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *InterfacePIM) getDeletedItems(ctx context.Context, state InterfacePIM) []string {
 	deletedItems := make([]string, 0)
 	if !state.Passive.IsNull() && data.Passive.IsNull() {
@@ -319,6 +346,10 @@ func (data *InterfacePIM) getDeletedItems(ctx context.Context, state InterfacePI
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *InterfacePIM) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.Passive.IsNull() && !data.Passive.ValueBool() {
@@ -344,6 +375,10 @@ func (data *InterfacePIM) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *InterfacePIM) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -374,11 +409,4 @@ func (data *InterfacePIM) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-func (data *InterfacePIM) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/%s=%v/ip/pim", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Type = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
-}
+// End of section. //template:end getDeletePaths

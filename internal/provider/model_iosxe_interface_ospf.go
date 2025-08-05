@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -34,6 +35,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceOSPF struct {
 	Device                       types.String                     `tfsdk:"device"`
 	Id                           types.String                     `tfsdk:"id"`
@@ -85,6 +89,10 @@ type InterfaceOSPFProcessIdsAreas struct {
 	AreaId types.String `tfsdk:"area_id"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data InterfaceOSPF) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/%s=%v/ip/Cisco-IOS-XE-ospf:router-ospf/ospf", url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
 }
@@ -103,6 +111,10 @@ func (data InterfaceOSPF) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data InterfaceOSPF) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -176,6 +188,10 @@ func (data InterfaceOSPF) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *InterfaceOSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -349,6 +365,10 @@ func (data *InterfaceOSPF) updateFromBody(ctx context.Context, res gjson.Result)
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *InterfaceOSPF) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -435,6 +455,10 @@ func (data *InterfaceOSPF) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -520,6 +544,10 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceOSPF) []string {
 	deletedItems := make([]string, 0)
@@ -634,6 +662,10 @@ func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceO
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *InterfaceOSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.ValueBool() {
@@ -651,6 +683,10 @@ func (data *InterfaceOSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *InterfaceOSPF) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -697,11 +733,4 @@ func (data *InterfaceOSPF) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-func (data *InterfaceOSPF) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/%s=%v/ip/Cisco-IOS-XE-ospf:router-ospf/ospf", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Type = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[2])))
-}
+// End of section. //template:end getDeletePaths

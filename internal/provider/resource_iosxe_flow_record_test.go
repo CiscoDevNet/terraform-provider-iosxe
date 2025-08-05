@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeFlowRecord(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -58,7 +65,7 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 				ResourceName:            "iosxe_flow_record.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=FNF1",
+				ImportStateIdFunc:       iosxeFlowRecordImportStateIdFunc("iosxe_flow_record.test"),
 				ImportStateVerifyIgnore: []string{"match_ipv6_source_address", "match_ipv6_destination_address", "match_application_name", "match_flow_observation_point", "match_ipv4_version", "match_ipv6_version", "match_ipv6_protocol", "match_connection_client_ipv4_address", "match_connection_server_ipv4_address", "match_connection_client_ipv6_address", "match_connection_server_ipv6_address", "match_connection_server_transport_port", "collect_connection_initiator", "collect_connection_new_connections", "collect_connection_server_counter_bytes_network_long", "collect_connection_server_counter_packets_long", "collect_datalink_mac_source_address_input", "collect_flow_direction"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -66,12 +73,36 @@ func TestAccIosxeFlowRecord(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeFlowRecordImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeFlowRecordConfig_minimum() string {
 	config := `resource "iosxe_flow_record" "test" {` + "\n"
 	config += `	name = "FNF1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeFlowRecordConfig_all() string {
 	config := `resource "iosxe_flow_record" "test" {` + "\n"
@@ -94,3 +125,5 @@ func testAccIosxeFlowRecordConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

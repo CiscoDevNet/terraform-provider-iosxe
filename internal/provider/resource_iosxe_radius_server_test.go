@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeRadiusServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -49,7 +56,7 @@ func TestAccIosxeRadiusServer(t *testing.T) {
 				ResourceName:            "iosxe_radius_server.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/radius-server",
+				ImportStateIdFunc:       iosxeRadiusServerImportStateIdFunc("iosxe_radius_server.test"),
 				ImportStateVerifyIgnore: []string{"attributes.0.access_request_include", "attributes.0.attribute_31_parameters.0.id_send_nas_port_detail", "attributes.0.attribute_31_parameters.0.id_send_mac_only"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -57,11 +64,33 @@ func TestAccIosxeRadiusServer(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeRadiusServerImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeRadiusServerConfig_minimum() string {
 	config := `resource "iosxe_radius_server" "test" {` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeRadiusServerConfig_all() string {
 	config := `resource "iosxe_radius_server" "test" {` + "\n"
@@ -79,3 +108,5 @@ func testAccIosxeRadiusServerConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

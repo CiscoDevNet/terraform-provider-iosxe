@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -33,6 +34,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type LLDP struct {
 	Device                  types.String      `tfsdk:"device"`
 	Id                      types.String      `tfsdk:"id"`
@@ -62,6 +66,10 @@ type LLDPSystemNames struct {
 	Name     types.String `tfsdk:"name"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data LLDP) getPath() string {
 	return "Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp"
 }
@@ -80,6 +88,10 @@ func (data LLDP) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data LLDP) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -120,6 +132,10 @@ func (data LLDP) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *LLDP) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -196,6 +212,10 @@ func (data *LLDP) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *LLDP) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -241,6 +261,10 @@ func (data *LLDP) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *LLDPData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -285,6 +309,10 @@ func (data *LLDPData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
 	deletedItems := make([]string, 0)
@@ -373,6 +401,10 @@ func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *LLDP) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.Run.IsNull() && !data.Run.ValueBool() {
@@ -381,6 +413,10 @@ func (data *LLDP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *LLDP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -409,3 +445,5 @@ func (data *LLDP) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

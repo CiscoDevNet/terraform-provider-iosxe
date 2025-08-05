@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -33,12 +34,18 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type DeviceSensor struct {
 	Device                 types.String                         `tfsdk:"device"`
 	Id                     types.String                         `tfsdk:"id"`
 	DeleteMode             types.String                         `tfsdk:"delete_mode"`
 	FilterSpecDhcpIncludes []DeviceSensorFilterSpecDhcpIncludes `tfsdk:"filter_spec_dhcp_includes"`
+	FilterSpecDhcpExcludes []DeviceSensorFilterSpecDhcpExcludes `tfsdk:"filter_spec_dhcp_excludes"`
 	FilterSpecLldpIncludes []DeviceSensorFilterSpecLldpIncludes `tfsdk:"filter_spec_lldp_includes"`
+	FilterSpecLldpExcludes []DeviceSensorFilterSpecLldpExcludes `tfsdk:"filter_spec_lldp_excludes"`
+	FilterSpecCdpIncludes  []DeviceSensorFilterSpecCdpIncludes  `tfsdk:"filter_spec_cdp_includes"`
 	FilterSpecCdpExcludes  []DeviceSensorFilterSpecCdpExcludes  `tfsdk:"filter_spec_cdp_excludes"`
 	FilterListsLldp        []DeviceSensorFilterListsLldp        `tfsdk:"filter_lists_lldp"`
 	FilterListsDhcp        []DeviceSensorFilterListsDhcp        `tfsdk:"filter_lists_dhcp"`
@@ -49,7 +56,10 @@ type DeviceSensorData struct {
 	Device                 types.String                         `tfsdk:"device"`
 	Id                     types.String                         `tfsdk:"id"`
 	FilterSpecDhcpIncludes []DeviceSensorFilterSpecDhcpIncludes `tfsdk:"filter_spec_dhcp_includes"`
+	FilterSpecDhcpExcludes []DeviceSensorFilterSpecDhcpExcludes `tfsdk:"filter_spec_dhcp_excludes"`
 	FilterSpecLldpIncludes []DeviceSensorFilterSpecLldpIncludes `tfsdk:"filter_spec_lldp_includes"`
+	FilterSpecLldpExcludes []DeviceSensorFilterSpecLldpExcludes `tfsdk:"filter_spec_lldp_excludes"`
+	FilterSpecCdpIncludes  []DeviceSensorFilterSpecCdpIncludes  `tfsdk:"filter_spec_cdp_includes"`
 	FilterSpecCdpExcludes  []DeviceSensorFilterSpecCdpExcludes  `tfsdk:"filter_spec_cdp_excludes"`
 	FilterListsLldp        []DeviceSensorFilterListsLldp        `tfsdk:"filter_lists_lldp"`
 	FilterListsDhcp        []DeviceSensorFilterListsDhcp        `tfsdk:"filter_lists_dhcp"`
@@ -58,18 +68,28 @@ type DeviceSensorData struct {
 type DeviceSensorFilterSpecDhcpIncludes struct {
 	Name types.String `tfsdk:"name"`
 }
+type DeviceSensorFilterSpecDhcpExcludes struct {
+	Name types.String `tfsdk:"name"`
+}
 type DeviceSensorFilterSpecLldpIncludes struct {
+	Name types.String `tfsdk:"name"`
+}
+type DeviceSensorFilterSpecLldpExcludes struct {
+	Name types.String `tfsdk:"name"`
+}
+type DeviceSensorFilterSpecCdpIncludes struct {
 	Name types.String `tfsdk:"name"`
 }
 type DeviceSensorFilterSpecCdpExcludes struct {
 	Name types.String `tfsdk:"name"`
 }
 type DeviceSensorFilterListsLldp struct {
-	Name                     types.String `tfsdk:"name"`
-	TlvNamePortId            types.Bool   `tfsdk:"tlv_name_port_id"`
-	TlvNamePortDescription   types.Bool   `tfsdk:"tlv_name_port_description"`
-	TlvNameSystemName        types.Bool   `tfsdk:"tlv_name_system_name"`
-	TlvNameSystemDescription types.Bool   `tfsdk:"tlv_name_system_description"`
+	Name                      types.String `tfsdk:"name"`
+	TlvNamePortId             types.Bool   `tfsdk:"tlv_name_port_id"`
+	TlvNamePortDescription    types.Bool   `tfsdk:"tlv_name_port_description"`
+	TlvNameSystemName         types.Bool   `tfsdk:"tlv_name_system_name"`
+	TlvNameSystemDescription  types.Bool   `tfsdk:"tlv_name_system_description"`
+	TlvNameSystemCapabilities types.Bool   `tfsdk:"tlv_name_system_capabilities"`
 }
 type DeviceSensorFilterListsDhcp struct {
 	Name                           types.String `tfsdk:"name"`
@@ -81,6 +101,10 @@ type DeviceSensorFilterListsDhcp struct {
 	OptionNameClientIdentifier     types.Bool   `tfsdk:"option_name_client_identifier"`
 	OptionNameClientFqdn           types.Bool   `tfsdk:"option_name_client_fqdn"`
 }
+
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data DeviceSensor) getPath() string {
 	return "Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor"
@@ -101,6 +125,10 @@ func (data DeviceSensor) getPathShort() string {
 	return matches[1]
 }
 
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
+
 func (data DeviceSensor) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.NotifyAllChanges.IsNull() && !data.NotifyAllChanges.IsUnknown() {
@@ -116,11 +144,35 @@ func (data DeviceSensor) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.FilterSpecDhcpExcludes) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-spec.dhcp.exclude.list", []interface{}{})
+		for index, item := range data.FilterSpecDhcpExcludes {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-spec.dhcp.exclude.list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
 	if len(data.FilterSpecLldpIncludes) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-spec.lldp.include.list", []interface{}{})
 		for index, item := range data.FilterSpecLldpIncludes {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-spec.lldp.include.list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.FilterSpecLldpExcludes) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-spec.lldp.exclude.list", []interface{}{})
+		for index, item := range data.FilterSpecLldpExcludes {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-spec.lldp.exclude.list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.FilterSpecCdpIncludes) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-spec.cdp.include.list", []interface{}{})
+		for index, item := range data.FilterSpecCdpIncludes {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-spec.cdp.include.list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
 		}
 	}
@@ -156,6 +208,11 @@ func (data DeviceSensor) toBody(ctx context.Context) string {
 			if !item.TlvNameSystemDescription.IsNull() && !item.TlvNameSystemDescription.IsUnknown() {
 				if item.TlvNameSystemDescription.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.lldp.list"+"."+strconv.Itoa(index)+"."+"tlv.name.system-description", map[string]string{})
+				}
+			}
+			if !item.TlvNameSystemCapabilities.IsNull() && !item.TlvNameSystemCapabilities.IsUnknown() {
+				if item.TlvNameSystemCapabilities.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.lldp.list"+"."+strconv.Itoa(index)+"."+"tlv.name.system-capabilities", map[string]string{})
 				}
 			}
 		}
@@ -206,6 +263,10 @@ func (data DeviceSensor) toBody(ctx context.Context) string {
 	return body
 }
 
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
+
 func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -240,6 +301,35 @@ func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) 
 			data.FilterSpecDhcpIncludes[i].Name = types.StringNull()
 		}
 	}
+	for i := range data.FilterSpecDhcpExcludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecDhcpExcludes[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "filter-spec.dhcp.exclude.list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.FilterSpecDhcpExcludes[i].Name.IsNull() {
+			data.FilterSpecDhcpExcludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecDhcpExcludes[i].Name = types.StringNull()
+		}
+	}
 	for i := range data.FilterSpecLldpIncludes {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.FilterSpecLldpIncludes[i].Name.ValueString()}
@@ -267,6 +357,64 @@ func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) 
 			data.FilterSpecLldpIncludes[i].Name = types.StringValue(value.String())
 		} else {
 			data.FilterSpecLldpIncludes[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.FilterSpecLldpExcludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecLldpExcludes[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "filter-spec.lldp.exclude.list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.FilterSpecLldpExcludes[i].Name.IsNull() {
+			data.FilterSpecLldpExcludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecLldpExcludes[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.FilterSpecCdpIncludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecCdpIncludes[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "filter-spec.cdp.include.list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.FilterSpecCdpIncludes[i].Name.IsNull() {
+			data.FilterSpecCdpIncludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecCdpIncludes[i].Name = types.StringNull()
 		}
 	}
 	for i := range data.FilterSpecCdpExcludes {
@@ -361,6 +509,15 @@ func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) 
 			}
 		} else {
 			data.FilterListsLldp[i].TlvNameSystemDescription = types.BoolNull()
+		}
+		if value := r.Get("tlv.name.system-capabilities"); !data.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() {
+			if value.Exists() {
+				data.FilterListsLldp[i].TlvNameSystemCapabilities = types.BoolValue(true)
+			} else {
+				data.FilterListsLldp[i].TlvNameSystemCapabilities = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsLldp[i].TlvNameSystemCapabilities = types.BoolNull()
 		}
 	}
 	for i := range data.FilterListsDhcp {
@@ -466,6 +623,10 @@ func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) 
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -482,6 +643,17 @@ func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "filter-spec.dhcp.exclude.list"); value.Exists() {
+		data.FilterSpecDhcpExcludes = make([]DeviceSensorFilterSpecDhcpExcludes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DeviceSensorFilterSpecDhcpExcludes{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecDhcpExcludes = append(data.FilterSpecDhcpExcludes, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "filter-spec.lldp.include.list"); value.Exists() {
 		data.FilterSpecLldpIncludes = make([]DeviceSensorFilterSpecLldpIncludes, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -490,6 +662,28 @@ func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
 				item.Name = types.StringValue(cValue.String())
 			}
 			data.FilterSpecLldpIncludes = append(data.FilterSpecLldpIncludes, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "filter-spec.lldp.exclude.list"); value.Exists() {
+		data.FilterSpecLldpExcludes = make([]DeviceSensorFilterSpecLldpExcludes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DeviceSensorFilterSpecLldpExcludes{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecLldpExcludes = append(data.FilterSpecLldpExcludes, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "filter-spec.cdp.include.list"); value.Exists() {
+		data.FilterSpecCdpIncludes = make([]DeviceSensorFilterSpecCdpIncludes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DeviceSensorFilterSpecCdpIncludes{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecCdpIncludes = append(data.FilterSpecCdpIncludes, item)
 			return true
 		})
 	}
@@ -530,6 +724,11 @@ func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
 				item.TlvNameSystemDescription = types.BoolValue(true)
 			} else {
 				item.TlvNameSystemDescription = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.system-capabilities"); cValue.Exists() {
+				item.TlvNameSystemCapabilities = types.BoolValue(true)
+			} else {
+				item.TlvNameSystemCapabilities = types.BoolValue(false)
 			}
 			data.FilterListsLldp = append(data.FilterListsLldp, item)
 			return true
@@ -588,6 +787,10 @@ func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -604,6 +807,17 @@ func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "filter-spec.dhcp.exclude.list"); value.Exists() {
+		data.FilterSpecDhcpExcludes = make([]DeviceSensorFilterSpecDhcpExcludes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DeviceSensorFilterSpecDhcpExcludes{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecDhcpExcludes = append(data.FilterSpecDhcpExcludes, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "filter-spec.lldp.include.list"); value.Exists() {
 		data.FilterSpecLldpIncludes = make([]DeviceSensorFilterSpecLldpIncludes, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -612,6 +826,28 @@ func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Name = types.StringValue(cValue.String())
 			}
 			data.FilterSpecLldpIncludes = append(data.FilterSpecLldpIncludes, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "filter-spec.lldp.exclude.list"); value.Exists() {
+		data.FilterSpecLldpExcludes = make([]DeviceSensorFilterSpecLldpExcludes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DeviceSensorFilterSpecLldpExcludes{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecLldpExcludes = append(data.FilterSpecLldpExcludes, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "filter-spec.cdp.include.list"); value.Exists() {
+		data.FilterSpecCdpIncludes = make([]DeviceSensorFilterSpecCdpIncludes, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DeviceSensorFilterSpecCdpIncludes{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecCdpIncludes = append(data.FilterSpecCdpIncludes, item)
 			return true
 		})
 	}
@@ -652,6 +888,11 @@ func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 				item.TlvNameSystemDescription = types.BoolValue(true)
 			} else {
 				item.TlvNameSystemDescription = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.system-capabilities"); cValue.Exists() {
+				item.TlvNameSystemCapabilities = types.BoolValue(true)
+			} else {
+				item.TlvNameSystemCapabilities = types.BoolValue(false)
 			}
 			data.FilterListsLldp = append(data.FilterListsLldp, item)
 			return true
@@ -709,6 +950,10 @@ func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 		data.NotifyAllChanges = types.BoolValue(false)
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSensor) []string {
 	deletedItems := make([]string, 0)
@@ -737,6 +982,31 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/dhcp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.FilterSpecDhcpExcludes {
+		stateKeyValues := [...]string{state.FilterSpecDhcpExcludes[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecDhcpExcludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecDhcpExcludes {
+			found = true
+			if state.FilterSpecDhcpExcludes[i].Name.ValueString() != data.FilterSpecDhcpExcludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/dhcp/exclude/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.FilterSpecLldpIncludes {
 		stateKeyValues := [...]string{state.FilterSpecLldpIncludes[i].Name.ValueString()}
 
@@ -760,6 +1030,56 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/lldp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.FilterSpecLldpExcludes {
+		stateKeyValues := [...]string{state.FilterSpecLldpExcludes[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecLldpExcludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecLldpExcludes {
+			found = true
+			if state.FilterSpecLldpExcludes[i].Name.ValueString() != data.FilterSpecLldpExcludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/lldp/exclude/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.FilterSpecCdpIncludes {
+		stateKeyValues := [...]string{state.FilterSpecCdpIncludes[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecCdpIncludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecCdpIncludes {
+			found = true
+			if state.FilterSpecCdpIncludes[i].Name.ValueString() != data.FilterSpecCdpIncludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/cdp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.FilterSpecCdpExcludes {
@@ -816,6 +1136,9 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 				}
 				if !state.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && data.FilterListsLldp[j].TlvNameSystemDescription.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && data.FilterListsLldp[j].TlvNameSystemCapabilities.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-capabilities", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -876,6 +1199,10 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
@@ -892,6 +1219,9 @@ func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
 		}
 		if !data.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && !data.FilterListsLldp[i].TlvNameSystemDescription.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-description", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && !data.FilterListsLldp[i].TlvNameSystemCapabilities.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-capabilities", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 
@@ -925,6 +1255,10 @@ func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
 	return emptyLeafsDelete
 }
 
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
+
 func (data *DeviceSensor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	for i := range data.FilterSpecDhcpIncludes {
@@ -932,10 +1266,25 @@ func (data *DeviceSensor) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/dhcp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.FilterSpecDhcpExcludes {
+		keyValues := [...]string{data.FilterSpecDhcpExcludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/dhcp/exclude/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.FilterSpecLldpIncludes {
 		keyValues := [...]string{data.FilterSpecLldpIncludes[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/lldp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.FilterSpecLldpExcludes {
+		keyValues := [...]string{data.FilterSpecLldpExcludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/lldp/exclude/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.FilterSpecCdpIncludes {
+		keyValues := [...]string{data.FilterSpecCdpIncludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/cdp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.FilterSpecCdpExcludes {
 		keyValues := [...]string{data.FilterSpecCdpExcludes[i].Name.ValueString()}
@@ -957,3 +1306,5 @@ func (data *DeviceSensor) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

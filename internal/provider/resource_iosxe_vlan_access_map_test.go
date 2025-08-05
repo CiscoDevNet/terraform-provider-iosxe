@@ -19,12 +19,19 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeVLANAccessMap(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -51,13 +58,34 @@ func TestAccIosxeVLANAccessMap(t *testing.T) {
 				ResourceName:            "iosxe_vlan_access_map.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10",
+				ImportStateIdFunc:       iosxeVLANAccessMapImportStateIdFunc("iosxe_vlan_access_map.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
 }
+
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeVLANAccessMapImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+		Sequence := primary.Attributes["sequence"]
+
+		return fmt.Sprintf("%s,%s", Name, Sequence), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
 func testAccIosxeVLANAccessMapConfig_minimum() string {
 	config := `resource "iosxe_vlan_access_map" "test" {` + "\n"
@@ -66,6 +94,10 @@ func testAccIosxeVLANAccessMapConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeVLANAccessMapConfig_all() string {
 	config := `resource "iosxe_vlan_access_map" "test" {` + "\n"
@@ -77,3 +109,5 @@ func testAccIosxeVLANAccessMapConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

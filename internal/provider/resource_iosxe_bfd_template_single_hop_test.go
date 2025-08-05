@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -52,7 +59,7 @@ func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
 				ResourceName:            "iosxe_bfd_template_single_hop.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=SH-TEMPLATE-1",
+				ImportStateIdFunc:       iosxeBFDTemplateSingleHopImportStateIdFunc("iosxe_bfd_template_single_hop.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -60,12 +67,36 @@ func TestAccIosxeBFDTemplateSingleHop(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeBFDTemplateSingleHopImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeBFDTemplateSingleHopConfig_minimum() string {
 	config := `resource "iosxe_bfd_template_single_hop" "test" {` + "\n"
 	config += `	name = "SH-TEMPLATE-1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeBFDTemplateSingleHopConfig_all() string {
 	config := `resource "iosxe_bfd_template_single_hop" "test" {` + "\n"
@@ -82,3 +113,5 @@ func testAccIosxeBFDTemplateSingleHopConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

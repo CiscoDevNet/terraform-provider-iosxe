@@ -19,12 +19,19 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeErrdisable(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -108,7 +115,7 @@ func TestAccIosxeErrdisable(t *testing.T) {
 				ResourceName:            "iosxe_errdisable.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/errdisable",
+				ImportStateIdFunc:       iosxeErrdisableImportStateIdFunc("iosxe_errdisable.test"),
 				ImportStateVerifyIgnore: []string{"detect_cause_all", "detect_cause_arp_inspection", "detect_cause_bpduguard", "detect_cause_gbic_invalid", "detect_cause_inline_power", "detect_cause_loopback", "detect_cause_mlacp_minlink", "detect_cause_pagp_flap", "detect_cause_security_violation_shutdown_vlan", "detect_cause_sfp_config_mismatch", "detect_cause_small_frame", "recovery_cause_all", "recovery_cause_channel_misconfig", "recovery_cause_gbic_invalid", "recovery_cause_inline_power", "recovery_cause_link_monitor_failure", "recovery_cause_loopback", "recovery_cause_mac_limit", "recovery_cause_mlacp_minlink", "recovery_cause_pagp_flap", "recovery_cause_sfp_config_mismatch", "recovery_cause_small_frame", "recovery_cause_storm_control", "recovery_cause_unicast_flood", "recovery_cause_vmps", "recovery_cause_oam_remote_failure", "recovery_cause_mrp_miscabling"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -116,11 +123,33 @@ func TestAccIosxeErrdisable(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeErrdisableImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeErrdisableConfig_minimum() string {
 	config := `resource "iosxe_errdisable" "test" {` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeErrdisableConfig_all() string {
 	config := `resource "iosxe_errdisable" "test" {` + "\n"
@@ -192,3 +221,5 @@ func testAccIosxeErrdisableConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

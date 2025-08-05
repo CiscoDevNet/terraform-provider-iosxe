@@ -1,1 +1,1 @@
-terraform import iosxe_logging.example "Cisco-IOS-XE-native:native/logging"
+terraform import iosxe_logging.example ""

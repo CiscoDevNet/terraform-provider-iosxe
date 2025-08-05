@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeBGPIPv4UnicastNeighbor(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -51,7 +58,7 @@ func TestAccIosxeBGPIPv4UnicastNeighbor(t *testing.T) {
 				ResourceName:            "iosxe_bgp_ipv4_unicast_neighbor.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv4=unicast/ipv4-unicast/neighbor=3.3.3.3",
+				ImportStateIdFunc:       iosxeBGPIPv4UnicastNeighborImportStateIdFunc("iosxe_bgp_ipv4_unicast_neighbor.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -59,6 +66,23 @@ func TestAccIosxeBGPIPv4UnicastNeighbor(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeBGPIPv4UnicastNeighborImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		Ip := primary.Attributes["ip"]
+
+		return fmt.Sprintf("%s,%s", Asn, Ip), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPIPv4UnicastNeighborPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
@@ -93,6 +117,10 @@ resource "iosxe_restconf" "PreReq3" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeBGPIPv4UnicastNeighborConfig_minimum() string {
 	config := `resource "iosxe_bgp_ipv4_unicast_neighbor" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
@@ -101,6 +129,10 @@ func testAccIosxeBGPIPv4UnicastNeighborConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeBGPIPv4UnicastNeighborConfig_all() string {
 	config := `resource "iosxe_bgp_ipv4_unicast_neighbor" "test" {` + "\n"
@@ -120,3 +152,5 @@ func testAccIosxeBGPIPv4UnicastNeighborConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

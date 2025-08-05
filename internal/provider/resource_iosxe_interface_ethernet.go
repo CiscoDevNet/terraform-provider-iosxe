@@ -19,10 +19,12 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
@@ -36,6 +38,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
+)
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
+
+// Ensure provider defined types fully satisfy framework interfaces
+var (
+	_ resource.Resource                = &InterfaceEthernetResource{}
+	_ resource.ResourceWithImportState = &InterfaceEthernetResource{}
 )
 
 func NewInterfaceEthernetResource() resource.Resource {
@@ -756,6 +768,10 @@ func (r *InterfaceEthernetResource) Configure(_ context.Context, req resource.Co
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
+
 func (r *InterfaceEthernetResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan InterfaceEthernet
 
@@ -820,6 +836,10 @@ func (r *InterfaceEthernetResource) Create(ctx context.Context, req resource.Cre
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// End of section. //template:end create
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (r *InterfaceEthernetResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state InterfaceEthernet
 
@@ -855,7 +875,6 @@ func (r *InterfaceEthernetResource) Read(ctx context.Context, req resource.ReadR
 
 			// After `terraform import` we switch to a full read.
 			if imp {
-				state.getIdsFromPath()
 				state.fromBody(ctx, res.Res)
 			} else {
 				state.updateFromBody(ctx, res.Res)
@@ -870,6 +889,10 @@ func (r *InterfaceEthernetResource) Read(ctx context.Context, req resource.ReadR
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end read
+
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *InterfaceEthernetResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state InterfaceEthernet
@@ -906,10 +929,11 @@ func (r *InterfaceEthernetResource) Update(ctx context.Context, req resource.Upd
 		tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
 		if YangPatch {
-			edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
+			var edits []restconf.YangPatchEdit
 			for _, i := range deletedItems {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
+			edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
 			for _, i := range emptyLeafsDelete {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
@@ -919,6 +943,13 @@ func (r *InterfaceEthernetResource) Update(ctx context.Context, req resource.Upd
 				return
 			}
 		} else {
+			for _, i := range deletedItems {
+				res, err := device.Client.DeleteData(i, restconf.Wait)
+				if err != nil && res.StatusCode != 404 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					return
+				}
+			}
 			res, err := device.Client.PatchData(plan.getPathShort(), body, restconf.Wait)
 			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
 				_, err = device.Client.PutData(plan.getPath(), body, restconf.Wait)
@@ -926,13 +957,6 @@ func (r *InterfaceEthernetResource) Update(ctx context.Context, req resource.Upd
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
 				return
-			}
-			for _, i := range deletedItems {
-				res, err := device.Client.DeleteData(i, restconf.Wait)
-				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-					return
-				}
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i, restconf.Wait)
@@ -949,6 +973,10 @@ func (r *InterfaceEthernetResource) Update(ctx context.Context, req resource.Upd
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 }
+
+// End of section. //template:end update
+
+// Section below is generated&owned by "gen/generator.go". //template:begin delete
 
 func (r *InterfaceEthernetResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state InterfaceEthernet
@@ -1008,8 +1036,39 @@ func (r *InterfaceEthernetResource) Delete(ctx context.Context, req resource.Del
 	resp.State.RemoveResource(ctx)
 }
 
+// End of section. //template:end delete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin import
+
 func (r *InterfaceEthernetResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	idParts := strings.Split(req.ID, ",")
+	idParts = helpers.RemoveEmptyStrings(idParts)
+
+	if len(idParts) != 2 && len(idParts) != 3 {
+		expectedIdentifier := "Expected import identifier with format: '<type>,<name>'"
+		expectedIdentifier += " or '<type>,<name>,<device>'"
+		resp.Diagnostics.AddError(
+			"Unexpected Import Identifier",
+			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
+		)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("type"), idParts[0])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[1])...)
+	if len(idParts) == 3 {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
+	}
+
+	// construct path for 'id' attribute
+	var state InterfaceEthernet
+	diags := resp.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end import

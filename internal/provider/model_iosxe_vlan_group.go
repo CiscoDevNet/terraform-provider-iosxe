@@ -19,12 +19,12 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
 	"net/url"
 	"regexp"
-	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -32,6 +32,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type VLANGroup struct {
 	Device    types.String `tfsdk:"device"`
 	Id        types.String `tfsdk:"id"`
@@ -45,6 +48,10 @@ type VLANGroupData struct {
 	Name      types.String `tfsdk:"name"`
 	VlanLists types.List   `tfsdk:"vlan_lists"`
 }
+
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data VLANGroup) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
@@ -65,6 +72,10 @@ func (data VLANGroup) getPathShort() string {
 	return matches[1]
 }
 
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
+
 func (data VLANGroup) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
@@ -77,6 +88,10 @@ func (data VLANGroup) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *VLANGroup) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -95,6 +110,10 @@ func (data *VLANGroup) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *VLANGroup) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -107,6 +126,10 @@ func (data *VLANGroup) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *VLANGroupData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -118,6 +141,10 @@ func (data *VLANGroupData) fromBody(ctx context.Context, res gjson.Result) {
 		data.VlanLists = types.ListNull(types.Int64Type)
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *VLANGroup) getDeletedItems(ctx context.Context, state VLANGroup) []string {
 	deletedItems := make([]string, 0)
@@ -145,10 +172,18 @@ func (data *VLANGroup) getDeletedItems(ctx context.Context, state VLANGroup) []s
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *VLANGroup) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *VLANGroup) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -158,10 +193,4 @@ func (data *VLANGroup) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-func (data *VLANGroup) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.StringValue(helpers.Must(url.QueryUnescape(matches[1])))
-}
+// End of section. //template:end getDeletePaths

@@ -20,6 +20,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"regexp"
@@ -34,6 +35,10 @@ import (
 	"github.com/tidwall/sjson"
 	"github.com/tidwall/gjson"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 
 {{- $name := camelCase .Name}}
 type {{camelCase .Name}} struct {
@@ -103,6 +108,10 @@ type {{$name}}{{$cname}}{{toGoName .TfName}} struct {
 {{- end}}
 {{- end}}
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data {{camelCase .Name}}) getPath() string {
 {{- if hasId .Attributes}}
 	return fmt.Sprintf("{{.Path}}"{{range .Attributes}}{{if or .Id .Reference}}, url.QueryEscape(fmt.Sprintf("%v", data.{{toGoName .TfName}}.Value{{.Type}}())){{end}}{{end}})
@@ -129,6 +138,10 @@ func (data {{camelCase .Name}}) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data {{camelCase .Name}}) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -233,6 +246,10 @@ func (data {{camelCase .Name}}) toBody(ctx context.Context) string {
 	{{- end}}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -450,6 +467,10 @@ func (data *{{camelCase .Name}}) updateFromBody(ctx context.Context, res gjson.R
 	{{- end}}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result) {
 {{- define "fromBodyTemplate"}}
 	{{- $name := camelCase .Name}}
@@ -609,9 +630,17 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 {{- template "fromBodyTemplate" .}}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *{{camelCase .Name}}Data) fromBody(ctx context.Context, res gjson.Result) {
 {{- template "fromBodyTemplate" .}}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{camelCase .Name}}) []string {
 	deletedItems := make([]string, 0)
@@ -619,11 +648,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 	{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 	if !state.{{toGoName .TfName}}.IsNull() {
 		if data.{{toGoName .TfName}}.IsNull() {
-			{{- if .DeleteParent}}
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath()))
-			{{- else}}
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}", state.getPath()))
-			{{- end}}
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}", state.getPath()))
 		} else {
 			var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
 			data.{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -637,22 +662,14 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 					}
 				}
 				if !found {
-					{{- if .DeleteParent}}
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), v))
-					{{- else}}
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), v))
-					{{- end}}
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}=%v", state.getPath(), v))
 				}
 			}
 		}
 	}
 	{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 	if !state.{{toGoName .TfName}}.IsNull() && data.{{toGoName .TfName}}.IsNull() {
-		{{- if .DeleteParent}}
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath()))
-		{{- else}}
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}", state.getPath()))
-		{{- end}}
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}", state.getPath()))
 	}
 	{{- else if eq .Type "List"}}
 	{{- $xpath := getXPath .YangName .XPath}}
@@ -687,11 +704,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 				{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
 					if data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
-						{{- if .DeleteParent}}
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-						{{- else}}
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-						{{- end}}
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
 						data.{{$list}}[i].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -705,22 +718,14 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 								}
 							}
 							if !found {
-								{{- if .DeleteParent}}
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
-								{{- else}}
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
-								{{- end}}
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
 							}
 						}
 					}
 				}
 				{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
-					{{- if .DeleteParent}}
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-					{{- else}}
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-					{{- end}}
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				{{- else if eq .Type "List"}}
 				{{- $cXpath := getXPath .YangName .XPath}}
@@ -755,11 +760,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 							{{- if or (eq .Type "StringList") (eq .Type "Int64List")}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
 								if data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
-									{{- if .DeleteParent}}
-									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-									{{- else}}
-									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-									{{- end}}
+									deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 								} else {
 									var dataValues, stateValues []{{ if eq .Type "StringList" }}string{{else}}int{{end}}
 									data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -773,22 +774,14 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 											}
 										}
 										if !found {
-											{{- if .DeleteParent}}
-											deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
-											{{- else}}
-											deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v{{$cXpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
-											{{- end}}
+											deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getDeletePath .}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
 										}
 									}
 								}
 							}
 							{{- else if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
-								{{- if .DeleteParent}}
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-								{{- else}}
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getXPath .YangName .XPath}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-								{{- end}}
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{$cXpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							{{- end}}
 							{{- end}}
@@ -796,7 +789,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 						}
 					}
 					if !found {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
 				{{- end}}
@@ -805,13 +798,17 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	{{- end}}
 	{{- end}}
 	return deletedItems
 }
+
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
@@ -833,7 +830,7 @@ func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []stri
 		{{- range .Attributes}}
 		{{- if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}
 		if !data.{{$list}}[i].{{toGoName .TfName}}.IsNull() && !data.{{$list}}[i].{{toGoName .TfName}}.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/{{$yangName}}=%v/{{getXPath .YangName .XPath}}", data.getPath(), strings.Join(keyValues[:], ",")))
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/{{$yangName}}=%v/{{getDeletePath .}}", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		{{- end}}
 		{{- if eq .Type "List"}}
@@ -862,16 +859,16 @@ func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []stri
 	return emptyLeafsDelete
 }
 
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
+
 func (data *{{camelCase .Name}}) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	{{- range .Attributes}}
 	{{- if and (not .Reference) (not .Id) (ne .Type "List") (not .NoDelete)}}
 	if !data.{{toGoName .TfName}}.IsNull() {
-		{{- if .DeleteParent}}
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/{{removeLastPathElement (getXPath .YangName .XPath)}}", data.getPath()))
-		{{- else}}
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/{{getXPath .YangName .XPath}}", data.getPath()))
-		{{- end}}
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/{{getDeletePath .}}", data.getPath()))
 	}
 	{{- else if and (eq .Type "List") (not .NoDelete)}}
 	for i := range data.{{toGoName .TfName}} {
@@ -885,18 +882,4 @@ func (data *{{camelCase .Name}}) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-{{if hasId .Attributes}}
-func (data *{{camelCase .Name}}) getIdsFromPath() {
-	reString := strings.ReplaceAll("{{.Path}}", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-{{- $count := 1}}
-{{- range .Attributes}}
-{{- if or .Id .Reference}}
-	data.{{toGoName .TfName}} = types.{{.Type}}Value({{if eq .Type "Int64"}}helpers.Must(strconv.ParseInt(matches[{{$count}}], 10, 0)){{else}}helpers.Must(url.QueryUnescape(matches[{{$count}}])){{end}})
-{{- $count = (add $count 1)}}
-{{- end}}
-{{- end}}
-}
-{{end}}
+// End of section. //template:end getDeletePaths

@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeLogging(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -76,6 +81,9 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeLoggingPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -97,6 +105,10 @@ resource "iosxe_restconf" "PreReq1" {
 }
 
 `
+
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxeLoggingConfig() string {
 	config := `resource "iosxe_logging" "test" {` + "\n"
@@ -189,3 +201,5 @@ func testAccDataSourceIosxeLoggingConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -69,7 +76,7 @@ func TestAccIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 				ResourceName:            "iosxe_bgp_ipv4_unicast_vrf_neighbor.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/with-vrf/ipv4=unicast/vrf=VRF1/ipv4-unicast/neighbor=3.3.3.3",
+				ImportStateIdFunc:       iosxeBGPIPv4UnicastVRFNeighborImportStateIdFunc("iosxe_bgp_ipv4_unicast_vrf_neighbor.test"),
 				ImportStateVerifyIgnore: []string{"fall_over_bfd_multi_hop", "disable_connected_check", "local_as_no_prepend", "local_as_replace_as", "local_as_dual_as", "ebgp_multihop"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -77,6 +84,24 @@ func TestAccIosxeBGPIPv4UnicastVRFNeighbor(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeBGPIPv4UnicastVRFNeighborImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		Vrf := primary.Attributes["vrf"]
+		Ip := primary.Attributes["ip"]
+
+		return fmt.Sprintf("%s,%s,%s", Asn, Vrf, Ip), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPIPv4UnicastVRFNeighborPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
@@ -123,6 +148,10 @@ resource "iosxe_restconf" "PreReq3" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeBGPIPv4UnicastVRFNeighborConfig_minimum() string {
 	config := `resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
@@ -132,6 +161,10 @@ func testAccIosxeBGPIPv4UnicastVRFNeighborConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeBGPIPv4UnicastVRFNeighborConfig_all() string {
 	config := `resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "test" {` + "\n"
@@ -173,3 +206,5 @@ func testAccIosxeBGPIPv4UnicastVRFNeighborConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

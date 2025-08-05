@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeAccessListStandard(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -48,7 +55,7 @@ func TestAccIosxeAccessListStandard(t *testing.T) {
 				ResourceName:            "iosxe_access_list_standard.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=SACL1",
+				ImportStateIdFunc:       iosxeAccessListStandardImportStateIdFunc("iosxe_access_list_standard.test"),
 				ImportStateVerifyIgnore: []string{"entries.0.deny_any", "entries.0.permit_any", "entries.0.permit_log"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -56,12 +63,36 @@ func TestAccIosxeAccessListStandard(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeAccessListStandardImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeAccessListStandardConfig_minimum() string {
 	config := `resource "iosxe_access_list_standard" "test" {` + "\n"
 	config += `	name = "SACL1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeAccessListStandardConfig_all() string {
 	config := `resource "iosxe_access_list_standard" "test" {` + "\n"
@@ -76,3 +107,5 @@ func testAccIosxeAccessListStandardConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

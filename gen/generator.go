@@ -300,6 +300,26 @@ func GetImportExcludes(attributes []YamlConfigAttribute) []string {
 	return excludes
 }
 
+// Templating helper function to return all import attributes
+func ImportAttributes(config YamlConfig) []YamlConfigAttribute {
+	attributes := []YamlConfigAttribute{}
+	for _, attr := range config.Attributes {
+		if attr.Reference || attr.Id {
+			attributes = append(attributes, attr)
+		}
+	}
+
+	return attributes
+}
+
+func GetDeletePath(attribute YamlConfigAttribute) string {
+	path := GetXPath(attribute.YangName, attribute.XPath)
+	if attribute.DeleteParent {
+		return RemoveLastPathElement(path)
+	}
+	return path
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
 	"toGoName":              ToGoName,
@@ -315,6 +335,8 @@ var functions = template.FuncMap{
 	"contains":              contains,
 	"add":                   Add,
 	"getImportExcludes":     GetImportExcludes,
+	"importAttributes":      ImportAttributes,
+	"getDeletePath":         GetDeletePath,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {
@@ -442,8 +464,11 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 		attr.TypeYangBool = "presence"
 		attr.Type = "Bool"
 	}
+	if attr.XPath == "" {
+		attr.XPath = attr.YangName
+	}
 	if attr.TfName == "" {
-		tfName := strings.ReplaceAll(ToYangShortName(attr.YangName), "-", "_")
+		tfName := strings.ReplaceAll(ToYangShortName(attr.XPath), "-", "_")
 		tfName = strings.ReplaceAll(tfName, "/", "_")
 		attr.TfName = tfName
 	}
@@ -602,7 +627,7 @@ func main() {
 			augmentConfig(&configs[i], yangModules)
 		}
 
-		fmt.Printf("Augumented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
+		fmt.Printf("Augmented %d/%d: %v\n", i+1, len(configs), configs[i].Name)
 
 		if writeFlag {
 			// Write full definitions

@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeCommunityListExpanded(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -42,7 +49,7 @@ func TestAccIosxeCommunityListExpanded(t *testing.T) {
 				ResourceName:            "iosxe_community_list_expanded.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/expanded=CLE1",
+				ImportStateIdFunc:       iosxeCommunityListExpandedImportStateIdFunc("iosxe_community_list_expanded.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -50,12 +57,36 @@ func TestAccIosxeCommunityListExpanded(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeCommunityListExpandedImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeCommunityListExpandedConfig_minimum() string {
 	config := `resource "iosxe_community_list_expanded" "test" {` + "\n"
 	config += `	name = "CLE1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeCommunityListExpandedConfig_all() string {
 	config := `resource "iosxe_community_list_expanded" "test" {` + "\n"
@@ -67,3 +98,5 @@ func testAccIosxeCommunityListExpandedConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

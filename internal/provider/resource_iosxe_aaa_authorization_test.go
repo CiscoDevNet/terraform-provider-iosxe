@@ -19,12 +19,19 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeAAAAuthorization(t *testing.T) {
 	if os.Getenv("AAA") == "" {
@@ -56,7 +63,7 @@ func TestAccIosxeAAAAuthorization(t *testing.T) {
 				ResourceName:            "iosxe_aaa_authorization.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authorization",
+				ImportStateIdFunc:       iosxeAAAAuthorizationImportStateIdFunc("iosxe_aaa_authorization.test"),
 				ImportStateVerifyIgnore: []string{"execs.0.a1_local", "execs.0.a1_radius", "execs.0.a1_tacacs", "execs.0.a1_if_authenticated", "execs.0.a2_local", "execs.0.a2_radius", "execs.0.a2_tacacs", "execs.0.a2_if_authenticated", "execs.0.a3_local", "execs.0.a3_radius", "execs.0.a3_tacacs", "execs.0.a3_if_authenticated", "execs.0.a4_radius", "execs.0.a4_tacacs", "execs.0.a4_if_authenticated", "networks.0.a1_local", "networks.0.a2_local", "networks.0.a3_local"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -64,11 +71,33 @@ func TestAccIosxeAAAAuthorization(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeAAAAuthorizationImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeAAAAuthorizationConfig_minimum() string {
 	config := `resource "iosxe_aaa_authorization" "test" {` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeAAAAuthorizationConfig_all() string {
 	config := `resource "iosxe_aaa_authorization" "test" {` + "\n"
@@ -89,3 +118,5 @@ func testAccIosxeAAAAuthorizationConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

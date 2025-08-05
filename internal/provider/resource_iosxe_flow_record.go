@@ -19,10 +19,12 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -35,6 +37,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
+)
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
+
+// Ensure provider defined types fully satisfy framework interfaces
+var (
+	_ resource.Resource                = &FlowRecordResource{}
+	_ resource.ResourceWithImportState = &FlowRecordResource{}
 )
 
 func NewFlowRecordResource() resource.Resource {
@@ -227,6 +239,10 @@ func (r *FlowRecordResource) Configure(_ context.Context, req resource.Configure
 	r.data = req.ProviderData.(*IosxeProviderData)
 }
 
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin create
+
 func (r *FlowRecordResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan FlowRecord
 
@@ -291,6 +307,10 @@ func (r *FlowRecordResource) Create(ctx context.Context, req resource.CreateRequ
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
 
+// End of section. //template:end create
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
+
 func (r *FlowRecordResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state FlowRecord
 
@@ -326,7 +346,6 @@ func (r *FlowRecordResource) Read(ctx context.Context, req resource.ReadRequest,
 
 			// After `terraform import` we switch to a full read.
 			if imp {
-				state.getIdsFromPath()
 				state.fromBody(ctx, res.Res)
 			} else {
 				state.updateFromBody(ctx, res.Res)
@@ -341,6 +360,10 @@ func (r *FlowRecordResource) Read(ctx context.Context, req resource.ReadRequest,
 
 	helpers.SetFlagImporting(ctx, false, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end read
+
+// Section below is generated&owned by "gen/generator.go". //template:begin update
 
 func (r *FlowRecordResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state FlowRecord
@@ -377,10 +400,11 @@ func (r *FlowRecordResource) Update(ctx context.Context, req resource.UpdateRequ
 		tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
 		if YangPatch {
-			edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
+			var edits []restconf.YangPatchEdit
 			for _, i := range deletedItems {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
+			edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
 			for _, i := range emptyLeafsDelete {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
@@ -390,6 +414,13 @@ func (r *FlowRecordResource) Update(ctx context.Context, req resource.UpdateRequ
 				return
 			}
 		} else {
+			for _, i := range deletedItems {
+				res, err := device.Client.DeleteData(i)
+				if err != nil && res.StatusCode != 404 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					return
+				}
+			}
 			res, err := device.Client.PatchData(plan.getPathShort(), body)
 			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
 				_, err = device.Client.PutData(plan.getPath(), body)
@@ -397,13 +428,6 @@ func (r *FlowRecordResource) Update(ctx context.Context, req resource.UpdateRequ
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
 				return
-			}
-			for _, i := range deletedItems {
-				res, err := device.Client.DeleteData(i)
-				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-					return
-				}
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
@@ -420,6 +444,10 @@ func (r *FlowRecordResource) Update(ctx context.Context, req resource.UpdateRequ
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
 }
+
+// End of section. //template:end update
+
+// Section below is generated&owned by "gen/generator.go". //template:begin delete
 
 func (r *FlowRecordResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state FlowRecord
@@ -484,8 +512,38 @@ func (r *FlowRecordResource) Delete(ctx context.Context, req resource.DeleteRequ
 	resp.State.RemoveResource(ctx)
 }
 
+// End of section. //template:end delete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin import
+
 func (r *FlowRecordResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	idParts := strings.Split(req.ID, ",")
+	idParts = helpers.RemoveEmptyStrings(idParts)
+
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<name>'"
+		expectedIdentifier += " or '<name>,<device>'"
+		resp.Diagnostics.AddError(
+			"Unexpected Import Identifier",
+			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
+		)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
+	if len(idParts) == 2 {
+		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
+	}
+
+	// construct path for 'id' attribute
+	var state FlowRecord
+	diags := resp.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
 }
+
+// End of section. //template:end import

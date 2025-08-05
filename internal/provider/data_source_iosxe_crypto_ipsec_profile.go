@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -29,6 +30,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin model
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
@@ -71,11 +76,11 @@ func (d *CryptoIPSecProfileDataSource) Schema(ctx context.Context, req datasourc
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
-			"set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile": schema.StringAttribute{
+			"set_ikev2_profile": schema.StringAttribute{
 				MarkdownDescription: "Specify ikev2 Profile",
 				Computed:            true,
 			},
-			"set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile": schema.StringAttribute{
+			"set_isakmp_profile": schema.StringAttribute{
 				MarkdownDescription: "Specify isakmp Profile",
 				Computed:            true,
 			},
@@ -90,6 +95,10 @@ func (d *CryptoIPSecProfileDataSource) Configure(_ context.Context, req datasour
 
 	d.data = req.ProviderData.(*IosxeProviderData)
 }
+
+// End of section. //template:end model
+
+// Section below is generated&owned by "gen/generator.go". //template:begin read
 
 func (d *CryptoIPSecProfileDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var config CryptoIPSecProfileData
@@ -128,3 +137,5 @@ func (d *CryptoIPSecProfileDataSource) Read(ctx context.Context, req datasource.
 	diags = resp.State.Set(ctx, &config)
 	resp.Diagnostics.Append(diags...)
 }
+
+// End of section. //template:end read

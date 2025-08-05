@@ -19,11 +19,16 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxePrefixList(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -46,6 +51,13 @@ func TestAccDataSourceIosxePrefixList(t *testing.T) {
 		},
 	})
 }
+
+// End of section. //template:end testAccDataSource
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
 func testAccDataSourceIosxePrefixListConfig() string {
 	config := `resource "iosxe_prefix_list" "test" {` + "\n"
@@ -70,3 +82,5 @@ func testAccDataSourceIosxePrefixListConfig() string {
 	`
 	return config
 }
+
+// End of section. //template:end testAccDataSourceConfig

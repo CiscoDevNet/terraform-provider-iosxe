@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -46,7 +53,7 @@ func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
 				ResourceName:            "iosxe_crypto_ikev2_proposal.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=PROPOSAL1",
+				ImportStateIdFunc:       iosxeCryptoIKEv2ProposalImportStateIdFunc("iosxe_crypto_ikev2_proposal.test"),
 				ImportStateVerifyIgnore: []string{"encryption_en_3des", "encryption_aes_cbc_128", "encryption_aes_cbc_192", "encryption_aes_gcm_128", "encryption_aes_gcm_256", "group_one", "group_two", "group_fourteen", "group_fifteen", "group_nineteen", "group_twenty", "group_twenty_one", "group_twenty_four", "integrity_md5", "integrity_sha1", "integrity_sha384", "integrity_sha512", "prf_md5", "prf_sha1", "prf_sha256", "prf_sha384", "prf_sha512"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -54,12 +61,36 @@ func TestAccIosxeCryptoIKEv2Proposal(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeCryptoIKEv2ProposalImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s", Name), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeCryptoIKEv2ProposalConfig_minimum() string {
 	config := `resource "iosxe_crypto_ikev2_proposal" "test" {` + "\n"
 	config += `	name = "PROPOSAL1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeCryptoIKEv2ProposalConfig_all() string {
 	config := `resource "iosxe_crypto_ikev2_proposal" "test" {` + "\n"
@@ -70,3 +101,5 @@ func testAccIosxeCryptoIKEv2ProposalConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

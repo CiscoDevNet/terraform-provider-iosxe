@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeInterfaceMPLS(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -44,7 +51,7 @@ func TestAccIosxeInterfaceMPLS(t *testing.T) {
 				ResourceName:            "iosxe_interface_mpls.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/interface/Loopback=1/mpls",
+				ImportStateIdFunc:       iosxeInterfaceMPLSImportStateIdFunc("iosxe_interface_mpls.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -52,6 +59,23 @@ func TestAccIosxeInterfaceMPLS(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeInterfaceMPLSImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Type := primary.Attributes["type"]
+		Name := primary.Attributes["name"]
+
+		return fmt.Sprintf("%s,%s", Type, Name), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfaceMPLSPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
@@ -62,6 +86,10 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeInterfaceMPLSConfig_minimum() string {
 	config := `resource "iosxe_interface_mpls" "test" {` + "\n"
 	config += `	type = "Loopback"` + "\n"
@@ -70,6 +98,10 @@ func testAccIosxeInterfaceMPLSConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeInterfaceMPLSConfig_all() string {
 	config := `resource "iosxe_interface_mpls" "test" {` + "\n"
@@ -81,3 +113,5 @@ func testAccIosxeInterfaceMPLSConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

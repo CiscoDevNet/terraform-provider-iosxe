@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -30,6 +31,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type License struct {
 	Device                          types.String `tfsdk:"device"`
 	Id                              types.String `tfsdk:"id"`
@@ -53,6 +57,10 @@ type LicenseData struct {
 	SmartUrlCslu                    types.String `tfsdk:"smart_url_cslu"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data License) getPath() string {
 	return "Cisco-IOS-XE-native:native/license"
 }
@@ -71,6 +79,10 @@ func (data License) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data License) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -98,6 +110,10 @@ func (data License) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *License) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -144,6 +160,10 @@ func (data *License) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *License) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -172,6 +192,10 @@ func (data *License) fromBody(ctx context.Context, res gjson.Result) {
 		data.SmartUrlCslu = types.StringValue(value.String())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *LicenseData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -202,6 +226,10 @@ func (data *LicenseData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *License) getDeletedItems(ctx context.Context, state License) []string {
 	deletedItems := make([]string, 0)
 	if !state.BootLevelNetworkAdvantage.IsNull() && data.BootLevelNetworkAdvantage.IsNull() {
@@ -225,6 +253,10 @@ func (data *License) getDeletedItems(ctx context.Context, state License) []strin
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *License) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.BootLevelNetworkAdvantage.IsNull() && !data.BootLevelNetworkAdvantage.ValueBool() {
@@ -235,6 +267,10 @@ func (data *License) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *License) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -258,3 +294,5 @@ func (data *License) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

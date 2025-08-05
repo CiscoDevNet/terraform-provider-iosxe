@@ -19,12 +19,19 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeVTP(t *testing.T) {
 	if os.Getenv("VTP") == "" {
@@ -53,7 +60,7 @@ func TestAccIosxeVTP(t *testing.T) {
 				ResourceName:            "iosxe_vtp.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/vtp",
+				ImportStateIdFunc:       iosxeVTPImportStateIdFunc("iosxe_vtp.test"),
 				ImportStateVerifyIgnore: []string{"interface_only", "password_secret", "pruning", "mode_client", "mode_client_mst", "mode_client_unknown", "mode_client_vlan", "mode_off", "mode_off_mst", "mode_off_unknown", "mode_off_vlan", "mode_server", "mode_server_mst", "mode_server_unknown", "mode_server_vlan", "mode_transparent_mst", "mode_transparent_unknown", "mode_transparent_vlan"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -61,11 +68,33 @@ func TestAccIosxeVTP(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeVTPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeVTPConfig_minimum() string {
 	config := `resource "iosxe_vtp" "test" {` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeVTPConfig_all() string {
 	config := `resource "iosxe_vtp" "test" {` + "\n"
@@ -79,3 +108,5 @@ func testAccIosxeVTPConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

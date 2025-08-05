@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -30,6 +31,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type CTS struct {
 	Device            types.String `tfsdk:"device"`
 	Id                types.String `tfsdk:"id"`
@@ -42,6 +46,10 @@ type CTSData struct {
 	Id                types.String `tfsdk:"id"`
 	AuthorizationList types.String `tfsdk:"authorization_list"`
 }
+
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
 func (data CTS) getPath() string {
 	return "Cisco-IOS-XE-native:native/cts"
@@ -62,6 +70,10 @@ func (data CTS) getPathShort() string {
 	return matches[1]
 }
 
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
+
 func (data CTS) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.AuthorizationList.IsNull() && !data.AuthorizationList.IsUnknown() {
@@ -69,6 +81,10 @@ func (data CTS) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -82,6 +98,10 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -91,6 +111,10 @@ func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 		data.AuthorizationList = types.StringValue(value.String())
 	}
 }
+
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
 func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -102,6 +126,10 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
+
 func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 	deletedItems := make([]string, 0)
 	if !state.AuthorizationList.IsNull() && data.AuthorizationList.IsNull() {
@@ -110,10 +138,18 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *CTS) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *CTS) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -122,3 +158,5 @@ func (data *CTS) getDeletePaths(ctx context.Context) []string {
 	}
 	return deletePaths
 }
+
+// End of section. //template:end getDeletePaths

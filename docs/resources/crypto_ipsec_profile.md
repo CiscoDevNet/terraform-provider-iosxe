@@ -14,9 +14,9 @@ This resource can manage the Crypto IPSec Profile configuration.
 
 ```terraform
 resource "iosxe_crypto_ipsec_profile" "example" {
-  name                                                              = "vpn200"
-  set_transform_set                                                 = ["TS1"]
-  set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile = "vpn300"
+  name              = "vpn200"
+  set_transform_set = ["TS1"]
+  set_ikev2_profile = "vpn300"
 }
 ```
 
@@ -30,8 +30,8 @@ resource "iosxe_crypto_ipsec_profile" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile` (String) Specify ikev2 Profile
-- `set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile` (String) Specify isakmp Profile
+- `set_ikev2_profile` (String) Specify ikev2 Profile
+- `set_isakmp_profile` (String) Specify isakmp Profile
 - `set_transform_set` (List of String) Specify list of transform sets in priority order
 
 ### Read-Only
@@ -45,5 +45,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_crypto_ipsec_profile.example "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=vpn200"
+terraform import iosxe_crypto_ipsec_profile.example "<name>"
 ```

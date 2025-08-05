@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeStaticRoute(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -47,13 +54,34 @@ func TestAccIosxeStaticRoute(t *testing.T) {
 				ResourceName:            "iosxe_static_route.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list=5.5.5.5,255.255.255.255",
+				ImportStateIdFunc:       iosxeStaticRouteImportStateIdFunc("iosxe_static_route.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
 	})
 }
+
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeStaticRouteImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Prefix := primary.Attributes["prefix"]
+		Mask := primary.Attributes["mask"]
+
+		return fmt.Sprintf("%s,%s", Prefix, Mask), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
 func testAccIosxeStaticRouteConfig_minimum() string {
 	config := `resource "iosxe_static_route" "test" {` + "\n"
@@ -62,6 +90,10 @@ func testAccIosxeStaticRouteConfig_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeStaticRouteConfig_all() string {
 	config := `resource "iosxe_static_route" "test" {` + "\n"
@@ -78,3 +110,5 @@ func testAccIosxeStaticRouteConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

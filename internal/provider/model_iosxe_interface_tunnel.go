@@ -19,6 +19,7 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"context"
 	"fmt"
@@ -34,6 +35,9 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceTunnel struct {
 	Device                       types.String                            `tfsdk:"device"`
 	Id                           types.String                            `tfsdk:"id"`
@@ -140,6 +144,10 @@ type InterfaceTunnelHelperAddresses struct {
 	Vrf     types.String `tfsdk:"vrf"`
 }
 
+// End of section. //template:end types
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getPath
+
 func (data InterfaceTunnel) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/interface/Tunnel=%s", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
 }
@@ -158,6 +166,10 @@ func (data InterfaceTunnel) getPathShort() string {
 	}
 	return matches[1]
 }
+
+// End of section. //template:end getPath
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
 func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
@@ -335,6 +347,10 @@ func (data InterfaceTunnel) toBody(ctx context.Context) string {
 	}
 	return body
 }
+
+// End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
@@ -698,6 +714,10 @@ func (data *InterfaceTunnel) updateFromBody(ctx context.Context, res gjson.Resul
 	}
 }
 
+// End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBody
+
 func (data *InterfaceTunnel) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -897,6 +917,10 @@ func (data *InterfaceTunnel) fromBody(ctx context.Context, res gjson.Result) {
 	}
 }
 
+// End of section. //template:end fromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
+
 func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
@@ -1095,6 +1119,10 @@ func (data *InterfaceTunnelData) fromBody(ctx context.Context, res gjson.Result)
 		data.TunnelVrf = types.StringValue(value.String())
 	}
 }
+
+// End of section. //template:end fromBodyData
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state InterfaceTunnel) []string {
 	deletedItems := make([]string, 0)
@@ -1299,6 +1327,10 @@ func (data *InterfaceTunnel) getDeletedItems(ctx context.Context, state Interfac
 	return deletedItems
 }
 
+// End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
+
 func (data *InterfaceTunnel) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
@@ -1348,6 +1380,10 @@ func (data *InterfaceTunnel) getEmptyLeafsDelete(ctx context.Context) []string {
 	}
 	return emptyLeafsDelete
 }
+
+// End of section. //template:end getEmptyLeafsDelete
+
+// Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
 func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
@@ -1480,10 +1516,4 @@ func (data *InterfaceTunnel) getDeletePaths(ctx context.Context) []string {
 	return deletePaths
 }
 
-func (data *InterfaceTunnel) getIdsFromPath() {
-	reString := strings.ReplaceAll("Cisco-IOS-XE-native:native/interface/Tunnel=%s", "%s", "(.+)")
-	reString = strings.ReplaceAll(reString, "%v", "(.+)")
-	re := regexp.MustCompile(reString)
-	matches := re.FindStringSubmatch(data.Id.ValueString())
-	data.Name = types.Int64Value(helpers.Must(strconv.ParseInt(matches[1], 10, 0)))
-}
+// End of section. //template:end getDeletePaths

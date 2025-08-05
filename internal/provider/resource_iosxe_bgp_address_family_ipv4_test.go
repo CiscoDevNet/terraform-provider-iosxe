@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeBGPAddressFamilyIPv4(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -54,7 +61,7 @@ func TestAccIosxeBGPAddressFamilyIPv4(t *testing.T) {
 				ResourceName:            "iosxe_bgp_address_family_ipv4.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv4=unicast",
+				ImportStateIdFunc:       iosxeBGPAddressFamilyIPv4ImportStateIdFunc("iosxe_bgp_address_family_ipv4.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -62,6 +69,23 @@ func TestAccIosxeBGPAddressFamilyIPv4(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeBGPAddressFamilyIPv4ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Asn := primary.Attributes["asn"]
+		AfName := primary.Attributes["af_name"]
+
+		return fmt.Sprintf("%s,%s", Asn, AfName), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPAddressFamilyIPv4PrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
@@ -72,6 +96,10 @@ resource "iosxe_restconf" "PreReq0" {
 
 `
 
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeBGPAddressFamilyIPv4Config_minimum() string {
 	config := `resource "iosxe_bgp_address_family_ipv4" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
@@ -80,6 +108,10 @@ func testAccIosxeBGPAddressFamilyIPv4Config_minimum() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeBGPAddressFamilyIPv4Config_all() string {
 	config := `resource "iosxe_bgp_address_family_ipv4" "test" {` + "\n"
@@ -106,3 +138,5 @@ func testAccIosxeBGPAddressFamilyIPv4Config_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

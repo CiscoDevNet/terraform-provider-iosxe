@@ -19,11 +19,18 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeOSPF(t *testing.T) {
 	var checks []resource.TestCheckFunc
@@ -70,7 +77,7 @@ func TestAccIosxeOSPF(t *testing.T) {
 				ResourceName:            "iosxe_ospf.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=1",
+				ImportStateIdFunc:       iosxeOSPFImportStateIdFunc("iosxe_ospf.test"),
 				ImportStateVerifyIgnore: []string{"mpls_ldp_autoconfig", "mpls_ldp_sync"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -78,12 +85,36 @@ func TestAccIosxeOSPF(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeOSPFImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		ProcessId := primary.Attributes["process_id"]
+
+		return fmt.Sprintf("%s", ProcessId), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeOSPFConfig_minimum() string {
 	config := `resource "iosxe_ospf" "test" {` + "\n"
 	config += `	process_id = 1` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeOSPFConfig_all() string {
 	config := `resource "iosxe_ospf" "test" {` + "\n"
@@ -126,3 +157,5 @@ func testAccIosxeOSPFConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

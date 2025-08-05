@@ -19,12 +19,19 @@
 
 package provider
 
+// Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"fmt"
 	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
+
+// End of section. //template:end imports
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeDeviceSensor(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
@@ -38,6 +45,7 @@ func TestAccIosxeDeviceSensor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_port_description", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_name", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_description", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_system_capabilities", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.name", "dhcp1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_host_name", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_default_ip_ttl", "true"))
@@ -62,7 +70,7 @@ func TestAccIosxeDeviceSensor(t *testing.T) {
 				ResourceName:            "iosxe_device_sensor.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateId:           "Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor",
+				ImportStateIdFunc:       iosxeDeviceSensorImportStateIdFunc("iosxe_device_sensor.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -70,11 +78,33 @@ func TestAccIosxeDeviceSensor(t *testing.T) {
 	})
 }
 
+// End of section. //template:end testAcc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
+
+func iosxeDeviceSensorImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+	return func(s *terraform.State) (string, error) {
+
+		return fmt.Sprintf(""), nil
+	}
+}
+
+// End of section. //template:end importStateIdFunc
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+// End of section. //template:end testPrerequisites
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
+
 func testAccIosxeDeviceSensorConfig_minimum() string {
 	config := `resource "iosxe_device_sensor" "test" {` + "\n"
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigMinimal
+
+// Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
 func testAccIosxeDeviceSensorConfig_all() string {
 	config := `resource "iosxe_device_sensor" "test" {` + "\n"
@@ -90,6 +120,7 @@ func testAccIosxeDeviceSensorConfig_all() string {
 	config += `		tlv_name_port_description = true` + "\n"
 	config += `		tlv_name_system_name = true` + "\n"
 	config += `		tlv_name_system_description = true` + "\n"
+	config += `		tlv_name_system_capabilities = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	filter_lists_dhcp = [{` + "\n"
 	config += `		name = "dhcp1"` + "\n"
@@ -105,3 +136,5 @@ func testAccIosxeDeviceSensorConfig_all() string {
 	config += `}` + "\n"
 	return config
 }
+
+// End of section. //template:end testAccConfigAll

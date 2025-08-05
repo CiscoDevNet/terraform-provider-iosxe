@@ -82,5 +82,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_class_map.example "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CM1"
+terraform import iosxe_class_map.example "<name>"
 ```
