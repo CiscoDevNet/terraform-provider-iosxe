@@ -39,27 +39,37 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type StaticRoute struct {
-	Device   types.String          `tfsdk:"device"`
-	Id       types.String          `tfsdk:"id"`
-	Prefix   types.String          `tfsdk:"prefix"`
-	Mask     types.String          `tfsdk:"mask"`
-	NextHops []StaticRouteNextHops `tfsdk:"next_hops"`
+	Device            types.String                   `tfsdk:"device"`
+	Id                types.String                   `tfsdk:"id"`
+	Prefix            types.String                   `tfsdk:"prefix"`
+	Mask              types.String                   `tfsdk:"mask"`
+	NextHops          []StaticRouteNextHops          `tfsdk:"next_hops"`
+	NextHopsWithTrack []StaticRouteNextHopsWithTrack `tfsdk:"next_hops_with_track"`
 }
 
 type StaticRouteData struct {
-	Device   types.String          `tfsdk:"device"`
-	Id       types.String          `tfsdk:"id"`
-	Prefix   types.String          `tfsdk:"prefix"`
-	Mask     types.String          `tfsdk:"mask"`
-	NextHops []StaticRouteNextHops `tfsdk:"next_hops"`
+	Device            types.String                   `tfsdk:"device"`
+	Id                types.String                   `tfsdk:"id"`
+	Prefix            types.String                   `tfsdk:"prefix"`
+	Mask              types.String                   `tfsdk:"mask"`
+	NextHops          []StaticRouteNextHops          `tfsdk:"next_hops"`
+	NextHopsWithTrack []StaticRouteNextHopsWithTrack `tfsdk:"next_hops_with_track"`
 }
 type StaticRouteNextHops struct {
 	NextHop   types.String `tfsdk:"next_hop"`
-	Metric    types.Int64  `tfsdk:"metric"`
+	Distance  types.Int64  `tfsdk:"distance"`
 	Global    types.Bool   `tfsdk:"global"`
 	Name      types.String `tfsdk:"name"`
 	Permanent types.Bool   `tfsdk:"permanent"`
 	Tag       types.Int64  `tfsdk:"tag"`
+}
+type StaticRouteNextHopsWithTrack struct {
+	NextHop     types.String `tfsdk:"next_hop"`
+	Name        types.String `tfsdk:"name"`
+	TrackIdName types.Int64  `tfsdk:"track_id_name"`
+	Distance    types.Int64  `tfsdk:"distance"`
+	Tag         types.Int64  `tfsdk:"tag"`
+	Permanent   types.Bool   `tfsdk:"permanent"`
 }
 
 // End of section. //template:end types
@@ -103,8 +113,8 @@ func (data StaticRoute) toBody(ctx context.Context) string {
 			if !item.NextHop.IsNull() && !item.NextHop.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list"+"."+strconv.Itoa(index)+"."+"fwd", item.NextHop.ValueString())
 			}
-			if !item.Metric.IsNull() && !item.Metric.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list"+"."+strconv.Itoa(index)+"."+"metric", strconv.FormatInt(item.Metric.ValueInt64(), 10))
+			if !item.Distance.IsNull() && !item.Distance.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list"+"."+strconv.Itoa(index)+"."+"metric", strconv.FormatInt(item.Distance.ValueInt64(), 10))
 			}
 			if !item.Global.IsNull() && !item.Global.IsUnknown() {
 				if item.Global.ValueBool() {
@@ -121,6 +131,31 @@ func (data StaticRoute) toBody(ctx context.Context) string {
 			}
 			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list"+"."+strconv.Itoa(index)+"."+"tag", strconv.FormatInt(item.Tag.ValueInt64(), 10))
+			}
+		}
+	}
+	if len(data.NextHopsWithTrack) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list-with-track", []interface{}{})
+		for index, item := range data.NextHopsWithTrack {
+			if !item.NextHop.IsNull() && !item.NextHop.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list-with-track"+"."+strconv.Itoa(index)+"."+"fwd", item.NextHop.ValueString())
+			}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list-with-track"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.TrackIdName.IsNull() && !item.TrackIdName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list-with-track"+"."+strconv.Itoa(index)+"."+"track-id-name.id", strconv.FormatInt(item.TrackIdName.ValueInt64(), 10))
+			}
+			if !item.Distance.IsNull() && !item.Distance.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list-with-track"+"."+strconv.Itoa(index)+"."+"metric", strconv.FormatInt(item.Distance.ValueInt64(), 10))
+			}
+			if !item.Tag.IsNull() && !item.Tag.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list-with-track"+"."+strconv.Itoa(index)+"."+"tag", strconv.FormatInt(item.Tag.ValueInt64(), 10))
+			}
+			if !item.Permanent.IsNull() && !item.Permanent.IsUnknown() {
+				if item.Permanent.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fwd-list-with-track"+"."+strconv.Itoa(index)+"."+"permanent", map[string]string{})
+				}
 			}
 		}
 	}
@@ -174,10 +209,10 @@ func (data *StaticRoute) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.NextHops[i].NextHop = types.StringNull()
 		}
-		if value := r.Get("metric"); value.Exists() && !data.NextHops[i].Metric.IsNull() {
-			data.NextHops[i].Metric = types.Int64Value(value.Int())
+		if value := r.Get("metric"); value.Exists() && !data.NextHops[i].Distance.IsNull() {
+			data.NextHops[i].Distance = types.Int64Value(value.Int())
 		} else {
-			data.NextHops[i].Metric = types.Int64Null()
+			data.NextHops[i].Distance = types.Int64Null()
 		}
 		if value := r.Get("global"); !data.NextHops[i].Global.IsNull() {
 			if value.Exists() {
@@ -208,6 +243,64 @@ func (data *StaticRoute) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.NextHops[i].Tag = types.Int64Null()
 		}
 	}
+	for i := range data.NextHopsWithTrack {
+		keys := [...]string{"fwd"}
+		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "fwd-list-with-track").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("fwd"); value.Exists() && !data.NextHopsWithTrack[i].NextHop.IsNull() {
+			data.NextHopsWithTrack[i].NextHop = types.StringValue(value.String())
+		} else {
+			data.NextHopsWithTrack[i].NextHop = types.StringNull()
+		}
+		if value := r.Get("name"); value.Exists() && !data.NextHopsWithTrack[i].Name.IsNull() {
+			data.NextHopsWithTrack[i].Name = types.StringValue(value.String())
+		} else {
+			data.NextHopsWithTrack[i].Name = types.StringNull()
+		}
+		if value := r.Get("track-id-name.id"); value.Exists() && !data.NextHopsWithTrack[i].TrackIdName.IsNull() {
+			data.NextHopsWithTrack[i].TrackIdName = types.Int64Value(value.Int())
+		} else {
+			data.NextHopsWithTrack[i].TrackIdName = types.Int64Null()
+		}
+		if value := r.Get("metric"); value.Exists() && !data.NextHopsWithTrack[i].Distance.IsNull() {
+			data.NextHopsWithTrack[i].Distance = types.Int64Value(value.Int())
+		} else {
+			data.NextHopsWithTrack[i].Distance = types.Int64Null()
+		}
+		if value := r.Get("tag"); value.Exists() && !data.NextHopsWithTrack[i].Tag.IsNull() {
+			data.NextHopsWithTrack[i].Tag = types.Int64Value(value.Int())
+		} else {
+			data.NextHopsWithTrack[i].Tag = types.Int64Null()
+		}
+		if value := r.Get("permanent"); !data.NextHopsWithTrack[i].Permanent.IsNull() {
+			if value.Exists() {
+				data.NextHopsWithTrack[i].Permanent = types.BoolValue(true)
+			} else {
+				data.NextHopsWithTrack[i].Permanent = types.BoolValue(false)
+			}
+		} else {
+			data.NextHopsWithTrack[i].Permanent = types.BoolNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -227,7 +320,7 @@ func (data *StaticRoute) fromBody(ctx context.Context, res gjson.Result) {
 				item.NextHop = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("metric"); cValue.Exists() {
-				item.Metric = types.Int64Value(cValue.Int())
+				item.Distance = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("global"); cValue.Exists() {
 				item.Global = types.BoolValue(true)
@@ -246,6 +339,34 @@ func (data *StaticRoute) fromBody(ctx context.Context, res gjson.Result) {
 				item.Tag = types.Int64Value(cValue.Int())
 			}
 			data.NextHops = append(data.NextHops, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "fwd-list-with-track"); value.Exists() {
+		data.NextHopsWithTrack = make([]StaticRouteNextHopsWithTrack, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := StaticRouteNextHopsWithTrack{}
+			if cValue := v.Get("fwd"); cValue.Exists() {
+				item.NextHop = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("track-id-name.id"); cValue.Exists() {
+				item.TrackIdName = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("metric"); cValue.Exists() {
+				item.Distance = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("permanent"); cValue.Exists() {
+				item.Permanent = types.BoolValue(true)
+			} else {
+				item.Permanent = types.BoolValue(false)
+			}
+			data.NextHopsWithTrack = append(data.NextHopsWithTrack, item)
 			return true
 		})
 	}
@@ -268,7 +389,7 @@ func (data *StaticRouteData) fromBody(ctx context.Context, res gjson.Result) {
 				item.NextHop = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("metric"); cValue.Exists() {
-				item.Metric = types.Int64Value(cValue.Int())
+				item.Distance = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("global"); cValue.Exists() {
 				item.Global = types.BoolValue(true)
@@ -287,6 +408,34 @@ func (data *StaticRouteData) fromBody(ctx context.Context, res gjson.Result) {
 				item.Tag = types.Int64Value(cValue.Int())
 			}
 			data.NextHops = append(data.NextHops, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "fwd-list-with-track"); value.Exists() {
+		data.NextHopsWithTrack = make([]StaticRouteNextHopsWithTrack, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := StaticRouteNextHopsWithTrack{}
+			if cValue := v.Get("fwd"); cValue.Exists() {
+				item.NextHop = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("track-id-name.id"); cValue.Exists() {
+				item.TrackIdName = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("metric"); cValue.Exists() {
+				item.Distance = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("tag"); cValue.Exists() {
+				item.Tag = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("permanent"); cValue.Exists() {
+				item.Permanent = types.BoolValue(true)
+			} else {
+				item.Permanent = types.BoolValue(false)
+			}
+			data.NextHopsWithTrack = append(data.NextHopsWithTrack, item)
 			return true
 		})
 	}
@@ -316,7 +465,7 @@ func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute)
 				found = false
 			}
 			if found {
-				if !state.NextHops[i].Metric.IsNull() && data.NextHops[j].Metric.IsNull() {
+				if !state.NextHops[i].Distance.IsNull() && data.NextHops[j].Distance.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.NextHops[i].Global.IsNull() && data.NextHops[j].Global.IsNull() {
@@ -338,6 +487,46 @@ func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute)
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.NextHopsWithTrack {
+		stateKeyValues := [...]string{state.NextHopsWithTrack[i].NextHop.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.NextHopsWithTrack[i].NextHop.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.NextHopsWithTrack {
+			found = true
+			if state.NextHopsWithTrack[i].NextHop.ValueString() != data.NextHopsWithTrack[j].NextHop.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.NextHopsWithTrack[i].Name.IsNull() && data.NextHopsWithTrack[j].Name.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.NextHopsWithTrack[i].TrackIdName.IsNull() && data.NextHopsWithTrack[j].TrackIdName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/track-id-name/id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.NextHopsWithTrack[i].Distance.IsNull() && data.NextHopsWithTrack[j].Distance.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.NextHopsWithTrack[i].Tag.IsNull() && data.NextHopsWithTrack[j].Tag.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/tag", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.NextHopsWithTrack[i].Permanent.IsNull() && data.NextHopsWithTrack[j].Permanent.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/permanent", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	return deletedItems
 }
 
@@ -357,6 +546,13 @@ func (data *StaticRoute) getEmptyLeafsDelete(ctx context.Context) []string {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fwd-list=%v/permanent", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
+	for i := range data.NextHopsWithTrack {
+		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
+		if !data.NextHopsWithTrack[i].Permanent.IsNull() && !data.NextHopsWithTrack[i].Permanent.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fwd-list-with-track=%v/permanent", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
 	return emptyLeafsDelete
 }
 
@@ -370,6 +566,11 @@ func (data *StaticRoute) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/fwd-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.NextHopsWithTrack {
+		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fwd-list-with-track=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

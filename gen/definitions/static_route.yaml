@@ -18,6 +18,7 @@ attributes:
         example: 6.6.6.6
         id: true
       - yang_name: metric
+        tf_name: distance
         example: 10
       - yang_name: global
         example: false
@@ -27,3 +28,26 @@ attributes:
         example: true
       - yang_name: tag
         example: 100
+  - yang_name: fwd-list-with-track
+    tf_name: next_hops_with_track
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: fwd
+        tf_name: next_hop
+        example: 7.7.7.7
+        id: true
+      - yang_name: name
+        example: Route2
+      - yang_name: track-id-name/track-choice/id/id
+        xpath: track-id-name/id
+        tf_name: track_id_name
+        example: 12
+      - yang_name: metric
+        tf_name: distance
+        example: 11
+      - yang_name: tag
+        example: 200
+      - yang_name: permanent
+        example: true
+        exclude_test: true

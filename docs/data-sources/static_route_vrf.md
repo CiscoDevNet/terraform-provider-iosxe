@@ -41,6 +41,7 @@ Read-Only:
 
 - `mask` (String)
 - `next_hops` (Attributes List) (see [below for nested schema](#nestedatt--routes--next_hops))
+- `next_hops_with_track` (Attributes List) (see [below for nested schema](#nestedatt--routes--next_hops_with_track))
 - `prefix` (String)
 
 <a id="nestedatt--routes--next_hops"></a>
@@ -48,9 +49,22 @@ Read-Only:
 
 Read-Only:
 
+- `distance` (Number)
 - `global` (Boolean) Next hop address is global
-- `metric` (Number)
 - `name` (String) Specify name of the next hop
 - `next_hop` (String) Specify the next hop as an ip-address or interface name
 - `permanent` (Boolean) permanent route
 - `tag` (Number) Set tag for this route
+
+
+<a id="nestedatt--routes--next_hops_with_track"></a>
+### Nested Schema for `routes.next_hops_with_track`
+
+Read-Only:
+
+- `distance` (Number)
+- `name` (String) Specify name of the next hop
+- `next_hop` (String) Specify the next hop as an ip-address or interface name
+- `permanent` (Boolean) permanent route
+- `tag` (Number) Set tag for this route
+- `track_id_name` (Number) Track number

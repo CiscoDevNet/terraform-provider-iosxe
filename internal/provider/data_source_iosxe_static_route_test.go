@@ -33,7 +33,7 @@ import (
 func TestAccDataSourceIosxeStaticRoute(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route.test", "next_hops.0.next_hop", "6.6.6.6"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route.test", "next_hops.0.metric", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route.test", "next_hops.0.distance", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route.test", "next_hops.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route.test", "next_hops.0.name", "Route1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route.test", "next_hops.0.permanent", "true"))
@@ -63,7 +63,7 @@ func testAccDataSourceIosxeStaticRouteConfig() string {
 	config += `	mask = "255.255.255.255"` + "\n"
 	config += `	next_hops = [{` + "\n"
 	config += `		next_hop = "6.6.6.6"` + "\n"
-	config += `		metric = 10` + "\n"
+	config += `		distance = 10` + "\n"
 	config += `		global = false` + "\n"
 	config += `		name = "Route1"` + "\n"
 	config += `		permanent = true` + "\n"

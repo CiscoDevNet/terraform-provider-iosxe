@@ -19,7 +19,7 @@ resource "iosxe_static_route" "example" {
   next_hops = [
     {
       next_hop  = "6.6.6.6"
-      metric    = 10
+      distance  = 10
       global    = false
       name      = "Route1"
       permanent = true
@@ -41,6 +41,7 @@ resource "iosxe_static_route" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `next_hops` (Attributes List) (see [below for nested schema](#nestedatt--next_hops))
+- `next_hops_with_track` (Attributes List) (see [below for nested schema](#nestedatt--next_hops_with_track))
 
 ### Read-Only
 
@@ -55,12 +56,30 @@ Required:
 
 Optional:
 
+- `distance` (Number) - Range: `1`-`255`
 - `global` (Boolean) Next hop address is global
-- `metric` (Number) - Range: `1`-`255`
 - `name` (String) Specify name of the next hop
 - `permanent` (Boolean) permanent route
 - `tag` (Number) Set tag for this route
   - Range: `1`-`4294967295`
+
+
+<a id="nestedatt--next_hops_with_track"></a>
+### Nested Schema for `next_hops_with_track`
+
+Required:
+
+- `next_hop` (String) Specify the next hop as an ip-address or interface name
+
+Optional:
+
+- `distance` (Number) - Range: `1`-`255`
+- `name` (String) Specify name of the next hop
+- `permanent` (Boolean) permanent route
+- `tag` (Number) Set tag for this route
+  - Range: `1`-`4294967295`
+- `track_id_name` (Number) Track number
+  - Range: `1`-`1000`
 
 ## Import
 

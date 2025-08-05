@@ -35,7 +35,7 @@ func TestAccDataSourceIosxeStaticRouteVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.prefix", "6.6.6.6"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.mask", "255.255.255.255"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.next_hop", "7.7.7.7"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.metric", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.distance", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.name", "Route1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.permanent", "true"))
@@ -79,7 +79,7 @@ func testAccDataSourceIosxeStaticRouteVRFConfig() string {
 	config += `		mask = "255.255.255.255"` + "\n"
 	config += `		next_hops = [{` + "\n"
 	config += `			next_hop = "7.7.7.7"` + "\n"
-	config += `			metric = 10` + "\n"
+	config += `			distance = 10` + "\n"
 	config += `			global = false` + "\n"
 	config += `			name = "Route1"` + "\n"
 	config += `			permanent = true` + "\n"

@@ -84,7 +84,7 @@ func (d *StaticRouteDataSource) Schema(ctx context.Context, req datasource.Schem
 							MarkdownDescription: "Specify the next hop as an ip-address or interface name",
 							Computed:            true,
 						},
-						"metric": schema.Int64Attribute{
+						"distance": schema.Int64Attribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
@@ -102,6 +102,38 @@ func (d *StaticRouteDataSource) Schema(ctx context.Context, req datasource.Schem
 						},
 						"tag": schema.Int64Attribute{
 							MarkdownDescription: "Set tag for this route",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"next_hops_with_track": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"next_hop": schema.StringAttribute{
+							MarkdownDescription: "Specify the next hop as an ip-address or interface name",
+							Computed:            true,
+						},
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Specify name of the next hop",
+							Computed:            true,
+						},
+						"track_id_name": schema.Int64Attribute{
+							MarkdownDescription: "Track number",
+							Computed:            true,
+						},
+						"distance": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"tag": schema.Int64Attribute{
+							MarkdownDescription: "Set tag for this route",
+							Computed:            true,
+						},
+						"permanent": schema.BoolAttribute{
+							MarkdownDescription: "permanent route",
 							Computed:            true,
 						},
 					},

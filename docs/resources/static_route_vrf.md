@@ -22,7 +22,7 @@ resource "iosxe_static_route_vrf" "example" {
       next_hops = [
         {
           next_hop  = "7.7.7.7"
-          metric    = 10
+          distance  = 10
           global    = false
           name      = "Route1"
           permanent = true
@@ -61,6 +61,7 @@ Required:
 Optional:
 
 - `next_hops` (Attributes List) (see [below for nested schema](#nestedatt--routes--next_hops))
+- `next_hops_with_track` (Attributes List) (see [below for nested schema](#nestedatt--routes--next_hops_with_track))
 
 <a id="nestedatt--routes--next_hops"></a>
 ### Nested Schema for `routes.next_hops`
@@ -71,12 +72,30 @@ Required:
 
 Optional:
 
+- `distance` (Number) - Range: `1`-`255`
 - `global` (Boolean) Next hop address is global
-- `metric` (Number) - Range: `1`-`255`
 - `name` (String) Specify name of the next hop
 - `permanent` (Boolean) permanent route
 - `tag` (Number) Set tag for this route
   - Range: `1`-`4294967295`
+
+
+<a id="nestedatt--routes--next_hops_with_track"></a>
+### Nested Schema for `routes.next_hops_with_track`
+
+Required:
+
+- `next_hop` (String) Specify the next hop as an ip-address or interface name
+
+Optional:
+
+- `distance` (Number) - Range: `1`-`255`
+- `name` (String) Specify name of the next hop
+- `permanent` (Boolean) permanent route
+- `tag` (Number) Set tag for this route
+  - Range: `1`-`4294967295`
+- `track_id_name` (Number) Track number
+  - Range: `1`-`1000`
 
 ## Import
 

@@ -4,7 +4,7 @@ resource "iosxe_static_route" "example" {
   next_hops = [
     {
       next_hop  = "6.6.6.6"
-      metric    = 10
+      distance  = 10
       global    = false
       name      = "Route1"
       permanent = true
