@@ -11,4 +11,7 @@ resource "iosxe_clock" "example" {
   summer_time_recurring_end_month     = "Dec"
   summer_time_recurring_end_time      = "00:00"
   summer_time_recurring_offset        = 60
+  timezone                            = "CET"
+  timezone_offset_hours               = 1
+  timezone_offset_minutes             = 0
 }

@@ -222,6 +222,24 @@ func (r *ClockResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 					int64validator.Between(1, 1440),
 				},
 			},
+			"timezone": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Name of time zone").String,
+				Optional:            true,
+			},
+			"timezone_offset_hours": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(-23, 23).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(-23, 23),
+				},
+			},
+			"timezone_offset_minutes": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 59).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 59),
+				},
+			},
 		},
 	}
 }

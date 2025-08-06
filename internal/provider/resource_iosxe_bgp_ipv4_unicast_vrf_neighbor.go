@@ -226,7 +226,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").String,
 				Optional:            true,
 			},
-			"update_source_loopback": schema.StringAttribute{
+			"update_source_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
 				Optional:            true,
 			},

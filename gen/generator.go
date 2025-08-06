@@ -408,61 +408,97 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 	if leaf.Kind.String() == "Leaf" {
 		if leaf.ListAttr != nil {
 			if contains([]string{"string", "union", "leafref", "enumeration"}, leaf.Type.Kind.String()) {
-				attr.Type = "StringList"
+				if attr.Type == "" {
+					attr.Type = "StringList"
+				}
 			} else if contains([]string{"uint8", "uint16", "uint32", "uint64"}, leaf.Type.Kind.String()) {
-				attr.Type = "Int64List"
+				if attr.Type == "" {
+					attr.Type = "Int64List"
+				}
 			} else {
 				panic(fmt.Sprintf("Unknown leaf-list type, attribute: %s, type: %s", attr.YangName, leaf.Type.Kind.String()))
 			}
 			// TODO parse union type
 		} else if contains([]string{"string", "union", "leafref"}, leaf.Type.Kind.String()) {
-			attr.Type = "String"
+			if attr.Type == "" {
+				attr.Type = "String"
+			}
 			if leaf.Type.Length != nil {
-				attr.StringMinLength = int64(leaf.Type.Length[0].Min.Value)
+				if attr.StringMinLength == 0 {
+					attr.StringMinLength = int64(leaf.Type.Length[0].Min.Value)
+				}
 				max := leaf.Type.Length[0].Max.Value
 				// hack to not introduce unsigned types
 				if max > math.MaxInt64 {
 					max = math.MaxInt64
 				}
-				attr.StringMaxLength = int64(max)
+				if attr.StringMaxLength == 0 {
+					attr.StringMaxLength = int64(max)
+				}
 			}
 			if len(leaf.Type.Pattern) > 0 {
-				attr.StringPatterns = leaf.Type.Pattern
+				if len(attr.StringPatterns) == 0 {
+					attr.StringPatterns = leaf.Type.Pattern
+				}
 			}
 		} else if contains([]string{"uint8", "uint16", "uint32", "uint64", "int8", "int16", "int32", "int64"}, leaf.Type.Kind.String()) {
 			attr.Type = "Int64"
 			if leaf.Type.Range != nil {
-				attr.MinInt = int64(leaf.Type.Range[0].Min.Value)
+				if attr.MinInt == 0 {
+					attr.MinInt = int64(leaf.Type.Range[0].Min.Value)
+				}
 				max := leaf.Type.Range[0].Max.Value
 				// hack to not introduce unsigned types
 				if max > math.MaxInt64 {
 					max = math.MaxInt64
 				}
-				attr.MaxInt = int64(max)
+				if attr.MaxInt == 0 {
+					attr.MaxInt = int64(max)
+				}
 			}
 		} else if contains([]string{"decimal8", "decimal16", "decimal32", "decimal64"}, leaf.Type.Kind.String()) {
-			attr.Type = "Float64"
+			if attr.Type == "" {
+				attr.Type = "Float64"
+			}
 			if leaf.Type.Range != nil {
-				attr.MinFloat = float64(leaf.Type.Range[0].Min.Value)
-				attr.MaxFloat = float64(leaf.Type.Range[0].Max.Value)
+				if attr.MinFloat == 0 {
+					attr.MinFloat = float64(leaf.Type.Range[0].Min.Value)
+				}
+				if attr.MaxFloat == 0 {
+					attr.MaxFloat = float64(leaf.Type.Range[0].Max.Value)
+				}
 			}
 		} else if contains([]string{"boolean", "empty"}, leaf.Type.Kind.String()) {
 			if leaf.Type.Kind.String() == "boolean" {
-				attr.TypeYangBool = "boolean"
+				if attr.TypeYangBool == "" {
+					attr.TypeYangBool = "boolean"
+				}
 			} else if leaf.Type.Kind.String() == "empty" {
-				attr.TypeYangBool = "empty"
+				if attr.TypeYangBool == "" {
+					attr.TypeYangBool = "empty"
+				}
 			}
-			attr.Type = "Bool"
+			if attr.Type == "" {
+				attr.Type = "Bool"
+			}
 		} else if contains([]string{"enumeration"}, leaf.Type.Kind.String()) {
-			attr.Type = "String"
-			attr.EnumValues = leaf.Type.Enum.Names()
+			if attr.Type == "" {
+				attr.Type = "String"
+			}
+			if len(attr.EnumValues) == 0 {
+				attr.EnumValues = leaf.Type.Enum.Names()
+			}
 		} else {
 			panic(fmt.Sprintf("Unknown leaf type, attribute: %s, type: %s", attr.YangName, leaf.Type.Kind.String()))
 		}
 	}
 	if _, ok := leaf.Extra["presence"]; ok {
-		attr.TypeYangBool = "presence"
-		attr.Type = "Bool"
+		if attr.TypeYangBool == "" {
+			attr.TypeYangBool = "presence"
+		}
+		if attr.Type == "" {
+			attr.Type = "Bool"
+		}
 	}
 	if attr.XPath == "" {
 		attr.XPath = attr.YangName

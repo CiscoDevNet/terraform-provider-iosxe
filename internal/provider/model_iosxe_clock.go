@@ -61,6 +61,9 @@ type Clock struct {
 	SummerTimeRecurringEndMonth     types.String `tfsdk:"summer_time_recurring_end_month"`
 	SummerTimeRecurringEndTime      types.String `tfsdk:"summer_time_recurring_end_time"`
 	SummerTimeRecurringOffset       types.Int64  `tfsdk:"summer_time_recurring_offset"`
+	Timezone                        types.String `tfsdk:"timezone"`
+	TimezoneOffsetHours             types.Int64  `tfsdk:"timezone_offset_hours"`
+	TimezoneOffsetMinutes           types.Int64  `tfsdk:"timezone_offset_minutes"`
 }
 
 type ClockData struct {
@@ -88,6 +91,9 @@ type ClockData struct {
 	SummerTimeRecurringEndMonth     types.String `tfsdk:"summer_time_recurring_end_month"`
 	SummerTimeRecurringEndTime      types.String `tfsdk:"summer_time_recurring_end_time"`
 	SummerTimeRecurringOffset       types.Int64  `tfsdk:"summer_time_recurring_offset"`
+	Timezone                        types.String `tfsdk:"timezone"`
+	TimezoneOffsetHours             types.Int64  `tfsdk:"timezone_offset_hours"`
+	TimezoneOffsetMinutes           types.Int64  `tfsdk:"timezone_offset_minutes"`
 }
 
 // End of section. //template:end types
@@ -190,6 +196,15 @@ func (data Clock) toBody(ctx context.Context) string {
 	}
 	if !data.SummerTimeRecurringOffset.IsNull() && !data.SummerTimeRecurringOffset.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"summer-time.recurring-offset", strconv.FormatInt(data.SummerTimeRecurringOffset.ValueInt64(), 10))
+	}
+	if !data.Timezone.IsNull() && !data.Timezone.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timezone.zone", data.Timezone.ValueString())
+	}
+	if !data.TimezoneOffsetHours.IsNull() && !data.TimezoneOffsetHours.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timezone.hours", strconv.FormatInt(data.TimezoneOffsetHours.ValueInt64(), 10))
+	}
+	if !data.TimezoneOffsetMinutes.IsNull() && !data.TimezoneOffsetMinutes.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"timezone.minutes", strconv.FormatInt(data.TimezoneOffsetMinutes.ValueInt64(), 10))
 	}
 	return body
 }
@@ -325,6 +340,21 @@ func (data *Clock) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SummerTimeRecurringOffset = types.Int64Null()
 	}
+	if value := res.Get(prefix + "timezone.zone"); value.Exists() && !data.Timezone.IsNull() {
+		data.Timezone = types.StringValue(value.String())
+	} else {
+		data.Timezone = types.StringNull()
+	}
+	if value := res.Get(prefix + "timezone.hours"); value.Exists() && !data.TimezoneOffsetHours.IsNull() {
+		data.TimezoneOffsetHours = types.Int64Value(value.Int())
+	} else {
+		data.TimezoneOffsetHours = types.Int64Null()
+	}
+	if value := res.Get(prefix + "timezone.minutes"); value.Exists() && !data.TimezoneOffsetMinutes.IsNull() {
+		data.TimezoneOffsetMinutes = types.Int64Value(value.Int())
+	} else {
+		data.TimezoneOffsetMinutes = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -407,6 +437,15 @@ func (data *Clock) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "summer-time.recurring-offset"); value.Exists() {
 		data.SummerTimeRecurringOffset = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "timezone.zone"); value.Exists() {
+		data.Timezone = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "timezone.hours"); value.Exists() {
+		data.TimezoneOffsetHours = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "timezone.minutes"); value.Exists() {
+		data.TimezoneOffsetMinutes = types.Int64Value(value.Int())
 	}
 }
 
@@ -491,6 +530,15 @@ func (data *ClockData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "summer-time.recurring-offset"); value.Exists() {
 		data.SummerTimeRecurringOffset = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "timezone.zone"); value.Exists() {
+		data.Timezone = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "timezone.hours"); value.Exists() {
+		data.TimezoneOffsetHours = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "timezone.minutes"); value.Exists() {
+		data.TimezoneOffsetMinutes = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -564,6 +612,15 @@ func (data *Clock) getDeletedItems(ctx context.Context, state Clock) []string {
 	}
 	if !state.SummerTimeRecurringOffset.IsNull() && data.SummerTimeRecurringOffset.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/summer-time/recurring-offset", state.getPath()))
+	}
+	if !state.Timezone.IsNull() && data.Timezone.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timezone/zone", state.getPath()))
+	}
+	if !state.TimezoneOffsetHours.IsNull() && data.TimezoneOffsetHours.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timezone/hours", state.getPath()))
+	}
+	if !state.TimezoneOffsetMinutes.IsNull() && data.TimezoneOffsetMinutes.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timezone/minutes", state.getPath()))
 	}
 	return deletedItems
 }
@@ -657,6 +714,15 @@ func (data *Clock) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.SummerTimeRecurringOffset.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/summer-time/recurring-offset", data.getPath()))
+	}
+	if !data.Timezone.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timezone/zone", data.getPath()))
+	}
+	if !data.TimezoneOffsetHours.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timezone/hours", data.getPath()))
+	}
+	if !data.TimezoneOffsetMinutes.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timezone/minutes", data.getPath()))
 	}
 	return deletePaths
 }

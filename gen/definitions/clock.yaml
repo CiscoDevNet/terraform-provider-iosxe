@@ -98,3 +98,14 @@ attributes:
     xpath: summer-time/recurring-offset
     tf_name: summer_time_recurring_offset
     example: 60
+  - yang_name: timezone/zone
+    tf_name: timezone
+    example: CET
+  - yang_name: timezone/hours
+    tf_name: timezone_offset_hours
+    min_int: -23
+    example: 1
+  - yang_name: timezone/minutes
+    tf_name: timezone_offset_minutes
+    example: 0
+  

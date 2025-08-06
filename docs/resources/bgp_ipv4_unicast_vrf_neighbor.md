@@ -33,7 +33,7 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
   fall_over_bfd_check_control_plane_failure = true
   fall_over_bfd_strict_mode                 = true
   fall_over_maximum_metric_route_map        = "ROUTEMAP"
-  update_source_loopback                    = "100"
+  update_source_loopback                    = 100
   activate                                  = true
   send_community                            = "both"
   route_reflector_client                    = false
@@ -108,7 +108,7 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `timers_minimum_neighbor_hold` (Number) - Range: `0`-`65535`
 - `ttl_security_hops` (Number) IP hops
   - Range: `1`-`254`
-- `update_source_loopback` (String) Loopback interface
+- `update_source_loopback` (Number) Loopback interface
 - `version` (Number) Set the BGP version to match a neighbor
   - Range: `4`-`4`
 

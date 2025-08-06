@@ -10,6 +10,9 @@
 - Extend timeout to wait for device configuration database lock release, [link](https://github.com/CiscoDevNet/terraform-provider-iosxe/issues/201)
 - BREAKING CHANGE: Rename `set_isakmp_profile_ikev2_profile_ikev2_profile_case_ikev2_profile` to `set_ikev2_profile` of `iosxe_crypto_ipsec_profile` resource and data source
 - BREAKING CHANGE: Rename `set_isakmp_profile_ikev2_profile_isakmp_profile_case_isakmp_profile` to `set_isakmp_profile` of `iosxe_crypto_ipsec_profile` resource and data source
+- Add `timezone`, `timezone_offset_hours`, `timezone_offset_minutes` attributes to `iosxe_clock` resource and data source
+- Change `update_source_loopback` attribute of `iosxe_bgp_neighbor` resource and data source from `String` to `Number`
+- Change `update_source_loopback` attribute of `iosxe_bgp_ipv4_unicast_vrf_neighbor` resource and data source from `String` to `Number`
 
 ## 0.6.1
 

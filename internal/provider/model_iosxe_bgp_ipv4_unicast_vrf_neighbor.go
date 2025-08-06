@@ -69,7 +69,7 @@ type BGPIPv4UnicastVRFNeighbor struct {
 	LocalAsNoPrepend                    types.Bool                           `tfsdk:"local_as_no_prepend"`
 	LocalAsReplaceAs                    types.Bool                           `tfsdk:"local_as_replace_as"`
 	LocalAsDualAs                       types.Bool                           `tfsdk:"local_as_dual_as"`
-	UpdateSourceLoopback                types.String                         `tfsdk:"update_source_loopback"`
+	UpdateSourceLoopback                types.Int64                          `tfsdk:"update_source_loopback"`
 	Activate                            types.Bool                           `tfsdk:"activate"`
 	SendCommunity                       types.String                         `tfsdk:"send_community"`
 	RouteReflectorClient                types.Bool                           `tfsdk:"route_reflector_client"`
@@ -115,7 +115,7 @@ type BGPIPv4UnicastVRFNeighborData struct {
 	LocalAsNoPrepend                    types.Bool                           `tfsdk:"local_as_no_prepend"`
 	LocalAsReplaceAs                    types.Bool                           `tfsdk:"local_as_replace_as"`
 	LocalAsDualAs                       types.Bool                           `tfsdk:"local_as_dual_as"`
-	UpdateSourceLoopback                types.String                         `tfsdk:"update_source_loopback"`
+	UpdateSourceLoopback                types.Int64                          `tfsdk:"update_source_loopback"`
 	Activate                            types.Bool                           `tfsdk:"activate"`
 	SendCommunity                       types.String                         `tfsdk:"send_community"`
 	RouteReflectorClient                types.Bool                           `tfsdk:"route_reflector_client"`
@@ -262,7 +262,7 @@ func (data BGPIPv4UnicastVRFNeighbor) toBody(ctx context.Context) string {
 		}
 	}
 	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", data.UpdateSourceLoopback.ValueString())
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", strconv.FormatInt(data.UpdateSourceLoopback.ValueInt64(), 10))
 	}
 	if !data.Activate.IsNull() && !data.Activate.IsUnknown() {
 		if data.Activate.ValueBool() {
@@ -507,9 +507,9 @@ func (data *BGPIPv4UnicastVRFNeighbor) updateFromBody(ctx context.Context, res g
 		data.LocalAsDualAs = types.BoolNull()
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceLoopback.IsNull() {
-		data.UpdateSourceLoopback = types.StringValue(value.String())
+		data.UpdateSourceLoopback = types.Int64Value(value.Int())
 	} else {
-		data.UpdateSourceLoopback = types.StringNull()
+		data.UpdateSourceLoopback = types.Int64Null()
 	}
 	if value := res.Get(prefix + "activate"); !data.Activate.IsNull() {
 		if value.Exists() {
@@ -739,7 +739,7 @@ func (data *BGPIPv4UnicastVRFNeighbor) fromBody(ctx context.Context, res gjson.R
 		data.LocalAsDualAs = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.StringValue(value.String())
+		data.UpdateSourceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "activate"); value.Exists() {
 		data.Activate = types.BoolValue(true)
@@ -911,7 +911,7 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 		data.LocalAsDualAs = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.StringValue(value.String())
+		data.UpdateSourceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "activate"); value.Exists() {
 		data.Activate = types.BoolValue(true)
