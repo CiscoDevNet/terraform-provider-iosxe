@@ -44,6 +44,9 @@ func TestAccDataSourceIosxeClock(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_clock.test", "summer_time_recurring_end_month", "Dec"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_clock.test", "summer_time_recurring_end_time", "00:00"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_clock.test", "summer_time_recurring_offset", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_clock.test", "timezone", "CET"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_clock.test", "timezone_offset_hours", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_clock.test", "timezone_offset_minutes", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -78,6 +81,9 @@ func testAccDataSourceIosxeClockConfig() string {
 	config += `	summer_time_recurring_end_month = "Dec"` + "\n"
 	config += `	summer_time_recurring_end_time = "00:00"` + "\n"
 	config += `	summer_time_recurring_offset = 60` + "\n"
+	config += `	timezone = "CET"` + "\n"
+	config += `	timezone_offset_hours = 1` + "\n"
+	config += `	timezone_offset_minutes = 0` + "\n"
 	config += `}` + "\n"
 
 	config += `

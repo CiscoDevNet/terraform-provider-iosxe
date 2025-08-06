@@ -112,7 +112,7 @@ func testAccDataSourceIosxeBGPNeighborConfig() string {
 	config += `	timers_keepalive_interval = 655` + "\n"
 	config += `	timers_holdtime = 866` + "\n"
 	config += `	timers_minimum_neighbor_hold = 222` + "\n"
-	config += `	update_source_loopback = "100"` + "\n"
+	config += `	update_source_loopback = 100` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 

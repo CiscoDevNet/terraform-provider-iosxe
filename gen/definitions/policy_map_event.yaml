@@ -94,7 +94,6 @@ attributes:
           - yang_name: authentication-restart
             example: 2
           - yang_name: set-domain
-            enum_values: ["data", "voice", "switch"]
             example: "data"
           - yang_name: unauthorize
             example: true

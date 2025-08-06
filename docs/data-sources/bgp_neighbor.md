@@ -61,5 +61,5 @@ data "iosxe_bgp_neighbor" "example" {
 - `timers_keepalive_interval` (Number)
 - `timers_minimum_neighbor_hold` (Number)
 - `ttl_security_hops` (Number) IP hops
-- `update_source_loopback` (String) Loopback interface
+- `update_source_loopback` (Number) Loopback interface
 - `version` (Number) Set the BGP version to match a neighbor

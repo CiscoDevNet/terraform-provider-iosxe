@@ -26,6 +26,9 @@ resource "iosxe_clock" "example" {
   summer_time_recurring_end_month     = "Dec"
   summer_time_recurring_end_time      = "00:00"
   summer_time_recurring_offset        = 60
+  timezone                            = "CET"
+  timezone_offset_hours               = 1
+  timezone_offset_minutes             = 0
 }
 ```
 
@@ -59,6 +62,9 @@ resource "iosxe_clock" "example" {
 - `summer_time_recurring_start_week` (String)
 - `summer_time_recurring_start_weekday` (String) - Choices: `Fri`, `Mon`, `Sat`, `Sun`, `Thu`, `Tue`, `Wed`
 - `summer_time_zone` (String) Name of time zone in summer
+- `timezone` (String) Name of time zone
+- `timezone_offset_hours` (Number) - Range: `-23`-`23`
+- `timezone_offset_minutes` (Number) - Range: `0`-`59`
 
 ### Read-Only
 

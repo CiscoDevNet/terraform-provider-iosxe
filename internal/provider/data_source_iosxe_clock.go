@@ -155,6 +155,18 @@ func (d *ClockDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"timezone": schema.StringAttribute{
+				MarkdownDescription: "Name of time zone",
+				Computed:            true,
+			},
+			"timezone_offset_hours": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"timezone_offset_minutes": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

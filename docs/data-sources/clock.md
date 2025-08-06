@@ -49,3 +49,6 @@ data "iosxe_clock" "example" {
 - `summer_time_recurring_start_week` (String)
 - `summer_time_recurring_start_weekday` (String)
 - `summer_time_zone` (String) Name of time zone in summer
+- `timezone` (String) Name of time zone
+- `timezone_offset_hours` (Number)
+- `timezone_offset_minutes` (Number)

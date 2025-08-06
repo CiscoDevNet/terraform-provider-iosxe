@@ -68,7 +68,7 @@ type BGPNeighbor struct {
 	TimersHoldtime                      types.Int64  `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64  `tfsdk:"timers_minimum_neighbor_hold"`
 	TtlSecurityHops                     types.Int64  `tfsdk:"ttl_security_hops"`
-	UpdateSourceLoopback                types.String `tfsdk:"update_source_loopback"`
+	UpdateSourceLoopback                types.Int64  `tfsdk:"update_source_loopback"`
 	EbgpMultihop                        types.Bool   `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
 }
@@ -104,7 +104,7 @@ type BGPNeighborData struct {
 	TimersHoldtime                      types.Int64  `tfsdk:"timers_holdtime"`
 	TimersMinimumNeighborHold           types.Int64  `tfsdk:"timers_minimum_neighbor_hold"`
 	TtlSecurityHops                     types.Int64  `tfsdk:"ttl_security_hops"`
-	UpdateSourceLoopback                types.String `tfsdk:"update_source_loopback"`
+	UpdateSourceLoopback                types.Int64  `tfsdk:"update_source_loopback"`
 	EbgpMultihop                        types.Bool   `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
 }
@@ -244,7 +244,7 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ttl-security.hops", strconv.FormatInt(data.TtlSecurityHops.ValueInt64(), 10))
 	}
 	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", data.UpdateSourceLoopback.ValueString())
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", strconv.FormatInt(data.UpdateSourceLoopback.ValueInt64(), 10))
 	}
 	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.IsUnknown() {
 		if data.EbgpMultihop.ValueBool() {
@@ -450,9 +450,9 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.TtlSecurityHops = types.Int64Null()
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceLoopback.IsNull() {
-		data.UpdateSourceLoopback = types.StringValue(value.String())
+		data.UpdateSourceLoopback = types.Int64Value(value.Int())
 	} else {
-		data.UpdateSourceLoopback = types.StringNull()
+		data.UpdateSourceLoopback = types.Int64Null()
 	}
 	if value := res.Get(prefix + "ebgp-multihop"); !data.EbgpMultihop.IsNull() {
 		if value.Exists() {
@@ -582,7 +582,7 @@ func (data *BGPNeighbor) fromBody(ctx context.Context, res gjson.Result) {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.StringValue(value.String())
+		data.UpdateSourceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ebgp-multihop"); value.Exists() {
 		data.EbgpMultihop = types.BoolValue(true)
@@ -706,7 +706,7 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.StringValue(value.String())
+		data.UpdateSourceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ebgp-multihop"); value.Exists() {
 		data.EbgpMultihop = types.BoolValue(true)

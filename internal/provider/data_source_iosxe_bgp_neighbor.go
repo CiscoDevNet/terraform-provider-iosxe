@@ -179,7 +179,7 @@ func (d *BGPNeighborDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "IP hops",
 				Computed:            true,
 			},
-			"update_source_loopback": schema.StringAttribute{
+			"update_source_loopback": schema.Int64Attribute{
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},

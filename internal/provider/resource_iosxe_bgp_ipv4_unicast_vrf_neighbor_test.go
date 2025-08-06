@@ -187,7 +187,7 @@ func testAccIosxeBGPIPv4UnicastVRFNeighborConfig_all() string {
 	config += `	fall_over_bfd_check_control_plane_failure = true` + "\n"
 	config += `	fall_over_bfd_strict_mode = true` + "\n"
 	config += `	fall_over_maximum_metric_route_map = "ROUTEMAP"` + "\n"
-	config += `	update_source_loopback = "100"` + "\n"
+	config += `	update_source_loopback = 100` + "\n"
 	config += `	activate = true` + "\n"
 	config += `	send_community = "both"` + "\n"
 	config += `	route_reflector_client = false` + "\n"
