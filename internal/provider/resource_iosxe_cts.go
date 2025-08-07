@@ -23,9 +23,11 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -90,6 +92,206 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 64),
 				},
+			},
+			"sgt": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Local device security group").AddIntegerRangeDescription(2, 65519).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(2, 65519),
+				},
+			},
+			"sxp_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable CTS SXP support").String,
+				Optional:            true,
+			},
+			"sxp_default_password_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "6", "7").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("0", "6", "7"),
+				},
+			},
+			"sxp_default_password_secret": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 162),
+				},
+			},
+			"sxp_retry_period": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enter retry period value for sxp connection in seconds").AddIntegerRangeDescription(0, 64000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 64000),
+				},
+			},
+			"sxp_connection_peer_ipv4_no_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter SXP Peer IP address (IPv4)").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"source_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter SXP Source IP address (IPv4)").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"password": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Password type").AddStringEnumDescription("default", "key-chain", "none").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("default", "key-chain", "none"),
+							},
+						},
+						"connection_mode": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Mode of connection").AddStringEnumDescription("local", "peer").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("local", "peer"),
+							},
+						},
+						"option": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Role of a device speaker/listener/both").AddStringEnumDescription("both", "listener", "speaker").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("both", "listener", "speaker"),
+							},
+						},
+						"hold_time": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Minimum hold time period").AddIntegerRangeDescription(0, 65535).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 65535),
+							},
+						},
+						"max_time": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Maximum hold time period").AddIntegerRangeDescription(0, 65535).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 65535),
+							},
+						},
+					},
+				},
+			},
+			"sxp_connection_peer_ipv4_with_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter SXP Peer IP address (IPv4)").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VRF details").String,
+							Required:            true,
+						},
+						"source_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enter SXP Source IP address (IPv4)").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"password": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Password type").AddStringEnumDescription("default", "key-chain", "none").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("default", "key-chain", "none"),
+							},
+						},
+						"connection_mode": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Mode of connection").AddStringEnumDescription("local", "peer").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("local", "peer"),
+							},
+						},
+						"option": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Role of a device speaker/listener/both").AddStringEnumDescription("both", "listener", "speaker").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("both", "listener", "speaker"),
+							},
+						},
+						"hold_time": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Minimum hold time period").AddIntegerRangeDescription(0, 65535).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 65535),
+							},
+						},
+						"max_time": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Maximum hold time period").AddIntegerRangeDescription(0, 65535).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 65535),
+							},
+						},
+					},
+				},
+			},
+			"sxp_speaker_hold_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enter speaker hold-time value in seconds").AddIntegerRangeDescription(1, 65534).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65534),
+				},
+			},
+			"sxp_listener_hold_min_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enter minimum allowed Hold Time in seconds").AddIntegerRangeDescription(1, 65534).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65534),
+				},
+			},
+			"sxp_listener_hold_max_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enter maximum allowed Hold Time in seconds").AddIntegerRangeDescription(1, 65534).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65534),
+				},
+			},
+			"role_based_enforcement_logging_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure sgacl logging interval").AddIntegerRangeDescription(5, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(5, 86400),
+				},
+			},
+			"role_based_enforcement_vlan_list": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("VLANs on which Role-based ACLs are enforced").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vlans": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VLAN id").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"role_based_enforcement_vlan_lists": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("VLANs on which Role-based ACLs are enforced").String,
+				ElementType:         types.Int64Type,
+				Optional:            true,
+			},
+			"role_based_permissions_default_acl_name": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Role-based Access-list name").String,
+				ElementType:         types.StringType,
+				Optional:            true,
 			},
 		},
 	}
