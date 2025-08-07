@@ -180,6 +180,12 @@ func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Resu
 
 func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state CryptoIPSecProfile) []string {
 	deletedItems := make([]string, 0)
+	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/isakmp-profile", state.getPath()))
+	}
+	if !state.SetIkev2Profile.IsNull() && data.SetIkev2Profile.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/ikev2-profile", state.getPath()))
+	}
 	if !state.SetTransformSet.IsNull() {
 		if data.SetTransformSet.IsNull() {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/set/transform-set", state.getPath()))
@@ -201,12 +207,7 @@ func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state Crypt
 			}
 		}
 	}
-	if !state.SetIkev2Profile.IsNull() && data.SetIkev2Profile.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/ikev2-profile", state.getPath()))
-	}
-	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/set/isakmp-profile", state.getPath()))
-	}
+
 	return deletedItems
 }
 
@@ -216,6 +217,7 @@ func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state Crypt
 
 func (data *CryptoIPSecProfile) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -225,15 +227,16 @@ func (data *CryptoIPSecProfile) getEmptyLeafsDelete(ctx context.Context) []strin
 
 func (data *CryptoIPSecProfile) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.SetTransformSet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/transform-set", data.getPath()))
+	if !data.SetIsakmpProfile.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/isakmp-profile", data.getPath()))
 	}
 	if !data.SetIkev2Profile.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/ikev2-profile", data.getPath()))
 	}
-	if !data.SetIsakmpProfile.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/isakmp-profile", data.getPath()))
+	if !data.SetTransformSet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/set/transform-set", data.getPath()))
 	}
+
 	return deletePaths
 }
 

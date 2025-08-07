@@ -324,18 +324,6 @@ func (data *SpanningTreeData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTree) []string {
 	deletedItems := make([]string, 0)
-	if !state.Mode.IsNull() && data.Mode.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mode", state.getPath()))
-	}
-	if !state.LoopguardDefault.IsNull() && data.LoopguardDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", state.getPath()))
-	}
-	if !state.PortfastDefault.IsNull() && data.PortfastDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", state.getPath()))
-	}
-	if !state.PortfastBpduguardDefault.IsNull() && data.PortfastBpduguardDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", state.getPath()))
-	}
 	for i := range state.MstInstances {
 		stateKeyValues := [...]string{strconv.FormatInt(state.MstInstances[i].Id.ValueInt64(), 10)}
 
@@ -382,6 +370,19 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mst/configuration/instance=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.PortfastBpduguardDefault.IsNull() && data.PortfastBpduguardDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", state.getPath()))
+	}
+	if !state.PortfastDefault.IsNull() && data.PortfastDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", state.getPath()))
+	}
+	if !state.LoopguardDefault.IsNull() && data.LoopguardDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", state.getPath()))
+	}
+	if !state.Mode.IsNull() && data.Mode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mode", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -391,17 +392,18 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 
 func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.LoopguardDefault.IsNull() && !data.LoopguardDefault.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", data.getPath()))
-	}
-	if !data.PortfastDefault.IsNull() && !data.PortfastDefault.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", data.getPath()))
+
+	if !data.ExtendSystemId.IsNull() && !data.ExtendSystemId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:extend/system-id", data.getPath()))
 	}
 	if !data.PortfastBpduguardDefault.IsNull() && !data.PortfastBpduguardDefault.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", data.getPath()))
 	}
-	if !data.ExtendSystemId.IsNull() && !data.ExtendSystemId.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:extend/system-id", data.getPath()))
+	if !data.PortfastDefault.IsNull() && !data.PortfastDefault.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", data.getPath()))
+	}
+	if !data.LoopguardDefault.IsNull() && !data.LoopguardDefault.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -413,23 +415,24 @@ func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Mode.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mode", data.getPath()))
-	}
-	if !data.LoopguardDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", data.getPath()))
-	}
-	if !data.PortfastDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", data.getPath()))
-	}
-	if !data.PortfastBpduguardDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", data.getPath()))
-	}
 	for i := range data.MstInstances {
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mst/configuration/instance=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.PortfastBpduguardDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default", data.getPath()))
+	}
+	if !data.PortfastDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:portfast/default", data.getPath()))
+	}
+	if !data.LoopguardDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", data.getPath()))
+	}
+	if !data.Mode.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mode", data.getPath()))
+	}
+
 	return deletePaths
 }
 

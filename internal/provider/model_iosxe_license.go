@@ -232,24 +232,25 @@ func (data *LicenseData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *License) getDeletedItems(ctx context.Context, state License) []string {
 	deletedItems := make([]string, 0)
-	if !state.BootLevelNetworkAdvantage.IsNull() && data.BootLevelNetworkAdvantage.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/level/network-advantage", state.getPath()))
-	}
-	if !state.BootLevelNetworkAdvantageAddon.IsNull() && data.BootLevelNetworkAdvantageAddon.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/level/network-advantage/addon", state.getPath()))
-	}
-	if !state.BootLevelNetworkEssentials.IsNull() && data.BootLevelNetworkEssentials.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/level/network-essentials", state.getPath()))
-	}
-	if !state.BootLevelNetworkEssentialsAddon.IsNull() && data.BootLevelNetworkEssentialsAddon.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/level/network-essentials/addon", state.getPath()))
+	if !state.SmartUrlCslu.IsNull() && data.SmartUrlCslu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/smart/url/cslu", state.getPath()))
 	}
 	if !state.SmartTransportType.IsNull() && data.SmartTransportType.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/smart/transport-type", state.getPath()))
 	}
-	if !state.SmartUrlCslu.IsNull() && data.SmartUrlCslu.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/smart/url/cslu", state.getPath()))
+	if !state.BootLevelNetworkEssentialsAddon.IsNull() && data.BootLevelNetworkEssentialsAddon.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/level/network-essentials/addon", state.getPath()))
 	}
+	if !state.BootLevelNetworkEssentials.IsNull() && data.BootLevelNetworkEssentials.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/level/network-essentials", state.getPath()))
+	}
+	if !state.BootLevelNetworkAdvantageAddon.IsNull() && data.BootLevelNetworkAdvantageAddon.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/level/network-advantage/addon", state.getPath()))
+	}
+	if !state.BootLevelNetworkAdvantage.IsNull() && data.BootLevelNetworkAdvantage.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/level/network-advantage", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -259,12 +260,13 @@ func (data *License) getDeletedItems(ctx context.Context, state License) []strin
 
 func (data *License) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.BootLevelNetworkAdvantage.IsNull() && !data.BootLevelNetworkAdvantage.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/boot/level/network-advantage", data.getPath()))
-	}
 	if !data.BootLevelNetworkEssentials.IsNull() && !data.BootLevelNetworkEssentials.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/boot/level/network-essentials", data.getPath()))
 	}
+	if !data.BootLevelNetworkAdvantage.IsNull() && !data.BootLevelNetworkAdvantage.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/boot/level/network-advantage", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -274,24 +276,25 @@ func (data *License) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *License) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.BootLevelNetworkAdvantage.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/level/network-advantage", data.getPath()))
-	}
-	if !data.BootLevelNetworkAdvantageAddon.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/level/network-advantage/addon", data.getPath()))
-	}
-	if !data.BootLevelNetworkEssentials.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/level/network-essentials", data.getPath()))
-	}
-	if !data.BootLevelNetworkEssentialsAddon.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/level/network-essentials/addon", data.getPath()))
+	if !data.SmartUrlCslu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/smart/url/cslu", data.getPath()))
 	}
 	if !data.SmartTransportType.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/smart/transport-type", data.getPath()))
 	}
-	if !data.SmartUrlCslu.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/smart/url/cslu", data.getPath()))
+	if !data.BootLevelNetworkEssentialsAddon.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/level/network-essentials/addon", data.getPath()))
 	}
+	if !data.BootLevelNetworkEssentials.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/level/network-essentials", data.getPath()))
+	}
+	if !data.BootLevelNetworkAdvantageAddon.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/level/network-advantage/addon", data.getPath()))
+	}
+	if !data.BootLevelNetworkAdvantage.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/level/network-advantage", data.getPath()))
+	}
+
 	return deletePaths
 }
 

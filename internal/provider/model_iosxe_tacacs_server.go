@@ -181,18 +181,19 @@ func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServer) []string {
 	deletedItems := make([]string, 0)
-	if !state.AddressIpv4.IsNull() && data.AddressIpv4.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/ipv4", state.getPath()))
-	}
-	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/timeout", state.getPath()))
+	if !state.Key.IsNull() && data.Key.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/key", state.getPath()))
 	}
 	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/encryption", state.getPath()))
 	}
-	if !state.Key.IsNull() && data.Key.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/key", state.getPath()))
+	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timeout", state.getPath()))
 	}
+	if !state.AddressIpv4.IsNull() && data.AddressIpv4.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/ipv4", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -202,6 +203,7 @@ func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServe
 
 func (data *TACACSServer) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -211,18 +213,19 @@ func (data *TACACSServer) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *TACACSServer) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.AddressIpv4.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/ipv4", data.getPath()))
-	}
-	if !data.Timeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timeout", data.getPath()))
+	if !data.Key.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
 	}
 	if !data.Encryption.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/encryption", data.getPath()))
 	}
-	if !data.Key.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
+	if !data.Timeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timeout", data.getPath()))
 	}
+	if !data.AddressIpv4.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/ipv4", data.getPath()))
+	}
+
 	return deletePaths
 }
 

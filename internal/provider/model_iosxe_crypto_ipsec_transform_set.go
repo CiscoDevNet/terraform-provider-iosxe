@@ -184,15 +184,16 @@ func (data *CryptoIPSecTransformSetData) fromBody(ctx context.Context, res gjson
 
 func (data *CryptoIPSecTransformSet) getDeletedItems(ctx context.Context, state CryptoIPSecTransformSet) []string {
 	deletedItems := make([]string, 0)
-	if !state.Esp.IsNull() && data.Esp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/esp", state.getPath()))
+	if !state.ModeTunnel.IsNull() && data.ModeTunnel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mode/tunnel-choice", state.getPath()))
 	}
 	if !state.EspHmac.IsNull() && data.EspHmac.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/esp-hmac", state.getPath()))
 	}
-	if !state.ModeTunnel.IsNull() && data.ModeTunnel.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mode/tunnel-choice", state.getPath()))
+	if !state.Esp.IsNull() && data.Esp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/esp", state.getPath()))
 	}
+
 	return deletedItems
 }
 
@@ -205,6 +206,7 @@ func (data *CryptoIPSecTransformSet) getEmptyLeafsDelete(ctx context.Context) []
 	if !data.ModeTunnel.IsNull() && !data.ModeTunnel.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mode/tunnel-choice", data.getPath()))
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -214,15 +216,16 @@ func (data *CryptoIPSecTransformSet) getEmptyLeafsDelete(ctx context.Context) []
 
 func (data *CryptoIPSecTransformSet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Esp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/esp", data.getPath()))
+	if !data.ModeTunnel.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mode/tunnel-choice", data.getPath()))
 	}
 	if !data.EspHmac.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/esp-hmac", data.getPath()))
 	}
-	if !data.ModeTunnel.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mode/tunnel-choice", data.getPath()))
+	if !data.Esp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/esp", data.getPath()))
 	}
+
 	return deletePaths
 }
 

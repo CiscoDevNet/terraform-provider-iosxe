@@ -975,105 +975,106 @@ func (data *FlowRecordData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) []string {
 	deletedItems := make([]string, 0)
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.MatchIpv4SourceAddress.IsNull() && data.MatchIpv4SourceAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/source/address", state.getPath()))
-	}
-	if !state.MatchIpv4DestinationAddress.IsNull() && data.MatchIpv4DestinationAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/destination/address", state.getPath()))
-	}
-	if !state.MatchIpv4Protocol.IsNull() && data.MatchIpv4Protocol.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/protocol", state.getPath()))
-	}
-	if !state.MatchIpv4Tos.IsNull() && data.MatchIpv4Tos.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/tos", state.getPath()))
-	}
-	if !state.MatchIpv6SourceAddress.IsNull() && data.MatchIpv6SourceAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/source/address", state.getPath()))
-	}
-	if !state.MatchIpv6DestinationAddress.IsNull() && data.MatchIpv6DestinationAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/destination/address", state.getPath()))
-	}
-	if !state.MatchTransportSourcePort.IsNull() && data.MatchTransportSourcePort.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/transport/source-port", state.getPath()))
-	}
-	if !state.MatchTransportDestinationPort.IsNull() && data.MatchTransportDestinationPort.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/transport/destination-port", state.getPath()))
-	}
-	if !state.MatchInterfaceInput.IsNull() && data.MatchInterfaceInput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/interface/input", state.getPath()))
-	}
-	if !state.MatchFlowDirection.IsNull() && data.MatchFlowDirection.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/direction", state.getPath()))
-	}
-	if !state.MatchApplicationName.IsNull() && data.MatchApplicationName.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/application/name", state.getPath()))
-	}
-	if !state.MatchFlowObservationPoint.IsNull() && data.MatchFlowObservationPoint.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/observation/point", state.getPath()))
-	}
-	if !state.MatchIpv4Version.IsNull() && data.MatchIpv4Version.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/version", state.getPath()))
-	}
-	if !state.MatchIpv6Version.IsNull() && data.MatchIpv6Version.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/version", state.getPath()))
-	}
-	if !state.MatchIpv6Protocol.IsNull() && data.MatchIpv6Protocol.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/protocol", state.getPath()))
-	}
-	if !state.MatchConnectionClientIpv4Address.IsNull() && data.MatchConnectionClientIpv4Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/client/ipv4/address", state.getPath()))
-	}
-	if !state.MatchConnectionServerIpv4Address.IsNull() && data.MatchConnectionServerIpv4Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/ipv4/address", state.getPath()))
-	}
-	if !state.MatchConnectionClientIpv6Address.IsNull() && data.MatchConnectionClientIpv6Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/client/ipv6/address", state.getPath()))
-	}
-	if !state.MatchConnectionServerIpv6Address.IsNull() && data.MatchConnectionServerIpv6Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/ipv6/address", state.getPath()))
-	}
-	if !state.MatchConnectionServerTransportPort.IsNull() && data.MatchConnectionServerTransportPort.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/transport/port", state.getPath()))
-	}
-	if !state.CollectInterfaceOutput.IsNull() && data.CollectInterfaceOutput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/interface/output", state.getPath()))
-	}
-	if !state.CollectCounterBytesLong.IsNull() && data.CollectCounterBytesLong.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/counter/bytes", state.getPath()))
-	}
-	if !state.CollectCounterPacketsLong.IsNull() && data.CollectCounterPacketsLong.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/counter/packets", state.getPath()))
-	}
-	if !state.CollectTransportTcpFlags.IsNull() && data.CollectTransportTcpFlags.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/transport/tcp/flags", state.getPath()))
-	}
-	if !state.CollectTimestampAbsoluteFirst.IsNull() && data.CollectTimestampAbsoluteFirst.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/timestamp/absolute/first", state.getPath()))
-	}
-	if !state.CollectTimestampAbsoluteLast.IsNull() && data.CollectTimestampAbsoluteLast.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/timestamp/absolute/last", state.getPath()))
-	}
-	if !state.CollectConnectionInitiator.IsNull() && data.CollectConnectionInitiator.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/initiator", state.getPath()))
-	}
-	if !state.CollectConnectionNewConnections.IsNull() && data.CollectConnectionNewConnections.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/new-connections", state.getPath()))
-	}
-	if !state.CollectConnectionServerCounterBytesNetworkLong.IsNull() && data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", state.getPath()))
-	}
-	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", state.getPath()))
+	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/flow/direction", state.getPath()))
 	}
 	if !state.CollectDatalinkMacSourceAddressInput.IsNull() && data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", state.getPath()))
 	}
-	if !state.CollectFlowDirection.IsNull() && data.CollectFlowDirection.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/flow/direction", state.getPath()))
+	if !state.CollectConnectionServerCounterPacketsLong.IsNull() && data.CollectConnectionServerCounterPacketsLong.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", state.getPath()))
 	}
+	if !state.CollectConnectionServerCounterBytesNetworkLong.IsNull() && data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", state.getPath()))
+	}
+	if !state.CollectConnectionNewConnections.IsNull() && data.CollectConnectionNewConnections.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/new-connections", state.getPath()))
+	}
+	if !state.CollectConnectionInitiator.IsNull() && data.CollectConnectionInitiator.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/connection/initiator", state.getPath()))
+	}
+	if !state.CollectTimestampAbsoluteLast.IsNull() && data.CollectTimestampAbsoluteLast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/timestamp/absolute/last", state.getPath()))
+	}
+	if !state.CollectTimestampAbsoluteFirst.IsNull() && data.CollectTimestampAbsoluteFirst.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/timestamp/absolute/first", state.getPath()))
+	}
+	if !state.CollectTransportTcpFlags.IsNull() && data.CollectTransportTcpFlags.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/transport/tcp/flags", state.getPath()))
+	}
+	if !state.CollectCounterPacketsLong.IsNull() && data.CollectCounterPacketsLong.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/counter/packets", state.getPath()))
+	}
+	if !state.CollectCounterBytesLong.IsNull() && data.CollectCounterBytesLong.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/counter/bytes", state.getPath()))
+	}
+	if !state.CollectInterfaceOutput.IsNull() && data.CollectInterfaceOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/collect/interface/output", state.getPath()))
+	}
+	if !state.MatchConnectionServerTransportPort.IsNull() && data.MatchConnectionServerTransportPort.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/transport/port", state.getPath()))
+	}
+	if !state.MatchConnectionServerIpv6Address.IsNull() && data.MatchConnectionServerIpv6Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/ipv6/address", state.getPath()))
+	}
+	if !state.MatchConnectionClientIpv6Address.IsNull() && data.MatchConnectionClientIpv6Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/client/ipv6/address", state.getPath()))
+	}
+	if !state.MatchConnectionServerIpv4Address.IsNull() && data.MatchConnectionServerIpv4Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/server/ipv4/address", state.getPath()))
+	}
+	if !state.MatchConnectionClientIpv4Address.IsNull() && data.MatchConnectionClientIpv4Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/connection/client/ipv4/address", state.getPath()))
+	}
+	if !state.MatchIpv6Protocol.IsNull() && data.MatchIpv6Protocol.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/protocol", state.getPath()))
+	}
+	if !state.MatchIpv6Version.IsNull() && data.MatchIpv6Version.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/version", state.getPath()))
+	}
+	if !state.MatchIpv4Version.IsNull() && data.MatchIpv4Version.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/version", state.getPath()))
+	}
+	if !state.MatchFlowObservationPoint.IsNull() && data.MatchFlowObservationPoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/observation/point", state.getPath()))
+	}
+	if !state.MatchApplicationName.IsNull() && data.MatchApplicationName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/application/name", state.getPath()))
+	}
+	if !state.MatchFlowDirection.IsNull() && data.MatchFlowDirection.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/flow/direction", state.getPath()))
+	}
+	if !state.MatchInterfaceInput.IsNull() && data.MatchInterfaceInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/interface/input", state.getPath()))
+	}
+	if !state.MatchTransportDestinationPort.IsNull() && data.MatchTransportDestinationPort.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/transport/destination-port", state.getPath()))
+	}
+	if !state.MatchTransportSourcePort.IsNull() && data.MatchTransportSourcePort.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/transport/source-port", state.getPath()))
+	}
+	if !state.MatchIpv6DestinationAddress.IsNull() && data.MatchIpv6DestinationAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/destination/address", state.getPath()))
+	}
+	if !state.MatchIpv6SourceAddress.IsNull() && data.MatchIpv6SourceAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/source/address", state.getPath()))
+	}
+	if !state.MatchIpv4Tos.IsNull() && data.MatchIpv4Tos.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/tos", state.getPath()))
+	}
+	if !state.MatchIpv4Protocol.IsNull() && data.MatchIpv4Protocol.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/protocol", state.getPath()))
+	}
+	if !state.MatchIpv4DestinationAddress.IsNull() && data.MatchIpv4DestinationAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/destination/address", state.getPath()))
+	}
+	if !state.MatchIpv4SourceAddress.IsNull() && data.MatchIpv4SourceAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv4/source/address", state.getPath()))
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -1083,102 +1084,103 @@ func (data *FlowRecord) getDeletedItems(ctx context.Context, state FlowRecord) [
 
 func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.MatchIpv4SourceAddress.IsNull() && !data.MatchIpv4SourceAddress.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/source/address", data.getPath()))
-	}
-	if !data.MatchIpv4DestinationAddress.IsNull() && !data.MatchIpv4DestinationAddress.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/destination/address", data.getPath()))
-	}
-	if !data.MatchIpv4Protocol.IsNull() && !data.MatchIpv4Protocol.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/protocol", data.getPath()))
-	}
-	if !data.MatchIpv4Tos.IsNull() && !data.MatchIpv4Tos.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/tos", data.getPath()))
-	}
-	if !data.MatchIpv6SourceAddress.IsNull() && !data.MatchIpv6SourceAddress.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/source/address", data.getPath()))
-	}
-	if !data.MatchIpv6DestinationAddress.IsNull() && !data.MatchIpv6DestinationAddress.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/destination/address", data.getPath()))
-	}
-	if !data.MatchTransportSourcePort.IsNull() && !data.MatchTransportSourcePort.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/transport/source-port", data.getPath()))
-	}
-	if !data.MatchTransportDestinationPort.IsNull() && !data.MatchTransportDestinationPort.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/transport/destination-port", data.getPath()))
-	}
-	if !data.MatchInterfaceInput.IsNull() && !data.MatchInterfaceInput.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/interface/input", data.getPath()))
-	}
-	if !data.MatchFlowDirection.IsNull() && !data.MatchFlowDirection.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/direction", data.getPath()))
-	}
-	if !data.MatchApplicationName.IsNull() && !data.MatchApplicationName.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/application/name", data.getPath()))
-	}
-	if !data.MatchFlowObservationPoint.IsNull() && !data.MatchFlowObservationPoint.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/observation/point", data.getPath()))
-	}
-	if !data.MatchIpv4Version.IsNull() && !data.MatchIpv4Version.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/version", data.getPath()))
-	}
-	if !data.MatchIpv6Version.IsNull() && !data.MatchIpv6Version.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/version", data.getPath()))
-	}
-	if !data.MatchIpv6Protocol.IsNull() && !data.MatchIpv6Protocol.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/protocol", data.getPath()))
-	}
-	if !data.MatchConnectionClientIpv4Address.IsNull() && !data.MatchConnectionClientIpv4Address.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/client/ipv4/address", data.getPath()))
-	}
-	if !data.MatchConnectionServerIpv4Address.IsNull() && !data.MatchConnectionServerIpv4Address.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/ipv4/address", data.getPath()))
-	}
-	if !data.MatchConnectionClientIpv6Address.IsNull() && !data.MatchConnectionClientIpv6Address.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/client/ipv6/address", data.getPath()))
-	}
-	if !data.MatchConnectionServerIpv6Address.IsNull() && !data.MatchConnectionServerIpv6Address.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/ipv6/address", data.getPath()))
-	}
-	if !data.MatchConnectionServerTransportPort.IsNull() && !data.MatchConnectionServerTransportPort.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/transport/port", data.getPath()))
-	}
-	if !data.CollectInterfaceOutput.IsNull() && !data.CollectInterfaceOutput.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
-	}
-	if !data.CollectCounterBytesLong.IsNull() && !data.CollectCounterBytesLong.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/counter/bytes/long", data.getPath()))
-	}
-	if !data.CollectCounterPacketsLong.IsNull() && !data.CollectCounterPacketsLong.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/counter/packets/long", data.getPath()))
-	}
-	if !data.CollectTransportTcpFlags.IsNull() && !data.CollectTransportTcpFlags.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/transport/tcp/flags", data.getPath()))
-	}
-	if !data.CollectTimestampAbsoluteFirst.IsNull() && !data.CollectTimestampAbsoluteFirst.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/timestamp/absolute/first", data.getPath()))
-	}
-	if !data.CollectTimestampAbsoluteLast.IsNull() && !data.CollectTimestampAbsoluteLast.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/timestamp/absolute/last", data.getPath()))
-	}
-	if !data.CollectConnectionInitiator.IsNull() && !data.CollectConnectionInitiator.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/initiator", data.getPath()))
-	}
-	if !data.CollectConnectionNewConnections.IsNull() && !data.CollectConnectionNewConnections.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/new-connections", data.getPath()))
-	}
-	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() && !data.CollectConnectionServerCounterBytesNetworkLong.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", data.getPath()))
-	}
-	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
+	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() && !data.CollectDatalinkMacSourceAddressInput.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
 	}
-	if !data.CollectFlowDirection.IsNull() && !data.CollectFlowDirection.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
+	if !data.CollectConnectionServerCounterPacketsLong.IsNull() && !data.CollectConnectionServerCounterPacketsLong.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
 	}
+	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() && !data.CollectConnectionServerCounterBytesNetworkLong.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", data.getPath()))
+	}
+	if !data.CollectConnectionNewConnections.IsNull() && !data.CollectConnectionNewConnections.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/new-connections", data.getPath()))
+	}
+	if !data.CollectConnectionInitiator.IsNull() && !data.CollectConnectionInitiator.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/connection/initiator", data.getPath()))
+	}
+	if !data.CollectTimestampAbsoluteLast.IsNull() && !data.CollectTimestampAbsoluteLast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/timestamp/absolute/last", data.getPath()))
+	}
+	if !data.CollectTimestampAbsoluteFirst.IsNull() && !data.CollectTimestampAbsoluteFirst.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/timestamp/absolute/first", data.getPath()))
+	}
+	if !data.CollectTransportTcpFlags.IsNull() && !data.CollectTransportTcpFlags.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/transport/tcp/flags", data.getPath()))
+	}
+	if !data.CollectCounterPacketsLong.IsNull() && !data.CollectCounterPacketsLong.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/counter/packets/long", data.getPath()))
+	}
+	if !data.CollectCounterBytesLong.IsNull() && !data.CollectCounterBytesLong.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/counter/bytes/long", data.getPath()))
+	}
+	if !data.CollectInterfaceOutput.IsNull() && !data.CollectInterfaceOutput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
+	}
+	if !data.MatchConnectionServerTransportPort.IsNull() && !data.MatchConnectionServerTransportPort.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/transport/port", data.getPath()))
+	}
+	if !data.MatchConnectionServerIpv6Address.IsNull() && !data.MatchConnectionServerIpv6Address.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/ipv6/address", data.getPath()))
+	}
+	if !data.MatchConnectionClientIpv6Address.IsNull() && !data.MatchConnectionClientIpv6Address.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/client/ipv6/address", data.getPath()))
+	}
+	if !data.MatchConnectionServerIpv4Address.IsNull() && !data.MatchConnectionServerIpv4Address.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/server/ipv4/address", data.getPath()))
+	}
+	if !data.MatchConnectionClientIpv4Address.IsNull() && !data.MatchConnectionClientIpv4Address.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/connection/client/ipv4/address", data.getPath()))
+	}
+	if !data.MatchIpv6Protocol.IsNull() && !data.MatchIpv6Protocol.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/protocol", data.getPath()))
+	}
+	if !data.MatchIpv6Version.IsNull() && !data.MatchIpv6Version.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/version", data.getPath()))
+	}
+	if !data.MatchIpv4Version.IsNull() && !data.MatchIpv4Version.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/version", data.getPath()))
+	}
+	if !data.MatchFlowObservationPoint.IsNull() && !data.MatchFlowObservationPoint.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/observation/point", data.getPath()))
+	}
+	if !data.MatchApplicationName.IsNull() && !data.MatchApplicationName.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/application/name", data.getPath()))
+	}
+	if !data.MatchFlowDirection.IsNull() && !data.MatchFlowDirection.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/flow/direction", data.getPath()))
+	}
+	if !data.MatchInterfaceInput.IsNull() && !data.MatchInterfaceInput.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/interface/input", data.getPath()))
+	}
+	if !data.MatchTransportDestinationPort.IsNull() && !data.MatchTransportDestinationPort.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/transport/destination-port", data.getPath()))
+	}
+	if !data.MatchTransportSourcePort.IsNull() && !data.MatchTransportSourcePort.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/transport/source-port", data.getPath()))
+	}
+	if !data.MatchIpv6DestinationAddress.IsNull() && !data.MatchIpv6DestinationAddress.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/destination/address", data.getPath()))
+	}
+	if !data.MatchIpv6SourceAddress.IsNull() && !data.MatchIpv6SourceAddress.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv6/source/address", data.getPath()))
+	}
+	if !data.MatchIpv4Tos.IsNull() && !data.MatchIpv4Tos.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/tos", data.getPath()))
+	}
+	if !data.MatchIpv4Protocol.IsNull() && !data.MatchIpv4Protocol.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/protocol", data.getPath()))
+	}
+	if !data.MatchIpv4DestinationAddress.IsNull() && !data.MatchIpv4DestinationAddress.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/destination/address", data.getPath()))
+	}
+	if !data.MatchIpv4SourceAddress.IsNull() && !data.MatchIpv4SourceAddress.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/ipv4/source/address", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -1188,105 +1190,106 @@ func (data *FlowRecord) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *FlowRecord) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	if !data.MatchIpv4SourceAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/source/address", data.getPath()))
-	}
-	if !data.MatchIpv4DestinationAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/destination/address", data.getPath()))
-	}
-	if !data.MatchIpv4Protocol.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/protocol", data.getPath()))
-	}
-	if !data.MatchIpv4Tos.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/tos", data.getPath()))
-	}
-	if !data.MatchIpv6SourceAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/source/address", data.getPath()))
-	}
-	if !data.MatchIpv6DestinationAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/destination/address", data.getPath()))
-	}
-	if !data.MatchTransportSourcePort.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/transport/source-port", data.getPath()))
-	}
-	if !data.MatchTransportDestinationPort.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/transport/destination-port", data.getPath()))
-	}
-	if !data.MatchInterfaceInput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/interface/input", data.getPath()))
-	}
-	if !data.MatchFlowDirection.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/direction", data.getPath()))
-	}
-	if !data.MatchApplicationName.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/application/name", data.getPath()))
-	}
-	if !data.MatchFlowObservationPoint.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/observation/point", data.getPath()))
-	}
-	if !data.MatchIpv4Version.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/version", data.getPath()))
-	}
-	if !data.MatchIpv6Version.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/version", data.getPath()))
-	}
-	if !data.MatchIpv6Protocol.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/protocol", data.getPath()))
-	}
-	if !data.MatchConnectionClientIpv4Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/client/ipv4/address", data.getPath()))
-	}
-	if !data.MatchConnectionServerIpv4Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/ipv4/address", data.getPath()))
-	}
-	if !data.MatchConnectionClientIpv6Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/client/ipv6/address", data.getPath()))
-	}
-	if !data.MatchConnectionServerIpv6Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/ipv6/address", data.getPath()))
-	}
-	if !data.MatchConnectionServerTransportPort.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/transport/port", data.getPath()))
-	}
-	if !data.CollectInterfaceOutput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
-	}
-	if !data.CollectCounterBytesLong.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/counter/bytes", data.getPath()))
-	}
-	if !data.CollectCounterPacketsLong.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/counter/packets", data.getPath()))
-	}
-	if !data.CollectTransportTcpFlags.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/transport/tcp/flags", data.getPath()))
-	}
-	if !data.CollectTimestampAbsoluteFirst.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/timestamp/absolute/first", data.getPath()))
-	}
-	if !data.CollectTimestampAbsoluteLast.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/timestamp/absolute/last", data.getPath()))
-	}
-	if !data.CollectConnectionInitiator.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/initiator", data.getPath()))
-	}
-	if !data.CollectConnectionNewConnections.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/new-connections", data.getPath()))
-	}
-	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", data.getPath()))
-	}
-	if !data.CollectConnectionServerCounterPacketsLong.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
+	if !data.CollectFlowDirection.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
 	}
 	if !data.CollectDatalinkMacSourceAddressInput.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/datalink/mac/source/address/input", data.getPath()))
 	}
-	if !data.CollectFlowDirection.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/flow/direction", data.getPath()))
+	if !data.CollectConnectionServerCounterPacketsLong.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/packets/long", data.getPath()))
 	}
+	if !data.CollectConnectionServerCounterBytesNetworkLong.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/server/counter/bytes/network/long", data.getPath()))
+	}
+	if !data.CollectConnectionNewConnections.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/new-connections", data.getPath()))
+	}
+	if !data.CollectConnectionInitiator.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/connection/initiator", data.getPath()))
+	}
+	if !data.CollectTimestampAbsoluteLast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/timestamp/absolute/last", data.getPath()))
+	}
+	if !data.CollectTimestampAbsoluteFirst.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/timestamp/absolute/first", data.getPath()))
+	}
+	if !data.CollectTransportTcpFlags.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/transport/tcp/flags", data.getPath()))
+	}
+	if !data.CollectCounterPacketsLong.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/counter/packets", data.getPath()))
+	}
+	if !data.CollectCounterBytesLong.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/counter/bytes", data.getPath()))
+	}
+	if !data.CollectInterfaceOutput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/collect/interface/output", data.getPath()))
+	}
+	if !data.MatchConnectionServerTransportPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/transport/port", data.getPath()))
+	}
+	if !data.MatchConnectionServerIpv6Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/ipv6/address", data.getPath()))
+	}
+	if !data.MatchConnectionClientIpv6Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/client/ipv6/address", data.getPath()))
+	}
+	if !data.MatchConnectionServerIpv4Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/server/ipv4/address", data.getPath()))
+	}
+	if !data.MatchConnectionClientIpv4Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/connection/client/ipv4/address", data.getPath()))
+	}
+	if !data.MatchIpv6Protocol.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/protocol", data.getPath()))
+	}
+	if !data.MatchIpv6Version.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/version", data.getPath()))
+	}
+	if !data.MatchIpv4Version.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/version", data.getPath()))
+	}
+	if !data.MatchFlowObservationPoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/observation/point", data.getPath()))
+	}
+	if !data.MatchApplicationName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/application/name", data.getPath()))
+	}
+	if !data.MatchFlowDirection.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/flow/direction", data.getPath()))
+	}
+	if !data.MatchInterfaceInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/interface/input", data.getPath()))
+	}
+	if !data.MatchTransportDestinationPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/transport/destination-port", data.getPath()))
+	}
+	if !data.MatchTransportSourcePort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/transport/source-port", data.getPath()))
+	}
+	if !data.MatchIpv6DestinationAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/destination/address", data.getPath()))
+	}
+	if !data.MatchIpv6SourceAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/source/address", data.getPath()))
+	}
+	if !data.MatchIpv4Tos.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/tos", data.getPath()))
+	}
+	if !data.MatchIpv4Protocol.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/protocol", data.getPath()))
+	}
+	if !data.MatchIpv4DestinationAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/destination/address", data.getPath()))
+	}
+	if !data.MatchIpv4SourceAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv4/source/address", data.getPath()))
+	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+
 	return deletePaths
 }
 

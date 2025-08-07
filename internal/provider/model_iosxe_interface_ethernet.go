@@ -3050,116 +3050,11 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
 	deletedItems := make([]string, 0)
-	if !state.MediaType.IsNull() && data.MediaType.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/media-type", state.getPath()))
-	}
-	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu", state.getPath()))
-	}
-	if !state.Bandwidth.IsNull() && data.Bandwidth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bandwidth/kilobits", state.getPath()))
-	}
-	if !state.Switchport.IsNull() && data.Switchport.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport-conf/switchport", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
-	}
-	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/proxy-arp", state.getPath()))
-	}
-	if !state.IpRedirects.IsNull() && data.IpRedirects.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/redirects", state.getPath()))
-	}
-	if !state.IpUnreachables.IsNull() && data.IpUnreachables.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-icmp:unreachables", state.getPath()))
-	}
-	if !state.VrfForwarding.IsNull() && data.VrfForwarding.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf/forwarding", state.getPath()))
-	}
-	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
-	}
-	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
-	}
-	if !state.Unnumbered.IsNull() && data.Unnumbered.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/unnumbered", state.getPath()))
-	}
-	if !state.EncapsulationDot1qVlanId.IsNull() && data.EncapsulationDot1qVlanId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", state.getPath()))
-	}
-	if !state.ChannelGroupNumber.IsNull() && data.ChannelGroupNumber.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/number", state.getPath()))
-	}
-	if !state.ChannelGroupMode.IsNull() && data.ChannelGroupMode.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/mode", state.getPath()))
-	}
-	if !state.IpDhcpRelaySourceInterface.IsNull() && data.IpDhcpRelaySourceInterface.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", state.getPath()))
-	}
-	if !state.IpAccessGroupIn.IsNull() && data.IpAccessGroupIn.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl", state.getPath()))
-	}
-	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
-	}
-	if !state.IpAccessGroupOut.IsNull() && data.IpAccessGroupOut.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl", state.getPath()))
-	}
-	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl/out", state.getPath()))
-	}
-	if !state.SpanningTreeGuard.IsNull() && data.SpanningTreeGuard.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/guard", state.getPath()))
-	}
-	if !state.AutoQosClassify.IsNull() && data.AutoQosClassify.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", state.getPath()))
-	}
-	if !state.AutoQosClassifyPolice.IsNull() && data.AutoQosClassifyPolice.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify/police", state.getPath()))
-	}
-	if !state.AutoQosTrust.IsNull() && data.AutoQosTrust.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust", state.getPath()))
-	}
-	if !state.AutoQosTrustCos.IsNull() && data.AutoQosTrustCos.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/cos", state.getPath()))
-	}
-	if !state.AutoQosTrustDscp.IsNull() && data.AutoQosTrustDscp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/dscp", state.getPath()))
-	}
-	if !state.AutoQosVideoCts.IsNull() && data.AutoQosVideoCts.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/cts", state.getPath()))
-	}
-	if !state.AutoQosVideoIpCamera.IsNull() && data.AutoQosVideoIpCamera.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/ip-camera", state.getPath()))
-	}
-	if !state.AutoQosVideoMediaPlayer.IsNull() && data.AutoQosVideoMediaPlayer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", state.getPath()))
-	}
-	if !state.AutoQosVoip.IsNull() && data.AutoQosVoip.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", state.getPath()))
-	}
-	if !state.AutoQosVoipCiscoPhone.IsNull() && data.AutoQosVoipCiscoPhone.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", state.getPath()))
-	}
-	if !state.AutoQosVoipCiscoSoftphone.IsNull() && data.AutoQosVoipCiscoSoftphone.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone", state.getPath()))
-	}
-	if !state.AutoQosVoipTrust.IsNull() && data.AutoQosVoipTrust.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/trust", state.getPath()))
-	}
-	if !state.TrustDevice.IsNull() && data.TrustDevice.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/trust/device", state.getPath()))
-	}
-	for i := range state.HelperAddresses {
-		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
+	for i := range state.DeviceTrackingAttachedPolicies {
+		stateKeyValues := [...]string{state.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.HelperAddresses[i].Address.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.DeviceTrackingAttachedPolicies[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -3167,166 +3062,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 		}
 
 		found := false
-		for j := range data.HelperAddresses {
+		for j := range data.DeviceTrackingAttachedPolicies {
 			found = true
-			if state.HelperAddresses[i].Address.ValueString() != data.HelperAddresses[j].Address.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.HelperAddresses[i].Global.IsNull() && data.HelperAddresses[j].Global.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v/global", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.HelperAddresses[i].Vrf.IsNull() && data.HelperAddresses[j].Vrf.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v/vrf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.SourceTemplate {
-		stateKeyValues := [...]string{state.SourceTemplate[i].TemplateName.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.SourceTemplate[i].TemplateName.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.SourceTemplate {
-			found = true
-			if state.SourceTemplate[i].TemplateName.ValueString() != data.SourceTemplate[j].TemplateName.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.SourceTemplate[i].Merge.IsNull() && data.SourceTemplate[j].Merge.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/source/template/template-name=%v/merge", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/source/template/template-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", state.getPath()))
-	}
-	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", state.getPath()))
-	}
-	if !state.BfdLocalAddress.IsNull() && data.BfdLocalAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:local-address", state.getPath()))
-	}
-	if !state.BfdInterval.IsNull() && data.BfdInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", state.getPath()))
-	}
-	if !state.BfdIntervalMinRx.IsNull() && data.BfdIntervalMinRx.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", state.getPath()))
-	}
-	if !state.BfdIntervalMultiplier.IsNull() && data.BfdIntervalMultiplier.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", state.getPath()))
-	}
-	if !state.BfdEcho.IsNull() && data.BfdEcho.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", state.getPath()))
-	}
-	if !state.Ipv6Enable.IsNull() && data.Ipv6Enable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/enable", state.getPath()))
-	}
-	if !state.Ipv6Mtu.IsNull() && data.Ipv6Mtu.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/mtu", state.getPath()))
-	}
-	if !state.Ipv6NdRaSuppressAll.IsNull() && data.Ipv6NdRaSuppressAll.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", state.getPath()))
-	}
-	if !state.Ipv6AddressAutoconfigDefault.IsNull() && data.Ipv6AddressAutoconfigDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/autoconfig/default", state.getPath()))
-	}
-	if !state.Ipv6AddressDhcp.IsNull() && data.Ipv6AddressDhcp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/dhcp", state.getPath()))
-	}
-	for i := range state.Ipv6LinkLocalAddresses {
-		stateKeyValues := [...]string{state.Ipv6LinkLocalAddresses[i].Address.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv6LinkLocalAddresses[i].Address.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Ipv6LinkLocalAddresses {
-			found = true
-			if state.Ipv6LinkLocalAddresses[i].Address.ValueString() != data.Ipv6LinkLocalAddresses[j].Address.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Ipv6LinkLocalAddresses[i].LinkLocal.IsNull() && data.Ipv6LinkLocalAddresses[j].LinkLocal.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v/link-local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.Ipv6Addresses {
-		stateKeyValues := [...]string{state.Ipv6Addresses[i].Prefix.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv6Addresses[i].Prefix.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Ipv6Addresses {
-			found = true
-			if state.Ipv6Addresses[i].Prefix.ValueString() != data.Ipv6Addresses[j].Prefix.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Ipv6Addresses[i].Eui64.IsNull() && data.Ipv6Addresses[j].Eui64.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v/eui-64", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.Ipv6FlowMonitors {
-		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Direction.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Ipv6FlowMonitors {
-			found = true
-			if state.Ipv6FlowMonitors[i].Name.ValueString() != data.Ipv6FlowMonitors[j].Name.ValueString() {
-				found = false
-			}
-			if state.Ipv6FlowMonitors[i].Direction.ValueString() != data.Ipv6FlowMonitors[j].Direction.ValueString() {
+			if state.DeviceTrackingAttachedPolicies[i].Name.ValueString() != data.DeviceTrackingAttachedPolicies[j].Name.ValueString() {
 				found = false
 			}
 			if found {
@@ -3334,173 +3072,23 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-flow:flow/monitor-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking/attached-policies=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/arp/timeout", state.getPath()))
+	if !state.DeviceTracking.IsNull() && data.DeviceTracking.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", state.getPath()))
 	}
-	if !state.SpanningTreeLinkType.IsNull() && data.SpanningTreeLinkType.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", state.getPath()))
+	if !state.IpNbarProtocolDiscovery.IsNull() && data.IpNbarProtocolDiscovery.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", state.getPath()))
 	}
-	if !state.BpduguardEnable.IsNull() && data.BpduguardEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", state.getPath()))
+	if !state.LoggingEventLinkStatusEnable.IsNull() && data.LoggingEventLinkStatusEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/event/link-status-enable", state.getPath()))
 	}
-	if !state.BpduguardDisable.IsNull() && data.BpduguardDisable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", state.getPath()))
+	if !state.SnmpTrapLinkStatus.IsNull() && data.SnmpTrapLinkStatus.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:snmp/trap/link-status", state.getPath()))
 	}
-	if !state.SpanningTreePortfast.IsNull() && data.SpanningTreePortfast.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", state.getPath()))
-	}
-	if !state.SpanningTreePortfastDisable.IsNull() && data.SpanningTreePortfastDisable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", state.getPath()))
-	}
-	if !state.SpanningTreePortfastTrunk.IsNull() && data.SpanningTreePortfastTrunk.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", state.getPath()))
-	}
-	if !state.SpanningTreePortfastEdge.IsNull() && data.SpanningTreePortfastEdge.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", state.getPath()))
-	}
-	if !state.IpArpInspectionTrust.IsNull() && data.IpArpInspectionTrust.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/arp/inspection/trust", state.getPath()))
-	}
-	if !state.IpArpInspectionLimitRate.IsNull() && data.IpArpInspectionLimitRate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", state.getPath()))
-	}
-	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", state.getPath()))
-	}
-	if !state.Speed100.IsNull() && data.Speed100.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", state.getPath()))
-	}
-	if !state.Speed1000.IsNull() && data.Speed1000.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", state.getPath()))
-	}
-	if !state.Speed2500.IsNull() && data.Speed2500.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", state.getPath()))
-	}
-	if !state.Speed5000.IsNull() && data.Speed5000.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", state.getPath()))
-	}
-	if !state.Speed10000.IsNull() && data.Speed10000.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", state.getPath()))
-	}
-	if !state.Speed25000.IsNull() && data.Speed25000.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", state.getPath()))
-	}
-	if !state.Speed40000.IsNull() && data.Speed40000.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", state.getPath()))
-	}
-	if !state.Speed100000.IsNull() && data.Speed100000.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", state.getPath()))
-	}
-	if !state.NegotiationAuto.IsNull() && data.NegotiationAuto.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:negotiation/auto", state.getPath()))
-	}
-	if !state.SpeedNonegotiate.IsNull() && data.SpeedNonegotiate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/nonegotiate", state.getPath()))
-	}
-	if !state.AuthenticationHostMode.IsNull() && data.AuthenticationHostMode.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/host-mode", state.getPath()))
-	}
-	if !state.AuthenticationOrderDot1x.IsNull() && data.AuthenticationOrderDot1x.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config", state.getPath()))
-	}
-	if !state.AuthenticationOrderDot1xMab.IsNull() && data.AuthenticationOrderDot1xMab.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/mab", state.getPath()))
-	}
-	if !state.AuthenticationOrderDot1xWebauth.IsNull() && data.AuthenticationOrderDot1xWebauth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/webauth", state.getPath()))
-	}
-	if !state.AuthenticationOrderMab.IsNull() && data.AuthenticationOrderMab.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config", state.getPath()))
-	}
-	if !state.AuthenticationOrderMabDot1x.IsNull() && data.AuthenticationOrderMabDot1x.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/dot1x", state.getPath()))
-	}
-	if !state.AuthenticationOrderMabWebauth.IsNull() && data.AuthenticationOrderMabWebauth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/webauth", state.getPath()))
-	}
-	if !state.AuthenticationOrderWebauth.IsNull() && data.AuthenticationOrderWebauth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/webauth-config", state.getPath()))
-	}
-	if !state.AuthenticationPriorityDot1x.IsNull() && data.AuthenticationPriorityDot1x.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config", state.getPath()))
-	}
-	if !state.AuthenticationPriorityDot1xMab.IsNull() && data.AuthenticationPriorityDot1xMab.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/mab", state.getPath()))
-	}
-	if !state.AuthenticationPriorityDot1xWebauth.IsNull() && data.AuthenticationPriorityDot1xWebauth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/webauth", state.getPath()))
-	}
-	if !state.AuthenticationPriorityMab.IsNull() && data.AuthenticationPriorityMab.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config", state.getPath()))
-	}
-	if !state.AuthenticationPriorityMabDot1x.IsNull() && data.AuthenticationPriorityMabDot1x.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/dot1x", state.getPath()))
-	}
-	if !state.AuthenticationPriorityMabWebauth.IsNull() && data.AuthenticationPriorityMabWebauth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/webauth", state.getPath()))
-	}
-	if !state.AuthenticationPriorityWebauth.IsNull() && data.AuthenticationPriorityWebauth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/webauth-config", state.getPath()))
-	}
-	if !state.AuthenticationPortControl.IsNull() && data.AuthenticationPortControl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/port-control", state.getPath()))
-	}
-	if !state.AuthenticationPeriodic.IsNull() && data.AuthenticationPeriodic.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/periodic", state.getPath()))
-	}
-	if !state.AuthenticationTimerReauthenticate.IsNull() && data.AuthenticationTimerReauthenticate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/value-config", state.getPath()))
-	}
-	if !state.AuthenticationTimerReauthenticateServer.IsNull() && data.AuthenticationTimerReauthenticateServer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", state.getPath()))
-	}
-	if !state.Mab.IsNull() && data.Mab.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", state.getPath()))
-	}
-	if !state.MabEap.IsNull() && data.MabEap.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab/eap", state.getPath()))
-	}
-	if !state.Dot1xPae.IsNull() && data.Dot1xPae.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/pae", state.getPath()))
-	}
-	if !state.Dot1xTimeoutAuthPeriod.IsNull() && data.Dot1xTimeoutAuthPeriod.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/auth-period", state.getPath()))
-	}
-	if !state.Dot1xTimeoutHeldPeriod.IsNull() && data.Dot1xTimeoutHeldPeriod.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/held-period", state.getPath()))
-	}
-	if !state.Dot1xTimeoutQuietPeriod.IsNull() && data.Dot1xTimeoutQuietPeriod.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/quiet-period", state.getPath()))
-	}
-	if !state.Dot1xTimeoutRatelimitPeriod.IsNull() && data.Dot1xTimeoutRatelimitPeriod.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/ratelimit-period", state.getPath()))
-	}
-	if !state.Dot1xTimeoutServerTimeout.IsNull() && data.Dot1xTimeoutServerTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/server-timeout", state.getPath()))
-	}
-	if !state.Dot1xTimeoutStartPeriod.IsNull() && data.Dot1xTimeoutStartPeriod.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/start-period", state.getPath()))
-	}
-	if !state.Dot1xTimeoutSuppTimeout.IsNull() && data.Dot1xTimeoutSuppTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/supp-timeout", state.getPath()))
-	}
-	if !state.Dot1xTimeoutTxPeriod.IsNull() && data.Dot1xTimeoutTxPeriod.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/tx-period", state.getPath()))
-	}
-	if !state.Dot1xMaxReq.IsNull() && data.Dot1xMaxReq.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-req", state.getPath()))
-	}
-	if !state.Dot1xMaxReauthReq.IsNull() && data.Dot1xMaxReauthReq.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-reauth-req", state.getPath()))
-	}
-	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
-	}
-	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", state.getPath()))
+	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/load-interval", state.getPath()))
 	}
 	for i := range state.IpFlowMonitors {
 		stateKeyValues := [...]string{state.IpFlowMonitors[i].Name.ValueString(), state.IpFlowMonitors[i].Direction.ValueString()}
@@ -3533,26 +3121,179 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/load-interval", state.getPath()))
+	if !state.ServicePolicyOutput.IsNull() && data.ServicePolicyOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", state.getPath()))
 	}
-	if !state.SnmpTrapLinkStatus.IsNull() && data.SnmpTrapLinkStatus.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:snmp/trap/link-status", state.getPath()))
+	if !state.ServicePolicyInput.IsNull() && data.ServicePolicyInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
 	}
-	if !state.LoggingEventLinkStatusEnable.IsNull() && data.LoggingEventLinkStatusEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/event/link-status-enable", state.getPath()))
+	if !state.Dot1xMaxReauthReq.IsNull() && data.Dot1xMaxReauthReq.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-reauth-req", state.getPath()))
 	}
-	if !state.IpNbarProtocolDiscovery.IsNull() && data.IpNbarProtocolDiscovery.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", state.getPath()))
+	if !state.Dot1xMaxReq.IsNull() && data.Dot1xMaxReq.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-req", state.getPath()))
 	}
-	if !state.DeviceTracking.IsNull() && data.DeviceTracking.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", state.getPath()))
+	if !state.Dot1xTimeoutTxPeriod.IsNull() && data.Dot1xTimeoutTxPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/tx-period", state.getPath()))
 	}
-	for i := range state.DeviceTrackingAttachedPolicies {
-		stateKeyValues := [...]string{state.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
+	if !state.Dot1xTimeoutSuppTimeout.IsNull() && data.Dot1xTimeoutSuppTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/supp-timeout", state.getPath()))
+	}
+	if !state.Dot1xTimeoutStartPeriod.IsNull() && data.Dot1xTimeoutStartPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/start-period", state.getPath()))
+	}
+	if !state.Dot1xTimeoutServerTimeout.IsNull() && data.Dot1xTimeoutServerTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/server-timeout", state.getPath()))
+	}
+	if !state.Dot1xTimeoutRatelimitPeriod.IsNull() && data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/ratelimit-period", state.getPath()))
+	}
+	if !state.Dot1xTimeoutQuietPeriod.IsNull() && data.Dot1xTimeoutQuietPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/quiet-period", state.getPath()))
+	}
+	if !state.Dot1xTimeoutHeldPeriod.IsNull() && data.Dot1xTimeoutHeldPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/held-period", state.getPath()))
+	}
+	if !state.Dot1xTimeoutAuthPeriod.IsNull() && data.Dot1xTimeoutAuthPeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/auth-period", state.getPath()))
+	}
+	if !state.Dot1xPae.IsNull() && data.Dot1xPae.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/pae", state.getPath()))
+	}
+	if !state.MabEap.IsNull() && data.MabEap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab/eap", state.getPath()))
+	}
+	if !state.Mab.IsNull() && data.Mab.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", state.getPath()))
+	}
+	if !state.AuthenticationTimerReauthenticateServer.IsNull() && data.AuthenticationTimerReauthenticateServer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", state.getPath()))
+	}
+	if !state.AuthenticationTimerReauthenticate.IsNull() && data.AuthenticationTimerReauthenticate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/value-config", state.getPath()))
+	}
+	if !state.AuthenticationPeriodic.IsNull() && data.AuthenticationPeriodic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/periodic", state.getPath()))
+	}
+	if !state.AuthenticationPortControl.IsNull() && data.AuthenticationPortControl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/port-control", state.getPath()))
+	}
+	if !state.AuthenticationPriorityWebauth.IsNull() && data.AuthenticationPriorityWebauth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/webauth-config", state.getPath()))
+	}
+	if !state.AuthenticationPriorityMabWebauth.IsNull() && data.AuthenticationPriorityMabWebauth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/webauth", state.getPath()))
+	}
+	if !state.AuthenticationPriorityMabDot1x.IsNull() && data.AuthenticationPriorityMabDot1x.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/dot1x", state.getPath()))
+	}
+	if !state.AuthenticationPriorityMab.IsNull() && data.AuthenticationPriorityMab.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config", state.getPath()))
+	}
+	if !state.AuthenticationPriorityDot1xWebauth.IsNull() && data.AuthenticationPriorityDot1xWebauth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/webauth", state.getPath()))
+	}
+	if !state.AuthenticationPriorityDot1xMab.IsNull() && data.AuthenticationPriorityDot1xMab.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/mab", state.getPath()))
+	}
+	if !state.AuthenticationPriorityDot1x.IsNull() && data.AuthenticationPriorityDot1x.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config", state.getPath()))
+	}
+	if !state.AuthenticationOrderWebauth.IsNull() && data.AuthenticationOrderWebauth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/webauth-config", state.getPath()))
+	}
+	if !state.AuthenticationOrderMabWebauth.IsNull() && data.AuthenticationOrderMabWebauth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/webauth", state.getPath()))
+	}
+	if !state.AuthenticationOrderMabDot1x.IsNull() && data.AuthenticationOrderMabDot1x.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/dot1x", state.getPath()))
+	}
+	if !state.AuthenticationOrderMab.IsNull() && data.AuthenticationOrderMab.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config", state.getPath()))
+	}
+	if !state.AuthenticationOrderDot1xWebauth.IsNull() && data.AuthenticationOrderDot1xWebauth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/webauth", state.getPath()))
+	}
+	if !state.AuthenticationOrderDot1xMab.IsNull() && data.AuthenticationOrderDot1xMab.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/mab", state.getPath()))
+	}
+	if !state.AuthenticationOrderDot1x.IsNull() && data.AuthenticationOrderDot1x.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config", state.getPath()))
+	}
+	if !state.AuthenticationHostMode.IsNull() && data.AuthenticationHostMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/host-mode", state.getPath()))
+	}
+	if !state.SpeedNonegotiate.IsNull() && data.SpeedNonegotiate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/nonegotiate", state.getPath()))
+	}
+	if !state.NegotiationAuto.IsNull() && data.NegotiationAuto.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:negotiation/auto", state.getPath()))
+	}
+	if !state.Speed100000.IsNull() && data.Speed100000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", state.getPath()))
+	}
+	if !state.Speed40000.IsNull() && data.Speed40000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", state.getPath()))
+	}
+	if !state.Speed25000.IsNull() && data.Speed25000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", state.getPath()))
+	}
+	if !state.Speed10000.IsNull() && data.Speed10000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", state.getPath()))
+	}
+	if !state.Speed5000.IsNull() && data.Speed5000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", state.getPath()))
+	}
+	if !state.Speed2500.IsNull() && data.Speed2500.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", state.getPath()))
+	}
+	if !state.Speed1000.IsNull() && data.Speed1000.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", state.getPath()))
+	}
+	if !state.Speed100.IsNull() && data.Speed100.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", state.getPath()))
+	}
+	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", state.getPath()))
+	}
+	if !state.IpArpInspectionLimitRate.IsNull() && data.IpArpInspectionLimitRate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", state.getPath()))
+	}
+	if !state.IpArpInspectionTrust.IsNull() && data.IpArpInspectionTrust.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/arp/inspection/trust", state.getPath()))
+	}
+	if !state.SpanningTreePortfastEdge.IsNull() && data.SpanningTreePortfastEdge.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", state.getPath()))
+	}
+	if !state.SpanningTreePortfastTrunk.IsNull() && data.SpanningTreePortfastTrunk.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", state.getPath()))
+	}
+	if !state.SpanningTreePortfastDisable.IsNull() && data.SpanningTreePortfastDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", state.getPath()))
+	}
+	if !state.SpanningTreePortfast.IsNull() && data.SpanningTreePortfast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", state.getPath()))
+	}
+	if !state.BpduguardDisable.IsNull() && data.BpduguardDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", state.getPath()))
+	}
+	if !state.BpduguardEnable.IsNull() && data.BpduguardEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", state.getPath()))
+	}
+	if !state.SpanningTreeLinkType.IsNull() && data.SpanningTreeLinkType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", state.getPath()))
+	}
+	if !state.ArpTimeout.IsNull() && data.ArpTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/arp/timeout", state.getPath()))
+	}
+	for i := range state.Ipv6FlowMonitors {
+		stateKeyValues := [...]string{state.Ipv6FlowMonitors[i].Name.ValueString(), state.Ipv6FlowMonitors[i].Direction.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.DeviceTrackingAttachedPolicies[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6FlowMonitors[i].Direction.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -3560,9 +3301,12 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 		}
 
 		found := false
-		for j := range data.DeviceTrackingAttachedPolicies {
+		for j := range data.Ipv6FlowMonitors {
 			found = true
-			if state.DeviceTrackingAttachedPolicies[i].Name.ValueString() != data.DeviceTrackingAttachedPolicies[j].Name.ValueString() {
+			if state.Ipv6FlowMonitors[i].Name.ValueString() != data.Ipv6FlowMonitors[j].Name.ValueString() {
+				found = false
+			}
+			if state.Ipv6FlowMonitors[i].Direction.ValueString() != data.Ipv6FlowMonitors[j].Direction.ValueString() {
 				found = false
 			}
 			if found {
@@ -3570,9 +3314,266 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking/attached-policies=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-flow:flow/monitor-new=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Ipv6Addresses {
+		stateKeyValues := [...]string{state.Ipv6Addresses[i].Prefix.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6Addresses[i].Prefix.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6Addresses {
+			found = true
+			if state.Ipv6Addresses[i].Prefix.ValueString() != data.Ipv6Addresses[j].Prefix.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6Addresses[i].Eui64.IsNull() && data.Ipv6Addresses[j].Eui64.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v/eui-64", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Ipv6LinkLocalAddresses {
+		stateKeyValues := [...]string{state.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6LinkLocalAddresses[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6LinkLocalAddresses {
+			found = true
+			if state.Ipv6LinkLocalAddresses[i].Address.ValueString() != data.Ipv6LinkLocalAddresses[j].Address.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6LinkLocalAddresses[i].LinkLocal.IsNull() && data.Ipv6LinkLocalAddresses[j].LinkLocal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v/link-local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.Ipv6AddressDhcp.IsNull() && data.Ipv6AddressDhcp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/dhcp", state.getPath()))
+	}
+	if !state.Ipv6AddressAutoconfigDefault.IsNull() && data.Ipv6AddressAutoconfigDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/address/autoconfig/default", state.getPath()))
+	}
+	if !state.Ipv6NdRaSuppressAll.IsNull() && data.Ipv6NdRaSuppressAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", state.getPath()))
+	}
+	if !state.Ipv6Mtu.IsNull() && data.Ipv6Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/mtu", state.getPath()))
+	}
+	if !state.Ipv6Enable.IsNull() && data.Ipv6Enable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/enable", state.getPath()))
+	}
+	if !state.BfdEcho.IsNull() && data.BfdEcho.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", state.getPath()))
+	}
+	if !state.BfdIntervalMultiplier.IsNull() && data.BfdIntervalMultiplier.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", state.getPath()))
+	}
+	if !state.BfdIntervalMinRx.IsNull() && data.BfdIntervalMinRx.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", state.getPath()))
+	}
+	if !state.BfdInterval.IsNull() && data.BfdInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", state.getPath()))
+	}
+	if !state.BfdLocalAddress.IsNull() && data.BfdLocalAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:local-address", state.getPath()))
+	}
+	if !state.BfdEnable.IsNull() && data.BfdEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", state.getPath()))
+	}
+	if !state.BfdTemplate.IsNull() && data.BfdTemplate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", state.getPath()))
+	}
+	for i := range state.SourceTemplate {
+		stateKeyValues := [...]string{state.SourceTemplate[i].TemplateName.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.SourceTemplate[i].TemplateName.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.SourceTemplate {
+			found = true
+			if state.SourceTemplate[i].TemplateName.ValueString() != data.SourceTemplate[j].TemplateName.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.SourceTemplate[i].Merge.IsNull() && data.SourceTemplate[j].Merge.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/source/template/template-name=%v/merge", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/source/template/template-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.HelperAddresses {
+		stateKeyValues := [...]string{state.HelperAddresses[i].Address.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.HelperAddresses[i].Address.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.HelperAddresses {
+			found = true
+			if state.HelperAddresses[i].Address.ValueString() != data.HelperAddresses[j].Address.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.HelperAddresses[i].Vrf.IsNull() && data.HelperAddresses[j].Vrf.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v/vrf", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.HelperAddresses[i].Global.IsNull() && data.HelperAddresses[j].Global.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v/global", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/helper-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.TrustDevice.IsNull() && data.TrustDevice.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/trust/device", state.getPath()))
+	}
+	if !state.AutoQosVoipTrust.IsNull() && data.AutoQosVoipTrust.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/trust", state.getPath()))
+	}
+	if !state.AutoQosVoipCiscoSoftphone.IsNull() && data.AutoQosVoipCiscoSoftphone.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone", state.getPath()))
+	}
+	if !state.AutoQosVoipCiscoPhone.IsNull() && data.AutoQosVoipCiscoPhone.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", state.getPath()))
+	}
+	if !state.AutoQosVoip.IsNull() && data.AutoQosVoip.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", state.getPath()))
+	}
+	if !state.AutoQosVideoMediaPlayer.IsNull() && data.AutoQosVideoMediaPlayer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", state.getPath()))
+	}
+	if !state.AutoQosVideoIpCamera.IsNull() && data.AutoQosVideoIpCamera.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/ip-camera", state.getPath()))
+	}
+	if !state.AutoQosVideoCts.IsNull() && data.AutoQosVideoCts.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/cts", state.getPath()))
+	}
+	if !state.AutoQosTrustDscp.IsNull() && data.AutoQosTrustDscp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/dscp", state.getPath()))
+	}
+	if !state.AutoQosTrustCos.IsNull() && data.AutoQosTrustCos.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/cos", state.getPath()))
+	}
+	if !state.AutoQosTrust.IsNull() && data.AutoQosTrust.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust", state.getPath()))
+	}
+	if !state.AutoQosClassifyPolice.IsNull() && data.AutoQosClassifyPolice.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify/police", state.getPath()))
+	}
+	if !state.AutoQosClassify.IsNull() && data.AutoQosClassify.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", state.getPath()))
+	}
+	if !state.SpanningTreeGuard.IsNull() && data.SpanningTreeGuard.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/guard", state.getPath()))
+	}
+	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl/out", state.getPath()))
+	}
+	if !state.IpAccessGroupOut.IsNull() && data.IpAccessGroupOut.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl", state.getPath()))
+	}
+	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
+	}
+	if !state.IpAccessGroupIn.IsNull() && data.IpAccessGroupIn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl", state.getPath()))
+	}
+	if !state.IpDhcpRelaySourceInterface.IsNull() && data.IpDhcpRelaySourceInterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", state.getPath()))
+	}
+	if !state.ChannelGroupMode.IsNull() && data.ChannelGroupMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/mode", state.getPath()))
+	}
+	if !state.ChannelGroupNumber.IsNull() && data.ChannelGroupNumber.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/number", state.getPath()))
+	}
+	if !state.EncapsulationDot1qVlanId.IsNull() && data.EncapsulationDot1qVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", state.getPath()))
+	}
+	if !state.Unnumbered.IsNull() && data.Unnumbered.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/unnumbered", state.getPath()))
+	}
+	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
+	}
+	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
+	}
+	if !state.VrfForwarding.IsNull() && data.VrfForwarding.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf/forwarding", state.getPath()))
+	}
+	if !state.IpUnreachables.IsNull() && data.IpUnreachables.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-icmp:unreachables", state.getPath()))
+	}
+	if !state.IpRedirects.IsNull() && data.IpRedirects.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/redirects", state.getPath()))
+	}
+	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/proxy-arp", state.getPath()))
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.Switchport.IsNull() && data.Switchport.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport-conf/switchport", state.getPath()))
+	}
+	if !state.Bandwidth.IsNull() && data.Bandwidth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bandwidth/kilobits", state.getPath()))
+	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu", state.getPath()))
+	}
+	if !state.MediaType.IsNull() && data.MediaType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/media-type", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -3582,83 +3583,118 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 
 func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
+
+	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", data.getPath()))
 	}
-	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
-	}
-	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
-	}
-	if !data.AutoQosClassify.IsNull() && !data.AutoQosClassify.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", data.getPath()))
-	}
-	if !data.AutoQosClassifyPolice.IsNull() && !data.AutoQosClassifyPolice.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify/police", data.getPath()))
-	}
-	if !data.AutoQosTrust.IsNull() && !data.AutoQosTrust.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust", data.getPath()))
-	}
-	if !data.AutoQosTrustCos.IsNull() && !data.AutoQosTrustCos.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/cos", data.getPath()))
-	}
-	if !data.AutoQosTrustDscp.IsNull() && !data.AutoQosTrustDscp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/dscp", data.getPath()))
-	}
-	if !data.AutoQosVideoCts.IsNull() && !data.AutoQosVideoCts.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/cts", data.getPath()))
-	}
-	if !data.AutoQosVideoIpCamera.IsNull() && !data.AutoQosVideoIpCamera.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/ip-camera", data.getPath()))
-	}
-	if !data.AutoQosVideoMediaPlayer.IsNull() && !data.AutoQosVideoMediaPlayer.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", data.getPath()))
-	}
-	if !data.AutoQosVoip.IsNull() && !data.AutoQosVoip.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", data.getPath()))
-	}
-	if !data.AutoQosVoipCiscoPhone.IsNull() && !data.AutoQosVoipCiscoPhone.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", data.getPath()))
-	}
-	if !data.AutoQosVoipCiscoSoftphone.IsNull() && !data.AutoQosVoipCiscoSoftphone.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone", data.getPath()))
-	}
-	if !data.AutoQosVoipTrust.IsNull() && !data.AutoQosVoipTrust.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/trust", data.getPath()))
+	if !data.IpNbarProtocolDiscovery.IsNull() && !data.IpNbarProtocolDiscovery.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", data.getPath()))
 	}
 
-	for i := range data.HelperAddresses {
-		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
-		if !data.HelperAddresses[i].Global.IsNull() && !data.HelperAddresses[i].Global.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/helper-address=%v/global", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
+	if !data.MabEap.IsNull() && !data.MabEap.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab/eap", data.getPath()))
 	}
-
-	for i := range data.SourceTemplate {
-		keyValues := [...]string{data.SourceTemplate[i].TemplateName.ValueString()}
-		if !data.SourceTemplate[i].Merge.IsNull() && !data.SourceTemplate[i].Merge.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/source/template/template-name=%v/merge", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
+	if !data.Mab.IsNull() && !data.Mab.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", data.getPath()))
 	}
-	if !data.Ipv6Enable.IsNull() && !data.Ipv6Enable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/enable", data.getPath()))
+	if !data.AuthenticationTimerReauthenticateServer.IsNull() && !data.AuthenticationTimerReauthenticateServer.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", data.getPath()))
 	}
-	if !data.Ipv6NdRaSuppressAll.IsNull() && !data.Ipv6NdRaSuppressAll.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", data.getPath()))
+	if !data.AuthenticationPeriodic.IsNull() && !data.AuthenticationPeriodic.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/periodic", data.getPath()))
 	}
-	if !data.Ipv6AddressAutoconfigDefault.IsNull() && !data.Ipv6AddressAutoconfigDefault.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/autoconfig/default", data.getPath()))
+	if !data.AuthenticationPriorityWebauth.IsNull() && !data.AuthenticationPriorityWebauth.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/webauth-config", data.getPath()))
 	}
-	if !data.Ipv6AddressDhcp.IsNull() && !data.Ipv6AddressDhcp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/dhcp", data.getPath()))
+	if !data.AuthenticationPriorityMabWebauth.IsNull() && !data.AuthenticationPriorityMabWebauth.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/webauth", data.getPath()))
 	}
-
-	for i := range data.Ipv6LinkLocalAddresses {
-		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
-		if !data.Ipv6LinkLocalAddresses[i].LinkLocal.IsNull() && !data.Ipv6LinkLocalAddresses[i].LinkLocal.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/link-local-address=%v/link-local", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
+	if !data.AuthenticationPriorityMabDot1x.IsNull() && !data.AuthenticationPriorityMabDot1x.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/dot1x", data.getPath()))
+	}
+	if !data.AuthenticationPriorityMab.IsNull() && !data.AuthenticationPriorityMab.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config", data.getPath()))
+	}
+	if !data.AuthenticationPriorityDot1xWebauth.IsNull() && !data.AuthenticationPriorityDot1xWebauth.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/webauth", data.getPath()))
+	}
+	if !data.AuthenticationPriorityDot1xMab.IsNull() && !data.AuthenticationPriorityDot1xMab.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/mab", data.getPath()))
+	}
+	if !data.AuthenticationPriorityDot1x.IsNull() && !data.AuthenticationPriorityDot1x.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config", data.getPath()))
+	}
+	if !data.AuthenticationOrderWebauth.IsNull() && !data.AuthenticationOrderWebauth.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/webauth-config", data.getPath()))
+	}
+	if !data.AuthenticationOrderMabWebauth.IsNull() && !data.AuthenticationOrderMabWebauth.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/webauth", data.getPath()))
+	}
+	if !data.AuthenticationOrderMabDot1x.IsNull() && !data.AuthenticationOrderMabDot1x.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/dot1x", data.getPath()))
+	}
+	if !data.AuthenticationOrderMab.IsNull() && !data.AuthenticationOrderMab.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config", data.getPath()))
+	}
+	if !data.AuthenticationOrderDot1xWebauth.IsNull() && !data.AuthenticationOrderDot1xWebauth.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/webauth", data.getPath()))
+	}
+	if !data.AuthenticationOrderDot1xMab.IsNull() && !data.AuthenticationOrderDot1xMab.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/mab", data.getPath()))
+	}
+	if !data.AuthenticationOrderDot1x.IsNull() && !data.AuthenticationOrderDot1x.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config", data.getPath()))
+	}
+	if !data.SpeedNonegotiate.IsNull() && !data.SpeedNonegotiate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/nonegotiate", data.getPath()))
+	}
+	if !data.Speed100000.IsNull() && !data.Speed100000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", data.getPath()))
+	}
+	if !data.Speed40000.IsNull() && !data.Speed40000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", data.getPath()))
+	}
+	if !data.Speed25000.IsNull() && !data.Speed25000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", data.getPath()))
+	}
+	if !data.Speed10000.IsNull() && !data.Speed10000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", data.getPath()))
+	}
+	if !data.Speed5000.IsNull() && !data.Speed5000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", data.getPath()))
+	}
+	if !data.Speed2500.IsNull() && !data.Speed2500.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", data.getPath()))
+	}
+	if !data.Speed1000.IsNull() && !data.Speed1000.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", data.getPath()))
+	}
+	if !data.Speed100.IsNull() && !data.Speed100.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", data.getPath()))
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
+	}
+	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() && !data.SpanningTreePortfastEdge.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", data.getPath()))
+	}
+	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() && !data.SpanningTreePortfastDisable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", data.getPath()))
+	}
+	if !data.SpanningTreePortfast.IsNull() && !data.SpanningTreePortfast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", data.getPath()))
+	}
+	if !data.BpduguardDisable.IsNull() && !data.BpduguardDisable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", data.getPath()))
+	}
+	if !data.BpduguardEnable.IsNull() && !data.BpduguardEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", data.getPath()))
 	}
 
 	for i := range data.Ipv6Addresses {
@@ -3668,117 +3704,82 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 		}
 	}
 
-	if !data.BpduguardEnable.IsNull() && !data.BpduguardEnable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", data.getPath()))
+	for i := range data.Ipv6LinkLocalAddresses {
+		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+		if !data.Ipv6LinkLocalAddresses[i].LinkLocal.IsNull() && !data.Ipv6LinkLocalAddresses[i].LinkLocal.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/link-local-address=%v/link-local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 	}
-	if !data.BpduguardDisable.IsNull() && !data.BpduguardDisable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", data.getPath()))
+	if !data.Ipv6AddressDhcp.IsNull() && !data.Ipv6AddressDhcp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/dhcp", data.getPath()))
 	}
-	if !data.SpanningTreePortfast.IsNull() && !data.SpanningTreePortfast.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", data.getPath()))
+	if !data.Ipv6AddressAutoconfigDefault.IsNull() && !data.Ipv6AddressAutoconfigDefault.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/address/autoconfig/default", data.getPath()))
 	}
-	if !data.SpanningTreePortfastDisable.IsNull() && !data.SpanningTreePortfastDisable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", data.getPath()))
+	if !data.Ipv6NdRaSuppressAll.IsNull() && !data.Ipv6NdRaSuppressAll.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", data.getPath()))
 	}
-	if !data.SpanningTreePortfastTrunk.IsNull() && !data.SpanningTreePortfastTrunk.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
-	}
-	if !data.SpanningTreePortfastEdge.IsNull() && !data.SpanningTreePortfastEdge.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", data.getPath()))
-	}
-	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
-	}
-	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
-	}
-	if !data.Speed100.IsNull() && !data.Speed100.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", data.getPath()))
-	}
-	if !data.Speed1000.IsNull() && !data.Speed1000.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", data.getPath()))
-	}
-	if !data.Speed2500.IsNull() && !data.Speed2500.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", data.getPath()))
-	}
-	if !data.Speed5000.IsNull() && !data.Speed5000.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", data.getPath()))
-	}
-	if !data.Speed10000.IsNull() && !data.Speed10000.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", data.getPath()))
-	}
-	if !data.Speed25000.IsNull() && !data.Speed25000.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", data.getPath()))
-	}
-	if !data.Speed40000.IsNull() && !data.Speed40000.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", data.getPath()))
-	}
-	if !data.Speed100000.IsNull() && !data.Speed100000.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", data.getPath()))
-	}
-	if !data.SpeedNonegotiate.IsNull() && !data.SpeedNonegotiate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/nonegotiate", data.getPath()))
-	}
-	if !data.AuthenticationOrderDot1x.IsNull() && !data.AuthenticationOrderDot1x.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config", data.getPath()))
-	}
-	if !data.AuthenticationOrderDot1xMab.IsNull() && !data.AuthenticationOrderDot1xMab.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/mab", data.getPath()))
-	}
-	if !data.AuthenticationOrderDot1xWebauth.IsNull() && !data.AuthenticationOrderDot1xWebauth.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/webauth", data.getPath()))
-	}
-	if !data.AuthenticationOrderMab.IsNull() && !data.AuthenticationOrderMab.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config", data.getPath()))
-	}
-	if !data.AuthenticationOrderMabDot1x.IsNull() && !data.AuthenticationOrderMabDot1x.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/dot1x", data.getPath()))
-	}
-	if !data.AuthenticationOrderMabWebauth.IsNull() && !data.AuthenticationOrderMabWebauth.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/webauth", data.getPath()))
-	}
-	if !data.AuthenticationOrderWebauth.IsNull() && !data.AuthenticationOrderWebauth.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/webauth-config", data.getPath()))
-	}
-	if !data.AuthenticationPriorityDot1x.IsNull() && !data.AuthenticationPriorityDot1x.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config", data.getPath()))
-	}
-	if !data.AuthenticationPriorityDot1xMab.IsNull() && !data.AuthenticationPriorityDot1xMab.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/mab", data.getPath()))
-	}
-	if !data.AuthenticationPriorityDot1xWebauth.IsNull() && !data.AuthenticationPriorityDot1xWebauth.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/webauth", data.getPath()))
-	}
-	if !data.AuthenticationPriorityMab.IsNull() && !data.AuthenticationPriorityMab.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config", data.getPath()))
-	}
-	if !data.AuthenticationPriorityMabDot1x.IsNull() && !data.AuthenticationPriorityMabDot1x.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/dot1x", data.getPath()))
-	}
-	if !data.AuthenticationPriorityMabWebauth.IsNull() && !data.AuthenticationPriorityMabWebauth.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/webauth", data.getPath()))
-	}
-	if !data.AuthenticationPriorityWebauth.IsNull() && !data.AuthenticationPriorityWebauth.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/webauth-config", data.getPath()))
-	}
-	if !data.AuthenticationPeriodic.IsNull() && !data.AuthenticationPeriodic.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/periodic", data.getPath()))
-	}
-	if !data.AuthenticationTimerReauthenticateServer.IsNull() && !data.AuthenticationTimerReauthenticateServer.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", data.getPath()))
-	}
-	if !data.Mab.IsNull() && !data.Mab.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", data.getPath()))
-	}
-	if !data.MabEap.IsNull() && !data.MabEap.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab/eap", data.getPath()))
+	if !data.Ipv6Enable.IsNull() && !data.Ipv6Enable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/enable", data.getPath()))
 	}
 
-	if !data.IpNbarProtocolDiscovery.IsNull() && !data.IpNbarProtocolDiscovery.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", data.getPath()))
+	for i := range data.SourceTemplate {
+		keyValues := [...]string{data.SourceTemplate[i].TemplateName.ValueString()}
+		if !data.SourceTemplate[i].Merge.IsNull() && !data.SourceTemplate[i].Merge.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/source/template/template-name=%v/merge", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 	}
-	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", data.getPath()))
+
+	for i := range data.HelperAddresses {
+		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
+		if !data.HelperAddresses[i].Global.IsNull() && !data.HelperAddresses[i].Global.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/helper-address=%v/global", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+	if !data.AutoQosVoipTrust.IsNull() && !data.AutoQosVoipTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/trust", data.getPath()))
+	}
+	if !data.AutoQosVoipCiscoSoftphone.IsNull() && !data.AutoQosVoipCiscoSoftphone.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone", data.getPath()))
+	}
+	if !data.AutoQosVoipCiscoPhone.IsNull() && !data.AutoQosVoipCiscoPhone.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", data.getPath()))
+	}
+	if !data.AutoQosVoip.IsNull() && !data.AutoQosVoip.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", data.getPath()))
+	}
+	if !data.AutoQosVideoMediaPlayer.IsNull() && !data.AutoQosVideoMediaPlayer.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", data.getPath()))
+	}
+	if !data.AutoQosVideoIpCamera.IsNull() && !data.AutoQosVideoIpCamera.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/ip-camera", data.getPath()))
+	}
+	if !data.AutoQosVideoCts.IsNull() && !data.AutoQosVideoCts.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/cts", data.getPath()))
+	}
+	if !data.AutoQosTrustDscp.IsNull() && !data.AutoQosTrustDscp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/dscp", data.getPath()))
+	}
+	if !data.AutoQosTrustCos.IsNull() && !data.AutoQosTrustCos.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/cos", data.getPath()))
+	}
+	if !data.AutoQosTrust.IsNull() && !data.AutoQosTrust.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust", data.getPath()))
+	}
+	if !data.AutoQosClassifyPolice.IsNull() && !data.AutoQosClassifyPolice.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify/police", data.getPath()))
+	}
+	if !data.AutoQosClassify.IsNull() && !data.AutoQosClassify.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", data.getPath()))
+	}
+	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
+	}
+	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
+	}
+	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -3790,362 +3791,363 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 
 func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.MediaType.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/media-type", data.getPath()))
-	}
-	if !data.Mtu.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu", data.getPath()))
-	}
-	if !data.Bandwidth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bandwidth/kilobits", data.getPath()))
-	}
-	if !data.Switchport.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport-conf/switchport", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	if !data.IpProxyArp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/proxy-arp", data.getPath()))
-	}
-	if !data.IpRedirects.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/redirects", data.getPath()))
-	}
-	if !data.IpUnreachables.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-icmp:unreachables", data.getPath()))
-	}
-	if !data.VrfForwarding.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/vrf/forwarding", data.getPath()))
-	}
-	if !data.Ipv4Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
-	}
-	if !data.Ipv4AddressMask.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
-	}
-	if !data.Unnumbered.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/unnumbered", data.getPath()))
-	}
-	if !data.EncapsulationDot1qVlanId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", data.getPath()))
-	}
-	if !data.ChannelGroupNumber.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/number", data.getPath()))
-	}
-	if !data.ChannelGroupMode.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/mode", data.getPath()))
-	}
-	if !data.IpDhcpRelaySourceInterface.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.getPath()))
-	}
-	if !data.IpAccessGroupIn.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl", data.getPath()))
-	}
-	if !data.IpAccessGroupInEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
-	}
-	if !data.IpAccessGroupOut.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl", data.getPath()))
-	}
-	if !data.IpAccessGroupOutEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
-	}
-	if !data.SpanningTreeGuard.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/guard", data.getPath()))
-	}
-	if !data.AutoQosClassify.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", data.getPath()))
-	}
-	if !data.AutoQosClassifyPolice.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify/police", data.getPath()))
-	}
-	if !data.AutoQosTrust.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust", data.getPath()))
-	}
-	if !data.AutoQosTrustCos.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/cos", data.getPath()))
-	}
-	if !data.AutoQosTrustDscp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/dscp", data.getPath()))
-	}
-	if !data.AutoQosVideoCts.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/cts", data.getPath()))
-	}
-	if !data.AutoQosVideoIpCamera.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/ip-camera", data.getPath()))
-	}
-	if !data.AutoQosVideoMediaPlayer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", data.getPath()))
-	}
-	if !data.AutoQosVoip.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", data.getPath()))
-	}
-	if !data.AutoQosVoipCiscoPhone.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", data.getPath()))
-	}
-	if !data.AutoQosVoipCiscoSoftphone.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone", data.getPath()))
-	}
-	if !data.AutoQosVoipTrust.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/trust", data.getPath()))
-	}
-	if !data.TrustDevice.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/trust/device", data.getPath()))
-	}
-	for i := range data.HelperAddresses {
-		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
+	for i := range data.DeviceTrackingAttachedPolicies {
+		keyValues := [...]string{data.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/helper-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking/attached-policies=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.SourceTemplate {
-		keyValues := [...]string{data.SourceTemplate[i].TemplateName.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/template/template-name=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.DeviceTracking.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", data.getPath()))
 	}
-	if !data.BfdTemplate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", data.getPath()))
+	if !data.IpNbarProtocolDiscovery.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", data.getPath()))
 	}
-	if !data.BfdEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", data.getPath()))
+	if !data.LoggingEventLinkStatusEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/event/link-status-enable", data.getPath()))
 	}
-	if !data.BfdLocalAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:local-address", data.getPath()))
+	if !data.SnmpTrapLinkStatus.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:snmp/trap/link-status", data.getPath()))
 	}
-	if !data.BfdInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
-	}
-	if !data.BfdIntervalMinRx.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
-	}
-	if !data.BfdIntervalMultiplier.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
-	}
-	if !data.BfdEcho.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", data.getPath()))
-	}
-	if !data.Ipv6Enable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/enable", data.getPath()))
-	}
-	if !data.Ipv6Mtu.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/mtu", data.getPath()))
-	}
-	if !data.Ipv6NdRaSuppressAll.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", data.getPath()))
-	}
-	if !data.Ipv6AddressAutoconfigDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/autoconfig/default", data.getPath()))
-	}
-	if !data.Ipv6AddressDhcp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/dhcp", data.getPath()))
-	}
-	for i := range data.Ipv6LinkLocalAddresses {
-		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Ipv6Addresses {
-		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Ipv6FlowMonitors {
-		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.ArpTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
-	}
-	if !data.SpanningTreeLinkType.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", data.getPath()))
-	}
-	if !data.BpduguardEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", data.getPath()))
-	}
-	if !data.BpduguardDisable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", data.getPath()))
-	}
-	if !data.SpanningTreePortfast.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", data.getPath()))
-	}
-	if !data.SpanningTreePortfastDisable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", data.getPath()))
-	}
-	if !data.SpanningTreePortfastTrunk.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
-	}
-	if !data.SpanningTreePortfastEdge.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", data.getPath()))
-	}
-	if !data.IpArpInspectionTrust.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
-	}
-	if !data.IpArpInspectionLimitRate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", data.getPath()))
-	}
-	if !data.IpDhcpSnoopingTrust.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
-	}
-	if !data.Speed100.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", data.getPath()))
-	}
-	if !data.Speed1000.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", data.getPath()))
-	}
-	if !data.Speed2500.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", data.getPath()))
-	}
-	if !data.Speed5000.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", data.getPath()))
-	}
-	if !data.Speed10000.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", data.getPath()))
-	}
-	if !data.Speed25000.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", data.getPath()))
-	}
-	if !data.Speed40000.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", data.getPath()))
-	}
-	if !data.Speed100000.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", data.getPath()))
-	}
-	if !data.NegotiationAuto.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:negotiation/auto", data.getPath()))
-	}
-	if !data.SpeedNonegotiate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/nonegotiate", data.getPath()))
-	}
-	if !data.AuthenticationHostMode.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/host-mode", data.getPath()))
-	}
-	if !data.AuthenticationOrderDot1x.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config", data.getPath()))
-	}
-	if !data.AuthenticationOrderDot1xMab.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/mab", data.getPath()))
-	}
-	if !data.AuthenticationOrderDot1xWebauth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/webauth", data.getPath()))
-	}
-	if !data.AuthenticationOrderMab.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config", data.getPath()))
-	}
-	if !data.AuthenticationOrderMabDot1x.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/dot1x", data.getPath()))
-	}
-	if !data.AuthenticationOrderMabWebauth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/webauth", data.getPath()))
-	}
-	if !data.AuthenticationOrderWebauth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/webauth-config", data.getPath()))
-	}
-	if !data.AuthenticationPriorityDot1x.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config", data.getPath()))
-	}
-	if !data.AuthenticationPriorityDot1xMab.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/mab", data.getPath()))
-	}
-	if !data.AuthenticationPriorityDot1xWebauth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/webauth", data.getPath()))
-	}
-	if !data.AuthenticationPriorityMab.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config", data.getPath()))
-	}
-	if !data.AuthenticationPriorityMabDot1x.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/dot1x", data.getPath()))
-	}
-	if !data.AuthenticationPriorityMabWebauth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/webauth", data.getPath()))
-	}
-	if !data.AuthenticationPriorityWebauth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/webauth-config", data.getPath()))
-	}
-	if !data.AuthenticationPortControl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/port-control", data.getPath()))
-	}
-	if !data.AuthenticationPeriodic.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/periodic", data.getPath()))
-	}
-	if !data.AuthenticationTimerReauthenticate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/value-config", data.getPath()))
-	}
-	if !data.AuthenticationTimerReauthenticateServer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", data.getPath()))
-	}
-	if !data.Mab.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", data.getPath()))
-	}
-	if !data.MabEap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab/eap", data.getPath()))
-	}
-	if !data.Dot1xPae.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/pae", data.getPath()))
-	}
-	if !data.Dot1xTimeoutAuthPeriod.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/auth-period", data.getPath()))
-	}
-	if !data.Dot1xTimeoutHeldPeriod.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/held-period", data.getPath()))
-	}
-	if !data.Dot1xTimeoutQuietPeriod.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/quiet-period", data.getPath()))
-	}
-	if !data.Dot1xTimeoutRatelimitPeriod.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/ratelimit-period", data.getPath()))
-	}
-	if !data.Dot1xTimeoutServerTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/server-timeout", data.getPath()))
-	}
-	if !data.Dot1xTimeoutStartPeriod.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/start-period", data.getPath()))
-	}
-	if !data.Dot1xTimeoutSuppTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/supp-timeout", data.getPath()))
-	}
-	if !data.Dot1xTimeoutTxPeriod.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/tx-period", data.getPath()))
-	}
-	if !data.Dot1xMaxReq.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-req", data.getPath()))
-	}
-	if !data.Dot1xMaxReauthReq.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-reauth-req", data.getPath()))
-	}
-	if !data.ServicePolicyInput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
-	}
-	if !data.ServicePolicyOutput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", data.getPath()))
+	if !data.LoadInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/load-interval", data.getPath()))
 	}
 	for i := range data.IpFlowMonitors {
 		keyValues := [...]string{data.IpFlowMonitors[i].Name.ValueString(), data.IpFlowMonitors[i].Direction.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.LoadInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/load-interval", data.getPath()))
+	if !data.ServicePolicyOutput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/output", data.getPath()))
 	}
-	if !data.SnmpTrapLinkStatus.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:snmp/trap/link-status", data.getPath()))
+	if !data.ServicePolicyInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
 	}
-	if !data.LoggingEventLinkStatusEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/event/link-status-enable", data.getPath()))
+	if !data.Dot1xMaxReauthReq.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-reauth-req", data.getPath()))
 	}
-	if !data.IpNbarProtocolDiscovery.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/protocol-discovery", data.getPath()))
+	if !data.Dot1xMaxReq.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/max-req", data.getPath()))
 	}
-	if !data.DeviceTracking.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", data.getPath()))
+	if !data.Dot1xTimeoutTxPeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/tx-period", data.getPath()))
 	}
-	for i := range data.DeviceTrackingAttachedPolicies {
-		keyValues := [...]string{data.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
+	if !data.Dot1xTimeoutSuppTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/supp-timeout", data.getPath()))
+	}
+	if !data.Dot1xTimeoutStartPeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/start-period", data.getPath()))
+	}
+	if !data.Dot1xTimeoutServerTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/server-timeout", data.getPath()))
+	}
+	if !data.Dot1xTimeoutRatelimitPeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/ratelimit-period", data.getPath()))
+	}
+	if !data.Dot1xTimeoutQuietPeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/quiet-period", data.getPath()))
+	}
+	if !data.Dot1xTimeoutHeldPeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/held-period", data.getPath()))
+	}
+	if !data.Dot1xTimeoutAuthPeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/timeout/auth-period", data.getPath()))
+	}
+	if !data.Dot1xPae.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:dot1x/pae", data.getPath()))
+	}
+	if !data.MabEap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab/eap", data.getPath()))
+	}
+	if !data.Mab.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", data.getPath()))
+	}
+	if !data.AuthenticationTimerReauthenticateServer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", data.getPath()))
+	}
+	if !data.AuthenticationTimerReauthenticate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/value-config", data.getPath()))
+	}
+	if !data.AuthenticationPeriodic.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/periodic", data.getPath()))
+	}
+	if !data.AuthenticationPortControl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/port-control", data.getPath()))
+	}
+	if !data.AuthenticationPriorityWebauth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/webauth-config", data.getPath()))
+	}
+	if !data.AuthenticationPriorityMabWebauth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/webauth", data.getPath()))
+	}
+	if !data.AuthenticationPriorityMabDot1x.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config/dot1x", data.getPath()))
+	}
+	if !data.AuthenticationPriorityMab.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/mab-config", data.getPath()))
+	}
+	if !data.AuthenticationPriorityDot1xWebauth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/webauth", data.getPath()))
+	}
+	if !data.AuthenticationPriorityDot1xMab.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config/mab", data.getPath()))
+	}
+	if !data.AuthenticationPriorityDot1x.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/priority-config/dot1x-config", data.getPath()))
+	}
+	if !data.AuthenticationOrderWebauth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/webauth-config", data.getPath()))
+	}
+	if !data.AuthenticationOrderMabWebauth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/webauth", data.getPath()))
+	}
+	if !data.AuthenticationOrderMabDot1x.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config/dot1x", data.getPath()))
+	}
+	if !data.AuthenticationOrderMab.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/mab-config", data.getPath()))
+	}
+	if !data.AuthenticationOrderDot1xWebauth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/webauth", data.getPath()))
+	}
+	if !data.AuthenticationOrderDot1xMab.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config/mab", data.getPath()))
+	}
+	if !data.AuthenticationOrderDot1x.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/order-config/dot1x-config", data.getPath()))
+	}
+	if !data.AuthenticationHostMode.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/host-mode", data.getPath()))
+	}
+	if !data.SpeedNonegotiate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/nonegotiate", data.getPath()))
+	}
+	if !data.NegotiationAuto.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:negotiation/auto", data.getPath()))
+	}
+	if !data.Speed100000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100000", data.getPath()))
+	}
+	if !data.Speed40000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-40000", data.getPath()))
+	}
+	if !data.Speed25000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-25000", data.getPath()))
+	}
+	if !data.Speed10000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-10000", data.getPath()))
+	}
+	if !data.Speed5000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-5000", data.getPath()))
+	}
+	if !data.Speed2500.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-2500", data.getPath()))
+	}
+	if !data.Speed1000.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-1000", data.getPath()))
+	}
+	if !data.Speed100.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:speed/value-100", data.getPath()))
+	}
+	if !data.IpDhcpSnoopingTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
+	}
+	if !data.IpArpInspectionLimitRate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", data.getPath()))
+	}
+	if !data.IpArpInspectionTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
+	}
+	if !data.SpanningTreePortfastEdge.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/edge", data.getPath()))
+	}
+	if !data.SpanningTreePortfastTrunk.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/trunk", data.getPath()))
+	}
+	if !data.SpanningTreePortfastDisable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast/disable", data.getPath()))
+	}
+	if !data.SpanningTreePortfast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/portfast", data.getPath()))
+	}
+	if !data.BpduguardDisable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/disable", data.getPath()))
+	}
+	if !data.BpduguardEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/bpduguard/enable", data.getPath()))
+	}
+	if !data.SpanningTreeLinkType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/link-type", data.getPath()))
+	}
+	if !data.ArpTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/arp/timeout", data.getPath()))
+	}
+	for i := range data.Ipv6FlowMonitors {
+		keyValues := [...]string{data.Ipv6FlowMonitors[i].Name.ValueString(), data.Ipv6FlowMonitors[i].Direction.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking/attached-policies=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/Cisco-IOS-XE-flow:flow/monitor-new=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.Ipv6Addresses {
+		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/prefix-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv6LinkLocalAddresses {
+		keyValues := [...]string{data.Ipv6LinkLocalAddresses[i].Address.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/link-local-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.Ipv6AddressDhcp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/dhcp", data.getPath()))
+	}
+	if !data.Ipv6AddressAutoconfigDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/address/autoconfig/default", data.getPath()))
+	}
+	if !data.Ipv6NdRaSuppressAll.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all", data.getPath()))
+	}
+	if !data.Ipv6Mtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/mtu", data.getPath()))
+	}
+	if !data.Ipv6Enable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/enable", data.getPath()))
+	}
+	if !data.BfdEcho.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:echo", data.getPath()))
+	}
+	if !data.BfdIntervalMultiplier.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
+	}
+	if !data.BfdIntervalMinRx.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
+	}
+	if !data.BfdInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:interval-interface", data.getPath()))
+	}
+	if !data.BfdLocalAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:local-address", data.getPath()))
+	}
+	if !data.BfdEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:enable", data.getPath()))
+	}
+	if !data.BfdTemplate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/Cisco-IOS-XE-bfd:template", data.getPath()))
+	}
+	for i := range data.SourceTemplate {
+		keyValues := [...]string{data.SourceTemplate[i].TemplateName.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/template/template-name=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.HelperAddresses {
+		keyValues := [...]string{data.HelperAddresses[i].Address.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/helper-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.TrustDevice.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/trust/device", data.getPath()))
+	}
+	if !data.AutoQosVoipTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/trust", data.getPath()))
+	}
+	if !data.AutoQosVoipCiscoSoftphone.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-softphone", data.getPath()))
+	}
+	if !data.AutoQosVoipCiscoPhone.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip/cisco-phone", data.getPath()))
+	}
+	if !data.AutoQosVoip.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/voip", data.getPath()))
+	}
+	if !data.AutoQosVideoMediaPlayer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/media-player", data.getPath()))
+	}
+	if !data.AutoQosVideoIpCamera.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/ip-camera", data.getPath()))
+	}
+	if !data.AutoQosVideoCts.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/video/cts", data.getPath()))
+	}
+	if !data.AutoQosTrustDscp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/dscp", data.getPath()))
+	}
+	if !data.AutoQosTrustCos.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust/cos", data.getPath()))
+	}
+	if !data.AutoQosTrust.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/trust", data.getPath()))
+	}
+	if !data.AutoQosClassifyPolice.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify/police", data.getPath()))
+	}
+	if !data.AutoQosClassify.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", data.getPath()))
+	}
+	if !data.SpanningTreeGuard.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/guard", data.getPath()))
+	}
+	if !data.IpAccessGroupOutEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
+	}
+	if !data.IpAccessGroupOut.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl", data.getPath()))
+	}
+	if !data.IpAccessGroupInEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
+	}
+	if !data.IpAccessGroupIn.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl", data.getPath()))
+	}
+	if !data.IpDhcpRelaySourceInterface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.getPath()))
+	}
+	if !data.ChannelGroupMode.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/mode", data.getPath()))
+	}
+	if !data.ChannelGroupNumber.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/number", data.getPath()))
+	}
+	if !data.EncapsulationDot1qVlanId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", data.getPath()))
+	}
+	if !data.Unnumbered.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/unnumbered", data.getPath()))
+	}
+	if !data.Ipv4AddressMask.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
+	}
+	if !data.Ipv4Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
+	}
+	if !data.VrfForwarding.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vrf/forwarding", data.getPath()))
+	}
+	if !data.IpUnreachables.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-icmp:unreachables", data.getPath()))
+	}
+	if !data.IpRedirects.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/redirects", data.getPath()))
+	}
+	if !data.IpProxyArp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/proxy-arp", data.getPath()))
+	}
+	if !data.Shutdown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
+	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+	if !data.Switchport.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport-conf/switchport", data.getPath()))
+	}
+	if !data.Bandwidth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bandwidth/kilobits", data.getPath()))
+	}
+	if !data.Mtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu", data.getPath()))
+	}
+	if !data.MediaType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/media-type", data.getPath()))
+	}
+
 	return deletePaths
 }
 

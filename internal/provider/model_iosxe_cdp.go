@@ -377,18 +377,6 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *CDP) getDeletedItems(ctx context.Context, state CDP) []string {
 	deletedItems := make([]string, 0)
-	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:holdtime", state.getPath()))
-	}
-	if !state.Timer.IsNull() && data.Timer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:timer", state.getPath()))
-	}
-	if !state.Run.IsNull() && data.Run.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:run-enable", state.getPath()))
-	}
-	if !state.FilterTlvList.IsNull() && data.FilterTlvList.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:filter-tlv-list", state.getPath()))
-	}
 	for i := range state.TlvLists {
 		stateKeyValues := [...]string{state.TlvLists[i].Name.ValueString()}
 
@@ -407,20 +395,20 @@ func (data *CDP) getDeletedItems(ctx context.Context, state CDP) []string {
 				found = false
 			}
 			if found {
-				if !state.TlvLists[i].VtpMgmtDomain.IsNull() && data.TlvLists[j].VtpMgmtDomain.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/vtp-mgmt-domain", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.TlvLists[i].Cos.IsNull() && data.TlvLists[j].Cos.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/cos", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.TlvLists[i].Duplex.IsNull() && data.TlvLists[j].Duplex.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/duplex", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.TlvLists[i].Version.IsNull() && data.TlvLists[j].Version.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.TlvLists[i].Trust.IsNull() && data.TlvLists[j].Trust.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/trust", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.TlvLists[i].Version.IsNull() && data.TlvLists[j].Version.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.TlvLists[i].Duplex.IsNull() && data.TlvLists[j].Duplex.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/duplex", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.TlvLists[i].Cos.IsNull() && data.TlvLists[j].Cos.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/cos", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.TlvLists[i].VtpMgmtDomain.IsNull() && data.TlvLists[j].VtpMgmtDomain.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/vtp-mgmt-domain", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -429,6 +417,19 @@ func (data *CDP) getDeletedItems(ctx context.Context, state CDP) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.FilterTlvList.IsNull() && data.FilterTlvList.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:filter-tlv-list", state.getPath()))
+	}
+	if !state.Run.IsNull() && data.Run.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:run-enable", state.getPath()))
+	}
+	if !state.Timer.IsNull() && data.Timer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:timer", state.getPath()))
+	}
+	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:holdtime", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -441,22 +442,23 @@ func (data *CDP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.TlvLists {
 		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
-		if !data.TlvLists[i].VtpMgmtDomain.IsNull() && !data.TlvLists[i].VtpMgmtDomain.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/vtp-mgmt-domain", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.TlvLists[i].Cos.IsNull() && !data.TlvLists[i].Cos.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/cos", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.TlvLists[i].Duplex.IsNull() && !data.TlvLists[i].Duplex.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/duplex", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.TlvLists[i].Version.IsNull() && !data.TlvLists[i].Version.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/version", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.TlvLists[i].Trust.IsNull() && !data.TlvLists[i].Trust.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/trust", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.TlvLists[i].Version.IsNull() && !data.TlvLists[i].Version.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/version", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.TlvLists[i].Duplex.IsNull() && !data.TlvLists[i].Duplex.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/duplex", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.TlvLists[i].Cos.IsNull() && !data.TlvLists[i].Cos.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/cos", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.TlvLists[i].VtpMgmtDomain.IsNull() && !data.TlvLists[i].VtpMgmtDomain.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v/vtp-mgmt-domain", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -466,23 +468,24 @@ func (data *CDP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *CDP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Holdtime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:holdtime", data.getPath()))
-	}
-	if !data.Timer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:timer", data.getPath()))
-	}
-	if !data.Run.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:run-enable", data.getPath()))
-	}
-	if !data.FilterTlvList.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:filter-tlv-list", data.getPath()))
-	}
 	for i := range data.TlvLists {
 		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:tlv-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.FilterTlvList.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:filter-tlv-list", data.getPath()))
+	}
+	if !data.Run.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:run-enable", data.getPath()))
+	}
+	if !data.Timer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:timer", data.getPath()))
+	}
+	if !data.Holdtime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:holdtime", data.getPath()))
+	}
+
 	return deletePaths
 }
 

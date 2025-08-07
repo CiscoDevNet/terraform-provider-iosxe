@@ -336,49 +336,6 @@ func (data *PrefixListData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *PrefixList) getDeletedItems(ctx context.Context, state PrefixList) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.Prefixes {
-		stateKeyValues := [...]string{state.Prefixes[i].Name.ValueString(), strconv.FormatInt(state.Prefixes[i].Seq.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Prefixes[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Prefixes[i].Seq.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Prefixes {
-			found = true
-			if state.Prefixes[i].Name.ValueString() != data.Prefixes[j].Name.ValueString() {
-				found = false
-			}
-			if state.Prefixes[i].Seq.ValueInt64() != data.Prefixes[j].Seq.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.Prefixes[i].Action.IsNull() && data.Prefixes[j].Action.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/action", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Prefixes[i].Ip.IsNull() && data.Prefixes[j].Ip.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/ip", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Prefixes[i].Ge.IsNull() && data.Prefixes[j].Ge.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/ge", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Prefixes[i].Le.IsNull() && data.Prefixes[j].Le.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/le", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
 	for i := range state.PrefixListDescription {
 		stateKeyValues := [...]string{state.PrefixListDescription[i].Name.ValueString()}
 
@@ -407,6 +364,50 @@ func (data *PrefixList) getDeletedItems(ctx context.Context, state PrefixList) [
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/prefix-list-description=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Prefixes {
+		stateKeyValues := [...]string{state.Prefixes[i].Name.ValueString(), strconv.FormatInt(state.Prefixes[i].Seq.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Prefixes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Prefixes[i].Seq.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Prefixes {
+			found = true
+			if state.Prefixes[i].Name.ValueString() != data.Prefixes[j].Name.ValueString() {
+				found = false
+			}
+			if state.Prefixes[i].Seq.ValueInt64() != data.Prefixes[j].Seq.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.Prefixes[i].Le.IsNull() && data.Prefixes[j].Le.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/le", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Prefixes[i].Ge.IsNull() && data.Prefixes[j].Ge.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/ge", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Prefixes[i].Ip.IsNull() && data.Prefixes[j].Ip.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/ip", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Prefixes[i].Action.IsNull() && data.Prefixes[j].Action.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v/action", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/prefixes=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+
 	return deletedItems
 }
 
@@ -426,16 +427,17 @@ func (data *PrefixList) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *PrefixList) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Prefixes {
-		keyValues := [...]string{data.Prefixes[i].Name.ValueString(), strconv.FormatInt(data.Prefixes[i].Seq.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/prefixes=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
 	for i := range data.PrefixListDescription {
 		keyValues := [...]string{data.PrefixListDescription[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/prefix-list-description=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.Prefixes {
+		keyValues := [...]string{data.Prefixes[i].Name.ValueString(), strconv.FormatInt(data.Prefixes[i].Seq.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/prefixes=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+
 	return deletePaths
 }
 

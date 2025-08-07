@@ -382,17 +382,17 @@ func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []s
 				found = false
 			}
 			if found {
-				if !state.Trustpoints[i].EnrollmentPkcs12.IsNull() && data.Trustpoints[j].EnrollmentPkcs12.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/pkcs12", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Trustpoints[i].SourceInterface.IsNull() && data.Trustpoints[j].SourceInterface.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/source/interface", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && data.Trustpoints[j].EnrollmentSelfsigned.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Trustpoints[i].Usage.IsNull() && data.Trustpoints[j].Usage.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/usage", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && data.Trustpoints[j].EnrollmentModeRa.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/mode/ra", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Trustpoints[i].Rsakeypair.IsNull() && data.Trustpoints[j].Rsakeypair.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/rsakeypair/key-label", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Trustpoints[i].EnrollmentTerminal.IsNull() && data.Trustpoints[j].EnrollmentTerminal.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/terminal", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Trustpoints[i].SubjectName.IsNull() && data.Trustpoints[j].SubjectName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/subject-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Trustpoints[i].RevocationCheck.IsNull() {
 					if data.Trustpoints[j].RevocationCheck.IsNull() {
@@ -415,17 +415,17 @@ func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []s
 						}
 					}
 				}
-				if !state.Trustpoints[i].SubjectName.IsNull() && data.Trustpoints[j].SubjectName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/subject-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Trustpoints[i].EnrollmentTerminal.IsNull() && data.Trustpoints[j].EnrollmentTerminal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/terminal", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Trustpoints[i].Rsakeypair.IsNull() && data.Trustpoints[j].Rsakeypair.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/rsakeypair/key-label", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && data.Trustpoints[j].EnrollmentModeRa.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/mode/ra", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Trustpoints[i].Usage.IsNull() && data.Trustpoints[j].Usage.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/usage", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && data.Trustpoints[j].EnrollmentSelfsigned.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Trustpoints[i].SourceInterface.IsNull() && data.Trustpoints[j].SourceInterface.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/source/interface", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Trustpoints[i].EnrollmentPkcs12.IsNull() && data.Trustpoints[j].EnrollmentPkcs12.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/pkcs12", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -434,6 +434,7 @@ func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []s
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+
 	return deletedItems
 }
 
@@ -446,19 +447,20 @@ func (data *CryptoPKI) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.Trustpoints {
 		keyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
-		if !data.Trustpoints[i].EnrollmentPkcs12.IsNull() && !data.Trustpoints[i].EnrollmentPkcs12.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/pkcs12", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Trustpoints[i].EnrollmentSelfsigned.IsNull() && !data.Trustpoints[i].EnrollmentSelfsigned.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.Trustpoints[i].EnrollmentTerminal.IsNull() && !data.Trustpoints[i].EnrollmentTerminal.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/terminal", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.Trustpoints[i].EnrollmentModeRa.IsNull() && !data.Trustpoints[i].EnrollmentModeRa.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/mode/ra", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Trustpoints[i].EnrollmentTerminal.IsNull() && !data.Trustpoints[i].EnrollmentTerminal.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/terminal", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.Trustpoints[i].EnrollmentSelfsigned.IsNull() && !data.Trustpoints[i].EnrollmentSelfsigned.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Trustpoints[i].EnrollmentPkcs12.IsNull() && !data.Trustpoints[i].EnrollmentPkcs12.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/pkcs12", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -473,6 +475,7 @@ func (data *CryptoPKI) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/trustpoint=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+
 	return deletePaths
 }
 

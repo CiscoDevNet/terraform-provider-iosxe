@@ -641,38 +641,42 @@ func (data *PIMVRFData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *PIMVRF) getDeletedItems(ctx context.Context, state PIMVRF) []string {
 	deletedItems := make([]string, 0)
-	if !state.Autorp.IsNull() && data.Autorp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/autorp-container/autorp", state.getPath()))
-	}
-	if !state.AutorpListener.IsNull() && data.AutorpListener.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/autorp-container/listener", state.getPath()))
-	}
-	if !state.BsrCandidateLoopback.IsNull() && data.BsrCandidateLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bsr-candidate", state.getPath()))
-	}
-	if !state.BsrCandidateMask.IsNull() && data.BsrCandidateMask.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bsr-candidate", state.getPath()))
-	}
-	if !state.BsrCandidatePriority.IsNull() && data.BsrCandidatePriority.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bsr-candidate", state.getPath()))
-	}
-	if !state.BsrCandidateAcceptRpCandidate.IsNull() && data.BsrCandidateAcceptRpCandidate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bsr-candidate", state.getPath()))
-	}
-	if !state.SsmRange.IsNull() && data.SsmRange.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ssm/range", state.getPath()))
-	}
-	if !state.SsmDefault.IsNull() && data.SsmDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ssm/default", state.getPath()))
-	}
-	if !state.RpAddress.IsNull() && data.RpAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-conf/address", state.getPath()))
-	}
-	if !state.RpAddressOverride.IsNull() && data.RpAddressOverride.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-conf/override", state.getPath()))
-	}
-	if !state.RpAddressBidir.IsNull() && data.RpAddressBidir.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-conf/bidir", state.getPath()))
+	for i := range state.RpCandidates {
+		stateKeyValues := [...]string{state.RpCandidates[i].Interface.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RpCandidates[i].Interface.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RpCandidates {
+			found = true
+			if state.RpCandidates[i].Interface.ValueString() != data.RpCandidates[j].Interface.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.RpCandidates[i].Bidir.IsNull() && data.RpCandidates[j].Bidir.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v/bidir", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.RpCandidates[i].Priority.IsNull() && data.RpCandidates[j].Priority.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.RpCandidates[i].Interval.IsNull() && data.RpCandidates[j].Interval.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v/interval", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.RpCandidates[i].GroupList.IsNull() && data.RpCandidates[j].GroupList.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v/group-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
 	for i := range state.RpAddresses {
 		stateKeyValues := [...]string{state.RpAddresses[i].AccessList.ValueString()}
@@ -692,14 +696,14 @@ func (data *PIMVRF) getDeletedItems(ctx context.Context, state PIMVRF) []string 
 				found = false
 			}
 			if found {
-				if !state.RpAddresses[i].RpAddress.IsNull() && data.RpAddresses[j].RpAddress.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-list=%v/rp-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.RpAddresses[i].Bidir.IsNull() && data.RpAddresses[j].Bidir.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-list=%v/bidir", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.RpAddresses[i].Override.IsNull() && data.RpAddresses[j].Override.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-list=%v/override", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.RpAddresses[i].Bidir.IsNull() && data.RpAddresses[j].Bidir.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-list=%v/bidir", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.RpAddresses[i].RpAddress.IsNull() && data.RpAddresses[j].RpAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-list=%v/rp-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -708,43 +712,40 @@ func (data *PIMVRF) getDeletedItems(ctx context.Context, state PIMVRF) []string 
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.RpCandidates {
-		stateKeyValues := [...]string{state.RpCandidates[i].Interface.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.RpCandidates[i].Interface.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.RpCandidates {
-			found = true
-			if state.RpCandidates[i].Interface.ValueString() != data.RpCandidates[j].Interface.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.RpCandidates[i].GroupList.IsNull() && data.RpCandidates[j].GroupList.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v/group-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.RpCandidates[i].Interval.IsNull() && data.RpCandidates[j].Interval.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v/interval", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.RpCandidates[i].Priority.IsNull() && data.RpCandidates[j].Priority.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.RpCandidates[i].Bidir.IsNull() && data.RpCandidates[j].Bidir.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v/bidir", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-candidate=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
+	if !state.RpAddressBidir.IsNull() && data.RpAddressBidir.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-conf/bidir", state.getPath()))
 	}
+	if !state.RpAddressOverride.IsNull() && data.RpAddressOverride.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-conf/override", state.getPath()))
+	}
+	if !state.RpAddress.IsNull() && data.RpAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/rp-address-conf/address", state.getPath()))
+	}
+	if !state.SsmDefault.IsNull() && data.SsmDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ssm/default", state.getPath()))
+	}
+	if !state.SsmRange.IsNull() && data.SsmRange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ssm/range", state.getPath()))
+	}
+	if !state.BsrCandidateAcceptRpCandidate.IsNull() && data.BsrCandidateAcceptRpCandidate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bsr-candidate", state.getPath()))
+	}
+	if !state.BsrCandidatePriority.IsNull() && data.BsrCandidatePriority.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bsr-candidate", state.getPath()))
+	}
+	if !state.BsrCandidateMask.IsNull() && data.BsrCandidateMask.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bsr-candidate", state.getPath()))
+	}
+	if !state.BsrCandidateLoopback.IsNull() && data.BsrCandidateLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bsr-candidate", state.getPath()))
+	}
+	if !state.AutorpListener.IsNull() && data.AutorpListener.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/autorp-container/listener", state.getPath()))
+	}
+	if !state.Autorp.IsNull() && data.Autorp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/autorp-container/autorp", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -754,31 +755,6 @@ func (data *PIMVRF) getDeletedItems(ctx context.Context, state PIMVRF) []string 
 
 func (data *PIMVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.AutorpListener.IsNull() && !data.AutorpListener.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/autorp-container/listener", data.getPath()))
-	}
-	if !data.SsmDefault.IsNull() && !data.SsmDefault.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ssm/default", data.getPath()))
-	}
-	if !data.RpAddressOverride.IsNull() && !data.RpAddressOverride.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-address-conf/override", data.getPath()))
-	}
-	if !data.RpAddressBidir.IsNull() && !data.RpAddressBidir.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-address-conf/bidir", data.getPath()))
-	}
-	if !data.CacheRpfOif.IsNull() && !data.CacheRpfOif.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/cache/rpf-oif", data.getPath()))
-	}
-
-	for i := range data.RpAddresses {
-		keyValues := [...]string{data.RpAddresses[i].AccessList.ValueString()}
-		if !data.RpAddresses[i].Override.IsNull() && !data.RpAddresses[i].Override.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-address-list=%v/override", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.RpAddresses[i].Bidir.IsNull() && !data.RpAddresses[i].Bidir.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-address-list=%v/bidir", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
 
 	for i := range data.RpCandidates {
 		keyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
@@ -786,6 +762,32 @@ func (data *PIMVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-candidate=%v/bidir", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
+	for i := range data.RpAddresses {
+		keyValues := [...]string{data.RpAddresses[i].AccessList.ValueString()}
+		if !data.RpAddresses[i].Bidir.IsNull() && !data.RpAddresses[i].Bidir.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-address-list=%v/bidir", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.RpAddresses[i].Override.IsNull() && !data.RpAddresses[i].Override.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-address-list=%v/override", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+	if !data.CacheRpfOif.IsNull() && !data.CacheRpfOif.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/cache/rpf-oif", data.getPath()))
+	}
+	if !data.RpAddressBidir.IsNull() && !data.RpAddressBidir.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-address-conf/bidir", data.getPath()))
+	}
+	if !data.RpAddressOverride.IsNull() && !data.RpAddressOverride.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/rp-address-conf/override", data.getPath()))
+	}
+	if !data.SsmDefault.IsNull() && !data.SsmDefault.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ssm/default", data.getPath()))
+	}
+	if !data.AutorpListener.IsNull() && !data.AutorpListener.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/autorp-container/listener", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -795,49 +797,50 @@ func (data *PIMVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *PIMVRF) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Autorp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/autorp-container/autorp", data.getPath()))
-	}
-	if !data.AutorpListener.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/autorp-container/listener", data.getPath()))
-	}
-	if !data.BsrCandidateLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bsr-candidate", data.getPath()))
-	}
-	if !data.BsrCandidateMask.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bsr-candidate", data.getPath()))
-	}
-	if !data.BsrCandidatePriority.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bsr-candidate", data.getPath()))
-	}
-	if !data.BsrCandidateAcceptRpCandidate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bsr-candidate", data.getPath()))
-	}
-	if !data.SsmRange.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ssm/range", data.getPath()))
-	}
-	if !data.SsmDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ssm/default", data.getPath()))
-	}
-	if !data.RpAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-address-conf/address", data.getPath()))
-	}
-	if !data.RpAddressOverride.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-address-conf/override", data.getPath()))
-	}
-	if !data.RpAddressBidir.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-address-conf/bidir", data.getPath()))
+	for i := range data.RpCandidates {
+		keyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-candidate=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.RpAddresses {
 		keyValues := [...]string{data.RpAddresses[i].AccessList.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-address-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.RpCandidates {
-		keyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-candidate=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.RpAddressBidir.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-address-conf/bidir", data.getPath()))
 	}
+	if !data.RpAddressOverride.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-address-conf/override", data.getPath()))
+	}
+	if !data.RpAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/rp-address-conf/address", data.getPath()))
+	}
+	if !data.SsmDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ssm/default", data.getPath()))
+	}
+	if !data.SsmRange.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ssm/range", data.getPath()))
+	}
+	if !data.BsrCandidateAcceptRpCandidate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bsr-candidate", data.getPath()))
+	}
+	if !data.BsrCandidatePriority.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bsr-candidate", data.getPath()))
+	}
+	if !data.BsrCandidateMask.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bsr-candidate", data.getPath()))
+	}
+	if !data.BsrCandidateLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bsr-candidate", data.getPath()))
+	}
+	if !data.AutorpListener.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/autorp-container/listener", data.getPath()))
+	}
+	if !data.Autorp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/autorp-container/autorp", data.getPath()))
+	}
+
 	return deletePaths
 }
 

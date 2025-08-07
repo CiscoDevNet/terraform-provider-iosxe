@@ -212,24 +212,25 @@ func (data *UsernameData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Username) getDeletedItems(ctx context.Context, state Username) []string {
 	deletedItems := make([]string, 0)
-	if !state.Privilege.IsNull() && data.Privilege.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/privilege", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/password/encryption", state.getPath()))
-	}
-	if !state.Password.IsNull() && data.Password.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/password/password", state.getPath()))
+	if !state.Secret.IsNull() && data.Secret.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/secret/secret", state.getPath()))
 	}
 	if !state.SecretEncryption.IsNull() && data.SecretEncryption.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/secret/encryption", state.getPath()))
 	}
-	if !state.Secret.IsNull() && data.Secret.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/secret/secret", state.getPath()))
+	if !state.Password.IsNull() && data.Password.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/password/password", state.getPath()))
 	}
+	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/password/encryption", state.getPath()))
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.Privilege.IsNull() && data.Privilege.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/privilege", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -239,6 +240,7 @@ func (data *Username) getDeletedItems(ctx context.Context, state Username) []str
 
 func (data *Username) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -248,24 +250,25 @@ func (data *Username) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Username) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Privilege.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/privilege", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	if !data.PasswordEncryption.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/encryption", data.getPath()))
-	}
-	if !data.Password.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/password", data.getPath()))
+	if !data.Secret.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/secret/secret", data.getPath()))
 	}
 	if !data.SecretEncryption.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/secret/encryption", data.getPath()))
 	}
-	if !data.Secret.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/secret/secret", data.getPath()))
+	if !data.Password.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/password", data.getPath()))
 	}
+	if !data.PasswordEncryption.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/encryption", data.getPath()))
+	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+	if !data.Privilege.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/privilege", data.getPath()))
+	}
+
 	return deletePaths
 }
 

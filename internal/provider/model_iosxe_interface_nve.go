@@ -397,14 +397,36 @@ func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNVE) []string {
 	deletedItems := make([]string, 0)
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
-	}
-	if !state.SourceInterfaceLoopback.IsNull() && data.SourceInterfaceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface/Loopback", state.getPath()))
+	for i := range state.Vnis {
+		stateKeyValues := [...]string{state.Vnis[i].VniRange.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vnis[i].VniRange.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vnis {
+			found = true
+			if state.Vnis[i].VniRange.ValueString() != data.Vnis[j].VniRange.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Vnis[i].IngressReplication.IsNull() && data.Vnis[j].IngressReplication.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/ingress-replication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vnis[i].Ipv4MulticastGroup.IsNull() && data.Vnis[j].Ipv4MulticastGroup.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/mcast-group/multicast-group-min", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
 	for i := range state.VniVrfs {
 		stateKeyValues := [...]string{state.VniVrfs[i].VniRange.ValueString()}
@@ -434,37 +456,16 @@ func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNV
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/member-in-one-line/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Vnis {
-		stateKeyValues := [...]string{state.Vnis[i].VniRange.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Vnis[i].VniRange.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Vnis {
-			found = true
-			if state.Vnis[i].VniRange.ValueString() != data.Vnis[j].VniRange.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Vnis[i].Ipv4MulticastGroup.IsNull() && data.Vnis[j].Ipv4MulticastGroup.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/mcast-group/multicast-group-min", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vnis[i].IngressReplication.IsNull() && data.Vnis[j].IngressReplication.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/ingress-replication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
+	if !state.SourceInterfaceLoopback.IsNull() && data.SourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface/Loopback", state.getPath()))
 	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -474,12 +475,6 @@ func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNV
 
 func (data *InterfaceNVE) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	if !data.HostReachabilityProtocolBgp.IsNull() && !data.HostReachabilityProtocolBgp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/host-reachability/protocol/bgp", data.getPath()))
-	}
 
 	for i := range data.Vnis {
 		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
@@ -487,6 +482,14 @@ func (data *InterfaceNVE) getEmptyLeafsDelete(ctx context.Context) []string {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/ingress-replication", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
+	if !data.HostReachabilityProtocolBgp.IsNull() && !data.HostReachabilityProtocolBgp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/host-reachability/protocol/bgp", data.getPath()))
+	}
+	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -496,25 +499,26 @@ func (data *InterfaceNVE) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceNVE) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	if !data.SourceInterfaceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/source-interface/Loopback", data.getPath()))
+	for i := range data.Vnis {
+		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/member/vni=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.VniVrfs {
 		keyValues := [...]string{data.VniVrfs[i].VniRange.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/member-in-one-line/member/vni=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.Vnis {
-		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/member/vni=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.SourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/source-interface/Loopback", data.getPath()))
 	}
+	if !data.Shutdown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
+	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+
 	return deletePaths
 }
 
