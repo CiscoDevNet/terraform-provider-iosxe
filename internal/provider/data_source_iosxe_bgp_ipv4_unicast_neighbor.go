@@ -154,7 +154,7 @@ func (d *BGPIPv4UnicastNeighborDataSource) Read(ctx context.Context, req datasou
 		config = BGPIPv4UnicastNeighborData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

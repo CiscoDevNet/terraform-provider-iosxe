@@ -2082,7 +2082,7 @@ func (data *Template) getDeletedItems(ctx context.Context, state Template) []str
 		}
 	}
 	if !state.SwitchportPortSecurityAgingTypeInactivity.IsNull() && data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/aging/type/inactivity", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/aging/type", state.getPath()))
 	}
 	if !state.SwitchportPortSecurityAgingType.IsNull() && data.SwitchportPortSecurityAgingType.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport/port-security/aging/type", state.getPath()))
@@ -2429,7 +2429,7 @@ func (data *Template) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport/port-security/maximum/range=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport/port-security/aging/type/inactivity", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport/port-security/aging/type", data.getPath()))
 	}
 	if !data.SwitchportPortSecurityAgingType.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport/port-security/aging/type", data.getPath()))

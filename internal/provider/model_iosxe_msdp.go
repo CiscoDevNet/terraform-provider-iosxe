@@ -42,26 +42,26 @@ type MSDP struct {
 	Id           types.String    `tfsdk:"id"`
 	DeleteMode   types.String    `tfsdk:"delete_mode"`
 	OriginatorId types.String    `tfsdk:"originator_id"`
-	Passwords    []MSDPPasswords `tfsdk:"passwords"`
 	Peers        []MSDPPeers     `tfsdk:"peers"`
+	Passwords    []MSDPPasswords `tfsdk:"passwords"`
 }
 
 type MSDPData struct {
 	Device       types.String    `tfsdk:"device"`
 	Id           types.String    `tfsdk:"id"`
 	OriginatorId types.String    `tfsdk:"originator_id"`
-	Passwords    []MSDPPasswords `tfsdk:"passwords"`
 	Peers        []MSDPPeers     `tfsdk:"peers"`
-}
-type MSDPPasswords struct {
-	Addr       types.String `tfsdk:"addr"`
-	Encryption types.Int64  `tfsdk:"encryption"`
-	Password   types.String `tfsdk:"password"`
+	Passwords    []MSDPPasswords `tfsdk:"passwords"`
 }
 type MSDPPeers struct {
 	Addr                  types.String `tfsdk:"addr"`
 	RemoteAs              types.Int64  `tfsdk:"remote_as"`
 	ConnectSourceLoopback types.Int64  `tfsdk:"connect_source_loopback"`
+}
+type MSDPPasswords struct {
+	Addr       types.String `tfsdk:"addr"`
+	Encryption types.Int64  `tfsdk:"encryption"`
+	Password   types.String `tfsdk:"password"`
 }
 
 // End of section. //template:end types
@@ -96,20 +96,6 @@ func (data MSDP) toBody(ctx context.Context) string {
 	if !data.OriginatorId.IsNull() && !data.OriginatorId.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"originator-id", data.OriginatorId.ValueString())
 	}
-	if len(data.Passwords) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list", []interface{}{})
-		for index, item := range data.Passwords {
-			if !item.Addr.IsNull() && !item.Addr.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list"+"."+strconv.Itoa(index)+"."+"addr", item.Addr.ValueString())
-			}
-			if !item.Encryption.IsNull() && !item.Encryption.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list"+"."+strconv.Itoa(index)+"."+"encryption", strconv.FormatInt(item.Encryption.ValueInt64(), 10))
-			}
-			if !item.Password.IsNull() && !item.Password.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list"+"."+strconv.Itoa(index)+"."+"password", item.Password.ValueString())
-			}
-		}
-	}
 	if len(data.Peers) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer", []interface{}{})
 		for index, item := range data.Peers {
@@ -121,6 +107,20 @@ func (data MSDP) toBody(ctx context.Context) string {
 			}
 			if !item.ConnectSourceLoopback.IsNull() && !item.ConnectSourceLoopback.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"peer"+"."+strconv.Itoa(index)+"."+"connect-source.Loopback", strconv.FormatInt(item.ConnectSourceLoopback.ValueInt64(), 10))
+			}
+		}
+	}
+	if len(data.Passwords) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list", []interface{}{})
+		for index, item := range data.Passwords {
+			if !item.Addr.IsNull() && !item.Addr.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list"+"."+strconv.Itoa(index)+"."+"addr", item.Addr.ValueString())
+			}
+			if !item.Encryption.IsNull() && !item.Encryption.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list"+"."+strconv.Itoa(index)+"."+"encryption", strconv.FormatInt(item.Encryption.ValueInt64(), 10))
+			}
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list"+"."+strconv.Itoa(index)+"."+"password", item.Password.ValueString())
 			}
 		}
 	}
@@ -140,45 +140,6 @@ func (data *MSDP) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.OriginatorId = types.StringValue(value.String())
 	} else {
 		data.OriginatorId = types.StringNull()
-	}
-	for i := range data.Passwords {
-		keys := [...]string{"addr"}
-		keyValues := [...]string{data.Passwords[i].Addr.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "password.peer-list").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("addr"); value.Exists() && !data.Passwords[i].Addr.IsNull() {
-			data.Passwords[i].Addr = types.StringValue(value.String())
-		} else {
-			data.Passwords[i].Addr = types.StringNull()
-		}
-		if value := r.Get("encryption"); value.Exists() && !data.Passwords[i].Encryption.IsNull() {
-			data.Passwords[i].Encryption = types.Int64Value(value.Int())
-		} else {
-			data.Passwords[i].Encryption = types.Int64Null()
-		}
-		if value := r.Get("password"); value.Exists() && !data.Passwords[i].Password.IsNull() {
-			data.Passwords[i].Password = types.StringValue(value.String())
-		} else {
-			data.Passwords[i].Password = types.StringNull()
-		}
 	}
 	for i := range data.Peers {
 		keys := [...]string{"addr"}
@@ -219,6 +180,45 @@ func (data *MSDP) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Peers[i].ConnectSourceLoopback = types.Int64Null()
 		}
 	}
+	for i := range data.Passwords {
+		keys := [...]string{"addr"}
+		keyValues := [...]string{data.Passwords[i].Addr.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "password.peer-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("addr"); value.Exists() && !data.Passwords[i].Addr.IsNull() {
+			data.Passwords[i].Addr = types.StringValue(value.String())
+		} else {
+			data.Passwords[i].Addr = types.StringNull()
+		}
+		if value := r.Get("encryption"); value.Exists() && !data.Passwords[i].Encryption.IsNull() {
+			data.Passwords[i].Encryption = types.Int64Value(value.Int())
+		} else {
+			data.Passwords[i].Encryption = types.Int64Null()
+		}
+		if value := r.Get("password"); value.Exists() && !data.Passwords[i].Password.IsNull() {
+			data.Passwords[i].Password = types.StringValue(value.String())
+		} else {
+			data.Passwords[i].Password = types.StringNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -232,23 +232,6 @@ func (data *MSDP) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "originator-id"); value.Exists() {
 		data.OriginatorId = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "password.peer-list"); value.Exists() {
-		data.Passwords = make([]MSDPPasswords, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MSDPPasswords{}
-			if cValue := v.Get("addr"); cValue.Exists() {
-				item.Addr = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("encryption"); cValue.Exists() {
-				item.Encryption = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("password"); cValue.Exists() {
-				item.Password = types.StringValue(cValue.String())
-			}
-			data.Passwords = append(data.Passwords, item)
-			return true
-		})
 	}
 	if value := res.Get(prefix + "peer"); value.Exists() {
 		data.Peers = make([]MSDPPeers, 0)
@@ -264,6 +247,23 @@ func (data *MSDP) fromBody(ctx context.Context, res gjson.Result) {
 				item.ConnectSourceLoopback = types.Int64Value(cValue.Int())
 			}
 			data.Peers = append(data.Peers, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "password.peer-list"); value.Exists() {
+		data.Passwords = make([]MSDPPasswords, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := MSDPPasswords{}
+			if cValue := v.Get("addr"); cValue.Exists() {
+				item.Addr = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("encryption"); cValue.Exists() {
+				item.Encryption = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("password"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			data.Passwords = append(data.Passwords, item)
 			return true
 		})
 	}
@@ -281,23 +281,6 @@ func (data *MSDPData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "originator-id"); value.Exists() {
 		data.OriginatorId = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "password.peer-list"); value.Exists() {
-		data.Passwords = make([]MSDPPasswords, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := MSDPPasswords{}
-			if cValue := v.Get("addr"); cValue.Exists() {
-				item.Addr = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("encryption"); cValue.Exists() {
-				item.Encryption = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("password"); cValue.Exists() {
-				item.Password = types.StringValue(cValue.String())
-			}
-			data.Passwords = append(data.Passwords, item)
-			return true
-		})
-	}
 	if value := res.Get(prefix + "peer"); value.Exists() {
 		data.Peers = make([]MSDPPeers, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -315,6 +298,23 @@ func (data *MSDPData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "password.peer-list"); value.Exists() {
+		data.Passwords = make([]MSDPPasswords, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := MSDPPasswords{}
+			if cValue := v.Get("addr"); cValue.Exists() {
+				item.Addr = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("encryption"); cValue.Exists() {
+				item.Encryption = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("password"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			data.Passwords = append(data.Passwords, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -323,37 +323,6 @@ func (data *MSDPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *MSDP) getDeletedItems(ctx context.Context, state MSDP) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.Peers {
-		stateKeyValues := [...]string{state.Peers[i].Addr.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Peers[i].Addr.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Peers {
-			found = true
-			if state.Peers[i].Addr.ValueString() != data.Peers[j].Addr.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Peers[i].ConnectSourceLoopback.IsNull() && data.Peers[j].ConnectSourceLoopback.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/connect-source/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Peers[i].RemoteAs.IsNull() && data.Peers[j].RemoteAs.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/remote-as", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
 	for i := range state.Passwords {
 		stateKeyValues := [...]string{state.Passwords[i].Addr.ValueString()}
 
@@ -385,6 +354,37 @@ func (data *MSDP) getDeletedItems(ctx context.Context, state MSDP) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/password/peer-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Peers {
+		stateKeyValues := [...]string{state.Peers[i].Addr.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Peers[i].Addr.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Peers {
+			found = true
+			if state.Peers[i].Addr.ValueString() != data.Peers[j].Addr.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Peers[i].ConnectSourceLoopback.IsNull() && data.Peers[j].ConnectSourceLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/connect-source/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Peers[i].RemoteAs.IsNull() && data.Peers[j].RemoteAs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v/remote-as", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/peer=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.OriginatorId.IsNull() && data.OriginatorId.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/originator-id", state.getPath()))
 	}
@@ -408,15 +408,15 @@ func (data *MSDP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *MSDP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Peers {
-		keyValues := [...]string{data.Peers[i].Addr.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/peer=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
 	for i := range data.Passwords {
 		keyValues := [...]string{data.Passwords[i].Addr.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/password/peer-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Peers {
+		keyValues := [...]string{data.Peers[i].Addr.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/peer=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.OriginatorId.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/originator-id", data.getPath()))

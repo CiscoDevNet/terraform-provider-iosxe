@@ -200,13 +200,13 @@ func (r *MDTSubscriptionResource) Create(ctx context.Context, req resource.Creat
 				_, err = device.Client.PutData(plan.getPath(), body)
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -251,7 +251,7 @@ func (r *MDTSubscriptionResource) Read(ctx context.Context, req resource.ReadReq
 			state = MDTSubscription{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 
@@ -333,7 +333,7 @@ func (r *MDTSubscriptionResource) Update(ctx context.Context, req resource.Updat
 			for _, i := range deletedItems {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -342,13 +342,13 @@ func (r *MDTSubscriptionResource) Update(ctx context.Context, req resource.Updat
 				_, err = device.Client.PutData(plan.getPath(), body)
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -389,7 +389,7 @@ func (r *MDTSubscriptionResource) Delete(ctx context.Context, req resource.Delet
 		if deleteMode == "all" {
 			res, err := device.Client.DeleteData(state.Id.ValueString())
 			if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 		} else {
@@ -410,7 +410,7 @@ func (r *MDTSubscriptionResource) Delete(ctx context.Context, req resource.Delet
 				for _, i := range deletePaths {
 					res, err := device.Client.DeleteData(i)
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}
 				}

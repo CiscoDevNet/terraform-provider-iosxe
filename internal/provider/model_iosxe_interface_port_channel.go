@@ -45,17 +45,17 @@ type InterfacePortChannel struct {
 	Name                           types.Int64                                          `tfsdk:"name"`
 	Description                    types.String                                         `tfsdk:"description"`
 	Shutdown                       types.Bool                                           `tfsdk:"shutdown"`
+	Switchport                     types.Bool                                           `tfsdk:"switchport"`
 	IpProxyArp                     types.Bool                                           `tfsdk:"ip_proxy_arp"`
 	IpRedirects                    types.Bool                                           `tfsdk:"ip_redirects"`
 	IpUnreachables                 types.Bool                                           `tfsdk:"ip_unreachables"`
 	VrfForwarding                  types.String                                         `tfsdk:"vrf_forwarding"`
 	Ipv4Address                    types.String                                         `tfsdk:"ipv4_address"`
 	Ipv4AddressMask                types.String                                         `tfsdk:"ipv4_address_mask"`
-	Switchport                     types.Bool                                           `tfsdk:"switchport"`
-	IpAccessGroupIn                types.String                                         `tfsdk:"ip_access_group_in"`
 	IpAccessGroupInEnable          types.Bool                                           `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut               types.String                                         `tfsdk:"ip_access_group_out"`
+	IpAccessGroupIn                types.String                                         `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable         types.Bool                                           `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut               types.String                                         `tfsdk:"ip_access_group_out"`
 	IpDhcpRelaySourceInterface     types.String                                         `tfsdk:"ip_dhcp_relay_source_interface"`
 	SpanningTreeGuard              types.String                                         `tfsdk:"spanning_tree_guard"`
 	AutoQosClassify                types.Bool                                           `tfsdk:"auto_qos_classify"`
@@ -104,17 +104,17 @@ type InterfacePortChannelData struct {
 	Name                           types.Int64                                          `tfsdk:"name"`
 	Description                    types.String                                         `tfsdk:"description"`
 	Shutdown                       types.Bool                                           `tfsdk:"shutdown"`
+	Switchport                     types.Bool                                           `tfsdk:"switchport"`
 	IpProxyArp                     types.Bool                                           `tfsdk:"ip_proxy_arp"`
 	IpRedirects                    types.Bool                                           `tfsdk:"ip_redirects"`
 	IpUnreachables                 types.Bool                                           `tfsdk:"ip_unreachables"`
 	VrfForwarding                  types.String                                         `tfsdk:"vrf_forwarding"`
 	Ipv4Address                    types.String                                         `tfsdk:"ipv4_address"`
 	Ipv4AddressMask                types.String                                         `tfsdk:"ipv4_address_mask"`
-	Switchport                     types.Bool                                           `tfsdk:"switchport"`
-	IpAccessGroupIn                types.String                                         `tfsdk:"ip_access_group_in"`
 	IpAccessGroupInEnable          types.Bool                                           `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut               types.String                                         `tfsdk:"ip_access_group_out"`
+	IpAccessGroupIn                types.String                                         `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable         types.Bool                                           `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut               types.String                                         `tfsdk:"ip_access_group_out"`
 	IpDhcpRelaySourceInterface     types.String                                         `tfsdk:"ip_dhcp_relay_source_interface"`
 	SpanningTreeGuard              types.String                                         `tfsdk:"spanning_tree_guard"`
 	AutoQosClassify                types.Bool                                           `tfsdk:"auto_qos_classify"`
@@ -213,6 +213,9 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", map[string]string{})
 		}
 	}
+	if !data.Switchport.IsNull() && !data.Switchport.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"switchport-conf.switchport", data.Switchport.ValueBool())
+	}
 	if !data.IpProxyArp.IsNull() && !data.IpProxyArp.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.proxy-arp", data.IpProxyArp.ValueBool())
 	}
@@ -231,24 +234,21 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 	if !data.Ipv4AddressMask.IsNull() && !data.Ipv4AddressMask.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.address.primary.mask", data.Ipv4AddressMask.ValueString())
 	}
-	if !data.Switchport.IsNull() && !data.Switchport.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"switchport-conf.switchport", data.Switchport.ValueBool())
-	}
-	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.acl-name", data.IpAccessGroupIn.ValueString())
-	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.in", map[string]string{})
 		}
 	}
-	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.acl-name", data.IpAccessGroupOut.ValueString())
+	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.acl-name", data.IpAccessGroupIn.ValueString())
 	}
 	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.IsUnknown() {
 		if data.IpAccessGroupOutEnable.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.out", map[string]string{})
 		}
+	}
+	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.acl-name", data.IpAccessGroupOut.ValueString())
 	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() && !data.IpDhcpRelaySourceInterface.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface", data.IpDhcpRelaySourceInterface.ValueString())
@@ -477,6 +477,13 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.Shutdown = types.BoolNull()
 	}
+	if value := res.Get(prefix + "switchport-conf.switchport"); !data.Switchport.IsNull() {
+		if value.Exists() {
+			data.Switchport = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Switchport = types.BoolNull()
+	}
 	if value := res.Get(prefix + "ip.proxy-arp"); !data.IpProxyArp.IsNull() {
 		if value.Exists() {
 			data.IpProxyArp = types.BoolValue(value.Bool())
@@ -513,18 +520,6 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.Ipv4AddressMask = types.StringNull()
 	}
-	if value := res.Get(prefix + "switchport-conf.switchport"); !data.Switchport.IsNull() {
-		if value.Exists() {
-			data.Switchport = types.BoolValue(value.Bool())
-		}
-	} else {
-		data.Switchport = types.BoolNull()
-	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() && !data.IpAccessGroupIn.IsNull() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	} else {
-		data.IpAccessGroupIn = types.StringNull()
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
 			data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -534,10 +529,10 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.IpAccessGroupInEnable = types.BoolNull()
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() && !data.IpAccessGroupOut.IsNull() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() && !data.IpAccessGroupIn.IsNull() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	} else {
-		data.IpAccessGroupOut = types.StringNull()
+		data.IpAccessGroupIn = types.StringNull()
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); !data.IpAccessGroupOutEnable.IsNull() {
 		if value.Exists() {
@@ -547,6 +542,11 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 		}
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() && !data.IpAccessGroupOut.IsNull() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
+	} else {
+		data.IpAccessGroupOut = types.StringNull()
 	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() && !data.IpDhcpRelaySourceInterface.IsNull() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
@@ -979,6 +979,11 @@ func (data *InterfacePortChannel) fromBody(ctx context.Context, res gjson.Result
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
+		data.Switchport = types.BoolValue(value.Bool())
+	} else {
+		data.Switchport = types.BoolNull()
+	}
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1003,26 +1008,21 @@ func (data *InterfacePortChannel) fromBody(ctx context.Context, res gjson.Result
 	if value := res.Get(prefix + "ip.address.primary.mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
-		data.Switchport = types.BoolValue(value.Bool())
-	} else {
-		data.Switchport = types.BoolNull()
-	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupInEnable = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); value.Exists() {
 		data.IpAccessGroupOutEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
@@ -1259,6 +1259,11 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	} else {
 		data.Shutdown = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
+		data.Switchport = types.BoolValue(value.Bool())
+	} else {
+		data.Switchport = types.BoolNull()
+	}
 	if value := res.Get(prefix + "ip.proxy-arp"); value.Exists() {
 		data.IpProxyArp = types.BoolValue(value.Bool())
 	} else {
@@ -1283,26 +1288,21 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 	if value := res.Get(prefix + "ip.address.primary.mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "switchport-conf.switchport"); value.Exists() {
-		data.Switchport = types.BoolValue(value.Bool())
-	} else {
-		data.Switchport = types.BoolNull()
-	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupInEnable = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); value.Exists() {
 		data.IpAccessGroupOutEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
@@ -1748,20 +1748,17 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 	if !state.IpDhcpRelaySourceInterface.IsNull() && data.IpDhcpRelaySourceInterface.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", state.getPath()))
 	}
-	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl/out", state.getPath()))
-	}
 	if !state.IpAccessGroupOut.IsNull() && data.IpAccessGroupOut.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl", state.getPath()))
 	}
-	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
+	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl/out", state.getPath()))
 	}
 	if !state.IpAccessGroupIn.IsNull() && data.IpAccessGroupIn.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl", state.getPath()))
 	}
-	if !state.Switchport.IsNull() && data.Switchport.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport-conf/switchport", state.getPath()))
+	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
 	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
@@ -1780,6 +1777,9 @@ func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state Int
 	}
 	if !state.IpProxyArp.IsNull() && data.IpProxyArp.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/proxy-arp", state.getPath()))
+	}
+	if !state.Switchport.IsNull() && data.Switchport.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/switchport-conf/switchport", state.getPath()))
 	}
 	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
@@ -2023,20 +2023,17 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	if !data.IpDhcpRelaySourceInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.getPath()))
 	}
-	if !data.IpAccessGroupOutEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
-	}
 	if !data.IpAccessGroupOut.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl", data.getPath()))
 	}
-	if !data.IpAccessGroupInEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
+	if !data.IpAccessGroupOutEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
 	}
 	if !data.IpAccessGroupIn.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl", data.getPath()))
 	}
-	if !data.Switchport.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport-conf/switchport", data.getPath()))
+	if !data.IpAccessGroupInEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
 	}
 	if !data.Ipv4AddressMask.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
@@ -2055,6 +2052,9 @@ func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpProxyArp.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/proxy-arp", data.getPath()))
+	}
+	if !data.Switchport.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/switchport-conf/switchport", data.getPath()))
 	}
 	if !data.Shutdown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))

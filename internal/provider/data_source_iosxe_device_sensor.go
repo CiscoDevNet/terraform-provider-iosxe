@@ -67,78 +67,6 @@ func (d *DeviceSensorDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"filter_spec_dhcp_includes": schema.ListNestedAttribute{
-				MarkdownDescription: "Protocol Filter Spec list",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"filter_spec_dhcp_excludes": schema.ListNestedAttribute{
-				MarkdownDescription: "Protocol Filter Spec list",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"filter_spec_lldp_includes": schema.ListNestedAttribute{
-				MarkdownDescription: "Protocol Filter Spec list",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"filter_spec_lldp_excludes": schema.ListNestedAttribute{
-				MarkdownDescription: "Protocol Filter Spec list",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"filter_spec_cdp_includes": schema.ListNestedAttribute{
-				MarkdownDescription: "Protocol Filter Spec list",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"filter_spec_cdp_excludes": schema.ListNestedAttribute{
-				MarkdownDescription: "Protocol Filter Spec list",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-					},
-				},
-			},
 			"filter_lists_lldp": schema.ListNestedAttribute{
 				MarkdownDescription: "Protocol Filter List",
 				Computed:            true,
@@ -211,6 +139,78 @@ func (d *DeviceSensorDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 			},
+			"filter_spec_dhcp_includes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_dhcp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_lldp_includes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_lldp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_cdp_includes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"filter_spec_cdp_excludes": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter Spec list",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"notify_all_changes": schema.BoolAttribute{
 				MarkdownDescription: "Trigger identity update when TLVs are added/modified/removed",
 				Computed:            true,
@@ -254,7 +254,7 @@ func (d *DeviceSensorDataSource) Read(ctx context.Context, req datasource.ReadRe
 		config = DeviceSensorData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

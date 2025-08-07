@@ -140,20 +140,20 @@ func (r *InterfaceLoopbackResource) Schema(ctx context.Context, req resource.Sch
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
-			"ip_access_group_in": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
 				Optional:            true,
 			},
-			"ip_access_group_out": schema.StringAttribute{
+			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"ip_access_group_out_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
+				Optional:            true,
+			},
+			"ip_access_group_out": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"ipv6_enable": schema.BoolAttribute{
@@ -283,13 +283,13 @@ func (r *InterfaceLoopbackResource) Create(ctx context.Context, req resource.Cre
 				_, err = device.Client.PutData(plan.getPath(), body)
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -334,7 +334,7 @@ func (r *InterfaceLoopbackResource) Read(ctx context.Context, req resource.ReadR
 			state = InterfaceLoopback{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 
@@ -416,7 +416,7 @@ func (r *InterfaceLoopbackResource) Update(ctx context.Context, req resource.Upd
 			for _, i := range deletedItems {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -425,13 +425,13 @@ func (r *InterfaceLoopbackResource) Update(ctx context.Context, req resource.Upd
 				_, err = device.Client.PutData(plan.getPath(), body)
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -477,7 +477,7 @@ func (r *InterfaceLoopbackResource) Delete(ctx context.Context, req resource.Del
 		if deleteMode == "all" {
 			res, err := device.Client.DeleteData(state.Id.ValueString())
 			if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 		} else {
@@ -498,7 +498,7 @@ func (r *InterfaceLoopbackResource) Delete(ctx context.Context, req resource.Del
 				for _, i := range deletePaths {
 					res, err := device.Client.DeleteData(i)
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}
 				}

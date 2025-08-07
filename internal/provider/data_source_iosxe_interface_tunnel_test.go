@@ -56,10 +56,10 @@ func TestAccDataSourceIosxeInterfaceTunnel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ipv4_address_mask", "255.255.255.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_mtu", "1200"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_dhcp_relay_source_interface", "Loopback100"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_access_group_in_enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_access_group_out", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_access_group_out_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "ip_access_group_out", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_tunnel.test", "helper_addresses.0.vrf", "VRF1"))
@@ -136,10 +136,10 @@ func testAccDataSourceIosxeInterfaceTunnelConfig() string {
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
 	config += `	ip_mtu = 1200` + "\n"
 	config += `	ip_dhcp_relay_source_interface = "Loopback100"` + "\n"
-	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_in_enable = true` + "\n"
-	config += `	ip_access_group_out = "1"` + "\n"
+	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_out_enable = true` + "\n"
+	config += `	ip_access_group_out = "1"` + "\n"
 	config += `	helper_addresses = [{` + "\n"
 	config += `		address = "10.10.10.10"` + "\n"
 	config += `		global = false` + "\n"

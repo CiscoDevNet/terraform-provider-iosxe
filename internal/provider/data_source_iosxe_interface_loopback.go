@@ -103,20 +103,20 @@ func (d *InterfaceLoopbackDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
-			"ip_access_group_in": schema.StringAttribute{
-				MarkdownDescription: "",
-				Computed:            true,
-			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: "inbound packets",
 				Computed:            true,
 			},
-			"ip_access_group_out": schema.StringAttribute{
+			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
 			"ip_access_group_out_enable": schema.BoolAttribute{
 				MarkdownDescription: "outbound packets",
+				Computed:            true,
+			},
+			"ip_access_group_out": schema.StringAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
 			"ipv6_enable": schema.BoolAttribute{
@@ -214,7 +214,7 @@ func (d *InterfaceLoopbackDataSource) Read(ctx context.Context, req datasource.R
 		config = InterfaceLoopbackData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

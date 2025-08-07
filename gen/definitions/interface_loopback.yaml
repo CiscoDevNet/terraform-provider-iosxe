@@ -29,24 +29,24 @@ attributes:
     tf_name: ipv4_address_mask
     example: 255.255.255.255
     delete_parent: true
-  - yang_name: ip/access-group/in/apply-type/apply-intf/acl/acl-name
-    xpath: ip/access-group/in/acl/acl-name
-    tf_name: ip_access_group_in
-    delete_parent: true
-    example: 1
   - yang_name: ip/access-group/in/apply-type/apply-intf/acl/in
     xpath: ip/access-group/in/acl/in
     tf_name: ip_access_group_in_enable
     example: true
-  - yang_name: ip/access-group/out/apply-type/apply-intf/acl/acl-name
-    xpath: ip/access-group/out/acl/acl-name
-    tf_name: ip_access_group_out
+  - yang_name: ip/access-group/in/apply-type/apply-intf/acl/acl-name
+    xpath: ip/access-group/in/acl/acl-name
+    tf_name: ip_access_group_in
     delete_parent: true
     example: 1
   - yang_name: ip/access-group/out/apply-type/apply-intf/acl/out
     xpath: ip/access-group/out/acl/out
     tf_name: ip_access_group_out_enable
     example: true
+  - yang_name: ip/access-group/out/apply-type/apply-intf/acl/acl-name
+    xpath: ip/access-group/out/acl/acl-name
+    tf_name: ip_access_group_out
+    delete_parent: true
+    example: 1
   - yang_name: ipv6/enable
     example: true
   - yang_name: ipv6/mtu
