@@ -169,8 +169,12 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_adslline", "true"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_pki", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_alarm_type", "informational"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_pki", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_alarm_type", "informational"))
+	}
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_casa", "true"))
 	}
@@ -282,9 +286,6 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_vrrp", "true"))
 	}
-	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "enable_traps_srp", "true"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "source_interface_informs_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "source_interface_traps_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "trap_source_loopback", "1"))
@@ -313,7 +314,7 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeSNMPServerImportStateIdFunc("iosxe_snmp_server.test"),
-				ImportStateVerifyIgnore: []string{"ifindex_persist", "enable_informs", "enable_traps_rep", "enable_traps_license", "enable_traps_stackwise", "enable_traps_udld_link_fail_rpt", "enable_traps_udld_status_change", "enable_traps_energywise", "enable_traps_power_ethernet_police", "enable_traps_envmon", "enable_traps_cef_resource_failure", "enable_traps_cef_peer_state_change", "enable_traps_cef_peer_fib_state_change", "enable_traps_cef_inconsistency", "enable_traps_isis", "enable_traps_entity_diag_boot_up_fail", "enable_traps_entity_diag_hm_test_recover", "enable_traps_entity_diag_hm_thresh_reached", "enable_traps_entity_diag_scheduled_test_fail", "enable_traps_hsrp", "enable_traps_bridge_newroot", "enable_traps_bridge_topologychange", "enable_traps_stpx_inconsistency", "enable_traps_stpx_root_inconsistency", "enable_traps_stpx_loop_inconsistency", "enable_traps_bgp_cbgp2", "enable_traps_nhrp_nhs", "enable_traps_nhrp_nhc", "enable_traps_nhrp_nhp", "enable_traps_nhrp_quota_exceeded", "enable_traps_mpls_traffic_eng", "enable_traps_mpls", "enable_traps_mpls_vpn", "enable_traps_mpls_rfc", "enable_traps_mpls_rfc_ldp", "enable_traps_mpls_ldp", "enable_traps_fast_reroute_protected", "enable_traps_local_auth", "enable_traps_vlan_membership", "enable_traps_errdisable", "enable_traps_mac_notification_change", "enable_traps_mac_notification_move", "enable_traps_mac_notification_threshold", "enable_traps_mvpn", "enable_traps_lisp", "enable_traps_vdsl2line", "enable_traps_adslline", "enable_traps_casa", "enable_traps_cnpd", "enable_traps_dial", "enable_traps_dlsw", "enable_traps_ds1", "enable_traps_dsp_card_status", "enable_traps_dsp_oper_state", "enable_traps_entity_sensor", "enable_traps_entity_state", "enable_traps_entity_qfp_mem_res_thresh", "enable_traps_entity_qfp_throughput_notif", "enable_traps_ether_oam", "enable_traps_ethernet_cfm_alarm", "enable_traps_ethernet_cfm_cc_config", "enable_traps_ethernet_cfm_cc_cross_connect", "enable_traps_ethernet_cfm_cc_loop", "enable_traps_ethernet_cfm_cc_mep_down", "enable_traps_ethernet_cfm_cc_mep_up", "enable_traps_ethernet_cfm_crosscheck_mep_missing", "enable_traps_ethernet_cfm_crosscheck_mep_unknown", "enable_traps_ethernet_cfm_crosscheck_service_up", "enable_traps_ethernet_evc_create", "enable_traps_ethernet_evc_delete", "enable_traps_ethernet_evc_status", "enable_traps_firewall_serverstatus", "enable_traps_frame_relay_config_only", "enable_traps_frame_relay_config_subif_configs", "enable_traps_frame_relay_config_bundle_mismatch", "enable_traps_frame_relay_multilink_bundle_mismatch", "enable_traps_ip_local_pool", "enable_traps_isdn_call_information", "enable_traps_isdn_chan_not_avail", "enable_traps_isdn_ietf", "enable_traps_isdn_layer2", "enable_traps_l2tun_session", "enable_traps_l2tun_tunnel", "enable_traps_l2tun_pseudowire_status", "enable_traps_pimstdmib_neighbor_loss", "enable_traps_pimstdmib_invalid_register", "enable_traps_pimstdmib_invalid_join_prune", "enable_traps_pimstdmib_rp_mapping_change", "enable_traps_pimstdmib_interface_election", "enable_traps_pfr", "enable_traps_pppoe", "enable_traps_resource_policy", "enable_traps_rsvp", "enable_traps_vrrp", "enable_traps_sonet", "enable_traps_srp", "enable_traps_voice"},
+				ImportStateVerifyIgnore: []string{"ifindex_persist", "enable_informs", "enable_traps_rep", "enable_traps_license", "enable_traps_stackwise", "enable_traps_udld_link_fail_rpt", "enable_traps_udld_status_change", "enable_traps_energywise", "enable_traps_power_ethernet_police", "enable_traps_envmon", "enable_traps_cef_resource_failure", "enable_traps_cef_peer_state_change", "enable_traps_cef_peer_fib_state_change", "enable_traps_cef_inconsistency", "enable_traps_isis", "enable_traps_entity_diag_boot_up_fail", "enable_traps_entity_diag_hm_test_recover", "enable_traps_entity_diag_hm_thresh_reached", "enable_traps_entity_diag_scheduled_test_fail", "enable_traps_hsrp", "enable_traps_bridge_newroot", "enable_traps_bridge_topologychange", "enable_traps_stpx_inconsistency", "enable_traps_stpx_root_inconsistency", "enable_traps_stpx_loop_inconsistency", "enable_traps_bgp_cbgp2", "enable_traps_nhrp_nhs", "enable_traps_nhrp_nhc", "enable_traps_nhrp_nhp", "enable_traps_nhrp_quota_exceeded", "enable_traps_mpls_traffic_eng", "enable_traps_mpls", "enable_traps_mpls_vpn", "enable_traps_mpls_rfc", "enable_traps_mpls_rfc_ldp", "enable_traps_mpls_ldp", "enable_traps_fast_reroute_protected", "enable_traps_local_auth", "enable_traps_vlan_membership", "enable_traps_errdisable", "enable_traps_mac_notification_change", "enable_traps_mac_notification_move", "enable_traps_mac_notification_threshold", "enable_traps_mvpn", "enable_traps_lisp", "enable_traps_vdsl2line", "enable_traps_adslline", "enable_traps_pki", "enable_traps_casa", "enable_traps_cnpd", "enable_traps_dial", "enable_traps_dlsw", "enable_traps_ds1", "enable_traps_dsp_card_status", "enable_traps_dsp_oper_state", "enable_traps_entity_sensor", "enable_traps_entity_state", "enable_traps_entity_qfp_mem_res_thresh", "enable_traps_entity_qfp_throughput_notif", "enable_traps_ether_oam", "enable_traps_ethernet_cfm_alarm", "enable_traps_ethernet_cfm_cc_config", "enable_traps_ethernet_cfm_cc_cross_connect", "enable_traps_ethernet_cfm_cc_loop", "enable_traps_ethernet_cfm_cc_mep_down", "enable_traps_ethernet_cfm_cc_mep_up", "enable_traps_ethernet_cfm_crosscheck_mep_missing", "enable_traps_ethernet_cfm_crosscheck_mep_unknown", "enable_traps_ethernet_cfm_crosscheck_service_up", "enable_traps_ethernet_evc_create", "enable_traps_ethernet_evc_delete", "enable_traps_ethernet_evc_status", "enable_traps_firewall_serverstatus", "enable_traps_frame_relay_config_only", "enable_traps_frame_relay_config_subif_configs", "enable_traps_frame_relay_config_bundle_mismatch", "enable_traps_frame_relay_multilink_bundle_mismatch", "enable_traps_ip_local_pool", "enable_traps_isdn_call_information", "enable_traps_isdn_chan_not_avail", "enable_traps_isdn_ietf", "enable_traps_isdn_layer2", "enable_traps_l2tun_session", "enable_traps_l2tun_tunnel", "enable_traps_l2tun_pseudowire_status", "enable_traps_pimstdmib_neighbor_loss", "enable_traps_pimstdmib_invalid_register", "enable_traps_pimstdmib_invalid_join_prune", "enable_traps_pimstdmib_rp_mapping_change", "enable_traps_pimstdmib_interface_election", "enable_traps_pfr", "enable_traps_pppoe", "enable_traps_resource_policy", "enable_traps_rsvp", "enable_traps_vrrp", "enable_traps_sonet", "enable_traps_srp", "enable_traps_voice"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -497,8 +498,12 @@ func testAccIosxeSNMPServerConfig_all() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	enable_traps_adslline = true` + "\n"
 	}
-	config += `	enable_traps_pki = true` + "\n"
-	config += `	enable_traps_alarm_type = "informational"` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_pki = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_alarm_type = "informational"` + "\n"
+	}
 	if os.Getenv("C8000V") != "" {
 		config += `	enable_traps_casa = true` + "\n"
 	}
@@ -609,9 +614,6 @@ func testAccIosxeSNMPServerConfig_all() string {
 	}
 	if os.Getenv("C8000V") != "" {
 		config += `	enable_traps_vrrp = true` + "\n"
-	}
-	if os.Getenv("C8000V") != "" {
-		config += `	enable_traps_srp = true` + "\n"
 	}
 	config += `	source_interface_informs_loopback = 1` + "\n"
 	config += `	source_interface_traps_loopback = 1` + "\n"

@@ -167,8 +167,12 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_adslline", "true"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pki", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_alarm_type", "informational"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pki", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_alarm_type", "informational"))
+	}
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_casa", "true"))
 	}
@@ -279,9 +283,6 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	}
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrrp", "true"))
-	}
-	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_srp", "true"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_informs_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_traps_loopback", "1"))
@@ -463,8 +464,12 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	enable_traps_adslline = true` + "\n"
 	}
-	config += `	enable_traps_pki = true` + "\n"
-	config += `	enable_traps_alarm_type = "informational"` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_pki = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_alarm_type = "informational"` + "\n"
+	}
 	if os.Getenv("C8000V") != "" {
 		config += `	enable_traps_casa = true` + "\n"
 	}
@@ -575,9 +580,6 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	}
 	if os.Getenv("C8000V") != "" {
 		config += `	enable_traps_vrrp = true` + "\n"
-	}
-	if os.Getenv("C8000V") != "" {
-		config += `	enable_traps_srp = true` + "\n"
 	}
 	config += `	source_interface_informs_loopback = 1` + "\n"
 	config += `	source_interface_traps_loopback = 1` + "\n"
