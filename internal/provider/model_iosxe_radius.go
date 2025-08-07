@@ -302,10 +302,10 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string {
 	deletedItems := make([]string, 0)
 	if !state.PacKeyEncryption.IsNull() && data.PacKeyEncryption.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/pac/key/encryption", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/pac/key", state.getPath()))
 	}
 	if !state.PacKey.IsNull() && data.PacKey.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/pac/key/key", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/pac/key", state.getPath()))
 	}
 	if !state.AutomateTesterProbeOnConfig.IsNull() && data.AutomateTesterProbeOnConfig.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/probe-on-config", state.getPath()))
@@ -317,7 +317,7 @@ func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string 
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/username", state.getPath()))
 	}
 	if !state.Key.IsNull() && data.Key.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/key", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/key", state.getPath()))
 	}
 	if !state.Retransmit.IsNull() && data.Retransmit.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/retransmit", state.getPath()))
@@ -361,10 +361,10 @@ func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.PacKeyEncryption.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key/encryption", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key", data.getPath()))
 	}
 	if !data.PacKey.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key/key", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key", data.getPath()))
 	}
 	if !data.AutomateTesterProbeOnConfig.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/probe-on-config", data.getPath()))
@@ -376,7 +376,7 @@ func (data *Radius) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/username", data.getPath()))
 	}
 	if !data.Key.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/key", data.getPath()))
 	}
 	if !data.Retransmit.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/retransmit", data.getPath()))
