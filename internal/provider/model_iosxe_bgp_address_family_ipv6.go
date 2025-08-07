@@ -288,12 +288,6 @@ func (data *BGPAddressFamilyIPv6Data) fromBody(ctx context.Context, res gjson.Re
 
 func (data *BGPAddressFamilyIPv6) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv6) []string {
 	deletedItems := make([]string, 0)
-	if !state.Ipv6UnicastRedistributeConnected.IsNull() && data.Ipv6UnicastRedistributeConnected.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", state.getPath()))
-	}
-	if !state.Ipv6UnicastRedistributeStatic.IsNull() && data.Ipv6UnicastRedistributeStatic.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", state.getPath()))
-	}
 	for i := range state.Ipv6UnicastNetworks {
 		stateKeyValues := [...]string{state.Ipv6UnicastNetworks[i].Network.ValueString()}
 
@@ -312,11 +306,11 @@ func (data *BGPAddressFamilyIPv6) getDeletedItems(ctx context.Context, state BGP
 				found = false
 			}
 			if found {
-				if !state.Ipv6UnicastNetworks[i].RouteMap.IsNull() && data.Ipv6UnicastNetworks[j].RouteMap.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/network=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				if !state.Ipv6UnicastNetworks[i].Backdoor.IsNull() && data.Ipv6UnicastNetworks[j].Backdoor.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/network=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Ipv6UnicastNetworks[i].RouteMap.IsNull() && data.Ipv6UnicastNetworks[j].RouteMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/network=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -325,6 +319,13 @@ func (data *BGPAddressFamilyIPv6) getDeletedItems(ctx context.Context, state BGP
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.Ipv6UnicastRedistributeStatic.IsNull() && data.Ipv6UnicastRedistributeStatic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", state.getPath()))
+	}
+	if !state.Ipv6UnicastRedistributeConnected.IsNull() && data.Ipv6UnicastRedistributeConnected.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -334,12 +335,6 @@ func (data *BGPAddressFamilyIPv6) getDeletedItems(ctx context.Context, state BGP
 
 func (data *BGPAddressFamilyIPv6) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Ipv6UnicastRedistributeConnected.IsNull() && !data.Ipv6UnicastRedistributeConnected.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", data.getPath()))
-	}
-	if !data.Ipv6UnicastRedistributeStatic.IsNull() && !data.Ipv6UnicastRedistributeStatic.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", data.getPath()))
-	}
 
 	for i := range data.Ipv6UnicastNetworks {
 		keyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
@@ -347,6 +342,13 @@ func (data *BGPAddressFamilyIPv6) getEmptyLeafsDelete(ctx context.Context) []str
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6-unicast/network=%v/backdoor", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+	if !data.Ipv6UnicastRedistributeStatic.IsNull() && !data.Ipv6UnicastRedistributeStatic.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", data.getPath()))
+	}
+	if !data.Ipv6UnicastRedistributeConnected.IsNull() && !data.Ipv6UnicastRedistributeConnected.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -356,17 +358,18 @@ func (data *BGPAddressFamilyIPv6) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *BGPAddressFamilyIPv6) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Ipv6UnicastRedistributeConnected.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", data.getPath()))
-	}
-	if !data.Ipv6UnicastRedistributeStatic.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", data.getPath()))
-	}
 	for i := range data.Ipv6UnicastNetworks {
 		keyValues := [...]string{data.Ipv6UnicastNetworks[i].Network.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.Ipv6UnicastRedistributeStatic.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/static", data.getPath()))
+	}
+	if !data.Ipv6UnicastRedistributeConnected.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6-unicast/redistribute-v6/connected", data.getPath()))
+	}
+
 	return deletePaths
 }
 

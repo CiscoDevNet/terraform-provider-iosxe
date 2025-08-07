@@ -497,14 +497,29 @@ func (data *ARPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 	deletedItems := make([]string, 0)
-	if !state.IncompleteEntries.IsNull() && data.IncompleteEntries.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/incomplete/entries", state.getPath()))
+	if !state.InspectionVlan.IsNull() && data.InspectionVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/vlan", state.getPath()))
 	}
-	if !state.ProxyDisable.IsNull() && data.ProxyDisable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/proxy/disable", state.getPath()))
+	if !state.InspectionLogBufferLogsInterval.IsNull() && data.InspectionLogBufferLogsInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/logs", state.getPath()))
 	}
-	if !state.EntryLearn.IsNull() && data.EntryLearn.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/entry/learn", state.getPath()))
+	if !state.InspectionLogBufferLogsEntries.IsNull() && data.InspectionLogBufferLogsEntries.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/logs", state.getPath()))
+	}
+	if !state.InspectionLogBufferEntries.IsNull() && data.InspectionLogBufferEntries.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/entries", state.getPath()))
+	}
+	if !state.InspectionValidateAllowZeros.IsNull() && data.InspectionValidateAllowZeros.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate/allow", state.getPath()))
+	}
+	if !state.InspectionValidateIp.IsNull() && data.InspectionValidateIp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
+	}
+	if !state.InspectionValidateDstMac.IsNull() && data.InspectionValidateDstMac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
+	}
+	if !state.InspectionValidateSrcMac.IsNull() && data.InspectionValidateSrcMac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
 	}
 	for i := range state.InspectionFilters {
 		stateKeyValues := [...]string{state.InspectionFilters[i].Name.ValueString()}
@@ -559,30 +574,16 @@ func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/filter=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.InspectionValidateSrcMac.IsNull() && data.InspectionValidateSrcMac.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
+	if !state.EntryLearn.IsNull() && data.EntryLearn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/entry/learn", state.getPath()))
 	}
-	if !state.InspectionValidateDstMac.IsNull() && data.InspectionValidateDstMac.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
+	if !state.ProxyDisable.IsNull() && data.ProxyDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/proxy/disable", state.getPath()))
 	}
-	if !state.InspectionValidateIp.IsNull() && data.InspectionValidateIp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate", state.getPath()))
+	if !state.IncompleteEntries.IsNull() && data.IncompleteEntries.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/incomplete/entries", state.getPath()))
 	}
-	if !state.InspectionValidateAllowZeros.IsNull() && data.InspectionValidateAllowZeros.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/validate/allow", state.getPath()))
-	}
-	if !state.InspectionLogBufferEntries.IsNull() && data.InspectionLogBufferEntries.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/entries", state.getPath()))
-	}
-	if !state.InspectionLogBufferLogsEntries.IsNull() && data.InspectionLogBufferLogsEntries.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/logs", state.getPath()))
-	}
-	if !state.InspectionLogBufferLogsInterval.IsNull() && data.InspectionLogBufferLogsInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/log-buffer/logs", state.getPath()))
-	}
-	if !state.InspectionVlan.IsNull() && data.InspectionVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inspection/vlan", state.getPath()))
-	}
+
 	return deletedItems
 }
 
@@ -592,8 +593,17 @@ func (data *ARP) getDeletedItems(ctx context.Context, state ARP) []string {
 
 func (data *ARP) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.ProxyDisable.IsNull() && !data.ProxyDisable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/proxy/disable", data.getPath()))
+	if !data.InspectionValidateAllowZeros.IsNull() && !data.InspectionValidateAllowZeros.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/validate/allow/zeros", data.getPath()))
+	}
+	if !data.InspectionValidateIp.IsNull() && !data.InspectionValidateIp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/validate/ip", data.getPath()))
+	}
+	if !data.InspectionValidateDstMac.IsNull() && !data.InspectionValidateDstMac.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/validate/dst-mac", data.getPath()))
+	}
+	if !data.InspectionValidateSrcMac.IsNull() && !data.InspectionValidateSrcMac.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/validate/src-mac", data.getPath()))
 	}
 
 	for i := range data.InspectionFilters {
@@ -606,18 +616,10 @@ func (data *ARP) getEmptyLeafsDelete(ctx context.Context) []string {
 			}
 		}
 	}
-	if !data.InspectionValidateSrcMac.IsNull() && !data.InspectionValidateSrcMac.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/validate/src-mac", data.getPath()))
+	if !data.ProxyDisable.IsNull() && !data.ProxyDisable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/proxy/disable", data.getPath()))
 	}
-	if !data.InspectionValidateDstMac.IsNull() && !data.InspectionValidateDstMac.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/validate/dst-mac", data.getPath()))
-	}
-	if !data.InspectionValidateIp.IsNull() && !data.InspectionValidateIp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/validate/ip", data.getPath()))
-	}
-	if !data.InspectionValidateAllowZeros.IsNull() && !data.InspectionValidateAllowZeros.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inspection/validate/allow/zeros", data.getPath()))
-	}
+
 	return emptyLeafsDelete
 }
 
@@ -627,44 +629,45 @@ func (data *ARP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *ARP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.IncompleteEntries.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/incomplete/entries", data.getPath()))
+	if !data.InspectionVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/vlan", data.getPath()))
 	}
-	if !data.ProxyDisable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/proxy/disable", data.getPath()))
+	if !data.InspectionLogBufferLogsInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/log-buffer/logs", data.getPath()))
 	}
-	if !data.EntryLearn.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/entry/learn", data.getPath()))
+	if !data.InspectionLogBufferLogsEntries.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/log-buffer/logs", data.getPath()))
+	}
+	if !data.InspectionLogBufferEntries.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/log-buffer/entries", data.getPath()))
+	}
+	if !data.InspectionValidateAllowZeros.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/validate/allow", data.getPath()))
+	}
+	if !data.InspectionValidateIp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/validate", data.getPath()))
+	}
+	if !data.InspectionValidateDstMac.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/validate", data.getPath()))
+	}
+	if !data.InspectionValidateSrcMac.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/validate", data.getPath()))
 	}
 	for i := range data.InspectionFilters {
 		keyValues := [...]string{data.InspectionFilters[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/filter=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.InspectionValidateSrcMac.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/validate", data.getPath()))
+	if !data.EntryLearn.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/entry/learn", data.getPath()))
 	}
-	if !data.InspectionValidateDstMac.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/validate", data.getPath()))
+	if !data.ProxyDisable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/proxy/disable", data.getPath()))
 	}
-	if !data.InspectionValidateIp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/validate", data.getPath()))
+	if !data.IncompleteEntries.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/incomplete/entries", data.getPath()))
 	}
-	if !data.InspectionValidateAllowZeros.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/validate/allow", data.getPath()))
-	}
-	if !data.InspectionLogBufferEntries.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/log-buffer/entries", data.getPath()))
-	}
-	if !data.InspectionLogBufferLogsEntries.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/log-buffer/logs", data.getPath()))
-	}
-	if !data.InspectionLogBufferLogsInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/log-buffer/logs", data.getPath()))
-	}
-	if !data.InspectionVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inspection/vlan", data.getPath()))
-	}
+
 	return deletePaths
 }
 

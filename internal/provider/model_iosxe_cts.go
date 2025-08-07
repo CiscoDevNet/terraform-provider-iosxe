@@ -135,6 +135,7 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 	if !state.AuthorizationList.IsNull() && data.AuthorizationList.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:authorization/list", state.getPath()))
 	}
+
 	return deletedItems
 }
 
@@ -144,6 +145,7 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 
 func (data *CTS) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -156,6 +158,7 @@ func (data *CTS) getDeletePaths(ctx context.Context) []string {
 	if !data.AuthorizationList.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:authorization/list", data.getPath()))
 	}
+
 	return deletePaths
 }
 

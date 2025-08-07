@@ -323,39 +323,40 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string {
 	deletedItems := make([]string, 0)
-	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/ipv4", state.getPath()))
-	}
-	if !state.AuthenticationPort.IsNull() && data.AuthenticationPort.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/auth-port", state.getPath()))
-	}
-	if !state.AccountingPort.IsNull() && data.AccountingPort.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/acct-port", state.getPath()))
-	}
-	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/timeout", state.getPath()))
-	}
-	if !state.Retransmit.IsNull() && data.Retransmit.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/retransmit", state.getPath()))
-	}
-	if !state.Key.IsNull() && data.Key.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/key", state.getPath()))
-	}
-	if !state.AutomateTesterUsername.IsNull() && data.AutomateTesterUsername.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/username", state.getPath()))
-	}
-	if !state.AutomateTesterIgnoreAcctPort.IsNull() && data.AutomateTesterIgnoreAcctPort.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/ignore-acct-port", state.getPath()))
-	}
-	if !state.AutomateTesterProbeOnConfig.IsNull() && data.AutomateTesterProbeOnConfig.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/probe-on-config", state.getPath()))
+	if !state.PacKeyEncryption.IsNull() && data.PacKeyEncryption.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/pac/key/encryption", state.getPath()))
 	}
 	if !state.PacKey.IsNull() && data.PacKey.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/pac/key/key", state.getPath()))
 	}
-	if !state.PacKeyEncryption.IsNull() && data.PacKeyEncryption.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/pac/key/encryption", state.getPath()))
+	if !state.AutomateTesterProbeOnConfig.IsNull() && data.AutomateTesterProbeOnConfig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/probe-on-config", state.getPath()))
 	}
+	if !state.AutomateTesterIgnoreAcctPort.IsNull() && data.AutomateTesterIgnoreAcctPort.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/ignore-acct-port", state.getPath()))
+	}
+	if !state.AutomateTesterUsername.IsNull() && data.AutomateTesterUsername.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/username", state.getPath()))
+	}
+	if !state.Key.IsNull() && data.Key.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/key", state.getPath()))
+	}
+	if !state.Retransmit.IsNull() && data.Retransmit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/retransmit", state.getPath()))
+	}
+	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timeout", state.getPath()))
+	}
+	if !state.AccountingPort.IsNull() && data.AccountingPort.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/acct-port", state.getPath()))
+	}
+	if !state.AuthenticationPort.IsNull() && data.AuthenticationPort.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/auth-port", state.getPath()))
+	}
+	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/address/ipv4", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -365,12 +366,13 @@ func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string 
 
 func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/automate-tester/ignore-acct-port", data.getPath()))
-	}
 	if !data.AutomateTesterProbeOnConfig.IsNull() && !data.AutomateTesterProbeOnConfig.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/automate-tester/probe-on-config", data.getPath()))
 	}
+	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/automate-tester/ignore-acct-port", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -380,39 +382,40 @@ func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Ipv4Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/ipv4", data.getPath()))
-	}
-	if !data.AuthenticationPort.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/auth-port", data.getPath()))
-	}
-	if !data.AccountingPort.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/acct-port", data.getPath()))
-	}
-	if !data.Timeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timeout", data.getPath()))
-	}
-	if !data.Retransmit.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/retransmit", data.getPath()))
-	}
-	if !data.Key.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
-	}
-	if !data.AutomateTesterUsername.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/username", data.getPath()))
-	}
-	if !data.AutomateTesterIgnoreAcctPort.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/ignore-acct-port", data.getPath()))
-	}
-	if !data.AutomateTesterProbeOnConfig.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/probe-on-config", data.getPath()))
+	if !data.PacKeyEncryption.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key/encryption", data.getPath()))
 	}
 	if !data.PacKey.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key/key", data.getPath()))
 	}
-	if !data.PacKeyEncryption.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key/encryption", data.getPath()))
+	if !data.AutomateTesterProbeOnConfig.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/probe-on-config", data.getPath()))
 	}
+	if !data.AutomateTesterIgnoreAcctPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/ignore-acct-port", data.getPath()))
+	}
+	if !data.AutomateTesterUsername.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/username", data.getPath()))
+	}
+	if !data.Key.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
+	}
+	if !data.Retransmit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/retransmit", data.getPath()))
+	}
+	if !data.Timeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timeout", data.getPath()))
+	}
+	if !data.AccountingPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/acct-port", data.getPath()))
+	}
+	if !data.AuthenticationPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/auth-port", data.getPath()))
+	}
+	if !data.Ipv4Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/address/ipv4", data.getPath()))
+	}
+
 	return deletePaths
 }
 

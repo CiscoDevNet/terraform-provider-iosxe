@@ -181,18 +181,19 @@ func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2) []string {
 	deletedItems := make([]string, 0)
-	if !state.NatKeepalive.IsNull() && data.NatKeepalive.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/nat/keepalive", state.getPath()))
-	}
-	if !state.Dpd.IsNull() && data.Dpd.IsNull() {
+	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd-container", state.getPath()))
 	}
 	if !state.DpdRetryInterval.IsNull() && data.DpdRetryInterval.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd-container", state.getPath()))
 	}
-	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
+	if !state.Dpd.IsNull() && data.Dpd.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd-container", state.getPath()))
 	}
+	if !state.NatKeepalive.IsNull() && data.NatKeepalive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nat/keepalive", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -202,6 +203,7 @@ func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2)
 
 func (data *CryptoIKEv2) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -211,18 +213,19 @@ func (data *CryptoIKEv2) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *CryptoIKEv2) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.NatKeepalive.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/nat/keepalive", data.getPath()))
-	}
-	if !data.Dpd.IsNull() {
+	if !data.DpdQuery.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container", data.getPath()))
 	}
 	if !data.DpdRetryInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container", data.getPath()))
 	}
-	if !data.DpdQuery.IsNull() {
+	if !data.Dpd.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd-container", data.getPath()))
 	}
+	if !data.NatKeepalive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nat/keepalive", data.getPath()))
+	}
+
 	return deletePaths
 }
 

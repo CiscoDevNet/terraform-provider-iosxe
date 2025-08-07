@@ -314,39 +314,40 @@ func (data *FlowExporterData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *FlowExporter) getDeletedItems(ctx context.Context, state FlowExporter) []string {
 	deletedItems := make([]string, 0)
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	if !state.DestinationIp.IsNull() && data.DestinationIp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/destination/ipdest/ip", state.getPath()))
-	}
-	if !state.SourceLoopback.IsNull() && data.SourceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/source/Loopback", state.getPath()))
-	}
-	if !state.TransportUdp.IsNull() && data.TransportUdp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/transport/udp", state.getPath()))
-	}
-	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/template/data/timeout", state.getPath()))
-	}
-	if !state.ExportProtocol.IsNull() && data.ExportProtocol.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/export-protocol", state.getPath()))
-	}
-	if !state.OptionInterfaceTableTimeout.IsNull() && data.OptionInterfaceTableTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/interface-table/timeout", state.getPath()))
-	}
-	if !state.OptionVrfTableTimeout.IsNull() && data.OptionVrfTableTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/vrf-table/timeout", state.getPath()))
-	}
-	if !state.OptionSamplerTable.IsNull() && data.OptionSamplerTable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/sampler-table", state.getPath()))
+	if !state.OptionApplicationAttributesTimeout.IsNull() && data.OptionApplicationAttributesTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/application-attributes/timeout", state.getPath()))
 	}
 	if !state.OptionApplicationTableTimeout.IsNull() && data.OptionApplicationTableTimeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/application-table/timeout", state.getPath()))
 	}
-	if !state.OptionApplicationAttributesTimeout.IsNull() && data.OptionApplicationAttributesTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/application-attributes/timeout", state.getPath()))
+	if !state.OptionSamplerTable.IsNull() && data.OptionSamplerTable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/sampler-table", state.getPath()))
 	}
+	if !state.OptionVrfTableTimeout.IsNull() && data.OptionVrfTableTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/vrf-table/timeout", state.getPath()))
+	}
+	if !state.OptionInterfaceTableTimeout.IsNull() && data.OptionInterfaceTableTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/option/interface-table/timeout", state.getPath()))
+	}
+	if !state.ExportProtocol.IsNull() && data.ExportProtocol.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/export-protocol", state.getPath()))
+	}
+	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/template/data/timeout", state.getPath()))
+	}
+	if !state.TransportUdp.IsNull() && data.TransportUdp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/transport/udp", state.getPath()))
+	}
+	if !state.SourceLoopback.IsNull() && data.SourceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/source/Loopback", state.getPath()))
+	}
+	if !state.DestinationIp.IsNull() && data.DestinationIp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/destination/ipdest/ip", state.getPath()))
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -359,6 +360,7 @@ func (data *FlowExporter) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.OptionSamplerTable.IsNull() && !data.OptionSamplerTable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/option/sampler-table", data.getPath()))
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -368,39 +370,40 @@ func (data *FlowExporter) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *FlowExporter) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	if !data.DestinationIp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/destination/ipdest/ip", data.getPath()))
-	}
-	if !data.SourceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/Loopback", data.getPath()))
-	}
-	if !data.TransportUdp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/transport/udp", data.getPath()))
-	}
-	if !data.TemplateDataTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/template/data/timeout", data.getPath()))
-	}
-	if !data.ExportProtocol.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/export-protocol", data.getPath()))
-	}
-	if !data.OptionInterfaceTableTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/interface-table/timeout", data.getPath()))
-	}
-	if !data.OptionVrfTableTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/vrf-table/timeout", data.getPath()))
-	}
-	if !data.OptionSamplerTable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/sampler-table", data.getPath()))
+	if !data.OptionApplicationAttributesTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/application-attributes/timeout", data.getPath()))
 	}
 	if !data.OptionApplicationTableTimeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/application-table/timeout", data.getPath()))
 	}
-	if !data.OptionApplicationAttributesTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/application-attributes/timeout", data.getPath()))
+	if !data.OptionSamplerTable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/sampler-table", data.getPath()))
 	}
+	if !data.OptionVrfTableTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/vrf-table/timeout", data.getPath()))
+	}
+	if !data.OptionInterfaceTableTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/option/interface-table/timeout", data.getPath()))
+	}
+	if !data.ExportProtocol.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/export-protocol", data.getPath()))
+	}
+	if !data.TemplateDataTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/template/data/timeout", data.getPath()))
+	}
+	if !data.TransportUdp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/transport/udp", data.getPath()))
+	}
+	if !data.SourceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/Loopback", data.getPath()))
+	}
+	if !data.DestinationIp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/destination/ipdest/ip", data.getPath()))
+	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+
 	return deletePaths
 }
 

@@ -316,60 +316,6 @@ func (data *LLDPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
 	deletedItems := make([]string, 0)
-	if !state.Run.IsNull() && data.Run.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/run", state.getPath()))
-	}
-	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/holdtime", state.getPath()))
-	}
-	if !state.ManagementVlan.IsNull() && data.ManagementVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/management-vlan", state.getPath()))
-	}
-	if !state.Timer.IsNull() && data.Timer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/timer", state.getPath()))
-	}
-	if !state.Ipv4ManagementAddresses.IsNull() {
-		if data.Ipv4ManagementAddresses.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv4", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.Ipv4ManagementAddresses.ElementsAs(ctx, &dataValues, false)
-			state.Ipv4ManagementAddresses.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv4=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-	if !state.Ipv6ManagementAddresses.IsNull() {
-		if data.Ipv6ManagementAddresses.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv6", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.Ipv6ManagementAddresses.ElementsAs(ctx, &dataValues, false)
-			state.Ipv6ManagementAddresses.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv6=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
 	for i := range state.SystemNames {
 		stateKeyValues := [...]string{strconv.FormatInt(state.SystemNames[i].SwitchId.ValueInt64(), 10)}
 
@@ -398,6 +344,61 @@ func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/system-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.Ipv6ManagementAddresses.IsNull() {
+		if data.Ipv6ManagementAddresses.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv6", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.Ipv6ManagementAddresses.ElementsAs(ctx, &dataValues, false)
+			state.Ipv6ManagementAddresses.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv6=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	if !state.Ipv4ManagementAddresses.IsNull() {
+		if data.Ipv4ManagementAddresses.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv4", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.Ipv4ManagementAddresses.ElementsAs(ctx, &dataValues, false)
+			state.Ipv4ManagementAddresses.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/management-address/ipv4=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	if !state.Timer.IsNull() && data.Timer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timer", state.getPath()))
+	}
+	if !state.ManagementVlan.IsNull() && data.ManagementVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/management-vlan", state.getPath()))
+	}
+	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/holdtime", state.getPath()))
+	}
+	if !state.Run.IsNull() && data.Run.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/run", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -407,6 +408,7 @@ func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
 
 func (data *LLDP) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	if !data.Run.IsNull() && !data.Run.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/run", data.getPath()))
 	}
@@ -420,29 +422,30 @@ func (data *LLDP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *LLDP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Run.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/run", data.getPath()))
-	}
-	if !data.Holdtime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/holdtime", data.getPath()))
-	}
-	if !data.ManagementVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-vlan", data.getPath()))
-	}
-	if !data.Timer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timer", data.getPath()))
-	}
-	if !data.Ipv4ManagementAddresses.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-address/ipv4", data.getPath()))
-	}
-	if !data.Ipv6ManagementAddresses.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-address/ipv6", data.getPath()))
-	}
 	for i := range data.SystemNames {
 		keyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/system-name=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.Ipv6ManagementAddresses.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-address/ipv6", data.getPath()))
+	}
+	if !data.Ipv4ManagementAddresses.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-address/ipv4", data.getPath()))
+	}
+	if !data.Timer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timer", data.getPath()))
+	}
+	if !data.ManagementVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/management-vlan", data.getPath()))
+	}
+	if !data.Holdtime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/holdtime", data.getPath()))
+	}
+	if !data.Run.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/run", data.getPath()))
+	}
+
 	return deletePaths
 }
 

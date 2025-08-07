@@ -283,36 +283,6 @@ func (data *CryptoIKEv2PolicyData) fromBody(ctx context.Context, res gjson.Resul
 
 func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state CryptoIKEv2Policy) []string {
 	deletedItems := make([]string, 0)
-	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/inbound-only", state.getPath()))
-	}
-	if !state.MatchAddressLocalIp.IsNull() {
-		if data.MatchAddressLocalIp.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.MatchAddressLocalIp.ElementsAs(ctx, &dataValues, false)
-			state.MatchAddressLocalIp.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/name", state.getPath()))
-	}
-	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/any", state.getPath()))
-	}
 	for i := range state.Proposals {
 		stateKeyValues := [...]string{state.Proposals[i].Proposals.ValueString()}
 
@@ -338,6 +308,37 @@ func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state Crypto
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/proposal=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/any", state.getPath()))
+	}
+	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/name", state.getPath()))
+	}
+	if !state.MatchAddressLocalIp.IsNull() {
+		if data.MatchAddressLocalIp.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchAddressLocalIp.ElementsAs(ctx, &dataValues, false)
+			state.MatchAddressLocalIp.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local-ip=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/inbound-only", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -347,11 +348,12 @@ func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state Crypto
 
 func (data *CryptoIKEv2Policy) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
-	}
+
 	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
+	}
+	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -363,23 +365,24 @@ func (data *CryptoIKEv2Policy) getEmptyLeafsDelete(ctx context.Context) []string
 
 func (data *CryptoIKEv2Policy) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.MatchInboundOnly.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
-	}
-	if !data.MatchAddressLocalIp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/address/local-ip", data.getPath()))
-	}
-	if !data.MatchFvrf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/name", data.getPath()))
-	}
-	if !data.MatchFvrfAny.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
-	}
 	for i := range data.Proposals {
 		keyValues := [...]string{data.Proposals[i].Proposals.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/proposal=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.MatchFvrfAny.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
+	}
+	if !data.MatchFvrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/name", data.getPath()))
+	}
+	if !data.MatchAddressLocalIp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/address/local-ip", data.getPath()))
+	}
+	if !data.MatchInboundOnly.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
+	}
+
 	return deletePaths
 }
 

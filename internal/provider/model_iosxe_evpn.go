@@ -405,45 +405,46 @@ func (data *EVPNData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 	deletedItems := make([]string, 0)
-	if !state.ReplicationTypeIngress.IsNull() && data.ReplicationTypeIngress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/ingress", state.getPath()))
-	}
-	if !state.ReplicationTypeStatic.IsNull() && data.ReplicationTypeStatic.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/static", state.getPath()))
-	}
-	if !state.ReplicationTypeP2mp.IsNull() && data.ReplicationTypeP2mp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/p2mp", state.getPath()))
-	}
-	if !state.ReplicationTypeMp2mp.IsNull() && data.ReplicationTypeMp2mp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/mp2mp", state.getPath()))
-	}
-	if !state.MacDuplicationLimit.IsNull() && data.MacDuplicationLimit.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac/duplication", state.getPath()))
-	}
-	if !state.MacDuplicationTime.IsNull() && data.MacDuplicationTime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac/duplication", state.getPath()))
-	}
-	if !state.IpDuplicationLimit.IsNull() && data.IpDuplicationLimit.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/duplication", state.getPath()))
-	}
-	if !state.IpDuplicationTime.IsNull() && data.IpDuplicationTime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/duplication", state.getPath()))
-	}
-	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/router-id/interface/Loopback", state.getPath()))
-	}
-	if !state.DefaultGatewayAdvertise.IsNull() && data.DefaultGatewayAdvertise.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-gateway/advertise", state.getPath()))
-	}
-	if !state.LoggingPeerState.IsNull() && data.LoggingPeerState.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/peer/state", state.getPath()))
+	if !state.AnycastGatewayMacAuto.IsNull() && data.AnycastGatewayMacAuto.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/anycast-gateway/mac/auto", state.getPath()))
 	}
 	if !state.RouteTargetAutoVni.IsNull() && data.RouteTargetAutoVni.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-target/auto/vni", state.getPath()))
 	}
-	if !state.AnycastGatewayMacAuto.IsNull() && data.AnycastGatewayMacAuto.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/anycast-gateway/mac/auto", state.getPath()))
+	if !state.LoggingPeerState.IsNull() && data.LoggingPeerState.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/logging/peer/state", state.getPath()))
 	}
+	if !state.DefaultGatewayAdvertise.IsNull() && data.DefaultGatewayAdvertise.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-gateway/advertise", state.getPath()))
+	}
+	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/router-id/interface/Loopback", state.getPath()))
+	}
+	if !state.IpDuplicationTime.IsNull() && data.IpDuplicationTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/duplication", state.getPath()))
+	}
+	if !state.IpDuplicationLimit.IsNull() && data.IpDuplicationLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/duplication", state.getPath()))
+	}
+	if !state.MacDuplicationTime.IsNull() && data.MacDuplicationTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac/duplication", state.getPath()))
+	}
+	if !state.MacDuplicationLimit.IsNull() && data.MacDuplicationLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac/duplication", state.getPath()))
+	}
+	if !state.ReplicationTypeMp2mp.IsNull() && data.ReplicationTypeMp2mp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/mp2mp", state.getPath()))
+	}
+	if !state.ReplicationTypeP2mp.IsNull() && data.ReplicationTypeP2mp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/p2mp", state.getPath()))
+	}
+	if !state.ReplicationTypeStatic.IsNull() && data.ReplicationTypeStatic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/static", state.getPath()))
+	}
+	if !state.ReplicationTypeIngress.IsNull() && data.ReplicationTypeIngress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/replication-type/ingress", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -453,30 +454,31 @@ func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 
 func (data *EVPN) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.ReplicationTypeIngress.IsNull() && !data.ReplicationTypeIngress.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/replication-type/ingress", data.getPath()))
-	}
-	if !data.ReplicationTypeStatic.IsNull() && !data.ReplicationTypeStatic.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/replication-type/static", data.getPath()))
-	}
-	if !data.ReplicationTypeP2mp.IsNull() && !data.ReplicationTypeP2mp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/replication-type/p2mp", data.getPath()))
-	}
-	if !data.ReplicationTypeMp2mp.IsNull() && !data.ReplicationTypeMp2mp.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/replication-type/mp2mp", data.getPath()))
-	}
-	if !data.DefaultGatewayAdvertise.IsNull() && !data.DefaultGatewayAdvertise.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-gateway/advertise", data.getPath()))
-	}
-	if !data.LoggingPeerState.IsNull() && !data.LoggingPeerState.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/logging/peer/state", data.getPath()))
+	if !data.AnycastGatewayMacAuto.IsNull() && !data.AnycastGatewayMacAuto.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/anycast-gateway/mac/auto", data.getPath()))
 	}
 	if !data.RouteTargetAutoVni.IsNull() && !data.RouteTargetAutoVni.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-target/auto/vni", data.getPath()))
 	}
-	if !data.AnycastGatewayMacAuto.IsNull() && !data.AnycastGatewayMacAuto.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/anycast-gateway/mac/auto", data.getPath()))
+	if !data.LoggingPeerState.IsNull() && !data.LoggingPeerState.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/logging/peer/state", data.getPath()))
 	}
+	if !data.DefaultGatewayAdvertise.IsNull() && !data.DefaultGatewayAdvertise.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-gateway/advertise", data.getPath()))
+	}
+	if !data.ReplicationTypeMp2mp.IsNull() && !data.ReplicationTypeMp2mp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/replication-type/mp2mp", data.getPath()))
+	}
+	if !data.ReplicationTypeP2mp.IsNull() && !data.ReplicationTypeP2mp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/replication-type/p2mp", data.getPath()))
+	}
+	if !data.ReplicationTypeStatic.IsNull() && !data.ReplicationTypeStatic.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/replication-type/static", data.getPath()))
+	}
+	if !data.ReplicationTypeIngress.IsNull() && !data.ReplicationTypeIngress.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/replication-type/ingress", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -486,45 +488,46 @@ func (data *EVPN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *EVPN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.ReplicationTypeIngress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/replication-type/ingress", data.getPath()))
-	}
-	if !data.ReplicationTypeStatic.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/replication-type/static", data.getPath()))
-	}
-	if !data.ReplicationTypeP2mp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/replication-type/p2mp", data.getPath()))
-	}
-	if !data.ReplicationTypeMp2mp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/replication-type/mp2mp", data.getPath()))
-	}
-	if !data.MacDuplicationLimit.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac/duplication", data.getPath()))
-	}
-	if !data.MacDuplicationTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac/duplication", data.getPath()))
-	}
-	if !data.IpDuplicationLimit.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/duplication", data.getPath()))
-	}
-	if !data.IpDuplicationTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/duplication", data.getPath()))
-	}
-	if !data.RouterIdLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/router-id/interface/Loopback", data.getPath()))
-	}
-	if !data.DefaultGatewayAdvertise.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-gateway/advertise", data.getPath()))
-	}
-	if !data.LoggingPeerState.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/peer/state", data.getPath()))
+	if !data.AnycastGatewayMacAuto.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/anycast-gateway/mac/auto", data.getPath()))
 	}
 	if !data.RouteTargetAutoVni.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-target/auto/vni", data.getPath()))
 	}
-	if !data.AnycastGatewayMacAuto.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/anycast-gateway/mac/auto", data.getPath()))
+	if !data.LoggingPeerState.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/logging/peer/state", data.getPath()))
 	}
+	if !data.DefaultGatewayAdvertise.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-gateway/advertise", data.getPath()))
+	}
+	if !data.RouterIdLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/router-id/interface/Loopback", data.getPath()))
+	}
+	if !data.IpDuplicationTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/duplication", data.getPath()))
+	}
+	if !data.IpDuplicationLimit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/duplication", data.getPath()))
+	}
+	if !data.MacDuplicationTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac/duplication", data.getPath()))
+	}
+	if !data.MacDuplicationLimit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac/duplication", data.getPath()))
+	}
+	if !data.ReplicationTypeMp2mp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/replication-type/mp2mp", data.getPath()))
+	}
+	if !data.ReplicationTypeP2mp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/replication-type/p2mp", data.getPath()))
+	}
+	if !data.ReplicationTypeStatic.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/replication-type/static", data.getPath()))
+	}
+	if !data.ReplicationTypeIngress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/replication-type/ingress", data.getPath()))
+	}
+
 	return deletePaths
 }
 

@@ -188,15 +188,16 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *BGP) getDeletedItems(ctx context.Context, state BGP) []string {
 	deletedItems := make([]string, 0)
-	if !state.DefaultIpv4Unicast.IsNull() && data.DefaultIpv4Unicast.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/default/ipv4-unicast", state.getPath()))
+	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/router-id/interface/Loopback", state.getPath()))
 	}
 	if !state.LogNeighborChanges.IsNull() && data.LogNeighborChanges.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/log-neighbor-changes", state.getPath()))
 	}
-	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/router-id/interface/Loopback", state.getPath()))
+	if !state.DefaultIpv4Unicast.IsNull() && data.DefaultIpv4Unicast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/default/ipv4-unicast", state.getPath()))
 	}
+
 	return deletedItems
 }
 
@@ -206,6 +207,7 @@ func (data *BGP) getDeletedItems(ctx context.Context, state BGP) []string {
 
 func (data *BGP) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -215,15 +217,16 @@ func (data *BGP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *BGP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.DefaultIpv4Unicast.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/default/ipv4-unicast", data.getPath()))
+	if !data.RouterIdLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/router-id/interface/Loopback", data.getPath()))
 	}
 	if !data.LogNeighborChanges.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/log-neighbor-changes", data.getPath()))
 	}
-	if !data.RouterIdLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/router-id/interface/Loopback", data.getPath()))
+	if !data.DefaultIpv4Unicast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/default/ipv4-unicast", data.getPath()))
 	}
+
 	return deletePaths
 }
 

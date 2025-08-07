@@ -2254,59 +2254,20 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
-	if !state.Hostname.IsNull() && data.Hostname.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/hostname", state.getPath()))
+	if !state.EnableSecretLevel.IsNull() && data.EnableSecretLevel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/level", state.getPath()))
 	}
-	if !state.IpBgpCommunityNewFormat.IsNull() && data.IpBgpCommunityNewFormat.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/bgp-community/new-format", state.getPath()))
+	if !state.EnableSecretType.IsNull() && data.EnableSecretType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/type", state.getPath()))
 	}
-	if !state.IpRouting.IsNull() && data.IpRouting.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-conf/routing", state.getPath()))
+	if !state.EnableSecret.IsNull() && data.EnableSecret.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret", state.getPath()))
 	}
-	if !state.Ipv6UnicastRouting.IsNull() && data.Ipv6UnicastRouting.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/unicast-routing", state.getPath()))
-	}
-	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/system/Cisco-IOS-XE-switch:mtu/size", state.getPath()))
-	}
-	if !state.IpSourceRoute.IsNull() && data.IpSourceRoute.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/source-route", state.getPath()))
-	}
-	if !state.IpDomainLookup.IsNull() && data.IpDomainLookup.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup", state.getPath()))
-	}
-	if !state.IpDomainName.IsNull() && data.IpDomainName.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/name", state.getPath()))
-	}
-	if !state.LoginDelay.IsNull() && data.LoginDelay.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/delay", state.getPath()))
-	}
-	if !state.LoginOnFailure.IsNull() && data.LoginOnFailure.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-failure", state.getPath()))
-	}
-	if !state.LoginOnFailureLog.IsNull() && data.LoginOnFailureLog.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-failure/log", state.getPath()))
-	}
-	if !state.LoginOnSuccess.IsNull() && data.LoginOnSuccess.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-success", state.getPath()))
-	}
-	if !state.LoginOnSuccessLog.IsNull() && data.LoginOnSuccessLog.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-success/log", state.getPath()))
-	}
-	if !state.IpMulticastRouting.IsNull() && data.IpMulticastRouting.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", state.getPath()))
-	}
-	if !state.MulticastRoutingSwitch.IsNull() && data.MulticastRoutingSwitch.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", state.getPath()))
-	}
-	if !state.IpMulticastRoutingDistributed.IsNull() && data.IpMulticastRoutingDistributed.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", state.getPath()))
-	}
-	for i := range state.MulticastRoutingVrfs {
-		stateKeyValues := [...]string{state.MulticastRoutingVrfs[i].Vrf.ValueString()}
+	for i := range state.BootSystemBootfiles {
+		stateKeyValues := [...]string{state.BootSystemBootfiles[i].Path.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.MulticastRoutingVrfs[i].Vrf.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.BootSystemBootfiles[i].Path.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2314,39 +2275,24 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		}
 
 		found := false
-		for j := range data.MulticastRoutingVrfs {
+		for j := range data.BootSystemBootfiles {
 			found = true
-			if state.MulticastRoutingVrfs[i].Vrf.ValueString() != data.MulticastRoutingVrfs[j].Vrf.ValueString() {
+			if state.BootSystemBootfiles[i].Path.ValueString() != data.BootSystemBootfiles[j].Path.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.MulticastRoutingVrfs[i].Distributed.IsNull() && data.MulticastRoutingVrfs[j].Distributed.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v/distributed", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/system/bootfile/filename-list-ordered-by-user=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.IpHttpAccessClass.IsNull() && data.IpHttpAccessClass.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/access-class", state.getPath()))
-	}
-	if !state.IpHttpAuthenticationAaa.IsNull() && data.IpHttpAuthenticationAaa.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", state.getPath()))
-	}
-	if !state.IpHttpAuthenticationAaaExecAuthorization.IsNull() && data.IpHttpAuthenticationAaaExecAuthorization.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/exec-authorization", state.getPath()))
-	}
-	if !state.IpHttpAuthenticationAaaLoginAuthentication.IsNull() && data.IpHttpAuthenticationAaaLoginAuthentication.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/login-authentication", state.getPath()))
-	}
-	for i := range state.IpHttpAuthenticationAaaCommandAuthorization {
-		stateKeyValues := [...]string{strconv.FormatInt(state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
+	for i := range state.BootSystemFlashFiles {
+		stateKeyValues := [...]string{state.BootSystemFlashFiles[i].Path.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64()).IsZero() {
+		if !reflect.ValueOf(state.BootSystemFlashFiles[i].Path.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2354,72 +2300,217 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		}
 
 		found := false
-		for j := range data.IpHttpAuthenticationAaaCommandAuthorization {
+		for j := range data.BootSystemFlashFiles {
 			found = true
-			if state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64() != data.IpHttpAuthenticationAaaCommandAuthorization[j].Level.ValueInt64() {
+			if state.BootSystemFlashFiles[i].Path.ValueString() != data.BootSystemFlashFiles[j].Path.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.IpHttpAuthenticationAaaCommandAuthorization[i].Name.IsNull() && data.IpHttpAuthenticationAaaCommandAuthorization[j].Name.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/system/flash/flash-list-ordered-by-user=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.IpRadiusSourceInterfaceVrf.IsNull() && data.IpRadiusSourceInterfaceVrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/vrf", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/HundredGigE", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TwentyFiveGigE", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/FiveGigabitEthernet", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TwoGigabitEthernet", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/GigabitEthernet", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceVlan.IsNull() && data.IpRadiusSourceInterfaceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/Vlan", state.getPath()))
+	}
+	if !state.IpRadiusSourceInterfaceLoopback.IsNull() && data.IpRadiusSourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/Loopback", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceVrf.IsNull() && data.IpTacacsSourceInterfaceVrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/vrf", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/HundredGigE", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwentyFiveGigE", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FiveGigabitEthernet", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwoGigabitEthernet", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/GigabitEthernet", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceVlan.IsNull() && data.IpTacacsSourceInterfaceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Vlan", state.getPath()))
+	}
+	if !state.IpTacacsSourceInterfaceLoopback.IsNull() && data.IpTacacsSourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Loopback", state.getPath()))
+	}
+	for i := range state.PnpProfiles {
+		stateKeyValues := [...]string{state.PnpProfiles[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PnpProfiles[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PnpProfiles {
+			found = true
+			if state.PnpProfiles[i].Name.ValueString() != data.PnpProfiles[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.PnpProfiles[i].TransportHttpsIpv4Port.IsNull() && data.PnpProfiles[j].TransportHttpsIpv4Port.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v/transport/https/ipv4/port", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.PnpProfiles[i].TransportHttpsIpv4Ipv4Address.IsNull() && data.PnpProfiles[j].TransportHttpsIpv4Ipv4Address.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v/transport/https/ipv4/ipv4-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.IpHttpAuthenticationLocal.IsNull() && data.IpHttpAuthenticationLocal.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", state.getPath()))
+	if !state.ControlPlaneServicePolicyInput.IsNull() && data.ControlPlaneServicePolicyInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
 	}
-	if !state.IpHttpServer.IsNull() && data.IpHttpServer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/server", state.getPath()))
+	if !state.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", state.getPath()))
 	}
-	if !state.IpHttpSecureServer.IsNull() && data.IpHttpSecureServer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-server", state.getPath()))
+	if !state.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/FortyGigabitEthernet", state.getPath()))
 	}
-	if !state.IpHttpSecureTrustpoint.IsNull() && data.IpHttpSecureTrustpoint.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-trustpoint", state.getPath()))
+	if !state.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwentyFiveGigE", state.getPath()))
 	}
-	if !state.IpHttpTlsVersion.IsNull() && data.IpHttpTlsVersion.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/tls-version", state.getPath()))
+	if !state.IpSshSourceInterfaceTenGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TenGigabitEthernet", state.getPath()))
 	}
-	if !state.IpHttpClientSecureTrustpoint.IsNull() && data.IpHttpClientSecureTrustpoint.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/secure-trustpoint", state.getPath()))
+	if !state.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/FiveGigabitEthernet", state.getPath()))
 	}
-	if !state.IpHttpClientSourceInterface.IsNull() && data.IpHttpClientSourceInterface.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/source-interface", state.getPath()))
+	if !state.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwoGigabitEthernet", state.getPath()))
 	}
-	if !state.IpHttpSecureActiveSessionModules.IsNull() && data.IpHttpSecureActiveSessionModules.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-active-session-modules", state.getPath()))
+	if !state.IpSshSourceInterfaceGigabitEthernet.IsNull() && data.IpSshSourceInterfaceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/GigabitEthernet", state.getPath()))
 	}
-	if !state.IpHttpMaxConnections.IsNull() && data.IpHttpMaxConnections.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/max-connections", state.getPath()))
+	if !state.IpSshSourceInterfaceVlan.IsNull() && data.IpSshSourceInterfaceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/Vlan", state.getPath()))
 	}
-	if !state.IpHttpActiveSessionModules.IsNull() && data.IpHttpActiveSessionModules.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/active-session-modules", state.getPath()))
+	if !state.IpSshSourceInterfaceLoopback.IsNull() && data.IpSshSourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/Loopback", state.getPath()))
 	}
-	if !state.IpNameServers.IsNull() {
-		if data.IpNameServers.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.IpNameServers.ElementsAs(ctx, &dataValues, false)
-			state.IpNameServers.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered=%v", state.getPath(), v))
-				}
-			}
-		}
+	if !state.IpSshVersion.IsNull() && data.IpSshVersion.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/ssh-version", state.getPath()))
+	}
+	if !state.IpScpServerEnable.IsNull() && data.IpScpServerEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/scp/server/enable", state.getPath()))
+	}
+	if !state.IpForwardProtocolNd.IsNull() && data.IpForwardProtocolNd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/forward-protocol-v2/nd", state.getPath()))
+	}
+	if !state.TransceiverTypeAllMonitoring.IsNull() && data.TransceiverTypeAllMonitoring.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", state.getPath()))
+	}
+	if !state.RedundancyMode.IsNull() && data.RedundancyMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redundancy/mode", state.getPath()))
+	}
+	if !state.Redundancy.IsNull() && data.Redundancy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redundancy", state.getPath()))
+	}
+	if !state.ArchiveLogConfigLoggingSize.IsNull() && data.ArchiveLogConfigLoggingSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/log/config/logging/size", state.getPath()))
+	}
+	if !state.ArchiveLogConfigLoggingEnable.IsNull() && data.ArchiveLogConfigLoggingEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/log/config/logging/enable", state.getPath()))
+	}
+	if !state.ArchiveTimePeriod.IsNull() && data.ArchiveTimePeriod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/time-period", state.getPath()))
+	}
+	if !state.ArchiveWriteMemory.IsNull() && data.ArchiveWriteMemory.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/write-memory", state.getPath()))
+	}
+	if !state.ArchiveMaximum.IsNull() && data.ArchiveMaximum.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/maximum", state.getPath()))
+	}
+	if !state.ArchivePath.IsNull() && data.ArchivePath.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/path", state.getPath()))
+	}
+	if !state.MemoryFreeLowWatermarkProcessor.IsNull() && data.MemoryFreeLowWatermarkProcessor.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/memory/free/low-watermark/processor", state.getPath()))
+	}
+	if !state.DiagnosticBootupLevel.IsNull() && data.DiagnosticBootupLevel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", state.getPath()))
+	}
+	if !state.AccessSessionMacMoveDeny.IsNull() && data.AccessSessionMacMoveDeny.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/mac-move/deny", state.getPath()))
+	}
+	if !state.EpmLogging.IsNull() && data.EpmLogging.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/epm/logging", state.getPath()))
+	}
+	if !state.CispEnable.IsNull() && data.CispEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cisp/enable", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/HundredGigE", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwentyFiveGigE", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FiveGigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwoGigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/GigabitEthernet", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceVlan.IsNull() && data.IpDomainLookupSourceInterfaceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Vlan", state.getPath()))
+	}
+	if !state.IpDomainLookupSourceInterfaceLoopback.IsNull() && data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Loopback", state.getPath()))
 	}
 	for i := range state.IpNameServersVrf {
 		stateKeyValues := [...]string{state.IpNameServersVrf[i].Vrf.ValueString()}
@@ -2467,119 +2558,62 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.IpDomainLookupSourceInterfaceLoopback.IsNull() && data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Loopback", state.getPath()))
+	if !state.IpNameServers.IsNull() {
+		if data.IpNameServers.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.IpNameServers.ElementsAs(ctx, &dataValues, false)
+			state.IpNameServers.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
-	if !state.IpDomainLookupSourceInterfaceVlan.IsNull() && data.IpDomainLookupSourceInterfaceVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Vlan", state.getPath()))
+	if !state.IpHttpActiveSessionModules.IsNull() && data.IpHttpActiveSessionModules.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/active-session-modules", state.getPath()))
 	}
-	if !state.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/GigabitEthernet", state.getPath()))
+	if !state.IpHttpMaxConnections.IsNull() && data.IpHttpMaxConnections.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/max-connections", state.getPath()))
 	}
-	if !state.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwoGigabitEthernet", state.getPath()))
+	if !state.IpHttpSecureActiveSessionModules.IsNull() && data.IpHttpSecureActiveSessionModules.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-active-session-modules", state.getPath()))
 	}
-	if !state.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FiveGigabitEthernet", state.getPath()))
+	if !state.IpHttpClientSourceInterface.IsNull() && data.IpHttpClientSourceInterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/source-interface", state.getPath()))
 	}
-	if !state.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TenGigabitEthernet", state.getPath()))
+	if !state.IpHttpClientSecureTrustpoint.IsNull() && data.IpHttpClientSecureTrustpoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/secure-trustpoint", state.getPath()))
 	}
-	if !state.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwentyFiveGigE", state.getPath()))
+	if !state.IpHttpTlsVersion.IsNull() && data.IpHttpTlsVersion.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/tls-version", state.getPath()))
 	}
-	if !state.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FortyGigabitEthernet", state.getPath()))
+	if !state.IpHttpSecureTrustpoint.IsNull() && data.IpHttpSecureTrustpoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-trustpoint", state.getPath()))
 	}
-	if !state.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/HundredGigE", state.getPath()))
+	if !state.IpHttpSecureServer.IsNull() && data.IpHttpSecureServer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-server", state.getPath()))
 	}
-	if !state.CispEnable.IsNull() && data.CispEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/cisp/enable", state.getPath()))
+	if !state.IpHttpServer.IsNull() && data.IpHttpServer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/server", state.getPath()))
 	}
-	if !state.EpmLogging.IsNull() && data.EpmLogging.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/epm/logging", state.getPath()))
+	if !state.IpHttpAuthenticationLocal.IsNull() && data.IpHttpAuthenticationLocal.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", state.getPath()))
 	}
-	if !state.AccessSessionMacMoveDeny.IsNull() && data.AccessSessionMacMoveDeny.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/mac-move/deny", state.getPath()))
-	}
-	if !state.DiagnosticBootupLevel.IsNull() && data.DiagnosticBootupLevel.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", state.getPath()))
-	}
-	if !state.MemoryFreeLowWatermarkProcessor.IsNull() && data.MemoryFreeLowWatermarkProcessor.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/memory/free/low-watermark/processor", state.getPath()))
-	}
-	if !state.ArchivePath.IsNull() && data.ArchivePath.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/path", state.getPath()))
-	}
-	if !state.ArchiveMaximum.IsNull() && data.ArchiveMaximum.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/maximum", state.getPath()))
-	}
-	if !state.ArchiveWriteMemory.IsNull() && data.ArchiveWriteMemory.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/write-memory", state.getPath()))
-	}
-	if !state.ArchiveTimePeriod.IsNull() && data.ArchiveTimePeriod.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/time-period", state.getPath()))
-	}
-	if !state.ArchiveLogConfigLoggingEnable.IsNull() && data.ArchiveLogConfigLoggingEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/log/config/logging/enable", state.getPath()))
-	}
-	if !state.ArchiveLogConfigLoggingSize.IsNull() && data.ArchiveLogConfigLoggingSize.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/archive/log/config/logging/size", state.getPath()))
-	}
-	if !state.Redundancy.IsNull() && data.Redundancy.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redundancy", state.getPath()))
-	}
-	if !state.RedundancyMode.IsNull() && data.RedundancyMode.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redundancy/mode", state.getPath()))
-	}
-	if !state.TransceiverTypeAllMonitoring.IsNull() && data.TransceiverTypeAllMonitoring.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", state.getPath()))
-	}
-	if !state.IpForwardProtocolNd.IsNull() && data.IpForwardProtocolNd.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/forward-protocol-v2/nd", state.getPath()))
-	}
-	if !state.IpScpServerEnable.IsNull() && data.IpScpServerEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/scp/server/enable", state.getPath()))
-	}
-	if !state.IpSshVersion.IsNull() && data.IpSshVersion.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/ssh-version", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceLoopback.IsNull() && data.IpSshSourceInterfaceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/Loopback", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceVlan.IsNull() && data.IpSshSourceInterfaceVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/Vlan", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceGigabitEthernet.IsNull() && data.IpSshSourceInterfaceGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/GigabitEthernet", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwoGigabitEthernet", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/FiveGigabitEthernet", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceTenGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTenGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TenGigabitEthernet", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwentyFiveGigE", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/FortyGigabitEthernet", state.getPath()))
-	}
-	if !state.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", state.getPath()))
-	}
-	if !state.ControlPlaneServicePolicyInput.IsNull() && data.ControlPlaneServicePolicyInput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", state.getPath()))
-	}
-	for i := range state.PnpProfiles {
-		stateKeyValues := [...]string{state.PnpProfiles[i].Name.ValueString()}
+	for i := range state.IpHttpAuthenticationAaaCommandAuthorization {
+		stateKeyValues := [...]string{strconv.FormatInt(state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.PnpProfiles[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2587,90 +2621,39 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		}
 
 		found := false
-		for j := range data.PnpProfiles {
+		for j := range data.IpHttpAuthenticationAaaCommandAuthorization {
 			found = true
-			if state.PnpProfiles[i].Name.ValueString() != data.PnpProfiles[j].Name.ValueString() {
+			if state.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64() != data.IpHttpAuthenticationAaaCommandAuthorization[j].Level.ValueInt64() {
 				found = false
 			}
 			if found {
-				if !state.PnpProfiles[i].TransportHttpsIpv4Ipv4Address.IsNull() && data.PnpProfiles[j].TransportHttpsIpv4Ipv4Address.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v/transport/https/ipv4/ipv4-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.PnpProfiles[i].TransportHttpsIpv4Port.IsNull() && data.PnpProfiles[j].TransportHttpsIpv4Port.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v/transport/https/ipv4/port", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.IpHttpAuthenticationAaaCommandAuthorization[i].Name.IsNull() && data.IpHttpAuthenticationAaaCommandAuthorization[j].Name.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.IpTacacsSourceInterfaceLoopback.IsNull() && data.IpTacacsSourceInterfaceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Loopback", state.getPath()))
+	if !state.IpHttpAuthenticationAaaLoginAuthentication.IsNull() && data.IpHttpAuthenticationAaaLoginAuthentication.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/login-authentication", state.getPath()))
 	}
-	if !state.IpTacacsSourceInterfaceVlan.IsNull() && data.IpTacacsSourceInterfaceVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Vlan", state.getPath()))
+	if !state.IpHttpAuthenticationAaaExecAuthorization.IsNull() && data.IpHttpAuthenticationAaaExecAuthorization.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/exec-authorization", state.getPath()))
 	}
-	if !state.IpTacacsSourceInterfaceGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/GigabitEthernet", state.getPath()))
+	if !state.IpHttpAuthenticationAaa.IsNull() && data.IpHttpAuthenticationAaa.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", state.getPath()))
 	}
-	if !state.IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwoGigabitEthernet", state.getPath()))
+	if !state.IpHttpAccessClass.IsNull() && data.IpHttpAccessClass.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/access-class", state.getPath()))
 	}
-	if !state.IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FiveGigabitEthernet", state.getPath()))
-	}
-	if !state.IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TenGigabitEthernet", state.getPath()))
-	}
-	if !state.IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwentyFiveGigE", state.getPath()))
-	}
-	if !state.IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FortyGigabitEthernet", state.getPath()))
-	}
-	if !state.IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/HundredGigE", state.getPath()))
-	}
-	if !state.IpTacacsSourceInterfaceVrf.IsNull() && data.IpTacacsSourceInterfaceVrf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/vrf", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceLoopback.IsNull() && data.IpRadiusSourceInterfaceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/Loopback", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceVlan.IsNull() && data.IpRadiusSourceInterfaceVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/Vlan", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/GigabitEthernet", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TwoGigabitEthernet", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/FiveGigabitEthernet", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TenGigabitEthernet", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TwentyFiveGigE", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/FortyGigabitEthernet", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() && data.IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/HundredGigE", state.getPath()))
-	}
-	if !state.IpRadiusSourceInterfaceVrf.IsNull() && data.IpRadiusSourceInterfaceVrf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/vrf", state.getPath()))
-	}
-	for i := range state.BootSystemFlashFiles {
-		stateKeyValues := [...]string{state.BootSystemFlashFiles[i].Path.ValueString()}
+	for i := range state.MulticastRoutingVrfs {
+		stateKeyValues := [...]string{state.MulticastRoutingVrfs[i].Vrf.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.BootSystemFlashFiles[i].Path.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.MulticastRoutingVrfs[i].Vrf.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2678,53 +2661,71 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		}
 
 		found := false
-		for j := range data.BootSystemFlashFiles {
+		for j := range data.MulticastRoutingVrfs {
 			found = true
-			if state.BootSystemFlashFiles[i].Path.ValueString() != data.BootSystemFlashFiles[j].Path.ValueString() {
+			if state.MulticastRoutingVrfs[i].Vrf.ValueString() != data.MulticastRoutingVrfs[j].Vrf.ValueString() {
 				found = false
 			}
 			if found {
+				if !state.MulticastRoutingVrfs[i].Distributed.IsNull() && data.MulticastRoutingVrfs[j].Distributed.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v/distributed", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/system/flash/flash-list-ordered-by-user=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.BootSystemBootfiles {
-		stateKeyValues := [...]string{state.BootSystemBootfiles[i].Path.ValueString()}
+	if !state.IpMulticastRoutingDistributed.IsNull() && data.IpMulticastRoutingDistributed.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", state.getPath()))
+	}
+	if !state.MulticastRoutingSwitch.IsNull() && data.MulticastRoutingSwitch.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", state.getPath()))
+	}
+	if !state.IpMulticastRouting.IsNull() && data.IpMulticastRouting.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", state.getPath()))
+	}
+	if !state.LoginOnSuccessLog.IsNull() && data.LoginOnSuccessLog.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-success/log", state.getPath()))
+	}
+	if !state.LoginOnSuccess.IsNull() && data.LoginOnSuccess.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-success", state.getPath()))
+	}
+	if !state.LoginOnFailureLog.IsNull() && data.LoginOnFailureLog.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-failure/log", state.getPath()))
+	}
+	if !state.LoginOnFailure.IsNull() && data.LoginOnFailure.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/on-failure", state.getPath()))
+	}
+	if !state.LoginDelay.IsNull() && data.LoginDelay.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/delay", state.getPath()))
+	}
+	if !state.IpDomainName.IsNull() && data.IpDomainName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/name", state.getPath()))
+	}
+	if !state.IpDomainLookup.IsNull() && data.IpDomainLookup.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/lookup", state.getPath()))
+	}
+	if !state.IpSourceRoute.IsNull() && data.IpSourceRoute.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/source-route", state.getPath()))
+	}
+	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/system/Cisco-IOS-XE-switch:mtu/size", state.getPath()))
+	}
+	if !state.Ipv6UnicastRouting.IsNull() && data.Ipv6UnicastRouting.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv6/unicast-routing", state.getPath()))
+	}
+	if !state.IpRouting.IsNull() && data.IpRouting.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-conf/routing", state.getPath()))
+	}
+	if !state.IpBgpCommunityNewFormat.IsNull() && data.IpBgpCommunityNewFormat.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/bgp-community/new-format", state.getPath()))
+	}
+	if !state.Hostname.IsNull() && data.Hostname.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/hostname", state.getPath()))
+	}
 
-		emptyKeys := true
-		if !reflect.ValueOf(state.BootSystemBootfiles[i].Path.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.BootSystemBootfiles {
-			found = true
-			if state.BootSystemBootfiles[i].Path.ValueString() != data.BootSystemBootfiles[j].Path.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/boot/system/bootfile/filename-list-ordered-by-user=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.EnableSecret.IsNull() && data.EnableSecret.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret", state.getPath()))
-	}
-	if !state.EnableSecretType.IsNull() && data.EnableSecretType.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/type", state.getPath()))
-	}
-	if !state.EnableSecretLevel.IsNull() && data.EnableSecretLevel.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/level", state.getPath()))
-	}
 	return deletedItems
 }
 
@@ -2734,32 +2735,38 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.IpBgpCommunityNewFormat.IsNull() && !data.IpBgpCommunityNewFormat.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/bgp-community/new-format", data.getPath()))
+
+	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
 	}
-	if !data.Ipv6UnicastRouting.IsNull() && !data.Ipv6UnicastRouting.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/unicast-routing", data.getPath()))
+	if !data.TransceiverTypeAllMonitoring.IsNull() && !data.TransceiverTypeAllMonitoring.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", data.getPath()))
 	}
-	if !data.LoginOnFailure.IsNull() && !data.LoginOnFailure.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-failure", data.getPath()))
+	if !data.Redundancy.IsNull() && !data.Redundancy.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redundancy", data.getPath()))
 	}
-	if !data.LoginOnFailureLog.IsNull() && !data.LoginOnFailureLog.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-failure/log", data.getPath()))
+	if !data.ArchiveLogConfigLoggingEnable.IsNull() && !data.ArchiveLogConfigLoggingEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/archive/log/config/logging/enable", data.getPath()))
 	}
-	if !data.LoginOnSuccess.IsNull() && !data.LoginOnSuccess.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-success", data.getPath()))
+	if !data.ArchiveWriteMemory.IsNull() && !data.ArchiveWriteMemory.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/archive/write-memory", data.getPath()))
 	}
-	if !data.LoginOnSuccessLog.IsNull() && !data.LoginOnSuccessLog.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-success/log", data.getPath()))
+	if !data.AccessSessionMacMoveDeny.IsNull() && !data.AccessSessionMacMoveDeny.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-session/mac-move/deny", data.getPath()))
 	}
-	if !data.IpMulticastRouting.IsNull() && !data.IpMulticastRouting.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", data.getPath()))
+	if !data.EpmLogging.IsNull() && !data.EpmLogging.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/epm/logging", data.getPath()))
 	}
-	if !data.MulticastRoutingSwitch.IsNull() && !data.MulticastRoutingSwitch.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", data.getPath()))
+	if !data.CispEnable.IsNull() && !data.CispEnable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/cisp/enable", data.getPath()))
 	}
-	if !data.IpMulticastRoutingDistributed.IsNull() && !data.IpMulticastRoutingDistributed.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", data.getPath()))
+
+	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", data.getPath()))
+	}
+
+	if !data.IpHttpAuthenticationAaa.IsNull() && !data.IpHttpAuthenticationAaa.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", data.getPath()))
 	}
 
 	for i := range data.MulticastRoutingVrfs {
@@ -2768,37 +2775,32 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v/distributed", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
-	if !data.IpHttpAuthenticationAaa.IsNull() && !data.IpHttpAuthenticationAaa.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", data.getPath()))
+	if !data.IpMulticastRoutingDistributed.IsNull() && !data.IpMulticastRoutingDistributed.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", data.getPath()))
 	}
-
-	if !data.IpHttpAuthenticationLocal.IsNull() && !data.IpHttpAuthenticationLocal.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", data.getPath()))
+	if !data.MulticastRoutingSwitch.IsNull() && !data.MulticastRoutingSwitch.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", data.getPath()))
 	}
-
-	if !data.CispEnable.IsNull() && !data.CispEnable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/cisp/enable", data.getPath()))
+	if !data.IpMulticastRouting.IsNull() && !data.IpMulticastRouting.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", data.getPath()))
 	}
-	if !data.EpmLogging.IsNull() && !data.EpmLogging.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/epm/logging", data.getPath()))
+	if !data.LoginOnSuccessLog.IsNull() && !data.LoginOnSuccessLog.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-success/log", data.getPath()))
 	}
-	if !data.AccessSessionMacMoveDeny.IsNull() && !data.AccessSessionMacMoveDeny.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-session/mac-move/deny", data.getPath()))
+	if !data.LoginOnSuccess.IsNull() && !data.LoginOnSuccess.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-success", data.getPath()))
 	}
-	if !data.ArchiveWriteMemory.IsNull() && !data.ArchiveWriteMemory.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/archive/write-memory", data.getPath()))
+	if !data.LoginOnFailureLog.IsNull() && !data.LoginOnFailureLog.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-failure/log", data.getPath()))
 	}
-	if !data.ArchiveLogConfigLoggingEnable.IsNull() && !data.ArchiveLogConfigLoggingEnable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/archive/log/config/logging/enable", data.getPath()))
+	if !data.LoginOnFailure.IsNull() && !data.LoginOnFailure.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/login/on-failure", data.getPath()))
 	}
-	if !data.Redundancy.IsNull() && !data.Redundancy.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redundancy", data.getPath()))
+	if !data.Ipv6UnicastRouting.IsNull() && !data.Ipv6UnicastRouting.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv6/unicast-routing", data.getPath()))
 	}
-	if !data.TransceiverTypeAllMonitoring.IsNull() && !data.TransceiverTypeAllMonitoring.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", data.getPath()))
-	}
-	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
+	if !data.IpBgpCommunityNewFormat.IsNull() && !data.IpBgpCommunityNewFormat.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/bgp-community/new-format", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -2810,306 +2812,307 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Hostname.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/hostname", data.getPath()))
+	if !data.EnableSecretLevel.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/level", data.getPath()))
 	}
-	if !data.IpBgpCommunityNewFormat.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/bgp-community/new-format", data.getPath()))
+	if !data.EnableSecretType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/type", data.getPath()))
 	}
-	if !data.IpRouting.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/routing-conf/routing", data.getPath()))
-	}
-	if !data.Ipv6UnicastRouting.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/unicast-routing", data.getPath()))
-	}
-	if !data.Mtu.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/system/Cisco-IOS-XE-switch:mtu/size", data.getPath()))
-	}
-	if !data.IpSourceRoute.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/source-route", data.getPath()))
-	}
-	if !data.IpDomainLookup.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup", data.getPath()))
-	}
-	if !data.IpDomainName.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/name", data.getPath()))
-	}
-	if !data.LoginDelay.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/delay", data.getPath()))
-	}
-	if !data.LoginOnFailure.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-failure", data.getPath()))
-	}
-	if !data.LoginOnFailureLog.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-failure/log", data.getPath()))
-	}
-	if !data.LoginOnSuccess.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-success", data.getPath()))
-	}
-	if !data.LoginOnSuccessLog.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-success/log", data.getPath()))
-	}
-	if !data.IpMulticastRouting.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", data.getPath()))
-	}
-	if !data.MulticastRoutingSwitch.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", data.getPath()))
-	}
-	if !data.IpMulticastRoutingDistributed.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", data.getPath()))
-	}
-	for i := range data.MulticastRoutingVrfs {
-		keyValues := [...]string{data.MulticastRoutingVrfs[i].Vrf.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.IpHttpAccessClass.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/access-class", data.getPath()))
-	}
-	if !data.IpHttpAuthenticationAaa.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", data.getPath()))
-	}
-	if !data.IpHttpAuthenticationAaaExecAuthorization.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/exec-authorization", data.getPath()))
-	}
-	if !data.IpHttpAuthenticationAaaLoginAuthentication.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/login-authentication", data.getPath()))
-	}
-	for i := range data.IpHttpAuthenticationAaaCommandAuthorization {
-		keyValues := [...]string{strconv.FormatInt(data.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.IpHttpAuthenticationLocal.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", data.getPath()))
-	}
-	if !data.IpHttpServer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/server", data.getPath()))
-	}
-	if !data.IpHttpSecureServer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-server", data.getPath()))
-	}
-	if !data.IpHttpSecureTrustpoint.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-trustpoint", data.getPath()))
-	}
-	if !data.IpHttpTlsVersion.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/tls-version", data.getPath()))
-	}
-	if !data.IpHttpClientSecureTrustpoint.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/secure-trustpoint", data.getPath()))
-	}
-	if !data.IpHttpClientSourceInterface.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/source-interface", data.getPath()))
-	}
-	if !data.IpHttpSecureActiveSessionModules.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-active-session-modules", data.getPath()))
-	}
-	if !data.IpHttpMaxConnections.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/max-connections", data.getPath()))
-	}
-	if !data.IpHttpActiveSessionModules.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/active-session-modules", data.getPath()))
-	}
-	if !data.IpNameServers.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered", data.getPath()))
-	}
-	for i := range data.IpNameServersVrf {
-		keyValues := [...]string{data.IpNameServersVrf[i].Vrf.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/name-server/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Loopback", data.getPath()))
-	}
-	if !data.IpDomainLookupSourceInterfaceVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Vlan", data.getPath()))
-	}
-	if !data.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/GigabitEthernet", data.getPath()))
-	}
-	if !data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwoGigabitEthernet", data.getPath()))
-	}
-	if !data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FiveGigabitEthernet", data.getPath()))
-	}
-	if !data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TenGigabitEthernet", data.getPath()))
-	}
-	if !data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwentyFiveGigE", data.getPath()))
-	}
-	if !data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FortyGigabitEthernet", data.getPath()))
-	}
-	if !data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/HundredGigE", data.getPath()))
-	}
-	if !data.CispEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/cisp/enable", data.getPath()))
-	}
-	if !data.EpmLogging.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/epm/logging", data.getPath()))
-	}
-	if !data.AccessSessionMacMoveDeny.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-session/mac-move/deny", data.getPath()))
-	}
-	if !data.DiagnosticBootupLevel.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", data.getPath()))
-	}
-	if !data.MemoryFreeLowWatermarkProcessor.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/memory/free/low-watermark/processor", data.getPath()))
-	}
-	if !data.ArchivePath.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/path", data.getPath()))
-	}
-	if !data.ArchiveMaximum.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/maximum", data.getPath()))
-	}
-	if !data.ArchiveWriteMemory.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/write-memory", data.getPath()))
-	}
-	if !data.ArchiveTimePeriod.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/time-period", data.getPath()))
-	}
-	if !data.ArchiveLogConfigLoggingEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/log/config/logging/enable", data.getPath()))
-	}
-	if !data.ArchiveLogConfigLoggingSize.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/log/config/logging/size", data.getPath()))
-	}
-	if !data.Redundancy.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redundancy", data.getPath()))
-	}
-	if !data.RedundancyMode.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redundancy/mode", data.getPath()))
-	}
-	if !data.TransceiverTypeAllMonitoring.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", data.getPath()))
-	}
-	if !data.IpForwardProtocolNd.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/forward-protocol-v2/nd", data.getPath()))
-	}
-	if !data.IpScpServerEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
-	}
-	if !data.IpSshVersion.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/ssh-version", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/Loopback", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/Vlan", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/GigabitEthernet", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwoGigabitEthernet", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/FiveGigabitEthernet", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceTenGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TenGigabitEthernet", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwentyFiveGigE", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/FortyGigabitEthernet", data.getPath()))
-	}
-	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", data.getPath()))
-	}
-	if !data.ControlPlaneServicePolicyInput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
-	}
-	for i := range data.PnpProfiles {
-		keyValues := [...]string{data.PnpProfiles[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.IpTacacsSourceInterfaceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Loopback", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Vlan", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/GigabitEthernet", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwoGigabitEthernet", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FiveGigabitEthernet", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TenGigabitEthernet", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwentyFiveGigE", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FortyGigabitEthernet", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/HundredGigE", data.getPath()))
-	}
-	if !data.IpTacacsSourceInterfaceVrf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/vrf", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/Loopback", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/Vlan", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/GigabitEthernet", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TwoGigabitEthernet", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/FiveGigabitEthernet", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TenGigabitEthernet", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TwentyFiveGigE", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/FortyGigabitEthernet", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/HundredGigE", data.getPath()))
-	}
-	if !data.IpRadiusSourceInterfaceVrf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/vrf", data.getPath()))
-	}
-	for i := range data.BootSystemFlashFiles {
-		keyValues := [...]string{data.BootSystemFlashFiles[i].Path.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/system/flash/flash-list-ordered-by-user=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.EnableSecret.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret", data.getPath()))
 	}
 	for i := range data.BootSystemBootfiles {
 		keyValues := [...]string{data.BootSystemBootfiles[i].Path.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/system/bootfile/filename-list-ordered-by-user=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.EnableSecret.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret", data.getPath()))
+	for i := range data.BootSystemFlashFiles {
+		keyValues := [...]string{data.BootSystemFlashFiles[i].Path.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/boot/system/flash/flash-list-ordered-by-user=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.EnableSecretType.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/type", data.getPath()))
+	if !data.IpRadiusSourceInterfaceVrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/vrf", data.getPath()))
 	}
-	if !data.EnableSecretLevel.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/level", data.getPath()))
+	if !data.IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/HundredGigE", data.getPath()))
 	}
+	if !data.IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/FortyGigabitEthernet", data.getPath()))
+	}
+	if !data.IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TwentyFiveGigE", data.getPath()))
+	}
+	if !data.IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TenGigabitEthernet", data.getPath()))
+	}
+	if !data.IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/FiveGigabitEthernet", data.getPath()))
+	}
+	if !data.IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/TwoGigabitEthernet", data.getPath()))
+	}
+	if !data.IpRadiusSourceInterfaceGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/GigabitEthernet", data.getPath()))
+	}
+	if !data.IpRadiusSourceInterfaceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/Vlan", data.getPath()))
+	}
+	if !data.IpRadiusSourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:radius/source-interface/Loopback", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceVrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/vrf", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/HundredGigE", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FortyGigabitEthernet", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwentyFiveGigE", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TenGigabitEthernet", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/FiveGigabitEthernet", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/TwoGigabitEthernet", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/GigabitEthernet", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Vlan", data.getPath()))
+	}
+	if !data.IpTacacsSourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-aaa:tacacs/source-interface/Loopback", data.getPath()))
+	}
+	for i := range data.PnpProfiles {
+		keyValues := [...]string{data.PnpProfiles[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-pnp:pnp/profile=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.ControlPlaneServicePolicyInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/control-plane/Cisco-IOS-XE-policy:service-policy/input", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/HundredGigE", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/FortyGigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwentyFiveGigE", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TenGigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/FiveGigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/TwoGigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/GigabitEthernet", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/Vlan", data.getPath()))
+	}
+	if !data.IpSshSourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/Loopback", data.getPath()))
+	}
+	if !data.IpSshVersion.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/ssh-version", data.getPath()))
+	}
+	if !data.IpScpServerEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
+	}
+	if !data.IpForwardProtocolNd.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/forward-protocol-v2/nd", data.getPath()))
+	}
+	if !data.TransceiverTypeAllMonitoring.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/transceivers/type/all/monitoring-enable/monitoring", data.getPath()))
+	}
+	if !data.RedundancyMode.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redundancy/mode", data.getPath()))
+	}
+	if !data.Redundancy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redundancy", data.getPath()))
+	}
+	if !data.ArchiveLogConfigLoggingSize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/log/config/logging/size", data.getPath()))
+	}
+	if !data.ArchiveLogConfigLoggingEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/log/config/logging/enable", data.getPath()))
+	}
+	if !data.ArchiveTimePeriod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/time-period", data.getPath()))
+	}
+	if !data.ArchiveWriteMemory.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/write-memory", data.getPath()))
+	}
+	if !data.ArchiveMaximum.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/maximum", data.getPath()))
+	}
+	if !data.ArchivePath.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/archive/path", data.getPath()))
+	}
+	if !data.MemoryFreeLowWatermarkProcessor.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/memory/free/low-watermark/processor", data.getPath()))
+	}
+	if !data.DiagnosticBootupLevel.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", data.getPath()))
+	}
+	if !data.AccessSessionMacMoveDeny.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-session/mac-move/deny", data.getPath()))
+	}
+	if !data.EpmLogging.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/epm/logging", data.getPath()))
+	}
+	if !data.CispEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/cisp/enable", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/HundredGigE", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FortyGigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwentyFiveGigE", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TenGigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/FiveGigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/TwoGigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/GigabitEthernet", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Vlan", data.getPath()))
+	}
+	if !data.IpDomainLookupSourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup-settings/lookup/source-interface/Loopback", data.getPath()))
+	}
+	for i := range data.IpNameServersVrf {
+		keyValues := [...]string{data.IpNameServersVrf[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/name-server/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.IpNameServers.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/name-server/no-vrf-ordered", data.getPath()))
+	}
+	if !data.IpHttpActiveSessionModules.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/active-session-modules", data.getPath()))
+	}
+	if !data.IpHttpMaxConnections.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/max-connections", data.getPath()))
+	}
+	if !data.IpHttpSecureActiveSessionModules.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-active-session-modules", data.getPath()))
+	}
+	if !data.IpHttpClientSourceInterface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/source-interface", data.getPath()))
+	}
+	if !data.IpHttpClientSecureTrustpoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/client/secure-trustpoint", data.getPath()))
+	}
+	if !data.IpHttpTlsVersion.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/tls-version", data.getPath()))
+	}
+	if !data.IpHttpSecureTrustpoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-trustpoint", data.getPath()))
+	}
+	if !data.IpHttpSecureServer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/secure-server", data.getPath()))
+	}
+	if !data.IpHttpServer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/server", data.getPath()))
+	}
+	if !data.IpHttpAuthenticationLocal.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/local", data.getPath()))
+	}
+	for i := range data.IpHttpAuthenticationAaaCommandAuthorization {
+		keyValues := [...]string{strconv.FormatInt(data.IpHttpAuthenticationAaaCommandAuthorization[i].Level.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/command-authorization=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.IpHttpAuthenticationAaaLoginAuthentication.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/login-authentication", data.getPath()))
+	}
+	if !data.IpHttpAuthenticationAaaExecAuthorization.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa/exec-authorization", data.getPath()))
+	}
+	if !data.IpHttpAuthenticationAaa.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/authentication/aaa", data.getPath()))
+	}
+	if !data.IpHttpAccessClass.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-http:http/access-class", data.getPath()))
+	}
+	for i := range data.MulticastRoutingVrfs {
+		keyValues := [...]string{data.MulticastRoutingVrfs[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.IpMulticastRoutingDistributed.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing/distributed", data.getPath()))
+	}
+	if !data.MulticastRoutingSwitch.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:mcr-conf/multicast-routing", data.getPath()))
+	}
+	if !data.IpMulticastRouting.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-multicast:multicast-routing", data.getPath()))
+	}
+	if !data.LoginOnSuccessLog.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-success/log", data.getPath()))
+	}
+	if !data.LoginOnSuccess.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-success", data.getPath()))
+	}
+	if !data.LoginOnFailureLog.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-failure/log", data.getPath()))
+	}
+	if !data.LoginOnFailure.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/on-failure", data.getPath()))
+	}
+	if !data.LoginDelay.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/delay", data.getPath()))
+	}
+	if !data.IpDomainName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/name", data.getPath()))
+	}
+	if !data.IpDomainLookup.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/lookup", data.getPath()))
+	}
+	if !data.IpSourceRoute.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/source-route", data.getPath()))
+	}
+	if !data.Mtu.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/system/Cisco-IOS-XE-switch:mtu/size", data.getPath()))
+	}
+	if !data.Ipv6UnicastRouting.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv6/unicast-routing", data.getPath()))
+	}
+	if !data.IpRouting.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/routing-conf/routing", data.getPath()))
+	}
+	if !data.IpBgpCommunityNewFormat.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/bgp-community/new-format", data.getPath()))
+	}
+	if !data.Hostname.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/hostname", data.getPath()))
+	}
+
 	return deletePaths
 }
 

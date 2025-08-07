@@ -289,27 +289,28 @@ func (data *VLANData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *VLAN) getDeletedItems(ctx context.Context, state VLAN) []string {
 	deletedItems := make([]string, 0)
-	if !state.RemoteSpan.IsNull() && data.RemoteSpan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/remote-span", state.getPath()))
-	}
-	if !state.PrivateVlanPrimary.IsNull() && data.PrivateVlanPrimary.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/primary", state.getPath()))
-	}
-	if !state.PrivateVlanAssociation.IsNull() && data.PrivateVlanAssociation.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/association", state.getPath()))
-	}
-	if !state.PrivateVlanCommunity.IsNull() && data.PrivateVlanCommunity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/community", state.getPath()))
-	}
-	if !state.PrivateVlanIsolated.IsNull() && data.PrivateVlanIsolated.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/isolated", state.getPath()))
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
 	}
 	if !state.Name.IsNull() && data.Name.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/name", state.getPath()))
 	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
+	if !state.PrivateVlanIsolated.IsNull() && data.PrivateVlanIsolated.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/isolated", state.getPath()))
 	}
+	if !state.PrivateVlanCommunity.IsNull() && data.PrivateVlanCommunity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/community", state.getPath()))
+	}
+	if !state.PrivateVlanAssociation.IsNull() && data.PrivateVlanAssociation.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/association", state.getPath()))
+	}
+	if !state.PrivateVlanPrimary.IsNull() && data.PrivateVlanPrimary.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/private-vlan/primary", state.getPath()))
+	}
+	if !state.RemoteSpan.IsNull() && data.RemoteSpan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/remote-span", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -319,21 +320,22 @@ func (data *VLAN) getDeletedItems(ctx context.Context, state VLAN) []string {
 
 func (data *VLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.RemoteSpan.IsNull() && !data.RemoteSpan.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/remote-span", data.getPath()))
-	}
-	if !data.PrivateVlanPrimary.IsNull() && !data.PrivateVlanPrimary.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/private-vlan/primary", data.getPath()))
-	}
-	if !data.PrivateVlanCommunity.IsNull() && !data.PrivateVlanCommunity.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/private-vlan/community", data.getPath()))
+	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
 	if !data.PrivateVlanIsolated.IsNull() && !data.PrivateVlanIsolated.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/private-vlan/isolated", data.getPath()))
 	}
-	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
+	if !data.PrivateVlanCommunity.IsNull() && !data.PrivateVlanCommunity.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/private-vlan/community", data.getPath()))
 	}
+	if !data.PrivateVlanPrimary.IsNull() && !data.PrivateVlanPrimary.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/private-vlan/primary", data.getPath()))
+	}
+	if !data.RemoteSpan.IsNull() && !data.RemoteSpan.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/remote-span", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -343,27 +345,28 @@ func (data *VLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *VLAN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.RemoteSpan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/remote-span", data.getPath()))
-	}
-	if !data.PrivateVlanPrimary.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/private-vlan/primary", data.getPath()))
-	}
-	if !data.PrivateVlanAssociation.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/private-vlan/association", data.getPath()))
-	}
-	if !data.PrivateVlanCommunity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/private-vlan/community", data.getPath()))
-	}
-	if !data.PrivateVlanIsolated.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/private-vlan/isolated", data.getPath()))
+	if !data.Shutdown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
 	if !data.Name.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/name", data.getPath()))
 	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
+	if !data.PrivateVlanIsolated.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/private-vlan/isolated", data.getPath()))
 	}
+	if !data.PrivateVlanCommunity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/private-vlan/community", data.getPath()))
+	}
+	if !data.PrivateVlanAssociation.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/private-vlan/association", data.getPath()))
+	}
+	if !data.PrivateVlanPrimary.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/private-vlan/primary", data.getPath()))
+	}
+	if !data.RemoteSpan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/remote-span", data.getPath()))
+	}
+
 	return deletePaths
 }
 

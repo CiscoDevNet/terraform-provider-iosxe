@@ -180,18 +180,19 @@ func (data *BannerData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Banner) getDeletedItems(ctx context.Context, state Banner) []string {
 	deletedItems := make([]string, 0)
-	if !state.ExecBanner.IsNull() && data.ExecBanner.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/exec/banner", state.getPath()))
-	}
-	if !state.LoginBanner.IsNull() && data.LoginBanner.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/banner", state.getPath()))
+	if !state.MotdBanner.IsNull() && data.MotdBanner.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/motd/banner", state.getPath()))
 	}
 	if !state.PromptTimeoutBanner.IsNull() && data.PromptTimeoutBanner.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/prompt-timeout/banner", state.getPath()))
 	}
-	if !state.MotdBanner.IsNull() && data.MotdBanner.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/motd/banner", state.getPath()))
+	if !state.LoginBanner.IsNull() && data.LoginBanner.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/login/banner", state.getPath()))
 	}
+	if !state.ExecBanner.IsNull() && data.ExecBanner.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/exec/banner", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -201,6 +202,7 @@ func (data *Banner) getDeletedItems(ctx context.Context, state Banner) []string 
 
 func (data *Banner) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -210,18 +212,19 @@ func (data *Banner) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Banner) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.ExecBanner.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec/banner", data.getPath()))
-	}
-	if !data.LoginBanner.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/banner", data.getPath()))
+	if !data.MotdBanner.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/motd/banner", data.getPath()))
 	}
 	if !data.PromptTimeoutBanner.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/prompt-timeout/banner", data.getPath()))
 	}
-	if !data.MotdBanner.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/motd/banner", data.getPath()))
+	if !data.LoginBanner.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/login/banner", data.getPath()))
 	}
+	if !data.ExecBanner.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec/banner", data.getPath()))
+	}
+
 	return deletePaths
 }
 

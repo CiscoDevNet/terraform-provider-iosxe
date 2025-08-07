@@ -645,109 +645,8 @@ func (data *ServiceTemplateData) fromBody(ctx context.Context, res gjson.Result)
 
 func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceTemplate) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.AccessGroups {
-		stateKeyValues := [...]string{state.AccessGroups[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.AccessGroups[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.AccessGroups {
-			found = true
-			if state.AccessGroups[i].Name.ValueString() != data.AccessGroups[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/access-group-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.InactivityTimer.IsNull() && data.InactivityTimer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inactivity-timer/value", state.getPath()))
-	}
-	if !state.InactivityTimerProbe.IsNull() && data.InactivityTimerProbe.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/inactivity-timer/probe", state.getPath()))
-	}
-	if !state.Vlan.IsNull() && data.Vlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan", state.getPath()))
-	}
-	if !state.VoiceVlan.IsNull() && data.VoiceVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/voice/vlan", state.getPath()))
-	}
-	if !state.LinksecPolicy.IsNull() && data.LinksecPolicy.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/linksec/policy", state.getPath()))
-	}
-	if !state.Sgt.IsNull() && data.Sgt.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/sgt", state.getPath()))
-	}
-	if !state.AbsoluteTimer.IsNull() && data.AbsoluteTimer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/absolute-timer", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
-	for i := range state.InterfaceTemplates {
-		stateKeyValues := [...]string{state.InterfaceTemplates[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.InterfaceTemplates[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.InterfaceTemplates {
-			found = true
-			if state.InterfaceTemplates[i].Name.ValueString() != data.InterfaceTemplates[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/interface-template=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.TunnelCapwapName.IsNull() && data.TunnelCapwapName.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/tunnel/type/capwap/name", state.getPath()))
-	}
-	if !state.Vnid.IsNull() && data.Vnid.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/vnid", state.getPath()))
-	}
-	if !state.RedirectAppendClientMac.IsNull() && data.RedirectAppendClientMac.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/append/client-mac", state.getPath()))
-	}
-	if !state.RedirectAppendSwitchMac.IsNull() && data.RedirectAppendSwitchMac.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/append/switch-mac", state.getPath()))
-	}
-	if !state.RedirectUrl.IsNull() && data.RedirectUrl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/url_name", state.getPath()))
-	}
-	if !state.RedirectUrlMatchAcl.IsNull() && data.RedirectUrlMatchAcl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/match/acl_name", state.getPath()))
-	}
-	if !state.RedirectUrlMatchAction.IsNull() && data.RedirectUrlMatchAction.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/match/action", state.getPath()))
-	}
-	if !state.DnsAclPreauth.IsNull() && data.DnsAclPreauth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dns-acl/preauth", state.getPath()))
-	}
-	if !state.ServicePolicyQosInput.IsNull() && data.ServicePolicyQosInput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/qos/input", state.getPath()))
-	}
-	if !state.ServicePolicyQosOutput.IsNull() && data.ServicePolicyQosOutput.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/qos/output", state.getPath()))
+	if !state.MdnsServicePolicy.IsNull() && data.MdnsServicePolicy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mdns-service-policy", state.getPath()))
 	}
 	for i := range state.Tags {
 		stateKeyValues := [...]string{state.Tags[i].Name.ValueString()}
@@ -774,9 +673,111 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/tag-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.MdnsServicePolicy.IsNull() && data.MdnsServicePolicy.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mdns-service-policy", state.getPath()))
+	if !state.ServicePolicyQosOutput.IsNull() && data.ServicePolicyQosOutput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/qos/output", state.getPath()))
 	}
+	if !state.ServicePolicyQosInput.IsNull() && data.ServicePolicyQosInput.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/service-policy/qos/input", state.getPath()))
+	}
+	if !state.DnsAclPreauth.IsNull() && data.DnsAclPreauth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dns-acl/preauth", state.getPath()))
+	}
+	if !state.RedirectUrlMatchAction.IsNull() && data.RedirectUrlMatchAction.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/match/action", state.getPath()))
+	}
+	if !state.RedirectUrlMatchAcl.IsNull() && data.RedirectUrlMatchAcl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/match/acl_name", state.getPath()))
+	}
+	if !state.RedirectUrl.IsNull() && data.RedirectUrl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/url/url_name", state.getPath()))
+	}
+	if !state.RedirectAppendSwitchMac.IsNull() && data.RedirectAppendSwitchMac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/append/switch-mac", state.getPath()))
+	}
+	if !state.RedirectAppendClientMac.IsNull() && data.RedirectAppendClientMac.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redirect/append/client-mac", state.getPath()))
+	}
+	if !state.Vnid.IsNull() && data.Vnid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vnid", state.getPath()))
+	}
+	if !state.TunnelCapwapName.IsNull() && data.TunnelCapwapName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/tunnel/type/capwap/name", state.getPath()))
+	}
+	for i := range state.InterfaceTemplates {
+		stateKeyValues := [...]string{state.InterfaceTemplates[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.InterfaceTemplates[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.InterfaceTemplates {
+			found = true
+			if state.InterfaceTemplates[i].Name.ValueString() != data.InterfaceTemplates[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/interface-template=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.AbsoluteTimer.IsNull() && data.AbsoluteTimer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/absolute-timer", state.getPath()))
+	}
+	if !state.Sgt.IsNull() && data.Sgt.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/sgt", state.getPath()))
+	}
+	if !state.LinksecPolicy.IsNull() && data.LinksecPolicy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/linksec/policy", state.getPath()))
+	}
+	if !state.VoiceVlan.IsNull() && data.VoiceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/voice/vlan", state.getPath()))
+	}
+	if !state.Vlan.IsNull() && data.Vlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/vlan", state.getPath()))
+	}
+	if !state.InactivityTimerProbe.IsNull() && data.InactivityTimerProbe.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inactivity-timer/probe", state.getPath()))
+	}
+	if !state.InactivityTimer.IsNull() && data.InactivityTimer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inactivity-timer/value", state.getPath()))
+	}
+	for i := range state.AccessGroups {
+		stateKeyValues := [...]string{state.AccessGroups[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.AccessGroups[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.AccessGroups {
+			found = true
+			if state.AccessGroups[i].Name.ValueString() != data.AccessGroups[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/access-group-config=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+
 	return deletedItems
 }
 
@@ -787,11 +788,11 @@ func (data *ServiceTemplate) getDeletedItems(ctx context.Context, state ServiceT
 func (data *ServiceTemplate) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
-	if !data.InactivityTimerProbe.IsNull() && !data.InactivityTimerProbe.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inactivity-timer/probe", data.getPath()))
-	}
 	if !data.VoiceVlan.IsNull() && !data.VoiceVlan.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/voice/vlan", data.getPath()))
+	}
+	if !data.InactivityTimerProbe.IsNull() && !data.InactivityTimerProbe.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inactivity-timer/probe", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -803,78 +804,79 @@ func (data *ServiceTemplate) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *ServiceTemplate) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.AccessGroups {
-		keyValues := [...]string{data.AccessGroups[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-group-config=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.InactivityTimer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inactivity-timer/value", data.getPath()))
-	}
-	if !data.InactivityTimerProbe.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/inactivity-timer/probe", data.getPath()))
-	}
-	if !data.Vlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan", data.getPath()))
-	}
-	if !data.VoiceVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/voice/vlan", data.getPath()))
-	}
-	if !data.LinksecPolicy.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/linksec/policy", data.getPath()))
-	}
-	if !data.Sgt.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/sgt", data.getPath()))
-	}
-	if !data.AbsoluteTimer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/absolute-timer", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
-	for i := range data.InterfaceTemplates {
-		keyValues := [...]string{data.InterfaceTemplates[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interface-template=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.TunnelCapwapName.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/tunnel/type/capwap/name", data.getPath()))
-	}
-	if !data.Vnid.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/vnid", data.getPath()))
-	}
-	if !data.RedirectAppendClientMac.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/append/client-mac", data.getPath()))
-	}
-	if !data.RedirectAppendSwitchMac.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/append/switch-mac", data.getPath()))
-	}
-	if !data.RedirectUrl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/url/url_name", data.getPath()))
-	}
-	if !data.RedirectUrlMatchAcl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/url/match/acl_name", data.getPath()))
-	}
-	if !data.RedirectUrlMatchAction.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/url/match/action", data.getPath()))
-	}
-	if !data.DnsAclPreauth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dns-acl/preauth", data.getPath()))
-	}
-	if !data.ServicePolicyQosInput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/service-policy/qos/input", data.getPath()))
-	}
-	if !data.ServicePolicyQosOutput.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/service-policy/qos/output", data.getPath()))
+	if !data.MdnsServicePolicy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mdns-service-policy", data.getPath()))
 	}
 	for i := range data.Tags {
 		keyValues := [...]string{data.Tags[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/tag-config=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.MdnsServicePolicy.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mdns-service-policy", data.getPath()))
+	if !data.ServicePolicyQosOutput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/service-policy/qos/output", data.getPath()))
 	}
+	if !data.ServicePolicyQosInput.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/service-policy/qos/input", data.getPath()))
+	}
+	if !data.DnsAclPreauth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dns-acl/preauth", data.getPath()))
+	}
+	if !data.RedirectUrlMatchAction.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/url/match/action", data.getPath()))
+	}
+	if !data.RedirectUrlMatchAcl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/url/match/acl_name", data.getPath()))
+	}
+	if !data.RedirectUrl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/url/url_name", data.getPath()))
+	}
+	if !data.RedirectAppendSwitchMac.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/append/switch-mac", data.getPath()))
+	}
+	if !data.RedirectAppendClientMac.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redirect/append/client-mac", data.getPath()))
+	}
+	if !data.Vnid.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vnid", data.getPath()))
+	}
+	if !data.TunnelCapwapName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/tunnel/type/capwap/name", data.getPath()))
+	}
+	for i := range data.InterfaceTemplates {
+		keyValues := [...]string{data.InterfaceTemplates[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interface-template=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+	if !data.AbsoluteTimer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/absolute-timer", data.getPath()))
+	}
+	if !data.Sgt.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/sgt", data.getPath()))
+	}
+	if !data.LinksecPolicy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/linksec/policy", data.getPath()))
+	}
+	if !data.VoiceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/voice/vlan", data.getPath()))
+	}
+	if !data.Vlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan", data.getPath()))
+	}
+	if !data.InactivityTimerProbe.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inactivity-timer/probe", data.getPath()))
+	}
+	if !data.InactivityTimer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inactivity-timer/value", data.getPath()))
+	}
+	for i := range data.AccessGroups {
+		keyValues := [...]string{data.AccessGroups[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-group-config=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+
 	return deletePaths
 }
 

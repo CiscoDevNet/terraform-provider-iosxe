@@ -549,15 +549,6 @@ func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []string {
 	deletedItems := make([]string, 0)
-	if !state.Type.IsNull() && data.Type.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/type", state.getPath()))
-	}
-	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber", state.getPath()))
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
 	for i := range state.Classes {
 		stateKeyValues := [...]string{state.Classes[i].Name.ValueString()}
 
@@ -594,50 +585,50 @@ func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []s
 							found = false
 						}
 						if found {
-							if !state.Classes[i].Actions[ci].BandwidthBits.IsNull() && data.Classes[j].Actions[cj].BandwidthBits.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/bits", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].BandwidthPercent.IsNull() && data.Classes[j].Actions[cj].BandwidthPercent.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/percent", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].BandwidthRemainingOption.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingOption.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/remaining/rem-option", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].BandwidthRemainingPercent.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingPercent.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/remaining/percent", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].BandwidthRemainingRatio.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingRatio.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/remaining/ratio", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].PriorityLevel.IsNull() && data.Classes[j].Actions[cj].PriorityLevel.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/priority/level", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].PriorityBurst.IsNull() && data.Classes[j].Actions[cj].PriorityBurst.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/priority/burst", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].QueueLimit.IsNull() && data.Classes[j].Actions[cj].QueueLimit.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/queue-limit/queue-limit-value", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].QueueLimitType.IsNull() && data.Classes[j].Actions[cj].QueueLimitType.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/queue-limit/queue-limit-type", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].ShapeAverageBitRate.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitRate.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/bit-rate", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalSustained.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalSustained.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/bits-per-interval-sustained", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalExcess.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalExcess.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/bits-per-interval-excess", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Classes[i].Actions[ci].ShapeAveragePercent.IsNull() && data.Classes[j].Actions[cj].ShapeAveragePercent.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/percent", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							if !state.Classes[i].Actions[ci].ShapeAverageMs.IsNull() && data.Classes[j].Actions[cj].ShapeAverageMs.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/ms", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							if !state.Classes[i].Actions[ci].ShapeAverageBurstSizeSustained.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBurstSizeSustained.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/burst-size-sustained", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
-							if !state.Classes[i].Actions[ci].ShapeAverageMs.IsNull() && data.Classes[j].Actions[cj].ShapeAverageMs.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/ms", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							if !state.Classes[i].Actions[ci].ShapeAveragePercent.IsNull() && data.Classes[j].Actions[cj].ShapeAveragePercent.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/percent", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalExcess.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalExcess.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/bits-per-interval-excess", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAverageBitsPerIntervalSustained.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitsPerIntervalSustained.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/bits-per-interval-sustained", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].ShapeAverageBitRate.IsNull() && data.Classes[j].Actions[cj].ShapeAverageBitRate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/bit-rate", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].QueueLimitType.IsNull() && data.Classes[j].Actions[cj].QueueLimitType.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/queue-limit/queue-limit-type", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].QueueLimit.IsNull() && data.Classes[j].Actions[cj].QueueLimit.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/queue-limit/queue-limit-value", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].PriorityBurst.IsNull() && data.Classes[j].Actions[cj].PriorityBurst.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/priority/burst", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].PriorityLevel.IsNull() && data.Classes[j].Actions[cj].PriorityLevel.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/priority/level", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthRemainingRatio.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingRatio.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/remaining/ratio", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthRemainingPercent.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingPercent.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/remaining/percent", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthRemainingOption.IsNull() && data.Classes[j].Actions[cj].BandwidthRemainingOption.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/remaining/rem-option", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthPercent.IsNull() && data.Classes[j].Actions[cj].BandwidthPercent.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/percent", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].BandwidthBits.IsNull() && data.Classes[j].Actions[cj].BandwidthBits.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/bandwidth/bits", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							break
 						}
@@ -653,6 +644,16 @@ func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []s
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber", state.getPath()))
+	}
+	if !state.Type.IsNull() && data.Type.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/type", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -662,9 +663,6 @@ func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []s
 
 func (data *PolicyMap) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Subscriber.IsNull() && !data.Subscriber.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber", data.getPath()))
-	}
 
 	for i := range data.Classes {
 		keyValues := [...]string{data.Classes[i].Name.ValueString()}
@@ -676,6 +674,10 @@ func (data *PolicyMap) getEmptyLeafsDelete(ctx context.Context) []string {
 			}
 		}
 	}
+	if !data.Subscriber.IsNull() && !data.Subscriber.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -685,20 +687,21 @@ func (data *PolicyMap) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *PolicyMap) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Type.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/type", data.getPath()))
-	}
-	if !data.Subscriber.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/subscriber", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
 	for i := range data.Classes {
 		keyValues := [...]string{data.Classes[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/class=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+	if !data.Subscriber.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/subscriber", data.getPath()))
+	}
+	if !data.Type.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/type", data.getPath()))
+	}
+
 	return deletePaths
 }
 

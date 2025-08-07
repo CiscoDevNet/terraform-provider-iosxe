@@ -477,66 +477,67 @@ func (data *BFDTemplateMultiHopData) fromBody(ctx context.Context, res gjson.Res
 
 func (data *BFDTemplateMultiHop) getDeletedItems(ctx context.Context, state BFDTemplateMultiHop) []string {
 	deletedItems := make([]string, 0)
-	if !state.Echo.IsNull() && data.Echo.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/echo", state.getPath()))
-	}
-	if !state.IntervalMillisecondsBoth.IsNull() && data.IntervalMillisecondsBoth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/both", state.getPath()))
-	}
-	if !state.IntervalMillisecondsMinTx.IsNull() && data.IntervalMillisecondsMinTx.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/min-tx", state.getPath()))
-	}
-	if !state.IntervalMillisecondsMinRx.IsNull() && data.IntervalMillisecondsMinRx.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/min-rx", state.getPath()))
-	}
-	if !state.IntervalMillisecondsMultiplier.IsNull() && data.IntervalMillisecondsMultiplier.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/multiplier", state.getPath()))
-	}
-	if !state.IntervalMicroseconds.IsNull() && data.IntervalMicroseconds.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/microseconds", state.getPath()))
-	}
-	if !state.IntervalMicrosecondsBoth.IsNull() && data.IntervalMicrosecondsBoth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/both", state.getPath()))
-	}
-	if !state.IntervalMicrosecondsMinTx.IsNull() && data.IntervalMicrosecondsMinTx.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/min-tx", state.getPath()))
-	}
-	if !state.IntervalMicrosecondsMinRx.IsNull() && data.IntervalMicrosecondsMinRx.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/min-rx", state.getPath()))
-	}
-	if !state.IntervalMicrosecondsMultiplier.IsNull() && data.IntervalMicrosecondsMultiplier.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/multiplier", state.getPath()))
-	}
-	if !state.AuthenticationMd5Keychain.IsNull() && data.AuthenticationMd5Keychain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/md5/keychain", state.getPath()))
-	}
-	if !state.AuthenticationMeticulousMd5Keychain.IsNull() && data.AuthenticationMeticulousMd5Keychain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/meticulous-md5/keychain", state.getPath()))
-	}
-	if !state.AuthenticationMeticulousSha1keychain.IsNull() && data.AuthenticationMeticulousSha1keychain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/meticulous-sha-1_keychain", state.getPath()))
-	}
-	if !state.AuthenticationSha1Keychain.IsNull() && data.AuthenticationSha1Keychain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/sha-1/keychain", state.getPath()))
-	}
-	if !state.DampeningHalfTime.IsNull() && data.DampeningHalfTime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/half-time", state.getPath()))
-	}
-	if !state.DampeningUnsuppressTime.IsNull() && data.DampeningUnsuppressTime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/unsuppress-time", state.getPath()))
-	}
-	if !state.DampeningSuppressTime.IsNull() && data.DampeningSuppressTime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/suppress-time", state.getPath()))
-	}
-	if !state.DampeningMaxSuppressingTime.IsNull() && data.DampeningMaxSuppressingTime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/max-suppressing-time", state.getPath()))
+	if !state.DampeningDownMonitoring.IsNull() && data.DampeningDownMonitoring.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/down-monitoring", state.getPath()))
 	}
 	if !state.DampeningThreshold.IsNull() && data.DampeningThreshold.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/threshold", state.getPath()))
 	}
-	if !state.DampeningDownMonitoring.IsNull() && data.DampeningDownMonitoring.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/down-monitoring", state.getPath()))
+	if !state.DampeningMaxSuppressingTime.IsNull() && data.DampeningMaxSuppressingTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/max-suppressing-time", state.getPath()))
 	}
+	if !state.DampeningSuppressTime.IsNull() && data.DampeningSuppressTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/suppress-time", state.getPath()))
+	}
+	if !state.DampeningUnsuppressTime.IsNull() && data.DampeningUnsuppressTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/unsuppress-time", state.getPath()))
+	}
+	if !state.DampeningHalfTime.IsNull() && data.DampeningHalfTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dampening/half-time", state.getPath()))
+	}
+	if !state.AuthenticationSha1Keychain.IsNull() && data.AuthenticationSha1Keychain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/sha-1/keychain", state.getPath()))
+	}
+	if !state.AuthenticationMeticulousSha1keychain.IsNull() && data.AuthenticationMeticulousSha1keychain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/meticulous-sha-1_keychain", state.getPath()))
+	}
+	if !state.AuthenticationMeticulousMd5Keychain.IsNull() && data.AuthenticationMeticulousMd5Keychain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/meticulous-md5/keychain", state.getPath()))
+	}
+	if !state.AuthenticationMd5Keychain.IsNull() && data.AuthenticationMd5Keychain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/md5/keychain", state.getPath()))
+	}
+	if !state.IntervalMicrosecondsMultiplier.IsNull() && data.IntervalMicrosecondsMultiplier.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/multiplier", state.getPath()))
+	}
+	if !state.IntervalMicrosecondsMinRx.IsNull() && data.IntervalMicrosecondsMinRx.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/min-rx", state.getPath()))
+	}
+	if !state.IntervalMicrosecondsMinTx.IsNull() && data.IntervalMicrosecondsMinTx.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/min-tx", state.getPath()))
+	}
+	if !state.IntervalMicrosecondsBoth.IsNull() && data.IntervalMicrosecondsBoth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/both", state.getPath()))
+	}
+	if !state.IntervalMicroseconds.IsNull() && data.IntervalMicroseconds.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/microseconds", state.getPath()))
+	}
+	if !state.IntervalMillisecondsMultiplier.IsNull() && data.IntervalMillisecondsMultiplier.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/multiplier", state.getPath()))
+	}
+	if !state.IntervalMillisecondsMinRx.IsNull() && data.IntervalMillisecondsMinRx.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/min-rx", state.getPath()))
+	}
+	if !state.IntervalMillisecondsMinTx.IsNull() && data.IntervalMillisecondsMinTx.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/min-tx", state.getPath()))
+	}
+	if !state.IntervalMillisecondsBoth.IsNull() && data.IntervalMillisecondsBoth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/both", state.getPath()))
+	}
+	if !state.Echo.IsNull() && data.Echo.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/echo", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -546,15 +547,16 @@ func (data *BFDTemplateMultiHop) getDeletedItems(ctx context.Context, state BFDT
 
 func (data *BFDTemplateMultiHop) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Echo.IsNull() && !data.Echo.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/echo", data.getPath()))
+	if !data.DampeningDownMonitoring.IsNull() && !data.DampeningDownMonitoring.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dampening/down-monitoring", data.getPath()))
 	}
 	if !data.IntervalMicroseconds.IsNull() && !data.IntervalMicroseconds.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/interval-multihop-v2/microseconds", data.getPath()))
 	}
-	if !data.DampeningDownMonitoring.IsNull() && !data.DampeningDownMonitoring.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/dampening/down-monitoring", data.getPath()))
+	if !data.Echo.IsNull() && !data.Echo.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/echo", data.getPath()))
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -564,66 +566,67 @@ func (data *BFDTemplateMultiHop) getEmptyLeafsDelete(ctx context.Context) []stri
 
 func (data *BFDTemplateMultiHop) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Echo.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/echo", data.getPath()))
-	}
-	if !data.IntervalMillisecondsBoth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/both", data.getPath()))
-	}
-	if !data.IntervalMillisecondsMinTx.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/min-tx", data.getPath()))
-	}
-	if !data.IntervalMillisecondsMinRx.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/min-rx", data.getPath()))
-	}
-	if !data.IntervalMillisecondsMultiplier.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/multiplier", data.getPath()))
-	}
-	if !data.IntervalMicroseconds.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/microseconds", data.getPath()))
-	}
-	if !data.IntervalMicrosecondsBoth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/both", data.getPath()))
-	}
-	if !data.IntervalMicrosecondsMinTx.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/min-tx", data.getPath()))
-	}
-	if !data.IntervalMicrosecondsMinRx.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/min-rx", data.getPath()))
-	}
-	if !data.IntervalMicrosecondsMultiplier.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/multiplier", data.getPath()))
-	}
-	if !data.AuthenticationMd5Keychain.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/md5/keychain", data.getPath()))
-	}
-	if !data.AuthenticationMeticulousMd5Keychain.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/meticulous-md5/keychain", data.getPath()))
-	}
-	if !data.AuthenticationMeticulousSha1keychain.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/meticulous-sha-1_keychain", data.getPath()))
-	}
-	if !data.AuthenticationSha1Keychain.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/sha-1/keychain", data.getPath()))
-	}
-	if !data.DampeningHalfTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/half-time", data.getPath()))
-	}
-	if !data.DampeningUnsuppressTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/unsuppress-time", data.getPath()))
-	}
-	if !data.DampeningSuppressTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/suppress-time", data.getPath()))
-	}
-	if !data.DampeningMaxSuppressingTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/max-suppressing-time", data.getPath()))
+	if !data.DampeningDownMonitoring.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/down-monitoring", data.getPath()))
 	}
 	if !data.DampeningThreshold.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/threshold", data.getPath()))
 	}
-	if !data.DampeningDownMonitoring.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/down-monitoring", data.getPath()))
+	if !data.DampeningMaxSuppressingTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/max-suppressing-time", data.getPath()))
 	}
+	if !data.DampeningSuppressTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/suppress-time", data.getPath()))
+	}
+	if !data.DampeningUnsuppressTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/unsuppress-time", data.getPath()))
+	}
+	if !data.DampeningHalfTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dampening/half-time", data.getPath()))
+	}
+	if !data.AuthenticationSha1Keychain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/sha-1/keychain", data.getPath()))
+	}
+	if !data.AuthenticationMeticulousSha1keychain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/meticulous-sha-1_keychain", data.getPath()))
+	}
+	if !data.AuthenticationMeticulousMd5Keychain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/meticulous-md5/keychain", data.getPath()))
+	}
+	if !data.AuthenticationMd5Keychain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/md5/keychain", data.getPath()))
+	}
+	if !data.IntervalMicrosecondsMultiplier.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/multiplier", data.getPath()))
+	}
+	if !data.IntervalMicrosecondsMinRx.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/min-rx", data.getPath()))
+	}
+	if !data.IntervalMicrosecondsMinTx.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/min-tx", data.getPath()))
+	}
+	if !data.IntervalMicrosecondsBoth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/both", data.getPath()))
+	}
+	if !data.IntervalMicroseconds.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/microseconds", data.getPath()))
+	}
+	if !data.IntervalMillisecondsMultiplier.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/multiplier", data.getPath()))
+	}
+	if !data.IntervalMillisecondsMinRx.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/min-rx", data.getPath()))
+	}
+	if !data.IntervalMillisecondsMinTx.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/min-tx", data.getPath()))
+	}
+	if !data.IntervalMillisecondsBoth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/interval-multihop-v2/mill-unit/both", data.getPath()))
+	}
+	if !data.Echo.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/echo", data.getPath()))
+	}
+
 	return deletePaths
 }
 

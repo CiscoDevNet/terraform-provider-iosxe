@@ -717,75 +717,76 @@ func (data *VTPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *VTP) getDeletedItems(ctx context.Context, state VTP) []string {
 	deletedItems := make([]string, 0)
-	if !state.File.IsNull() && data.File.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:file", state.getPath()))
-	}
-	if !state.Interface.IsNull() && data.Interface.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/interface-name", state.getPath()))
-	}
-	if !state.InterfaceOnly.IsNull() && data.InterfaceOnly.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/only", state.getPath()))
-	}
-	if !state.Password.IsNull() && data.Password.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/password", state.getPath()))
-	}
-	if !state.PasswordHidden.IsNull() && data.PasswordHidden.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/hidden", state.getPath()))
-	}
-	if !state.PasswordSecret.IsNull() && data.PasswordSecret.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/secret", state.getPath()))
-	}
-	if !state.Pruning.IsNull() && data.Pruning.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", state.getPath()))
-	}
-	if !state.ModeClient.IsNull() && data.ModeClient.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", state.getPath()))
-	}
-	if !state.ModeClientMst.IsNull() && data.ModeClientMst.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", state.getPath()))
-	}
-	if !state.ModeClientUnknown.IsNull() && data.ModeClientUnknown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/unknown", state.getPath()))
-	}
-	if !state.ModeClientVlan.IsNull() && data.ModeClientVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", state.getPath()))
-	}
-	if !state.ModeOff.IsNull() && data.ModeOff.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", state.getPath()))
-	}
-	if !state.ModeOffMst.IsNull() && data.ModeOffMst.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", state.getPath()))
-	}
-	if !state.ModeOffUnknown.IsNull() && data.ModeOffUnknown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/unknown", state.getPath()))
-	}
-	if !state.ModeOffVlan.IsNull() && data.ModeOffVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", state.getPath()))
-	}
-	if !state.ModeServer.IsNull() && data.ModeServer.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", state.getPath()))
-	}
-	if !state.ModeServerMst.IsNull() && data.ModeServerMst.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", state.getPath()))
-	}
-	if !state.ModeServerUnknown.IsNull() && data.ModeServerUnknown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/unknown", state.getPath()))
-	}
-	if !state.ModeServerVlan.IsNull() && data.ModeServerVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", state.getPath()))
-	}
-	if !state.ModeTransparent.IsNull() && data.ModeTransparent.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", state.getPath()))
-	}
-	if !state.ModeTransparentMst.IsNull() && data.ModeTransparentMst.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", state.getPath()))
+	if !state.ModeTransparentVlan.IsNull() && data.ModeTransparentVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/vlan", state.getPath()))
 	}
 	if !state.ModeTransparentUnknown.IsNull() && data.ModeTransparentUnknown.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/unknown", state.getPath()))
 	}
-	if !state.ModeTransparentVlan.IsNull() && data.ModeTransparentVlan.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/vlan", state.getPath()))
+	if !state.ModeTransparentMst.IsNull() && data.ModeTransparentMst.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", state.getPath()))
 	}
+	if !state.ModeTransparent.IsNull() && data.ModeTransparent.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", state.getPath()))
+	}
+	if !state.ModeServerVlan.IsNull() && data.ModeServerVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", state.getPath()))
+	}
+	if !state.ModeServerUnknown.IsNull() && data.ModeServerUnknown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/unknown", state.getPath()))
+	}
+	if !state.ModeServerMst.IsNull() && data.ModeServerMst.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", state.getPath()))
+	}
+	if !state.ModeServer.IsNull() && data.ModeServer.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", state.getPath()))
+	}
+	if !state.ModeOffVlan.IsNull() && data.ModeOffVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", state.getPath()))
+	}
+	if !state.ModeOffUnknown.IsNull() && data.ModeOffUnknown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/unknown", state.getPath()))
+	}
+	if !state.ModeOffMst.IsNull() && data.ModeOffMst.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", state.getPath()))
+	}
+	if !state.ModeOff.IsNull() && data.ModeOff.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", state.getPath()))
+	}
+	if !state.ModeClientVlan.IsNull() && data.ModeClientVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", state.getPath()))
+	}
+	if !state.ModeClientUnknown.IsNull() && data.ModeClientUnknown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/unknown", state.getPath()))
+	}
+	if !state.ModeClientMst.IsNull() && data.ModeClientMst.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", state.getPath()))
+	}
+	if !state.ModeClient.IsNull() && data.ModeClient.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", state.getPath()))
+	}
+	if !state.Pruning.IsNull() && data.Pruning.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", state.getPath()))
+	}
+	if !state.PasswordSecret.IsNull() && data.PasswordSecret.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/secret", state.getPath()))
+	}
+	if !state.PasswordHidden.IsNull() && data.PasswordHidden.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/hidden", state.getPath()))
+	}
+	if !state.Password.IsNull() && data.Password.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/password", state.getPath()))
+	}
+	if !state.InterfaceOnly.IsNull() && data.InterfaceOnly.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/only", state.getPath()))
+	}
+	if !state.Interface.IsNull() && data.Interface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/interface-name", state.getPath()))
+	}
+	if !state.File.IsNull() && data.File.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:file", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -795,66 +796,67 @@ func (data *VTP) getDeletedItems(ctx context.Context, state VTP) []string {
 
 func (data *VTP) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.InterfaceOnly.IsNull() && !data.InterfaceOnly.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/only", data.getPath()))
-	}
-	if !data.PasswordHidden.IsNull() && !data.PasswordHidden.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/hidden", data.getPath()))
-	}
-	if !data.PasswordSecret.IsNull() && !data.PasswordSecret.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/secret", data.getPath()))
-	}
-	if !data.Pruning.IsNull() && !data.Pruning.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", data.getPath()))
-	}
-	if !data.ModeClient.IsNull() && !data.ModeClient.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", data.getPath()))
-	}
-	if !data.ModeClientMst.IsNull() && !data.ModeClientMst.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", data.getPath()))
-	}
-	if !data.ModeClientUnknown.IsNull() && !data.ModeClientUnknown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/unknown", data.getPath()))
-	}
-	if !data.ModeClientVlan.IsNull() && !data.ModeClientVlan.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", data.getPath()))
-	}
-	if !data.ModeOff.IsNull() && !data.ModeOff.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", data.getPath()))
-	}
-	if !data.ModeOffMst.IsNull() && !data.ModeOffMst.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", data.getPath()))
-	}
-	if !data.ModeOffUnknown.IsNull() && !data.ModeOffUnknown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/unknown", data.getPath()))
-	}
-	if !data.ModeOffVlan.IsNull() && !data.ModeOffVlan.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", data.getPath()))
-	}
-	if !data.ModeServer.IsNull() && !data.ModeServer.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", data.getPath()))
-	}
-	if !data.ModeServerMst.IsNull() && !data.ModeServerMst.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", data.getPath()))
-	}
-	if !data.ModeServerUnknown.IsNull() && !data.ModeServerUnknown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/unknown", data.getPath()))
-	}
-	if !data.ModeServerVlan.IsNull() && !data.ModeServerVlan.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", data.getPath()))
-	}
-	if !data.ModeTransparent.IsNull() && !data.ModeTransparent.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", data.getPath()))
-	}
-	if !data.ModeTransparentMst.IsNull() && !data.ModeTransparentMst.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", data.getPath()))
+	if !data.ModeTransparentVlan.IsNull() && !data.ModeTransparentVlan.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/vlan", data.getPath()))
 	}
 	if !data.ModeTransparentUnknown.IsNull() && !data.ModeTransparentUnknown.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/unknown", data.getPath()))
 	}
-	if !data.ModeTransparentVlan.IsNull() && !data.ModeTransparentVlan.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/vlan", data.getPath()))
+	if !data.ModeTransparentMst.IsNull() && !data.ModeTransparentMst.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", data.getPath()))
 	}
+	if !data.ModeTransparent.IsNull() && !data.ModeTransparent.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", data.getPath()))
+	}
+	if !data.ModeServerVlan.IsNull() && !data.ModeServerVlan.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", data.getPath()))
+	}
+	if !data.ModeServerUnknown.IsNull() && !data.ModeServerUnknown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/unknown", data.getPath()))
+	}
+	if !data.ModeServerMst.IsNull() && !data.ModeServerMst.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", data.getPath()))
+	}
+	if !data.ModeServer.IsNull() && !data.ModeServer.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", data.getPath()))
+	}
+	if !data.ModeOffVlan.IsNull() && !data.ModeOffVlan.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", data.getPath()))
+	}
+	if !data.ModeOffUnknown.IsNull() && !data.ModeOffUnknown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/unknown", data.getPath()))
+	}
+	if !data.ModeOffMst.IsNull() && !data.ModeOffMst.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", data.getPath()))
+	}
+	if !data.ModeOff.IsNull() && !data.ModeOff.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", data.getPath()))
+	}
+	if !data.ModeClientVlan.IsNull() && !data.ModeClientVlan.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", data.getPath()))
+	}
+	if !data.ModeClientUnknown.IsNull() && !data.ModeClientUnknown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/unknown", data.getPath()))
+	}
+	if !data.ModeClientMst.IsNull() && !data.ModeClientMst.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", data.getPath()))
+	}
+	if !data.ModeClient.IsNull() && !data.ModeClient.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", data.getPath()))
+	}
+	if !data.Pruning.IsNull() && !data.Pruning.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", data.getPath()))
+	}
+	if !data.PasswordSecret.IsNull() && !data.PasswordSecret.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/secret", data.getPath()))
+	}
+	if !data.PasswordHidden.IsNull() && !data.PasswordHidden.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/hidden", data.getPath()))
+	}
+	if !data.InterfaceOnly.IsNull() && !data.InterfaceOnly.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/only", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -864,75 +866,76 @@ func (data *VTP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *VTP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.File.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:file", data.getPath()))
-	}
-	if !data.Interface.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/interface-name", data.getPath()))
-	}
-	if !data.InterfaceOnly.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/only", data.getPath()))
-	}
-	if !data.Password.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/password", data.getPath()))
-	}
-	if !data.PasswordHidden.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/hidden", data.getPath()))
-	}
-	if !data.PasswordSecret.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/secret", data.getPath()))
-	}
-	if !data.Pruning.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", data.getPath()))
-	}
-	if !data.ModeClient.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", data.getPath()))
-	}
-	if !data.ModeClientMst.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", data.getPath()))
-	}
-	if !data.ModeClientUnknown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/unknown", data.getPath()))
-	}
-	if !data.ModeClientVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", data.getPath()))
-	}
-	if !data.ModeOff.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", data.getPath()))
-	}
-	if !data.ModeOffMst.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", data.getPath()))
-	}
-	if !data.ModeOffUnknown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/unknown", data.getPath()))
-	}
-	if !data.ModeOffVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", data.getPath()))
-	}
-	if !data.ModeServer.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", data.getPath()))
-	}
-	if !data.ModeServerMst.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", data.getPath()))
-	}
-	if !data.ModeServerUnknown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/unknown", data.getPath()))
-	}
-	if !data.ModeServerVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", data.getPath()))
-	}
-	if !data.ModeTransparent.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", data.getPath()))
-	}
-	if !data.ModeTransparentMst.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", data.getPath()))
+	if !data.ModeTransparentVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/vlan", data.getPath()))
 	}
 	if !data.ModeTransparentUnknown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/unknown", data.getPath()))
 	}
-	if !data.ModeTransparentVlan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/vlan", data.getPath()))
+	if !data.ModeTransparentMst.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent/mst", data.getPath()))
 	}
+	if !data.ModeTransparent.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/transparent", data.getPath()))
+	}
+	if !data.ModeServerVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/vlan", data.getPath()))
+	}
+	if !data.ModeServerUnknown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/unknown", data.getPath()))
+	}
+	if !data.ModeServerMst.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server/mst", data.getPath()))
+	}
+	if !data.ModeServer.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/server", data.getPath()))
+	}
+	if !data.ModeOffVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/vlan", data.getPath()))
+	}
+	if !data.ModeOffUnknown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/unknown", data.getPath()))
+	}
+	if !data.ModeOffMst.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off/mst", data.getPath()))
+	}
+	if !data.ModeOff.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/off", data.getPath()))
+	}
+	if !data.ModeClientVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/vlan", data.getPath()))
+	}
+	if !data.ModeClientUnknown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/unknown", data.getPath()))
+	}
+	if !data.ModeClientMst.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client/mst", data.getPath()))
+	}
+	if !data.ModeClient.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:mode/client", data.getPath()))
+	}
+	if !data.Pruning.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:pruning", data.getPath()))
+	}
+	if !data.PasswordSecret.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/secret", data.getPath()))
+	}
+	if !data.PasswordHidden.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/hidden", data.getPath()))
+	}
+	if !data.Password.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:password/password", data.getPath()))
+	}
+	if !data.InterfaceOnly.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/only", data.getPath()))
+	}
+	if !data.Interface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:interface/interface-name", data.getPath()))
+	}
+	if !data.File.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-vtp:file", data.getPath()))
+	}
+
 	return deletePaths
 }
 

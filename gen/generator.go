@@ -320,6 +320,14 @@ func GetDeletePath(attribute YamlConfigAttribute) string {
 	return path
 }
 
+func ReverseAttributes(attributes []YamlConfigAttribute) []YamlConfigAttribute {
+	reversed := make([]YamlConfigAttribute, len(attributes))
+	for i, v := range attributes {
+		reversed[len(attributes)-1-i] = v
+	}
+	return reversed
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
 	"toGoName":              ToGoName,
@@ -337,6 +345,7 @@ var functions = template.FuncMap{
 	"getImportExcludes":     GetImportExcludes,
 	"importAttributes":      ImportAttributes,
 	"getDeletePath":         GetDeletePath,
+	"reverseAttributes":     ReverseAttributes,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {

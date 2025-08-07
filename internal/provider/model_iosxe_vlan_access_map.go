@@ -197,26 +197,8 @@ func (data *VLANAccessMapData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *VLANAccessMap) getDeletedItems(ctx context.Context, state VLANAccessMap) []string {
 	deletedItems := make([]string, 0)
-	if !state.MatchIpv6Address.IsNull() {
-		if data.MatchIpv6Address.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/address", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.MatchIpv6Address.ElementsAs(ctx, &dataValues, false)
-			state.MatchIpv6Address.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/address=%v", state.getPath(), v))
-				}
-			}
-		}
+	if !state.Action.IsNull() && data.Action.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/action", state.getPath()))
 	}
 	if !state.MatchIpAddress.IsNull() {
 		if data.MatchIpAddress.IsNull() {
@@ -239,9 +221,28 @@ func (data *VLANAccessMap) getDeletedItems(ctx context.Context, state VLANAccess
 			}
 		}
 	}
-	if !state.Action.IsNull() && data.Action.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/action", state.getPath()))
+	if !state.MatchIpv6Address.IsNull() {
+		if data.MatchIpv6Address.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/address", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIpv6Address.ElementsAs(ctx, &dataValues, false)
+			state.MatchIpv6Address.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ipv6/address=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
+
 	return deletedItems
 }
 
@@ -251,6 +252,7 @@ func (data *VLANAccessMap) getDeletedItems(ctx context.Context, state VLANAccess
 
 func (data *VLANAccessMap) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -260,15 +262,16 @@ func (data *VLANAccessMap) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *VLANAccessMap) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.MatchIpv6Address.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/address", data.getPath()))
+	if !data.Action.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/action", data.getPath()))
 	}
 	if !data.MatchIpAddress.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ip/address", data.getPath()))
 	}
-	if !data.Action.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/action", data.getPath()))
+	if !data.MatchIpv6Address.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ipv6/address", data.getPath()))
 	}
+
 	return deletePaths
 }
 

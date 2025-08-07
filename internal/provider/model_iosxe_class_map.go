@@ -545,23 +545,68 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []string {
 	deletedItems := make([]string, 0)
-	if !state.Type.IsNull() && data.Type.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/type", state.getPath()))
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
-	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber", state.getPath()))
+	if !state.MatchDscp.IsNull() {
+		if data.MatchDscp.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/dscp", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchDscp.ElementsAs(ctx, &dataValues, false)
+			state.MatchDscp.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/dscp=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
-	if !state.Prematch.IsNull() && data.Prematch.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/prematch", state.getPath()))
+	if !state.MatchResultTypeMethodMabAuthoritative.IsNull() && data.MatchResultTypeMethodMabAuthoritative.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/mab/authoritative", state.getPath()))
 	}
-	if !state.MatchAuthorizationStatusAuthorized.IsNull() && data.MatchAuthorizationStatusAuthorized.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorization-status/authorized", state.getPath()))
+	if !state.MatchMethodMab.IsNull() && data.MatchMethodMab.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/method/mab", state.getPath()))
 	}
-	if !state.MatchResultTypeAaaTimeout.IsNull() && data.MatchResultTypeAaaTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/aaa-timeout", state.getPath()))
+	if !state.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/dot1x/method-timeout", state.getPath()))
 	}
-	if !state.MatchAuthorizationStatusUnauthorized.IsNull() && data.MatchAuthorizationStatusUnauthorized.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorization-status/unauthorized", state.getPath()))
+	if !state.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/dot1x/agent-not-found", state.getPath()))
+	}
+	if !state.MatchResultTypeMethodDot1xAuthoritative.IsNull() && data.MatchResultTypeMethodDot1xAuthoritative.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/dot1x/authoritative", state.getPath()))
+	}
+	if !state.MatchMethodDot1x.IsNull() && data.MatchMethodDot1x.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/method/dot1x", state.getPath()))
+	}
+	if !state.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+		if data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than", state.getPath()))
+		} else {
+			var dataValues, stateValues []int
+			data.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &dataValues, false)
+			state.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	for i := range state.MatchActivatedServiceTemplates {
 		stateKeyValues := [...]string{state.MatchActivatedServiceTemplates[i].ServiceName.ValueString()}
@@ -588,69 +633,25 @@ func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []str
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/activated-service-template=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
-		if data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than", state.getPath()))
-		} else {
-			var dataValues, stateValues []int
-			data.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &dataValues, false)
-			state.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than=%v", state.getPath(), v))
-				}
-			}
-		}
+	if !state.MatchAuthorizationStatusUnauthorized.IsNull() && data.MatchAuthorizationStatusUnauthorized.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorization-status/unauthorized", state.getPath()))
 	}
-	if !state.MatchMethodDot1x.IsNull() && data.MatchMethodDot1x.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/method/dot1x", state.getPath()))
+	if !state.MatchResultTypeAaaTimeout.IsNull() && data.MatchResultTypeAaaTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/aaa-timeout", state.getPath()))
 	}
-	if !state.MatchResultTypeMethodDot1xAuthoritative.IsNull() && data.MatchResultTypeMethodDot1xAuthoritative.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/dot1x/authoritative", state.getPath()))
+	if !state.MatchAuthorizationStatusAuthorized.IsNull() && data.MatchAuthorizationStatusAuthorized.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/authorization-status/authorized", state.getPath()))
 	}
-	if !state.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/dot1x/agent-not-found", state.getPath()))
+	if !state.Prematch.IsNull() && data.Prematch.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/prematch", state.getPath()))
 	}
-	if !state.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/dot1x/method-timeout", state.getPath()))
+	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber", state.getPath()))
 	}
-	if !state.MatchMethodMab.IsNull() && data.MatchMethodMab.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/method/mab", state.getPath()))
+	if !state.Type.IsNull() && data.Type.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/type", state.getPath()))
 	}
-	if !state.MatchResultTypeMethodMabAuthoritative.IsNull() && data.MatchResultTypeMethodMabAuthoritative.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/result-type/method/mab/authoritative", state.getPath()))
-	}
-	if !state.MatchDscp.IsNull() {
-		if data.MatchDscp.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/dscp", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.MatchDscp.ElementsAs(ctx, &dataValues, false)
-			state.MatchDscp.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/dscp=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
-	}
+
 	return deletedItems
 }
 
@@ -660,37 +661,38 @@ func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []str
 
 func (data *ClassMap) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Subscriber.IsNull() && !data.Subscriber.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber", data.getPath()))
-	}
-	if !data.MatchAuthorizationStatusAuthorized.IsNull() && !data.MatchAuthorizationStatusAuthorized.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/authorization-status/authorized", data.getPath()))
-	}
-	if !data.MatchResultTypeAaaTimeout.IsNull() && !data.MatchResultTypeAaaTimeout.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/aaa-timeout", data.getPath()))
-	}
-	if !data.MatchAuthorizationStatusUnauthorized.IsNull() && !data.MatchAuthorizationStatusUnauthorized.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/authorization-status/unauthorized", data.getPath()))
-	}
-
-	if !data.MatchMethodDot1x.IsNull() && !data.MatchMethodDot1x.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/method/dot1x", data.getPath()))
-	}
-	if !data.MatchResultTypeMethodDot1xAuthoritative.IsNull() && !data.MatchResultTypeMethodDot1xAuthoritative.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/method/dot1x/authoritative", data.getPath()))
-	}
-	if !data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && !data.MatchResultTypeMethodDot1xAgentNotFound.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/method/dot1x/agent-not-found", data.getPath()))
-	}
-	if !data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && !data.MatchResultTypeMethodDot1xMethodTimeout.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/method/dot1x/method-timeout", data.getPath()))
+	if !data.MatchResultTypeMethodMabAuthoritative.IsNull() && !data.MatchResultTypeMethodMabAuthoritative.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/method/mab/authoritative", data.getPath()))
 	}
 	if !data.MatchMethodMab.IsNull() && !data.MatchMethodMab.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/method/mab", data.getPath()))
 	}
-	if !data.MatchResultTypeMethodMabAuthoritative.IsNull() && !data.MatchResultTypeMethodMabAuthoritative.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/method/mab/authoritative", data.getPath()))
+	if !data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && !data.MatchResultTypeMethodDot1xMethodTimeout.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/method/dot1x/method-timeout", data.getPath()))
 	}
+	if !data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && !data.MatchResultTypeMethodDot1xAgentNotFound.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/method/dot1x/agent-not-found", data.getPath()))
+	}
+	if !data.MatchResultTypeMethodDot1xAuthoritative.IsNull() && !data.MatchResultTypeMethodDot1xAuthoritative.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/method/dot1x/authoritative", data.getPath()))
+	}
+	if !data.MatchMethodDot1x.IsNull() && !data.MatchMethodDot1x.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/method/dot1x", data.getPath()))
+	}
+
+	if !data.MatchAuthorizationStatusUnauthorized.IsNull() && !data.MatchAuthorizationStatusUnauthorized.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/authorization-status/unauthorized", data.getPath()))
+	}
+	if !data.MatchResultTypeAaaTimeout.IsNull() && !data.MatchResultTypeAaaTimeout.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/result-type/aaa-timeout", data.getPath()))
+	}
+	if !data.MatchAuthorizationStatusAuthorized.IsNull() && !data.MatchAuthorizationStatusAuthorized.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/authorization-status/authorized", data.getPath()))
+	}
+	if !data.Subscriber.IsNull() && !data.Subscriber.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -700,56 +702,57 @@ func (data *ClassMap) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *ClassMap) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Type.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/type", data.getPath()))
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
 	}
-	if !data.Subscriber.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/subscriber", data.getPath()))
+	if !data.MatchDscp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/dscp", data.getPath()))
 	}
-	if !data.Prematch.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/prematch", data.getPath()))
+	if !data.MatchResultTypeMethodMabAuthoritative.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/mab/authoritative", data.getPath()))
 	}
-	if !data.MatchAuthorizationStatusAuthorized.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/authorization-status/authorized", data.getPath()))
+	if !data.MatchMethodMab.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/method/mab", data.getPath()))
 	}
-	if !data.MatchResultTypeAaaTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/aaa-timeout", data.getPath()))
+	if !data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/dot1x/method-timeout", data.getPath()))
 	}
-	if !data.MatchAuthorizationStatusUnauthorized.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/authorization-status/unauthorized", data.getPath()))
+	if !data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/dot1x/agent-not-found", data.getPath()))
+	}
+	if !data.MatchResultTypeMethodDot1xAuthoritative.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/dot1x/authoritative", data.getPath()))
+	}
+	if !data.MatchMethodDot1x.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/method/dot1x", data.getPath()))
+	}
+	if !data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than", data.getPath()))
 	}
 	for i := range data.MatchActivatedServiceTemplates {
 		keyValues := [...]string{data.MatchActivatedServiceTemplates[i].ServiceName.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/activated-service-template=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/authorizing-method-priority/greater-than", data.getPath()))
+	if !data.MatchAuthorizationStatusUnauthorized.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/authorization-status/unauthorized", data.getPath()))
 	}
-	if !data.MatchMethodDot1x.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/method/dot1x", data.getPath()))
+	if !data.MatchResultTypeAaaTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/aaa-timeout", data.getPath()))
 	}
-	if !data.MatchResultTypeMethodDot1xAuthoritative.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/dot1x/authoritative", data.getPath()))
+	if !data.MatchAuthorizationStatusAuthorized.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/authorization-status/authorized", data.getPath()))
 	}
-	if !data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/dot1x/agent-not-found", data.getPath()))
+	if !data.Prematch.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/prematch", data.getPath()))
 	}
-	if !data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/dot1x/method-timeout", data.getPath()))
+	if !data.Subscriber.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/subscriber", data.getPath()))
 	}
-	if !data.MatchMethodMab.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/method/mab", data.getPath()))
+	if !data.Type.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/type", data.getPath()))
 	}
-	if !data.MatchResultTypeMethodMabAuthoritative.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/result-type/method/mab/authoritative", data.getPath()))
-	}
-	if !data.MatchDscp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/dscp", data.getPath()))
-	}
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
-	}
+
 	return deletePaths
 }
 

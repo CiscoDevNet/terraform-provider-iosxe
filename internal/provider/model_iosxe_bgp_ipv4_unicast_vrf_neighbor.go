@@ -985,92 +985,23 @@ func (data *BGPIPv4UnicastVRFNeighborData) fromBody(ctx context.Context, res gjs
 
 func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, state BGPIPv4UnicastVRFNeighbor) []string {
 	deletedItems := make([]string, 0)
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	if !state.AdvertisementInterval.IsNull() && data.AdvertisementInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/advertisement-interval", state.getPath()))
 	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
+	if !state.NextHopSelfAll.IsNull() && data.NextHopSelfAll.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/next-hop-self/all", state.getPath()))
 	}
-	if !state.ClusterId.IsNull() && data.ClusterId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/cluster-id", state.getPath()))
+	if !state.NextHopSelf.IsNull() && data.NextHopSelf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/next-hop-self", state.getPath()))
 	}
-	if !state.LogNeighborChangesDisable.IsNull() && data.LogNeighborChangesDisable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-neighbor-changes/disable", state.getPath()))
+	if !state.HaModeGracefulRestart.IsNull() && data.HaModeGracefulRestart.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ha-mode/graceful-restart", state.getPath()))
 	}
-	if !state.PasswordType.IsNull() && data.PasswordType.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/password", state.getPath()))
+	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop/max-hop", state.getPath()))
 	}
-	if !state.Password.IsNull() && data.Password.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/password", state.getPath()))
-	}
-	if !state.TimersKeepaliveInterval.IsNull() && data.TimersKeepaliveInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/timers", state.getPath()))
-	}
-	if !state.TimersHoldtime.IsNull() && data.TimersHoldtime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/timers", state.getPath()))
-	}
-	if !state.TimersMinimumNeighborHold.IsNull() && data.TimersMinimumNeighborHold.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/timers", state.getPath()))
-	}
-	if !state.Version.IsNull() && data.Version.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/version", state.getPath()))
-	}
-	if !state.FallOverDefaultRouteMap.IsNull() && data.FallOverDefaultRouteMap.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/default/route-map", state.getPath()))
-	}
-	if !state.FallOverBfd.IsNull() && data.FallOverBfd.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd", state.getPath()))
-	}
-	if !state.FallOverBfdMultiHop.IsNull() && data.FallOverBfdMultiHop.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/multi-hop", state.getPath()))
-	}
-	if !state.FallOverBfdSingleHop.IsNull() && data.FallOverBfdSingleHop.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/single-hop", state.getPath()))
-	}
-	if !state.FallOverBfdCheckControlPlaneFailure.IsNull() && data.FallOverBfdCheckControlPlaneFailure.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/check-control-plane-failure", state.getPath()))
-	}
-	if !state.FallOverBfdStrictMode.IsNull() && data.FallOverBfdStrictMode.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/strict-mode", state.getPath()))
-	}
-	if !state.FallOverMaximumMetricRouteMap.IsNull() && data.FallOverMaximumMetricRouteMap.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/maximum-metric/route-map", state.getPath()))
-	}
-	if !state.DisableConnectedCheck.IsNull() && data.DisableConnectedCheck.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/disable-connected-check", state.getPath()))
-	}
-	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ttl-security/hops", state.getPath()))
-	}
-	if !state.LocalAs.IsNull() && data.LocalAs.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/local-as/as-no", state.getPath()))
-	}
-	if !state.LocalAsNoPrepend.IsNull() && data.LocalAsNoPrepend.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/local-as/no-prepend", state.getPath()))
-	}
-	if !state.LocalAsReplaceAs.IsNull() && data.LocalAsReplaceAs.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/local-as/replace-as", state.getPath()))
-	}
-	if !state.LocalAsDualAs.IsNull() && data.LocalAsDualAs.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/local-as/dual-as", state.getPath()))
-	}
-	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/interface/Loopback", state.getPath()))
-	}
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
-	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
-	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
-	}
-	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate", state.getPath()))
-	}
-	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate/route-map", state.getPath()))
+	if !state.EbgpMultihop.IsNull() && data.EbgpMultihop.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop", state.getPath()))
 	}
 	for i := range state.RouteMaps {
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
@@ -1100,24 +1031,94 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, stat
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.EbgpMultihop.IsNull() && data.EbgpMultihop.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop", state.getPath()))
+	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate/route-map", state.getPath()))
 	}
-	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop/max-hop", state.getPath()))
+	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate", state.getPath()))
 	}
-	if !state.HaModeGracefulRestart.IsNull() && data.HaModeGracefulRestart.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ha-mode/graceful-restart", state.getPath()))
+	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
 	}
-	if !state.NextHopSelf.IsNull() && data.NextHopSelf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/next-hop-self", state.getPath()))
+	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
 	}
-	if !state.NextHopSelfAll.IsNull() && data.NextHopSelfAll.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/next-hop-self/all", state.getPath()))
+	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
 	}
-	if !state.AdvertisementInterval.IsNull() && data.AdvertisementInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/advertisement-interval", state.getPath()))
+	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/interface/Loopback", state.getPath()))
 	}
+	if !state.LocalAsDualAs.IsNull() && data.LocalAsDualAs.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/local-as/dual-as", state.getPath()))
+	}
+	if !state.LocalAsReplaceAs.IsNull() && data.LocalAsReplaceAs.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/local-as/replace-as", state.getPath()))
+	}
+	if !state.LocalAsNoPrepend.IsNull() && data.LocalAsNoPrepend.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/local-as/no-prepend", state.getPath()))
+	}
+	if !state.LocalAs.IsNull() && data.LocalAs.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/local-as/as-no", state.getPath()))
+	}
+	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ttl-security/hops", state.getPath()))
+	}
+	if !state.DisableConnectedCheck.IsNull() && data.DisableConnectedCheck.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/disable-connected-check", state.getPath()))
+	}
+	if !state.FallOverMaximumMetricRouteMap.IsNull() && data.FallOverMaximumMetricRouteMap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/maximum-metric/route-map", state.getPath()))
+	}
+	if !state.FallOverBfdStrictMode.IsNull() && data.FallOverBfdStrictMode.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/strict-mode", state.getPath()))
+	}
+	if !state.FallOverBfdCheckControlPlaneFailure.IsNull() && data.FallOverBfdCheckControlPlaneFailure.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/check-control-plane-failure", state.getPath()))
+	}
+	if !state.FallOverBfdSingleHop.IsNull() && data.FallOverBfdSingleHop.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/single-hop", state.getPath()))
+	}
+	if !state.FallOverBfdMultiHop.IsNull() && data.FallOverBfdMultiHop.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd/multi-hop", state.getPath()))
+	}
+	if !state.FallOverBfd.IsNull() && data.FallOverBfd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/bfd", state.getPath()))
+	}
+	if !state.FallOverDefaultRouteMap.IsNull() && data.FallOverDefaultRouteMap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fall-over/default/route-map", state.getPath()))
+	}
+	if !state.Version.IsNull() && data.Version.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/version", state.getPath()))
+	}
+	if !state.TimersMinimumNeighborHold.IsNull() && data.TimersMinimumNeighborHold.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timers", state.getPath()))
+	}
+	if !state.TimersHoldtime.IsNull() && data.TimersHoldtime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timers", state.getPath()))
+	}
+	if !state.TimersKeepaliveInterval.IsNull() && data.TimersKeepaliveInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/timers", state.getPath()))
+	}
+	if !state.Password.IsNull() && data.Password.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/password", state.getPath()))
+	}
+	if !state.PasswordType.IsNull() && data.PasswordType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/password", state.getPath()))
+	}
+	if !state.LogNeighborChangesDisable.IsNull() && data.LogNeighborChangesDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-neighbor-changes/disable", state.getPath()))
+	}
+	if !state.ClusterId.IsNull() && data.ClusterId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cluster-id", state.getPath()))
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -1127,61 +1128,62 @@ func (data *BGPIPv4UnicastVRFNeighbor) getDeletedItems(ctx context.Context, stat
 
 func (data *BGPIPv4UnicastVRFNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	if !data.LogNeighborChangesDisable.IsNull() && !data.LogNeighborChangesDisable.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/log-neighbor-changes/disable", data.getPath()))
-	}
-	if !data.FallOverBfd.IsNull() && !data.FallOverBfd.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd", data.getPath()))
-	}
-	if !data.FallOverBfdMultiHop.IsNull() && !data.FallOverBfdMultiHop.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/multi-hop", data.getPath()))
-	}
-	if !data.FallOverBfdSingleHop.IsNull() && !data.FallOverBfdSingleHop.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/single-hop", data.getPath()))
-	}
-	if !data.FallOverBfdCheckControlPlaneFailure.IsNull() && !data.FallOverBfdCheckControlPlaneFailure.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/check-control-plane-failure", data.getPath()))
-	}
-	if !data.FallOverBfdStrictMode.IsNull() && !data.FallOverBfdStrictMode.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/strict-mode", data.getPath()))
-	}
-	if !data.DisableConnectedCheck.IsNull() && !data.DisableConnectedCheck.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/disable-connected-check", data.getPath()))
-	}
-	if !data.LocalAsNoPrepend.IsNull() && !data.LocalAsNoPrepend.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/local-as/no-prepend", data.getPath()))
-	}
-	if !data.LocalAsReplaceAs.IsNull() && !data.LocalAsReplaceAs.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/local-as/replace-as", data.getPath()))
-	}
-	if !data.LocalAsDualAs.IsNull() && !data.LocalAsDualAs.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/local-as/dual-as", data.getPath()))
-	}
-	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
-	}
-	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
-	}
-	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-originate", data.getPath()))
-	}
-
-	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
-	}
-	if !data.HaModeGracefulRestart.IsNull() && !data.HaModeGracefulRestart.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ha-mode/graceful-restart", data.getPath()))
+	if !data.NextHopSelfAll.IsNull() && !data.NextHopSelfAll.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/next-hop-self/all", data.getPath()))
 	}
 	if !data.NextHopSelf.IsNull() && !data.NextHopSelf.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/next-hop-self", data.getPath()))
 	}
-	if !data.NextHopSelfAll.IsNull() && !data.NextHopSelfAll.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/next-hop-self/all", data.getPath()))
+	if !data.HaModeGracefulRestart.IsNull() && !data.HaModeGracefulRestart.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ha-mode/graceful-restart", data.getPath()))
 	}
+	if !data.EbgpMultihop.IsNull() && !data.EbgpMultihop.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
+	}
+
+	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-originate", data.getPath()))
+	}
+	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
+	}
+	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
+	}
+	if !data.LocalAsDualAs.IsNull() && !data.LocalAsDualAs.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/local-as/dual-as", data.getPath()))
+	}
+	if !data.LocalAsReplaceAs.IsNull() && !data.LocalAsReplaceAs.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/local-as/replace-as", data.getPath()))
+	}
+	if !data.LocalAsNoPrepend.IsNull() && !data.LocalAsNoPrepend.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/local-as/no-prepend", data.getPath()))
+	}
+	if !data.DisableConnectedCheck.IsNull() && !data.DisableConnectedCheck.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/disable-connected-check", data.getPath()))
+	}
+	if !data.FallOverBfdStrictMode.IsNull() && !data.FallOverBfdStrictMode.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/strict-mode", data.getPath()))
+	}
+	if !data.FallOverBfdCheckControlPlaneFailure.IsNull() && !data.FallOverBfdCheckControlPlaneFailure.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/check-control-plane-failure", data.getPath()))
+	}
+	if !data.FallOverBfdSingleHop.IsNull() && !data.FallOverBfdSingleHop.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/single-hop", data.getPath()))
+	}
+	if !data.FallOverBfdMultiHop.IsNull() && !data.FallOverBfdMultiHop.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd/multi-hop", data.getPath()))
+	}
+	if !data.FallOverBfd.IsNull() && !data.FallOverBfd.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fall-over/bfd", data.getPath()))
+	}
+	if !data.LogNeighborChangesDisable.IsNull() && !data.LogNeighborChangesDisable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/log-neighbor-changes/disable", data.getPath()))
+	}
+	if !data.Shutdown.IsNull() && !data.Shutdown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/shutdown", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -1191,116 +1193,117 @@ func (data *BGPIPv4UnicastVRFNeighbor) getEmptyLeafsDelete(ctx context.Context) 
 
 func (data *BGPIPv4UnicastVRFNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	if !data.AdvertisementInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/advertisement-interval", data.getPath()))
 	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
+	if !data.NextHopSelfAll.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/next-hop-self/all", data.getPath()))
 	}
-	if !data.ClusterId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/cluster-id", data.getPath()))
+	if !data.NextHopSelf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/next-hop-self", data.getPath()))
 	}
-	if !data.LogNeighborChangesDisable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-neighbor-changes/disable", data.getPath()))
+	if !data.HaModeGracefulRestart.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ha-mode/graceful-restart", data.getPath()))
 	}
-	if !data.PasswordType.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/password", data.getPath()))
+	if !data.EbgpMultihopMaxHop.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop/max-hop", data.getPath()))
 	}
-	if !data.Password.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/password", data.getPath()))
-	}
-	if !data.TimersKeepaliveInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
-	}
-	if !data.TimersHoldtime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
-	}
-	if !data.TimersMinimumNeighborHold.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
-	}
-	if !data.Version.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))
-	}
-	if !data.FallOverDefaultRouteMap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/default/route-map", data.getPath()))
-	}
-	if !data.FallOverBfd.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd", data.getPath()))
-	}
-	if !data.FallOverBfdMultiHop.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/multi-hop", data.getPath()))
-	}
-	if !data.FallOverBfdSingleHop.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/single-hop", data.getPath()))
-	}
-	if !data.FallOverBfdCheckControlPlaneFailure.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/check-control-plane-failure", data.getPath()))
-	}
-	if !data.FallOverBfdStrictMode.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/strict-mode", data.getPath()))
-	}
-	if !data.FallOverMaximumMetricRouteMap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/maximum-metric/route-map", data.getPath()))
-	}
-	if !data.DisableConnectedCheck.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/disable-connected-check", data.getPath()))
-	}
-	if !data.TtlSecurityHops.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ttl-security/hops", data.getPath()))
-	}
-	if !data.LocalAs.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/as-no", data.getPath()))
-	}
-	if !data.LocalAsNoPrepend.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/no-prepend", data.getPath()))
-	}
-	if !data.LocalAsReplaceAs.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/replace-as", data.getPath()))
-	}
-	if !data.LocalAsDualAs.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/dual-as", data.getPath()))
-	}
-	if !data.UpdateSourceLoopback.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/interface/Loopback", data.getPath()))
-	}
-	if !data.SendCommunity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
-	}
-	if !data.RouteReflectorClient.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
-	}
-	if !data.SoftReconfiguration.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
-	}
-	if !data.DefaultOriginate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate", data.getPath()))
-	}
-	if !data.DefaultOriginateRouteMap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate/route-map", data.getPath()))
+	if !data.EbgpMultihop.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
 	}
 	for i := range data.RouteMaps {
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-map=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.EbgpMultihop.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop", data.getPath()))
+	if !data.DefaultOriginateRouteMap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate/route-map", data.getPath()))
 	}
-	if !data.EbgpMultihopMaxHop.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop/max-hop", data.getPath()))
+	if !data.DefaultOriginate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate", data.getPath()))
 	}
-	if !data.HaModeGracefulRestart.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ha-mode/graceful-restart", data.getPath()))
+	if !data.SoftReconfiguration.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
 	}
-	if !data.NextHopSelf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/next-hop-self", data.getPath()))
+	if !data.RouteReflectorClient.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
 	}
-	if !data.NextHopSelfAll.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/next-hop-self/all", data.getPath()))
+	if !data.SendCommunity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
 	}
-	if !data.AdvertisementInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/advertisement-interval", data.getPath()))
+	if !data.UpdateSourceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/interface/Loopback", data.getPath()))
 	}
+	if !data.LocalAsDualAs.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/dual-as", data.getPath()))
+	}
+	if !data.LocalAsReplaceAs.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/replace-as", data.getPath()))
+	}
+	if !data.LocalAsNoPrepend.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/no-prepend", data.getPath()))
+	}
+	if !data.LocalAs.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/local-as/as-no", data.getPath()))
+	}
+	if !data.TtlSecurityHops.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ttl-security/hops", data.getPath()))
+	}
+	if !data.DisableConnectedCheck.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/disable-connected-check", data.getPath()))
+	}
+	if !data.FallOverMaximumMetricRouteMap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/maximum-metric/route-map", data.getPath()))
+	}
+	if !data.FallOverBfdStrictMode.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/strict-mode", data.getPath()))
+	}
+	if !data.FallOverBfdCheckControlPlaneFailure.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/check-control-plane-failure", data.getPath()))
+	}
+	if !data.FallOverBfdSingleHop.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/single-hop", data.getPath()))
+	}
+	if !data.FallOverBfdMultiHop.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd/multi-hop", data.getPath()))
+	}
+	if !data.FallOverBfd.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/bfd", data.getPath()))
+	}
+	if !data.FallOverDefaultRouteMap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fall-over/default/route-map", data.getPath()))
+	}
+	if !data.Version.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))
+	}
+	if !data.TimersMinimumNeighborHold.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
+	}
+	if !data.TimersHoldtime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
+	}
+	if !data.TimersKeepaliveInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/timers", data.getPath()))
+	}
+	if !data.Password.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/password", data.getPath()))
+	}
+	if !data.PasswordType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/password", data.getPath()))
+	}
+	if !data.LogNeighborChangesDisable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-neighbor-changes/disable", data.getPath()))
+	}
+	if !data.ClusterId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/cluster-id", data.getPath()))
+	}
+	if !data.Shutdown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
+	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+
 	return deletePaths
 }
 

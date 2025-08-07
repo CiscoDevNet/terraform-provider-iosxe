@@ -170,27 +170,6 @@ func (data *CommunityListStandardData) fromBody(ctx context.Context, res gjson.R
 
 func (data *CommunityListStandard) getDeletedItems(ctx context.Context, state CommunityListStandard) []string {
 	deletedItems := make([]string, 0)
-	if !state.DenyEntries.IsNull() {
-		if data.DenyEntries.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/deny/deny-list", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.DenyEntries.ElementsAs(ctx, &dataValues, false)
-			state.DenyEntries.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/deny/deny-list=%v", state.getPath(), v))
-				}
-			}
-		}
-	}
 	if !state.PermitEntries.IsNull() {
 		if data.PermitEntries.IsNull() {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/permit/permit-list", state.getPath()))
@@ -212,6 +191,28 @@ func (data *CommunityListStandard) getDeletedItems(ctx context.Context, state Co
 			}
 		}
 	}
+	if !state.DenyEntries.IsNull() {
+		if data.DenyEntries.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/deny/deny-list", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.DenyEntries.ElementsAs(ctx, &dataValues, false)
+			state.DenyEntries.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/deny/deny-list=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+
 	return deletedItems
 }
 
@@ -221,6 +222,7 @@ func (data *CommunityListStandard) getDeletedItems(ctx context.Context, state Co
 
 func (data *CommunityListStandard) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -230,12 +232,13 @@ func (data *CommunityListStandard) getEmptyLeafsDelete(ctx context.Context) []st
 
 func (data *CommunityListStandard) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.DenyEntries.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/deny/deny-list", data.getPath()))
-	}
 	if !data.PermitEntries.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/permit/permit-list", data.getPath()))
 	}
+	if !data.DenyEntries.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/deny/deny-list", data.getPath()))
+	}
+
 	return deletePaths
 }
 

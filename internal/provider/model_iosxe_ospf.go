@@ -908,35 +908,38 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 	deletedItems := make([]string, 0)
-	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/all-interfaces", state.getPath()))
+	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/auto-cost/reference-bandwidth", state.getPath()))
 	}
-	if !state.DefaultInformationOriginate.IsNull() && data.DefaultInformationOriginate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate", state.getPath()))
+	if !state.PassiveInterface.IsNull() {
+		if data.PassiveInterface.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/interface", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.PassiveInterface.ElementsAs(ctx, &dataValues, false)
+			state.PassiveInterface.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/interface=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
-	if !state.DefaultInformationOriginateAlways.IsNull() && data.DefaultInformationOriginateAlways.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate/always", state.getPath()))
+	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/default", state.getPath()))
 	}
-	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-metric", state.getPath()))
-	}
-	if !state.Distance.IsNull() && data.Distance.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/distance/distance", state.getPath()))
-	}
-	if !state.DomainTag.IsNull() && data.DomainTag.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/domain-tag", state.getPath()))
-	}
-	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/autoconfig", state.getPath()))
-	}
-	if !state.MplsLdpSync.IsNull() && data.MplsLdpSync.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/sync", state.getPath()))
-	}
-	for i := range state.Neighbors {
-		stateKeyValues := [...]string{state.Neighbors[i].Ip.ValueString()}
+	for i := range state.Areas {
+		stateKeyValues := [...]string{state.Areas[i].AreaId.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Neighbors[i].Ip.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Areas[i].AreaId.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -944,64 +947,39 @@ func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 		}
 
 		found := false
-		for j := range data.Neighbors {
+		for j := range data.Areas {
 			found = true
-			if state.Neighbors[i].Ip.ValueString() != data.Neighbors[j].Ip.ValueString() {
+			if state.Areas[i].AreaId.ValueString() != data.Areas[j].AreaId.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Neighbors[i].Priority.IsNull() && data.Neighbors[j].Priority.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Areas[i].NssaNoRedistribution.IsNull() && data.Areas[j].NssaNoRedistribution.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Neighbors[i].Cost.IsNull() && data.Neighbors[j].Cost.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/cost", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Areas[i].NssaNoSummary.IsNull() && data.Areas[j].NssaNoSummary.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetricType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate/metric-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetric.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginate.IsNull() && data.Areas[j].NssaDefaultInformationOriginate.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].Nssa.IsNull() && data.Areas[j].Nssa.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Areas[i].AuthenticationMessageDigest.IsNull() && data.Areas[j].AuthenticationMessageDigest.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/authentication/message-digest", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
-	}
-	for i := range state.Networks {
-		stateKeyValues := [...]string{state.Networks[i].Ip.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Networks[i].Ip.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Networks {
-			found = true
-			if state.Networks[i].Ip.ValueString() != data.Networks[j].Ip.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Networks[i].Wildcard.IsNull() && data.Networks[j].Wildcard.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/wildcard", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Networks[i].Area.IsNull() && data.Networks[j].Area.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/area", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	if !state.Priority.IsNull() && data.Priority.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
-	}
-	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/router-id", state.getPath()))
-	}
-	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
 	}
 	for i := range state.SummaryAddresses {
 		stateKeyValues := [...]string{state.SummaryAddresses[i].Ip.ValueString()}
@@ -1031,11 +1009,20 @@ func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/summary-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Areas {
-		stateKeyValues := [...]string{state.Areas[i].AreaId.ValueString()}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/shutdown", state.getPath()))
+	}
+	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/router-id", state.getPath()))
+	}
+	if !state.Priority.IsNull() && data.Priority.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
+	}
+	for i := range state.Networks {
+		stateKeyValues := [...]string{state.Networks[i].Ip.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Areas[i].AreaId.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Networks[i].Ip.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1043,67 +1030,81 @@ func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 		}
 
 		found := false
-		for j := range data.Areas {
+		for j := range data.Networks {
 			found = true
-			if state.Areas[i].AreaId.ValueString() != data.Areas[j].AreaId.ValueString() {
+			if state.Networks[i].Ip.ValueString() != data.Networks[j].Ip.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Areas[i].AuthenticationMessageDigest.IsNull() && data.Areas[j].AuthenticationMessageDigest.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/authentication/message-digest", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Networks[i].Area.IsNull() && data.Networks[j].Area.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/area", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Areas[i].Nssa.IsNull() && data.Areas[j].Nssa.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaDefaultInformationOriginate.IsNull() && data.Areas[j].NssaDefaultInformationOriginate.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetric.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetricType.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate/metric-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaNoSummary.IsNull() && data.Areas[j].NssaNoSummary.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Areas[i].NssaNoRedistribution.IsNull() && data.Areas[j].NssaNoRedistribution.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Networks[i].Wildcard.IsNull() && data.Networks[j].Wildcard.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/wildcard", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/area=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/default", state.getPath()))
-	}
-	if !state.PassiveInterface.IsNull() {
-		if data.PassiveInterface.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/interface", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.PassiveInterface.ElementsAs(ctx, &dataValues, false)
-			state.PassiveInterface.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
+	for i := range state.Neighbors {
+		stateKeyValues := [...]string{state.Neighbors[i].Ip.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Neighbors[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Neighbors {
+			found = true
+			if state.Neighbors[i].Ip.ValueString() != data.Neighbors[j].Ip.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Neighbors[i].Cost.IsNull() && data.Neighbors[j].Cost.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/cost", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/interface=%v", state.getPath(), v))
+				if !state.Neighbors[i].Priority.IsNull() && data.Neighbors[j].Priority.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
+				break
 			}
 		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/neighbor=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
-	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/auto-cost/reference-bandwidth", state.getPath()))
+	if !state.MplsLdpSync.IsNull() && data.MplsLdpSync.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/sync", state.getPath()))
 	}
+	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mpls/ldp/autoconfig", state.getPath()))
+	}
+	if !state.DomainTag.IsNull() && data.DomainTag.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/domain-tag", state.getPath()))
+	}
+	if !state.Distance.IsNull() && data.Distance.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/distance/distance", state.getPath()))
+	}
+	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-metric", state.getPath()))
+	}
+	if !state.DefaultInformationOriginateAlways.IsNull() && data.DefaultInformationOriginateAlways.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate/always", state.getPath()))
+	}
+	if !state.DefaultInformationOriginate.IsNull() && data.DefaultInformationOriginate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-information/originate", state.getPath()))
+	}
+	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bfd/all-interfaces", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -1113,40 +1114,42 @@ func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 
 func (data *OSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
-	}
-	if !data.DefaultInformationOriginate.IsNull() && !data.DefaultInformationOriginate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-information/originate", data.getPath()))
-	}
-	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-information/originate/always", data.getPath()))
-	}
-	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
-	}
-	if !data.MplsLdpSync.IsNull() && !data.MplsLdpSync.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
-	}
 
 	for i := range data.Areas {
 		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
-		if !data.Areas[i].AuthenticationMessageDigest.IsNull() && !data.Areas[i].AuthenticationMessageDigest.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/authentication/message-digest", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Areas[i].Nssa.IsNull() && !data.Areas[i].Nssa.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Areas[i].NssaDefaultInformationOriginate.IsNull() && !data.Areas[i].NssaDefaultInformationOriginate.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.Areas[i].NssaNoRedistribution.IsNull() && !data.Areas[i].NssaNoRedistribution.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.Areas[i].NssaNoSummary.IsNull() && !data.Areas[i].NssaNoSummary.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-summary", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Areas[i].NssaNoRedistribution.IsNull() && !data.Areas[i].NssaNoRedistribution.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/no-redistribution", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.Areas[i].NssaDefaultInformationOriginate.IsNull() && !data.Areas[i].NssaDefaultInformationOriginate.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa/nssa-options/default-information-originate", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].Nssa.IsNull() && !data.Areas[i].Nssa.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/nssa", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Areas[i].AuthenticationMessageDigest.IsNull() && !data.Areas[i].AuthenticationMessageDigest.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/area=%v/authentication/message-digest", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
+	if !data.MplsLdpSync.IsNull() && !data.MplsLdpSync.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
+	}
+	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
+	}
+	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-information/originate/always", data.getPath()))
+	}
+	if !data.DefaultInformationOriginate.IsNull() && !data.DefaultInformationOriginate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-information/originate", data.getPath()))
+	}
+	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -1156,68 +1159,69 @@ func (data *OSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *OSPF) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.BfdAllInterfaces.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
+	if !data.AutoCostReferenceBandwidth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/auto-cost/reference-bandwidth", data.getPath()))
 	}
-	if !data.DefaultInformationOriginate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate", data.getPath()))
+	if !data.PassiveInterface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/interface", data.getPath()))
 	}
-	if !data.DefaultInformationOriginateAlways.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/always", data.getPath()))
-	}
-	if !data.DefaultMetric.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-metric", data.getPath()))
-	}
-	if !data.Distance.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/distance/distance", data.getPath()))
-	}
-	if !data.DomainTag.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/domain-tag", data.getPath()))
-	}
-	if !data.MplsLdpAutoconfig.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
-	}
-	if !data.MplsLdpSync.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
-	}
-	for i := range data.Neighbors {
-		keyValues := [...]string{data.Neighbors[i].Ip.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/neighbor=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Networks {
-		keyValues := [...]string{data.Networks[i].Ip.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.Priority.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/priority", data.getPath()))
-	}
-	if !data.RouterId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/router-id", data.getPath()))
-	}
-	if !data.Shutdown.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
-	}
-	for i := range data.SummaryAddresses {
-		keyValues := [...]string{data.SummaryAddresses[i].Ip.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/summary-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.PassiveInterfaceDefault.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
 	}
 	for i := range data.Areas {
 		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/area=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.PassiveInterfaceDefault.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
+	for i := range data.SummaryAddresses {
+		keyValues := [...]string{data.SummaryAddresses[i].Ip.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/summary-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.PassiveInterface.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/interface", data.getPath()))
+	if !data.Shutdown.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/shutdown", data.getPath()))
 	}
-	if !data.AutoCostReferenceBandwidth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/auto-cost/reference-bandwidth", data.getPath()))
+	if !data.RouterId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/router-id", data.getPath()))
 	}
+	if !data.Priority.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/priority", data.getPath()))
+	}
+	for i := range data.Networks {
+		keyValues := [...]string{data.Networks[i].Ip.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Neighbors {
+		keyValues := [...]string{data.Neighbors[i].Ip.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/neighbor=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.MplsLdpSync.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/sync", data.getPath()))
+	}
+	if !data.MplsLdpAutoconfig.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mpls/ldp/autoconfig", data.getPath()))
+	}
+	if !data.DomainTag.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/domain-tag", data.getPath()))
+	}
+	if !data.Distance.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/distance/distance", data.getPath()))
+	}
+	if !data.DefaultMetric.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-metric", data.getPath()))
+	}
+	if !data.DefaultInformationOriginateAlways.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate/always", data.getPath()))
+	}
+	if !data.DefaultInformationOriginate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-information/originate", data.getPath()))
+	}
+	if !data.BfdAllInterfaces.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bfd/all-interfaces", data.getPath()))
+	}
+
 	return deletePaths
 }
 

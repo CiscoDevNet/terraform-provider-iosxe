@@ -486,11 +486,73 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 
 func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv4) []string {
 	deletedItems := make([]string, 0)
-	if !state.Ipv4UnicastRedistributeConnected.IsNull() && data.Ipv4UnicastRedistributeConnected.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/redistribute/connected", state.getPath()))
+	for i := range state.Ipv4UnicastNetworks {
+		stateKeyValues := [...]string{state.Ipv4UnicastNetworks[i].Network.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4UnicastNetworks[i].Network.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4UnicastNetworks {
+			found = true
+			if state.Ipv4UnicastNetworks[i].Network.ValueString() != data.Ipv4UnicastNetworks[j].Network.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4UnicastNetworks[i].Backdoor.IsNull() && data.Ipv4UnicastNetworks[j].Backdoor.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Ipv4UnicastNetworks[i].RouteMap.IsNull() && data.Ipv4UnicastNetworks[j].RouteMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
-	if !state.Ipv4UnicastRedistributeStatic.IsNull() && data.Ipv4UnicastRedistributeStatic.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/redistribute/static", state.getPath()))
+	for i := range state.Ipv4UnicastNetworksMask {
+		stateKeyValues := [...]string{state.Ipv4UnicastNetworksMask[i].Network.ValueString(), state.Ipv4UnicastNetworksMask[i].Mask.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4UnicastNetworksMask[i].Network.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4UnicastNetworksMask[i].Mask.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4UnicastNetworksMask {
+			found = true
+			if state.Ipv4UnicastNetworksMask[i].Network.ValueString() != data.Ipv4UnicastNetworksMask[j].Network.ValueString() {
+				found = false
+			}
+			if state.Ipv4UnicastNetworksMask[i].Mask.ValueString() != data.Ipv4UnicastNetworksMask[j].Mask.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4UnicastNetworksMask[i].Backdoor.IsNull() && data.Ipv4UnicastNetworksMask[j].Backdoor.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Ipv4UnicastNetworksMask[i].RouteMap.IsNull() && data.Ipv4UnicastNetworksMask[j].RouteMap.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
 	for i := range state.Ipv4UnicastAggregateAddresses {
 		stateKeyValues := [...]string{state.Ipv4UnicastAggregateAddresses[i].Ipv4Address.ValueString(), state.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.ValueString()}
@@ -523,74 +585,13 @@ func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGP
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/aggregate-address=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Ipv4UnicastNetworksMask {
-		stateKeyValues := [...]string{state.Ipv4UnicastNetworksMask[i].Network.ValueString(), state.Ipv4UnicastNetworksMask[i].Mask.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv4UnicastNetworksMask[i].Network.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Ipv4UnicastNetworksMask[i].Mask.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Ipv4UnicastNetworksMask {
-			found = true
-			if state.Ipv4UnicastNetworksMask[i].Network.ValueString() != data.Ipv4UnicastNetworksMask[j].Network.ValueString() {
-				found = false
-			}
-			if state.Ipv4UnicastNetworksMask[i].Mask.ValueString() != data.Ipv4UnicastNetworksMask[j].Mask.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Ipv4UnicastNetworksMask[i].RouteMap.IsNull() && data.Ipv4UnicastNetworksMask[j].RouteMap.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Ipv4UnicastNetworksMask[i].Backdoor.IsNull() && data.Ipv4UnicastNetworksMask[j].Backdoor.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
+	if !state.Ipv4UnicastRedistributeStatic.IsNull() && data.Ipv4UnicastRedistributeStatic.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/redistribute/static", state.getPath()))
 	}
-	for i := range state.Ipv4UnicastNetworks {
-		stateKeyValues := [...]string{state.Ipv4UnicastNetworks[i].Network.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv4UnicastNetworks[i].Network.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Ipv4UnicastNetworks {
-			found = true
-			if state.Ipv4UnicastNetworks[i].Network.ValueString() != data.Ipv4UnicastNetworks[j].Network.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Ipv4UnicastNetworks[i].RouteMap.IsNull() && data.Ipv4UnicastNetworks[j].RouteMap.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v/route-map", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Ipv4UnicastNetworks[i].Backdoor.IsNull() && data.Ipv4UnicastNetworks[j].Backdoor.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v/backdoor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
+	if !state.Ipv4UnicastRedistributeConnected.IsNull() && data.Ipv4UnicastRedistributeConnected.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/redistribute/connected", state.getPath()))
 	}
+
 	return deletedItems
 }
 
@@ -600,11 +601,12 @@ func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGP
 
 func (data *BGPAddressFamilyIPv4) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Ipv4UnicastRedistributeConnected.IsNull() && !data.Ipv4UnicastRedistributeConnected.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv4-unicast/redistribute/connected", data.getPath()))
-	}
-	if !data.Ipv4UnicastRedistributeStatic.IsNull() && !data.Ipv4UnicastRedistributeStatic.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv4-unicast/redistribute/static", data.getPath()))
+
+	for i := range data.Ipv4UnicastNetworks {
+		keyValues := [...]string{data.Ipv4UnicastNetworks[i].Network.ValueString()}
+		if !data.Ipv4UnicastNetworks[i].Backdoor.IsNull() && !data.Ipv4UnicastNetworks[i].Backdoor.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v/backdoor", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 	}
 
 	for i := range data.Ipv4UnicastNetworksMask {
@@ -614,12 +616,13 @@ func (data *BGPAddressFamilyIPv4) getEmptyLeafsDelete(ctx context.Context) []str
 		}
 	}
 
-	for i := range data.Ipv4UnicastNetworks {
-		keyValues := [...]string{data.Ipv4UnicastNetworks[i].Network.ValueString()}
-		if !data.Ipv4UnicastNetworks[i].Backdoor.IsNull() && !data.Ipv4UnicastNetworks[i].Backdoor.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v/backdoor", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
+	if !data.Ipv4UnicastRedistributeStatic.IsNull() && !data.Ipv4UnicastRedistributeStatic.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv4-unicast/redistribute/static", data.getPath()))
 	}
+	if !data.Ipv4UnicastRedistributeConnected.IsNull() && !data.Ipv4UnicastRedistributeConnected.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ipv4-unicast/redistribute/connected", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -629,27 +632,28 @@ func (data *BGPAddressFamilyIPv4) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *BGPAddressFamilyIPv4) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Ipv4UnicastRedistributeConnected.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/redistribute/connected", data.getPath()))
-	}
-	if !data.Ipv4UnicastRedistributeStatic.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/redistribute/static", data.getPath()))
-	}
-	for i := range data.Ipv4UnicastAggregateAddresses {
-		keyValues := [...]string{data.Ipv4UnicastAggregateAddresses[i].Ipv4Address.ValueString(), data.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.ValueString()}
+	for i := range data.Ipv4UnicastNetworks {
+		keyValues := [...]string{data.Ipv4UnicastNetworks[i].Network.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/aggregate-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.Ipv4UnicastNetworksMask {
 		keyValues := [...]string{data.Ipv4UnicastNetworksMask[i].Network.ValueString(), data.Ipv4UnicastNetworksMask[i].Mask.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/network/with-mask=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.Ipv4UnicastNetworks {
-		keyValues := [...]string{data.Ipv4UnicastNetworks[i].Network.ValueString()}
+	for i := range data.Ipv4UnicastAggregateAddresses {
+		keyValues := [...]string{data.Ipv4UnicastAggregateAddresses[i].Ipv4Address.ValueString(), data.Ipv4UnicastAggregateAddresses[i].Ipv4Mask.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/network/no-mask=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/aggregate-address=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.Ipv4UnicastRedistributeStatic.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/redistribute/static", data.getPath()))
+	}
+	if !data.Ipv4UnicastRedistributeConnected.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/redistribute/connected", data.getPath()))
+	}
+
 	return deletePaths
 }
 

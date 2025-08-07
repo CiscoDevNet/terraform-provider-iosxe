@@ -957,11 +957,14 @@ func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSensor) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.FilterSpecDhcpIncludes {
-		stateKeyValues := [...]string{state.FilterSpecDhcpIncludes[i].Name.ValueString()}
+	if !state.NotifyAllChanges.IsNull() && data.NotifyAllChanges.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/notify/all-changes", state.getPath()))
+	}
+	for i := range state.FilterListsDhcp {
+		stateKeyValues := [...]string{state.FilterListsDhcp[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.FilterSpecDhcpIncludes[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.FilterListsDhcp[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -969,24 +972,45 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 		}
 
 		found := false
-		for j := range data.FilterSpecDhcpIncludes {
+		for j := range data.FilterListsDhcp {
 			found = true
-			if state.FilterSpecDhcpIncludes[i].Name.ValueString() != data.FilterSpecDhcpIncludes[j].Name.ValueString() {
+			if state.FilterListsDhcp[i].Name.ValueString() != data.FilterListsDhcp[j].Name.ValueString() {
 				found = false
 			}
 			if found {
+				if !state.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() && data.FilterListsDhcp[j].OptionNameClientFqdn.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/client-fqdn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsDhcp[i].OptionNameClientIdentifier.IsNull() && data.FilterListsDhcp[j].OptionNameClientIdentifier.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/client-identifier", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsDhcp[i].OptionNameClassIdentifier.IsNull() && data.FilterListsDhcp[j].OptionNameClassIdentifier.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/class-identifier", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsDhcp[i].OptionNameParameterRequestList.IsNull() && data.FilterListsDhcp[j].OptionNameParameterRequestList.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/parameter-request-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsDhcp[i].OptionNameRequestedAddress.IsNull() && data.FilterListsDhcp[j].OptionNameRequestedAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/requested-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsDhcp[i].OptionNameDefaultIpTtl.IsNull() && data.FilterListsDhcp[j].OptionNameDefaultIpTtl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/default-ip-ttl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsDhcp[i].OptionNameHostName.IsNull() && data.FilterListsDhcp[j].OptionNameHostName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/host-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/dhcp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.FilterSpecDhcpExcludes {
-		stateKeyValues := [...]string{state.FilterSpecDhcpExcludes[i].Name.ValueString()}
+	for i := range state.FilterListsLldp {
+		stateKeyValues := [...]string{state.FilterListsLldp[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.FilterSpecDhcpExcludes[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.FilterListsLldp[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -994,92 +1018,32 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 		}
 
 		found := false
-		for j := range data.FilterSpecDhcpExcludes {
+		for j := range data.FilterListsLldp {
 			found = true
-			if state.FilterSpecDhcpExcludes[i].Name.ValueString() != data.FilterSpecDhcpExcludes[j].Name.ValueString() {
+			if state.FilterListsLldp[i].Name.ValueString() != data.FilterListsLldp[j].Name.ValueString() {
 				found = false
 			}
 			if found {
+				if !state.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && data.FilterListsLldp[j].TlvNameSystemCapabilities.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-capabilities", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && data.FilterListsLldp[j].TlvNameSystemDescription.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsLldp[i].TlvNameSystemName.IsNull() && data.FilterListsLldp[j].TlvNameSystemName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsLldp[i].TlvNamePortDescription.IsNull() && data.FilterListsLldp[j].TlvNamePortDescription.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/port-description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsLldp[i].TlvNamePortId.IsNull() && data.FilterListsLldp[j].TlvNamePortId.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/port-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/dhcp/exclude/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.FilterSpecLldpIncludes {
-		stateKeyValues := [...]string{state.FilterSpecLldpIncludes[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.FilterSpecLldpIncludes[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.FilterSpecLldpIncludes {
-			found = true
-			if state.FilterSpecLldpIncludes[i].Name.ValueString() != data.FilterSpecLldpIncludes[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/lldp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.FilterSpecLldpExcludes {
-		stateKeyValues := [...]string{state.FilterSpecLldpExcludes[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.FilterSpecLldpExcludes[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.FilterSpecLldpExcludes {
-			found = true
-			if state.FilterSpecLldpExcludes[i].Name.ValueString() != data.FilterSpecLldpExcludes[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/lldp/exclude/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.FilterSpecCdpIncludes {
-		stateKeyValues := [...]string{state.FilterSpecCdpIncludes[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.FilterSpecCdpIncludes[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.FilterSpecCdpIncludes {
-			found = true
-			if state.FilterSpecCdpIncludes[i].Name.ValueString() != data.FilterSpecCdpIncludes[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/cdp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.FilterSpecCdpExcludes {
@@ -1107,11 +1071,11 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/cdp/exclude/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.FilterListsLldp {
-		stateKeyValues := [...]string{state.FilterListsLldp[i].Name.ValueString()}
+	for i := range state.FilterSpecCdpIncludes {
+		stateKeyValues := [...]string{state.FilterSpecCdpIncludes[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.FilterListsLldp[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.FilterSpecCdpIncludes[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1119,39 +1083,24 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 		}
 
 		found := false
-		for j := range data.FilterListsLldp {
+		for j := range data.FilterSpecCdpIncludes {
 			found = true
-			if state.FilterListsLldp[i].Name.ValueString() != data.FilterListsLldp[j].Name.ValueString() {
+			if state.FilterSpecCdpIncludes[i].Name.ValueString() != data.FilterSpecCdpIncludes[j].Name.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.FilterListsLldp[i].TlvNamePortId.IsNull() && data.FilterListsLldp[j].TlvNamePortId.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/port-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsLldp[i].TlvNamePortDescription.IsNull() && data.FilterListsLldp[j].TlvNamePortDescription.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/port-description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsLldp[i].TlvNameSystemName.IsNull() && data.FilterListsLldp[j].TlvNameSystemName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && data.FilterListsLldp[j].TlvNameSystemDescription.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && data.FilterListsLldp[j].TlvNameSystemCapabilities.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-capabilities", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/lldp/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/cdp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.FilterListsDhcp {
-		stateKeyValues := [...]string{state.FilterListsDhcp[i].Name.ValueString()}
+	for i := range state.FilterSpecLldpExcludes {
+		stateKeyValues := [...]string{state.FilterSpecLldpExcludes[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.FilterListsDhcp[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.FilterSpecLldpExcludes[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1159,43 +1108,95 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 		}
 
 		found := false
-		for j := range data.FilterListsDhcp {
+		for j := range data.FilterSpecLldpExcludes {
 			found = true
-			if state.FilterListsDhcp[i].Name.ValueString() != data.FilterListsDhcp[j].Name.ValueString() {
+			if state.FilterSpecLldpExcludes[i].Name.ValueString() != data.FilterSpecLldpExcludes[j].Name.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.FilterListsDhcp[i].OptionNameHostName.IsNull() && data.FilterListsDhcp[j].OptionNameHostName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/host-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsDhcp[i].OptionNameDefaultIpTtl.IsNull() && data.FilterListsDhcp[j].OptionNameDefaultIpTtl.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/default-ip-ttl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsDhcp[i].OptionNameRequestedAddress.IsNull() && data.FilterListsDhcp[j].OptionNameRequestedAddress.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/requested-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsDhcp[i].OptionNameParameterRequestList.IsNull() && data.FilterListsDhcp[j].OptionNameParameterRequestList.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/parameter-request-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsDhcp[i].OptionNameClassIdentifier.IsNull() && data.FilterListsDhcp[j].OptionNameClassIdentifier.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/class-identifier", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsDhcp[i].OptionNameClientIdentifier.IsNull() && data.FilterListsDhcp[j].OptionNameClientIdentifier.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/client-identifier", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() && data.FilterListsDhcp[j].OptionNameClientFqdn.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/client-fqdn", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/dhcp/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/lldp/exclude/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.NotifyAllChanges.IsNull() && data.NotifyAllChanges.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/notify/all-changes", state.getPath()))
+	for i := range state.FilterSpecLldpIncludes {
+		stateKeyValues := [...]string{state.FilterSpecLldpIncludes[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecLldpIncludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecLldpIncludes {
+			found = true
+			if state.FilterSpecLldpIncludes[i].Name.ValueString() != data.FilterSpecLldpIncludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/lldp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
+	for i := range state.FilterSpecDhcpExcludes {
+		stateKeyValues := [...]string{state.FilterSpecDhcpExcludes[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecDhcpExcludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecDhcpExcludes {
+			found = true
+			if state.FilterSpecDhcpExcludes[i].Name.ValueString() != data.FilterSpecDhcpExcludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/dhcp/exclude/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.FilterSpecDhcpIncludes {
+		stateKeyValues := [...]string{state.FilterSpecDhcpIncludes[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecDhcpIncludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecDhcpIncludes {
+			found = true
+			if state.FilterSpecDhcpIncludes[i].Name.ValueString() != data.FilterSpecDhcpIncludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/dhcp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+
 	return deletedItems
 }
 
@@ -1205,53 +1206,54 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 
 func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-
-	for i := range data.FilterListsLldp {
-		keyValues := [...]string{data.FilterListsLldp[i].Name.ValueString()}
-		if !data.FilterListsLldp[i].TlvNamePortId.IsNull() && !data.FilterListsLldp[i].TlvNamePortId.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/port-id", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.FilterListsLldp[i].TlvNamePortDescription.IsNull() && !data.FilterListsLldp[i].TlvNamePortDescription.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/port-description", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.FilterListsLldp[i].TlvNameSystemName.IsNull() && !data.FilterListsLldp[i].TlvNameSystemName.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-name", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && !data.FilterListsLldp[i].TlvNameSystemDescription.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-description", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && !data.FilterListsLldp[i].TlvNameSystemCapabilities.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-capabilities", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
+	if !data.NotifyAllChanges.IsNull() && !data.NotifyAllChanges.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/notify/all-changes", data.getPath()))
 	}
 
 	for i := range data.FilterListsDhcp {
 		keyValues := [...]string{data.FilterListsDhcp[i].Name.ValueString()}
-		if !data.FilterListsDhcp[i].OptionNameHostName.IsNull() && !data.FilterListsDhcp[i].OptionNameHostName.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/host-name", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.FilterListsDhcp[i].OptionNameDefaultIpTtl.IsNull() && !data.FilterListsDhcp[i].OptionNameDefaultIpTtl.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/default-ip-ttl", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.FilterListsDhcp[i].OptionNameRequestedAddress.IsNull() && !data.FilterListsDhcp[i].OptionNameRequestedAddress.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/requested-address", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.FilterListsDhcp[i].OptionNameParameterRequestList.IsNull() && !data.FilterListsDhcp[i].OptionNameParameterRequestList.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/parameter-request-list", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.FilterListsDhcp[i].OptionNameClassIdentifier.IsNull() && !data.FilterListsDhcp[i].OptionNameClassIdentifier.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/class-identifier", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() && !data.FilterListsDhcp[i].OptionNameClientFqdn.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/client-fqdn", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.FilterListsDhcp[i].OptionNameClientIdentifier.IsNull() && !data.FilterListsDhcp[i].OptionNameClientIdentifier.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/client-identifier", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() && !data.FilterListsDhcp[i].OptionNameClientFqdn.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/client-fqdn", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.FilterListsDhcp[i].OptionNameClassIdentifier.IsNull() && !data.FilterListsDhcp[i].OptionNameClassIdentifier.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/class-identifier", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsDhcp[i].OptionNameParameterRequestList.IsNull() && !data.FilterListsDhcp[i].OptionNameParameterRequestList.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/parameter-request-list", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsDhcp[i].OptionNameRequestedAddress.IsNull() && !data.FilterListsDhcp[i].OptionNameRequestedAddress.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/requested-address", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsDhcp[i].OptionNameDefaultIpTtl.IsNull() && !data.FilterListsDhcp[i].OptionNameDefaultIpTtl.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/default-ip-ttl", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsDhcp[i].OptionNameHostName.IsNull() && !data.FilterListsDhcp[i].OptionNameHostName.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/dhcp/list=%v/option/name/host-name", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
-	if !data.NotifyAllChanges.IsNull() && !data.NotifyAllChanges.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/notify/all-changes", data.getPath()))
+
+	for i := range data.FilterListsLldp {
+		keyValues := [...]string{data.FilterListsLldp[i].Name.ValueString()}
+		if !data.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && !data.FilterListsLldp[i].TlvNameSystemCapabilities.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-capabilities", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && !data.FilterListsLldp[i].TlvNameSystemDescription.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-description", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsLldp[i].TlvNameSystemName.IsNull() && !data.FilterListsLldp[i].TlvNameSystemName.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/system-name", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsLldp[i].TlvNamePortDescription.IsNull() && !data.FilterListsLldp[i].TlvNamePortDescription.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/port-description", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsLldp[i].TlvNamePortId.IsNull() && !data.FilterListsLldp[i].TlvNamePortId.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/lldp/list=%v/tlv/name/port-id", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -1261,49 +1263,50 @@ func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *DeviceSensor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.FilterSpecDhcpIncludes {
-		keyValues := [...]string{data.FilterSpecDhcpIncludes[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/dhcp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.FilterSpecDhcpExcludes {
-		keyValues := [...]string{data.FilterSpecDhcpExcludes[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/dhcp/exclude/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.FilterSpecLldpIncludes {
-		keyValues := [...]string{data.FilterSpecLldpIncludes[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/lldp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.FilterSpecLldpExcludes {
-		keyValues := [...]string{data.FilterSpecLldpExcludes[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/lldp/exclude/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.FilterSpecCdpIncludes {
-		keyValues := [...]string{data.FilterSpecCdpIncludes[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/cdp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.FilterSpecCdpExcludes {
-		keyValues := [...]string{data.FilterSpecCdpExcludes[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/cdp/exclude/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.FilterListsLldp {
-		keyValues := [...]string{data.FilterListsLldp[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-list/lldp/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.NotifyAllChanges.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/notify/all-changes", data.getPath()))
 	}
 	for i := range data.FilterListsDhcp {
 		keyValues := [...]string{data.FilterListsDhcp[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-list/dhcp/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.NotifyAllChanges.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/notify/all-changes", data.getPath()))
+	for i := range data.FilterListsLldp {
+		keyValues := [...]string{data.FilterListsLldp[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-list/lldp/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.FilterSpecCdpExcludes {
+		keyValues := [...]string{data.FilterSpecCdpExcludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/cdp/exclude/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.FilterSpecCdpIncludes {
+		keyValues := [...]string{data.FilterSpecCdpIncludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/cdp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.FilterSpecLldpExcludes {
+		keyValues := [...]string{data.FilterSpecLldpExcludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/lldp/exclude/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.FilterSpecLldpIncludes {
+		keyValues := [...]string{data.FilterSpecLldpIncludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/lldp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.FilterSpecDhcpExcludes {
+		keyValues := [...]string{data.FilterSpecDhcpExcludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/dhcp/exclude/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.FilterSpecDhcpIncludes {
+		keyValues := [...]string{data.FilterSpecDhcpIncludes[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/dhcp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+
 	return deletePaths
 }
 

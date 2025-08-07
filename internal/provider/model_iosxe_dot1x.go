@@ -461,8 +461,26 @@ func (data *Dot1xData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
 	deletedItems := make([]string, 0)
-	if !state.AuthFailEapol.IsNull() && data.AuthFailEapol.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:auth-fail/eapol", state.getPath()))
+	if !state.SystemAuthControl.IsNull() && data.SystemAuthControl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", state.getPath()))
+	}
+	if !state.SupplicantForceMulticast.IsNull() && data.SupplicantForceMulticast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/force-multicast", state.getPath()))
+	}
+	if !state.SupplicantControlledTransient.IsNull() && data.SupplicantControlledTransient.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/controlled/transient", state.getPath()))
+	}
+	if !state.LoggingVerbose.IsNull() && data.LoggingVerbose.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:logging/verbose", state.getPath()))
+	}
+	if !state.TestTimeout.IsNull() && data.TestTimeout.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:test/timeout", state.getPath()))
+	}
+	if !state.CriticalRecoveryDelay.IsNull() && data.CriticalRecoveryDelay.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/recovery/delay", state.getPath()))
+	}
+	if !state.CriticalEapolConfigBlock.IsNull() && data.CriticalEapolConfigBlock.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", state.getPath()))
 	}
 	for i := range state.Credentials {
 		stateKeyValues := [...]string{state.Credentials[i].ProfileName.ValueString()}
@@ -482,23 +500,23 @@ func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
 				found = false
 			}
 			if found {
-				if !state.Credentials[i].Description.IsNull() && data.Credentials[j].Description.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Credentials[i].Username.IsNull() && data.Credentials[j].Username.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/username", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Credentials[i].PasswordType.IsNull() && data.Credentials[j].PasswordType.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/password/type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Credentials[i].Password.IsNull() && data.Credentials[j].Password.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/password/secret", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Credentials[i].AnonymousId.IsNull() && data.Credentials[j].AnonymousId.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/anonymous-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Credentials[i].PkiTrustpoint.IsNull() && data.Credentials[j].PkiTrustpoint.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/pki-trustpoint", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Credentials[i].AnonymousId.IsNull() && data.Credentials[j].AnonymousId.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/anonymous-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Credentials[i].Password.IsNull() && data.Credentials[j].Password.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/password/secret", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Credentials[i].PasswordType.IsNull() && data.Credentials[j].PasswordType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/password/type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Credentials[i].Username.IsNull() && data.Credentials[j].Username.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/username", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Credentials[i].Description.IsNull() && data.Credentials[j].Description.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v/description", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -507,27 +525,10 @@ func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.CriticalEapolConfigBlock.IsNull() && data.CriticalEapolConfigBlock.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", state.getPath()))
+	if !state.AuthFailEapol.IsNull() && data.AuthFailEapol.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:auth-fail/eapol", state.getPath()))
 	}
-	if !state.CriticalRecoveryDelay.IsNull() && data.CriticalRecoveryDelay.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/recovery/delay", state.getPath()))
-	}
-	if !state.TestTimeout.IsNull() && data.TestTimeout.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:test/timeout", state.getPath()))
-	}
-	if !state.LoggingVerbose.IsNull() && data.LoggingVerbose.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:logging/verbose", state.getPath()))
-	}
-	if !state.SupplicantControlledTransient.IsNull() && data.SupplicantControlledTransient.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/controlled/transient", state.getPath()))
-	}
-	if !state.SupplicantForceMulticast.IsNull() && data.SupplicantForceMulticast.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/force-multicast", state.getPath()))
-	}
-	if !state.SystemAuthControl.IsNull() && data.SystemAuthControl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", state.getPath()))
-	}
+
 	return deletedItems
 }
 
@@ -537,25 +538,26 @@ func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
 
 func (data *Dot1x) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.AuthFailEapol.IsNull() && !data.AuthFailEapol.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:auth-fail/eapol", data.getPath()))
-	}
-
-	if !data.CriticalEapolConfigBlock.IsNull() && !data.CriticalEapolConfigBlock.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", data.getPath()))
-	}
-	if !data.LoggingVerbose.IsNull() && !data.LoggingVerbose.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:logging/verbose", data.getPath()))
-	}
-	if !data.SupplicantControlledTransient.IsNull() && !data.SupplicantControlledTransient.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/controlled/transient", data.getPath()))
+	if !data.SystemAuthControl.IsNull() && !data.SystemAuthControl.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", data.getPath()))
 	}
 	if !data.SupplicantForceMulticast.IsNull() && !data.SupplicantForceMulticast.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/force-multicast", data.getPath()))
 	}
-	if !data.SystemAuthControl.IsNull() && !data.SystemAuthControl.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", data.getPath()))
+	if !data.SupplicantControlledTransient.IsNull() && !data.SupplicantControlledTransient.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/controlled/transient", data.getPath()))
 	}
+	if !data.LoggingVerbose.IsNull() && !data.LoggingVerbose.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:logging/verbose", data.getPath()))
+	}
+	if !data.CriticalEapolConfigBlock.IsNull() && !data.CriticalEapolConfigBlock.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", data.getPath()))
+	}
+
+	if !data.AuthFailEapol.IsNull() && !data.AuthFailEapol.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:auth-fail/eapol", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -565,35 +567,36 @@ func (data *Dot1x) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Dot1x) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.AuthFailEapol.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:auth-fail/eapol", data.getPath()))
+	if !data.SystemAuthControl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", data.getPath()))
+	}
+	if !data.SupplicantForceMulticast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/force-multicast", data.getPath()))
+	}
+	if !data.SupplicantControlledTransient.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/controlled/transient", data.getPath()))
+	}
+	if !data.LoggingVerbose.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:logging/verbose", data.getPath()))
+	}
+	if !data.TestTimeout.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:test/timeout", data.getPath()))
+	}
+	if !data.CriticalRecoveryDelay.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/recovery/delay", data.getPath()))
+	}
+	if !data.CriticalEapolConfigBlock.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", data.getPath()))
 	}
 	for i := range data.Credentials {
 		keyValues := [...]string{data.Credentials[i].ProfileName.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:credentials=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.CriticalEapolConfigBlock.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", data.getPath()))
+	if !data.AuthFailEapol.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:auth-fail/eapol", data.getPath()))
 	}
-	if !data.CriticalRecoveryDelay.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/recovery/delay", data.getPath()))
-	}
-	if !data.TestTimeout.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:test/timeout", data.getPath()))
-	}
-	if !data.LoggingVerbose.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:logging/verbose", data.getPath()))
-	}
-	if !data.SupplicantControlledTransient.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/controlled/transient", data.getPath()))
-	}
-	if !data.SupplicantForceMulticast.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:supplicant/force-multicast", data.getPath()))
-	}
-	if !data.SystemAuthControl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", data.getPath()))
-	}
+
 	return deletePaths
 }
 
