@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.7.0 (unreleased)
+## 0.7.0
 
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv4_host_transport` resource and data source into `iosxe_logging` resource and data source
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv6_host_transport` resource and data source into `iosxe_logging` resource and data source
