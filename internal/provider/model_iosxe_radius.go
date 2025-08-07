@@ -181,11 +181,6 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Retransmit = types.Int64Null()
 	}
-	if value := res.Get(prefix + "key.key"); value.Exists() && !data.Key.IsNull() {
-		data.Key = types.StringValue(value.String())
-	} else {
-		data.Key = types.StringNull()
-	}
 	if value := res.Get(prefix + "automate-tester.username"); value.Exists() && !data.AutomateTesterUsername.IsNull() {
 		data.AutomateTesterUsername = types.StringValue(value.String())
 	} else {
@@ -208,11 +203,6 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.AutomateTesterProbeOnConfig = types.BoolNull()
-	}
-	if value := res.Get(prefix + "pac.key.key"); value.Exists() && !data.PacKey.IsNull() {
-		data.PacKey = types.StringValue(value.String())
-	} else {
-		data.PacKey = types.StringNull()
 	}
 	if value := res.Get(prefix + "pac.key.encryption"); value.Exists() && !data.PacKeyEncryption.IsNull() {
 		data.PacKeyEncryption = types.StringValue(value.String())
@@ -245,9 +235,6 @@ func (data *Radius) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "retransmit"); value.Exists() {
 		data.Retransmit = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "key.key"); value.Exists() {
-		data.Key = types.StringValue(value.String())
-	}
 	if value := res.Get(prefix + "automate-tester.username"); value.Exists() {
 		data.AutomateTesterUsername = types.StringValue(value.String())
 	}
@@ -260,9 +247,6 @@ func (data *Radius) fromBody(ctx context.Context, res gjson.Result) {
 		data.AutomateTesterProbeOnConfig = types.BoolValue(true)
 	} else {
 		data.AutomateTesterProbeOnConfig = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "pac.key.key"); value.Exists() {
-		data.PacKey = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "pac.key.encryption"); value.Exists() {
 		data.PacKeyEncryption = types.StringValue(value.String())
@@ -293,9 +277,6 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "retransmit"); value.Exists() {
 		data.Retransmit = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "key.key"); value.Exists() {
-		data.Key = types.StringValue(value.String())
-	}
 	if value := res.Get(prefix + "automate-tester.username"); value.Exists() {
 		data.AutomateTesterUsername = types.StringValue(value.String())
 	}
@@ -308,9 +289,6 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 		data.AutomateTesterProbeOnConfig = types.BoolValue(true)
 	} else {
 		data.AutomateTesterProbeOnConfig = types.BoolValue(false)
-	}
-	if value := res.Get(prefix + "pac.key.key"); value.Exists() {
-		data.PacKey = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "pac.key.encryption"); value.Exists() {
 		data.PacKeyEncryption = types.StringValue(value.String())

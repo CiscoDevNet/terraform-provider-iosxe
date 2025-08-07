@@ -38,13 +38,9 @@ func TestAccDataSourceIosxeRadius(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "accounting_port", "1812"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "timeout", "4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "retransmit", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "key", "123"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "automate_tester_username", "dummy"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "automate_tester_ignore_acct_port", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "automate_tester_probe_on_config", "true"))
-	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "pac_key", "123"))
-	}
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_radius.test", "pac_key_encryption", "0"))
 	}
