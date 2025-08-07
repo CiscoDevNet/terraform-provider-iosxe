@@ -12,11 +12,11 @@ resource "iosxe_ntp" "example" {
       encryption_type = 7
     }
   ]
-  master               = true
-  master_stratum       = 5
-  passive              = false
-  update_calendar      = false
-  trap_source_loopback = 1
+  master          = true
+  master_stratum  = 5
+  passive         = false
+  update_calendar = false
+  source_loopback = 1
   servers = [
     {
       ip_address = "1.2.3.4"

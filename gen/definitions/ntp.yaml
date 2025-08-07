@@ -67,41 +67,41 @@ attributes:
     example: false
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/GigabitEthernet/GigabitEthernet
     xpath: Cisco-IOS-XE-ntp:source/GigabitEthernet
-    tf_name: trap_source_gigabit_ethernet
+    tf_name: source_gigabit_ethernet
     example: 1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/TenGigabitEthernet/TenGigabitEthernet
     xpath: Cisco-IOS-XE-ntp:source/TenGigabitEthernet
-    tf_name: trap_source_ten_gigabit_ethernet
+    tf_name: source_ten_gigabit_ethernet
     example: 1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
     xpath: Cisco-IOS-XE-ntp:source/FortyGigabitEthernet
-    tf_name: trap_source_forty_gigabit_ethernet
+    tf_name: source_forty_gigabit_ethernet
     example: 1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/HundredGigE/HundredGigE
     xpath: Cisco-IOS-XE-ntp:source/HundredGigE
-    tf_name: trap_source_hundred_gigabit_ethernet
+    tf_name: source_hundred_gigabit_ethernet
     example: 1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Loopback/Loopback
     xpath: Cisco-IOS-XE-ntp:source/Loopback
-    tf_name: trap_source_loopback
+    tf_name: source_loopback
     example: 1
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Port-channel/Port-channel
     xpath: Cisco-IOS-XE-ntp:source/Port-channel
-    tf_name: trap_source_port_channel
+    tf_name: source_port_channel
     example: 1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Port-channel-subinterface/Port-channel-subinterface/Port-channel
     xpath: Cisco-IOS-XE-ntp:source/Port-channel-subinterface/Port-channel
-    tf_name: trap_source_port_channel_subinterface
+    tf_name: source_port_channel_subinterface
     example: 1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:source/interface-choice/Vlan/Vlan
     xpath: Cisco-IOS-XE-ntp:source/Vlan
-    tf_name: trap_source_vlan
+    tf_name: source_vlan
     example: 1
     exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:server/server-list

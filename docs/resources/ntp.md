@@ -27,11 +27,11 @@ resource "iosxe_ntp" "example" {
       encryption_type = 7
     }
   ]
-  master               = true
-  master_stratum       = 5
-  passive              = false
-  update_calendar      = false
-  trap_source_loopback = 1
+  master          = true
+  master_stratum  = 5
+  passive         = false
+  update_calendar = false
+  source_loopback = 1
   servers = [
     {
       ip_address = "1.2.3.4"
@@ -108,16 +108,16 @@ resource "iosxe_ntp" "example" {
 - `peers` (Attributes List) (see [below for nested schema](#nestedatt--peers))
 - `server_vrfs` (Attributes List) VPN Routing/Forwarding Information (see [below for nested schema](#nestedatt--server_vrfs))
 - `servers` (Attributes List) (see [below for nested schema](#nestedatt--servers))
-- `trap_source_forty_gigabit_ethernet` (String) Forty GigabitEthernet
-- `trap_source_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
-- `trap_source_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
-- `trap_source_loopback` (Number) Loopback interface
+- `source_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `source_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `source_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `source_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
-- `trap_source_port_channel` (Number) Ethernet Channel of interfaces
+- `source_port_channel` (Number) Ethernet Channel of interfaces
   - Range: `0`-`4294967295`
-- `trap_source_port_channel_subinterface` (String)
-- `trap_source_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
-- `trap_source_vlan` (Number) Iosxr Vlans
+- `source_port_channel_subinterface` (String)
+- `source_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `source_vlan` (Number) Iosxr Vlans
   - Range: `0`-`65535`
 - `trusted_keys` (Attributes List) Key numbers for trusted time sources (see [below for nested schema](#nestedatt--trusted_keys))
 - `update_calendar` (Boolean) Periodically update calendar with NTP time

@@ -38,64 +38,64 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type NTP struct {
-	Device                            types.String            `tfsdk:"device"`
-	Id                                types.String            `tfsdk:"id"`
-	DeleteMode                        types.String            `tfsdk:"delete_mode"`
-	Authenticate                      types.Bool              `tfsdk:"authenticate"`
-	Logging                           types.Bool              `tfsdk:"logging"`
-	AccessGroupPeerAcl                types.String            `tfsdk:"access_group_peer_acl"`
-	AccessGroupQueryOnlyAcl           types.String            `tfsdk:"access_group_query_only_acl"`
-	AccessGroupServeAcl               types.String            `tfsdk:"access_group_serve_acl"`
-	AccessGroupServeOnlyAcl           types.String            `tfsdk:"access_group_serve_only_acl"`
-	AuthenticationKeys                []NTPAuthenticationKeys `tfsdk:"authentication_keys"`
-	ClockPeriod                       types.Int64             `tfsdk:"clock_period"`
-	Master                            types.Bool              `tfsdk:"master"`
-	MasterStratum                     types.Int64             `tfsdk:"master_stratum"`
-	Passive                           types.Bool              `tfsdk:"passive"`
-	UpdateCalendar                    types.Bool              `tfsdk:"update_calendar"`
-	TrapSourceGigabitEthernet         types.String            `tfsdk:"trap_source_gigabit_ethernet"`
-	TrapSourceTenGigabitEthernet      types.String            `tfsdk:"trap_source_ten_gigabit_ethernet"`
-	TrapSourceFortyGigabitEthernet    types.String            `tfsdk:"trap_source_forty_gigabit_ethernet"`
-	TrapSourceHundredGigabitEthernet  types.String            `tfsdk:"trap_source_hundred_gigabit_ethernet"`
-	TrapSourceLoopback                types.Int64             `tfsdk:"trap_source_loopback"`
-	TrapSourcePortChannel             types.Int64             `tfsdk:"trap_source_port_channel"`
-	TrapSourcePortChannelSubinterface types.String            `tfsdk:"trap_source_port_channel_subinterface"`
-	TrapSourceVlan                    types.Int64             `tfsdk:"trap_source_vlan"`
-	Servers                           []NTPServers            `tfsdk:"servers"`
-	ServerVrfs                        []NTPServerVrfs         `tfsdk:"server_vrfs"`
-	Peers                             []NTPPeers              `tfsdk:"peers"`
-	PeerVrfs                          []NTPPeerVrfs           `tfsdk:"peer_vrfs"`
-	TrustedKeys                       []NTPTrustedKeys        `tfsdk:"trusted_keys"`
+	Device                        types.String            `tfsdk:"device"`
+	Id                            types.String            `tfsdk:"id"`
+	DeleteMode                    types.String            `tfsdk:"delete_mode"`
+	Authenticate                  types.Bool              `tfsdk:"authenticate"`
+	Logging                       types.Bool              `tfsdk:"logging"`
+	AccessGroupPeerAcl            types.String            `tfsdk:"access_group_peer_acl"`
+	AccessGroupQueryOnlyAcl       types.String            `tfsdk:"access_group_query_only_acl"`
+	AccessGroupServeAcl           types.String            `tfsdk:"access_group_serve_acl"`
+	AccessGroupServeOnlyAcl       types.String            `tfsdk:"access_group_serve_only_acl"`
+	AuthenticationKeys            []NTPAuthenticationKeys `tfsdk:"authentication_keys"`
+	ClockPeriod                   types.Int64             `tfsdk:"clock_period"`
+	Master                        types.Bool              `tfsdk:"master"`
+	MasterStratum                 types.Int64             `tfsdk:"master_stratum"`
+	Passive                       types.Bool              `tfsdk:"passive"`
+	UpdateCalendar                types.Bool              `tfsdk:"update_calendar"`
+	SourceGigabitEthernet         types.String            `tfsdk:"source_gigabit_ethernet"`
+	SourceTenGigabitEthernet      types.String            `tfsdk:"source_ten_gigabit_ethernet"`
+	SourceFortyGigabitEthernet    types.String            `tfsdk:"source_forty_gigabit_ethernet"`
+	SourceHundredGigabitEthernet  types.String            `tfsdk:"source_hundred_gigabit_ethernet"`
+	SourceLoopback                types.Int64             `tfsdk:"source_loopback"`
+	SourcePortChannel             types.Int64             `tfsdk:"source_port_channel"`
+	SourcePortChannelSubinterface types.String            `tfsdk:"source_port_channel_subinterface"`
+	SourceVlan                    types.Int64             `tfsdk:"source_vlan"`
+	Servers                       []NTPServers            `tfsdk:"servers"`
+	ServerVrfs                    []NTPServerVrfs         `tfsdk:"server_vrfs"`
+	Peers                         []NTPPeers              `tfsdk:"peers"`
+	PeerVrfs                      []NTPPeerVrfs           `tfsdk:"peer_vrfs"`
+	TrustedKeys                   []NTPTrustedKeys        `tfsdk:"trusted_keys"`
 }
 
 type NTPData struct {
-	Device                            types.String            `tfsdk:"device"`
-	Id                                types.String            `tfsdk:"id"`
-	Authenticate                      types.Bool              `tfsdk:"authenticate"`
-	Logging                           types.Bool              `tfsdk:"logging"`
-	AccessGroupPeerAcl                types.String            `tfsdk:"access_group_peer_acl"`
-	AccessGroupQueryOnlyAcl           types.String            `tfsdk:"access_group_query_only_acl"`
-	AccessGroupServeAcl               types.String            `tfsdk:"access_group_serve_acl"`
-	AccessGroupServeOnlyAcl           types.String            `tfsdk:"access_group_serve_only_acl"`
-	AuthenticationKeys                []NTPAuthenticationKeys `tfsdk:"authentication_keys"`
-	ClockPeriod                       types.Int64             `tfsdk:"clock_period"`
-	Master                            types.Bool              `tfsdk:"master"`
-	MasterStratum                     types.Int64             `tfsdk:"master_stratum"`
-	Passive                           types.Bool              `tfsdk:"passive"`
-	UpdateCalendar                    types.Bool              `tfsdk:"update_calendar"`
-	TrapSourceGigabitEthernet         types.String            `tfsdk:"trap_source_gigabit_ethernet"`
-	TrapSourceTenGigabitEthernet      types.String            `tfsdk:"trap_source_ten_gigabit_ethernet"`
-	TrapSourceFortyGigabitEthernet    types.String            `tfsdk:"trap_source_forty_gigabit_ethernet"`
-	TrapSourceHundredGigabitEthernet  types.String            `tfsdk:"trap_source_hundred_gigabit_ethernet"`
-	TrapSourceLoopback                types.Int64             `tfsdk:"trap_source_loopback"`
-	TrapSourcePortChannel             types.Int64             `tfsdk:"trap_source_port_channel"`
-	TrapSourcePortChannelSubinterface types.String            `tfsdk:"trap_source_port_channel_subinterface"`
-	TrapSourceVlan                    types.Int64             `tfsdk:"trap_source_vlan"`
-	Servers                           []NTPServers            `tfsdk:"servers"`
-	ServerVrfs                        []NTPServerVrfs         `tfsdk:"server_vrfs"`
-	Peers                             []NTPPeers              `tfsdk:"peers"`
-	PeerVrfs                          []NTPPeerVrfs           `tfsdk:"peer_vrfs"`
-	TrustedKeys                       []NTPTrustedKeys        `tfsdk:"trusted_keys"`
+	Device                        types.String            `tfsdk:"device"`
+	Id                            types.String            `tfsdk:"id"`
+	Authenticate                  types.Bool              `tfsdk:"authenticate"`
+	Logging                       types.Bool              `tfsdk:"logging"`
+	AccessGroupPeerAcl            types.String            `tfsdk:"access_group_peer_acl"`
+	AccessGroupQueryOnlyAcl       types.String            `tfsdk:"access_group_query_only_acl"`
+	AccessGroupServeAcl           types.String            `tfsdk:"access_group_serve_acl"`
+	AccessGroupServeOnlyAcl       types.String            `tfsdk:"access_group_serve_only_acl"`
+	AuthenticationKeys            []NTPAuthenticationKeys `tfsdk:"authentication_keys"`
+	ClockPeriod                   types.Int64             `tfsdk:"clock_period"`
+	Master                        types.Bool              `tfsdk:"master"`
+	MasterStratum                 types.Int64             `tfsdk:"master_stratum"`
+	Passive                       types.Bool              `tfsdk:"passive"`
+	UpdateCalendar                types.Bool              `tfsdk:"update_calendar"`
+	SourceGigabitEthernet         types.String            `tfsdk:"source_gigabit_ethernet"`
+	SourceTenGigabitEthernet      types.String            `tfsdk:"source_ten_gigabit_ethernet"`
+	SourceFortyGigabitEthernet    types.String            `tfsdk:"source_forty_gigabit_ethernet"`
+	SourceHundredGigabitEthernet  types.String            `tfsdk:"source_hundred_gigabit_ethernet"`
+	SourceLoopback                types.Int64             `tfsdk:"source_loopback"`
+	SourcePortChannel             types.Int64             `tfsdk:"source_port_channel"`
+	SourcePortChannelSubinterface types.String            `tfsdk:"source_port_channel_subinterface"`
+	SourceVlan                    types.Int64             `tfsdk:"source_vlan"`
+	Servers                       []NTPServers            `tfsdk:"servers"`
+	ServerVrfs                    []NTPServerVrfs         `tfsdk:"server_vrfs"`
+	Peers                         []NTPPeers              `tfsdk:"peers"`
+	PeerVrfs                      []NTPPeerVrfs           `tfsdk:"peer_vrfs"`
+	TrustedKeys                   []NTPTrustedKeys        `tfsdk:"trusted_keys"`
 }
 type NTPAuthenticationKeys struct {
 	Number         types.Int64  `tfsdk:"number"`
@@ -217,29 +217,29 @@ func (data NTP) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:update-calendar", map[string]string{})
 		}
 	}
-	if !data.TrapSourceGigabitEthernet.IsNull() && !data.TrapSourceGigabitEthernet.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.GigabitEthernet", data.TrapSourceGigabitEthernet.ValueString())
+	if !data.SourceGigabitEthernet.IsNull() && !data.SourceGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.GigabitEthernet", data.SourceGigabitEthernet.ValueString())
 	}
-	if !data.TrapSourceTenGigabitEthernet.IsNull() && !data.TrapSourceTenGigabitEthernet.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.TenGigabitEthernet", data.TrapSourceTenGigabitEthernet.ValueString())
+	if !data.SourceTenGigabitEthernet.IsNull() && !data.SourceTenGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.TenGigabitEthernet", data.SourceTenGigabitEthernet.ValueString())
 	}
-	if !data.TrapSourceFortyGigabitEthernet.IsNull() && !data.TrapSourceFortyGigabitEthernet.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.FortyGigabitEthernet", data.TrapSourceFortyGigabitEthernet.ValueString())
+	if !data.SourceFortyGigabitEthernet.IsNull() && !data.SourceFortyGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.FortyGigabitEthernet", data.SourceFortyGigabitEthernet.ValueString())
 	}
-	if !data.TrapSourceHundredGigabitEthernet.IsNull() && !data.TrapSourceHundredGigabitEthernet.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.HundredGigE", data.TrapSourceHundredGigabitEthernet.ValueString())
+	if !data.SourceHundredGigabitEthernet.IsNull() && !data.SourceHundredGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.HundredGigE", data.SourceHundredGigabitEthernet.ValueString())
 	}
-	if !data.TrapSourceLoopback.IsNull() && !data.TrapSourceLoopback.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Loopback", strconv.FormatInt(data.TrapSourceLoopback.ValueInt64(), 10))
+	if !data.SourceLoopback.IsNull() && !data.SourceLoopback.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Loopback", strconv.FormatInt(data.SourceLoopback.ValueInt64(), 10))
 	}
-	if !data.TrapSourcePortChannel.IsNull() && !data.TrapSourcePortChannel.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Port-channel", strconv.FormatInt(data.TrapSourcePortChannel.ValueInt64(), 10))
+	if !data.SourcePortChannel.IsNull() && !data.SourcePortChannel.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Port-channel", strconv.FormatInt(data.SourcePortChannel.ValueInt64(), 10))
 	}
-	if !data.TrapSourcePortChannelSubinterface.IsNull() && !data.TrapSourcePortChannelSubinterface.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Port-channel-subinterface.Port-channel", data.TrapSourcePortChannelSubinterface.ValueString())
+	if !data.SourcePortChannelSubinterface.IsNull() && !data.SourcePortChannelSubinterface.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Port-channel-subinterface.Port-channel", data.SourcePortChannelSubinterface.ValueString())
 	}
-	if !data.TrapSourceVlan.IsNull() && !data.TrapSourceVlan.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Vlan", strconv.FormatInt(data.TrapSourceVlan.ValueInt64(), 10))
+	if !data.SourceVlan.IsNull() && !data.SourceVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:source.Vlan", strconv.FormatInt(data.SourceVlan.ValueInt64(), 10))
 	}
 	if len(data.AuthenticationKeys) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:authentication-key", []interface{}{})
@@ -527,45 +527,45 @@ func (data *NTP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.UpdateCalendar = types.BoolNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.GigabitEthernet"); value.Exists() && !data.TrapSourceGigabitEthernet.IsNull() {
-		data.TrapSourceGigabitEthernet = types.StringValue(value.String())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.GigabitEthernet"); value.Exists() && !data.SourceGigabitEthernet.IsNull() {
+		data.SourceGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.TrapSourceGigabitEthernet = types.StringNull()
+		data.SourceGigabitEthernet = types.StringNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.TenGigabitEthernet"); value.Exists() && !data.TrapSourceTenGigabitEthernet.IsNull() {
-		data.TrapSourceTenGigabitEthernet = types.StringValue(value.String())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.TenGigabitEthernet"); value.Exists() && !data.SourceTenGigabitEthernet.IsNull() {
+		data.SourceTenGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.TrapSourceTenGigabitEthernet = types.StringNull()
+		data.SourceTenGigabitEthernet = types.StringNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.FortyGigabitEthernet"); value.Exists() && !data.TrapSourceFortyGigabitEthernet.IsNull() {
-		data.TrapSourceFortyGigabitEthernet = types.StringValue(value.String())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.FortyGigabitEthernet"); value.Exists() && !data.SourceFortyGigabitEthernet.IsNull() {
+		data.SourceFortyGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.TrapSourceFortyGigabitEthernet = types.StringNull()
+		data.SourceFortyGigabitEthernet = types.StringNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.HundredGigE"); value.Exists() && !data.TrapSourceHundredGigabitEthernet.IsNull() {
-		data.TrapSourceHundredGigabitEthernet = types.StringValue(value.String())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.HundredGigE"); value.Exists() && !data.SourceHundredGigabitEthernet.IsNull() {
+		data.SourceHundredGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.TrapSourceHundredGigabitEthernet = types.StringNull()
+		data.SourceHundredGigabitEthernet = types.StringNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Loopback"); value.Exists() && !data.TrapSourceLoopback.IsNull() {
-		data.TrapSourceLoopback = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Loopback"); value.Exists() && !data.SourceLoopback.IsNull() {
+		data.SourceLoopback = types.Int64Value(value.Int())
 	} else {
-		data.TrapSourceLoopback = types.Int64Null()
+		data.SourceLoopback = types.Int64Null()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Port-channel"); value.Exists() && !data.TrapSourcePortChannel.IsNull() {
-		data.TrapSourcePortChannel = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Port-channel"); value.Exists() && !data.SourcePortChannel.IsNull() {
+		data.SourcePortChannel = types.Int64Value(value.Int())
 	} else {
-		data.TrapSourcePortChannel = types.Int64Null()
+		data.SourcePortChannel = types.Int64Null()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Port-channel-subinterface.Port-channel"); value.Exists() && !data.TrapSourcePortChannelSubinterface.IsNull() {
-		data.TrapSourcePortChannelSubinterface = types.StringValue(value.String())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Port-channel-subinterface.Port-channel"); value.Exists() && !data.SourcePortChannelSubinterface.IsNull() {
+		data.SourcePortChannelSubinterface = types.StringValue(value.String())
 	} else {
-		data.TrapSourcePortChannelSubinterface = types.StringNull()
+		data.SourcePortChannelSubinterface = types.StringNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Vlan"); value.Exists() && !data.TrapSourceVlan.IsNull() {
-		data.TrapSourceVlan = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Vlan"); value.Exists() && !data.SourceVlan.IsNull() {
+		data.SourceVlan = types.Int64Value(value.Int())
 	} else {
-		data.TrapSourceVlan = types.Int64Null()
+		data.SourceVlan = types.Int64Null()
 	}
 	for i := range data.Servers {
 		keys := [...]string{"ip-address"}
@@ -943,28 +943,28 @@ func (data *NTP) fromBody(ctx context.Context, res gjson.Result) {
 		data.UpdateCalendar = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.GigabitEthernet"); value.Exists() {
-		data.TrapSourceGigabitEthernet = types.StringValue(value.String())
+		data.SourceGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.TenGigabitEthernet"); value.Exists() {
-		data.TrapSourceTenGigabitEthernet = types.StringValue(value.String())
+		data.SourceTenGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.FortyGigabitEthernet"); value.Exists() {
-		data.TrapSourceFortyGigabitEthernet = types.StringValue(value.String())
+		data.SourceFortyGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.HundredGigE"); value.Exists() {
-		data.TrapSourceHundredGigabitEthernet = types.StringValue(value.String())
+		data.SourceHundredGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Loopback"); value.Exists() {
-		data.TrapSourceLoopback = types.Int64Value(value.Int())
+		data.SourceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Port-channel"); value.Exists() {
-		data.TrapSourcePortChannel = types.Int64Value(value.Int())
+		data.SourcePortChannel = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Port-channel-subinterface.Port-channel"); value.Exists() {
-		data.TrapSourcePortChannelSubinterface = types.StringValue(value.String())
+		data.SourcePortChannelSubinterface = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Vlan"); value.Exists() {
-		data.TrapSourceVlan = types.Int64Value(value.Int())
+		data.SourceVlan = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:server.server-list"); value.Exists() {
 		data.Servers = make([]NTPServers, 0)
@@ -1180,28 +1180,28 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 		data.UpdateCalendar = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.GigabitEthernet"); value.Exists() {
-		data.TrapSourceGigabitEthernet = types.StringValue(value.String())
+		data.SourceGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.TenGigabitEthernet"); value.Exists() {
-		data.TrapSourceTenGigabitEthernet = types.StringValue(value.String())
+		data.SourceTenGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.FortyGigabitEthernet"); value.Exists() {
-		data.TrapSourceFortyGigabitEthernet = types.StringValue(value.String())
+		data.SourceFortyGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.HundredGigE"); value.Exists() {
-		data.TrapSourceHundredGigabitEthernet = types.StringValue(value.String())
+		data.SourceHundredGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Loopback"); value.Exists() {
-		data.TrapSourceLoopback = types.Int64Value(value.Int())
+		data.SourceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Port-channel"); value.Exists() {
-		data.TrapSourcePortChannel = types.Int64Value(value.Int())
+		data.SourcePortChannel = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Port-channel-subinterface.Port-channel"); value.Exists() {
-		data.TrapSourcePortChannelSubinterface = types.StringValue(value.String())
+		data.SourcePortChannelSubinterface = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:source.Vlan"); value.Exists() {
-		data.TrapSourceVlan = types.Int64Value(value.Int())
+		data.SourceVlan = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:server.server-list"); value.Exists() {
 		data.Servers = make([]NTPServers, 0)
@@ -1555,28 +1555,28 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.TrapSourceVlan.IsNull() && data.TrapSourceVlan.IsNull() {
+	if !state.SourceVlan.IsNull() && data.SourceVlan.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Vlan", state.getPath()))
 	}
-	if !state.TrapSourcePortChannelSubinterface.IsNull() && data.TrapSourcePortChannelSubinterface.IsNull() {
+	if !state.SourcePortChannelSubinterface.IsNull() && data.SourcePortChannelSubinterface.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Port-channel-subinterface/Port-channel", state.getPath()))
 	}
-	if !state.TrapSourcePortChannel.IsNull() && data.TrapSourcePortChannel.IsNull() {
+	if !state.SourcePortChannel.IsNull() && data.SourcePortChannel.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Port-channel", state.getPath()))
 	}
-	if !state.TrapSourceLoopback.IsNull() && data.TrapSourceLoopback.IsNull() {
+	if !state.SourceLoopback.IsNull() && data.SourceLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Loopback", state.getPath()))
 	}
-	if !state.TrapSourceHundredGigabitEthernet.IsNull() && data.TrapSourceHundredGigabitEthernet.IsNull() {
+	if !state.SourceHundredGigabitEthernet.IsNull() && data.SourceHundredGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/HundredGigE", state.getPath()))
 	}
-	if !state.TrapSourceFortyGigabitEthernet.IsNull() && data.TrapSourceFortyGigabitEthernet.IsNull() {
+	if !state.SourceFortyGigabitEthernet.IsNull() && data.SourceFortyGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/FortyGigabitEthernet", state.getPath()))
 	}
-	if !state.TrapSourceTenGigabitEthernet.IsNull() && data.TrapSourceTenGigabitEthernet.IsNull() {
+	if !state.SourceTenGigabitEthernet.IsNull() && data.SourceTenGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/TenGigabitEthernet", state.getPath()))
 	}
-	if !state.TrapSourceGigabitEthernet.IsNull() && data.TrapSourceGigabitEthernet.IsNull() {
+	if !state.SourceGigabitEthernet.IsNull() && data.SourceGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/GigabitEthernet", state.getPath()))
 	}
 	if !state.UpdateCalendar.IsNull() && data.UpdateCalendar.IsNull() {
@@ -1755,28 +1755,28 @@ func (data *NTP) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.TrapSourceVlan.IsNull() {
+	if !data.SourceVlan.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Vlan", data.getPath()))
 	}
-	if !data.TrapSourcePortChannelSubinterface.IsNull() {
+	if !data.SourcePortChannelSubinterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Port-channel-subinterface/Port-channel", data.getPath()))
 	}
-	if !data.TrapSourcePortChannel.IsNull() {
+	if !data.SourcePortChannel.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Port-channel", data.getPath()))
 	}
-	if !data.TrapSourceLoopback.IsNull() {
+	if !data.SourceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/Loopback", data.getPath()))
 	}
-	if !data.TrapSourceHundredGigabitEthernet.IsNull() {
+	if !data.SourceHundredGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/HundredGigE", data.getPath()))
 	}
-	if !data.TrapSourceFortyGigabitEthernet.IsNull() {
+	if !data.SourceFortyGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/FortyGigabitEthernet", data.getPath()))
 	}
-	if !data.TrapSourceTenGigabitEthernet.IsNull() {
+	if !data.SourceTenGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/TenGigabitEthernet", data.getPath()))
 	}
-	if !data.TrapSourceGigabitEthernet.IsNull() {
+	if !data.SourceGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:source/GigabitEthernet", data.getPath()))
 	}
 	if !data.UpdateCalendar.IsNull() {

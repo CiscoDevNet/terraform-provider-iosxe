@@ -47,7 +47,7 @@ func TestAccIosxeNTP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "master_stratum", "5"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "passive", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "update_calendar", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "trap_source_loopback", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "source_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "servers.0.ip_address", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "servers.0.source", "Loopback1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "servers.0.key", "1"))
@@ -164,7 +164,7 @@ func testAccIosxeNTPConfig_all() string {
 	config += `	master_stratum = 5` + "\n"
 	config += `	passive = false` + "\n"
 	config += `	update_calendar = false` + "\n"
-	config += `	trap_source_loopback = 1` + "\n"
+	config += `	source_loopback = 1` + "\n"
 	config += `	servers = [{` + "\n"
 	config += `		ip_address = "1.2.3.4"` + "\n"
 	config += `		source = "Loopback1"` + "\n"

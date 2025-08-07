@@ -151,35 +151,35 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Periodically update calendar with NTP time",
 				Computed:            true,
 			},
-			"trap_source_gigabit_ethernet": schema.StringAttribute{
+			"source_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "GigabitEthernet IEEE 802.3z",
 				Computed:            true,
 			},
-			"trap_source_ten_gigabit_ethernet": schema.StringAttribute{
+			"source_ten_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "Ten Gigabit Ethernet",
 				Computed:            true,
 			},
-			"trap_source_forty_gigabit_ethernet": schema.StringAttribute{
+			"source_forty_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "Forty GigabitEthernet ",
 				Computed:            true,
 			},
-			"trap_source_hundred_gigabit_ethernet": schema.StringAttribute{
+			"source_hundred_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "Hundred GigabitEthernet",
 				Computed:            true,
 			},
-			"trap_source_loopback": schema.Int64Attribute{
+			"source_loopback": schema.Int64Attribute{
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},
-			"trap_source_port_channel": schema.Int64Attribute{
+			"source_port_channel": schema.Int64Attribute{
 				MarkdownDescription: "Ethernet Channel of interfaces",
 				Computed:            true,
 			},
-			"trap_source_port_channel_subinterface": schema.StringAttribute{
+			"source_port_channel_subinterface": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"trap_source_vlan": schema.Int64Attribute{
+			"source_vlan": schema.Int64Attribute{
 				MarkdownDescription: "Iosxr Vlans",
 				Computed:            true,
 			},
