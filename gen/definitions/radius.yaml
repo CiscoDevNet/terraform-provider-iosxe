@@ -26,6 +26,8 @@ attributes:
     tf_name: key
     example: 123
     write_only: true
+    allow_import_changes: true
+    delete_parent: true
   - yang_name: automate-tester/username
     example: dummy
   - yang_name: automate-tester/ignore-acct-port
@@ -39,6 +41,9 @@ attributes:
     example: 123
     test_tags: [IOSXE1712]
     write_only: true
+    allow_import_changes: true
+    delete_parent: true
   - yang_name: pac/key/encryption
     example: 0
     test_tags: [IOSXE1712]
+    delete_parent: true

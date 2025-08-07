@@ -63,7 +63,7 @@ func TestAccIosxeRadius(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeRadiusImportStateIdFunc("iosxe_radius.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"key", "pac_key"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
