@@ -166,6 +166,63 @@ type SNMPServer struct {
 	EnableTrapsVrfmibVnetTrunkDown                types.Bool                  `tfsdk:"enable_traps_vrfmib_vnet_trunk_down"`
 	EnableTrapsMvpn                               types.Bool                  `tfsdk:"enable_traps_mvpn"`
 	EnableTrapsLisp                               types.Bool                  `tfsdk:"enable_traps_lisp"`
+	EnableTrapsAaaServer                          types.Bool                  `tfsdk:"enable_traps_aaa_server"`
+	EnableTrapsVdsl2line                          types.Bool                  `tfsdk:"enable_traps_vdsl2line"`
+	EnableTrapsAdslline                           types.Bool                  `tfsdk:"enable_traps_adslline"`
+	EnableTrapsPki                                types.Bool                  `tfsdk:"enable_traps_pki"`
+	EnableTrapsAlarmType                          types.String                `tfsdk:"enable_traps_alarm_type"`
+	EnableTrapsCasa                               types.Bool                  `tfsdk:"enable_traps_casa"`
+	EnableTrapsCnpd                               types.Bool                  `tfsdk:"enable_traps_cnpd"`
+	EnableTrapsDial                               types.Bool                  `tfsdk:"enable_traps_dial"`
+	EnableTrapsDlsw                               types.Bool                  `tfsdk:"enable_traps_dlsw"`
+	EnableTrapsDs1                                types.Bool                  `tfsdk:"enable_traps_ds1"`
+	EnableTrapsDspCardStatus                      types.Bool                  `tfsdk:"enable_traps_dsp_card_status"`
+	EnableTrapsDspOperState                       types.Bool                  `tfsdk:"enable_traps_dsp_oper_state"`
+	EnableTrapsEntitySensor                       types.Bool                  `tfsdk:"enable_traps_entity_sensor"`
+	EnableTrapsEntityState                        types.Bool                  `tfsdk:"enable_traps_entity_state"`
+	EnableTrapsEntityQfpMemResThresh              types.Bool                  `tfsdk:"enable_traps_entity_qfp_mem_res_thresh"`
+	EnableTrapsEntityQfpThroughputNotif           types.Bool                  `tfsdk:"enable_traps_entity_qfp_throughput_notif"`
+	EnableTrapsEtherOam                           types.Bool                  `tfsdk:"enable_traps_ether_oam"`
+	EnableTrapsEthernetCfmAlarm                   types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_alarm"`
+	EnableTrapsEthernetCfmCcConfig                types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_config"`
+	EnableTrapsEthernetCfmCcCrossConnect          types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_cross_connect"`
+	EnableTrapsEthernetCfmCcLoop                  types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_loop"`
+	EnableTrapsEthernetCfmCcMepDown               types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_mep_down"`
+	EnableTrapsEthernetCfmCcMepUp                 types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_mep_up"`
+	EnableTrapsEthernetCfmCrosscheckMepMissing    types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_mep_missing"`
+	EnableTrapsEthernetCfmCrosscheckMepUnknown    types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_mep_unknown"`
+	EnableTrapsEthernetCfmCrosscheckServiceUp     types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_service_up"`
+	EnableTrapsEthernetEvcCreate                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_create"`
+	EnableTrapsEthernetEvcDelete                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_delete"`
+	EnableTrapsEthernetEvcStatus                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_status"`
+	EnableTrapsFirewallServerstatus               types.Bool                  `tfsdk:"enable_traps_firewall_serverstatus"`
+	EnableTrapsFrameRelayConfigOnly               types.Bool                  `tfsdk:"enable_traps_frame_relay_config_only"`
+	EnableTrapsFrameRelayConfigSubifConfigs       types.Bool                  `tfsdk:"enable_traps_frame_relay_config_subif_configs"`
+	EnableTrapsFrameRelaySubifCount               types.Int64                 `tfsdk:"enable_traps_frame_relay_subif_count"`
+	EnableTrapsFrameRelaySubifInterval            types.Int64                 `tfsdk:"enable_traps_frame_relay_subif_interval"`
+	EnableTrapsFrameRelayConfigBundleMismatch     types.Bool                  `tfsdk:"enable_traps_frame_relay_config_bundle_mismatch"`
+	EnableTrapsFrameRelayMultilinkBundleMismatch  types.Bool                  `tfsdk:"enable_traps_frame_relay_multilink_bundle_mismatch"`
+	EnableTrapsIpLocalPool                        types.Bool                  `tfsdk:"enable_traps_ip_local_pool"`
+	EnableTrapsIsdnCallInformation                types.Bool                  `tfsdk:"enable_traps_isdn_call_information"`
+	EnableTrapsIsdnChanNotAvail                   types.Bool                  `tfsdk:"enable_traps_isdn_chan_not_avail"`
+	EnableTrapsIsdnIetf                           types.Bool                  `tfsdk:"enable_traps_isdn_ietf"`
+	EnableTrapsIsdnLayer2                         types.Bool                  `tfsdk:"enable_traps_isdn_layer2"`
+	EnableTrapsL2tunSession                       types.Bool                  `tfsdk:"enable_traps_l2tun_session"`
+	EnableTrapsL2tunTunnel                        types.Bool                  `tfsdk:"enable_traps_l2tun_tunnel"`
+	EnableTrapsL2tunPseudowireStatus              types.Bool                  `tfsdk:"enable_traps_l2tun_pseudowire_status"`
+	EnableTrapsPimstdmibNeighborLoss              types.Bool                  `tfsdk:"enable_traps_pimstdmib_neighbor_loss"`
+	EnableTrapsPimstdmibInvalidRegister           types.Bool                  `tfsdk:"enable_traps_pimstdmib_invalid_register"`
+	EnableTrapsPimstdmibInvalidJoinPrune          types.Bool                  `tfsdk:"enable_traps_pimstdmib_invalid_join_prune"`
+	EnableTrapsPimstdmibRpMappingChange           types.Bool                  `tfsdk:"enable_traps_pimstdmib_rp_mapping_change"`
+	EnableTrapsPimstdmibInterfaceElection         types.Bool                  `tfsdk:"enable_traps_pimstdmib_interface_election"`
+	EnableTrapsPfr                                types.Bool                  `tfsdk:"enable_traps_pfr"`
+	EnableTrapsPppoe                              types.Bool                  `tfsdk:"enable_traps_pppoe"`
+	EnableTrapsResourcePolicy                     types.Bool                  `tfsdk:"enable_traps_resource_policy"`
+	EnableTrapsRsvp                               types.Bool                  `tfsdk:"enable_traps_rsvp"`
+	EnableTrapsVrrp                               types.Bool                  `tfsdk:"enable_traps_vrrp"`
+	EnableTrapsSonet                              types.Bool                  `tfsdk:"enable_traps_sonet"`
+	EnableTrapsSrp                                types.Bool                  `tfsdk:"enable_traps_srp"`
+	EnableTrapsVoice                              types.Bool                  `tfsdk:"enable_traps_voice"`
 	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
 	SourceInterfaceInformsTenGigabitEthernet      types.String                `tfsdk:"source_interface_informs_ten_gigabit_ethernet"`
 	SourceInterfaceInformsFortyGigabitEthernet    types.String                `tfsdk:"source_interface_informs_forty_gigabit_ethernet"`
@@ -323,6 +380,63 @@ type SNMPServerData struct {
 	EnableTrapsVrfmibVnetTrunkDown                types.Bool                  `tfsdk:"enable_traps_vrfmib_vnet_trunk_down"`
 	EnableTrapsMvpn                               types.Bool                  `tfsdk:"enable_traps_mvpn"`
 	EnableTrapsLisp                               types.Bool                  `tfsdk:"enable_traps_lisp"`
+	EnableTrapsAaaServer                          types.Bool                  `tfsdk:"enable_traps_aaa_server"`
+	EnableTrapsVdsl2line                          types.Bool                  `tfsdk:"enable_traps_vdsl2line"`
+	EnableTrapsAdslline                           types.Bool                  `tfsdk:"enable_traps_adslline"`
+	EnableTrapsPki                                types.Bool                  `tfsdk:"enable_traps_pki"`
+	EnableTrapsAlarmType                          types.String                `tfsdk:"enable_traps_alarm_type"`
+	EnableTrapsCasa                               types.Bool                  `tfsdk:"enable_traps_casa"`
+	EnableTrapsCnpd                               types.Bool                  `tfsdk:"enable_traps_cnpd"`
+	EnableTrapsDial                               types.Bool                  `tfsdk:"enable_traps_dial"`
+	EnableTrapsDlsw                               types.Bool                  `tfsdk:"enable_traps_dlsw"`
+	EnableTrapsDs1                                types.Bool                  `tfsdk:"enable_traps_ds1"`
+	EnableTrapsDspCardStatus                      types.Bool                  `tfsdk:"enable_traps_dsp_card_status"`
+	EnableTrapsDspOperState                       types.Bool                  `tfsdk:"enable_traps_dsp_oper_state"`
+	EnableTrapsEntitySensor                       types.Bool                  `tfsdk:"enable_traps_entity_sensor"`
+	EnableTrapsEntityState                        types.Bool                  `tfsdk:"enable_traps_entity_state"`
+	EnableTrapsEntityQfpMemResThresh              types.Bool                  `tfsdk:"enable_traps_entity_qfp_mem_res_thresh"`
+	EnableTrapsEntityQfpThroughputNotif           types.Bool                  `tfsdk:"enable_traps_entity_qfp_throughput_notif"`
+	EnableTrapsEtherOam                           types.Bool                  `tfsdk:"enable_traps_ether_oam"`
+	EnableTrapsEthernetCfmAlarm                   types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_alarm"`
+	EnableTrapsEthernetCfmCcConfig                types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_config"`
+	EnableTrapsEthernetCfmCcCrossConnect          types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_cross_connect"`
+	EnableTrapsEthernetCfmCcLoop                  types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_loop"`
+	EnableTrapsEthernetCfmCcMepDown               types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_mep_down"`
+	EnableTrapsEthernetCfmCcMepUp                 types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_cc_mep_up"`
+	EnableTrapsEthernetCfmCrosscheckMepMissing    types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_mep_missing"`
+	EnableTrapsEthernetCfmCrosscheckMepUnknown    types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_mep_unknown"`
+	EnableTrapsEthernetCfmCrosscheckServiceUp     types.Bool                  `tfsdk:"enable_traps_ethernet_cfm_crosscheck_service_up"`
+	EnableTrapsEthernetEvcCreate                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_create"`
+	EnableTrapsEthernetEvcDelete                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_delete"`
+	EnableTrapsEthernetEvcStatus                  types.Bool                  `tfsdk:"enable_traps_ethernet_evc_status"`
+	EnableTrapsFirewallServerstatus               types.Bool                  `tfsdk:"enable_traps_firewall_serverstatus"`
+	EnableTrapsFrameRelayConfigOnly               types.Bool                  `tfsdk:"enable_traps_frame_relay_config_only"`
+	EnableTrapsFrameRelayConfigSubifConfigs       types.Bool                  `tfsdk:"enable_traps_frame_relay_config_subif_configs"`
+	EnableTrapsFrameRelaySubifCount               types.Int64                 `tfsdk:"enable_traps_frame_relay_subif_count"`
+	EnableTrapsFrameRelaySubifInterval            types.Int64                 `tfsdk:"enable_traps_frame_relay_subif_interval"`
+	EnableTrapsFrameRelayConfigBundleMismatch     types.Bool                  `tfsdk:"enable_traps_frame_relay_config_bundle_mismatch"`
+	EnableTrapsFrameRelayMultilinkBundleMismatch  types.Bool                  `tfsdk:"enable_traps_frame_relay_multilink_bundle_mismatch"`
+	EnableTrapsIpLocalPool                        types.Bool                  `tfsdk:"enable_traps_ip_local_pool"`
+	EnableTrapsIsdnCallInformation                types.Bool                  `tfsdk:"enable_traps_isdn_call_information"`
+	EnableTrapsIsdnChanNotAvail                   types.Bool                  `tfsdk:"enable_traps_isdn_chan_not_avail"`
+	EnableTrapsIsdnIetf                           types.Bool                  `tfsdk:"enable_traps_isdn_ietf"`
+	EnableTrapsIsdnLayer2                         types.Bool                  `tfsdk:"enable_traps_isdn_layer2"`
+	EnableTrapsL2tunSession                       types.Bool                  `tfsdk:"enable_traps_l2tun_session"`
+	EnableTrapsL2tunTunnel                        types.Bool                  `tfsdk:"enable_traps_l2tun_tunnel"`
+	EnableTrapsL2tunPseudowireStatus              types.Bool                  `tfsdk:"enable_traps_l2tun_pseudowire_status"`
+	EnableTrapsPimstdmibNeighborLoss              types.Bool                  `tfsdk:"enable_traps_pimstdmib_neighbor_loss"`
+	EnableTrapsPimstdmibInvalidRegister           types.Bool                  `tfsdk:"enable_traps_pimstdmib_invalid_register"`
+	EnableTrapsPimstdmibInvalidJoinPrune          types.Bool                  `tfsdk:"enable_traps_pimstdmib_invalid_join_prune"`
+	EnableTrapsPimstdmibRpMappingChange           types.Bool                  `tfsdk:"enable_traps_pimstdmib_rp_mapping_change"`
+	EnableTrapsPimstdmibInterfaceElection         types.Bool                  `tfsdk:"enable_traps_pimstdmib_interface_election"`
+	EnableTrapsPfr                                types.Bool                  `tfsdk:"enable_traps_pfr"`
+	EnableTrapsPppoe                              types.Bool                  `tfsdk:"enable_traps_pppoe"`
+	EnableTrapsResourcePolicy                     types.Bool                  `tfsdk:"enable_traps_resource_policy"`
+	EnableTrapsRsvp                               types.Bool                  `tfsdk:"enable_traps_rsvp"`
+	EnableTrapsVrrp                               types.Bool                  `tfsdk:"enable_traps_vrrp"`
+	EnableTrapsSonet                              types.Bool                  `tfsdk:"enable_traps_sonet"`
+	EnableTrapsSrp                                types.Bool                  `tfsdk:"enable_traps_srp"`
+	EnableTrapsVoice                              types.Bool                  `tfsdk:"enable_traps_voice"`
 	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
 	SourceInterfaceInformsTenGigabitEthernet      types.String                `tfsdk:"source_interface_informs_ten_gigabit_ethernet"`
 	SourceInterfaceInformsFortyGigabitEthernet    types.String                `tfsdk:"source_interface_informs_forty_gigabit_ethernet"`
@@ -1004,6 +1118,285 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 	if !data.EnableTrapsLisp.IsNull() && !data.EnableTrapsLisp.IsUnknown() {
 		if data.EnableTrapsLisp.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.lisp", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsAaaServer.IsNull() && !data.EnableTrapsAaaServer.IsUnknown() {
+		if data.EnableTrapsAaaServer.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.aaa_server", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsVdsl2line.IsNull() && !data.EnableTrapsVdsl2line.IsUnknown() {
+		if data.EnableTrapsVdsl2line.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.vdsl2line", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsAdslline.IsNull() && !data.EnableTrapsAdslline.IsUnknown() {
+		if data.EnableTrapsAdslline.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.adslline", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsPki.IsNull() && !data.EnableTrapsPki.IsUnknown() {
+		if data.EnableTrapsPki.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.pki", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsAlarmType.IsNull() && !data.EnableTrapsAlarmType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.alarms.alarm-type", data.EnableTrapsAlarmType.ValueString())
+	}
+	if !data.EnableTrapsCasa.IsNull() && !data.EnableTrapsCasa.IsUnknown() {
+		if data.EnableTrapsCasa.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.casa", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsCnpd.IsNull() && !data.EnableTrapsCnpd.IsUnknown() {
+		if data.EnableTrapsCnpd.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.cnpd", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsDial.IsNull() && !data.EnableTrapsDial.IsUnknown() {
+		if data.EnableTrapsDial.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.dial", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsDlsw.IsNull() && !data.EnableTrapsDlsw.IsUnknown() {
+		if data.EnableTrapsDlsw.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.dlsw", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsDs1.IsNull() && !data.EnableTrapsDs1.IsUnknown() {
+		if data.EnableTrapsDs1.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ds1", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsDspCardStatus.IsNull() && !data.EnableTrapsDspCardStatus.IsUnknown() {
+		if data.EnableTrapsDspCardStatus.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.dsp.card-status", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsDspOperState.IsNull() && !data.EnableTrapsDspOperState.IsUnknown() {
+		if data.EnableTrapsDspOperState.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.dsp.oper-state", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEntitySensor.IsNull() && !data.EnableTrapsEntitySensor.IsUnknown() {
+		if data.EnableTrapsEntitySensor.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-sensor", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEntityState.IsNull() && !data.EnableTrapsEntityState.IsUnknown() {
+		if data.EnableTrapsEntityState.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-state", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEntityQfpMemResThresh.IsNull() && !data.EnableTrapsEntityQfpMemResThresh.IsUnknown() {
+		if data.EnableTrapsEntityQfpMemResThresh.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-qfp.mem-res-thresh", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEntityQfpThroughputNotif.IsNull() && !data.EnableTrapsEntityQfpThroughputNotif.IsUnknown() {
+		if data.EnableTrapsEntityQfpThroughputNotif.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-qfp.throughput-notif", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEtherOam.IsNull() && !data.EnableTrapsEtherOam.IsUnknown() {
+		if data.EnableTrapsEtherOam.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ether-oam", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmAlarm.IsNull() && !data.EnableTrapsEthernetCfmAlarm.IsUnknown() {
+		if data.EnableTrapsEthernetCfmAlarm.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.alarm", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmCcConfig.IsNull() && !data.EnableTrapsEthernetCfmCcConfig.IsUnknown() {
+		if data.EnableTrapsEthernetCfmCcConfig.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.config", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmCcCrossConnect.IsNull() && !data.EnableTrapsEthernetCfmCcCrossConnect.IsUnknown() {
+		if data.EnableTrapsEthernetCfmCcCrossConnect.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.cross-connect", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmCcLoop.IsNull() && !data.EnableTrapsEthernetCfmCcLoop.IsUnknown() {
+		if data.EnableTrapsEthernetCfmCcLoop.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.loop", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmCcMepDown.IsNull() && !data.EnableTrapsEthernetCfmCcMepDown.IsUnknown() {
+		if data.EnableTrapsEthernetCfmCcMepDown.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.mep-down", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmCcMepUp.IsNull() && !data.EnableTrapsEthernetCfmCcMepUp.IsUnknown() {
+		if data.EnableTrapsEthernetCfmCcMepUp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.mep-up", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmCrosscheckMepMissing.IsNull() && !data.EnableTrapsEthernetCfmCrosscheckMepMissing.IsUnknown() {
+		if data.EnableTrapsEthernetCfmCrosscheckMepMissing.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.mep-missing", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmCrosscheckMepUnknown.IsNull() && !data.EnableTrapsEthernetCfmCrosscheckMepUnknown.IsUnknown() {
+		if data.EnableTrapsEthernetCfmCrosscheckMepUnknown.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.mep-unknown", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetCfmCrosscheckServiceUp.IsNull() && !data.EnableTrapsEthernetCfmCrosscheckServiceUp.IsUnknown() {
+		if data.EnableTrapsEthernetCfmCrosscheckServiceUp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.service-up", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetEvcCreate.IsNull() && !data.EnableTrapsEthernetEvcCreate.IsUnknown() {
+		if data.EnableTrapsEthernetEvcCreate.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.create", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetEvcDelete.IsNull() && !data.EnableTrapsEthernetEvcDelete.IsUnknown() {
+		if data.EnableTrapsEthernetEvcDelete.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.delete", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsEthernetEvcStatus.IsNull() && !data.EnableTrapsEthernetEvcStatus.IsUnknown() {
+		if data.EnableTrapsEthernetEvcStatus.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.status", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsFirewallServerstatus.IsNull() && !data.EnableTrapsFirewallServerstatus.IsUnknown() {
+		if data.EnableTrapsFirewallServerstatus.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.firewall.serverstatus", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsFrameRelayConfigOnly.IsNull() && !data.EnableTrapsFrameRelayConfigOnly.IsUnknown() {
+		if data.EnableTrapsFrameRelayConfigOnly.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.only-frame-relay.frame-relay", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsFrameRelayConfigSubifConfigs.IsNull() && !data.EnableTrapsFrameRelayConfigSubifConfigs.IsUnknown() {
+		if data.EnableTrapsFrameRelayConfigSubifConfigs.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.frame-relay-options.frame-relay.subif-configs.subif", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsFrameRelaySubifCount.IsNull() && !data.EnableTrapsFrameRelaySubifCount.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.subif.count", strconv.FormatInt(data.EnableTrapsFrameRelaySubifCount.ValueInt64(), 10))
+	}
+	if !data.EnableTrapsFrameRelaySubifInterval.IsNull() && !data.EnableTrapsFrameRelaySubifInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.subif.interval", strconv.FormatInt(data.EnableTrapsFrameRelaySubifInterval.ValueInt64(), 10))
+	}
+	if !data.EnableTrapsFrameRelayConfigBundleMismatch.IsNull() && !data.EnableTrapsFrameRelayConfigBundleMismatch.IsUnknown() {
+		if data.EnableTrapsFrameRelayConfigBundleMismatch.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.frame-relay-options.frame-relay.multilink.bundle-mismatch", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsFrameRelayMultilinkBundleMismatch.IsNull() && !data.EnableTrapsFrameRelayMultilinkBundleMismatch.IsUnknown() {
+		if data.EnableTrapsFrameRelayMultilinkBundleMismatch.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.multilink.bundle-mismatch", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsIpLocalPool.IsNull() && !data.EnableTrapsIpLocalPool.IsUnknown() {
+		if data.EnableTrapsIpLocalPool.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ip.local.pool", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsIsdnCallInformation.IsNull() && !data.EnableTrapsIsdnCallInformation.IsUnknown() {
+		if data.EnableTrapsIsdnCallInformation.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.call-information", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsIsdnChanNotAvail.IsNull() && !data.EnableTrapsIsdnChanNotAvail.IsUnknown() {
+		if data.EnableTrapsIsdnChanNotAvail.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.chan-not-avail", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsIsdnIetf.IsNull() && !data.EnableTrapsIsdnIetf.IsUnknown() {
+		if data.EnableTrapsIsdnIetf.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.ietf", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsIsdnLayer2.IsNull() && !data.EnableTrapsIsdnLayer2.IsUnknown() {
+		if data.EnableTrapsIsdnLayer2.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.layer2", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsL2tunSession.IsNull() && !data.EnableTrapsL2tunSession.IsUnknown() {
+		if data.EnableTrapsL2tunSession.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.session", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsL2tunTunnel.IsNull() && !data.EnableTrapsL2tunTunnel.IsUnknown() {
+		if data.EnableTrapsL2tunTunnel.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.tunnel", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsL2tunPseudowireStatus.IsNull() && !data.EnableTrapsL2tunPseudowireStatus.IsUnknown() {
+		if data.EnableTrapsL2tunPseudowireStatus.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.pseudowire.status", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsPimstdmibNeighborLoss.IsNull() && !data.EnableTrapsPimstdmibNeighborLoss.IsUnknown() {
+		if data.EnableTrapsPimstdmibNeighborLoss.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.neighbor-loss", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsPimstdmibInvalidRegister.IsNull() && !data.EnableTrapsPimstdmibInvalidRegister.IsUnknown() {
+		if data.EnableTrapsPimstdmibInvalidRegister.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.invalid-register", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsPimstdmibInvalidJoinPrune.IsNull() && !data.EnableTrapsPimstdmibInvalidJoinPrune.IsUnknown() {
+		if data.EnableTrapsPimstdmibInvalidJoinPrune.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.invalid-join-prune", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsPimstdmibRpMappingChange.IsNull() && !data.EnableTrapsPimstdmibRpMappingChange.IsUnknown() {
+		if data.EnableTrapsPimstdmibRpMappingChange.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.rp-mapping-change", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsPimstdmibInterfaceElection.IsNull() && !data.EnableTrapsPimstdmibInterfaceElection.IsUnknown() {
+		if data.EnableTrapsPimstdmibInterfaceElection.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.interface-election", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsPfr.IsNull() && !data.EnableTrapsPfr.IsUnknown() {
+		if data.EnableTrapsPfr.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.pfr", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsPppoe.IsNull() && !data.EnableTrapsPppoe.IsUnknown() {
+		if data.EnableTrapsPppoe.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.pppoe", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsResourcePolicy.IsNull() && !data.EnableTrapsResourcePolicy.IsUnknown() {
+		if data.EnableTrapsResourcePolicy.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.resource-policy", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsRsvp.IsNull() && !data.EnableTrapsRsvp.IsUnknown() {
+		if data.EnableTrapsRsvp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.rsvp", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsVrrp.IsNull() && !data.EnableTrapsVrrp.IsUnknown() {
+		if data.EnableTrapsVrrp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.vrrp", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsSonet.IsNull() && !data.EnableTrapsSonet.IsUnknown() {
+		if data.EnableTrapsSonet.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.sonet", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsSrp.IsNull() && !data.EnableTrapsSrp.IsUnknown() {
+		if data.EnableTrapsSrp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.srp", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsVoice.IsNull() && !data.EnableTrapsVoice.IsUnknown() {
+		if data.EnableTrapsVoice.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.voice", map[string]string{})
 		}
 	}
 	if !data.SourceInterfaceInformsGigabitEthernet.IsNull() && !data.SourceInterfaceInformsGigabitEthernet.IsUnknown() {
@@ -2281,6 +2674,507 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsLisp = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.aaa_server"); !data.EnableTrapsAaaServer.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsAaaServer = types.BoolValue(true)
+		} else {
+			data.EnableTrapsAaaServer = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsAaaServer = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.vdsl2line"); !data.EnableTrapsVdsl2line.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsVdsl2line = types.BoolValue(true)
+		} else {
+			data.EnableTrapsVdsl2line = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsVdsl2line = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.adslline"); !data.EnableTrapsAdslline.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsAdslline = types.BoolValue(true)
+		} else {
+			data.EnableTrapsAdslline = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsAdslline = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pki"); !data.EnableTrapsPki.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsPki = types.BoolValue(true)
+		} else {
+			data.EnableTrapsPki = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsPki = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.alarms.alarm-type"); value.Exists() && !data.EnableTrapsAlarmType.IsNull() {
+		data.EnableTrapsAlarmType = types.StringValue(value.String())
+	} else {
+		data.EnableTrapsAlarmType = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.casa"); !data.EnableTrapsCasa.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsCasa = types.BoolValue(true)
+		} else {
+			data.EnableTrapsCasa = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsCasa = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.cnpd"); !data.EnableTrapsCnpd.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsCnpd = types.BoolValue(true)
+		} else {
+			data.EnableTrapsCnpd = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsCnpd = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dial"); !data.EnableTrapsDial.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsDial = types.BoolValue(true)
+		} else {
+			data.EnableTrapsDial = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsDial = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dlsw"); !data.EnableTrapsDlsw.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsDlsw = types.BoolValue(true)
+		} else {
+			data.EnableTrapsDlsw = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsDlsw = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ds1"); !data.EnableTrapsDs1.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsDs1 = types.BoolValue(true)
+		} else {
+			data.EnableTrapsDs1 = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsDs1 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dsp.card-status"); !data.EnableTrapsDspCardStatus.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsDspCardStatus = types.BoolValue(true)
+		} else {
+			data.EnableTrapsDspCardStatus = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsDspCardStatus = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dsp.oper-state"); !data.EnableTrapsDspOperState.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsDspOperState = types.BoolValue(true)
+		} else {
+			data.EnableTrapsDspOperState = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsDspOperState = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-sensor"); !data.EnableTrapsEntitySensor.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEntitySensor = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEntitySensor = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEntitySensor = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-state"); !data.EnableTrapsEntityState.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEntityState = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEntityState = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEntityState = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-qfp.mem-res-thresh"); !data.EnableTrapsEntityQfpMemResThresh.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEntityQfpMemResThresh = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEntityQfpMemResThresh = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEntityQfpMemResThresh = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-qfp.throughput-notif"); !data.EnableTrapsEntityQfpThroughputNotif.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEntityQfpThroughputNotif = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEntityQfpThroughputNotif = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEntityQfpThroughputNotif = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ether-oam"); !data.EnableTrapsEtherOam.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEtherOam = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEtherOam = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEtherOam = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.alarm"); !data.EnableTrapsEthernetCfmAlarm.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmAlarm = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmAlarm = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmAlarm = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.config"); !data.EnableTrapsEthernetCfmCcConfig.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmCcConfig = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmCcConfig = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmCcConfig = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.cross-connect"); !data.EnableTrapsEthernetCfmCcCrossConnect.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmCcCrossConnect = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmCcCrossConnect = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmCcCrossConnect = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.loop"); !data.EnableTrapsEthernetCfmCcLoop.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmCcLoop = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmCcLoop = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmCcLoop = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.mep-down"); !data.EnableTrapsEthernetCfmCcMepDown.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmCcMepDown = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmCcMepDown = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmCcMepDown = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.mep-up"); !data.EnableTrapsEthernetCfmCcMepUp.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmCcMepUp = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmCcMepUp = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmCcMepUp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.mep-missing"); !data.EnableTrapsEthernetCfmCrosscheckMepMissing.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmCrosscheckMepMissing = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmCrosscheckMepMissing = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckMepMissing = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.mep-unknown"); !data.EnableTrapsEthernetCfmCrosscheckMepUnknown.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmCrosscheckMepUnknown = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmCrosscheckMepUnknown = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckMepUnknown = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.service-up"); !data.EnableTrapsEthernetCfmCrosscheckServiceUp.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetCfmCrosscheckServiceUp = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetCfmCrosscheckServiceUp = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckServiceUp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.create"); !data.EnableTrapsEthernetEvcCreate.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetEvcCreate = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetEvcCreate = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetEvcCreate = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.delete"); !data.EnableTrapsEthernetEvcDelete.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetEvcDelete = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetEvcDelete = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetEvcDelete = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.status"); !data.EnableTrapsEthernetEvcStatus.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsEthernetEvcStatus = types.BoolValue(true)
+		} else {
+			data.EnableTrapsEthernetEvcStatus = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsEthernetEvcStatus = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.firewall.serverstatus"); !data.EnableTrapsFirewallServerstatus.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsFirewallServerstatus = types.BoolValue(true)
+		} else {
+			data.EnableTrapsFirewallServerstatus = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsFirewallServerstatus = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.only-frame-relay.frame-relay"); !data.EnableTrapsFrameRelayConfigOnly.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsFrameRelayConfigOnly = types.BoolValue(true)
+		} else {
+			data.EnableTrapsFrameRelayConfigOnly = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsFrameRelayConfigOnly = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.frame-relay-options.frame-relay.subif-configs.subif"); !data.EnableTrapsFrameRelayConfigSubifConfigs.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsFrameRelayConfigSubifConfigs = types.BoolValue(true)
+		} else {
+			data.EnableTrapsFrameRelayConfigSubifConfigs = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsFrameRelayConfigSubifConfigs = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.subif.count"); value.Exists() && !data.EnableTrapsFrameRelaySubifCount.IsNull() {
+		data.EnableTrapsFrameRelaySubifCount = types.Int64Value(value.Int())
+	} else {
+		data.EnableTrapsFrameRelaySubifCount = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.subif.interval"); value.Exists() && !data.EnableTrapsFrameRelaySubifInterval.IsNull() {
+		data.EnableTrapsFrameRelaySubifInterval = types.Int64Value(value.Int())
+	} else {
+		data.EnableTrapsFrameRelaySubifInterval = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.frame-relay-options.frame-relay.multilink.bundle-mismatch"); !data.EnableTrapsFrameRelayConfigBundleMismatch.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsFrameRelayConfigBundleMismatch = types.BoolValue(true)
+		} else {
+			data.EnableTrapsFrameRelayConfigBundleMismatch = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsFrameRelayConfigBundleMismatch = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.multilink.bundle-mismatch"); !data.EnableTrapsFrameRelayMultilinkBundleMismatch.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsFrameRelayMultilinkBundleMismatch = types.BoolValue(true)
+		} else {
+			data.EnableTrapsFrameRelayMultilinkBundleMismatch = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsFrameRelayMultilinkBundleMismatch = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ip.local.pool"); !data.EnableTrapsIpLocalPool.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsIpLocalPool = types.BoolValue(true)
+		} else {
+			data.EnableTrapsIpLocalPool = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsIpLocalPool = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.call-information"); !data.EnableTrapsIsdnCallInformation.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsIsdnCallInformation = types.BoolValue(true)
+		} else {
+			data.EnableTrapsIsdnCallInformation = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsIsdnCallInformation = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.chan-not-avail"); !data.EnableTrapsIsdnChanNotAvail.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsIsdnChanNotAvail = types.BoolValue(true)
+		} else {
+			data.EnableTrapsIsdnChanNotAvail = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsIsdnChanNotAvail = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.ietf"); !data.EnableTrapsIsdnIetf.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsIsdnIetf = types.BoolValue(true)
+		} else {
+			data.EnableTrapsIsdnIetf = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsIsdnIetf = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.layer2"); !data.EnableTrapsIsdnLayer2.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsIsdnLayer2 = types.BoolValue(true)
+		} else {
+			data.EnableTrapsIsdnLayer2 = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsIsdnLayer2 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.session"); !data.EnableTrapsL2tunSession.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsL2tunSession = types.BoolValue(true)
+		} else {
+			data.EnableTrapsL2tunSession = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsL2tunSession = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.tunnel"); !data.EnableTrapsL2tunTunnel.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsL2tunTunnel = types.BoolValue(true)
+		} else {
+			data.EnableTrapsL2tunTunnel = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsL2tunTunnel = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.pseudowire.status"); !data.EnableTrapsL2tunPseudowireStatus.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsL2tunPseudowireStatus = types.BoolValue(true)
+		} else {
+			data.EnableTrapsL2tunPseudowireStatus = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsL2tunPseudowireStatus = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.neighbor-loss"); !data.EnableTrapsPimstdmibNeighborLoss.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsPimstdmibNeighborLoss = types.BoolValue(true)
+		} else {
+			data.EnableTrapsPimstdmibNeighborLoss = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsPimstdmibNeighborLoss = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.invalid-register"); !data.EnableTrapsPimstdmibInvalidRegister.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsPimstdmibInvalidRegister = types.BoolValue(true)
+		} else {
+			data.EnableTrapsPimstdmibInvalidRegister = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsPimstdmibInvalidRegister = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.invalid-join-prune"); !data.EnableTrapsPimstdmibInvalidJoinPrune.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsPimstdmibInvalidJoinPrune = types.BoolValue(true)
+		} else {
+			data.EnableTrapsPimstdmibInvalidJoinPrune = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsPimstdmibInvalidJoinPrune = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.rp-mapping-change"); !data.EnableTrapsPimstdmibRpMappingChange.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsPimstdmibRpMappingChange = types.BoolValue(true)
+		} else {
+			data.EnableTrapsPimstdmibRpMappingChange = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsPimstdmibRpMappingChange = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.interface-election"); !data.EnableTrapsPimstdmibInterfaceElection.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsPimstdmibInterfaceElection = types.BoolValue(true)
+		} else {
+			data.EnableTrapsPimstdmibInterfaceElection = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsPimstdmibInterfaceElection = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pfr"); !data.EnableTrapsPfr.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsPfr = types.BoolValue(true)
+		} else {
+			data.EnableTrapsPfr = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsPfr = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pppoe"); !data.EnableTrapsPppoe.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsPppoe = types.BoolValue(true)
+		} else {
+			data.EnableTrapsPppoe = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsPppoe = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.resource-policy"); !data.EnableTrapsResourcePolicy.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsResourcePolicy = types.BoolValue(true)
+		} else {
+			data.EnableTrapsResourcePolicy = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsResourcePolicy = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.rsvp"); !data.EnableTrapsRsvp.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsRsvp = types.BoolValue(true)
+		} else {
+			data.EnableTrapsRsvp = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsRsvp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.vrrp"); !data.EnableTrapsVrrp.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsVrrp = types.BoolValue(true)
+		} else {
+			data.EnableTrapsVrrp = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsVrrp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.sonet"); !data.EnableTrapsSonet.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsSonet = types.BoolValue(true)
+		} else {
+			data.EnableTrapsSonet = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsSonet = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.srp"); !data.EnableTrapsSrp.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsSrp = types.BoolValue(true)
+		} else {
+			data.EnableTrapsSrp = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsSrp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.voice"); !data.EnableTrapsVoice.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsVoice = types.BoolValue(true)
+		} else {
+			data.EnableTrapsVoice = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsVoice = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() && !data.SourceInterfaceInformsGigabitEthernet.IsNull() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
 	} else {
@@ -3157,6 +4051,285 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsLisp = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.aaa_server"); value.Exists() {
+		data.EnableTrapsAaaServer = types.BoolValue(true)
+	} else {
+		data.EnableTrapsAaaServer = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.vdsl2line"); value.Exists() {
+		data.EnableTrapsVdsl2line = types.BoolValue(true)
+	} else {
+		data.EnableTrapsVdsl2line = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.adslline"); value.Exists() {
+		data.EnableTrapsAdslline = types.BoolValue(true)
+	} else {
+		data.EnableTrapsAdslline = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pki"); value.Exists() {
+		data.EnableTrapsPki = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPki = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.alarms.alarm-type"); value.Exists() {
+		data.EnableTrapsAlarmType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.casa"); value.Exists() {
+		data.EnableTrapsCasa = types.BoolValue(true)
+	} else {
+		data.EnableTrapsCasa = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.cnpd"); value.Exists() {
+		data.EnableTrapsCnpd = types.BoolValue(true)
+	} else {
+		data.EnableTrapsCnpd = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dial"); value.Exists() {
+		data.EnableTrapsDial = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDial = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dlsw"); value.Exists() {
+		data.EnableTrapsDlsw = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDlsw = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ds1"); value.Exists() {
+		data.EnableTrapsDs1 = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDs1 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dsp.card-status"); value.Exists() {
+		data.EnableTrapsDspCardStatus = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDspCardStatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dsp.oper-state"); value.Exists() {
+		data.EnableTrapsDspOperState = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDspOperState = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-sensor"); value.Exists() {
+		data.EnableTrapsEntitySensor = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEntitySensor = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-state"); value.Exists() {
+		data.EnableTrapsEntityState = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEntityState = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-qfp.mem-res-thresh"); value.Exists() {
+		data.EnableTrapsEntityQfpMemResThresh = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEntityQfpMemResThresh = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-qfp.throughput-notif"); value.Exists() {
+		data.EnableTrapsEntityQfpThroughputNotif = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEntityQfpThroughputNotif = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ether-oam"); value.Exists() {
+		data.EnableTrapsEtherOam = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEtherOam = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.alarm"); value.Exists() {
+		data.EnableTrapsEthernetCfmAlarm = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmAlarm = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.config"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcConfig = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcConfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.cross-connect"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcCrossConnect = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcCrossConnect = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.loop"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcLoop = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcLoop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.mep-down"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcMepDown = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcMepDown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.mep-up"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcMepUp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcMepUp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.mep-missing"); value.Exists() {
+		data.EnableTrapsEthernetCfmCrosscheckMepMissing = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckMepMissing = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.mep-unknown"); value.Exists() {
+		data.EnableTrapsEthernetCfmCrosscheckMepUnknown = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckMepUnknown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.service-up"); value.Exists() {
+		data.EnableTrapsEthernetCfmCrosscheckServiceUp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckServiceUp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.create"); value.Exists() {
+		data.EnableTrapsEthernetEvcCreate = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetEvcCreate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.delete"); value.Exists() {
+		data.EnableTrapsEthernetEvcDelete = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetEvcDelete = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.status"); value.Exists() {
+		data.EnableTrapsEthernetEvcStatus = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetEvcStatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.firewall.serverstatus"); value.Exists() {
+		data.EnableTrapsFirewallServerstatus = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFirewallServerstatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.only-frame-relay.frame-relay"); value.Exists() {
+		data.EnableTrapsFrameRelayConfigOnly = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFrameRelayConfigOnly = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.frame-relay-options.frame-relay.subif-configs.subif"); value.Exists() {
+		data.EnableTrapsFrameRelayConfigSubifConfigs = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFrameRelayConfigSubifConfigs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.subif.count"); value.Exists() {
+		data.EnableTrapsFrameRelaySubifCount = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.subif.interval"); value.Exists() {
+		data.EnableTrapsFrameRelaySubifInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.frame-relay-options.frame-relay.multilink.bundle-mismatch"); value.Exists() {
+		data.EnableTrapsFrameRelayConfigBundleMismatch = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFrameRelayConfigBundleMismatch = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.multilink.bundle-mismatch"); value.Exists() {
+		data.EnableTrapsFrameRelayMultilinkBundleMismatch = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFrameRelayMultilinkBundleMismatch = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ip.local.pool"); value.Exists() {
+		data.EnableTrapsIpLocalPool = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIpLocalPool = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.call-information"); value.Exists() {
+		data.EnableTrapsIsdnCallInformation = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIsdnCallInformation = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.chan-not-avail"); value.Exists() {
+		data.EnableTrapsIsdnChanNotAvail = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIsdnChanNotAvail = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.ietf"); value.Exists() {
+		data.EnableTrapsIsdnIetf = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIsdnIetf = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.layer2"); value.Exists() {
+		data.EnableTrapsIsdnLayer2 = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIsdnLayer2 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.session"); value.Exists() {
+		data.EnableTrapsL2tunSession = types.BoolValue(true)
+	} else {
+		data.EnableTrapsL2tunSession = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.tunnel"); value.Exists() {
+		data.EnableTrapsL2tunTunnel = types.BoolValue(true)
+	} else {
+		data.EnableTrapsL2tunTunnel = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.pseudowire.status"); value.Exists() {
+		data.EnableTrapsL2tunPseudowireStatus = types.BoolValue(true)
+	} else {
+		data.EnableTrapsL2tunPseudowireStatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.neighbor-loss"); value.Exists() {
+		data.EnableTrapsPimstdmibNeighborLoss = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibNeighborLoss = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.invalid-register"); value.Exists() {
+		data.EnableTrapsPimstdmibInvalidRegister = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibInvalidRegister = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.invalid-join-prune"); value.Exists() {
+		data.EnableTrapsPimstdmibInvalidJoinPrune = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibInvalidJoinPrune = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.rp-mapping-change"); value.Exists() {
+		data.EnableTrapsPimstdmibRpMappingChange = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibRpMappingChange = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.interface-election"); value.Exists() {
+		data.EnableTrapsPimstdmibInterfaceElection = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibInterfaceElection = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pfr"); value.Exists() {
+		data.EnableTrapsPfr = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPfr = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pppoe"); value.Exists() {
+		data.EnableTrapsPppoe = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPppoe = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.resource-policy"); value.Exists() {
+		data.EnableTrapsResourcePolicy = types.BoolValue(true)
+	} else {
+		data.EnableTrapsResourcePolicy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.rsvp"); value.Exists() {
+		data.EnableTrapsRsvp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsRsvp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.vrrp"); value.Exists() {
+		data.EnableTrapsVrrp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsVrrp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.sonet"); value.Exists() {
+		data.EnableTrapsSonet = types.BoolValue(true)
+	} else {
+		data.EnableTrapsSonet = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.srp"); value.Exists() {
+		data.EnableTrapsSrp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsSrp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.voice"); value.Exists() {
+		data.EnableTrapsVoice = types.BoolValue(true)
+	} else {
+		data.EnableTrapsVoice = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
 	}
@@ -3919,6 +5092,285 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsLisp = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.aaa_server"); value.Exists() {
+		data.EnableTrapsAaaServer = types.BoolValue(true)
+	} else {
+		data.EnableTrapsAaaServer = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.vdsl2line"); value.Exists() {
+		data.EnableTrapsVdsl2line = types.BoolValue(true)
+	} else {
+		data.EnableTrapsVdsl2line = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.adslline"); value.Exists() {
+		data.EnableTrapsAdslline = types.BoolValue(true)
+	} else {
+		data.EnableTrapsAdslline = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pki"); value.Exists() {
+		data.EnableTrapsPki = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPki = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.alarms.alarm-type"); value.Exists() {
+		data.EnableTrapsAlarmType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.casa"); value.Exists() {
+		data.EnableTrapsCasa = types.BoolValue(true)
+	} else {
+		data.EnableTrapsCasa = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.cnpd"); value.Exists() {
+		data.EnableTrapsCnpd = types.BoolValue(true)
+	} else {
+		data.EnableTrapsCnpd = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dial"); value.Exists() {
+		data.EnableTrapsDial = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDial = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dlsw"); value.Exists() {
+		data.EnableTrapsDlsw = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDlsw = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ds1"); value.Exists() {
+		data.EnableTrapsDs1 = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDs1 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dsp.card-status"); value.Exists() {
+		data.EnableTrapsDspCardStatus = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDspCardStatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.dsp.oper-state"); value.Exists() {
+		data.EnableTrapsDspOperState = types.BoolValue(true)
+	} else {
+		data.EnableTrapsDspOperState = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-sensor"); value.Exists() {
+		data.EnableTrapsEntitySensor = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEntitySensor = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-state"); value.Exists() {
+		data.EnableTrapsEntityState = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEntityState = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-qfp.mem-res-thresh"); value.Exists() {
+		data.EnableTrapsEntityQfpMemResThresh = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEntityQfpMemResThresh = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.entity-qfp.throughput-notif"); value.Exists() {
+		data.EnableTrapsEntityQfpThroughputNotif = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEntityQfpThroughputNotif = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ether-oam"); value.Exists() {
+		data.EnableTrapsEtherOam = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEtherOam = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.alarm"); value.Exists() {
+		data.EnableTrapsEthernetCfmAlarm = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmAlarm = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.config"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcConfig = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcConfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.cross-connect"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcCrossConnect = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcCrossConnect = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.loop"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcLoop = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcLoop = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.mep-down"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcMepDown = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcMepDown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.cc.mep-up"); value.Exists() {
+		data.EnableTrapsEthernetCfmCcMepUp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCcMepUp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.mep-missing"); value.Exists() {
+		data.EnableTrapsEthernetCfmCrosscheckMepMissing = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckMepMissing = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.mep-unknown"); value.Exists() {
+		data.EnableTrapsEthernetCfmCrosscheckMepUnknown = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckMepUnknown = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.cfm.crosscheck.service-up"); value.Exists() {
+		data.EnableTrapsEthernetCfmCrosscheckServiceUp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetCfmCrosscheckServiceUp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.create"); value.Exists() {
+		data.EnableTrapsEthernetEvcCreate = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetEvcCreate = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.delete"); value.Exists() {
+		data.EnableTrapsEthernetEvcDelete = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetEvcDelete = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ethernet.evc.status"); value.Exists() {
+		data.EnableTrapsEthernetEvcStatus = types.BoolValue(true)
+	} else {
+		data.EnableTrapsEthernetEvcStatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.firewall.serverstatus"); value.Exists() {
+		data.EnableTrapsFirewallServerstatus = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFirewallServerstatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.only-frame-relay.frame-relay"); value.Exists() {
+		data.EnableTrapsFrameRelayConfigOnly = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFrameRelayConfigOnly = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.frame-relay-options.frame-relay.subif-configs.subif"); value.Exists() {
+		data.EnableTrapsFrameRelayConfigSubifConfigs = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFrameRelayConfigSubifConfigs = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.subif.count"); value.Exists() {
+		data.EnableTrapsFrameRelaySubifCount = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.subif.interval"); value.Exists() {
+		data.EnableTrapsFrameRelaySubifInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay-config.frame-relay-options.frame-relay.multilink.bundle-mismatch"); value.Exists() {
+		data.EnableTrapsFrameRelayConfigBundleMismatch = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFrameRelayConfigBundleMismatch = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.frame-relay.multilink.bundle-mismatch"); value.Exists() {
+		data.EnableTrapsFrameRelayMultilinkBundleMismatch = types.BoolValue(true)
+	} else {
+		data.EnableTrapsFrameRelayMultilinkBundleMismatch = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ip.local.pool"); value.Exists() {
+		data.EnableTrapsIpLocalPool = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIpLocalPool = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.call-information"); value.Exists() {
+		data.EnableTrapsIsdnCallInformation = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIsdnCallInformation = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.chan-not-avail"); value.Exists() {
+		data.EnableTrapsIsdnChanNotAvail = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIsdnChanNotAvail = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.ietf"); value.Exists() {
+		data.EnableTrapsIsdnIetf = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIsdnIetf = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.isdn.layer2"); value.Exists() {
+		data.EnableTrapsIsdnLayer2 = types.BoolValue(true)
+	} else {
+		data.EnableTrapsIsdnLayer2 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.session"); value.Exists() {
+		data.EnableTrapsL2tunSession = types.BoolValue(true)
+	} else {
+		data.EnableTrapsL2tunSession = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.tunnel"); value.Exists() {
+		data.EnableTrapsL2tunTunnel = types.BoolValue(true)
+	} else {
+		data.EnableTrapsL2tunTunnel = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.l2tun.pseudowire.status"); value.Exists() {
+		data.EnableTrapsL2tunPseudowireStatus = types.BoolValue(true)
+	} else {
+		data.EnableTrapsL2tunPseudowireStatus = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.neighbor-loss"); value.Exists() {
+		data.EnableTrapsPimstdmibNeighborLoss = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibNeighborLoss = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.invalid-register"); value.Exists() {
+		data.EnableTrapsPimstdmibInvalidRegister = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibInvalidRegister = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.invalid-join-prune"); value.Exists() {
+		data.EnableTrapsPimstdmibInvalidJoinPrune = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibInvalidJoinPrune = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.rp-mapping-change"); value.Exists() {
+		data.EnableTrapsPimstdmibRpMappingChange = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibRpMappingChange = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pimstdmib.interface-election"); value.Exists() {
+		data.EnableTrapsPimstdmibInterfaceElection = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPimstdmibInterfaceElection = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pfr"); value.Exists() {
+		data.EnableTrapsPfr = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPfr = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.pppoe"); value.Exists() {
+		data.EnableTrapsPppoe = types.BoolValue(true)
+	} else {
+		data.EnableTrapsPppoe = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.resource-policy"); value.Exists() {
+		data.EnableTrapsResourcePolicy = types.BoolValue(true)
+	} else {
+		data.EnableTrapsResourcePolicy = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.rsvp"); value.Exists() {
+		data.EnableTrapsRsvp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsRsvp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.vrrp"); value.Exists() {
+		data.EnableTrapsVrrp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsVrrp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.sonet"); value.Exists() {
+		data.EnableTrapsSonet = types.BoolValue(true)
+	} else {
+		data.EnableTrapsSonet = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.srp"); value.Exists() {
+		data.EnableTrapsSrp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsSrp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.voice"); value.Exists() {
+		data.EnableTrapsVoice = types.BoolValue(true)
+	} else {
+		data.EnableTrapsVoice = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
 	}
@@ -4473,9 +5925,6 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 	if !state.EnableTrapsSmartLicense.IsNull() && data.EnableTrapsSmartLicense.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/smart-licenseing/smart-license", state.getPath()))
 	}
-	if !state.EnableTrapsLicense.IsNull() && data.EnableTrapsLicense.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/license", state.getPath()))
-	}
 	if !state.EnableTrapsPortSecurity.IsNull() && data.EnableTrapsPortSecurity.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/port-security", state.getPath()))
 	}
@@ -4984,6 +6433,168 @@ func (data *SNMPServer) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.IfindexPersist.IsNull() && !data.IfindexPersist.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:ifindex/persist", data.getPath()))
 	}
+	if !data.EnableTrapsAaaServer.IsNull() && !data.EnableTrapsAaaServer.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/aaa_server", data.getPath()))
+	}
+	if !data.EnableTrapsVdsl2line.IsNull() && !data.EnableTrapsVdsl2line.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vdsl2line", data.getPath()))
+	}
+	if !data.EnableTrapsAdslline.IsNull() && !data.EnableTrapsAdslline.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/adslline", data.getPath()))
+	}
+	if !data.EnableTrapsPki.IsNull() && !data.EnableTrapsPki.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pki", data.getPath()))
+	}
+	if !data.EnableTrapsCasa.IsNull() && !data.EnableTrapsCasa.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/casa", data.getPath()))
+	}
+	if !data.EnableTrapsCnpd.IsNull() && !data.EnableTrapsCnpd.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/cnpd", data.getPath()))
+	}
+	if !data.EnableTrapsDial.IsNull() && !data.EnableTrapsDial.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/dial", data.getPath()))
+	}
+	if !data.EnableTrapsDlsw.IsNull() && !data.EnableTrapsDlsw.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/dlsw", data.getPath()))
+	}
+	if !data.EnableTrapsDs1.IsNull() && !data.EnableTrapsDs1.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ds1", data.getPath()))
+	}
+	if !data.EnableTrapsDspCardStatus.IsNull() && !data.EnableTrapsDspCardStatus.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/dsp/card-status", data.getPath()))
+	}
+	if !data.EnableTrapsDspOperState.IsNull() && !data.EnableTrapsDspOperState.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/dsp/oper-state", data.getPath()))
+	}
+	if !data.EnableTrapsEntitySensor.IsNull() && !data.EnableTrapsEntitySensor.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-sensor", data.getPath()))
+	}
+	if !data.EnableTrapsEntityState.IsNull() && !data.EnableTrapsEntityState.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-state", data.getPath()))
+	}
+	if !data.EnableTrapsEntityQfpMemResThresh.IsNull() && !data.EnableTrapsEntityQfpMemResThresh.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-qfp/mem-res-thresh", data.getPath()))
+	}
+	if !data.EnableTrapsEntityQfpThroughputNotif.IsNull() && !data.EnableTrapsEntityQfpThroughputNotif.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-qfp/throughput-notif", data.getPath()))
+	}
+	if !data.EnableTrapsEtherOam.IsNull() && !data.EnableTrapsEtherOam.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ether-oam", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmAlarm.IsNull() && !data.EnableTrapsEthernetCfmAlarm.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/alarm", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmCcConfig.IsNull() && !data.EnableTrapsEthernetCfmCcConfig.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/config", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmCcCrossConnect.IsNull() && !data.EnableTrapsEthernetCfmCcCrossConnect.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/cross-connect", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmCcLoop.IsNull() && !data.EnableTrapsEthernetCfmCcLoop.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/loop", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmCcMepDown.IsNull() && !data.EnableTrapsEthernetCfmCcMepDown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/mep-down", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmCcMepUp.IsNull() && !data.EnableTrapsEthernetCfmCcMepUp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/mep-up", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmCrosscheckMepMissing.IsNull() && !data.EnableTrapsEthernetCfmCrosscheckMepMissing.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/crosscheck/mep-missing", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmCrosscheckMepUnknown.IsNull() && !data.EnableTrapsEthernetCfmCrosscheckMepUnknown.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/crosscheck/mep-unknown", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetCfmCrosscheckServiceUp.IsNull() && !data.EnableTrapsEthernetCfmCrosscheckServiceUp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/crosscheck/service-up", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetEvcCreate.IsNull() && !data.EnableTrapsEthernetEvcCreate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/evc/create", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetEvcDelete.IsNull() && !data.EnableTrapsEthernetEvcDelete.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/evc/delete", data.getPath()))
+	}
+	if !data.EnableTrapsEthernetEvcStatus.IsNull() && !data.EnableTrapsEthernetEvcStatus.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/evc/status", data.getPath()))
+	}
+	if !data.EnableTrapsFirewallServerstatus.IsNull() && !data.EnableTrapsFirewallServerstatus.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/firewall/serverstatus", data.getPath()))
+	}
+	if !data.EnableTrapsFrameRelayConfigOnly.IsNull() && !data.EnableTrapsFrameRelayConfigOnly.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay-config/only-frame-relay/frame-relay", data.getPath()))
+	}
+	if !data.EnableTrapsFrameRelayConfigSubifConfigs.IsNull() && !data.EnableTrapsFrameRelayConfigSubifConfigs.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay-config/frame-relay-options/frame-relay/subif-configs/subif", data.getPath()))
+	}
+	if !data.EnableTrapsFrameRelayConfigBundleMismatch.IsNull() && !data.EnableTrapsFrameRelayConfigBundleMismatch.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay-config/frame-relay-options/frame-relay/multilink/bundle-mismatch", data.getPath()))
+	}
+	if !data.EnableTrapsFrameRelayMultilinkBundleMismatch.IsNull() && !data.EnableTrapsFrameRelayMultilinkBundleMismatch.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay/multilink/bundle-mismatch", data.getPath()))
+	}
+	if !data.EnableTrapsIpLocalPool.IsNull() && !data.EnableTrapsIpLocalPool.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ip/local/pool", data.getPath()))
+	}
+	if !data.EnableTrapsIsdnCallInformation.IsNull() && !data.EnableTrapsIsdnCallInformation.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/isdn/call-information", data.getPath()))
+	}
+	if !data.EnableTrapsIsdnChanNotAvail.IsNull() && !data.EnableTrapsIsdnChanNotAvail.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/isdn/chan-not-avail", data.getPath()))
+	}
+	if !data.EnableTrapsIsdnIetf.IsNull() && !data.EnableTrapsIsdnIetf.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/isdn/ietf", data.getPath()))
+	}
+	if !data.EnableTrapsIsdnLayer2.IsNull() && !data.EnableTrapsIsdnLayer2.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/isdn/layer2", data.getPath()))
+	}
+	if !data.EnableTrapsL2tunSession.IsNull() && !data.EnableTrapsL2tunSession.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/l2tun/session", data.getPath()))
+	}
+	if !data.EnableTrapsL2tunTunnel.IsNull() && !data.EnableTrapsL2tunTunnel.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/l2tun/tunnel", data.getPath()))
+	}
+	if !data.EnableTrapsL2tunPseudowireStatus.IsNull() && !data.EnableTrapsL2tunPseudowireStatus.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/l2tun/pseudowire/status", data.getPath()))
+	}
+	if !data.EnableTrapsPimstdmibNeighborLoss.IsNull() && !data.EnableTrapsPimstdmibNeighborLoss.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/neighbor-loss", data.getPath()))
+	}
+	if !data.EnableTrapsPimstdmibInvalidRegister.IsNull() && !data.EnableTrapsPimstdmibInvalidRegister.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/invalid-register", data.getPath()))
+	}
+	if !data.EnableTrapsPimstdmibInvalidJoinPrune.IsNull() && !data.EnableTrapsPimstdmibInvalidJoinPrune.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/invalid-join-prune", data.getPath()))
+	}
+	if !data.EnableTrapsPimstdmibRpMappingChange.IsNull() && !data.EnableTrapsPimstdmibRpMappingChange.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/rp-mapping-change", data.getPath()))
+	}
+	if !data.EnableTrapsPimstdmibInterfaceElection.IsNull() && !data.EnableTrapsPimstdmibInterfaceElection.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/interface-election", data.getPath()))
+	}
+	if !data.EnableTrapsPfr.IsNull() && !data.EnableTrapsPfr.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pfr", data.getPath()))
+	}
+	if !data.EnableTrapsPppoe.IsNull() && !data.EnableTrapsPppoe.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pppoe", data.getPath()))
+	}
+	if !data.EnableTrapsResourcePolicy.IsNull() && !data.EnableTrapsResourcePolicy.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/resource-policy", data.getPath()))
+	}
+	if !data.EnableTrapsRsvp.IsNull() && !data.EnableTrapsRsvp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/rsvp", data.getPath()))
+	}
+	if !data.EnableTrapsVrrp.IsNull() && !data.EnableTrapsVrrp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrrp", data.getPath()))
+	}
+	if !data.EnableTrapsSonet.IsNull() && !data.EnableTrapsSonet.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/sonet", data.getPath()))
+	}
+	if !data.EnableTrapsSrp.IsNull() && !data.EnableTrapsSrp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/srp", data.getPath()))
+	}
+	if !data.EnableTrapsVoice.IsNull() && !data.EnableTrapsVoice.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/voice", data.getPath()))
+	}
 
 	return emptyLeafsDelete
 }
@@ -5377,9 +6988,6 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.EnableTrapsOspfNssaTransChange.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/cisco-specific/state-change/nssa-trans-change", data.getPath()))
-	}
-	if !data.EnableTrapsOspfConfigLsa.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/lsa/enable", data.getPath()))
 	}
 	if !data.EnableTrapsOspfConfigRetransmit.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-ospf:ospf-config/retransmit/enable", data.getPath()))

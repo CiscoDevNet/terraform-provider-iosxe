@@ -163,6 +163,126 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrfmib_vrf_down", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrfmib_vnet_trunk_up", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrfmib_vnet_trunk_down", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_aaa_server", "true"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_adslline", "true"))
+	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pki", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_alarm_type", "informational"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_casa", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_cnpd", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_dial", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_dlsw", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ds1", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_dsp_card_status", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_dsp_oper_state", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_sensor", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_state", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_qfp_mem_res_thresh", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_qfp_throughput_notif", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ether_oam", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_alarm", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_cc_config", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_cc_cross_connect", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_cc_loop", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_cc_mep_down", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_cc_mep_up", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_crosscheck_mep_missing", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_crosscheck_mep_unknown", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_cfm_crosscheck_service_up", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_evc_create", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_evc_delete", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ethernet_evc_status", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_firewall_serverstatus", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_frame_relay_subif_count", "10"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_frame_relay_subif_interval", "300"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ip_local_pool", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pimstdmib_neighbor_loss", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pimstdmib_invalid_register", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pimstdmib_invalid_join_prune", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pimstdmib_rp_mapping_change", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pimstdmib_interface_election", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_pfr", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_resource_policy", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_rsvp", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrrp", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_srp", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_informs_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_traps_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "trap_source_loopback", "1"))
@@ -339,6 +459,126 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `	enable_traps_vrfmib_vrf_down = true` + "\n"
 	config += `	enable_traps_vrfmib_vnet_trunk_up = true` + "\n"
 	config += `	enable_traps_vrfmib_vnet_trunk_down = true` + "\n"
+	config += `	enable_traps_aaa_server = true` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_adslline = true` + "\n"
+	}
+	config += `	enable_traps_pki = true` + "\n"
+	config += `	enable_traps_alarm_type = "informational"` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_casa = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_cnpd = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_dial = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_dlsw = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ds1 = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_dsp_card_status = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_dsp_oper_state = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_entity_sensor = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_entity_state = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_entity_qfp_mem_res_thresh = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_entity_qfp_throughput_notif = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ether_oam = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_alarm = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_cc_config = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_cc_cross_connect = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_cc_loop = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_cc_mep_down = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_cc_mep_up = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_crosscheck_mep_missing = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_crosscheck_mep_unknown = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_cfm_crosscheck_service_up = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_evc_create = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_evc_delete = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ethernet_evc_status = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_firewall_serverstatus = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_frame_relay_subif_count = 10` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_frame_relay_subif_interval = 300` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ip_local_pool = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_pimstdmib_neighbor_loss = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_pimstdmib_invalid_register = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_pimstdmib_invalid_join_prune = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_pimstdmib_rp_mapping_change = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_pimstdmib_interface_election = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_pfr = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_resource_policy = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_rsvp = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_vrrp = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_srp = true` + "\n"
+	}
 	config += `	source_interface_informs_loopback = 1` + "\n"
 	config += `	source_interface_traps_loopback = 1` + "\n"
 	config += `	trap_source_loopback = 1` + "\n"

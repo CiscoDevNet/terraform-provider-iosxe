@@ -587,6 +587,234 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "Allow SNMP LISP MIB traps",
 				Computed:            true,
 			},
+			"enable_traps_aaa_server": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP AAA Server traps",
+				Computed:            true,
+			},
+			"enable_traps_vdsl2line": schema.BoolAttribute{
+				MarkdownDescription: "Enable VDSL2 Line-MIB traps",
+				Computed:            true,
+			},
+			"enable_traps_adslline": schema.BoolAttribute{
+				MarkdownDescription: "Enable ADSL Line-MIB traps",
+				Computed:            true,
+			},
+			"enable_traps_pki": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP PKI Traps",
+				Computed:            true,
+			},
+			"enable_traps_alarm_type": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_casa": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP casa traps",
+				Computed:            true,
+			},
+			"enable_traps_cnpd": schema.BoolAttribute{
+				MarkdownDescription: "Enable NBAR Protocol Discovery traps",
+				Computed:            true,
+			},
+			"enable_traps_dial": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP dial control traps",
+				Computed:            true,
+			},
+			"enable_traps_dlsw": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP dlsw traps",
+				Computed:            true,
+			},
+			"enable_traps_ds1": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP DS1 traps",
+				Computed:            true,
+			},
+			"enable_traps_dsp_card_status": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP card status of dsp traps",
+				Computed:            true,
+			},
+			"enable_traps_dsp_oper_state": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_entity_sensor": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP entity-sensor traps",
+				Computed:            true,
+			},
+			"enable_traps_entity_state": schema.BoolAttribute{
+				MarkdownDescription: "Allow SNMP entity-state traps",
+				Computed:            true,
+			},
+			"enable_traps_entity_qfp_mem_res_thresh": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP ENTITY-QFP MEM-RES-THRESH notifications",
+				Computed:            true,
+			},
+			"enable_traps_entity_qfp_throughput_notif": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP ENTITY-QFP THROUGHPUT-NOTIF notifications",
+				Computed:            true,
+			},
+			"enable_traps_ether_oam": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_alarm": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP Ethernet CFM fault alarm trap",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_config": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_cross_connect": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_loop": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_mep_down": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_mep_up": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_crosscheck_mep_missing": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_crosscheck_mep_unknown": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_cfm_crosscheck_service_up": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_evc_create": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP Ethernet EVC create traps",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_evc_delete": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP Ethernet EVC delete traps",
+				Computed:            true,
+			},
+			"enable_traps_ethernet_evc_status": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP Ethernet EVC status traps",
+				Computed:            true,
+			},
+			"enable_traps_firewall_serverstatus": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_frame_relay_config_only": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_frame_relay_config_subif_configs": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_frame_relay_subif_count": schema.Int64Attribute{
+				MarkdownDescription: "Maximum number of traps sent per interval",
+				Computed:            true,
+			},
+			"enable_traps_frame_relay_subif_interval": schema.Int64Attribute{
+				MarkdownDescription: "Interval duration in which to limit the number of traps sent",
+				Computed:            true,
+			},
+			"enable_traps_frame_relay_config_bundle_mismatch": schema.BoolAttribute{
+				MarkdownDescription: "Enable MFR trap for inconsistent bundle event",
+				Computed:            true,
+			},
+			"enable_traps_frame_relay_multilink_bundle_mismatch": schema.BoolAttribute{
+				MarkdownDescription: "Enable MFR trap for inconsistent bundle event",
+				Computed:            true,
+			},
+			"enable_traps_ip_local_pool": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP IP LOCAL POOL traps",
+				Computed:            true,
+			},
+			"enable_traps_isdn_call_information": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP isdn call information traps",
+				Computed:            true,
+			},
+			"enable_traps_isdn_chan_not_avail": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP isdn channel not avail traps",
+				Computed:            true,
+			},
+			"enable_traps_isdn_ietf": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP isdn ietf traps",
+				Computed:            true,
+			},
+			"enable_traps_isdn_layer2": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP isdn layer2 transition traps",
+				Computed:            true,
+			},
+			"enable_traps_l2tun_session": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP l2tun session traps",
+				Computed:            true,
+			},
+			"enable_traps_l2tun_tunnel": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP l2tun tunnel traps",
+				Computed:            true,
+			},
+			"enable_traps_l2tun_pseudowire_status": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_pimstdmib_neighbor_loss": schema.BoolAttribute{
+				MarkdownDescription: "Enable neighbor-loss traps",
+				Computed:            true,
+			},
+			"enable_traps_pimstdmib_invalid_register": schema.BoolAttribute{
+				MarkdownDescription: "Enable invalid-register traps",
+				Computed:            true,
+			},
+			"enable_traps_pimstdmib_invalid_join_prune": schema.BoolAttribute{
+				MarkdownDescription: "Enable invalid-join-prune traps",
+				Computed:            true,
+			},
+			"enable_traps_pimstdmib_rp_mapping_change": schema.BoolAttribute{
+				MarkdownDescription: "Enable invalid rp-mapping-change",
+				Computed:            true,
+			},
+			"enable_traps_pimstdmib_interface_election": schema.BoolAttribute{
+				MarkdownDescription: "Enable interface-election traps",
+				Computed:            true,
+			},
+			"enable_traps_pfr": schema.BoolAttribute{
+				MarkdownDescription: "Allow SNMP PFR traps",
+				Computed:            true,
+			},
+			"enable_traps_pppoe": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP pppoe traps",
+				Computed:            true,
+			},
+			"enable_traps_resource_policy": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"enable_traps_rsvp": schema.BoolAttribute{
+				MarkdownDescription: "Enable RSVP flow change traps",
+				Computed:            true,
+			},
+			"enable_traps_vrrp": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP vrrp traps",
+				Computed:            true,
+			},
+			"enable_traps_sonet": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP SONET traps",
+				Computed:            true,
+			},
+			"enable_traps_srp": schema.BoolAttribute{
+				MarkdownDescription: "Enable SRP protocol traps",
+				Computed:            true,
+			},
+			"enable_traps_voice": schema.BoolAttribute{
+				MarkdownDescription: "Enable SNMP voice traps",
+				Computed:            true,
+			},
 			"source_interface_informs_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "GigabitEthernet IEEE 802.3z",
 				Computed:            true,

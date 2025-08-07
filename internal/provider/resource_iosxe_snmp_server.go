@@ -617,6 +617,240 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP LISP MIB traps").String,
 				Optional:            true,
 			},
+			"enable_traps_aaa_server": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP AAA Server traps").String,
+				Optional:            true,
+			},
+			"enable_traps_vdsl2line": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable VDSL2 Line-MIB traps").String,
+				Optional:            true,
+			},
+			"enable_traps_adslline": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable ADSL Line-MIB traps").String,
+				Optional:            true,
+			},
+			"enable_traps_pki": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP PKI Traps").String,
+				Optional:            true,
+			},
+			"enable_traps_alarm_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_casa": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP casa traps").String,
+				Optional:            true,
+			},
+			"enable_traps_cnpd": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable NBAR Protocol Discovery traps").String,
+				Optional:            true,
+			},
+			"enable_traps_dial": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP dial control traps").String,
+				Optional:            true,
+			},
+			"enable_traps_dlsw": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP dlsw traps").String,
+				Optional:            true,
+			},
+			"enable_traps_ds1": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP DS1 traps").String,
+				Optional:            true,
+			},
+			"enable_traps_dsp_card_status": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP card status of dsp traps").String,
+				Optional:            true,
+			},
+			"enable_traps_dsp_oper_state": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_entity_sensor": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP entity-sensor traps").String,
+				Optional:            true,
+			},
+			"enable_traps_entity_state": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP entity-state traps").String,
+				Optional:            true,
+			},
+			"enable_traps_entity_qfp_mem_res_thresh": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP ENTITY-QFP MEM-RES-THRESH notifications").String,
+				Optional:            true,
+			},
+			"enable_traps_entity_qfp_throughput_notif": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP ENTITY-QFP THROUGHPUT-NOTIF notifications").String,
+				Optional:            true,
+			},
+			"enable_traps_ether_oam": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_alarm": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP Ethernet CFM fault alarm trap").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_config": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_cross_connect": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_loop": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_mep_down": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_cc_mep_up": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_crosscheck_mep_missing": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_crosscheck_mep_unknown": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_cfm_crosscheck_service_up": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_evc_create": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP Ethernet EVC create traps").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_evc_delete": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP Ethernet EVC delete traps").String,
+				Optional:            true,
+			},
+			"enable_traps_ethernet_evc_status": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP Ethernet EVC status traps").String,
+				Optional:            true,
+			},
+			"enable_traps_firewall_serverstatus": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_frame_relay_config_only": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_frame_relay_config_subif_configs": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_frame_relay_subif_count": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum number of traps sent per interval").AddIntegerRangeDescription(1, 1000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1000),
+				},
+			},
+			"enable_traps_frame_relay_subif_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Interval duration in which to limit the number of traps sent").AddIntegerRangeDescription(1, 3600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3600),
+				},
+			},
+			"enable_traps_frame_relay_config_bundle_mismatch": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable MFR trap for inconsistent bundle event").String,
+				Optional:            true,
+			},
+			"enable_traps_frame_relay_multilink_bundle_mismatch": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable MFR trap for inconsistent bundle event").String,
+				Optional:            true,
+			},
+			"enable_traps_ip_local_pool": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP IP LOCAL POOL traps").String,
+				Optional:            true,
+			},
+			"enable_traps_isdn_call_information": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP isdn call information traps").String,
+				Optional:            true,
+			},
+			"enable_traps_isdn_chan_not_avail": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP isdn channel not avail traps").String,
+				Optional:            true,
+			},
+			"enable_traps_isdn_ietf": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP isdn ietf traps").String,
+				Optional:            true,
+			},
+			"enable_traps_isdn_layer2": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP isdn layer2 transition traps").String,
+				Optional:            true,
+			},
+			"enable_traps_l2tun_session": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP l2tun session traps").String,
+				Optional:            true,
+			},
+			"enable_traps_l2tun_tunnel": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP l2tun tunnel traps").String,
+				Optional:            true,
+			},
+			"enable_traps_l2tun_pseudowire_status": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_pimstdmib_neighbor_loss": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable neighbor-loss traps").String,
+				Optional:            true,
+			},
+			"enable_traps_pimstdmib_invalid_register": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable invalid-register traps").String,
+				Optional:            true,
+			},
+			"enable_traps_pimstdmib_invalid_join_prune": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable invalid-join-prune traps").String,
+				Optional:            true,
+			},
+			"enable_traps_pimstdmib_rp_mapping_change": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable invalid rp-mapping-change").String,
+				Optional:            true,
+			},
+			"enable_traps_pimstdmib_interface_election": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable interface-election traps").String,
+				Optional:            true,
+			},
+			"enable_traps_pfr": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow SNMP PFR traps").String,
+				Optional:            true,
+			},
+			"enable_traps_pppoe": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP pppoe traps").String,
+				Optional:            true,
+			},
+			"enable_traps_resource_policy": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"enable_traps_rsvp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable RSVP flow change traps").String,
+				Optional:            true,
+			},
+			"enable_traps_vrrp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP vrrp traps").String,
+				Optional:            true,
+			},
+			"enable_traps_sonet": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP SONET traps").String,
+				Optional:            true,
+			},
+			"enable_traps_srp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SRP protocol traps").String,
+				Optional:            true,
+			},
+			"enable_traps_voice": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP voice traps").String,
+				Optional:            true,
+			},
 			"source_interface_informs_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
 				Optional:            true,

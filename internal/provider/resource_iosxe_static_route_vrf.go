@@ -114,7 +114,7 @@ func (r *StaticRouteVRFResource) Schema(ctx context.Context, req resource.Schema
 										MarkdownDescription: helpers.NewAttributeDescription("Specify the next hop as an ip-address or interface name").String,
 										Required:            true,
 									},
-									"metric": schema.Int64Attribute{
+									"distance": schema.Int64Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
 										Optional:            true,
 										Validators: []validator.Int64{
@@ -139,6 +139,47 @@ func (r *StaticRouteVRFResource) Schema(ctx context.Context, req resource.Schema
 										Validators: []validator.Int64{
 											int64validator.Between(1, 4294967295),
 										},
+									},
+								},
+							},
+						},
+						"next_hops_with_track": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"next_hop": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify the next hop as an ip-address or interface name").String,
+										Required:            true,
+									},
+									"name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify name of the next hop").String,
+										Optional:            true,
+									},
+									"track_id_name": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Track number").AddIntegerRangeDescription(1, 1000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 1000),
+										},
+									},
+									"distance": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 255),
+										},
+									},
+									"tag": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Set tag for this route").AddIntegerRangeDescription(1, 4294967295).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 4294967295),
+										},
+									},
+									"permanent": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("permanent route").String,
+										Optional:            true,
 									},
 								},
 							},

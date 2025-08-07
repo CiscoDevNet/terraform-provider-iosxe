@@ -100,6 +100,9 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_vrfmib_vrf_down              = true
   enable_traps_vrfmib_vnet_trunk_up         = true
   enable_traps_vrfmib_vnet_trunk_down       = true
+  enable_traps_aaa_server                   = true
+  enable_traps_pki                          = true
+  enable_traps_alarm_type                   = "informational"
   source_interface_informs_loopback         = 1
   source_interface_traps_loopback           = 1
   trap_source_loopback                      = 1
@@ -142,6 +145,9 @@ resource "iosxe_snmp_server" "example" {
 - `enable_logging_getop` (Boolean) Enable SNMP GET Operation logging
 - `enable_logging_setop` (Boolean) Enable SNMP SET Operation logging
 - `enable_traps` (Boolean) Enable SNMP Traps
+- `enable_traps_aaa_server` (Boolean) Enable SNMP AAA Server traps
+- `enable_traps_adslline` (Boolean) Enable ADSL Line-MIB traps
+- `enable_traps_alarm_type` (String)
 - `enable_traps_auth_framework_sec_violation` (Boolean)
 - `enable_traps_bfd` (Boolean)
 - `enable_traps_bgp_cbgp2` (Boolean) Enable BGP MIBv2 traps
@@ -151,15 +157,22 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_bulkstat_transfer` (Boolean) Enable Data-Collection-MIB Transfer notifications
 - `enable_traps_call_home_message_send_fail` (Boolean)
 - `enable_traps_call_home_server_fail` (Boolean)
+- `enable_traps_casa` (Boolean) Enable SNMP casa traps
 - `enable_traps_cef_inconsistency` (Boolean)
 - `enable_traps_cef_peer_fib_state_change` (Boolean)
 - `enable_traps_cef_peer_state_change` (Boolean)
 - `enable_traps_cef_resource_failure` (Boolean)
+- `enable_traps_cnpd` (Boolean) Enable NBAR Protocol Discovery traps
 - `enable_traps_config` (Boolean) Enable SNMP config traps
 - `enable_traps_config_copy` (Boolean) Enable SNMP config-copy traps
 - `enable_traps_config_ctid` (Boolean)
 - `enable_traps_cpu_threshold` (Boolean) Allow CPU utilization threshold violation traps
 - `enable_traps_dhcp` (Boolean) Enable SNMP dhcp traps
+- `enable_traps_dial` (Boolean) Enable SNMP dial control traps
+- `enable_traps_dlsw` (Boolean) Enable SNMP dlsw traps
+- `enable_traps_ds1` (Boolean) Enable SNMP DS1 traps
+- `enable_traps_dsp_card_status` (Boolean) Enable SNMP card status of dsp traps
+- `enable_traps_dsp_oper_state` (Boolean)
 - `enable_traps_eigrp` (Boolean) Enable SNMP EIGRP traps
 - `enable_traps_energywise` (Boolean)
 - `enable_traps_entity` (Boolean) Enable SNMP entity traps
@@ -168,20 +181,47 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_entity_diag_hm_thresh_reached` (Boolean) Enable SNMP ceDiagHMThresholdReachedNotif traps
 - `enable_traps_entity_diag_scheduled_test_fail` (Boolean) Enable SNMP ceDiagScheduledTestFailedNotif traps
 - `enable_traps_entity_perf_throughput_notif` (Boolean) Enable ENTITY PERFORMANCE MIB throughput traps
+- `enable_traps_entity_qfp_mem_res_thresh` (Boolean) Enable SNMP ENTITY-QFP MEM-RES-THRESH notifications
+- `enable_traps_entity_qfp_throughput_notif` (Boolean) Enable SNMP ENTITY-QFP THROUGHPUT-NOTIF notifications
+- `enable_traps_entity_sensor` (Boolean) Enable SNMP entity-sensor traps
+- `enable_traps_entity_state` (Boolean) Allow SNMP entity-state traps
 - `enable_traps_envmon` (Boolean) Enable SNMP environmental monitor traps
 - `enable_traps_errdisable` (Boolean) Enable SNMP errdisable notifications
+- `enable_traps_ether_oam` (Boolean)
+- `enable_traps_ethernet_cfm_alarm` (Boolean) Enable SNMP Ethernet CFM fault alarm trap
+- `enable_traps_ethernet_cfm_cc_config` (Boolean)
+- `enable_traps_ethernet_cfm_cc_cross_connect` (Boolean)
+- `enable_traps_ethernet_cfm_cc_loop` (Boolean)
+- `enable_traps_ethernet_cfm_cc_mep_down` (Boolean)
+- `enable_traps_ethernet_cfm_cc_mep_up` (Boolean)
+- `enable_traps_ethernet_cfm_crosscheck_mep_missing` (Boolean)
+- `enable_traps_ethernet_cfm_crosscheck_mep_unknown` (Boolean)
+- `enable_traps_ethernet_cfm_crosscheck_service_up` (Boolean)
+- `enable_traps_ethernet_evc_create` (Boolean) Enable SNMP Ethernet EVC create traps
+- `enable_traps_ethernet_evc_delete` (Boolean) Enable SNMP Ethernet EVC delete traps
+- `enable_traps_ethernet_evc_status` (Boolean) Enable SNMP Ethernet EVC status traps
 - `enable_traps_event_manager` (Boolean) Enable SNMP Embedded Event Manager traps
 - `enable_traps_fast_reroute_protected` (Boolean) Enable MPLS fast reroute protection traps
+- `enable_traps_firewall_serverstatus` (Boolean)
 - `enable_traps_flash_insertion` (Boolean) Enable SNMP Flash Insertion notifications
 - `enable_traps_flash_lowspace` (Boolean) Enable SNMP Flash Lowspace notifications
 - `enable_traps_flash_removal` (Boolean) Enable SNMP Flash Removal notifications
 - `enable_traps_flowmon` (Boolean) Enable SNMP flowmon notifications
+- `enable_traps_frame_relay_config_bundle_mismatch` (Boolean) Enable MFR trap for inconsistent bundle event
+- `enable_traps_frame_relay_config_only` (Boolean)
+- `enable_traps_frame_relay_config_subif_configs` (Boolean)
+- `enable_traps_frame_relay_multilink_bundle_mismatch` (Boolean) Enable MFR trap for inconsistent bundle event
+- `enable_traps_frame_relay_subif_count` (Number) Maximum number of traps sent per interval
+  - Range: `1`-`1000`
+- `enable_traps_frame_relay_subif_interval` (Number) Interval duration in which to limit the number of traps sent
+  - Range: `1`-`3600`
 - `enable_traps_fru_ctrl` (Boolean) Enable SNMP entity FRU control traps
 - `enable_traps_hsrp` (Boolean) Enable SNMP HSRP traps
 - `enable_traps_ike_policy_add` (Boolean) Enable IKE Policy add trap
 - `enable_traps_ike_policy_delete` (Boolean) Enable IKE Policy delete trap
 - `enable_traps_ike_tunnel_start` (Boolean) Enable IKE Tunnel start trap
 - `enable_traps_ike_tunnel_stop` (Boolean) Enable IKE Tunnel stop trap
+- `enable_traps_ip_local_pool` (Boolean) Enable SNMP IP LOCAL POOL traps
 - `enable_traps_ipmulticast` (Boolean) Enable SNMP ipmulticast traps
 - `enable_traps_ipsec_cryptomap_add` (Boolean) Enable IPsec Cryptomap add trap
 - `enable_traps_ipsec_cryptomap_attach` (Boolean) Enable IPsec Cryptomap Attach trap
@@ -191,7 +231,14 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_ipsec_tunnel_start` (Boolean) Enable IPsec Tunnel Start trap
 - `enable_traps_ipsec_tunnel_stop` (Boolean) Enable IPsec Tunnel Stop trap
 - `enable_traps_ipsla` (Boolean) Enable IPSLA traps traps
+- `enable_traps_isdn_call_information` (Boolean) Enable SNMP isdn call information traps
+- `enable_traps_isdn_chan_not_avail` (Boolean) Enable SNMP isdn channel not avail traps
+- `enable_traps_isdn_ietf` (Boolean) Enable SNMP isdn ietf traps
+- `enable_traps_isdn_layer2` (Boolean) Enable SNMP isdn layer2 transition traps
 - `enable_traps_isis` (Boolean) Enable ISIS traps traps
+- `enable_traps_l2tun_pseudowire_status` (Boolean)
+- `enable_traps_l2tun_session` (Boolean) Enable SNMP l2tun session traps
+- `enable_traps_l2tun_tunnel` (Boolean) Enable SNMP l2tun tunnel traps
 - `enable_traps_license` (Boolean) Enable license traps
 - `enable_traps_lisp` (Boolean) Allow SNMP LISP MIB traps
 - `enable_traps_local_auth` (Boolean) Enable SNMP local auth traps
@@ -223,21 +270,33 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_ospf_shamlink_neighbor` (Boolean) Sham link neighbor state changes
 - `enable_traps_ospfv3_config_errors` (Boolean) Enable all traps of errors
 - `enable_traps_ospfv3_config_state_change` (Boolean) Enable all traps of state-change
+- `enable_traps_pfr` (Boolean) Allow SNMP PFR traps
 - `enable_traps_pim_invalid_pim_message` (Boolean) Enable invalid pim message trap
 - `enable_traps_pim_neighbor_change` (Boolean) Enable neighbor change trap
 - `enable_traps_pim_rp_mapping_change` (Boolean) Enable rp mapping change trap
+- `enable_traps_pimstdmib_interface_election` (Boolean) Enable interface-election traps
+- `enable_traps_pimstdmib_invalid_join_prune` (Boolean) Enable invalid-join-prune traps
+- `enable_traps_pimstdmib_invalid_register` (Boolean) Enable invalid-register traps
+- `enable_traps_pimstdmib_neighbor_loss` (Boolean) Enable neighbor-loss traps
+- `enable_traps_pimstdmib_rp_mapping_change` (Boolean) Enable invalid rp-mapping-change
+- `enable_traps_pki` (Boolean) Enable SNMP PKI Traps
 - `enable_traps_port_security` (Boolean) Enable SNMP port security traps
 - `enable_traps_power_ethernet_group` (String) Enable SNMP inline power group based traps
 - `enable_traps_power_ethernet_police` (Boolean) Enable Policing Trap
+- `enable_traps_pppoe` (Boolean) Enable SNMP pppoe traps
 - `enable_traps_pw_vc` (Boolean)
 - `enable_traps_rep` (Boolean)
+- `enable_traps_resource_policy` (Boolean)
 - `enable_traps_rf` (Boolean) Enable all SNMP traps defined in CISCO-RF-MIB
+- `enable_traps_rsvp` (Boolean) Enable RSVP flow change traps
 - `enable_traps_smart_license` (Boolean) Enable smart license traps
 - `enable_traps_snmp_authentication` (Boolean) Enable authentication trap
 - `enable_traps_snmp_coldstart` (Boolean) Enable coldStart trap
 - `enable_traps_snmp_linkdown` (Boolean) Enable linkDown trap
 - `enable_traps_snmp_linkup` (Boolean) Enable linkUp trap
 - `enable_traps_snmp_warmstart` (Boolean) Enable warmStart trap
+- `enable_traps_sonet` (Boolean) Enable SNMP SONET traps
+- `enable_traps_srp` (Boolean) Enable SRP protocol traps
 - `enable_traps_stackwise` (Boolean) Enable SNMP stackwise traps
 - `enable_traps_stpx_inconsistency` (Boolean)
 - `enable_traps_stpx_loop_inconsistency` (Boolean)
@@ -247,13 +306,16 @@ resource "iosxe_snmp_server" "example" {
 - `enable_traps_tty` (Boolean) Enable TCP connection traps
 - `enable_traps_udld_link_fail_rpt` (Boolean) Enable SNMP cudldpFastHelloLinkFailRptNotification traps
 - `enable_traps_udld_status_change` (Boolean) Enable SNMP cudldpFastHelloStatusChangeNotification traps
+- `enable_traps_vdsl2line` (Boolean) Enable VDSL2 Line-MIB traps
 - `enable_traps_vlan_membership` (Boolean)
 - `enable_traps_vlancreate` (Boolean)
 - `enable_traps_vlandelete` (Boolean)
+- `enable_traps_voice` (Boolean) Enable SNMP voice traps
 - `enable_traps_vrfmib_vnet_trunk_down` (Boolean)
 - `enable_traps_vrfmib_vnet_trunk_up` (Boolean)
 - `enable_traps_vrfmib_vrf_down` (Boolean)
 - `enable_traps_vrfmib_vrf_up` (Boolean)
+- `enable_traps_vrrp` (Boolean) Enable SNMP vrrp traps
 - `enable_traps_vtp` (Boolean)
 - `hosts` (Attributes List) Specify hosts keyed by (ip-address, community-or-user) (see [below for nested schema](#nestedatt--hosts))
 - `ifindex_persist` (Boolean) Persist interface indices

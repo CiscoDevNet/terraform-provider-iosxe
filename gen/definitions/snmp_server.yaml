@@ -434,6 +434,231 @@ attributes:
     tf_name: enable_traps_lisp
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/aaa_server
+    tf_name: enable_traps_aaa_server
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/vdsl2line
+    tf_name: enable_traps_vdsl2line
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/adslline
+    tf_name: enable_traps_adslline
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pki
+    tf_name: enable_traps_pki
+    example: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/alarms/alarm-type
+    tf_name: enable_traps_alarm_type
+    example: informational
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/casa
+    tf_name: enable_traps_casa
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/cnpd
+    tf_name: enable_traps_cnpd
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/dial
+    tf_name: enable_traps_dial
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/dlsw
+    tf_name: enable_traps_dlsw
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ds1
+    tf_name: enable_traps_ds1
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/dsp/card-status
+    tf_name: enable_traps_dsp_card_status
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/dsp/oper-state
+    tf_name: enable_traps_dsp_oper_state
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-sensor
+    tf_name: enable_traps_entity_sensor
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-state
+    tf_name: enable_traps_entity_state
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-qfp/mem-res-thresh
+    tf_name: enable_traps_entity_qfp_mem_res_thresh
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity-qfp/throughput-notif
+    tf_name: enable_traps_entity_qfp_throughput_notif
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ether-oam
+    tf_name: enable_traps_ether_oam
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/alarm
+    tf_name: enable_traps_ethernet_cfm_alarm
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/config
+    tf_name: enable_traps_ethernet_cfm_cc_config
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/cross-connect
+    tf_name: enable_traps_ethernet_cfm_cc_cross_connect
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/loop
+    tf_name: enable_traps_ethernet_cfm_cc_loop
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/mep-down
+    tf_name: enable_traps_ethernet_cfm_cc_mep_down
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/cc/mep-up
+    tf_name: enable_traps_ethernet_cfm_cc_mep_up
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/crosscheck/mep-missing
+    tf_name: enable_traps_ethernet_cfm_crosscheck_mep_missing
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/crosscheck/mep-unknown
+    tf_name: enable_traps_ethernet_cfm_crosscheck_mep_unknown
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/cfm/crosscheck/service-up
+    tf_name: enable_traps_ethernet_cfm_crosscheck_service_up
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/evc/create
+    tf_name: enable_traps_ethernet_evc_create
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/evc/delete
+    tf_name: enable_traps_ethernet_evc_delete
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ethernet/evc/status
+    tf_name: enable_traps_ethernet_evc_status
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/firewall/serverstatus
+    tf_name: enable_traps_firewall_serverstatus
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay-config/only-frame-relay/frame-relay
+    tf_name: enable_traps_frame_relay_config_only
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay-config/frame-relay-options/frame-relay/subif-configs/subif
+    tf_name: enable_traps_frame_relay_config_subif_configs
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay/subif/count
+    tf_name: enable_traps_frame_relay_subif_count
+    example: 10
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay/subif/interval
+    tf_name: enable_traps_frame_relay_subif_interval
+    example: 300
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay-config/frame-relay-options/frame-relay/multilink/bundle-mismatch
+    tf_name: enable_traps_frame_relay_config_bundle_mismatch
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/frame-relay/multilink/bundle-mismatch
+    tf_name: enable_traps_frame_relay_multilink_bundle_mismatch
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ip/local/pool
+    tf_name: enable_traps_ip_local_pool
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/isdn/call-information
+    tf_name: enable_traps_isdn_call_information
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/isdn/chan-not-avail
+    tf_name: enable_traps_isdn_chan_not_avail
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/isdn/ietf
+    tf_name: enable_traps_isdn_ietf
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/isdn/layer2
+    tf_name: enable_traps_isdn_layer2
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/l2tun/session
+    tf_name: enable_traps_l2tun_session
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/l2tun/tunnel
+    tf_name: enable_traps_l2tun_tunnel
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/l2tun/pseudowire/status
+    tf_name: enable_traps_l2tun_pseudowire_status
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/neighbor-loss
+    tf_name: enable_traps_pimstdmib_neighbor_loss
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/invalid-register
+    tf_name: enable_traps_pimstdmib_invalid_register
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/invalid-join-prune
+    tf_name: enable_traps_pimstdmib_invalid_join_prune
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/rp-mapping-change
+    tf_name: enable_traps_pimstdmib_rp_mapping_change
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pimstdmib/interface-election
+    tf_name: enable_traps_pimstdmib_interface_election
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pfr
+    tf_name: enable_traps_pfr
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pppoe
+    tf_name: enable_traps_pppoe
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/resource-policy
+    tf_name: enable_traps_resource_policy
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/rsvp
+    tf_name: enable_traps_rsvp
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/vrrp
+    tf_name: enable_traps_vrrp
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/sonet
+    tf_name: enable_traps_sonet
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/srp
+    tf_name: enable_traps_srp
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/voice
+    tf_name: enable_traps_voice
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/GigabitEthernet/GigabitEthernet
     xpath: Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet
     tf_name: source_interface_informs_gigabit_ethernet

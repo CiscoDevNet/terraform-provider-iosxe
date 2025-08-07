@@ -35,15 +35,29 @@ data "iosxe_static_route" "example" {
 
 - `id` (String) The path of the retrieved object.
 - `next_hops` (Attributes List) (see [below for nested schema](#nestedatt--next_hops))
+- `next_hops_with_track` (Attributes List) (see [below for nested schema](#nestedatt--next_hops_with_track))
 
 <a id="nestedatt--next_hops"></a>
 ### Nested Schema for `next_hops`
 
 Read-Only:
 
+- `distance` (Number)
 - `global` (Boolean) Next hop address is global
-- `metric` (Number)
 - `name` (String) Specify name of the next hop
 - `next_hop` (String) Specify the next hop as an ip-address or interface name
 - `permanent` (Boolean) permanent route
 - `tag` (Number) Set tag for this route
+
+
+<a id="nestedatt--next_hops_with_track"></a>
+### Nested Schema for `next_hops_with_track`
+
+Read-Only:
+
+- `distance` (Number)
+- `name` (String) Specify name of the next hop
+- `next_hop` (String) Specify the next hop as an ip-address or interface name
+- `permanent` (Boolean) permanent route
+- `tag` (Number) Set tag for this route
+- `track_id_name` (Number) Track number
