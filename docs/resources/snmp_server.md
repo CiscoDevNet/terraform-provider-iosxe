@@ -101,8 +101,6 @@ resource "iosxe_snmp_server" "example" {
   enable_traps_vrfmib_vnet_trunk_up         = true
   enable_traps_vrfmib_vnet_trunk_down       = true
   enable_traps_aaa_server                   = true
-  enable_traps_pki                          = true
-  enable_traps_alarm_type                   = "informational"
   source_interface_informs_loopback         = 1
   source_interface_traps_loopback           = 1
   trap_source_loopback                      = 1

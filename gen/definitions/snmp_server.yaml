@@ -448,9 +448,11 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pki
     tf_name: enable_traps_pki
     example: true
+    test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/alarms/alarm-type
     tf_name: enable_traps_alarm_type
     example: informational
+    test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/casa
     tf_name: enable_traps_casa
     example: true
@@ -654,7 +656,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/srp
     tf_name: enable_traps_srp
     example: true
-    test_tags: [C8000V]
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/voice
     tf_name: enable_traps_voice
     example: true
