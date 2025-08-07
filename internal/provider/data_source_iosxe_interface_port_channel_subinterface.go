@@ -71,6 +71,10 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				MarkdownDescription: "",
 				Required:            true,
 			},
+			"encapsulation_dot1q_vlan_id": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: "Interface specific description",
 				Computed:            true,
@@ -101,10 +105,6 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 			},
 			"ipv4_address_mask": schema.StringAttribute{
 				MarkdownDescription: "Ip subnet mask",
-				Computed:            true,
-			},
-			"encapsulation_dot1q_vlan_id": schema.Int64Attribute{
-				MarkdownDescription: "",
 				Computed:            true,
 			},
 			"ip_access_group_in_enable": schema.BoolAttribute{

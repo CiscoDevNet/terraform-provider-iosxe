@@ -433,8 +433,7 @@ func (r *InterfaceSwitchportResource) Delete(ctx context.Context, req resource.D
 				for _, i := range deletePaths {
 					res, err := device.Client.DeleteData(i)
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
+						resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					}
 				}
 			}

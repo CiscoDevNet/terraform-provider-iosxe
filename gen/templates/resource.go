@@ -556,8 +556,7 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 				for _, i := range deletePaths {
 					res, err := device.Client.DeleteData(i{{if .Wait}}, restconf.Wait{{end}})
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
+						resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					}
 				}
 			}
