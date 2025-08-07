@@ -556,8 +556,6 @@ func (data *StaticRouteVRF) getDeletedItems(ctx context.Context, state StaticRou
 							found = false
 						}
 						if found {
-							if !state.Routes[i].NextHops[ci].Tag.IsNull() && data.Routes[j].NextHops[cj].Tag.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/ip-route-interface-forwarding-list=%v/fwd-list=%v/tag", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							if !state.Routes[i].NextHops[ci].Distance.IsNull() && data.Routes[j].NextHops[cj].Distance.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/ip-route-interface-forwarding-list=%v/fwd-list=%v/metric", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
@@ -648,6 +646,13 @@ func (data *StaticRouteVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 			}
 			if !data.Routes[i].NextHops[ci].Global.IsNull() && !data.Routes[i].NextHops[ci].Global.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip-route-interface-forwarding-list=%v/fwd-list=%v/global", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+		}
+
+		for ci := range data.Routes[i].NextHopsWithTrack {
+			ckeyValues := [...]string{data.Routes[i].NextHopsWithTrack[ci].NextHop.ValueString()}
+			if !data.Routes[i].NextHopsWithTrack[ci].Permanent.IsNull() && !data.Routes[i].NextHopsWithTrack[ci].Permanent.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip-route-interface-forwarding-list=%v/fwd-list-with-track=%v/permanent", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 		}
 

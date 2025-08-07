@@ -465,8 +465,6 @@ func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute)
 				found = false
 			}
 			if found {
-				if !state.NextHops[i].Tag.IsNull() && data.NextHops[j].Tag.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/tag", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.NextHops[i].Permanent.IsNull() && data.NextHops[j].Permanent.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/permanent", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -527,7 +525,6 @@ func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute)
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-
 	return deletedItems
 }
 
@@ -547,7 +544,6 @@ func (data *StaticRoute) getEmptyLeafsDelete(ctx context.Context) []string {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fwd-list=%v/global", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
-
 
 	for i := range data.NextHopsWithTrack {
 		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
@@ -574,7 +570,6 @@ func (data *StaticRoute) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/fwd-list-with-track=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-
 	return deletePaths
 }
 
