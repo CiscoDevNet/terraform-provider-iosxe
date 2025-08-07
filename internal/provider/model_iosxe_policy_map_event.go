@@ -944,9 +944,6 @@ func (data *PolicyMapEventData) fromBody(ctx context.Context, res gjson.Result) 
 
 func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMapEvent) []string {
 	deletedItems := make([]string, 0)
-	if !state.MatchType.IsNull() && data.MatchType.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match-type", state.getPath()))
-	}
 	for i := range state.ClassNumbers {
 		stateKeyValues := [...]string{strconv.FormatInt(state.ClassNumbers[i].Number.ValueInt64(), 10)}
 
@@ -965,12 +962,6 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 				found = false
 			}
 			if found {
-				if !state.ClassNumbers[i].Class.IsNull() && data.ClassNumbers[j].Class.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/class", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.ClassNumbers[i].ExecutionType.IsNull() && data.ClassNumbers[j].ExecutionType.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/execution-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				for ci := range state.ClassNumbers[i].ActionNumbers {
 					cstateKeyValues := [...]string{strconv.FormatInt(state.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64(), 10)}
 
@@ -989,107 +980,107 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 							found = false
 						}
 						if found {
-							if !state.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].PauseReauthentication.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/pause/reauthentication", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Authorize.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authorize", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].TerminateConfig.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].TerminateConfig.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/terminate-config", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigServiceTemplate.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/service-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigAaaList.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/aaa-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigPrecedence.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/precedence", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigReplaceAll.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/replace-all", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateInterfaceTemplate.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/interface-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivatePolicyTypeControlSubscriber.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/policy/type/control/subscriber", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateInterfaceTemplate.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/interface-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateServiceTemplate.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/service-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivatePolicyTypeControlSubscriber.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/policy/type/control/subscriber", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingMethod.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/method", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetries.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/retries", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetryTime.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/retry-time", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/priority", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcList.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa/authc-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzList.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa/authz-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingBoth.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/both", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingParameterMap.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/parameter-map", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Replace.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/replace", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Restrict.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/restrict", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearSession.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-session", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearAuthenticatedDataHostsOnPort.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-authenticated-data-hosts-on-port", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Protect.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/protect", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ErrDisable.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/err-disable", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ResumeReauthentication.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/resume/reauthentication", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticationRestart.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authentication-restart", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].SetDomain.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetDomain.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/set-domain", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Unauthorize.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/unauthorize", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Notify.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/notify", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerName.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerName.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/set-timer/name", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							if !state.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].MapAttributeToServiceTable.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/map/attribute-to-service/table", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerValue.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerValue.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/set-timer/value", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].MapAttributeToServiceTable.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/map/attribute-to-service/table", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerName.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerName.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/set-timer/name", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Notify.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/notify", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Unauthorize.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/unauthorize", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetDomain.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetDomain.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/set-domain", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticationRestart.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authentication-restart", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ResumeReauthentication.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/resume/reauthentication", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ErrDisable.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/err-disable", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Protect.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/protect", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearAuthenticatedDataHostsOnPort.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-authenticated-data-hosts-on-port", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearSession.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-session", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Restrict.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/restrict", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Replace.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/replace", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingParameterMap.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/parameter-map", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingBoth.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/both", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa/authz-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/aaa/authc-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/priority", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetryTime.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/retry-time", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetries.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/retries", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingMethod.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/method", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivatePolicyTypeControlSubscriber.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/policy/type/control/subscriber", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateServiceTemplate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/service-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateInterfaceTemplate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/deactivate/interface-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivatePolicyTypeControlSubscriber.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/policy/type/control/subscriber", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateInterfaceTemplate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/interface-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigReplaceAll.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/replace-all", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigPrecedence.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/precedence", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigAaaList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/aaa-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigServiceTemplate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/service-template", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].TerminateConfig.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].TerminateConfig.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/terminate-config", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Authorize.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/authorize", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].PauseReauthentication.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v/pause/reauthentication", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							break
 						}
@@ -1098,6 +1089,12 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/action-number=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
+				if !state.ClassNumbers[i].ExecutionType.IsNull() && data.ClassNumbers[j].ExecutionType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/execution-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.ClassNumbers[i].Class.IsNull() && data.ClassNumbers[j].Class.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v/class", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -1105,6 +1102,10 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/class-number=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.MatchType.IsNull() && data.MatchType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match-type", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -1120,47 +1121,48 @@ func (data *PolicyMapEvent) getEmptyLeafsDelete(ctx context.Context) []string {
 
 		for ci := range data.ClassNumbers[i].ActionNumbers {
 			ckeyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64(), 10)}
-			if !data.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/pause/reauthentication", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Authorize.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/authorize", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/replace-all", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/both", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Replace.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/replace", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Restrict.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/restrict", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ClearSession.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-session", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-authenticated-data-hosts-on-port", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Protect.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/protect", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ErrDisable.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/err-disable", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/resume/reauthentication", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			if !data.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Notify.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/notify", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 			if !data.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Unauthorize.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/unauthorize", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
-			if !data.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Notify.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/notify", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			if !data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/resume/reauthentication", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ErrDisable.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/err-disable", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Protect.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/protect", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-authenticated-data-hosts-on-port", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ClearSession.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/clear-session", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Restrict.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/restrict", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Replace.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/replace", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/authenticate/using/both", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/activate/service-template-config/replace-all", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].Authorize.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/authorize", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() && !data.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class-number=%v/action-number=%v/pause/reauthentication", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 		}
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -1170,14 +1172,15 @@ func (data *PolicyMapEvent) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *PolicyMapEvent) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.MatchType.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match-type", data.getPath()))
-	}
 	for i := range data.ClassNumbers {
 		keyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].Number.ValueInt64(), 10)}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/class-number=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.MatchType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match-type", data.getPath()))
+	}
+
 	return deletePaths
 }
 

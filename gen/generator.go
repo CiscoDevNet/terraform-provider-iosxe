@@ -30,6 +30,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"text/template"
 
@@ -320,6 +321,14 @@ func GetDeletePath(attribute YamlConfigAttribute) string {
 	return path
 }
 
+func ReverseAttributes(attributes []YamlConfigAttribute) []YamlConfigAttribute {
+	reversed := make([]YamlConfigAttribute, len(attributes))
+	for i, v := range attributes {
+		reversed[len(attributes)-1-i] = v
+	}
+	return reversed
+}
+
 // Map of templating functions
 var functions = template.FuncMap{
 	"toGoName":              ToGoName,
@@ -337,6 +346,7 @@ var functions = template.FuncMap{
 	"getImportExcludes":     GetImportExcludes,
 	"importAttributes":      ImportAttributes,
 	"getDeletePath":         GetDeletePath,
+	"reverseAttributes":     ReverseAttributes,
 }
 
 func resolvePath(e *yang.Entry, path string) *yang.Entry {
@@ -580,6 +590,31 @@ func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 	}
 }
 
+func getTemplateSection(content, name string) string {
+	scanner := bufio.NewScanner(strings.NewReader(content))
+	result := ""
+	foundSection := false
+	beginRegex := regexp.MustCompile(`\/\/template:begin\s` + name + `$`)
+	endRegex := regexp.MustCompile(`\/\/template:end\s` + name + `$`)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if !foundSection {
+			match := beginRegex.MatchString(line)
+			if match {
+				foundSection = true
+				result += line + "\n"
+			}
+		} else {
+			result += line + "\n"
+			match := endRegex.MatchString(line)
+			if match {
+				foundSection = false
+			}
+		}
+	}
+	return result
+}
+
 func renderTemplate(templatePath, outputPath string, config interface{}) {
 	file, err := os.Open(templatePath)
 	if err != nil {
@@ -602,18 +637,46 @@ func renderTemplate(templatePath, outputPath string, config interface{}) {
 		log.Fatalf("Error parsing template: %v", err)
 	}
 
-	// create output file
-	outputFile := filepath.Join(outputPath)
-	os.MkdirAll(filepath.Dir(outputFile), 0755)
-	f, err := os.Create(outputFile)
-	if err != nil {
-		log.Fatalf("Error creating output file: %v", err)
-	}
-
 	output := new(bytes.Buffer)
 	err = template.Execute(output, config)
 	if err != nil {
-		log.Fatalf("Error executing template: %v", err)
+		log.Fatalf("Error executing template for %s: %v", outputPath, err)
+	}
+
+	outputFile := filepath.Join(outputPath)
+	existingFile, err := os.Open(outputPath)
+	if err != nil {
+		os.MkdirAll(filepath.Dir(outputFile), 0755)
+	} else if strings.HasSuffix(templatePath, ".go") {
+		existingScanner := bufio.NewScanner(existingFile)
+		var newContent string
+		currentSectionName := ""
+		beginRegex := regexp.MustCompile(`\/\/template:begin\s(.*?)$`)
+		endRegex := regexp.MustCompile(`\/\/template:end\s(.*?)$`)
+		for existingScanner.Scan() {
+			line := existingScanner.Text()
+			if currentSectionName == "" {
+				matches := beginRegex.FindStringSubmatch(line)
+				if len(matches) > 1 && matches[1] != "" {
+					currentSectionName = matches[1]
+				} else {
+					newContent += line + "\n"
+				}
+			} else {
+				matches := endRegex.FindStringSubmatch(line)
+				if len(matches) > 1 && matches[1] == currentSectionName {
+					currentSectionName = ""
+					newSection := getTemplateSection(string(output.Bytes()), matches[1])
+					newContent += newSection
+				}
+			}
+		}
+		output = bytes.NewBufferString(newContent)
+	}
+	// write to output file
+	f, err := os.Create(outputFile)
+	if err != nil {
+		log.Fatalf("Error creating output file: %v", err)
 	}
 	f.Write(output.Bytes())
 }
@@ -623,25 +686,31 @@ func main() {
 	flag.BoolVar(&writeFlag, "w", false, "Write full definitions")
 	flag.Parse()
 
-	items, _ := os.ReadDir(definitionsPath)
-	configs := make([]YamlConfig, len(items))
+	resourceName := ""
+	if len(os.Args) == 2 {
+		resourceName = os.Args[1]
+	}
 
 	// Load configs
-	for i, filename := range items {
-		yamlFile, err := os.ReadFile(filepath.Join(definitionsPath, filename.Name()))
+	var configs []YamlConfig
+	files, _ := os.ReadDir(definitionsPath)
+
+	for _, filename := range files {
+		path := filepath.Join(definitionsPath, filename.Name())
+		bytes, err := os.ReadFile(path)
 		if err != nil {
-			log.Fatalf("Error reading file: %v", err)
+			log.Fatalf("Error reading file %q: %v", path, err)
 		}
 
 		config := YamlConfig{}
-		err = yaml.Unmarshal(yamlFile, &config)
+		err = yaml.Unmarshal(bytes, &config)
 		if err != nil {
-			log.Fatalf("Error parsing yaml: %v", err)
+			log.Fatalf("Error parsing %q: %v", path, err)
 		}
-		configs[i] = config
+		configs = append(configs, config)
 	}
 
-	items, _ = os.ReadDir(modelsPath)
+	items, _ := os.ReadDir(modelsPath)
 
 	yangModules := yang.NewModules()
 
@@ -658,6 +727,9 @@ func main() {
 	}
 
 	for i := range configs {
+		if resourceName != "" && configs[i].Name != resourceName {
+			continue
+		}
 		// Augment config by yang models
 		if !configs[i].NoAugmentConfig {
 			augmentConfig(&configs[i], yangModules)

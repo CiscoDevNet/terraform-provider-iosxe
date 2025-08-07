@@ -71,6 +71,10 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				MarkdownDescription: "",
 				Required:            true,
 			},
+			"encapsulation_dot1q_vlan_id": schema.Int64Attribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: "Interface specific description",
 				Computed:            true,
@@ -103,24 +107,20 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Schema(ctx context.Context,
 				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
-			"encapsulation_dot1q_vlan_id": schema.Int64Attribute{
-				MarkdownDescription: "",
+			"ip_access_group_in_enable": schema.BoolAttribute{
+				MarkdownDescription: "inbound packets",
 				Computed:            true,
 			},
 			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: "inbound packets",
+			"ip_access_group_out_enable": schema.BoolAttribute{
+				MarkdownDescription: "outbound packets",
 				Computed:            true,
 			},
 			"ip_access_group_out": schema.StringAttribute{
 				MarkdownDescription: "",
-				Computed:            true,
-			},
-			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: "outbound packets",
 				Computed:            true,
 			},
 			"auto_qos_classify": schema.BoolAttribute{
@@ -326,7 +326,7 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Read(ctx context.Context, r
 		config = InterfacePortChannelSubinterfaceData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

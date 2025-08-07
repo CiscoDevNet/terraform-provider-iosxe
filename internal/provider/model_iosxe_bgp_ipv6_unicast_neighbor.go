@@ -337,21 +337,6 @@ func (data *BGPIPv6UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 
 func (data *BGPIPv6UnicastNeighbor) getDeletedItems(ctx context.Context, state BGPIPv6UnicastNeighbor) []string {
 	deletedItems := make([]string, 0)
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
-	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
-	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
-	}
-	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate", state.getPath()))
-	}
-	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate/route-map", state.getPath()))
-	}
 	for i := range state.RouteMaps {
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
 
@@ -380,6 +365,22 @@ func (data *BGPIPv6UnicastNeighbor) getDeletedItems(ctx context.Context, state B
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate/route-map", state.getPath()))
+	}
+	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/default-originate", state.getPath()))
+	}
+	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
+	}
+	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
+	}
+	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -389,14 +390,15 @@ func (data *BGPIPv6UnicastNeighbor) getDeletedItems(ctx context.Context, state B
 
 func (data *BGPIPv6UnicastNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
+
+	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-originate", data.getPath()))
 	}
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
 	}
-	if !data.DefaultOriginate.IsNull() && !data.DefaultOriginate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/default-originate", data.getPath()))
+	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -408,26 +410,27 @@ func (data *BGPIPv6UnicastNeighbor) getEmptyLeafsDelete(ctx context.Context) []s
 
 func (data *BGPIPv6UnicastNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.SendCommunity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
-	}
-	if !data.RouteReflectorClient.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
-	}
-	if !data.SoftReconfiguration.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
-	}
-	if !data.DefaultOriginate.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate", data.getPath()))
-	}
-	if !data.DefaultOriginateRouteMap.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate/route-map", data.getPath()))
-	}
 	for i := range data.RouteMaps {
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-map=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.DefaultOriginateRouteMap.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate/route-map", data.getPath()))
+	}
+	if !data.DefaultOriginate.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/default-originate", data.getPath()))
+	}
+	if !data.SoftReconfiguration.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
+	}
+	if !data.RouteReflectorClient.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
+	}
+	if !data.SendCommunity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
+	}
+
 	return deletePaths
 }
 

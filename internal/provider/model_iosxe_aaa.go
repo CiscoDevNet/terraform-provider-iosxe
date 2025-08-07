@@ -804,123 +804,6 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 	deletedItems := make([]string, 0)
-	if !state.NewModel.IsNull() && data.NewModel.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", state.getPath()))
-	}
-	if !state.ServerRadiusDynamicAuthor.IsNull() && data.ServerRadiusDynamicAuthor.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author", state.getPath()))
-	}
-	if !state.SessionId.IsNull() && data.SessionId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:session-id", state.getPath()))
-	}
-	for i := range state.ServerRadiusDynamicAuthorClients {
-		stateKeyValues := [...]string{state.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.ServerRadiusDynamicAuthorClients {
-			found = true
-			if state.ServerRadiusDynamicAuthorClients[i].Ip.ValueString() != data.ServerRadiusDynamicAuthorClients[j].Ip.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.ServerRadiusDynamicAuthorClients[i].ServerKeyType.IsNull() && data.ServerRadiusDynamicAuthorClients[j].ServerKeyType.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v/server-key/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.ServerRadiusDynamicAuthorClients[i].ServerKey.IsNull() && data.ServerRadiusDynamicAuthorClients[j].ServerKey.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v/server-key/string", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.GroupServerRadius {
-		stateKeyValues := [...]string{state.GroupServerRadius[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.GroupServerRadius[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.GroupServerRadius {
-			found = true
-			if state.GroupServerRadius[i].Name.ValueString() != data.GroupServerRadius[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				for ci := range state.GroupServerRadius[i].ServerNames {
-					cstateKeyValues := [...]string{state.GroupServerRadius[i].ServerNames[ci].Name.ValueString()}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.GroupServerRadius[i].ServerNames[ci].Name.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.GroupServerRadius[j].ServerNames {
-						found = true
-						if state.GroupServerRadius[i].ServerNames[ci].Name.ValueString() != data.GroupServerRadius[j].ServerNames[cj].Name.ValueString() {
-							found = false
-						}
-						if found {
-							break
-						}
-					}
-					if !found {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-					}
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceLoopback.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceVlan.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceVlan.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/Vlan", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/GigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/TwoGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/FiveGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/TenGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/TwentyFiveGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/FortyGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/HundredGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
 	for i := range state.GroupServerTacacsplus {
 		stateKeyValues := [...]string{state.GroupServerTacacsplus[i].Name.ValueString()}
 
@@ -939,6 +822,33 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 				found = false
 			}
 			if found {
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/HundredGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/FortyGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/TwentyFiveGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/TenGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/FiveGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/TwoGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/GigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceVlan.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceVlan.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/Vlan", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceLoopback.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				for ci := range state.GroupServerTacacsplus[i].ServerNames {
 					cstateKeyValues := [...]string{state.GroupServerTacacsplus[i].ServerNames[ci].Name.ValueString()}
 
@@ -964,33 +874,6 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceLoopback.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceLoopback.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceVlan.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceVlan.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/Vlan", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/GigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTwoGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/TwoGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceFiveGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/FiveGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTenGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/TenGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/TwentyFiveGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceFortyGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/FortyGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/HundredGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				break
 			}
 		}
@@ -998,6 +881,124 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.GroupServerRadius {
+		stateKeyValues := [...]string{state.GroupServerRadius[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.GroupServerRadius[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.GroupServerRadius {
+			found = true
+			if state.GroupServerRadius[i].Name.ValueString() != data.GroupServerRadius[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceHundredGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/HundredGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceFortyGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/FortyGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/TwentyFiveGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTenGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/TenGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceFiveGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/FiveGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceTwoGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/TwoGigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceGigabitEthernet.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceGigabitEthernet.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/GigabitEthernet", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceVlan.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceVlan.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/Vlan", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.GroupServerRadius[i].IpRadiusSourceInterfaceLoopback.IsNull() && data.GroupServerRadius[j].IpRadiusSourceInterfaceLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/ip/radius/source-interface/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				for ci := range state.GroupServerRadius[i].ServerNames {
+					cstateKeyValues := [...]string{state.GroupServerRadius[i].ServerNames[ci].Name.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.GroupServerRadius[i].ServerNames[ci].Name.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.GroupServerRadius[j].ServerNames {
+						found = true
+						if state.GroupServerRadius[i].ServerNames[ci].Name.ValueString() != data.GroupServerRadius[j].ServerNames[cj].Name.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v/server/name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.ServerRadiusDynamicAuthorClients {
+		stateKeyValues := [...]string{state.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ServerRadiusDynamicAuthorClients {
+			found = true
+			if state.ServerRadiusDynamicAuthorClients[i].Ip.ValueString() != data.ServerRadiusDynamicAuthorClients[j].Ip.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.ServerRadiusDynamicAuthorClients[i].ServerKey.IsNull() && data.ServerRadiusDynamicAuthorClients[j].ServerKey.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v/server-key/string", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.ServerRadiusDynamicAuthorClients[i].ServerKeyType.IsNull() && data.ServerRadiusDynamicAuthorClients[j].ServerKeyType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v/server-key/key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.SessionId.IsNull() && data.SessionId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:session-id", state.getPath()))
+	}
+	if !state.ServerRadiusDynamicAuthor.IsNull() && data.ServerRadiusDynamicAuthor.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author", state.getPath()))
+	}
+	if !state.NewModel.IsNull() && data.NewModel.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -1007,11 +1008,12 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 
 func (data *AAA) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.NewModel.IsNull() && !data.NewModel.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", data.getPath()))
-	}
+
 	if !data.ServerRadiusDynamicAuthor.IsNull() && !data.ServerRadiusDynamicAuthor.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author", data.getPath()))
+	}
+	if !data.NewModel.IsNull() && !data.NewModel.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -1023,30 +1025,31 @@ func (data *AAA) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *AAA) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.NewModel.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", data.getPath()))
-	}
-	if !data.ServerRadiusDynamicAuthor.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author", data.getPath()))
-	}
-	if !data.SessionId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:session-id", data.getPath()))
-	}
-	for i := range data.ServerRadiusDynamicAuthorClients {
-		keyValues := [...]string{data.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()}
+	for i := range data.GroupServerTacacsplus {
+		keyValues := [...]string{data.GroupServerTacacsplus[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.GroupServerRadius {
 		keyValues := [...]string{data.GroupServerRadius[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/radius=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.GroupServerTacacsplus {
-		keyValues := [...]string{data.GroupServerTacacsplus[i].Name.ValueString()}
+	for i := range data.ServerRadiusDynamicAuthorClients {
+		keyValues := [...]string{data.ServerRadiusDynamicAuthorClients[i].Ip.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author/client=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	if !data.SessionId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:session-id", data.getPath()))
+	}
+	if !data.ServerRadiusDynamicAuthor.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:server/radius/dynamic-author", data.getPath()))
+	}
+	if !data.NewModel.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:new-model", data.getPath()))
+	}
+
 	return deletePaths
 }
 

@@ -419,6 +419,15 @@ func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServer) []string {
 	deletedItems := make([]string, 0)
+	if !state.Deadtime.IsNull() && data.Deadtime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:deadtime", state.getPath()))
+	}
+	if !state.DeadCriteriaTries.IsNull() && data.DeadCriteriaTries.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/tries", state.getPath()))
+	}
+	if !state.DeadCriteriaTime.IsNull() && data.DeadCriteriaTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/time", state.getPath()))
+	}
 	for i := range state.Attributes {
 		stateKeyValues := [...]string{state.Attributes[i].Number.ValueString()}
 
@@ -437,46 +446,6 @@ func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServe
 				found = false
 			}
 			if found {
-				if !state.Attributes[i].AccessRequestInclude.IsNull() && data.Attributes[j].AccessRequestInclude.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/access-request/include", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				for ci := range state.Attributes[i].Attribute31Parameters {
-					cstateKeyValues := [...]string{state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Attributes[j].Attribute31Parameters {
-						found = true
-						if state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString() != data.Attributes[j].Attribute31Parameters[cj].CallingStationId.ValueString() {
-							found = false
-						}
-						if found {
-							if !state.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacFormat.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-mac/format", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacLuCase.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-mac/lu-case", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendNasPortDetail.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/nas-port-detail", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							if !state.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendMacOnly.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/mac-only", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
-							break
-						}
-					}
-					if !found {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-					}
-				}
 				if !state.Attributes[i].SendAttributes.IsNull() {
 					if data.Attributes[j].SendAttributes.IsNull() {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/send-attribute", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -498,6 +467,46 @@ func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServe
 						}
 					}
 				}
+				for ci := range state.Attributes[i].Attribute31Parameters {
+					cstateKeyValues := [...]string{state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Attributes[j].Attribute31Parameters {
+						found = true
+						if state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString() != data.Attributes[j].Attribute31Parameters[cj].CallingStationId.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendMacOnly.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/mac-only", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendNasPortDetail.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/nas-port-detail", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacLuCase.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-mac/lu-case", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacFormat.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-mac/format", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				if !state.Attributes[i].AccessRequestInclude.IsNull() && data.Attributes[j].AccessRequestInclude.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/access-request/include", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				break
 			}
 		}
@@ -505,15 +514,7 @@ func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServe
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.DeadCriteriaTime.IsNull() && data.DeadCriteriaTime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/time", state.getPath()))
-	}
-	if !state.DeadCriteriaTries.IsNull() && data.DeadCriteriaTries.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/tries", state.getPath()))
-	}
-	if !state.Deadtime.IsNull() && data.Deadtime.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:deadtime", state.getPath()))
-	}
+
 	return deletedItems
 }
 
@@ -526,20 +527,21 @@ func (data *RadiusServer) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.Attributes {
 		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
-		if !data.Attributes[i].AccessRequestInclude.IsNull() && !data.Attributes[i].AccessRequestInclude.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/access-request/include", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
 
 		for ci := range data.Attributes[i].Attribute31Parameters {
 			ckeyValues := [...]string{data.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
-			if !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.ValueBool() {
-				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/nas-port-detail", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
-			}
 			if !data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && !data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/mac-only", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
+			if !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/nas-port-detail", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+		}
+		if !data.Attributes[i].AccessRequestInclude.IsNull() && !data.Attributes[i].AccessRequestInclude.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/access-request/include", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -549,20 +551,21 @@ func (data *RadiusServer) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *RadiusServer) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.Deadtime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:deadtime", data.getPath()))
+	}
+	if !data.DeadCriteriaTries.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/tries", data.getPath()))
+	}
+	if !data.DeadCriteriaTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/time", data.getPath()))
+	}
 	for i := range data.Attributes {
 		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.DeadCriteriaTime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/time", data.getPath()))
-	}
-	if !data.DeadCriteriaTries.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:dead-criteria/tries", data.getPath()))
-	}
-	if !data.Deadtime.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:deadtime", data.getPath()))
-	}
+
 	return deletePaths
 }
 

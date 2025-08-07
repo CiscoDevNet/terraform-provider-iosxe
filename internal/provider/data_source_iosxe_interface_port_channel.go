@@ -79,6 +79,10 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Shutdown the selected interface",
 				Computed:            true,
 			},
+			"switchport": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 			"ip_proxy_arp": schema.BoolAttribute{
 				MarkdownDescription: "Enable proxy ARP",
 				Computed:            true,
@@ -103,24 +107,20 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 				MarkdownDescription: "Ip subnet mask",
 				Computed:            true,
 			},
-			"switchport": schema.BoolAttribute{
-				MarkdownDescription: "",
+			"ip_access_group_in_enable": schema.BoolAttribute{
+				MarkdownDescription: "inbound packets",
 				Computed:            true,
 			},
 			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"ip_access_group_in_enable": schema.BoolAttribute{
-				MarkdownDescription: "inbound packets",
+			"ip_access_group_out_enable": schema.BoolAttribute{
+				MarkdownDescription: "outbound packets",
 				Computed:            true,
 			},
 			"ip_access_group_out": schema.StringAttribute{
 				MarkdownDescription: "",
-				Computed:            true,
-			},
-			"ip_access_group_out_enable": schema.BoolAttribute{
-				MarkdownDescription: "outbound packets",
 				Computed:            true,
 			},
 			"ip_dhcp_relay_source_interface": schema.StringAttribute{
@@ -370,7 +370,7 @@ func (d *InterfacePortChannelDataSource) Read(ctx context.Context, req datasourc
 		config = InterfacePortChannelData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

@@ -1,67 +1,66 @@
 ---
-name: str()
-path: str()
-augment_path: str(required=False)
-no_delete: bool(required=False)
-no_delete_attributes: bool(required=False)
-default_delete_attributes: bool(required=False)
+name: str()  # The name of the resource and data source
+path: str()  # The YANG path of the resource and data source
+augment_path: str(required=False)  # If a different path is required to augment the definition it can be provided here
+no_delete: bool(required=False)  # Set to true if the resource path cannot be deleted, e.g. an ethernet interface
+no_delete_attributes: bool(required=False)  # Set to true if the resource should not provide an attribute to delete the top level attributes individually
+default_delete_attributes: bool(required=False)  # Set to true if the resource should use the "attributes" delete mode by default
 wait: bool(required=False)  # Wait for the DB lock to be released, this is required for operations that require a full-sync, eg. applying a source template to an interface
-test_tags: list(str(), required=False)
-skip_minimum_test: bool(required=False)
-no_augment_config: bool(required=False)
-ds_description: str(required=False)
-res_description: str(required=False)
-doc_category: str()
-attributes: list(include('attribute'), required=False)
-test_prerequisites: list(include('test_prerequisite'), required=False)
+test_tags: list(str(), required=False)  # List of test tags, tests are only executed if an environment variable for each of these tags is configured
+skip_minimum_test: bool(required=False)  # Set to true if the resource should skip the minimum test
+no_augment_config: bool(required=False)  # Set to true if the definition should not be augmented by the YANG models
+ds_description: str(required=False)  # Description for the data source
+res_description: str(required=False)  # Description for the resource
+doc_category: str()  # Documentation category for the resource
+attributes: list(include('attribute'), required=False)  # List of attributes
+test_prerequisites: list(include('test_prerequisite'), required=False)  # List of test prerequisites
 ---
 attribute:
-  yang_name: str()
-  yang_scope: str(required=False)
-  tf_name: str(required=False)
-  xpath: str(required=False)
-  type: enum('String', 'Int64', 'Bool', 'List', 'StringList', 'Int64List', required=False)
-  type_yang_bool: enum('empty', 'presence', 'boolean', required=False)
-  id: bool(required=False)
-  reference: bool(required=False)
-  mandatory: bool(required=False)
-  optional: bool(required=False)
-  write_only: bool(required=False)
-  exclude_test: bool(required=False)
-  exclude_example: bool(required=False)
-  description: str(required=False)
-  example: any(str(), int(), bool(), required=False)
-  allow_import_changes: bool(required=False)
-  enum_values: list(str(), required=False)
-  min_int: int(required=False)
-  max_int: int(required=False)
-  string_patterns: list(str(),required=False)
-  string_min_length: int(required=False)
-  string_max_length: int(required=False)
-  default_value: any(str(), int(), bool(), required=False)
-  requires_replace: bool(required=False)
-  no_augment_config: bool(required=False)
-  delete_parent: bool(required=False)
-  no_delete: bool(required=False)
-  test_tags: list(str(), required=False)
-  attributes: list(include('attribute'), required=False)
+  yang_name: str()  # YANG name/path of the attribute
+  yang_scope: str(required=False)  # When trying to find a matching element in the YANG model, limit the scope by proving the parent element name here
+  tf_name: str(required=False)  # Optionally provide a Terraform name for the attribute, otherwise it will be derived from the YANG name
+  xpath: str(required=False)  # Optionally provide an XPath for the attribute, otherwise it will be derived from 'yang_name'
+  type: enum('String', 'Int64', 'Bool', 'List', 'StringList', 'Int64List', required=False)  # Terraform type of the attribute
+  type_yang_bool: enum('empty', 'presence', 'boolean', required=False)  # There are three possible ways of representing a boolean in YANG
+  id: bool(required=False)  # Set to true if the attribute is used to identify an element in a list
+  reference: bool(required=False)  # Set to true if the attribute is a reference being used in the path (URL) of the REST endpoint
+  mandatory: bool(required=False)  # Set to true if the attribute is mandatory
+  optional: bool(required=False)  # Set to true if the attribute is optional
+  write_only: bool(required=False)  # Set to true if the attribute is write-only, meaning we cannot read the value
+  exclude_test: bool(required=False)  # Set to true if the attribute should be excluded from the test
+  exclude_example: bool(required=False)  # Set to true if the attribute should be excluded from the example
+  description: str(required=False)  # Description of the attribute
+  example: any(str(), int(), bool(), required=False)  # Example value for the attribute
+  allow_import_changes: bool(required=False)  # Set to true if the attribute should be allowed to change during import
+  enum_values: list(str(), required=False)  # List of possible enum values
+  min_int: int(required=False)  # Minimum value for integer attributes
+  max_int: int(required=False)  # Maximum value for integer attributes
+  string_patterns: list(str(),required=False)  # List of string patterns
+  string_min_length: int(required=False)  # Minimum length for string attributes
+  string_max_length: int(required=False)  # Maximum length for string attributes
+  default_value: any(str(), int(), bool(), required=False)  # Default value for the attribute
+  requires_replace: bool(required=False)  # Set to true if the attribute update should force Terraform to destroy/recreate the entire resource
+  no_augment_config: bool(required=False)  # Set to true if the attribute should not be augmented by the YANG models
+  delete_parent: bool(required=False)  # Set to true if the attribute should delete the parent YANG element when the attribute is deleted
+  no_delete: bool(required=False)  # Set to true if the attribute should not be deleted
+  test_tags: list(str(), required=False)  # List of test tags, tests are only executed if an environment variable for each of these tags is configured
+  attributes: list(include('attribute'), required=False)  # List of attributes in case of a list
 
 test_prerequisite:
-  path: str()
-  no_delete: bool(required=False)
-  attributes: list(include('test_attribute'), required=False)
-  lists: list(include('test_list'), required=False)
-  dependencies: list(int(), required=False)
+  path: str()  # YANG path of the test prerequisite
+  no_delete: bool(required=False)  # Set to true if the test prerequisite should not be deleted
+  attributes: list(include('test_attribute'), required=False)  # List of attributes
+  lists: list(include('test_list'), required=False)  # Lists of this test prerequisite
+  dependencies: list(int(), required=False)  # List of dependencies to other test prerequisites being the index of the test prerequisite in the 'test_prerequisites' list
 
 test_attribute:
-  name: str()
-  value: any(str(), int(), bool())
-  reference: str(required=False)
+  name: str()  # Name of the attribute
+  value: any(str(), int(), bool())  # Value of the attribute
 
 test_list:
-  name: str()
-  key: str()
-  items: list(include('test_list_item'))
+  name: str()  # Name of the list
+  key: str()  # Key (id) of the list
+  items: list(include('test_list_item'))  # Items of the list
 
 test_list_item:
-  attributes: list(include('test_attribute'), required=False)
+  attributes: list(include('test_attribute'), required=False)  # Attributes of the list item

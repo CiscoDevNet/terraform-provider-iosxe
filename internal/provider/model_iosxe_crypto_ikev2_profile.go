@@ -539,32 +539,65 @@ func (data *CryptoIKEv2ProfileData) fromBody(ctx context.Context, res gjson.Resu
 
 func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state CryptoIKEv2Profile) []string {
 	deletedItems := make([]string, 0)
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	if !state.ConfigExchangeRequest.IsNull() && data.ConfigExchangeRequest.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/config-exchange/request-1", state.getPath()))
 	}
-	if !state.AuthenticationRemotePreShare.IsNull() && data.AuthenticationRemotePreShare.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/remote/pre-share", state.getPath()))
+	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
 	}
-	if !state.AuthenticationLocalPreShare.IsNull() && data.AuthenticationLocalPreShare.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/local/pre-share", state.getPath()))
+	if !state.DpdRetry.IsNull() && data.DpdRetry.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
 	}
-	if !state.IdentityLocalAddress.IsNull() && data.IdentityLocalAddress.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/local/address", state.getPath()))
+	if !state.DpdInterval.IsNull() && data.DpdInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
 	}
-	if !state.IdentityLocalKeyId.IsNull() && data.IdentityLocalKeyId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/local/key-id", state.getPath()))
+	if !state.Ivrf.IsNull() && data.Ivrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ivrf", state.getPath()))
 	}
-	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/inbound-only", state.getPath()))
+	if !state.KeyringLocal.IsNull() && data.KeyringLocal.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/keyring/local/name", state.getPath()))
 	}
-	if !state.MatchAddressLocalIp.IsNull() && data.MatchAddressLocalIp.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local/ip", state.getPath()))
+	if !state.MatchIdentityRemoteKeys.IsNull() {
+		if data.MatchIdentityRemoteKeys.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/key-ids", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIdentityRemoteKeys.ElementsAs(ctx, &dataValues, false)
+			state.MatchIdentityRemoteKeys.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/key-ids=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
-	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/name", state.getPath()))
-	}
-	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/any", state.getPath()))
+	if !state.MatchIdentityRemoteIpv6Prefixes.IsNull() {
+		if data.MatchIdentityRemoteIpv6Prefixes.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &dataValues, false)
+			state.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix=%v", state.getPath(), v))
+				}
+			}
+		}
 	}
 	for i := range state.MatchIdentityRemoteIpv4Addresses {
 		stateKeyValues := [...]string{state.MatchIdentityRemoteIpv4Addresses[i].Address.ValueString()}
@@ -594,66 +627,34 @@ func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state Crypt
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.MatchIdentityRemoteIpv6Prefixes.IsNull() {
-		if data.MatchIdentityRemoteIpv6Prefixes.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &dataValues, false)
-			state.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix=%v", state.getPath(), v))
-				}
-			}
-		}
+	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/any", state.getPath()))
 	}
-	if !state.MatchIdentityRemoteKeys.IsNull() {
-		if data.MatchIdentityRemoteKeys.IsNull() {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/key-ids", state.getPath()))
-		} else {
-			var dataValues, stateValues []string
-			data.MatchIdentityRemoteKeys.ElementsAs(ctx, &dataValues, false)
-			state.MatchIdentityRemoteKeys.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/identity/remote/key-ids=%v", state.getPath(), v))
-				}
-			}
-		}
+	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/fvrf/name", state.getPath()))
 	}
-	if !state.KeyringLocal.IsNull() && data.KeyringLocal.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/keyring/local/name", state.getPath()))
+	if !state.MatchAddressLocalIp.IsNull() && data.MatchAddressLocalIp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/address/local/ip", state.getPath()))
 	}
-	if !state.Ivrf.IsNull() && data.Ivrf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ivrf", state.getPath()))
+	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/match/inbound-only", state.getPath()))
 	}
-	if !state.DpdInterval.IsNull() && data.DpdInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
+	if !state.IdentityLocalKeyId.IsNull() && data.IdentityLocalKeyId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/local/key-id", state.getPath()))
 	}
-	if !state.DpdRetry.IsNull() && data.DpdRetry.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
+	if !state.IdentityLocalAddress.IsNull() && data.IdentityLocalAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/identity/local/address", state.getPath()))
 	}
-	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dpd", state.getPath()))
+	if !state.AuthenticationLocalPreShare.IsNull() && data.AuthenticationLocalPreShare.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/local/pre-share", state.getPath()))
 	}
-	if !state.ConfigExchangeRequest.IsNull() && data.ConfigExchangeRequest.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/config-exchange/request-1", state.getPath()))
+	if !state.AuthenticationRemotePreShare.IsNull() && data.AuthenticationRemotePreShare.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/authentication/remote/pre-share", state.getPath()))
 	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -663,17 +664,18 @@ func (data *CryptoIKEv2Profile) getDeletedItems(ctx context.Context, state Crypt
 
 func (data *CryptoIKEv2Profile) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.AuthenticationRemotePreShare.IsNull() && !data.AuthenticationRemotePreShare.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/authentication/remote/pre-share", data.getPath()))
-	}
-	if !data.AuthenticationLocalPreShare.IsNull() && !data.AuthenticationLocalPreShare.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/authentication/local/pre-share", data.getPath()))
+
+	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
 	}
 	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
 	}
-	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
+	if !data.AuthenticationLocalPreShare.IsNull() && !data.AuthenticationLocalPreShare.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/authentication/local/pre-share", data.getPath()))
+	}
+	if !data.AuthenticationRemotePreShare.IsNull() && !data.AuthenticationRemotePreShare.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/authentication/remote/pre-share", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -685,62 +687,63 @@ func (data *CryptoIKEv2Profile) getEmptyLeafsDelete(ctx context.Context) []strin
 
 func (data *CryptoIKEv2Profile) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	if !data.ConfigExchangeRequest.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/config-exchange/request-1", data.getPath()))
 	}
-	if !data.AuthenticationRemotePreShare.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/remote/pre-share", data.getPath()))
+	if !data.DpdQuery.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd", data.getPath()))
 	}
-	if !data.AuthenticationLocalPreShare.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/local/pre-share", data.getPath()))
+	if !data.DpdRetry.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd", data.getPath()))
 	}
-	if !data.IdentityLocalAddress.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/local/address", data.getPath()))
+	if !data.DpdInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd", data.getPath()))
 	}
-	if !data.IdentityLocalKeyId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/local/key-id", data.getPath()))
+	if !data.Ivrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ivrf", data.getPath()))
 	}
-	if !data.MatchInboundOnly.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
+	if !data.KeyringLocal.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/keyring/local/name", data.getPath()))
 	}
-	if !data.MatchAddressLocalIp.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/address/local/ip", data.getPath()))
+	if !data.MatchIdentityRemoteKeys.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/identity/remote/key-ids", data.getPath()))
 	}
-	if !data.MatchFvrf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/name", data.getPath()))
-	}
-	if !data.MatchFvrfAny.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
+	if !data.MatchIdentityRemoteIpv6Prefixes.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix", data.getPath()))
 	}
 	for i := range data.MatchIdentityRemoteIpv4Addresses {
 		keyValues := [...]string{data.MatchIdentityRemoteIpv4Addresses[i].Address.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/identity/remote/address/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.MatchIdentityRemoteIpv6Prefixes.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/identity/remote/address/ipv6-prefix", data.getPath()))
+	if !data.MatchFvrfAny.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/any", data.getPath()))
 	}
-	if !data.MatchIdentityRemoteKeys.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/identity/remote/key-ids", data.getPath()))
+	if !data.MatchFvrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/fvrf/name", data.getPath()))
 	}
-	if !data.KeyringLocal.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/keyring/local/name", data.getPath()))
+	if !data.MatchAddressLocalIp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/address/local/ip", data.getPath()))
 	}
-	if !data.Ivrf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ivrf", data.getPath()))
+	if !data.MatchInboundOnly.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/inbound-only", data.getPath()))
 	}
-	if !data.DpdInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd", data.getPath()))
+	if !data.IdentityLocalKeyId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/local/key-id", data.getPath()))
 	}
-	if !data.DpdRetry.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd", data.getPath()))
+	if !data.IdentityLocalAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/local/address", data.getPath()))
 	}
-	if !data.DpdQuery.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dpd", data.getPath()))
+	if !data.AuthenticationLocalPreShare.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/local/pre-share", data.getPath()))
 	}
-	if !data.ConfigExchangeRequest.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/config-exchange/request-1", data.getPath()))
+	if !data.AuthenticationRemotePreShare.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/authentication/remote/pre-share", data.getPath()))
 	}
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+
 	return deletePaths
 }
 

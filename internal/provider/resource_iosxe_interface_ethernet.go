@@ -195,20 +195,20 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Set source interface for relayed messages").String,
 				Optional:            true,
 			},
-			"ip_access_group_in": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("inbound packets").String,
 				Optional:            true,
 			},
-			"ip_access_group_out": schema.StringAttribute{
+			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"ip_access_group_out_enable": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("outbound packets").String,
+				Optional:            true,
+			},
+			"ip_access_group_out": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
 			"spanning_tree_guard": schema.StringAttribute{
@@ -813,13 +813,13 @@ func (r *InterfaceEthernetResource) Create(ctx context.Context, req resource.Cre
 				_, err = device.Client.PutData(plan.getPath(), body, restconf.Wait)
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i, restconf.Wait)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -864,7 +864,7 @@ func (r *InterfaceEthernetResource) Read(ctx context.Context, req resource.ReadR
 			state = InterfaceEthernet{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 
@@ -946,7 +946,7 @@ func (r *InterfaceEthernetResource) Update(ctx context.Context, req resource.Upd
 			for _, i := range deletedItems {
 				res, err := device.Client.DeleteData(i, restconf.Wait)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -955,13 +955,13 @@ func (r *InterfaceEthernetResource) Update(ctx context.Context, req resource.Upd
 				_, err = device.Client.PutData(plan.getPath(), body, restconf.Wait)
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i, restconf.Wait)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -1002,7 +1002,7 @@ func (r *InterfaceEthernetResource) Delete(ctx context.Context, req resource.Del
 		if deleteMode == "all" {
 			res, err := device.Client.DeleteData(state.Id.ValueString(), restconf.Wait)
 			if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 		} else {
@@ -1023,8 +1023,7 @@ func (r *InterfaceEthernetResource) Delete(ctx context.Context, req resource.Del
 				for _, i := range deletePaths {
 					res, err := device.Client.DeleteData(i, restconf.Wait)
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-						return
+						resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					}
 				}
 			}

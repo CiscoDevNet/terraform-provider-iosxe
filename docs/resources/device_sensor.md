@@ -14,16 +14,6 @@ This resource can manage the Device Sensor configuration.
 
 ```terraform
 resource "iosxe_device_sensor" "example" {
-  filter_spec_dhcp_includes = [
-    {
-      name = "dhcp1"
-    }
-  ]
-  filter_spec_lldp_includes = [
-    {
-      name = "lldp1"
-    }
-  ]
   filter_lists_lldp = [
     {
       name                         = "lldp1"
@@ -44,6 +34,16 @@ resource "iosxe_device_sensor" "example" {
       option_name_class_identifier       = true
       option_name_client_identifier      = true
       option_name_client_fqdn            = true
+    }
+  ]
+  filter_spec_dhcp_includes = [
+    {
+      name = "dhcp1"
+    }
+  ]
+  filter_spec_lldp_includes = [
+    {
+      name = "lldp1"
     }
   ]
   notify_all_changes = true

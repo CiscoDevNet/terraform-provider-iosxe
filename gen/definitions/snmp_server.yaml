@@ -181,6 +181,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw/vc
     tf_name: enable_traps_pw_vc
     example: true
+    delete_parent: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/envmon
     tf_name: enable_traps_envmon
     example: true
@@ -316,10 +317,12 @@ attributes:
     tf_name: enable_traps_stpx_root_inconsistency
     example: true
     test_tags: [C9000V]
+    delete_parent: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/loop-inconsistency
     tf_name: enable_traps_stpx_loop_inconsistency
     example: true
     test_tags: [C9000V]
+    delete_parent: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog
     tf_name: enable_traps_syslog
     example: true

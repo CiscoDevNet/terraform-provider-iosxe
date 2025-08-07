@@ -169,6 +169,7 @@ func (data *VLANGroup) getDeletedItems(ctx context.Context, state VLANGroup) []s
 			}
 		}
 	}
+
 	return deletedItems
 }
 
@@ -178,6 +179,7 @@ func (data *VLANGroup) getDeletedItems(ctx context.Context, state VLANGroup) []s
 
 func (data *VLANGroup) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -190,6 +192,7 @@ func (data *VLANGroup) getDeletePaths(ctx context.Context) []string {
 	if !data.VlanLists.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/vlan-lists", data.getPath()))
 	}
+
 	return deletePaths
 }
 

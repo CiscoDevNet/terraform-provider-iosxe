@@ -465,66 +465,24 @@ func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute)
 				found = false
 			}
 			if found {
-				if !state.NextHops[i].Distance.IsNull() && data.NextHops[j].Distance.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.NextHops[i].Global.IsNull() && data.NextHops[j].Global.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/global", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.NextHops[i].Name.IsNull() && data.NextHops[j].Name.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.NextHops[i].Permanent.IsNull() && data.NextHops[j].Permanent.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/permanent", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.NextHops[i].Tag.IsNull() && data.NextHops[j].Tag.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/tag", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.NextHops[i].Name.IsNull() && data.NextHops[j].Name.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.NextHops[i].Global.IsNull() && data.NextHops[j].Global.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/global", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.NextHops[i].Metric.IsNull() && data.NextHops[j].Metric.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.NextHopsWithTrack {
-		stateKeyValues := [...]string{state.NextHopsWithTrack[i].NextHop.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.NextHopsWithTrack[i].NextHop.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.NextHopsWithTrack {
-			found = true
-			if state.NextHopsWithTrack[i].NextHop.ValueString() != data.NextHopsWithTrack[j].NextHop.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.NextHopsWithTrack[i].Name.IsNull() && data.NextHopsWithTrack[j].Name.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.NextHopsWithTrack[i].TrackIdName.IsNull() && data.NextHopsWithTrack[j].TrackIdName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/track-id-name/id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.NextHopsWithTrack[i].Distance.IsNull() && data.NextHopsWithTrack[j].Distance.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/metric", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.NextHopsWithTrack[i].Tag.IsNull() && data.NextHopsWithTrack[j].Tag.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/tag", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.NextHopsWithTrack[i].Permanent.IsNull() && data.NextHopsWithTrack[j].Permanent.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v/permanent", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/fwd-list-with-track=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	return deletedItems
@@ -539,18 +497,11 @@ func (data *StaticRoute) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.NextHops {
 		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
-		if !data.NextHops[i].Global.IsNull() && !data.NextHops[i].Global.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fwd-list=%v/global", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
 		if !data.NextHops[i].Permanent.IsNull() && !data.NextHops[i].Permanent.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fwd-list=%v/permanent", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-	}
-
-	for i := range data.NextHopsWithTrack {
-		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
-		if !data.NextHopsWithTrack[i].Permanent.IsNull() && !data.NextHopsWithTrack[i].Permanent.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fwd-list-with-track=%v/permanent", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.NextHops[i].Global.IsNull() && !data.NextHops[i].Global.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/fwd-list=%v/global", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 	return emptyLeafsDelete
@@ -566,11 +517,6 @@ func (data *StaticRoute) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/fwd-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.NextHopsWithTrack {
-		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/fwd-list-with-track=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	return deletePaths
 }

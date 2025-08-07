@@ -163,12 +163,13 @@ func (data *InterfaceMPLSData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *InterfaceMPLS) getDeletedItems(ctx context.Context, state InterfaceMPLS) []string {
 	deletedItems := make([]string, 0)
-	if !state.Ip.IsNull() && data.Ip.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", state.getPath()))
-	}
 	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:mtu", state.getPath()))
 	}
+	if !state.Ip.IsNull() && data.Ip.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -181,6 +182,7 @@ func (data *InterfaceMPLS) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.Ip.IsNull() && !data.Ip.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", data.getPath()))
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -190,12 +192,13 @@ func (data *InterfaceMPLS) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceMPLS) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Ip.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", data.getPath()))
-	}
 	if !data.Mtu.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:mtu", data.getPath()))
 	}
+	if !data.Ip.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-mpls:ip", data.getPath()))
+	}
+
 	return deletePaths
 }
 

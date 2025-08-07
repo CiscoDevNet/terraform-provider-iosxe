@@ -38,6 +38,9 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "name", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "description", "My Interface Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "shutdown", "false"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "switchport", "false"))
+	}
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_proxy_arp", "false"))
 	}
@@ -50,13 +53,10 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "vrf_forwarding", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv4_address", "192.0.2.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ipv4_address_mask", "255.255.255.0"))
-	if os.Getenv("C9000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "switchport", "false"))
-	}
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_access_group_in_enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_access_group_out", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_access_group_out_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_access_group_out", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "ip_dhcp_relay_source_interface", "Loopback100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "helper_addresses.0.global", "false"))
@@ -153,6 +153,9 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	name = 10` + "\n"
 	config += `	description = "My Interface Description"` + "\n"
 	config += `	shutdown = false` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	switchport = false` + "\n"
+	}
 	if os.Getenv("C8000V") != "" {
 		config += `	ip_proxy_arp = false` + "\n"
 	}
@@ -165,13 +168,10 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	vrf_forwarding = "VRF1"` + "\n"
 	config += `	ipv4_address = "192.0.2.1"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
-	if os.Getenv("C9000V") != "" {
-		config += `	switchport = false` + "\n"
-	}
-	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_in_enable = true` + "\n"
-	config += `	ip_access_group_out = "1"` + "\n"
+	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_out_enable = true` + "\n"
+	config += `	ip_access_group_out = "1"` + "\n"
 	config += `	ip_dhcp_relay_source_interface = "Loopback100"` + "\n"
 	config += `	helper_addresses = [{` + "\n"
 	config += `		address = "10.10.10.10"` + "\n"

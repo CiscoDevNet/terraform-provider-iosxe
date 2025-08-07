@@ -176,67 +176,6 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 					},
 				},
 			},
-			"ipv4_hosts_transport": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"ipv4_host": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-						},
-						"transport_udp_ports": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Port Number List").String,
-							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"port_number": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify the UDP port number (default=514)").AddIntegerRangeDescription(1, 65535).String,
-										Required:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 65535),
-										},
-									},
-								},
-							},
-						},
-						"transport_tcp_ports": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Port Number List").String,
-							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"port_number": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify the TCP port number (default=601)").AddIntegerRangeDescription(1, 65535).String,
-										Required:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 65535),
-										},
-									},
-								},
-							},
-						},
-						"transport_tls_ports": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Port Number List").String,
-							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"port_number": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify the TLS port number (default=6514)").AddIntegerRangeDescription(1025, 65535).String,
-										Required:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1025, 65535),
-										},
-									},
-									"profile": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify the TLS profile").String,
-										Optional:            true,
-									},
-								},
-							},
-						},
-					},
-				},
-			},
 			"ipv4_hosts": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
@@ -249,17 +188,13 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 					},
 				},
 			},
-			"ipv4_vrf_hosts_transport": schema.ListNestedAttribute{
+			"ipv4_hosts_transport": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"ipv4_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-						},
-						"vrf": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Set VRF option").String,
 							Required:            true,
 						},
 						"transport_udp_ports": schema.ListNestedAttribute{
@@ -330,13 +265,17 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 					},
 				},
 			},
-			"ipv6_hosts_transport": schema.ListNestedAttribute{
+			"ipv4_vrf_hosts_transport": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"ipv6_host": schema.StringAttribute{
+						"ipv4_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set VRF option").String,
 							Required:            true,
 						},
 						"transport_udp_ports": schema.ListNestedAttribute{
@@ -403,17 +342,13 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 					},
 				},
 			},
-			"ipv6_vrf_hosts_transport": schema.ListNestedAttribute{
+			"ipv6_hosts_transport": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"ipv6_host": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Required:            true,
-						},
-						"vrf": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Set VRF option").String,
 							Required:            true,
 						},
 						"transport_udp_ports": schema.ListNestedAttribute{
@@ -484,6 +419,71 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 					},
 				},
 			},
+			"ipv6_vrf_hosts_transport": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ipv6_host": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set VRF option").String,
+							Required:            true,
+						},
+						"transport_udp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Port Number List").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify the UDP port number (default=514)").AddIntegerRangeDescription(1, 65535).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 65535),
+										},
+									},
+								},
+							},
+						},
+						"transport_tcp_ports": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Port Number List").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify the TCP port number (default=601)").AddIntegerRangeDescription(1, 65535).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 65535),
+										},
+									},
+								},
+							},
+						},
+						"transport_tls_ports": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Port Number List").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"port_number": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify the TLS port number (default=6514)").AddIntegerRangeDescription(1025, 65535).String,
+										Required:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1025, 65535),
+										},
+									},
+									"profile": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify the TLS profile").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
@@ -541,13 +541,13 @@ func (r *LoggingResource) Create(ctx context.Context, req resource.CreateRequest
 				_, err = device.Client.PutData(plan.getPath(), body)
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -592,7 +592,7 @@ func (r *LoggingResource) Read(ctx context.Context, req resource.ReadRequest, re
 			state = Logging{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 
@@ -674,7 +674,7 @@ func (r *LoggingResource) Update(ctx context.Context, req resource.UpdateRequest
 			for _, i := range deletedItems {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -683,13 +683,13 @@ func (r *LoggingResource) Update(ctx context.Context, req resource.UpdateRequest
 				_, err = device.Client.PutData(plan.getPath(), body)
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -730,7 +730,7 @@ func (r *LoggingResource) Delete(ctx context.Context, req resource.DeleteRequest
 		if deleteMode == "all" {
 			res, err := device.Client.DeleteData(state.Id.ValueString())
 			if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 		} else {
@@ -751,8 +751,7 @@ func (r *LoggingResource) Delete(ctx context.Context, req resource.DeleteRequest
 				for _, i := range deletePaths {
 					res, err := device.Client.DeleteData(i)
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
-						return
+						resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					}
 				}
 			}

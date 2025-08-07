@@ -867,91 +867,6 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 
 func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuthorization) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.Execs {
-		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Execs[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Execs {
-			found = true
-			if state.Execs[i].Name.ValueString() != data.Execs[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Execs[i].A1Local.IsNull() && data.Execs[j].A1Local.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A1Group.IsNull() && data.Execs[j].A1Group.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A1Radius.IsNull() && data.Execs[j].A1Radius.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A1Tacacs.IsNull() && data.Execs[j].A1Tacacs.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A1IfAuthenticated.IsNull() && data.Execs[j].A1IfAuthenticated.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A2Local.IsNull() && data.Execs[j].A2Local.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A2Group.IsNull() && data.Execs[j].A2Group.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A2Radius.IsNull() && data.Execs[j].A2Radius.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A2Tacacs.IsNull() && data.Execs[j].A2Tacacs.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A2IfAuthenticated.IsNull() && data.Execs[j].A2IfAuthenticated.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A3Local.IsNull() && data.Execs[j].A3Local.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A3Group.IsNull() && data.Execs[j].A3Group.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A3Radius.IsNull() && data.Execs[j].A3Radius.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A3Tacacs.IsNull() && data.Execs[j].A3Tacacs.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A3IfAuthenticated.IsNull() && data.Execs[j].A3IfAuthenticated.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A4Local.IsNull() && data.Execs[j].A4Local.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A4Group.IsNull() && data.Execs[j].A4Group.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A4Radius.IsNull() && data.Execs[j].A4Radius.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A4Tacacs.IsNull() && data.Execs[j].A4Tacacs.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Execs[i].A4IfAuthenticated.IsNull() && data.Execs[j].A4IfAuthenticated.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
 	for i := range state.Networks {
 		stateKeyValues := [...]string{state.Networks[i].Id.ValueString()}
 
@@ -970,29 +885,29 @@ func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuth
 				found = false
 			}
 			if found {
-				if !state.Networks[i].A1Local.IsNull() && data.Networks[j].A1Local.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a1/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Networks[i].A1Group.IsNull() && data.Networks[j].A1Group.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Networks[i].A2Local.IsNull() && data.Networks[j].A2Local.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a2/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Networks[i].A2Group.IsNull() && data.Networks[j].A2Group.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Networks[i].A3Local.IsNull() && data.Networks[j].A3Local.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a3/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Networks[i].A3Group.IsNull() && data.Networks[j].A3Group.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Networks[i].A4Group.IsNull() && data.Networks[j].A4Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Networks[i].A4Local.IsNull() && data.Networks[j].A4Local.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a4/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Networks[i].A4Group.IsNull() && data.Networks[j].A4Group.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Networks[i].A3Group.IsNull() && data.Networks[j].A3Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Networks[i].A3Local.IsNull() && data.Networks[j].A3Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a3/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Networks[i].A2Group.IsNull() && data.Networks[j].A2Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Networks[i].A2Local.IsNull() && data.Networks[j].A2Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a2/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Networks[i].A1Group.IsNull() && data.Networks[j].A1Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Networks[i].A1Local.IsNull() && data.Networks[j].A1Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v/a1/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -1001,6 +916,92 @@ func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuth
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Execs {
+		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Execs[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Execs {
+			found = true
+			if state.Execs[i].Name.ValueString() != data.Execs[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Execs[i].A4IfAuthenticated.IsNull() && data.Execs[j].A4IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A4Tacacs.IsNull() && data.Execs[j].A4Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A4Radius.IsNull() && data.Execs[j].A4Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A4Group.IsNull() && data.Execs[j].A4Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A4Local.IsNull() && data.Execs[j].A4Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a4/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A3IfAuthenticated.IsNull() && data.Execs[j].A3IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A3Tacacs.IsNull() && data.Execs[j].A3Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A3Radius.IsNull() && data.Execs[j].A3Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A3Group.IsNull() && data.Execs[j].A3Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A3Local.IsNull() && data.Execs[j].A3Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a3/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A2IfAuthenticated.IsNull() && data.Execs[j].A2IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A2Tacacs.IsNull() && data.Execs[j].A2Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A2Radius.IsNull() && data.Execs[j].A2Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A2Group.IsNull() && data.Execs[j].A2Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A2Local.IsNull() && data.Execs[j].A2Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a2/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A1IfAuthenticated.IsNull() && data.Execs[j].A1IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A1Tacacs.IsNull() && data.Execs[j].A1Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A1Radius.IsNull() && data.Execs[j].A1Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A1Group.IsNull() && data.Execs[j].A1Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].A1Local.IsNull() && data.Execs[j].A1Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/a1/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+
 	return deletedItems
 }
 
@@ -1011,73 +1012,74 @@ func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuth
 func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
-	for i := range data.Execs {
-		keyValues := [...]string{data.Execs[i].Name.ValueString()}
-		if !data.Execs[i].A1Local.IsNull() && !data.Execs[i].A1Local.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/local", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A1Radius.IsNull() && !data.Execs[i].A1Radius.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/radius", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A1Tacacs.IsNull() && !data.Execs[i].A1Tacacs.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A1IfAuthenticated.IsNull() && !data.Execs[i].A1IfAuthenticated.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A2Local.IsNull() && !data.Execs[i].A2Local.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/local", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A2Radius.IsNull() && !data.Execs[i].A2Radius.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/radius", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A2Tacacs.IsNull() && !data.Execs[i].A2Tacacs.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A2IfAuthenticated.IsNull() && !data.Execs[i].A2IfAuthenticated.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A3Local.IsNull() && !data.Execs[i].A3Local.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a3/local", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A3Radius.IsNull() && !data.Execs[i].A3Radius.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a3/radius", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A3Tacacs.IsNull() && !data.Execs[i].A3Tacacs.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a3/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A3IfAuthenticated.IsNull() && !data.Execs[i].A3IfAuthenticated.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a3/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A4Local.IsNull() && !data.Execs[i].A4Local.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a4/local", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A4Radius.IsNull() && !data.Execs[i].A4Radius.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a4/radius", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A4Tacacs.IsNull() && !data.Execs[i].A4Tacacs.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a4/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Execs[i].A4IfAuthenticated.IsNull() && !data.Execs[i].A4IfAuthenticated.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a4/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-
 	for i := range data.Networks {
 		keyValues := [...]string{data.Networks[i].Id.ValueString()}
-		if !data.Networks[i].A1Local.IsNull() && !data.Networks[i].A1Local.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network=%v/a1/local", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Networks[i].A2Local.IsNull() && !data.Networks[i].A2Local.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network=%v/a2/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.Networks[i].A4Local.IsNull() && !data.Networks[i].A4Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network=%v/a4/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.Networks[i].A3Local.IsNull() && !data.Networks[i].A3Local.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network=%v/a3/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Networks[i].A4Local.IsNull() && !data.Networks[i].A4Local.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network=%v/a4/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.Networks[i].A2Local.IsNull() && !data.Networks[i].A2Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network=%v/a2/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Networks[i].A1Local.IsNull() && !data.Networks[i].A1Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network=%v/a1/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
+	for i := range data.Execs {
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
+		if !data.Execs[i].A4IfAuthenticated.IsNull() && !data.Execs[i].A4IfAuthenticated.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a4/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A4Tacacs.IsNull() && !data.Execs[i].A4Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a4/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A4Radius.IsNull() && !data.Execs[i].A4Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a4/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A4Local.IsNull() && !data.Execs[i].A4Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a4/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A3IfAuthenticated.IsNull() && !data.Execs[i].A3IfAuthenticated.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a3/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A3Tacacs.IsNull() && !data.Execs[i].A3Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a3/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A3Radius.IsNull() && !data.Execs[i].A3Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a3/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A3Local.IsNull() && !data.Execs[i].A3Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a3/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A2IfAuthenticated.IsNull() && !data.Execs[i].A2IfAuthenticated.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A2Tacacs.IsNull() && !data.Execs[i].A2Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A2Radius.IsNull() && !data.Execs[i].A2Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A2Local.IsNull() && !data.Execs[i].A2Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a2/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A1IfAuthenticated.IsNull() && !data.Execs[i].A1IfAuthenticated.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A1Tacacs.IsNull() && !data.Execs[i].A1Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A1Radius.IsNull() && !data.Execs[i].A1Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].A1Local.IsNull() && !data.Execs[i].A1Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/a1/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -1087,16 +1089,17 @@ func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string 
 
 func (data *AAAAuthorization) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Execs {
-		keyValues := [...]string{data.Execs[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
 	for i := range data.Networks {
 		keyValues := [...]string{data.Networks[i].Id.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.Execs {
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+
 	return deletePaths
 }
 

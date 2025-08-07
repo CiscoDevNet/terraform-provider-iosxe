@@ -1007,20 +1007,20 @@ func (data *BFDData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.Ipv4BothVrfs {
-		stateKeyValues := [...]string{state.Ipv4BothVrfs[i].DstVrf.ValueString(), state.Ipv4BothVrfs[i].DestIp.ValueString(), state.Ipv4BothVrfs[i].SrcVrf.ValueString(), state.Ipv4BothVrfs[i].SrcIp.ValueString()}
+	if !state.SlowTimers.IsNull() && data.SlowTimers.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:slow-timers", state.getPath()))
+	}
+	for i := range state.Ipv6WithDstVrfs {
+		stateKeyValues := [...]string{state.Ipv6WithDstVrfs[i].DstVrf.ValueString(), state.Ipv6WithDstVrfs[i].DestIpv6.ValueString(), state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv4BothVrfs[i].DstVrf.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].DstVrf.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv4BothVrfs[i].DestIp.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].DestIpv6.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv4BothVrfs[i].SrcVrf.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Ipv4BothVrfs[i].SrcIp.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1028,39 +1028,39 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 		}
 
 		found := false
-		for j := range data.Ipv4BothVrfs {
+		for j := range data.Ipv6WithDstVrfs {
 			found = true
-			if state.Ipv4BothVrfs[i].DstVrf.ValueString() != data.Ipv4BothVrfs[j].DstVrf.ValueString() {
+			if state.Ipv6WithDstVrfs[i].DstVrf.ValueString() != data.Ipv6WithDstVrfs[j].DstVrf.ValueString() {
 				found = false
 			}
-			if state.Ipv4BothVrfs[i].DestIp.ValueString() != data.Ipv4BothVrfs[j].DestIp.ValueString() {
+			if state.Ipv6WithDstVrfs[i].DestIpv6.ValueString() != data.Ipv6WithDstVrfs[j].DestIpv6.ValueString() {
 				found = false
 			}
-			if state.Ipv4BothVrfs[i].SrcVrf.ValueString() != data.Ipv4BothVrfs[j].SrcVrf.ValueString() {
-				found = false
-			}
-			if state.Ipv4BothVrfs[i].SrcIp.ValueString() != data.Ipv4BothVrfs[j].SrcIp.ValueString() {
+			if state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithDstVrfs[j].SrcIpv6.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Ipv4BothVrfs[i].TemplateName.IsNull() && data.Ipv4BothVrfs[j].TemplateName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Ipv6WithDstVrfs[i].TemplateName.IsNull() && data.Ipv6WithDstVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Ipv4WithoutVrfs {
-		stateKeyValues := [...]string{state.Ipv4WithoutVrfs[i].DestIp.ValueString(), state.Ipv4WithoutVrfs[i].SrcIp.ValueString()}
+	for i := range state.Ipv6WithSrcVrfs {
+		stateKeyValues := [...]string{state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString(), state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString(), state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv4WithoutVrfs[i].DestIp.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv4WithoutVrfs[i].SrcIp.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1068,36 +1068,36 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 		}
 
 		found := false
-		for j := range data.Ipv4WithoutVrfs {
+		for j := range data.Ipv6WithSrcVrfs {
 			found = true
-			if state.Ipv4WithoutVrfs[i].DestIp.ValueString() != data.Ipv4WithoutVrfs[j].DestIp.ValueString() {
+			if state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString() != data.Ipv6WithSrcVrfs[j].DestIpv6.ValueString() {
 				found = false
 			}
-			if state.Ipv4WithoutVrfs[i].SrcIp.ValueString() != data.Ipv4WithoutVrfs[j].SrcIp.ValueString() {
+			if state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString() != data.Ipv6WithSrcVrfs[j].SrcVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithSrcVrfs[j].SrcIpv6.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Ipv4WithoutVrfs[i].TemplateName.IsNull() && data.Ipv4WithoutVrfs[j].TemplateName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Ipv6WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv6WithSrcVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Ipv4WithSrcVrfs {
-		stateKeyValues := [...]string{state.Ipv4WithSrcVrfs[i].DestIp.ValueString(), state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString(), state.Ipv4WithSrcVrfs[i].SrcIp.ValueString()}
+	for i := range state.Ipv6WithoutVrfs {
+		stateKeyValues := [...]string{state.Ipv6WithoutVrfs[i].DestIpv6.ValueString(), state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].DestIp.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6WithoutVrfs[i].DestIpv6.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].SrcIp.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1105,66 +1105,23 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 		}
 
 		found := false
-		for j := range data.Ipv4WithSrcVrfs {
+		for j := range data.Ipv6WithoutVrfs {
 			found = true
-			if state.Ipv4WithSrcVrfs[i].DestIp.ValueString() != data.Ipv4WithSrcVrfs[j].DestIp.ValueString() {
+			if state.Ipv6WithoutVrfs[i].DestIpv6.ValueString() != data.Ipv6WithoutVrfs[j].DestIpv6.ValueString() {
 				found = false
 			}
-			if state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString() != data.Ipv4WithSrcVrfs[j].SrcVrf.ValueString() {
-				found = false
-			}
-			if state.Ipv4WithSrcVrfs[i].SrcIp.ValueString() != data.Ipv4WithSrcVrfs[j].SrcIp.ValueString() {
+			if state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithoutVrfs[j].SrcIpv6.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Ipv4WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv4WithSrcVrfs[j].TemplateName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Ipv6WithoutVrfs[i].TemplateName.IsNull() && data.Ipv6WithoutVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.Ipv4WithDstVrfs {
-		stateKeyValues := [...]string{state.Ipv4WithDstVrfs[i].DstVrf.ValueString(), state.Ipv4WithDstVrfs[i].DestIp.ValueString(), state.Ipv4WithDstVrfs[i].SrcIp.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].DstVrf.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].DestIp.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].SrcIp.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Ipv4WithDstVrfs {
-			found = true
-			if state.Ipv4WithDstVrfs[i].DstVrf.ValueString() != data.Ipv4WithDstVrfs[j].DstVrf.ValueString() {
-				found = false
-			}
-			if state.Ipv4WithDstVrfs[i].DestIp.ValueString() != data.Ipv4WithDstVrfs[j].DestIp.ValueString() {
-				found = false
-			}
-			if state.Ipv4WithDstVrfs[i].SrcIp.ValueString() != data.Ipv4WithDstVrfs[j].SrcIp.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Ipv4WithDstVrfs[i].TemplateName.IsNull() && data.Ipv4WithDstVrfs[j].TemplateName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.Ipv6WithBothVrfs {
@@ -1213,14 +1170,17 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Ipv6WithoutVrfs {
-		stateKeyValues := [...]string{state.Ipv6WithoutVrfs[i].DestIpv6.ValueString(), state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()}
+	for i := range state.Ipv4WithDstVrfs {
+		stateKeyValues := [...]string{state.Ipv4WithDstVrfs[i].DstVrf.ValueString(), state.Ipv4WithDstVrfs[i].DestIp.ValueString(), state.Ipv4WithDstVrfs[i].SrcIp.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv6WithoutVrfs[i].DestIpv6.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].DstVrf.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].DestIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].SrcIp.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1228,36 +1188,39 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 		}
 
 		found := false
-		for j := range data.Ipv6WithoutVrfs {
+		for j := range data.Ipv4WithDstVrfs {
 			found = true
-			if state.Ipv6WithoutVrfs[i].DestIpv6.ValueString() != data.Ipv6WithoutVrfs[j].DestIpv6.ValueString() {
+			if state.Ipv4WithDstVrfs[i].DstVrf.ValueString() != data.Ipv4WithDstVrfs[j].DstVrf.ValueString() {
 				found = false
 			}
-			if state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithoutVrfs[j].SrcIpv6.ValueString() {
+			if state.Ipv4WithDstVrfs[i].DestIp.ValueString() != data.Ipv4WithDstVrfs[j].DestIp.ValueString() {
+				found = false
+			}
+			if state.Ipv4WithDstVrfs[i].SrcIp.ValueString() != data.Ipv4WithDstVrfs[j].SrcIp.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Ipv6WithoutVrfs[i].TemplateName.IsNull() && data.Ipv6WithoutVrfs[j].TemplateName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Ipv4WithDstVrfs[i].TemplateName.IsNull() && data.Ipv4WithDstVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Ipv6WithSrcVrfs {
-		stateKeyValues := [...]string{state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString(), state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString(), state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()}
+	for i := range state.Ipv4WithSrcVrfs {
+		stateKeyValues := [...]string{state.Ipv4WithSrcVrfs[i].DestIp.ValueString(), state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString(), state.Ipv4WithSrcVrfs[i].SrcIp.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].DestIp.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].SrcIp.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1265,39 +1228,36 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 		}
 
 		found := false
-		for j := range data.Ipv6WithSrcVrfs {
+		for j := range data.Ipv4WithSrcVrfs {
 			found = true
-			if state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString() != data.Ipv6WithSrcVrfs[j].DestIpv6.ValueString() {
+			if state.Ipv4WithSrcVrfs[i].DestIp.ValueString() != data.Ipv4WithSrcVrfs[j].DestIp.ValueString() {
 				found = false
 			}
-			if state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString() != data.Ipv6WithSrcVrfs[j].SrcVrf.ValueString() {
+			if state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString() != data.Ipv4WithSrcVrfs[j].SrcVrf.ValueString() {
 				found = false
 			}
-			if state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithSrcVrfs[j].SrcIpv6.ValueString() {
+			if state.Ipv4WithSrcVrfs[i].SrcIp.ValueString() != data.Ipv4WithSrcVrfs[j].SrcIp.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Ipv6WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv6WithSrcVrfs[j].TemplateName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Ipv4WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv4WithSrcVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.Ipv6WithDstVrfs {
-		stateKeyValues := [...]string{state.Ipv6WithDstVrfs[i].DstVrf.ValueString(), state.Ipv6WithDstVrfs[i].DestIpv6.ValueString(), state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()}
+	for i := range state.Ipv4WithoutVrfs {
+		stateKeyValues := [...]string{state.Ipv4WithoutVrfs[i].DestIp.ValueString(), state.Ipv4WithoutVrfs[i].SrcIp.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].DstVrf.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4WithoutVrfs[i].DestIp.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].DestIpv6.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4WithoutVrfs[i].SrcIp.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1305,31 +1265,72 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 		}
 
 		found := false
-		for j := range data.Ipv6WithDstVrfs {
+		for j := range data.Ipv4WithoutVrfs {
 			found = true
-			if state.Ipv6WithDstVrfs[i].DstVrf.ValueString() != data.Ipv6WithDstVrfs[j].DstVrf.ValueString() {
+			if state.Ipv4WithoutVrfs[i].DestIp.ValueString() != data.Ipv4WithoutVrfs[j].DestIp.ValueString() {
 				found = false
 			}
-			if state.Ipv6WithDstVrfs[i].DestIpv6.ValueString() != data.Ipv6WithDstVrfs[j].DestIpv6.ValueString() {
-				found = false
-			}
-			if state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithDstVrfs[j].SrcIpv6.ValueString() {
+			if state.Ipv4WithoutVrfs[i].SrcIp.ValueString() != data.Ipv4WithoutVrfs[j].SrcIp.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Ipv6WithDstVrfs[i].TemplateName.IsNull() && data.Ipv6WithDstVrfs[j].TemplateName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Ipv4WithoutVrfs[i].TemplateName.IsNull() && data.Ipv4WithoutVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.SlowTimers.IsNull() && data.SlowTimers.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:slow-timers", state.getPath()))
+	for i := range state.Ipv4BothVrfs {
+		stateKeyValues := [...]string{state.Ipv4BothVrfs[i].DstVrf.ValueString(), state.Ipv4BothVrfs[i].DestIp.ValueString(), state.Ipv4BothVrfs[i].SrcVrf.ValueString(), state.Ipv4BothVrfs[i].SrcIp.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4BothVrfs[i].DstVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4BothVrfs[i].DestIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4BothVrfs[i].SrcVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4BothVrfs[i].SrcIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4BothVrfs {
+			found = true
+			if state.Ipv4BothVrfs[i].DstVrf.ValueString() != data.Ipv4BothVrfs[j].DstVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv4BothVrfs[i].DestIp.ValueString() != data.Ipv4BothVrfs[j].DestIp.ValueString() {
+				found = false
+			}
+			if state.Ipv4BothVrfs[i].SrcVrf.ValueString() != data.Ipv4BothVrfs[j].SrcVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv4BothVrfs[i].SrcIp.ValueString() != data.Ipv4BothVrfs[j].SrcIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4BothVrfs[i].TemplateName.IsNull() && data.Ipv4BothVrfs[j].TemplateName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v/template-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
+
 	return deletedItems
 }
 
@@ -1349,49 +1350,50 @@ func (data *BFD) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *BFD) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.Ipv4BothVrfs {
-		keyValues := [...]string{data.Ipv4BothVrfs[i].DstVrf.ValueString(), data.Ipv4BothVrfs[i].DestIp.ValueString(), data.Ipv4BothVrfs[i].SrcVrf.ValueString(), data.Ipv4BothVrfs[i].SrcIp.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Ipv4WithoutVrfs {
-		keyValues := [...]string{data.Ipv4WithoutVrfs[i].DestIp.ValueString(), data.Ipv4WithoutVrfs[i].SrcIp.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Ipv4WithSrcVrfs {
-		keyValues := [...]string{data.Ipv4WithSrcVrfs[i].DestIp.ValueString(), data.Ipv4WithSrcVrfs[i].SrcVrf.ValueString(), data.Ipv4WithSrcVrfs[i].SrcIp.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Ipv4WithDstVrfs {
-		keyValues := [...]string{data.Ipv4WithDstVrfs[i].DstVrf.ValueString(), data.Ipv4WithDstVrfs[i].DestIp.ValueString(), data.Ipv4WithDstVrfs[i].SrcIp.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Ipv6WithBothVrfs {
-		keyValues := [...]string{data.Ipv6WithBothVrfs[i].DstVrf.ValueString(), data.Ipv6WithBothVrfs[i].DestIpv6.ValueString(), data.Ipv6WithBothVrfs[i].SrcVrf.ValueString(), data.Ipv6WithBothVrfs[i].SrcIpv6.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Ipv6WithoutVrfs {
-		keyValues := [...]string{data.Ipv6WithoutVrfs[i].DestIpv6.ValueString(), data.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Ipv6WithSrcVrfs {
-		keyValues := [...]string{data.Ipv6WithSrcVrfs[i].DestIpv6.ValueString(), data.Ipv6WithSrcVrfs[i].SrcVrf.ValueString(), data.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.SlowTimers.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:slow-timers", data.getPath()))
 	}
 	for i := range data.Ipv6WithDstVrfs {
 		keyValues := [...]string{data.Ipv6WithDstVrfs[i].DstVrf.ValueString(), data.Ipv6WithDstVrfs[i].DestIpv6.ValueString(), data.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.SlowTimers.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:slow-timers", data.getPath()))
+	for i := range data.Ipv6WithSrcVrfs {
+		keyValues := [...]string{data.Ipv6WithSrcVrfs[i].DestIpv6.ValueString(), data.Ipv6WithSrcVrfs[i].SrcVrf.ValueString(), data.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.Ipv6WithoutVrfs {
+		keyValues := [...]string{data.Ipv6WithoutVrfs[i].DestIpv6.ValueString(), data.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv6WithBothVrfs {
+		keyValues := [...]string{data.Ipv6WithBothVrfs[i].DstVrf.ValueString(), data.Ipv6WithBothVrfs[i].DestIpv6.ValueString(), data.Ipv6WithBothVrfs[i].SrcVrf.ValueString(), data.Ipv6WithBothVrfs[i].SrcIpv6.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv4WithDstVrfs {
+		keyValues := [...]string{data.Ipv4WithDstVrfs[i].DstVrf.ValueString(), data.Ipv4WithDstVrfs[i].DestIp.ValueString(), data.Ipv4WithDstVrfs[i].SrcIp.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv4WithSrcVrfs {
+		keyValues := [...]string{data.Ipv4WithSrcVrfs[i].DestIp.ValueString(), data.Ipv4WithSrcVrfs[i].SrcVrf.ValueString(), data.Ipv4WithSrcVrfs[i].SrcIp.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv4WithoutVrfs {
+		keyValues := [...]string{data.Ipv4WithoutVrfs[i].DestIp.ValueString(), data.Ipv4WithoutVrfs[i].SrcIp.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Ipv4BothVrfs {
+		keyValues := [...]string{data.Ipv4BothVrfs[i].DstVrf.ValueString(), data.Ipv4BothVrfs[i].DestIp.ValueString(), data.Ipv4BothVrfs[i].SrcVrf.ValueString(), data.Ipv4BothVrfs[i].SrcIp.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+
 	return deletePaths
 }
 

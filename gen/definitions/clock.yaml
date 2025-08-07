@@ -18,41 +18,49 @@ attributes:
     tf_name: summer_time_date_start_day
     example: 1
     exclude_test: true
+    delete_parent: true
   - yang_name: summer-time/summer-choice/date-case/start-month
     xpath: summer-time/start-month
     tf_name: summer_time_date_start_month
     example: Jan
     exclude_test: true
+    delete_parent: true
   - yang_name: summer-time/summer-choice/date-case/start-year
     xpath: summer-time/start-year
     tf_name: summer_time_date_start_year
     example: 2000
     exclude_test: true
+    delete_parent: true
   - yang_name: summer-time/summer-choice/date-case/start-time
     xpath: summer-time/start-time
     tf_name: summer_time_date_start_time
     example: 00:00
     exclude_test: true
+    delete_parent: true
   - yang_name: summer-time/summer-choice/date-case/date-end-day
     xpath: summer-time/date-end-day
     tf_name: summer_time_date_end_day
     example: 1
     exclude_test: true
+    delete_parent: true
   - yang_name: summer-time/summer-choice/date-case/date-end-month
     xpath: summer-time/date-end-month
     tf_name: summer_time_date_end_month
     example: Dec
     exclude_test: true
+    delete_parent: true
   - yang_name: summer-time/summer-choice/date-case/date-end-year
     xpath: summer-time/date-end-year
     tf_name: summer_time_date_end_year
     example: 2000
     exclude_test: true
+    delete_parent: true
   - yang_name: summer-time/summer-choice/date-case/date-end-time
     xpath: summer-time/date-end-time
     tf_name: summer_time_date_end_time
     example: 00:00
     exclude_test: true
+    delete_parent: true
   - yang_name: summer-time/summer-choice/date-case/offset
     xpath: summer-time/offset
     tf_name: summer_time_date_offset
@@ -66,34 +74,42 @@ attributes:
     xpath: summer-time/recurring-start
     tf_name: summer_time_recurring_start_week
     example: 1
+    delete_parent: true
   - yang_name: summer-time/summer-choice/recurring-case/recurring-start-day
     xpath: summer-time/recurring-start-day
     tf_name: summer_time_recurring_start_weekday
     example: Mon
+    delete_parent: true
   - yang_name: summer-time/summer-choice/recurring-case/recurring-start-month
     xpath: summer-time/recurring-start-month
     tf_name: summer_time_recurring_start_month
     example: Jan
+    delete_parent: true
   - yang_name: summer-time/summer-choice/recurring-case/recurring-start-time
     xpath: summer-time/recurring-start-time
     tf_name: summer_time_recurring_start_time
     example: 00:00
+    delete_parent: true
   - yang_name: summer-time/summer-choice/recurring-case/recurring-end
     xpath: summer-time/recurring-end
     tf_name: summer_time_recurring_end_week
     example: 1
+    delete_parent: true
   - yang_name: summer-time/summer-choice/recurring-case/recurring-end-day
     xpath: summer-time/recurring-end-day
     tf_name: summer_time_recurring_end_weekday
     example: Mon
+    delete_parent: true
   - yang_name: summer-time/summer-choice/recurring-case/recurring-end-month
     xpath: summer-time/recurring-end-month
     tf_name: summer_time_recurring_end_month
     example: Dec
+    delete_parent: true
   - yang_name: summer-time/summer-choice/recurring-case/recurring-end-time
     xpath: summer-time/recurring-end-time
     tf_name: summer_time_recurring_end_time
     example: 00:00
+    delete_parent: true
   - yang_name: summer-time/summer-choice/recurring-case/recurring-offset
     xpath: summer-time/recurring-offset
     tf_name: summer_time_recurring_offset
@@ -105,7 +121,9 @@ attributes:
     tf_name: timezone_offset_hours
     min_int: -23
     example: 1
+    delete_parent: true
   - yang_name: timezone/minutes
     tf_name: timezone_offset_minutes
     example: 0
+    delete_parent: true
   

@@ -201,18 +201,19 @@ func (data *UDLDData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *UDLD) getDeletedItems(ctx context.Context, state UDLD) []string {
 	deletedItems := make([]string, 0)
-	if !state.Aggressive.IsNull() && data.Aggressive.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:aggressive", state.getPath()))
-	}
-	if !state.Enable.IsNull() && data.Enable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:enable", state.getPath()))
+	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:recovery/interval", state.getPath()))
 	}
 	if !state.MessageTime.IsNull() && data.MessageTime.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:message/time", state.getPath()))
 	}
-	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:recovery/interval", state.getPath()))
+	if !state.Enable.IsNull() && data.Enable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:enable", state.getPath()))
 	}
+	if !state.Aggressive.IsNull() && data.Aggressive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-udld:aggressive", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -222,12 +223,13 @@ func (data *UDLD) getDeletedItems(ctx context.Context, state UDLD) []string {
 
 func (data *UDLD) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Aggressive.IsNull() && !data.Aggressive.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-udld:aggressive", data.getPath()))
-	}
 	if !data.Enable.IsNull() && !data.Enable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-udld:enable", data.getPath()))
 	}
+	if !data.Aggressive.IsNull() && !data.Aggressive.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-udld:aggressive", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -237,18 +239,19 @@ func (data *UDLD) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *UDLD) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Aggressive.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-udld:aggressive", data.getPath()))
-	}
-	if !data.Enable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-udld:enable", data.getPath()))
+	if !data.RecoveryInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-udld:recovery/interval", data.getPath()))
 	}
 	if !data.MessageTime.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-udld:message/time", data.getPath()))
 	}
-	if !data.RecoveryInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-udld:recovery/interval", data.getPath()))
+	if !data.Enable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-udld:enable", data.getPath()))
 	}
+	if !data.Aggressive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-udld:aggressive", data.getPath()))
+	}
+
 	return deletePaths
 }
 

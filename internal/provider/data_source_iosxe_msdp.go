@@ -71,26 +71,6 @@ func (d *MSDPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "Configure MSDP Originator ID",
 				Computed:            true,
 			},
-			"passwords": schema.ListNestedAttribute{
-				MarkdownDescription: "MSDP peer on which the password is to be set",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"addr": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-						"encryption": schema.Int64Attribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-						"password": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-					},
-				},
-			},
 			"peers": schema.ListNestedAttribute{
 				MarkdownDescription: "Configure an MSDP peer",
 				Computed:            true,
@@ -106,6 +86,26 @@ func (d *MSDPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						},
 						"connect_source_loopback": schema.Int64Attribute{
 							MarkdownDescription: "Loopback interface",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"passwords": schema.ListNestedAttribute{
+				MarkdownDescription: "MSDP peer on which the password is to be set",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"addr": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"encryption": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"password": schema.StringAttribute{
+							MarkdownDescription: "",
 							Computed:            true,
 						},
 					},
@@ -150,7 +150,7 @@ func (d *MSDPDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		config = MSDPData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

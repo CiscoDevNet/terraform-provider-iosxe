@@ -213,15 +213,16 @@ func (data *BGPL2VPNEVPNNeighborData) fromBody(ctx context.Context, res gjson.Re
 
 func (data *BGPL2VPNEVPNNeighbor) getDeletedItems(ctx context.Context, state BGPL2VPNEVPNNeighbor) []string {
 	deletedItems := make([]string, 0)
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
+	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
 	}
 	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/route-reflector-client", state.getPath()))
 	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
+	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/send-community/send-community-where", state.getPath()))
 	}
+
 	return deletedItems
 }
 
@@ -231,12 +232,13 @@ func (data *BGPL2VPNEVPNNeighbor) getDeletedItems(ctx context.Context, state BGP
 
 func (data *BGPL2VPNEVPNNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
-	}
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
 	}
+	if !data.Activate.IsNull() && !data.Activate.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/activate", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -246,15 +248,16 @@ func (data *BGPL2VPNEVPNNeighbor) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *BGPL2VPNEVPNNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.SendCommunity.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
+	if !data.SoftReconfiguration.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
 	}
 	if !data.RouteReflectorClient.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
 	}
-	if !data.SoftReconfiguration.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
+	if !data.SendCommunity.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/send-community/send-community-where", data.getPath()))
 	}
+
 	return deletePaths
 }
 

@@ -735,58 +735,6 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.Console {
-		stateKeyValues := [...]string{state.Console[i].First.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Console[i].First.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Console {
-			found = true
-			if state.Console[i].First.ValueString() != data.Console[j].First.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Console[i].ExecTimeoutMinutes.IsNull() && data.Console[j].ExecTimeoutMinutes.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/exec-timeout/minutes", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Console[i].ExecTimeoutSeconds.IsNull() && data.Console[j].ExecTimeoutSeconds.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/exec-timeout/seconds", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Console[i].LoginLocal.IsNull() && data.Console[j].LoginLocal.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/login/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Console[i].LoginAuthentication.IsNull() && data.Console[j].LoginAuthentication.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/login/authentication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Console[i].PrivilegeLevel.IsNull() && data.Console[j].PrivilegeLevel.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/privilege/level/number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Console[i].Stopbits.IsNull() && data.Console[j].Stopbits.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/stopbits", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Console[i].PasswordLevel.IsNull() && data.Console[j].PasswordLevel.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/password/level", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Console[i].PasswordType.IsNull() && data.Console[j].PasswordType.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/password/type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Console[i].Password.IsNull() && data.Console[j].Password.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/password/secret", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
 	for i := range state.Vty {
 		stateKeyValues := [...]string{strconv.FormatInt(state.Vty[i].First.ValueInt64(), 10)}
 
@@ -805,8 +753,44 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 				found = false
 			}
 			if found {
-				if !state.Vty[i].Last.IsNull() && data.Vty[j].Last.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/last", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Vty[i].TransportInput.IsNull() && data.Vty[j].TransportInput.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/input", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].TransportInputNone.IsNull() && data.Vty[j].TransportInputNone.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].TransportInputAll.IsNull() && data.Vty[j].TransportInputAll.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/all", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].AuthorizationExecDefault.IsNull() && data.Vty[j].AuthorizationExecDefault.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/authorization/exec/default", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].AuthorizationExec.IsNull() && data.Vty[j].AuthorizationExec.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/authorization/exec/authorization-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].EscapeCharacter.IsNull() && data.Vty[j].EscapeCharacter.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/escape-character/char", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].TransportPreferredProtocol.IsNull() && data.Vty[j].TransportPreferredProtocol.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/preferred/protocol", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].LoginAuthentication.IsNull() && data.Vty[j].LoginAuthentication.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/login/authentication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].Password.IsNull() && data.Vty[j].Password.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/password/secret", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].PasswordType.IsNull() && data.Vty[j].PasswordType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/password/type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].PasswordLevel.IsNull() && data.Vty[j].PasswordLevel.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/password/level", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].ExecTimeoutSeconds.IsNull() && data.Vty[j].ExecTimeoutSeconds.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/exec-timeout/seconds", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].ExecTimeoutMinutes.IsNull() && data.Vty[j].ExecTimeoutMinutes.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/exec-timeout/minutes", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				for ci := range state.Vty[i].AccessClasses {
 					cstateKeyValues := [...]string{state.Vty[i].AccessClasses[ci].Direction.ValueString()}
@@ -826,11 +810,11 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 							found = false
 						}
 						if found {
-							if !state.Vty[i].AccessClasses[ci].AccessList.IsNull() && data.Vty[j].AccessClasses[cj].AccessList.IsNull() {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v/access-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
-							}
 							if !state.Vty[i].AccessClasses[ci].VrfAlso.IsNull() && data.Vty[j].AccessClasses[cj].VrfAlso.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v/vrf-also", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vty[i].AccessClasses[ci].AccessList.IsNull() && data.Vty[j].AccessClasses[cj].AccessList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v/access-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							break
 						}
@@ -839,44 +823,8 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
-				if !state.Vty[i].ExecTimeoutMinutes.IsNull() && data.Vty[j].ExecTimeoutMinutes.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/exec-timeout/minutes", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].ExecTimeoutSeconds.IsNull() && data.Vty[j].ExecTimeoutSeconds.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/exec-timeout/seconds", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].PasswordLevel.IsNull() && data.Vty[j].PasswordLevel.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/password/level", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].PasswordType.IsNull() && data.Vty[j].PasswordType.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/password/type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].Password.IsNull() && data.Vty[j].Password.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/password/secret", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].LoginAuthentication.IsNull() && data.Vty[j].LoginAuthentication.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/login/authentication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].TransportPreferredProtocol.IsNull() && data.Vty[j].TransportPreferredProtocol.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/preferred/protocol", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].EscapeCharacter.IsNull() && data.Vty[j].EscapeCharacter.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/escape-character/char", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].AuthorizationExec.IsNull() && data.Vty[j].AuthorizationExec.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/authorization/exec/authorization-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].AuthorizationExecDefault.IsNull() && data.Vty[j].AuthorizationExecDefault.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/authorization/exec/default", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].TransportInputAll.IsNull() && data.Vty[j].TransportInputAll.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/all", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].TransportInputNone.IsNull() && data.Vty[j].TransportInputNone.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Vty[i].TransportInput.IsNull() && data.Vty[j].TransportInput.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/input", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Vty[i].Last.IsNull() && data.Vty[j].Last.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/last", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -885,6 +833,59 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.Console {
+		stateKeyValues := [...]string{state.Console[i].First.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Console[i].First.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Console {
+			found = true
+			if state.Console[i].First.ValueString() != data.Console[j].First.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Console[i].Password.IsNull() && data.Console[j].Password.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/password/secret", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].PasswordType.IsNull() && data.Console[j].PasswordType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/password/type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].PasswordLevel.IsNull() && data.Console[j].PasswordLevel.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/password/level", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].Stopbits.IsNull() && data.Console[j].Stopbits.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/stopbits", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].PrivilegeLevel.IsNull() && data.Console[j].PrivilegeLevel.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/privilege/level/number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].LoginAuthentication.IsNull() && data.Console[j].LoginAuthentication.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/login/authentication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].LoginLocal.IsNull() && data.Console[j].LoginLocal.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/login/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].ExecTimeoutSeconds.IsNull() && data.Console[j].ExecTimeoutSeconds.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/exec-timeout/seconds", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].ExecTimeoutMinutes.IsNull() && data.Console[j].ExecTimeoutMinutes.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/exec-timeout/minutes", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+
 	return deletedItems
 }
 
@@ -895,15 +896,17 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
-	for i := range data.Console {
-		keyValues := [...]string{data.Console[i].First.ValueString()}
-		if !data.Console[i].LoginLocal.IsNull() && !data.Console[i].LoginLocal.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/console=%v/login/local", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-	}
-
 	for i := range data.Vty {
 		keyValues := [...]string{strconv.FormatInt(data.Vty[i].First.ValueInt64(), 10)}
+		if !data.Vty[i].TransportInputNone.IsNull() && !data.Vty[i].TransportInputNone.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/input/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vty[i].TransportInputAll.IsNull() && !data.Vty[i].TransportInputAll.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/input/all", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vty[i].AuthorizationExecDefault.IsNull() && !data.Vty[i].AuthorizationExecDefault.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/authorization/exec/default", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 
 		for ci := range data.Vty[i].AccessClasses {
 			ckeyValues := [...]string{data.Vty[i].AccessClasses[ci].Direction.ValueString()}
@@ -911,16 +914,15 @@ func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/access-class/acccess-list=%v/vrf-also", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 		}
-		if !data.Vty[i].AuthorizationExecDefault.IsNull() && !data.Vty[i].AuthorizationExecDefault.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/authorization/exec/default", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Vty[i].TransportInputAll.IsNull() && !data.Vty[i].TransportInputAll.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/input/all", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Vty[i].TransportInputNone.IsNull() && !data.Vty[i].TransportInputNone.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/input/none", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+
+	for i := range data.Console {
+		keyValues := [...]string{data.Console[i].First.ValueString()}
+		if !data.Console[i].LoginLocal.IsNull() && !data.Console[i].LoginLocal.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/console=%v/login/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -930,6 +932,7 @@ func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Line) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+
 	return deletePaths
 }
 

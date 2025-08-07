@@ -187,20 +187,20 @@ func (d *InterfaceTunnelDataSource) Schema(ctx context.Context, req datasource.S
 				MarkdownDescription: "Set source interface for relayed messages",
 				Computed:            true,
 			},
-			"ip_access_group_in": schema.StringAttribute{
-				MarkdownDescription: "",
-				Computed:            true,
-			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
 				MarkdownDescription: "inbound packets",
 				Computed:            true,
 			},
-			"ip_access_group_out": schema.StringAttribute{
+			"ip_access_group_in": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},
 			"ip_access_group_out_enable": schema.BoolAttribute{
 				MarkdownDescription: "outbound packets",
+				Computed:            true,
+			},
+			"ip_access_group_out": schema.StringAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
 			"helper_addresses": schema.ListNestedAttribute{
@@ -310,7 +310,7 @@ func (d *InterfaceTunnelDataSource) Read(ctx context.Context, req datasource.Rea
 		config = InterfaceTunnelData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

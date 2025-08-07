@@ -239,6 +239,7 @@ func (data *ASPathAccessList) getDeletedItems(ctx context.Context, state ASPathA
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/extended-grouping/extended_grouping=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+
 	return deletedItems
 }
 
@@ -263,6 +264,7 @@ func (data *ASPathAccessList) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/extended-grouping/extended_grouping=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+
 	return deletePaths
 }
 

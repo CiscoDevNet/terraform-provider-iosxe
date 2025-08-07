@@ -416,38 +416,38 @@ func (data *AccessListStandard) getDeletedItems(ctx context.Context, state Acces
 				found = false
 			}
 			if found {
-				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/remark", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyPrefix.IsNull() && data.Entries[j].DenyPrefix.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/ipv4-address-prefix", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyPrefixMask.IsNull() && data.Entries[j].DenyPrefixMask.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyAny.IsNull() && data.Entries[j].DenyAny.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/any", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyHost.IsNull() && data.Entries[j].DenyHost.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/host-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].DenyLog.IsNull() && data.Entries[j].DenyLog.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/log", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].PermitPrefix.IsNull() && data.Entries[j].PermitPrefix.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/ipv4-address-prefix", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].PermitPrefixMask.IsNull() && data.Entries[j].PermitPrefixMask.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.Entries[i].PermitAny.IsNull() && data.Entries[j].PermitAny.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/any", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Entries[i].PermitLog.IsNull() && data.Entries[j].PermitLog.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/log", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Entries[i].PermitHost.IsNull() && data.Entries[j].PermitHost.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/host-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Entries[i].PermitLog.IsNull() && data.Entries[j].PermitLog.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/log", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Entries[i].PermitAny.IsNull() && data.Entries[j].PermitAny.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/any", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].PermitPrefixMask.IsNull() && data.Entries[j].PermitPrefixMask.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].PermitPrefix.IsNull() && data.Entries[j].PermitPrefix.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/ipv4-address-prefix", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].DenyLog.IsNull() && data.Entries[j].DenyLog.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/log", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].DenyHost.IsNull() && data.Entries[j].DenyHost.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/host-address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].DenyAny.IsNull() && data.Entries[j].DenyAny.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/any", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].DenyPrefixMask.IsNull() && data.Entries[j].DenyPrefixMask.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/mask", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].DenyPrefix.IsNull() && data.Entries[j].DenyPrefix.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/ipv4-address-prefix", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/remark", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -456,6 +456,7 @@ func (data *AccessListStandard) getDeletedItems(ctx context.Context, state Acces
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+
 	return deletedItems
 }
 
@@ -468,19 +469,20 @@ func (data *AccessListStandard) getEmptyLeafsDelete(ctx context.Context) []strin
 
 	for i := range data.Entries {
 		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
-		if !data.Entries[i].DenyAny.IsNull() && !data.Entries[i].DenyAny.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/any", data.getPath(), strings.Join(keyValues[:], ",")))
-		}
-		if !data.Entries[i].DenyLog.IsNull() && !data.Entries[i].DenyLog.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/log", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.Entries[i].PermitLog.IsNull() && !data.Entries[i].PermitLog.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/log", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.Entries[i].PermitAny.IsNull() && !data.Entries[i].PermitAny.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/any", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Entries[i].PermitLog.IsNull() && !data.Entries[i].PermitLog.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/permit/std-ace/log", data.getPath(), strings.Join(keyValues[:], ",")))
+		if !data.Entries[i].DenyLog.IsNull() && !data.Entries[i].DenyLog.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/log", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Entries[i].DenyAny.IsNull() && !data.Entries[i].DenyAny.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-list-seq-rule=%v/deny/std-ace/any", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
+
 	return emptyLeafsDelete
 }
 
@@ -495,6 +497,7 @@ func (data *AccessListStandard) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-list-seq-rule=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+
 	return deletePaths
 }
 

@@ -38,8 +38,6 @@ func TestAccIosxeDeviceSensor(t *testing.T) {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_spec_dhcp_includes.0.name", "dhcp1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_spec_lldp_includes.0.name", "lldp1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.name", "lldp1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_port_id", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_lldp.0.tlv_name_port_description", "true"))
@@ -54,6 +52,8 @@ func TestAccIosxeDeviceSensor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_class_identifier", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_client_identifier", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_client_fqdn", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_spec_dhcp_includes.0.name", "dhcp1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "filter_spec_lldp_includes.0.name", "lldp1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_device_sensor.test", "notify_all_changes", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -108,12 +108,6 @@ func testAccIosxeDeviceSensorConfig_minimum() string {
 
 func testAccIosxeDeviceSensorConfig_all() string {
 	config := `resource "iosxe_device_sensor" "test" {` + "\n"
-	config += `	filter_spec_dhcp_includes = [{` + "\n"
-	config += `		name = "dhcp1"` + "\n"
-	config += `	}]` + "\n"
-	config += `	filter_spec_lldp_includes = [{` + "\n"
-	config += `		name = "lldp1"` + "\n"
-	config += `	}]` + "\n"
 	config += `	filter_lists_lldp = [{` + "\n"
 	config += `		name = "lldp1"` + "\n"
 	config += `		tlv_name_port_id = true` + "\n"
@@ -131,6 +125,12 @@ func testAccIosxeDeviceSensorConfig_all() string {
 	config += `		option_name_class_identifier = true` + "\n"
 	config += `		option_name_client_identifier = true` + "\n"
 	config += `		option_name_client_fqdn = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	filter_spec_dhcp_includes = [{` + "\n"
+	config += `		name = "dhcp1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	filter_spec_lldp_includes = [{` + "\n"
+	config += `		name = "lldp1"` + "\n"
 	config += `	}]` + "\n"
 	config += `	notify_all_changes = true` + "\n"
 	config += `}` + "\n"

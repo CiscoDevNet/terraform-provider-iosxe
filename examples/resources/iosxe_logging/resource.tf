@@ -16,35 +16,14 @@ resource "iosxe_logging" "example" {
       interface_name = "Loopback100"
     }
   ]
-  ipv4_hosts_transport = [
-    {
-      ipv4_host = "1.1.1.1"
-      transport_udp_ports = [
-        {
-          port_number = 10000
-        }
-      ]
-      transport_tcp_ports = [
-        {
-          port_number = 10001
-        }
-      ]
-      transport_tls_ports = [
-        {
-          port_number = 10002
-        }
-      ]
-    }
-  ]
   ipv4_hosts = [
     {
       ipv4_host = "1.1.1.1"
     }
   ]
-  ipv4_vrf_hosts_transport = [
+  ipv4_hosts_transport = [
     {
       ipv4_host = "1.1.1.1"
-      vrf       = "VRF1"
       transport_udp_ports = [
         {
           port_number = 10000
@@ -68,9 +47,10 @@ resource "iosxe_logging" "example" {
       vrf       = "VRF1"
     }
   ]
-  ipv6_hosts_transport = [
+  ipv4_vrf_hosts_transport = [
     {
-      ipv6_host = "2001::1"
+      ipv4_host = "1.1.1.1"
+      vrf       = "VRF1"
       transport_udp_ports = [
         {
           port_number = 10000
@@ -93,10 +73,9 @@ resource "iosxe_logging" "example" {
       ipv6_host = "2001::1"
     }
   ]
-  ipv6_vrf_hosts_transport = [
+  ipv6_hosts_transport = [
     {
       ipv6_host = "2001::1"
-      vrf       = "VRF1"
       transport_udp_ports = [
         {
           port_number = 10000
@@ -118,6 +97,27 @@ resource "iosxe_logging" "example" {
     {
       ipv6_host = "2001::1"
       vrf       = "VRF1"
+    }
+  ]
+  ipv6_vrf_hosts_transport = [
+    {
+      ipv6_host = "2001::1"
+      vrf       = "VRF1"
+      transport_udp_ports = [
+        {
+          port_number = 10000
+        }
+      ]
+      transport_tcp_ports = [
+        {
+          port_number = 10001
+        }
+      ]
+      transport_tls_ports = [
+        {
+          port_number = 10002
+        }
+      ]
     }
   ]
 }

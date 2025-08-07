@@ -242,21 +242,22 @@ func (data *InterfaceOSPFv3Data) fromBody(ctx context.Context, res gjson.Result)
 
 func (data *InterfaceOSPFv3) getDeletedItems(ctx context.Context, state InterfaceOSPFv3) []string {
 	deletedItems := make([]string, 0)
-	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/network-type/broadcast", state.getPath()))
-	}
-	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/network-type/non-broadcast", state.getPath()))
-	}
-	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/network-type/point-to-multipoint", state.getPath()))
+	if !state.Cost.IsNull() && data.Cost.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cost-config/value", state.getPath()))
 	}
 	if !state.NetworkTypePointToPoint.IsNull() && data.NetworkTypePointToPoint.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/network-type/point-to-point", state.getPath()))
 	}
-	if !state.Cost.IsNull() && data.Cost.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/cost-config/value", state.getPath()))
+	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network-type/point-to-multipoint", state.getPath()))
 	}
+	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network-type/non-broadcast", state.getPath()))
+	}
+	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network-type/broadcast", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -266,18 +267,19 @@ func (data *InterfaceOSPFv3) getDeletedItems(ctx context.Context, state Interfac
 
 func (data *InterfaceOSPFv3) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network-type/broadcast", data.getPath()))
-	}
-	if !data.NetworkTypeNonBroadcast.IsNull() && !data.NetworkTypeNonBroadcast.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network-type/non-broadcast", data.getPath()))
+	if !data.NetworkTypePointToPoint.IsNull() && !data.NetworkTypePointToPoint.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network-type/point-to-point", data.getPath()))
 	}
 	if !data.NetworkTypePointToMultipoint.IsNull() && !data.NetworkTypePointToMultipoint.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network-type/point-to-multipoint", data.getPath()))
 	}
-	if !data.NetworkTypePointToPoint.IsNull() && !data.NetworkTypePointToPoint.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network-type/point-to-point", data.getPath()))
+	if !data.NetworkTypeNonBroadcast.IsNull() && !data.NetworkTypeNonBroadcast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network-type/non-broadcast", data.getPath()))
 	}
+	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network-type/broadcast", data.getPath()))
+	}
+
 	return emptyLeafsDelete
 }
 
@@ -287,21 +289,22 @@ func (data *InterfaceOSPFv3) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceOSPFv3) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.NetworkTypeBroadcast.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network-type/broadcast", data.getPath()))
-	}
-	if !data.NetworkTypeNonBroadcast.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network-type/non-broadcast", data.getPath()))
-	}
-	if !data.NetworkTypePointToMultipoint.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network-type/point-to-multipoint", data.getPath()))
+	if !data.Cost.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/cost-config/value", data.getPath()))
 	}
 	if !data.NetworkTypePointToPoint.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/network-type/point-to-point", data.getPath()))
 	}
-	if !data.Cost.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/cost-config/value", data.getPath()))
+	if !data.NetworkTypePointToMultipoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/network-type/point-to-multipoint", data.getPath()))
 	}
+	if !data.NetworkTypeNonBroadcast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/network-type/non-broadcast", data.getPath()))
+	}
+	if !data.NetworkTypeBroadcast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/network-type/broadcast", data.getPath()))
+	}
+
 	return deletePaths
 }
 

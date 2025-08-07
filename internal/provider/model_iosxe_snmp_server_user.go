@@ -425,60 +425,61 @@ func (data *SNMPServerUserData) fromBody(ctx context.Context, res gjson.Result) 
 
 func (data *SNMPServerUser) getDeletedItems(ctx context.Context, state SNMPServerUser) []string {
 	deletedItems := make([]string, 0)
-	if !state.V3AuthAlgorithm.IsNull() && data.V3AuthAlgorithm.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/algorithm", state.getPath()))
-	}
-	if !state.V3AuthPassword.IsNull() && data.V3AuthPassword.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/password", state.getPath()))
-	}
-	if !state.V3AuthPrivAesAlgorithm.IsNull() && data.V3AuthPrivAesAlgorithm.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/algorithm", state.getPath()))
-	}
-	if !state.V3AuthPrivAesPassword.IsNull() && data.V3AuthPrivAesPassword.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/password", state.getPath()))
-	}
-	if !state.V3AuthPrivAesAccessIpv6Acl.IsNull() && data.V3AuthPrivAesAccessIpv6Acl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/ipv6-acl", state.getPath()))
-	}
-	if !state.V3AuthPrivAesAccessStandardAcl.IsNull() && data.V3AuthPrivAesAccessStandardAcl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/standard-acl", state.getPath()))
-	}
-	if !state.V3AuthPrivAesAccessAclName.IsNull() && data.V3AuthPrivAesAccessAclName.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/acl-name", state.getPath()))
-	}
-	if !state.V3AuthPrivDesPassword.IsNull() && data.V3AuthPrivDesPassword.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des/password", state.getPath()))
-	}
-	if !state.V3AuthPrivDesAccessIpv6Acl.IsNull() && data.V3AuthPrivDesAccessIpv6Acl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/ipv6-acl", state.getPath()))
-	}
-	if !state.V3AuthPrivDesAccessStandardAcl.IsNull() && data.V3AuthPrivDesAccessStandardAcl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/standard-acl", state.getPath()))
-	}
-	if !state.V3AuthPrivDesAccessAclName.IsNull() && data.V3AuthPrivDesAccessAclName.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/acl-name", state.getPath()))
-	}
-	if !state.V3AuthPrivDes3Password.IsNull() && data.V3AuthPrivDes3Password.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/password", state.getPath()))
-	}
-	if !state.V3AuthPrivDes3AccessIpv6Acl.IsNull() && data.V3AuthPrivDes3AccessIpv6Acl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/ipv6-acl", state.getPath()))
-	}
-	if !state.V3AuthPrivDes3AccessStandardAcl.IsNull() && data.V3AuthPrivDes3AccessStandardAcl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/standard-acl", state.getPath()))
-	}
-	if !state.V3AuthPrivDes3AccessAclName.IsNull() && data.V3AuthPrivDes3AccessAclName.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/acl-name", state.getPath()))
-	}
-	if !state.V3AuthAccessIpv6Acl.IsNull() && data.V3AuthAccessIpv6Acl.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/access-config/ipv6-acl", state.getPath()))
+	if !state.V3AuthAccessAclName.IsNull() && data.V3AuthAccessAclName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/access-config/acl-name", state.getPath()))
 	}
 	if !state.V3AuthAccessStandardAcl.IsNull() && data.V3AuthAccessStandardAcl.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/access-config/standard-acl", state.getPath()))
 	}
-	if !state.V3AuthAccessAclName.IsNull() && data.V3AuthAccessAclName.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/access-config/acl-name", state.getPath()))
+	if !state.V3AuthAccessIpv6Acl.IsNull() && data.V3AuthAccessIpv6Acl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/access-config/ipv6-acl", state.getPath()))
 	}
+	if !state.V3AuthPrivDes3AccessAclName.IsNull() && data.V3AuthPrivDes3AccessAclName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/acl-name", state.getPath()))
+	}
+	if !state.V3AuthPrivDes3AccessStandardAcl.IsNull() && data.V3AuthPrivDes3AccessStandardAcl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/standard-acl", state.getPath()))
+	}
+	if !state.V3AuthPrivDes3AccessIpv6Acl.IsNull() && data.V3AuthPrivDes3AccessIpv6Acl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/ipv6-acl", state.getPath()))
+	}
+	if !state.V3AuthPrivDes3Password.IsNull() && data.V3AuthPrivDes3Password.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/password", state.getPath()))
+	}
+	if !state.V3AuthPrivDesAccessAclName.IsNull() && data.V3AuthPrivDesAccessAclName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/acl-name", state.getPath()))
+	}
+	if !state.V3AuthPrivDesAccessStandardAcl.IsNull() && data.V3AuthPrivDesAccessStandardAcl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/standard-acl", state.getPath()))
+	}
+	if !state.V3AuthPrivDesAccessIpv6Acl.IsNull() && data.V3AuthPrivDesAccessIpv6Acl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/ipv6-acl", state.getPath()))
+	}
+	if !state.V3AuthPrivDesPassword.IsNull() && data.V3AuthPrivDesPassword.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/des/password", state.getPath()))
+	}
+	if !state.V3AuthPrivAesAccessAclName.IsNull() && data.V3AuthPrivAesAccessAclName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/acl-name", state.getPath()))
+	}
+	if !state.V3AuthPrivAesAccessStandardAcl.IsNull() && data.V3AuthPrivAesAccessStandardAcl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/standard-acl", state.getPath()))
+	}
+	if !state.V3AuthPrivAesAccessIpv6Acl.IsNull() && data.V3AuthPrivAesAccessIpv6Acl.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/ipv6-acl", state.getPath()))
+	}
+	if !state.V3AuthPrivAesPassword.IsNull() && data.V3AuthPrivAesPassword.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/password", state.getPath()))
+	}
+	if !state.V3AuthPrivAesAlgorithm.IsNull() && data.V3AuthPrivAesAlgorithm.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/algorithm", state.getPath()))
+	}
+	if !state.V3AuthPassword.IsNull() && data.V3AuthPassword.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/password", state.getPath()))
+	}
+	if !state.V3AuthAlgorithm.IsNull() && data.V3AuthAlgorithm.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/auth-config/algorithm", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -488,6 +489,7 @@ func (data *SNMPServerUser) getDeletedItems(ctx context.Context, state SNMPServe
 
 func (data *SNMPServerUser) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	return emptyLeafsDelete
 }
 
@@ -497,60 +499,61 @@ func (data *SNMPServerUser) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *SNMPServerUser) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.V3AuthAlgorithm.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/algorithm", data.getPath()))
-	}
-	if !data.V3AuthPassword.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/password", data.getPath()))
-	}
-	if !data.V3AuthPrivAesAlgorithm.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/algorithm", data.getPath()))
-	}
-	if !data.V3AuthPrivAesPassword.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/password", data.getPath()))
-	}
-	if !data.V3AuthPrivAesAccessIpv6Acl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/ipv6-acl", data.getPath()))
-	}
-	if !data.V3AuthPrivAesAccessStandardAcl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/standard-acl", data.getPath()))
-	}
-	if !data.V3AuthPrivAesAccessAclName.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/acl-name", data.getPath()))
-	}
-	if !data.V3AuthPrivDesPassword.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des/password", data.getPath()))
-	}
-	if !data.V3AuthPrivDesAccessIpv6Acl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/ipv6-acl", data.getPath()))
-	}
-	if !data.V3AuthPrivDesAccessStandardAcl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/standard-acl", data.getPath()))
-	}
-	if !data.V3AuthPrivDesAccessAclName.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/acl-name", data.getPath()))
-	}
-	if !data.V3AuthPrivDes3Password.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/password", data.getPath()))
-	}
-	if !data.V3AuthPrivDes3AccessIpv6Acl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/ipv6-acl", data.getPath()))
-	}
-	if !data.V3AuthPrivDes3AccessStandardAcl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/standard-acl", data.getPath()))
-	}
-	if !data.V3AuthPrivDes3AccessAclName.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/acl-name", data.getPath()))
-	}
-	if !data.V3AuthAccessIpv6Acl.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/access-config/ipv6-acl", data.getPath()))
+	if !data.V3AuthAccessAclName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/access-config/acl-name", data.getPath()))
 	}
 	if !data.V3AuthAccessStandardAcl.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/access-config/standard-acl", data.getPath()))
 	}
-	if !data.V3AuthAccessAclName.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/access-config/acl-name", data.getPath()))
+	if !data.V3AuthAccessIpv6Acl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/access-config/ipv6-acl", data.getPath()))
 	}
+	if !data.V3AuthPrivDes3AccessAclName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/acl-name", data.getPath()))
+	}
+	if !data.V3AuthPrivDes3AccessStandardAcl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/standard-acl", data.getPath()))
+	}
+	if !data.V3AuthPrivDes3AccessIpv6Acl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/access-config/ipv6-acl", data.getPath()))
+	}
+	if !data.V3AuthPrivDes3Password.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des3/password", data.getPath()))
+	}
+	if !data.V3AuthPrivDesAccessAclName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/acl-name", data.getPath()))
+	}
+	if !data.V3AuthPrivDesAccessStandardAcl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/standard-acl", data.getPath()))
+	}
+	if !data.V3AuthPrivDesAccessIpv6Acl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des/access-config/ipv6-acl", data.getPath()))
+	}
+	if !data.V3AuthPrivDesPassword.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/des/password", data.getPath()))
+	}
+	if !data.V3AuthPrivAesAccessAclName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/acl-name", data.getPath()))
+	}
+	if !data.V3AuthPrivAesAccessStandardAcl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/standard-acl", data.getPath()))
+	}
+	if !data.V3AuthPrivAesAccessIpv6Acl.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/access-config/ipv6-acl", data.getPath()))
+	}
+	if !data.V3AuthPrivAesPassword.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/password", data.getPath()))
+	}
+	if !data.V3AuthPrivAesAlgorithm.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/priv-config/aes/algorithm", data.getPath()))
+	}
+	if !data.V3AuthPassword.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/password", data.getPath()))
+	}
+	if !data.V3AuthAlgorithm.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/auth-config/algorithm", data.getPath()))
+	}
+
 	return deletePaths
 }
 

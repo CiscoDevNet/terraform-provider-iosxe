@@ -258,8 +258,14 @@ func (data *FlowMonitorData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *FlowMonitor) getDeletedItems(ctx context.Context, state FlowMonitor) []string {
 	deletedItems := make([]string, 0)
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	if !state.Record.IsNull() && data.Record.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/record/type", state.getPath()))
+	}
+	if !state.CacheTimeoutInactive.IsNull() && data.CacheTimeoutInactive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cache/timeout/inactive", state.getPath()))
+	}
+	if !state.CacheTimeoutActive.IsNull() && data.CacheTimeoutActive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cache/timeout/active", state.getPath()))
 	}
 	for i := range state.Exporters {
 		stateKeyValues := [...]string{state.Exporters[i].Name.ValueString()}
@@ -286,15 +292,10 @@ func (data *FlowMonitor) getDeletedItems(ctx context.Context, state FlowMonitor)
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/exporter=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	if !state.CacheTimeoutActive.IsNull() && data.CacheTimeoutActive.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/cache/timeout/active", state.getPath()))
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
-	if !state.CacheTimeoutInactive.IsNull() && data.CacheTimeoutInactive.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/cache/timeout/inactive", state.getPath()))
-	}
-	if !state.Record.IsNull() && data.Record.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/record/type", state.getPath()))
-	}
+
 	return deletedItems
 }
 
@@ -314,23 +315,24 @@ func (data *FlowMonitor) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *FlowMonitor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Description.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	if !data.Record.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/record/type", data.getPath()))
+	}
+	if !data.CacheTimeoutInactive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/cache/timeout/inactive", data.getPath()))
+	}
+	if !data.CacheTimeoutActive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/cache/timeout/active", data.getPath()))
 	}
 	for i := range data.Exporters {
 		keyValues := [...]string{data.Exporters[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/exporter=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	if !data.CacheTimeoutActive.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/cache/timeout/active", data.getPath()))
+	if !data.Description.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
 	}
-	if !data.CacheTimeoutInactive.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/cache/timeout/inactive", data.getPath()))
-	}
-	if !data.Record.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/record/type", data.getPath()))
-	}
+
 	return deletePaths
 }
 

@@ -551,35 +551,33 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceOSPF) []string {
 	deletedItems := make([]string, 0)
-	if !state.Cost.IsNull() && data.Cost.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/cost", state.getPath()))
-	}
-	if !state.DeadInterval.IsNull() && data.DeadInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/dead-interval", state.getPath()))
-	}
-	if !state.HelloInterval.IsNull() && data.HelloInterval.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/hello-interval", state.getPath()))
-	}
-	if !state.MtuIgnore.IsNull() && data.MtuIgnore.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu-ignore", state.getPath()))
-	}
-	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/broadcast", state.getPath()))
-	}
-	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/non-broadcast", state.getPath()))
-	}
-	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/point-to-multipoint", state.getPath()))
-	}
-	if !state.NetworkTypePointToPoint.IsNull() && data.NetworkTypePointToPoint.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/point-to-point", state.getPath()))
-	}
-	if !state.Priority.IsNull() && data.Priority.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
-	}
-	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ttl-security/hops", state.getPath()))
+	for i := range state.MessageDigestKeys {
+		stateKeyValues := [...]string{strconv.FormatInt(state.MessageDigestKeys[i].Id.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.MessageDigestKeys[i].Id.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.MessageDigestKeys {
+			found = true
+			if state.MessageDigestKeys[i].Id.ValueInt64() != data.MessageDigestKeys[j].Id.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.MessageDigestKeys[i].Md5AuthKey.IsNull() && data.MessageDigestKeys[j].Md5AuthKey.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/message-digest-key=%v/md5/auth-key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/message-digest-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
 	for i := range state.ProcessIds {
 		stateKeyValues := [...]string{strconv.FormatInt(state.ProcessIds[i].Id.ValueInt64(), 10)}
@@ -631,34 +629,37 @@ func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceO
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/process-id=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.MessageDigestKeys {
-		stateKeyValues := [...]string{strconv.FormatInt(state.MessageDigestKeys[i].Id.ValueInt64(), 10)}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.MessageDigestKeys[i].Id.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.MessageDigestKeys {
-			found = true
-			if state.MessageDigestKeys[i].Id.ValueInt64() != data.MessageDigestKeys[j].Id.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.MessageDigestKeys[i].Md5AuthKey.IsNull() && data.MessageDigestKeys[j].Md5AuthKey.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/message-digest-key=%v/md5/auth-key", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/message-digest-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
+	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ttl-security/hops", state.getPath()))
 	}
+	if !state.Priority.IsNull() && data.Priority.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/priority", state.getPath()))
+	}
+	if !state.NetworkTypePointToPoint.IsNull() && data.NetworkTypePointToPoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/point-to-point", state.getPath()))
+	}
+	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/point-to-multipoint", state.getPath()))
+	}
+	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/non-broadcast", state.getPath()))
+	}
+	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/network/broadcast", state.getPath()))
+	}
+	if !state.MtuIgnore.IsNull() && data.MtuIgnore.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mtu-ignore", state.getPath()))
+	}
+	if !state.HelloInterval.IsNull() && data.HelloInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/hello-interval", state.getPath()))
+	}
+	if !state.DeadInterval.IsNull() && data.DeadInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dead-interval", state.getPath()))
+	}
+	if !state.Cost.IsNull() && data.Cost.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/cost", state.getPath()))
+	}
+
 	return deletedItems
 }
 
@@ -668,17 +669,18 @@ func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceO
 
 func (data *InterfaceOSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network/broadcast", data.getPath()))
-	}
-	if !data.NetworkTypeNonBroadcast.IsNull() && !data.NetworkTypeNonBroadcast.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network/non-broadcast", data.getPath()))
+
+	if !data.NetworkTypePointToPoint.IsNull() && !data.NetworkTypePointToPoint.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network/point-to-point", data.getPath()))
 	}
 	if !data.NetworkTypePointToMultipoint.IsNull() && !data.NetworkTypePointToMultipoint.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network/point-to-multipoint", data.getPath()))
 	}
-	if !data.NetworkTypePointToPoint.IsNull() && !data.NetworkTypePointToPoint.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network/point-to-point", data.getPath()))
+	if !data.NetworkTypeNonBroadcast.IsNull() && !data.NetworkTypeNonBroadcast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network/non-broadcast", data.getPath()))
+	}
+	if !data.NetworkTypeBroadcast.IsNull() && !data.NetworkTypeBroadcast.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/network/broadcast", data.getPath()))
 	}
 
 	return emptyLeafsDelete
@@ -690,46 +692,47 @@ func (data *InterfaceOSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceOSPF) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.Cost.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/cost", data.getPath()))
-	}
-	if !data.DeadInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/dead-interval", data.getPath()))
-	}
-	if !data.HelloInterval.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/hello-interval", data.getPath()))
-	}
-	if !data.MtuIgnore.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu-ignore", data.getPath()))
-	}
-	if !data.NetworkTypeBroadcast.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/broadcast", data.getPath()))
-	}
-	if !data.NetworkTypeNonBroadcast.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/non-broadcast", data.getPath()))
-	}
-	if !data.NetworkTypePointToMultipoint.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/point-to-multipoint", data.getPath()))
-	}
-	if !data.NetworkTypePointToPoint.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/point-to-point", data.getPath()))
-	}
-	if !data.Priority.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/priority", data.getPath()))
-	}
-	if !data.TtlSecurityHops.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ttl-security/hops", data.getPath()))
+	for i := range data.MessageDigestKeys {
+		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/message-digest-key=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.ProcessIds {
 		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/process-id=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.MessageDigestKeys {
-		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/message-digest-key=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	if !data.TtlSecurityHops.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ttl-security/hops", data.getPath()))
 	}
+	if !data.Priority.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/priority", data.getPath()))
+	}
+	if !data.NetworkTypePointToPoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/point-to-point", data.getPath()))
+	}
+	if !data.NetworkTypePointToMultipoint.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/point-to-multipoint", data.getPath()))
+	}
+	if !data.NetworkTypeNonBroadcast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/non-broadcast", data.getPath()))
+	}
+	if !data.NetworkTypeBroadcast.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/network/broadcast", data.getPath()))
+	}
+	if !data.MtuIgnore.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mtu-ignore", data.getPath()))
+	}
+	if !data.HelloInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/hello-interval", data.getPath()))
+	}
+	if !data.DeadInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dead-interval", data.getPath()))
+	}
+	if !data.Cost.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/cost", data.getPath()))
+	}
+
 	return deletePaths
 }
 

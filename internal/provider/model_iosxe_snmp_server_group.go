@@ -331,29 +331,29 @@ func (data *SNMPServerGroup) getDeletedItems(ctx context.Context, state SNMPServ
 				found = false
 			}
 			if found {
-				if !state.V3Security[i].ContextNode.IsNull() && data.V3Security[j].ContextNode.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/context-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.V3Security[i].MatchNode.IsNull() && data.V3Security[j].MatchNode.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/match-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.V3Security[i].ReadNode.IsNull() && data.V3Security[j].ReadNode.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/read-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.V3Security[i].WriteNode.IsNull() && data.V3Security[j].WriteNode.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/write-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.V3Security[i].NotifyNode.IsNull() && data.V3Security[j].NotifyNode.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/notify-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				if !state.V3Security[i].AccessIpv6Acl.IsNull() && data.V3Security[j].AccessIpv6Acl.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/access-config/ipv6-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.V3Security[i].AccessAclName.IsNull() && data.V3Security[j].AccessAclName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/access-config/acl-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.V3Security[i].AccessStandardAcl.IsNull() && data.V3Security[j].AccessStandardAcl.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/access-config/standard-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.V3Security[i].AccessAclName.IsNull() && data.V3Security[j].AccessAclName.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/access-config/acl-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.V3Security[i].AccessIpv6Acl.IsNull() && data.V3Security[j].AccessIpv6Acl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/access-config/ipv6-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.V3Security[i].NotifyNode.IsNull() && data.V3Security[j].NotifyNode.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/notify-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.V3Security[i].WriteNode.IsNull() && data.V3Security[j].WriteNode.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/write-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.V3Security[i].ReadNode.IsNull() && data.V3Security[j].ReadNode.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/read-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.V3Security[i].MatchNode.IsNull() && data.V3Security[j].MatchNode.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/match-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.V3Security[i].ContextNode.IsNull() && data.V3Security[j].ContextNode.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v/context-node", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
@@ -362,6 +362,7 @@ func (data *SNMPServerGroup) getDeletedItems(ctx context.Context, state SNMPServ
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/v3/security-level-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+
 	return deletedItems
 }
 
@@ -386,6 +387,7 @@ func (data *SNMPServerGroup) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/v3/security-level-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+
 	return deletePaths
 }
 
