@@ -35,15 +35,39 @@ import (
 func TestAccIosxeCTS(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "authorization_list", "Tacacs-GROUP"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sgt", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_default_password_type", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_default_password_secret", "MySecretPassword"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_retry_period", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.ip", "2.2.2.2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.source_ip", "3.3.3.3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.password", "default"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.connection_mode", "local"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.option", "listener"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.hold_time", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.max_time", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.ip", "4.4.4.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.source_ip", "5.5.5.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.password", "default"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.connection_mode", "local"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.option", "listener"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.hold_time", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.max_time", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_speaker_hold_time", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_listener_hold_min_time", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_listener_hold_max_time", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "role_based_enforcement_logging_interval", "300"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeCTSConfig_minimum(),
+				Config: testAccIosxeCTSPrerequisitesConfig + testAccIosxeCTSConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeCTSConfig_all(),
+				Config: testAccIosxeCTSPrerequisitesConfig + testAccIosxeCTSConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
@@ -72,12 +96,26 @@ func iosxeCTSImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 // End of section. //template:end importStateIdFunc
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccIosxeCTSPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"rd" = "1:1"
+		"address-family/ipv4" = ""
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
 func testAccIosxeCTSConfig_minimum() string {
 	config := `resource "iosxe_cts" "test" {` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -89,6 +127,35 @@ func testAccIosxeCTSConfig_minimum() string {
 func testAccIosxeCTSConfig_all() string {
 	config := `resource "iosxe_cts" "test" {` + "\n"
 	config += `	authorization_list = "Tacacs-GROUP"` + "\n"
+	config += `	sgt = 200` + "\n"
+	config += `	sxp_enable = true` + "\n"
+	config += `	sxp_default_password_type = "0"` + "\n"
+	config += `	sxp_default_password_secret = "MySecretPassword"` + "\n"
+	config += `	sxp_retry_period = 60` + "\n"
+	config += `	sxp_connection_peer_ipv4_no_vrf = [{` + "\n"
+	config += `		ip = "2.2.2.2"` + "\n"
+	config += `		source_ip = "3.3.3.3"` + "\n"
+	config += `		password = "default"` + "\n"
+	config += `		connection_mode = "local"` + "\n"
+	config += `		option = "listener"` + "\n"
+	config += `		hold_time = 60` + "\n"
+	config += `		max_time = 300` + "\n"
+	config += `	}]` + "\n"
+	config += `	sxp_connection_peer_ipv4_with_vrf = [{` + "\n"
+	config += `		ip = "4.4.4.4"` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `		source_ip = "5.5.5.5"` + "\n"
+	config += `		password = "default"` + "\n"
+	config += `		connection_mode = "local"` + "\n"
+	config += `		option = "listener"` + "\n"
+	config += `		hold_time = 60` + "\n"
+	config += `		max_time = 300` + "\n"
+	config += `	}]` + "\n"
+	config += `	sxp_speaker_hold_time = 300` + "\n"
+	config += `	sxp_listener_hold_min_time = 60` + "\n"
+	config += `	sxp_listener_hold_max_time = 300` + "\n"
+	config += `	role_based_enforcement_logging_interval = 300` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

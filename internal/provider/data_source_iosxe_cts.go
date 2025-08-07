@@ -71,6 +71,140 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Local authorization list to use for CTS",
 				Computed:            true,
 			},
+			"sgt": schema.Int64Attribute{
+				MarkdownDescription: "Local device security group",
+				Computed:            true,
+			},
+			"sxp_enable": schema.BoolAttribute{
+				MarkdownDescription: "Enable CTS SXP support",
+				Computed:            true,
+			},
+			"sxp_default_password_type": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"sxp_default_password_secret": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"sxp_retry_period": schema.Int64Attribute{
+				MarkdownDescription: "Enter retry period value for sxp connection in seconds",
+				Computed:            true,
+			},
+			"sxp_connection_peer_ipv4_no_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ip": schema.StringAttribute{
+							MarkdownDescription: "Enter SXP Peer IP address (IPv4)",
+							Computed:            true,
+						},
+						"source_ip": schema.StringAttribute{
+							MarkdownDescription: "Enter SXP Source IP address (IPv4)",
+							Computed:            true,
+						},
+						"password": schema.StringAttribute{
+							MarkdownDescription: "Password type",
+							Computed:            true,
+						},
+						"connection_mode": schema.StringAttribute{
+							MarkdownDescription: "Mode of connection",
+							Computed:            true,
+						},
+						"option": schema.StringAttribute{
+							MarkdownDescription: "Role of a device speaker/listener/both",
+							Computed:            true,
+						},
+						"hold_time": schema.Int64Attribute{
+							MarkdownDescription: "Minimum hold time period",
+							Computed:            true,
+						},
+						"max_time": schema.Int64Attribute{
+							MarkdownDescription: "Maximum hold time period",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"sxp_connection_peer_ipv4_with_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ip": schema.StringAttribute{
+							MarkdownDescription: "Enter SXP Peer IP address (IPv4)",
+							Computed:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VRF details",
+							Computed:            true,
+						},
+						"source_ip": schema.StringAttribute{
+							MarkdownDescription: "Enter SXP Source IP address (IPv4)",
+							Computed:            true,
+						},
+						"password": schema.StringAttribute{
+							MarkdownDescription: "Password type",
+							Computed:            true,
+						},
+						"connection_mode": schema.StringAttribute{
+							MarkdownDescription: "Mode of connection",
+							Computed:            true,
+						},
+						"option": schema.StringAttribute{
+							MarkdownDescription: "Role of a device speaker/listener/both",
+							Computed:            true,
+						},
+						"hold_time": schema.Int64Attribute{
+							MarkdownDescription: "Minimum hold time period",
+							Computed:            true,
+						},
+						"max_time": schema.Int64Attribute{
+							MarkdownDescription: "Maximum hold time period",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"sxp_speaker_hold_time": schema.Int64Attribute{
+				MarkdownDescription: "Enter speaker hold-time value in seconds",
+				Computed:            true,
+			},
+			"sxp_listener_hold_min_time": schema.Int64Attribute{
+				MarkdownDescription: "Enter minimum allowed Hold Time in seconds",
+				Computed:            true,
+			},
+			"sxp_listener_hold_max_time": schema.Int64Attribute{
+				MarkdownDescription: "Enter maximum allowed Hold Time in seconds",
+				Computed:            true,
+			},
+			"role_based_enforcement_logging_interval": schema.Int64Attribute{
+				MarkdownDescription: "Configure sgacl logging interval",
+				Computed:            true,
+			},
+			"role_based_enforcement_vlan_list": schema.ListNestedAttribute{
+				MarkdownDescription: "VLANs on which Role-based ACLs are enforced",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vlans": schema.StringAttribute{
+							MarkdownDescription: "VLAN id",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"role_based_enforcement_vlan_lists": schema.ListAttribute{
+				MarkdownDescription: "VLANs on which Role-based ACLs are enforced",
+				ElementType:         types.Int64Type,
+				Computed:            true,
+			},
+			"role_based_permissions_default_acl_name": schema.ListAttribute{
+				MarkdownDescription: "Role-based Access-list name",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
 		},
 	}
 }
