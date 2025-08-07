@@ -45,10 +45,10 @@ func TestAccDataSourceIosxeInterfacePortChannelSubinterface(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv4_address", "192.0.2.2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ipv4_address_mask", "255.255.255.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "encapsulation_dot1q_vlan_id", "666"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_access_group_in_enable", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_access_group_out", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_access_group_in", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_access_group_out_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "ip_access_group_out", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "helper_addresses.0.address", "10.10.10.10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "helper_addresses.0.global", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_port_channel_subinterface.test", "bfd_template", "bfd_template1"))
@@ -128,10 +128,10 @@ func testAccDataSourceIosxeInterfacePortChannelSubinterfaceConfig() string {
 	config += `	ipv4_address = "192.0.2.2"` + "\n"
 	config += `	ipv4_address_mask = "255.255.255.0"` + "\n"
 	config += `	encapsulation_dot1q_vlan_id = 666` + "\n"
-	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_in_enable = true` + "\n"
-	config += `	ip_access_group_out = "1"` + "\n"
+	config += `	ip_access_group_in = "1"` + "\n"
 	config += `	ip_access_group_out_enable = true` + "\n"
+	config += `	ip_access_group_out = "1"` + "\n"
 	config += `	helper_addresses = [{` + "\n"
 	config += `		address = "10.10.10.10"` + "\n"
 	config += `		global = false` + "\n"

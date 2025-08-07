@@ -335,13 +335,13 @@ func (r *{{camelCase .Name}}Resource) Create(ctx context.Context, req resource.C
 				_, err = device.Client.PutData(plan.getPath(), body{{if .Wait}}, restconf.Wait{{end}})
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i{{if .Wait}}, restconf.Wait{{end}})
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -386,7 +386,7 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 			state = {{camelCase .Name}}{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 
@@ -468,7 +468,7 @@ func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.U
 			for _, i := range deletedItems {
 				res, err := device.Client.DeleteData(i{{if .Wait}}, restconf.Wait{{end}})
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -477,13 +477,13 @@ func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.U
 				_, err = device.Client.PutData(plan.getPath(), body{{if .Wait}}, restconf.Wait{{end}})
 			}
 			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH), got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
 				res, err := device.Client.DeleteData(i{{if .Wait}}, restconf.Wait{{end}})
 				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
@@ -535,7 +535,7 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 		if deleteMode == "all" {
 			res, err := device.Client.DeleteData(state.Id.ValueString(){{if .Wait}}, restconf.Wait{{end}})
 			if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
 				return
 			}
 		} else {
@@ -556,7 +556,7 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 				for _, i := range deletePaths {
 					res, err := device.Client.DeleteData(i{{if .Wait}}, restconf.Wait{{end}})
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 						return
 					}
 				}

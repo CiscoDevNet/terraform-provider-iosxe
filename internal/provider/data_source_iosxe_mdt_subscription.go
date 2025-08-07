@@ -158,7 +158,7 @@ func (d *MDTSubscriptionDataSource) Read(ctx context.Context, req datasource.Rea
 		config = MDTSubscriptionData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

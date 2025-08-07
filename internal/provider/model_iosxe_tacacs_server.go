@@ -182,10 +182,10 @@ func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServer) []string {
 	deletedItems := make([]string, 0)
 	if !state.Key.IsNull() && data.Key.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/key", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/key", state.getPath()))
 	}
 	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/encryption", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/key", state.getPath()))
 	}
 	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/timeout", state.getPath()))
@@ -214,10 +214,10 @@ func (data *TACACSServer) getEmptyLeafsDelete(ctx context.Context) []string {
 func (data *TACACSServer) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	if !data.Key.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/key", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/key", data.getPath()))
 	}
 	if !data.Encryption.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/encryption", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/key", data.getPath()))
 	}
 	if !data.Timeout.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/timeout", data.getPath()))

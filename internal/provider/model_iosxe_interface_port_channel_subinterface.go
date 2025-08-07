@@ -52,10 +52,10 @@ type InterfacePortChannelSubinterface struct {
 	Ipv4Address                  types.String                                             `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                                             `tfsdk:"ipv4_address_mask"`
 	EncapsulationDot1qVlanId     types.Int64                                              `tfsdk:"encapsulation_dot1q_vlan_id"`
-	IpAccessGroupIn              types.String                                             `tfsdk:"ip_access_group_in"`
 	IpAccessGroupInEnable        types.Bool                                               `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut             types.String                                             `tfsdk:"ip_access_group_out"`
+	IpAccessGroupIn              types.String                                             `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable       types.Bool                                               `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut             types.String                                             `tfsdk:"ip_access_group_out"`
 	AutoQosClassify              types.Bool                                               `tfsdk:"auto_qos_classify"`
 	AutoQosClassifyPolice        types.Bool                                               `tfsdk:"auto_qos_classify_police"`
 	AutoQosTrust                 types.Bool                                               `tfsdk:"auto_qos_trust"`
@@ -102,10 +102,10 @@ type InterfacePortChannelSubinterfaceData struct {
 	Ipv4Address                  types.String                                             `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                                             `tfsdk:"ipv4_address_mask"`
 	EncapsulationDot1qVlanId     types.Int64                                              `tfsdk:"encapsulation_dot1q_vlan_id"`
-	IpAccessGroupIn              types.String                                             `tfsdk:"ip_access_group_in"`
 	IpAccessGroupInEnable        types.Bool                                               `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut             types.String                                             `tfsdk:"ip_access_group_out"`
+	IpAccessGroupIn              types.String                                             `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable       types.Bool                                               `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut             types.String                                             `tfsdk:"ip_access_group_out"`
 	AutoQosClassify              types.Bool                                               `tfsdk:"auto_qos_classify"`
 	AutoQosClassifyPolice        types.Bool                                               `tfsdk:"auto_qos_classify_police"`
 	AutoQosTrust                 types.Bool                                               `tfsdk:"auto_qos_trust"`
@@ -213,21 +213,21 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string 
 	if !data.EncapsulationDot1qVlanId.IsNull() && !data.EncapsulationDot1qVlanId.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encapsulation.dot1Q.vlan-id", strconv.FormatInt(data.EncapsulationDot1qVlanId.ValueInt64(), 10))
 	}
-	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.acl-name", data.IpAccessGroupIn.ValueString())
-	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.in", map[string]string{})
 		}
 	}
-	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.acl-name", data.IpAccessGroupOut.ValueString())
+	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.acl-name", data.IpAccessGroupIn.ValueString())
 	}
 	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.IsUnknown() {
 		if data.IpAccessGroupOutEnable.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.out", map[string]string{})
 		}
+	}
+	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.acl-name", data.IpAccessGroupOut.ValueString())
 	}
 	if !data.AutoQosClassify.IsNull() && !data.AutoQosClassify.IsUnknown() {
 		if data.AutoQosClassify.ValueBool() {
@@ -461,11 +461,6 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 	} else {
 		data.EncapsulationDot1qVlanId = types.Int64Null()
 	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() && !data.IpAccessGroupIn.IsNull() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	} else {
-		data.IpAccessGroupIn = types.StringNull()
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
 			data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -475,10 +470,10 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 	} else {
 		data.IpAccessGroupInEnable = types.BoolNull()
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() && !data.IpAccessGroupOut.IsNull() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() && !data.IpAccessGroupIn.IsNull() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	} else {
-		data.IpAccessGroupOut = types.StringNull()
+		data.IpAccessGroupIn = types.StringNull()
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); !data.IpAccessGroupOutEnable.IsNull() {
 		if value.Exists() {
@@ -488,6 +483,11 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 		}
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() && !data.IpAccessGroupOut.IsNull() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
+	} else {
+		data.IpAccessGroupOut = types.StringNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.classify"); !data.AutoQosClassify.IsNull() {
 		if value.Exists() {
@@ -866,21 +866,21 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 	if value := res.Get(prefix + "encapsulation.dot1Q.vlan-id"); value.Exists() {
 		data.EncapsulationDot1qVlanId = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupInEnable = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); value.Exists() {
 		data.IpAccessGroupOutEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.classify"); value.Exists() {
 		data.AutoQosClassify = types.BoolValue(true)
@@ -1101,21 +1101,21 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 	if value := res.Get(prefix + "encapsulation.dot1Q.vlan-id"); value.Exists() {
 		data.EncapsulationDot1qVlanId = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupInEnable = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); value.Exists() {
 		data.IpAccessGroupOutEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-switch:auto.qos.classify"); value.Exists() {
 		data.AutoQosClassify = types.BoolValue(true)
@@ -1469,17 +1469,17 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 	if !state.AutoQosClassify.IsNull() && data.AutoQosClassify.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", state.getPath()))
 	}
-	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl/out", state.getPath()))
-	}
 	if !state.IpAccessGroupOut.IsNull() && data.IpAccessGroupOut.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl", state.getPath()))
 	}
-	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
+	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl/out", state.getPath()))
 	}
 	if !state.IpAccessGroupIn.IsNull() && data.IpAccessGroupIn.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl", state.getPath()))
+	}
+	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
 	}
 	if !state.EncapsulationDot1qVlanId.IsNull() && data.EncapsulationDot1qVlanId.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", state.getPath()))
@@ -1708,17 +1708,17 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	if !data.AutoQosClassify.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-switch:auto/qos/classify", data.getPath()))
 	}
-	if !data.IpAccessGroupOutEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
-	}
 	if !data.IpAccessGroupOut.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl", data.getPath()))
 	}
-	if !data.IpAccessGroupInEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
+	if !data.IpAccessGroupOutEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
 	}
 	if !data.IpAccessGroupIn.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl", data.getPath()))
+	}
+	if !data.IpAccessGroupInEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
 	}
 	if !data.EncapsulationDot1qVlanId.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", data.getPath()))

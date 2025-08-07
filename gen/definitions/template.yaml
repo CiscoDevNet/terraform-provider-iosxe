@@ -47,6 +47,7 @@ attributes:
     example: true
   - yang_name: switchport/port-security/aging/type/inactivity
     example: true
+    delete_parent: true
   - yang_name: switchport/port-security/maximum/range
     type: List
     attributes:

@@ -206,7 +206,7 @@ func (d *AAAAccountingDataSource) Read(ctx context.Context, req datasource.ReadR
 		config = AAAAccountingData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

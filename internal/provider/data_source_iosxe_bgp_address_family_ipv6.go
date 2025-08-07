@@ -142,7 +142,7 @@ func (d *BGPAddressFamilyIPv6DataSource) Read(ctx context.Context, req datasourc
 		config = BGPAddressFamilyIPv6Data{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

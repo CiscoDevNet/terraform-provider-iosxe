@@ -122,7 +122,7 @@ func (d *InterfaceMPLSDataSource) Read(ctx context.Context, req datasource.ReadR
 		config = InterfaceMPLSData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

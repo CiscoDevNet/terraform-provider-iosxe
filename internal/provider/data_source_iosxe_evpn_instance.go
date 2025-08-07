@@ -198,7 +198,7 @@ func (d *EVPNInstanceDataSource) Read(ctx context.Context, req datasource.ReadRe
 		config = EVPNInstanceData{Device: config.Device}
 	} else {
 		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))
+			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 

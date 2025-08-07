@@ -60,10 +60,10 @@ type InterfaceEthernet struct {
 	ChannelGroupNumber                      types.Int64                                       `tfsdk:"channel_group_number"`
 	ChannelGroupMode                        types.String                                      `tfsdk:"channel_group_mode"`
 	IpDhcpRelaySourceInterface              types.String                                      `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupIn                         types.String                                      `tfsdk:"ip_access_group_in"`
 	IpAccessGroupInEnable                   types.Bool                                        `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut                        types.String                                      `tfsdk:"ip_access_group_out"`
+	IpAccessGroupIn                         types.String                                      `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable                  types.Bool                                        `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                        types.String                                      `tfsdk:"ip_access_group_out"`
 	SpanningTreeGuard                       types.String                                      `tfsdk:"spanning_tree_guard"`
 	AutoQosClassify                         types.Bool                                        `tfsdk:"auto_qos_classify"`
 	AutoQosClassifyPolice                   types.Bool                                        `tfsdk:"auto_qos_classify_police"`
@@ -181,10 +181,10 @@ type InterfaceEthernetData struct {
 	ChannelGroupNumber                      types.Int64                                       `tfsdk:"channel_group_number"`
 	ChannelGroupMode                        types.String                                      `tfsdk:"channel_group_mode"`
 	IpDhcpRelaySourceInterface              types.String                                      `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupIn                         types.String                                      `tfsdk:"ip_access_group_in"`
 	IpAccessGroupInEnable                   types.Bool                                        `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupOut                        types.String                                      `tfsdk:"ip_access_group_out"`
+	IpAccessGroupIn                         types.String                                      `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable                  types.Bool                                        `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                        types.String                                      `tfsdk:"ip_access_group_out"`
 	SpanningTreeGuard                       types.String                                      `tfsdk:"spanning_tree_guard"`
 	AutoQosClassify                         types.Bool                                        `tfsdk:"auto_qos_classify"`
 	AutoQosClassifyPolice                   types.Bool                                        `tfsdk:"auto_qos_classify_police"`
@@ -393,21 +393,21 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	if !data.IpDhcpRelaySourceInterface.IsNull() && !data.IpDhcpRelaySourceInterface.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface", data.IpDhcpRelaySourceInterface.ValueString())
 	}
-	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.acl-name", data.IpAccessGroupIn.ValueString())
-	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.in", map[string]string{})
 		}
 	}
-	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.acl-name", data.IpAccessGroupOut.ValueString())
+	if !data.IpAccessGroupIn.IsNull() && !data.IpAccessGroupIn.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.in.acl.acl-name", data.IpAccessGroupIn.ValueString())
 	}
 	if !data.IpAccessGroupOutEnable.IsNull() && !data.IpAccessGroupOutEnable.IsUnknown() {
 		if data.IpAccessGroupOutEnable.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.out", map[string]string{})
 		}
+	}
+	if !data.IpAccessGroupOut.IsNull() && !data.IpAccessGroupOut.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.access-group.out.acl.acl-name", data.IpAccessGroupOut.ValueString())
 	}
 	if !data.SpanningTreeGuard.IsNull() && !data.SpanningTreeGuard.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:spanning-tree.guard", data.SpanningTreeGuard.ValueString())
@@ -972,11 +972,6 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpDhcpRelaySourceInterface = types.StringNull()
 	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() && !data.IpAccessGroupIn.IsNull() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	} else {
-		data.IpAccessGroupIn = types.StringNull()
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
 			data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -986,10 +981,10 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpAccessGroupInEnable = types.BoolNull()
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() && !data.IpAccessGroupOut.IsNull() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() && !data.IpAccessGroupIn.IsNull() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	} else {
-		data.IpAccessGroupOut = types.StringNull()
+		data.IpAccessGroupIn = types.StringNull()
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); !data.IpAccessGroupOutEnable.IsNull() {
 		if value.Exists() {
@@ -999,6 +994,11 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 		}
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() && !data.IpAccessGroupOut.IsNull() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
+	} else {
+		data.IpAccessGroupOut = types.StringNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.guard"); value.Exists() && !data.SpanningTreeGuard.IsNull() {
 		data.SpanningTreeGuard = types.StringValue(value.String())
@@ -1978,21 +1978,21 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupInEnable = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); value.Exists() {
 		data.IpAccessGroupOutEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.guard"); value.Exists() {
 		data.SpanningTreeGuard = types.StringValue(value.String())
@@ -2546,21 +2546,21 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.source-interface"); value.Exists() {
 		data.IpDhcpRelaySourceInterface = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupIn = types.StringValue(value.String())
-	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupInEnable = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
-		data.IpAccessGroupOut = types.StringValue(value.String())
+	if value := res.Get(prefix + "ip.access-group.in.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupIn = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "ip.access-group.out.acl.out"); value.Exists() {
 		data.IpAccessGroupOutEnable = types.BoolValue(true)
 	} else {
 		data.IpAccessGroupOutEnable = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.access-group.out.acl.acl-name"); value.Exists() {
+		data.IpAccessGroupOut = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:spanning-tree.guard"); value.Exists() {
 		data.SpanningTreeGuard = types.StringValue(value.String())
@@ -3510,17 +3510,17 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	if !state.SpanningTreeGuard.IsNull() && data.SpanningTreeGuard.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/guard", state.getPath()))
 	}
-	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl/out", state.getPath()))
-	}
 	if !state.IpAccessGroupOut.IsNull() && data.IpAccessGroupOut.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl", state.getPath()))
 	}
-	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
+	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/out/acl/out", state.getPath()))
 	}
 	if !state.IpAccessGroupIn.IsNull() && data.IpAccessGroupIn.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl", state.getPath()))
+	}
+	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
 	}
 	if !state.IpDhcpRelaySourceInterface.IsNull() && data.IpDhcpRelaySourceInterface.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", state.getPath()))
@@ -4084,17 +4084,17 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	if !data.SpanningTreeGuard.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:spanning-tree/guard", data.getPath()))
 	}
-	if !data.IpAccessGroupOutEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
-	}
 	if !data.IpAccessGroupOut.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl", data.getPath()))
 	}
-	if !data.IpAccessGroupInEnable.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
+	if !data.IpAccessGroupOutEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/out/acl/out", data.getPath()))
 	}
 	if !data.IpAccessGroupIn.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl", data.getPath()))
+	}
+	if !data.IpAccessGroupInEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
 	}
 	if !data.IpDhcpRelaySourceInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.getPath()))

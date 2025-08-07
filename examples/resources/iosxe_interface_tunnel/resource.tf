@@ -28,10 +28,10 @@ resource "iosxe_interface_tunnel" "example" {
   ipv4_address_mask              = "255.255.255.0"
   ip_mtu                         = 1200
   ip_dhcp_relay_source_interface = "Loopback100"
-  ip_access_group_in             = "1"
   ip_access_group_in_enable      = true
-  ip_access_group_out            = "1"
+  ip_access_group_in             = "1"
   ip_access_group_out_enable     = true
+  ip_access_group_out            = "1"
   helper_addresses = [
     {
       address = "10.10.10.10"

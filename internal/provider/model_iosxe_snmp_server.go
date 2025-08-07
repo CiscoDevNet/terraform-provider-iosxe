@@ -5758,10 +5758,10 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog", state.getPath()))
 	}
 	if !state.EnableTrapsStpxLoopInconsistency.IsNull() && data.EnableTrapsStpxLoopInconsistency.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/loop-inconsistency", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx", state.getPath()))
 	}
 	if !state.EnableTrapsStpxRootInconsistency.IsNull() && data.EnableTrapsStpxRootInconsistency.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/root-inconsistency", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx", state.getPath()))
 	}
 	if !state.EnableTrapsStpxInconsistency.IsNull() && data.EnableTrapsStpxInconsistency.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/inconsistency", state.getPath()))
@@ -5881,7 +5881,7 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/envmon", state.getPath()))
 	}
 	if !state.EnableTrapsPwVc.IsNull() && data.EnableTrapsPwVc.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw/vc", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw", state.getPath()))
 	}
 	if !state.EnableTrapsEntity.IsNull() && data.EnableTrapsEntity.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity", state.getPath()))
@@ -7116,10 +7116,10 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog", data.getPath()))
 	}
 	if !data.EnableTrapsStpxLoopInconsistency.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/loop-inconsistency", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx", data.getPath()))
 	}
 	if !data.EnableTrapsStpxRootInconsistency.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/root-inconsistency", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx", data.getPath()))
 	}
 	if !data.EnableTrapsStpxInconsistency.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/inconsistency", data.getPath()))
@@ -7239,7 +7239,7 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/envmon", data.getPath()))
 	}
 	if !data.EnableTrapsPwVc.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw/vc", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw", data.getPath()))
 	}
 	if !data.EnableTrapsEntity.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity", data.getPath()))

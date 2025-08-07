@@ -16,8 +16,10 @@ attributes:
     tf_name: encryption
     example: 0
     requires_replace: true
+    delete_parent: true
   - yang_name: key/key
     tf_name: key
     example: 123
     write_only: true
     allow_import_changes: true
+    delete_parent: true

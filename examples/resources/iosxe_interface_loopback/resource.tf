@@ -8,10 +8,10 @@ resource "iosxe_interface_loopback" "example" {
   vrf_forwarding             = "VRF1"
   ipv4_address               = "200.1.1.1"
   ipv4_address_mask          = "255.255.255.255"
-  ip_access_group_in         = "1"
   ip_access_group_in_enable  = true
-  ip_access_group_out        = "1"
+  ip_access_group_in         = "1"
   ip_access_group_out_enable = true
+  ip_access_group_out        = "1"
   ipv6_enable                = true
   ipv6_mtu                   = 1300
   ipv6_address_dhcp          = true

@@ -4,6 +4,44 @@ path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor
 test_tags: [C9000V]
 doc_category: System
 attributes:
+  - yang_name: filter-list/lldp/list
+    tf_name: filter_lists_lldp
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: lldp1
+      - yang_name: tlv/name/port-id
+        example: true
+      - yang_name: tlv/name/port-description
+        example: true
+      - yang_name: tlv/name/system-name
+        example: true
+      - yang_name: tlv/name/system-description
+        example: true
+      - yang_name: tlv/name/system-capabilities
+        example: true
+  - yang_name: filter-list/dhcp/list
+    tf_name: filter_lists_dhcp
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: dhcp1
+      - yang_name: option/name/host-name
+        example: true
+      - yang_name: option/name/default-ip-ttl
+        example: true
+      - yang_name: option/name/requested-address
+        example: true
+      - yang_name: option/name/parameter-request-list
+        example: true
+      - yang_name: option/name/class-identifier
+        example: true
+      - yang_name: option/name/client-identifier
+        example: true
+      - yang_name: option/name/client-fqdn
+        example: true
   - yang_name: filter-spec/dhcp/include/list
     tf_name: filter_spec_dhcp_includes
     type: List
@@ -50,43 +88,5 @@ attributes:
       - yang_name: name
         id: true
         example: cdp1
-  - yang_name: filter-list/lldp/list
-    tf_name: filter_lists_lldp
-    type: List
-    attributes:
-      - yang_name: name
-        id: true
-        example: lldp1
-      - yang_name: tlv/name/port-id
-        example: true
-      - yang_name: tlv/name/port-description
-        example: true
-      - yang_name: tlv/name/system-name
-        example: true
-      - yang_name: tlv/name/system-description
-        example: true
-      - yang_name: tlv/name/system-capabilities
-        example: true
-  - yang_name: filter-list/dhcp/list
-    tf_name: filter_lists_dhcp
-    type: List
-    attributes:
-      - yang_name: name
-        id: true
-        example: dhcp1
-      - yang_name: option/name/host-name
-        example: true
-      - yang_name: option/name/default-ip-ttl
-        example: true
-      - yang_name: option/name/requested-address
-        example: true
-      - yang_name: option/name/parameter-request-list
-        example: true
-      - yang_name: option/name/class-identifier
-        example: true
-      - yang_name: option/name/client-identifier
-        example: true
-      - yang_name: option/name/client-fqdn
-        example: true
   - yang_name: notify/all-changes
     example: true
