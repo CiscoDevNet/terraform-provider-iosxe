@@ -96,6 +96,13 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
+			"encapsulation_dot1q_vlan_id": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4094),
+				},
+			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Interface specific description").String,
 				Optional:            true,
@@ -136,13 +143,6 @@ func (r *InterfacePortChannelSubinterfaceResource) Schema(ctx context.Context, r
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-				},
-			},
-			"encapsulation_dot1q_vlan_id": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 4094).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 4094),
 				},
 			},
 			"ip_access_group_in_enable": schema.BoolAttribute{
@@ -629,8 +629,7 @@ func (r *InterfacePortChannelSubinterfaceResource) Delete(ctx context.Context, r
 				for _, i := range deletePaths {
 					res, err := device.Client.DeleteData(i)
 					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-						return
+						resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					}
 				}
 			}

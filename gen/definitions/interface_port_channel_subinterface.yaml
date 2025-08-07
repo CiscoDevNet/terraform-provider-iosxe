@@ -6,6 +6,10 @@ doc_category: Interface
 attributes:
   - yang_name: name
     example: "10.666"
+  - yang_name: encapsulation/encap-choice/dot1Q/dot1Q/vlan-id
+    xpath: encapsulation/dot1Q/vlan-id
+    tf_name: encapsulation_dot1q_vlan_id
+    example: 666
   - yang_name: description
     example: My Interface Description
   - yang_name: shutdown
@@ -30,10 +34,6 @@ attributes:
     tf_name: ipv4_address_mask
     delete_parent: true
     example: 255.255.255.0
-  - yang_name: encapsulation/encap-choice/dot1Q/dot1Q/vlan-id
-    xpath: encapsulation/dot1Q/vlan-id
-    tf_name: encapsulation_dot1q_vlan_id
-    example: 666
   - yang_name: ip/access-group/in/apply-type/apply-intf/acl/in
     xpath: ip/access-group/in/acl/in
     tf_name: ip_access_group_in_enable

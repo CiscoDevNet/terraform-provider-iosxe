@@ -43,6 +43,7 @@ type InterfacePortChannelSubinterface struct {
 	Id                           types.String                                             `tfsdk:"id"`
 	DeleteMode                   types.String                                             `tfsdk:"delete_mode"`
 	Name                         types.String                                             `tfsdk:"name"`
+	EncapsulationDot1qVlanId     types.Int64                                              `tfsdk:"encapsulation_dot1q_vlan_id"`
 	Description                  types.String                                             `tfsdk:"description"`
 	Shutdown                     types.Bool                                               `tfsdk:"shutdown"`
 	IpProxyArp                   types.Bool                                               `tfsdk:"ip_proxy_arp"`
@@ -51,7 +52,6 @@ type InterfacePortChannelSubinterface struct {
 	VrfForwarding                types.String                                             `tfsdk:"vrf_forwarding"`
 	Ipv4Address                  types.String                                             `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                                             `tfsdk:"ipv4_address_mask"`
-	EncapsulationDot1qVlanId     types.Int64                                              `tfsdk:"encapsulation_dot1q_vlan_id"`
 	IpAccessGroupInEnable        types.Bool                                               `tfsdk:"ip_access_group_in_enable"`
 	IpAccessGroupIn              types.String                                             `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable       types.Bool                                               `tfsdk:"ip_access_group_out_enable"`
@@ -93,6 +93,7 @@ type InterfacePortChannelSubinterfaceData struct {
 	Device                       types.String                                             `tfsdk:"device"`
 	Id                           types.String                                             `tfsdk:"id"`
 	Name                         types.String                                             `tfsdk:"name"`
+	EncapsulationDot1qVlanId     types.Int64                                              `tfsdk:"encapsulation_dot1q_vlan_id"`
 	Description                  types.String                                             `tfsdk:"description"`
 	Shutdown                     types.Bool                                               `tfsdk:"shutdown"`
 	IpProxyArp                   types.Bool                                               `tfsdk:"ip_proxy_arp"`
@@ -101,7 +102,6 @@ type InterfacePortChannelSubinterfaceData struct {
 	VrfForwarding                types.String                                             `tfsdk:"vrf_forwarding"`
 	Ipv4Address                  types.String                                             `tfsdk:"ipv4_address"`
 	Ipv4AddressMask              types.String                                             `tfsdk:"ipv4_address_mask"`
-	EncapsulationDot1qVlanId     types.Int64                                              `tfsdk:"encapsulation_dot1q_vlan_id"`
 	IpAccessGroupInEnable        types.Bool                                               `tfsdk:"ip_access_group_in_enable"`
 	IpAccessGroupIn              types.String                                             `tfsdk:"ip_access_group_in"`
 	IpAccessGroupOutEnable       types.Bool                                               `tfsdk:"ip_access_group_out_enable"`
@@ -184,6 +184,9 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string 
 	if !data.Name.IsNull() && !data.Name.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Name.ValueString())
 	}
+	if !data.EncapsulationDot1qVlanId.IsNull() && !data.EncapsulationDot1qVlanId.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encapsulation.dot1Q.vlan-id", strconv.FormatInt(data.EncapsulationDot1qVlanId.ValueInt64(), 10))
+	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
 	}
@@ -209,9 +212,6 @@ func (data InterfacePortChannelSubinterface) toBody(ctx context.Context) string 
 	}
 	if !data.Ipv4AddressMask.IsNull() && !data.Ipv4AddressMask.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.address.primary.mask", data.Ipv4AddressMask.ValueString())
-	}
-	if !data.EncapsulationDot1qVlanId.IsNull() && !data.EncapsulationDot1qVlanId.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"encapsulation.dot1Q.vlan-id", strconv.FormatInt(data.EncapsulationDot1qVlanId.ValueInt64(), 10))
 	}
 	if !data.IpAccessGroupInEnable.IsNull() && !data.IpAccessGroupInEnable.IsUnknown() {
 		if data.IpAccessGroupInEnable.ValueBool() {
@@ -406,6 +406,11 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 	} else {
 		data.Name = types.StringNull()
 	}
+	if value := res.Get(prefix + "encapsulation.dot1Q.vlan-id"); value.Exists() && !data.EncapsulationDot1qVlanId.IsNull() {
+		data.EncapsulationDot1qVlanId = types.Int64Value(value.Int())
+	} else {
+		data.EncapsulationDot1qVlanId = types.Int64Null()
+	}
 	if value := res.Get(prefix + "description"); value.Exists() && !data.Description.IsNull() {
 		data.Description = types.StringValue(value.String())
 	} else {
@@ -455,11 +460,6 @@ func (data *InterfacePortChannelSubinterface) updateFromBody(ctx context.Context
 		data.Ipv4AddressMask = types.StringValue(value.String())
 	} else {
 		data.Ipv4AddressMask = types.StringNull()
-	}
-	if value := res.Get(prefix + "encapsulation.dot1Q.vlan-id"); value.Exists() && !data.EncapsulationDot1qVlanId.IsNull() {
-		data.EncapsulationDot1qVlanId = types.Int64Value(value.Int())
-	} else {
-		data.EncapsulationDot1qVlanId = types.Int64Null()
 	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); !data.IpAccessGroupInEnable.IsNull() {
 		if value.Exists() {
@@ -831,6 +831,9 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
+	if value := res.Get(prefix + "encapsulation.dot1Q.vlan-id"); value.Exists() {
+		data.EncapsulationDot1qVlanId = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
@@ -862,9 +865,6 @@ func (data *InterfacePortChannelSubinterface) fromBody(ctx context.Context, res 
 	}
 	if value := res.Get(prefix + "ip.address.primary.mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "encapsulation.dot1Q.vlan-id"); value.Exists() {
-		data.EncapsulationDot1qVlanId = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -1066,6 +1066,9 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
+	if value := res.Get(prefix + "encapsulation.dot1Q.vlan-id"); value.Exists() {
+		data.EncapsulationDot1qVlanId = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
@@ -1097,9 +1100,6 @@ func (data *InterfacePortChannelSubinterfaceData) fromBody(ctx context.Context, 
 	}
 	if value := res.Get(prefix + "ip.address.primary.mask"); value.Exists() {
 		data.Ipv4AddressMask = types.StringValue(value.String())
-	}
-	if value := res.Get(prefix + "encapsulation.dot1Q.vlan-id"); value.Exists() {
-		data.EncapsulationDot1qVlanId = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ip.access-group.in.acl.in"); value.Exists() {
 		data.IpAccessGroupInEnable = types.BoolValue(true)
@@ -1481,9 +1481,6 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/access-group/in/acl/in", state.getPath()))
 	}
-	if !state.EncapsulationDot1qVlanId.IsNull() && data.EncapsulationDot1qVlanId.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", state.getPath()))
-	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/address/primary", state.getPath()))
 	}
@@ -1507,6 +1504,9 @@ func (data *InterfacePortChannelSubinterface) getDeletedItems(ctx context.Contex
 	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
+	}
+	if !state.EncapsulationDot1qVlanId.IsNull() && data.EncapsulationDot1qVlanId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", state.getPath()))
 	}
 
 	return deletedItems
@@ -1720,9 +1720,6 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	if !data.IpAccessGroupInEnable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/access-group/in/acl/in", data.getPath()))
 	}
-	if !data.EncapsulationDot1qVlanId.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", data.getPath()))
-	}
 	if !data.Ipv4AddressMask.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/address/primary", data.getPath()))
 	}
@@ -1746,6 +1743,9 @@ func (data *InterfacePortChannelSubinterface) getDeletePaths(ctx context.Context
 	}
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
+	}
+	if !data.EncapsulationDot1qVlanId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", data.getPath()))
 	}
 
 	return deletePaths
