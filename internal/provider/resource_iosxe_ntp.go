@@ -181,41 +181,41 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("Periodically update calendar with NTP time").String,
 				Optional:            true,
 			},
-			"trap_source_gigabit_ethernet": schema.StringAttribute{
+			"source_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
 				Optional:            true,
 			},
-			"trap_source_ten_gigabit_ethernet": schema.StringAttribute{
+			"source_ten_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Ten Gigabit Ethernet").String,
 				Optional:            true,
 			},
-			"trap_source_forty_gigabit_ethernet": schema.StringAttribute{
+			"source_forty_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
 				Optional:            true,
 			},
-			"trap_source_hundred_gigabit_ethernet": schema.StringAttribute{
+			"source_hundred_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
 				Optional:            true,
 			},
-			"trap_source_loopback": schema.Int64Attribute{
+			"source_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 2147483647),
 				},
 			},
-			"trap_source_port_channel": schema.Int64Attribute{
+			"source_port_channel": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Ethernet Channel of interfaces").AddIntegerRangeDescription(0, 4294967295).String,
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 4294967295),
 				},
 			},
-			"trap_source_port_channel_subinterface": schema.StringAttribute{
+			"source_port_channel_subinterface": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
-			"trap_source_vlan": schema.Int64Attribute{
+			"source_vlan": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Iosxr Vlans").AddIntegerRangeDescription(0, 65535).String,
 				Optional:            true,
 				Validators: []validator.Int64{

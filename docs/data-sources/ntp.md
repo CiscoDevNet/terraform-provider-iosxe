@@ -42,14 +42,14 @@ data "iosxe_ntp" "example" {
 - `peers` (Attributes List) (see [below for nested schema](#nestedatt--peers))
 - `server_vrfs` (Attributes List) VPN Routing/Forwarding Information (see [below for nested schema](#nestedatt--server_vrfs))
 - `servers` (Attributes List) (see [below for nested schema](#nestedatt--servers))
-- `trap_source_forty_gigabit_ethernet` (String) Forty GigabitEthernet
-- `trap_source_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
-- `trap_source_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
-- `trap_source_loopback` (Number) Loopback interface
-- `trap_source_port_channel` (Number) Ethernet Channel of interfaces
-- `trap_source_port_channel_subinterface` (String)
-- `trap_source_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
-- `trap_source_vlan` (Number) Iosxr Vlans
+- `source_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `source_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `source_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `source_loopback` (Number) Loopback interface
+- `source_port_channel` (Number) Ethernet Channel of interfaces
+- `source_port_channel_subinterface` (String)
+- `source_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `source_vlan` (Number) Iosxr Vlans
 - `trusted_keys` (Attributes List) Key numbers for trusted time sources (see [below for nested schema](#nestedatt--trusted_keys))
 - `update_calendar` (Boolean) Periodically update calendar with NTP time
 
