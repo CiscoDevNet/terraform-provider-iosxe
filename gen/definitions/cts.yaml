@@ -2,6 +2,111 @@
 name: CTS
 path: Cisco-IOS-XE-native:native/cts
 doc_category: CTS
+test_tags: [C9000V]
 attributes:
   - yang_name: Cisco-IOS-XE-cts:authorization/list
     example: Tacacs-GROUP
+  - yang_name: Cisco-IOS-XE-cts:sgt
+    tf_name: sgt
+    example: 200
+  - yang_name: Cisco-IOS-XE-cts:sxp/sxp-def-enable
+    tf_name: sxp_enable
+    example: true
+  - yang_name: Cisco-IOS-XE-cts:sxp/default/password/type
+    tf_name: sxp_default_password_type
+    example: 0
+  - yang_name: Cisco-IOS-XE-cts:sxp/default/password/secret
+    tf_name: sxp_default_password_secret
+    example: MySecretPassword
+  - yang_name: Cisco-IOS-XE-cts:sxp/retry/period
+    tf_name: sxp_retry_period
+    example: 60
+  - yang_name: Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf
+    tf_name: sxp_connection_peer_ipv4_no_vrf
+    type: List
+    attributes:
+      - yang_name: ipv4
+        tf_name: ip
+        example: 2.2.2.2
+        id: true
+      - yang_name: source
+        tf_name: source_ip
+        example: 3.3.3.3
+      - yang_name: password
+        tf_name: password
+        example: default
+      - yang_name: mode
+        tf_name: connection_mode
+        example: local
+      - yang_name: option
+        example: listener
+      - yang_name: hold-time
+        example: 60
+      - yang_name: max-time
+        example: 300
+  - yang_name: Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf
+    tf_name: sxp_connection_peer_ipv4_with_vrf
+    type: List
+    attributes:
+      - yang_name: ipv4
+        tf_name: ip
+        example: 4.4.4.4
+        id: true
+      - yang_name: vrf
+        example: VRF1
+        id: true
+      - yang_name: source
+        tf_name: source_ip
+        example: 5.5.5.5
+      - yang_name: password
+        tf_name: password
+        example: default
+      - yang_name: mode
+        tf_name: connection_mode
+        example: local
+      - yang_name: option
+        example: listener
+      - yang_name: hold-time
+        example: 60
+      - yang_name: max-time
+        example: 300
+  - yang_name: Cisco-IOS-XE-cts:sxp/speaker/hold-time
+    tf_name: sxp_speaker_hold_time
+    example: 300
+  - yang_name: Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time
+    tf_name: sxp_listener_hold_min_time
+    example: 60
+  - yang_name: Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time
+    tf_name: sxp_listener_hold_max_time
+    example: 300
+  - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/logging-interval
+    tf_name: role_based_enforcement_logging_interval
+    example: 300
+  - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/vlan-list
+    tf_name: role_based_enforcement_vlan_list
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: id
+        tf_name: vlans
+        id: true
+        example: 100
+  - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists
+    tf_name: role_based_enforcement_vlan_lists
+    exclude_test: true
+    example: 300
+  - yang_name: Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new
+    tf_name: role_based_permissions_default_acl_name
+    example: ACL1
+    exclude_test: true
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: rd
+        value: 1:1
+      - name: address-family/ipv4
+        value: ""
