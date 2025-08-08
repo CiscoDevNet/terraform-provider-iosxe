@@ -103,7 +103,7 @@ attributes:
       - yang_name: transport/input/input-protocol/other-protocol/input
         xpath: transport/input/input
         tf_name: transport_input
-        type: String
+        type: StringList
         description: Define which protocols to use when connecting to the terminal server
         example: ssh
         no_augment_config: true

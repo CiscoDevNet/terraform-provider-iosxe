@@ -79,7 +79,7 @@ type LineVty struct {
 	AuthorizationExecDefault   types.Bool             `tfsdk:"authorization_exec_default"`
 	TransportInputAll          types.Bool             `tfsdk:"transport_input_all"`
 	TransportInputNone         types.Bool             `tfsdk:"transport_input_none"`
-	TransportInput             types.String           `tfsdk:"transport_input"`
+	TransportInput             types.List             `tfsdk:"transport_input"`
 }
 type LineVtyAccessClasses struct {
 	Direction  types.String `tfsdk:"direction"`
@@ -205,7 +205,9 @@ func (data Line) toBody(ctx context.Context) string {
 				}
 			}
 			if !item.TransportInput.IsNull() && !item.TransportInput.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.input.input", item.TransportInput.ValueString())
+				var values []string
+				item.TransportInput.ElementsAs(ctx, &values, false)
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.input.input", values)
 			}
 			if len(item.AccessClasses) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"access-class.acccess-list", []interface{}{})
@@ -464,9 +466,9 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Vty[i].TransportInputNone = types.BoolNull()
 		}
 		if value := r.Get("transport.input.input"); value.Exists() && !data.Vty[i].TransportInput.IsNull() {
-			data.Vty[i].TransportInput = types.StringValue(value.String())
+			data.Vty[i].TransportInput = helpers.GetStringList(value.Array())
 		} else {
-			data.Vty[i].TransportInput = types.StringNull()
+			data.Vty[i].TransportInput = types.ListNull(types.StringType)
 		}
 	}
 }
@@ -592,7 +594,9 @@ func (data *Line) fromBody(ctx context.Context, res gjson.Result) {
 				item.TransportInputNone = types.BoolValue(false)
 			}
 			if cValue := v.Get("transport.input.input"); cValue.Exists() {
-				item.TransportInput = types.StringValue(cValue.String())
+				item.TransportInput = helpers.GetStringList(cValue.Array())
+			} else {
+				item.TransportInput = types.ListNull(types.StringType)
 			}
 			data.Vty = append(data.Vty, item)
 			return true
@@ -721,7 +725,9 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 				item.TransportInputNone = types.BoolValue(false)
 			}
 			if cValue := v.Get("transport.input.input"); cValue.Exists() {
-				item.TransportInput = types.StringValue(cValue.String())
+				item.TransportInput = helpers.GetStringList(cValue.Array())
+			} else {
+				item.TransportInput = types.ListNull(types.StringType)
 			}
 			data.Vty = append(data.Vty, item)
 			return true
@@ -753,8 +759,26 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 				found = false
 			}
 			if found {
-				if !state.Vty[i].TransportInput.IsNull() && data.Vty[j].TransportInput.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/input", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				if !state.Vty[i].TransportInput.IsNull() {
+					if data.Vty[j].TransportInput.IsNull() {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/input", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					} else {
+						var dataValues, stateValues []string
+						data.Vty[i].TransportInput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[j].TransportInput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/input=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+							}
+						}
+					}
 				}
 				if !state.Vty[i].TransportInputNone.IsNull() && data.Vty[j].TransportInputNone.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))

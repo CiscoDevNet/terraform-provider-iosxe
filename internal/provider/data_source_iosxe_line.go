@@ -196,8 +196,9 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "Define no transport protocols for line",
 							Computed:            true,
 						},
-						"transport_input": schema.StringAttribute{
+						"transport_input": schema.ListAttribute{
 							MarkdownDescription: "Define which protocols to use when connecting to the terminal server",
+							ElementType:         types.StringType,
 							Computed:            true,
 						},
 					},

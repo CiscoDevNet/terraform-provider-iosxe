@@ -55,7 +55,7 @@ func TestAccDataSourceIosxeLine(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.transport_preferred_protocol", "none"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.escape_character", "27"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.authorization_exec_default", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.transport_input", "ssh"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.transport_input.0", "ssh"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -102,7 +102,7 @@ func testAccDataSourceIosxeLineConfig() string {
 	config += `		transport_preferred_protocol = "none"` + "\n"
 	config += `		escape_character = "27"` + "\n"
 	config += `		authorization_exec_default = true` + "\n"
-	config += `		transport_input = "ssh"` + "\n"
+	config += `		transport_input = ["ssh"]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 

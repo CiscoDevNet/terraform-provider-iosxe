@@ -1,3 +1,7 @@
+## 0.7.1 (unreleased)
+
+- Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`
+
 ## 0.7.0
 
 - BREAKING CHANGE: Integrate `iosxe_logging_ipv4_host_transport` resource and data source into `iosxe_logging` resource and data source

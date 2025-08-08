@@ -43,7 +43,7 @@ resource "iosxe_line" "example" {
       transport_preferred_protocol = "none"
       escape_character             = "27"
       authorization_exec_default   = true
-      transport_input              = "ssh"
+      transport_input              = ["ssh"]
     }
   ]
 }
@@ -114,7 +114,7 @@ Optional:
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
 - `password_type` (String) - Choices: `0`, `6`, `7`
-- `transport_input` (String) Define which protocols to use when connecting to the terminal server
+- `transport_input` (List of String) Define which protocols to use when connecting to the terminal server
 - `transport_input_all` (Boolean) All protocols
 - `transport_input_none` (Boolean) Define no transport protocols for line
 - `transport_preferred_protocol` (String) - Choices: `acercon`, `lat`, `mop`, `nasi`, `none`, `pad`, `rlogin`, `ssh`, `telnet`, `udptn`

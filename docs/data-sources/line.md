@@ -64,7 +64,7 @@ Read-Only:
 - `password` (String)
 - `password_level` (Number) Set exec level password
 - `password_type` (String)
-- `transport_input` (String) Define which protocols to use when connecting to the terminal server
+- `transport_input` (List of String) Define which protocols to use when connecting to the terminal server
 - `transport_input_all` (Boolean) All protocols
 - `transport_input_none` (Boolean) Define no transport protocols for line
 - `transport_preferred_protocol` (String)
