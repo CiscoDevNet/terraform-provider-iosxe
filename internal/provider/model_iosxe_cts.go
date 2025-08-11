@@ -38,46 +38,44 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type CTS struct {
-	Device                              types.String                      `tfsdk:"device"`
-	Id                                  types.String                      `tfsdk:"id"`
-	DeleteMode                          types.String                      `tfsdk:"delete_mode"`
-	AuthorizationList                   types.String                      `tfsdk:"authorization_list"`
-	Sgt                                 types.Int64                       `tfsdk:"sgt"`
-	SxpEnable                           types.Bool                        `tfsdk:"sxp_enable"`
-	SxpDefaultPasswordType              types.String                      `tfsdk:"sxp_default_password_type"`
-	SxpDefaultPasswordSecret            types.String                      `tfsdk:"sxp_default_password_secret"`
-	SxpRetryPeriod                      types.Int64                       `tfsdk:"sxp_retry_period"`
-	SxpConnectionPeerIpv4NoVrf          []CTSSxpConnectionPeerIpv4NoVrf   `tfsdk:"sxp_connection_peer_ipv4_no_vrf"`
-	SxpConnectionPeerIpv4WithVrf        []CTSSxpConnectionPeerIpv4WithVrf `tfsdk:"sxp_connection_peer_ipv4_with_vrf"`
-	SxpSpeakerHoldTime                  types.Int64                       `tfsdk:"sxp_speaker_hold_time"`
-	SxpListenerHoldMinTime              types.Int64                       `tfsdk:"sxp_listener_hold_min_time"`
-	SxpListenerHoldMaxTime              types.Int64                       `tfsdk:"sxp_listener_hold_max_time"`
-	RoleBasedEnforcementLoggingInterval types.Int64                       `tfsdk:"role_based_enforcement_logging_interval"`
-	RoleBasedEnforcementVlanList        []CTSRoleBasedEnforcementVlanList `tfsdk:"role_based_enforcement_vlan_list"`
-	RoleBasedEnforcementVlanLists       types.List                        `tfsdk:"role_based_enforcement_vlan_lists"`
-	RoleBasedPermissionsDefaultAclName  types.List                        `tfsdk:"role_based_permissions_default_acl_name"`
+	Device                              types.String                   `tfsdk:"device"`
+	Id                                  types.String                   `tfsdk:"id"`
+	DeleteMode                          types.String                   `tfsdk:"delete_mode"`
+	AuthorizationList                   types.String                   `tfsdk:"authorization_list"`
+	Sgt                                 types.Int64                    `tfsdk:"sgt"`
+	SxpEnable                           types.Bool                     `tfsdk:"sxp_enable"`
+	SxpDefaultPasswordType              types.String                   `tfsdk:"sxp_default_password_type"`
+	SxpDefaultPasswordSecret            types.String                   `tfsdk:"sxp_default_password_secret"`
+	SxpRetryPeriod                      types.Int64                    `tfsdk:"sxp_retry_period"`
+	SxpConnectionPeersIpv4              []CTSSxpConnectionPeersIpv4    `tfsdk:"sxp_connection_peers_ipv4"`
+	SxpConnectionPeersIpv4Vrf           []CTSSxpConnectionPeersIpv4Vrf `tfsdk:"sxp_connection_peers_ipv4_vrf"`
+	SxpSpeakerHoldTime                  types.Int64                    `tfsdk:"sxp_speaker_hold_time"`
+	SxpListenerHoldMinTime              types.Int64                    `tfsdk:"sxp_listener_hold_min_time"`
+	SxpListenerHoldMaxTime              types.Int64                    `tfsdk:"sxp_listener_hold_max_time"`
+	RoleBasedEnforcementLoggingInterval types.Int64                    `tfsdk:"role_based_enforcement_logging_interval"`
+	RoleBasedEnforcementVlanLists       types.List                     `tfsdk:"role_based_enforcement_vlan_lists"`
+	RoleBasedPermissionsDefaultAclName  types.List                     `tfsdk:"role_based_permissions_default_acl_name"`
 }
 
 type CTSData struct {
-	Device                              types.String                      `tfsdk:"device"`
-	Id                                  types.String                      `tfsdk:"id"`
-	AuthorizationList                   types.String                      `tfsdk:"authorization_list"`
-	Sgt                                 types.Int64                       `tfsdk:"sgt"`
-	SxpEnable                           types.Bool                        `tfsdk:"sxp_enable"`
-	SxpDefaultPasswordType              types.String                      `tfsdk:"sxp_default_password_type"`
-	SxpDefaultPasswordSecret            types.String                      `tfsdk:"sxp_default_password_secret"`
-	SxpRetryPeriod                      types.Int64                       `tfsdk:"sxp_retry_period"`
-	SxpConnectionPeerIpv4NoVrf          []CTSSxpConnectionPeerIpv4NoVrf   `tfsdk:"sxp_connection_peer_ipv4_no_vrf"`
-	SxpConnectionPeerIpv4WithVrf        []CTSSxpConnectionPeerIpv4WithVrf `tfsdk:"sxp_connection_peer_ipv4_with_vrf"`
-	SxpSpeakerHoldTime                  types.Int64                       `tfsdk:"sxp_speaker_hold_time"`
-	SxpListenerHoldMinTime              types.Int64                       `tfsdk:"sxp_listener_hold_min_time"`
-	SxpListenerHoldMaxTime              types.Int64                       `tfsdk:"sxp_listener_hold_max_time"`
-	RoleBasedEnforcementLoggingInterval types.Int64                       `tfsdk:"role_based_enforcement_logging_interval"`
-	RoleBasedEnforcementVlanList        []CTSRoleBasedEnforcementVlanList `tfsdk:"role_based_enforcement_vlan_list"`
-	RoleBasedEnforcementVlanLists       types.List                        `tfsdk:"role_based_enforcement_vlan_lists"`
-	RoleBasedPermissionsDefaultAclName  types.List                        `tfsdk:"role_based_permissions_default_acl_name"`
+	Device                              types.String                   `tfsdk:"device"`
+	Id                                  types.String                   `tfsdk:"id"`
+	AuthorizationList                   types.String                   `tfsdk:"authorization_list"`
+	Sgt                                 types.Int64                    `tfsdk:"sgt"`
+	SxpEnable                           types.Bool                     `tfsdk:"sxp_enable"`
+	SxpDefaultPasswordType              types.String                   `tfsdk:"sxp_default_password_type"`
+	SxpDefaultPasswordSecret            types.String                   `tfsdk:"sxp_default_password_secret"`
+	SxpRetryPeriod                      types.Int64                    `tfsdk:"sxp_retry_period"`
+	SxpConnectionPeersIpv4              []CTSSxpConnectionPeersIpv4    `tfsdk:"sxp_connection_peers_ipv4"`
+	SxpConnectionPeersIpv4Vrf           []CTSSxpConnectionPeersIpv4Vrf `tfsdk:"sxp_connection_peers_ipv4_vrf"`
+	SxpSpeakerHoldTime                  types.Int64                    `tfsdk:"sxp_speaker_hold_time"`
+	SxpListenerHoldMinTime              types.Int64                    `tfsdk:"sxp_listener_hold_min_time"`
+	SxpListenerHoldMaxTime              types.Int64                    `tfsdk:"sxp_listener_hold_max_time"`
+	RoleBasedEnforcementLoggingInterval types.Int64                    `tfsdk:"role_based_enforcement_logging_interval"`
+	RoleBasedEnforcementVlanLists       types.List                     `tfsdk:"role_based_enforcement_vlan_lists"`
+	RoleBasedPermissionsDefaultAclName  types.List                     `tfsdk:"role_based_permissions_default_acl_name"`
 }
-type CTSSxpConnectionPeerIpv4NoVrf struct {
+type CTSSxpConnectionPeersIpv4 struct {
 	Ip             types.String `tfsdk:"ip"`
 	SourceIp       types.String `tfsdk:"source_ip"`
 	Password       types.String `tfsdk:"password"`
@@ -86,7 +84,7 @@ type CTSSxpConnectionPeerIpv4NoVrf struct {
 	HoldTime       types.Int64  `tfsdk:"hold_time"`
 	MaxTime        types.Int64  `tfsdk:"max_time"`
 }
-type CTSSxpConnectionPeerIpv4WithVrf struct {
+type CTSSxpConnectionPeersIpv4Vrf struct {
 	Ip             types.String `tfsdk:"ip"`
 	Vrf            types.String `tfsdk:"vrf"`
 	SourceIp       types.String `tfsdk:"source_ip"`
@@ -95,9 +93,6 @@ type CTSSxpConnectionPeerIpv4WithVrf struct {
 	Option         types.String `tfsdk:"option"`
 	HoldTime       types.Int64  `tfsdk:"hold_time"`
 	MaxTime        types.Int64  `tfsdk:"max_time"`
-}
-type CTSRoleBasedEnforcementVlanList struct {
-	Vlans types.String `tfsdk:"vlans"`
 }
 
 // End of section. //template:end types
@@ -169,9 +164,9 @@ func (data CTS) toBody(ctx context.Context) string {
 		data.RoleBasedPermissionsDefaultAclName.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:role-based.permissions.default.ACL-name-new", values)
 	}
-	if len(data.SxpConnectionPeerIpv4NoVrf) > 0 {
+	if len(data.SxpConnectionPeersIpv4) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf", []interface{}{})
-		for index, item := range data.SxpConnectionPeerIpv4NoVrf {
+		for index, item := range data.SxpConnectionPeersIpv4 {
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"+"."+strconv.Itoa(index)+"."+"ipv4", item.Ip.ValueString())
 			}
@@ -195,9 +190,9 @@ func (data CTS) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.SxpConnectionPeerIpv4WithVrf) > 0 {
+	if len(data.SxpConnectionPeersIpv4Vrf) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf", []interface{}{})
-		for index, item := range data.SxpConnectionPeerIpv4WithVrf {
+		for index, item := range data.SxpConnectionPeersIpv4Vrf {
 			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"+"."+strconv.Itoa(index)+"."+"ipv4", item.Ip.ValueString())
 			}
@@ -221,14 +216,6 @@ func (data CTS) toBody(ctx context.Context) string {
 			}
 			if !item.MaxTime.IsNull() && !item.MaxTime.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"+"."+strconv.Itoa(index)+"."+"max-time", strconv.FormatInt(item.MaxTime.ValueInt64(), 10))
-			}
-		}
-	}
-	if len(data.RoleBasedEnforcementVlanList) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:role-based.enforcement.vlan-list", []interface{}{})
-		for index, item := range data.RoleBasedEnforcementVlanList {
-			if !item.Vlans.IsNull() && !item.Vlans.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:role-based.enforcement.vlan-list"+"."+strconv.Itoa(index)+"."+"id", item.Vlans.ValueString())
 			}
 		}
 	}
@@ -276,9 +263,9 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SxpRetryPeriod = types.Int64Null()
 	}
-	for i := range data.SxpConnectionPeerIpv4NoVrf {
+	for i := range data.SxpConnectionPeersIpv4 {
 		keys := [...]string{"ipv4"}
-		keyValues := [...]string{data.SxpConnectionPeerIpv4NoVrf[i].Ip.ValueString()}
+		keyValues := [...]string{data.SxpConnectionPeersIpv4[i].Ip.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf").ForEach(
@@ -299,45 +286,45 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("ipv4"); value.Exists() && !data.SxpConnectionPeerIpv4NoVrf[i].Ip.IsNull() {
-			data.SxpConnectionPeerIpv4NoVrf[i].Ip = types.StringValue(value.String())
+		if value := r.Get("ipv4"); value.Exists() && !data.SxpConnectionPeersIpv4[i].Ip.IsNull() {
+			data.SxpConnectionPeersIpv4[i].Ip = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4NoVrf[i].Ip = types.StringNull()
+			data.SxpConnectionPeersIpv4[i].Ip = types.StringNull()
 		}
-		if value := r.Get("source"); value.Exists() && !data.SxpConnectionPeerIpv4NoVrf[i].SourceIp.IsNull() {
-			data.SxpConnectionPeerIpv4NoVrf[i].SourceIp = types.StringValue(value.String())
+		if value := r.Get("source"); value.Exists() && !data.SxpConnectionPeersIpv4[i].SourceIp.IsNull() {
+			data.SxpConnectionPeersIpv4[i].SourceIp = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4NoVrf[i].SourceIp = types.StringNull()
+			data.SxpConnectionPeersIpv4[i].SourceIp = types.StringNull()
 		}
-		if value := r.Get("password"); value.Exists() && !data.SxpConnectionPeerIpv4NoVrf[i].Password.IsNull() {
-			data.SxpConnectionPeerIpv4NoVrf[i].Password = types.StringValue(value.String())
+		if value := r.Get("password"); value.Exists() && !data.SxpConnectionPeersIpv4[i].Password.IsNull() {
+			data.SxpConnectionPeersIpv4[i].Password = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4NoVrf[i].Password = types.StringNull()
+			data.SxpConnectionPeersIpv4[i].Password = types.StringNull()
 		}
-		if value := r.Get("mode"); value.Exists() && !data.SxpConnectionPeerIpv4NoVrf[i].ConnectionMode.IsNull() {
-			data.SxpConnectionPeerIpv4NoVrf[i].ConnectionMode = types.StringValue(value.String())
+		if value := r.Get("mode"); value.Exists() && !data.SxpConnectionPeersIpv4[i].ConnectionMode.IsNull() {
+			data.SxpConnectionPeersIpv4[i].ConnectionMode = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4NoVrf[i].ConnectionMode = types.StringNull()
+			data.SxpConnectionPeersIpv4[i].ConnectionMode = types.StringNull()
 		}
-		if value := r.Get("option"); value.Exists() && !data.SxpConnectionPeerIpv4NoVrf[i].Option.IsNull() {
-			data.SxpConnectionPeerIpv4NoVrf[i].Option = types.StringValue(value.String())
+		if value := r.Get("option"); value.Exists() && !data.SxpConnectionPeersIpv4[i].Option.IsNull() {
+			data.SxpConnectionPeersIpv4[i].Option = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4NoVrf[i].Option = types.StringNull()
+			data.SxpConnectionPeersIpv4[i].Option = types.StringNull()
 		}
-		if value := r.Get("hold-time"); value.Exists() && !data.SxpConnectionPeerIpv4NoVrf[i].HoldTime.IsNull() {
-			data.SxpConnectionPeerIpv4NoVrf[i].HoldTime = types.Int64Value(value.Int())
+		if value := r.Get("hold-time"); value.Exists() && !data.SxpConnectionPeersIpv4[i].HoldTime.IsNull() {
+			data.SxpConnectionPeersIpv4[i].HoldTime = types.Int64Value(value.Int())
 		} else {
-			data.SxpConnectionPeerIpv4NoVrf[i].HoldTime = types.Int64Null()
+			data.SxpConnectionPeersIpv4[i].HoldTime = types.Int64Null()
 		}
-		if value := r.Get("max-time"); value.Exists() && !data.SxpConnectionPeerIpv4NoVrf[i].MaxTime.IsNull() {
-			data.SxpConnectionPeerIpv4NoVrf[i].MaxTime = types.Int64Value(value.Int())
+		if value := r.Get("max-time"); value.Exists() && !data.SxpConnectionPeersIpv4[i].MaxTime.IsNull() {
+			data.SxpConnectionPeersIpv4[i].MaxTime = types.Int64Value(value.Int())
 		} else {
-			data.SxpConnectionPeerIpv4NoVrf[i].MaxTime = types.Int64Null()
+			data.SxpConnectionPeersIpv4[i].MaxTime = types.Int64Null()
 		}
 	}
-	for i := range data.SxpConnectionPeerIpv4WithVrf {
+	for i := range data.SxpConnectionPeersIpv4Vrf {
 		keys := [...]string{"ipv4", "vrf"}
-		keyValues := [...]string{data.SxpConnectionPeerIpv4WithVrf[i].Ip.ValueString(), data.SxpConnectionPeerIpv4WithVrf[i].Vrf.ValueString()}
+		keyValues := [...]string{data.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString(), data.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf").ForEach(
@@ -358,45 +345,45 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("ipv4"); value.Exists() && !data.SxpConnectionPeerIpv4WithVrf[i].Ip.IsNull() {
-			data.SxpConnectionPeerIpv4WithVrf[i].Ip = types.StringValue(value.String())
+		if value := r.Get("ipv4"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Ip.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].Ip = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4WithVrf[i].Ip = types.StringNull()
+			data.SxpConnectionPeersIpv4Vrf[i].Ip = types.StringNull()
 		}
-		if value := r.Get("vrf"); value.Exists() && !data.SxpConnectionPeerIpv4WithVrf[i].Vrf.IsNull() {
-			data.SxpConnectionPeerIpv4WithVrf[i].Vrf = types.StringValue(value.String())
+		if value := r.Get("vrf"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Vrf.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].Vrf = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4WithVrf[i].Vrf = types.StringNull()
+			data.SxpConnectionPeersIpv4Vrf[i].Vrf = types.StringNull()
 		}
-		if value := r.Get("source"); value.Exists() && !data.SxpConnectionPeerIpv4WithVrf[i].SourceIp.IsNull() {
-			data.SxpConnectionPeerIpv4WithVrf[i].SourceIp = types.StringValue(value.String())
+		if value := r.Get("source"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].SourceIp.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].SourceIp = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4WithVrf[i].SourceIp = types.StringNull()
+			data.SxpConnectionPeersIpv4Vrf[i].SourceIp = types.StringNull()
 		}
-		if value := r.Get("password"); value.Exists() && !data.SxpConnectionPeerIpv4WithVrf[i].Password.IsNull() {
-			data.SxpConnectionPeerIpv4WithVrf[i].Password = types.StringValue(value.String())
+		if value := r.Get("password"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Password.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].Password = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4WithVrf[i].Password = types.StringNull()
+			data.SxpConnectionPeersIpv4Vrf[i].Password = types.StringNull()
 		}
-		if value := r.Get("mode"); value.Exists() && !data.SxpConnectionPeerIpv4WithVrf[i].ConnectionMode.IsNull() {
-			data.SxpConnectionPeerIpv4WithVrf[i].ConnectionMode = types.StringValue(value.String())
+		if value := r.Get("mode"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].ConnectionMode.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].ConnectionMode = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4WithVrf[i].ConnectionMode = types.StringNull()
+			data.SxpConnectionPeersIpv4Vrf[i].ConnectionMode = types.StringNull()
 		}
-		if value := r.Get("option"); value.Exists() && !data.SxpConnectionPeerIpv4WithVrf[i].Option.IsNull() {
-			data.SxpConnectionPeerIpv4WithVrf[i].Option = types.StringValue(value.String())
+		if value := r.Get("option"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Option.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].Option = types.StringValue(value.String())
 		} else {
-			data.SxpConnectionPeerIpv4WithVrf[i].Option = types.StringNull()
+			data.SxpConnectionPeersIpv4Vrf[i].Option = types.StringNull()
 		}
-		if value := r.Get("hold-time"); value.Exists() && !data.SxpConnectionPeerIpv4WithVrf[i].HoldTime.IsNull() {
-			data.SxpConnectionPeerIpv4WithVrf[i].HoldTime = types.Int64Value(value.Int())
+		if value := r.Get("hold-time"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].HoldTime.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].HoldTime = types.Int64Value(value.Int())
 		} else {
-			data.SxpConnectionPeerIpv4WithVrf[i].HoldTime = types.Int64Null()
+			data.SxpConnectionPeersIpv4Vrf[i].HoldTime = types.Int64Null()
 		}
-		if value := r.Get("max-time"); value.Exists() && !data.SxpConnectionPeerIpv4WithVrf[i].MaxTime.IsNull() {
-			data.SxpConnectionPeerIpv4WithVrf[i].MaxTime = types.Int64Value(value.Int())
+		if value := r.Get("max-time"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].MaxTime.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].MaxTime = types.Int64Value(value.Int())
 		} else {
-			data.SxpConnectionPeerIpv4WithVrf[i].MaxTime = types.Int64Null()
+			data.SxpConnectionPeersIpv4Vrf[i].MaxTime = types.Int64Null()
 		}
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.speaker.hold-time"); value.Exists() && !data.SxpSpeakerHoldTime.IsNull() {
@@ -418,35 +405,6 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
 	} else {
 		data.RoleBasedEnforcementLoggingInterval = types.Int64Null()
-	}
-	for i := range data.RoleBasedEnforcementVlanList {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.RoleBasedEnforcementVlanList[i].Vlans.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.vlan-list").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("id"); value.Exists() && !data.RoleBasedEnforcementVlanList[i].Vlans.IsNull() {
-			data.RoleBasedEnforcementVlanList[i].Vlans = types.StringValue(value.String())
-		} else {
-			data.RoleBasedEnforcementVlanList[i].Vlans = types.StringNull()
-		}
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.vlan-lists"); value.Exists() && !data.RoleBasedEnforcementVlanLists.IsNull() {
 		data.RoleBasedEnforcementVlanLists = helpers.GetInt64List(value.Array())
@@ -490,9 +448,9 @@ func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"); value.Exists() {
-		data.SxpConnectionPeerIpv4NoVrf = make([]CTSSxpConnectionPeerIpv4NoVrf, 0)
+		data.SxpConnectionPeersIpv4 = make([]CTSSxpConnectionPeersIpv4, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CTSSxpConnectionPeerIpv4NoVrf{}
+			item := CTSSxpConnectionPeersIpv4{}
 			if cValue := v.Get("ipv4"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -514,14 +472,14 @@ func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("max-time"); cValue.Exists() {
 				item.MaxTime = types.Int64Value(cValue.Int())
 			}
-			data.SxpConnectionPeerIpv4NoVrf = append(data.SxpConnectionPeerIpv4NoVrf, item)
+			data.SxpConnectionPeersIpv4 = append(data.SxpConnectionPeersIpv4, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"); value.Exists() {
-		data.SxpConnectionPeerIpv4WithVrf = make([]CTSSxpConnectionPeerIpv4WithVrf, 0)
+		data.SxpConnectionPeersIpv4Vrf = make([]CTSSxpConnectionPeersIpv4Vrf, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CTSSxpConnectionPeerIpv4WithVrf{}
+			item := CTSSxpConnectionPeersIpv4Vrf{}
 			if cValue := v.Get("ipv4"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -546,7 +504,7 @@ func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("max-time"); cValue.Exists() {
 				item.MaxTime = types.Int64Value(cValue.Int())
 			}
-			data.SxpConnectionPeerIpv4WithVrf = append(data.SxpConnectionPeerIpv4WithVrf, item)
+			data.SxpConnectionPeersIpv4Vrf = append(data.SxpConnectionPeersIpv4Vrf, item)
 			return true
 		})
 	}
@@ -561,17 +519,6 @@ func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.logging-interval"); value.Exists() {
 		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.vlan-list"); value.Exists() {
-		data.RoleBasedEnforcementVlanList = make([]CTSRoleBasedEnforcementVlanList, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CTSRoleBasedEnforcementVlanList{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Vlans = types.StringValue(cValue.String())
-			}
-			data.RoleBasedEnforcementVlanList = append(data.RoleBasedEnforcementVlanList, item)
-			return true
-		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.vlan-lists"); value.Exists() {
 		data.RoleBasedEnforcementVlanLists = helpers.GetInt64List(value.Array())
@@ -615,9 +562,9 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf"); value.Exists() {
-		data.SxpConnectionPeerIpv4NoVrf = make([]CTSSxpConnectionPeerIpv4NoVrf, 0)
+		data.SxpConnectionPeersIpv4 = make([]CTSSxpConnectionPeersIpv4, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CTSSxpConnectionPeerIpv4NoVrf{}
+			item := CTSSxpConnectionPeersIpv4{}
 			if cValue := v.Get("ipv4"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -639,14 +586,14 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("max-time"); cValue.Exists() {
 				item.MaxTime = types.Int64Value(cValue.Int())
 			}
-			data.SxpConnectionPeerIpv4NoVrf = append(data.SxpConnectionPeerIpv4NoVrf, item)
+			data.SxpConnectionPeersIpv4 = append(data.SxpConnectionPeersIpv4, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-with-vrf"); value.Exists() {
-		data.SxpConnectionPeerIpv4WithVrf = make([]CTSSxpConnectionPeerIpv4WithVrf, 0)
+		data.SxpConnectionPeersIpv4Vrf = make([]CTSSxpConnectionPeersIpv4Vrf, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := CTSSxpConnectionPeerIpv4WithVrf{}
+			item := CTSSxpConnectionPeersIpv4Vrf{}
 			if cValue := v.Get("ipv4"); cValue.Exists() {
 				item.Ip = types.StringValue(cValue.String())
 			}
@@ -671,7 +618,7 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("max-time"); cValue.Exists() {
 				item.MaxTime = types.Int64Value(cValue.Int())
 			}
-			data.SxpConnectionPeerIpv4WithVrf = append(data.SxpConnectionPeerIpv4WithVrf, item)
+			data.SxpConnectionPeersIpv4Vrf = append(data.SxpConnectionPeersIpv4Vrf, item)
 			return true
 		})
 	}
@@ -686,17 +633,6 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.logging-interval"); value.Exists() {
 		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.vlan-list"); value.Exists() {
-		data.RoleBasedEnforcementVlanList = make([]CTSRoleBasedEnforcementVlanList, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := CTSRoleBasedEnforcementVlanList{}
-			if cValue := v.Get("id"); cValue.Exists() {
-				item.Vlans = types.StringValue(cValue.String())
-			}
-			data.RoleBasedEnforcementVlanList = append(data.RoleBasedEnforcementVlanList, item)
-			return true
-		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.vlan-lists"); value.Exists() {
 		data.RoleBasedEnforcementVlanLists = helpers.GetInt64List(value.Array())
@@ -758,31 +694,6 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 			}
 		}
 	}
-	for i := range state.RoleBasedEnforcementVlanList {
-		stateKeyValues := [...]string{state.RoleBasedEnforcementVlanList[i].Vlans.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.RoleBasedEnforcementVlanList[i].Vlans.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.RoleBasedEnforcementVlanList {
-			found = true
-			if state.RoleBasedEnforcementVlanList[i].Vlans.ValueString() != data.RoleBasedEnforcementVlanList[j].Vlans.ValueString() {
-				found = false
-			}
-			if found {
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement/vlan-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
 	if !state.RoleBasedEnforcementLoggingInterval.IsNull() && data.RoleBasedEnforcementLoggingInterval.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval", state.getPath()))
 	}
@@ -795,14 +706,14 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 	if !state.SxpSpeakerHoldTime.IsNull() && data.SxpSpeakerHoldTime.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/speaker/hold-time", state.getPath()))
 	}
-	for i := range state.SxpConnectionPeerIpv4WithVrf {
-		stateKeyValues := [...]string{state.SxpConnectionPeerIpv4WithVrf[i].Ip.ValueString(), state.SxpConnectionPeerIpv4WithVrf[i].Vrf.ValueString()}
+	for i := range state.SxpConnectionPeersIpv4Vrf {
+		stateKeyValues := [...]string{state.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString(), state.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.SxpConnectionPeerIpv4WithVrf[i].Ip.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.SxpConnectionPeerIpv4WithVrf[i].Vrf.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -810,31 +721,31 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 		}
 
 		found := false
-		for j := range data.SxpConnectionPeerIpv4WithVrf {
+		for j := range data.SxpConnectionPeersIpv4Vrf {
 			found = true
-			if state.SxpConnectionPeerIpv4WithVrf[i].Ip.ValueString() != data.SxpConnectionPeerIpv4WithVrf[j].Ip.ValueString() {
+			if state.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString() != data.SxpConnectionPeersIpv4Vrf[j].Ip.ValueString() {
 				found = false
 			}
-			if state.SxpConnectionPeerIpv4WithVrf[i].Vrf.ValueString() != data.SxpConnectionPeerIpv4WithVrf[j].Vrf.ValueString() {
+			if state.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString() != data.SxpConnectionPeersIpv4Vrf[j].Vrf.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.SxpConnectionPeerIpv4WithVrf[i].MaxTime.IsNull() && data.SxpConnectionPeerIpv4WithVrf[j].MaxTime.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].MaxTime.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].MaxTime.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf=%v/max-time", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4WithVrf[i].HoldTime.IsNull() && data.SxpConnectionPeerIpv4WithVrf[j].HoldTime.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].HoldTime.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].HoldTime.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf=%v/hold-time", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4WithVrf[i].Option.IsNull() && data.SxpConnectionPeerIpv4WithVrf[j].Option.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].Option.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].Option.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf=%v/option", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4WithVrf[i].ConnectionMode.IsNull() && data.SxpConnectionPeerIpv4WithVrf[j].ConnectionMode.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].ConnectionMode.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].ConnectionMode.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf=%v/mode", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4WithVrf[i].Password.IsNull() && data.SxpConnectionPeerIpv4WithVrf[j].Password.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].Password.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].Password.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf=%v/password", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4WithVrf[i].SourceIp.IsNull() && data.SxpConnectionPeerIpv4WithVrf[j].SourceIp.IsNull() {
+				if !state.SxpConnectionPeersIpv4Vrf[i].SourceIp.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].SourceIp.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf=%v/source", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
@@ -844,11 +755,11 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.SxpConnectionPeerIpv4NoVrf {
-		stateKeyValues := [...]string{state.SxpConnectionPeerIpv4NoVrf[i].Ip.ValueString()}
+	for i := range state.SxpConnectionPeersIpv4 {
+		stateKeyValues := [...]string{state.SxpConnectionPeersIpv4[i].Ip.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.SxpConnectionPeerIpv4NoVrf[i].Ip.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.SxpConnectionPeersIpv4[i].Ip.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -856,28 +767,28 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 		}
 
 		found := false
-		for j := range data.SxpConnectionPeerIpv4NoVrf {
+		for j := range data.SxpConnectionPeersIpv4 {
 			found = true
-			if state.SxpConnectionPeerIpv4NoVrf[i].Ip.ValueString() != data.SxpConnectionPeerIpv4NoVrf[j].Ip.ValueString() {
+			if state.SxpConnectionPeersIpv4[i].Ip.ValueString() != data.SxpConnectionPeersIpv4[j].Ip.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.SxpConnectionPeerIpv4NoVrf[i].MaxTime.IsNull() && data.SxpConnectionPeerIpv4NoVrf[j].MaxTime.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].MaxTime.IsNull() && data.SxpConnectionPeersIpv4[j].MaxTime.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf=%v/max-time", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4NoVrf[i].HoldTime.IsNull() && data.SxpConnectionPeerIpv4NoVrf[j].HoldTime.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].HoldTime.IsNull() && data.SxpConnectionPeersIpv4[j].HoldTime.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf=%v/hold-time", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4NoVrf[i].Option.IsNull() && data.SxpConnectionPeerIpv4NoVrf[j].Option.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].Option.IsNull() && data.SxpConnectionPeersIpv4[j].Option.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf=%v/option", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4NoVrf[i].ConnectionMode.IsNull() && data.SxpConnectionPeerIpv4NoVrf[j].ConnectionMode.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].ConnectionMode.IsNull() && data.SxpConnectionPeersIpv4[j].ConnectionMode.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf=%v/mode", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4NoVrf[i].Password.IsNull() && data.SxpConnectionPeerIpv4NoVrf[j].Password.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].Password.IsNull() && data.SxpConnectionPeersIpv4[j].Password.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf=%v/password", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.SxpConnectionPeerIpv4NoVrf[i].SourceIp.IsNull() && data.SxpConnectionPeerIpv4NoVrf[j].SourceIp.IsNull() {
+				if !state.SxpConnectionPeersIpv4[i].SourceIp.IsNull() && data.SxpConnectionPeersIpv4[j].SourceIp.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf=%v/source", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
@@ -931,11 +842,6 @@ func (data *CTS) getDeletePaths(ctx context.Context) []string {
 	if !data.RoleBasedEnforcementVlanLists.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists", data.getPath()))
 	}
-	for i := range data.RoleBasedEnforcementVlanList {
-		keyValues := [...]string{data.RoleBasedEnforcementVlanList[i].Vlans.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement/vlan-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
 	if !data.RoleBasedEnforcementLoggingInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval", data.getPath()))
 	}
@@ -948,13 +854,13 @@ func (data *CTS) getDeletePaths(ctx context.Context) []string {
 	if !data.SxpSpeakerHoldTime.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/speaker/hold-time", data.getPath()))
 	}
-	for i := range data.SxpConnectionPeerIpv4WithVrf {
-		keyValues := [...]string{data.SxpConnectionPeerIpv4WithVrf[i].Ip.ValueString(), data.SxpConnectionPeerIpv4WithVrf[i].Vrf.ValueString()}
+	for i := range data.SxpConnectionPeersIpv4Vrf {
+		keyValues := [...]string{data.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString(), data.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.SxpConnectionPeerIpv4NoVrf {
-		keyValues := [...]string{data.SxpConnectionPeerIpv4NoVrf[i].Ip.ValueString()}
+	for i := range data.SxpConnectionPeersIpv4 {
+		keyValues := [...]string{data.SxpConnectionPeersIpv4[i].Ip.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

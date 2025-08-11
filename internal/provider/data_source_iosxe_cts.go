@@ -91,7 +91,7 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Enter retry period value for sxp connection in seconds",
 				Computed:            true,
 			},
-			"sxp_connection_peer_ipv4_no_vrf": schema.ListNestedAttribute{
+			"sxp_connection_peers_ipv4": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -127,7 +127,7 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
-			"sxp_connection_peer_ipv4_with_vrf": schema.ListNestedAttribute{
+			"sxp_connection_peers_ipv4_vrf": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -182,18 +182,6 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"role_based_enforcement_logging_interval": schema.Int64Attribute{
 				MarkdownDescription: "Configure sgacl logging interval",
 				Computed:            true,
-			},
-			"role_based_enforcement_vlan_list": schema.ListNestedAttribute{
-				MarkdownDescription: "VLANs on which Role-based ACLs are enforced",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"vlans": schema.StringAttribute{
-							MarkdownDescription: "VLAN id",
-							Computed:            true,
-						},
-					},
-				},
 			},
 			"role_based_enforcement_vlan_lists": schema.ListAttribute{
 				MarkdownDescription: "VLANs on which Role-based ACLs are enforced",

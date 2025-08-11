@@ -20,7 +20,7 @@ resource "iosxe_cts" "example" {
   sxp_default_password_type   = "0"
   sxp_default_password_secret = "MySecretPassword"
   sxp_retry_period            = 60
-  sxp_connection_peer_ipv4_no_vrf = [
+  sxp_connection_peers_ipv4 = [
     {
       ip              = "2.2.2.2"
       source_ip       = "3.3.3.3"
@@ -31,7 +31,7 @@ resource "iosxe_cts" "example" {
       max_time        = 300
     }
   ]
-  sxp_connection_peer_ipv4_with_vrf = [
+  sxp_connection_peers_ipv4_vrf = [
     {
       ip              = "4.4.4.4"
       vrf             = "VRF1"
@@ -61,13 +61,12 @@ resource "iosxe_cts" "example" {
 - `device` (String) A device name from the provider configuration.
 - `role_based_enforcement_logging_interval` (Number) Configure sgacl logging interval
   - Range: `5`-`86400`
-- `role_based_enforcement_vlan_list` (Attributes List) VLANs on which Role-based ACLs are enforced (see [below for nested schema](#nestedatt--role_based_enforcement_vlan_list))
 - `role_based_enforcement_vlan_lists` (List of Number) VLANs on which Role-based ACLs are enforced
 - `role_based_permissions_default_acl_name` (List of String) Role-based Access-list name
 - `sgt` (Number) Local device security group
   - Range: `2`-`65519`
-- `sxp_connection_peer_ipv4_no_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peer_ipv4_no_vrf))
-- `sxp_connection_peer_ipv4_with_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peer_ipv4_with_vrf))
+- `sxp_connection_peers_ipv4` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4))
+- `sxp_connection_peers_ipv4_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4_vrf))
 - `sxp_default_password_secret` (String)
 - `sxp_default_password_type` (String) - Choices: `0`, `6`, `7`
 - `sxp_enable` (Boolean) Enable CTS SXP support
@@ -84,16 +83,8 @@ resource "iosxe_cts" "example" {
 
 - `id` (String) The path of the object.
 
-<a id="nestedatt--role_based_enforcement_vlan_list"></a>
-### Nested Schema for `role_based_enforcement_vlan_list`
-
-Required:
-
-- `vlans` (String) VLAN id
-
-
-<a id="nestedatt--sxp_connection_peer_ipv4_no_vrf"></a>
-### Nested Schema for `sxp_connection_peer_ipv4_no_vrf`
+<a id="nestedatt--sxp_connection_peers_ipv4"></a>
+### Nested Schema for `sxp_connection_peers_ipv4`
 
 Required:
 
@@ -114,8 +105,8 @@ Optional:
 - `source_ip` (String) Enter SXP Source IP address (IPv4)
 
 
-<a id="nestedatt--sxp_connection_peer_ipv4_with_vrf"></a>
-### Nested Schema for `sxp_connection_peer_ipv4_with_vrf`
+<a id="nestedatt--sxp_connection_peers_ipv4_vrf"></a>
+### Nested Schema for `sxp_connection_peers_ipv4_vrf`
 
 Required:
 

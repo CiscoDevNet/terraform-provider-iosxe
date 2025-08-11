@@ -44,21 +44,21 @@ func TestAccIosxeCTS(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_default_password_type", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_default_password_secret", "MySecretPassword"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_retry_period", "60"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.ip", "2.2.2.2"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.source_ip", "3.3.3.3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.password", "default"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.connection_mode", "local"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.option", "listener"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.hold_time", "60"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_no_vrf.0.max_time", "300"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.ip", "4.4.4.4"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.vrf", "VRF1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.source_ip", "5.5.5.5"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.password", "default"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.connection_mode", "local"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.option", "listener"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.hold_time", "60"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peer_ipv4_with_vrf.0.max_time", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4.0.ip", "2.2.2.2"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4.0.source_ip", "3.3.3.3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4.0.password", "default"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4.0.connection_mode", "local"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4.0.option", "listener"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4.0.hold_time", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4.0.max_time", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4_vrf.0.ip", "4.4.4.4"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4_vrf.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4_vrf.0.source_ip", "5.5.5.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4_vrf.0.password", "default"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4_vrf.0.connection_mode", "local"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4_vrf.0.option", "listener"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4_vrf.0.hold_time", "60"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_connection_peers_ipv4_vrf.0.max_time", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_speaker_hold_time", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_listener_hold_min_time", "60"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_listener_hold_max_time", "300"))
@@ -136,7 +136,7 @@ func testAccIosxeCTSConfig_all() string {
 	config += `	sxp_default_password_type = "0"` + "\n"
 	config += `	sxp_default_password_secret = "MySecretPassword"` + "\n"
 	config += `	sxp_retry_period = 60` + "\n"
-	config += `	sxp_connection_peer_ipv4_no_vrf = [{` + "\n"
+	config += `	sxp_connection_peers_ipv4 = [{` + "\n"
 	config += `		ip = "2.2.2.2"` + "\n"
 	config += `		source_ip = "3.3.3.3"` + "\n"
 	config += `		password = "default"` + "\n"
@@ -145,7 +145,7 @@ func testAccIosxeCTSConfig_all() string {
 	config += `		hold_time = 60` + "\n"
 	config += `		max_time = 300` + "\n"
 	config += `	}]` + "\n"
-	config += `	sxp_connection_peer_ipv4_with_vrf = [{` + "\n"
+	config += `	sxp_connection_peers_ipv4_vrf = [{` + "\n"
 	config += `		ip = "4.4.4.4"` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `		source_ip = "5.5.5.5"` + "\n"

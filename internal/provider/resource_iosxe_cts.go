@@ -125,7 +125,7 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					int64validator.Between(0, 64000),
 				},
 			},
-			"sxp_connection_peer_ipv4_no_vrf": schema.ListNestedAttribute{
+			"sxp_connection_peers_ipv4": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -182,7 +182,7 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
-			"sxp_connection_peer_ipv4_with_vrf": schema.ListNestedAttribute{
+			"sxp_connection_peers_ipv4_vrf": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -269,18 +269,6 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(5, 86400),
-				},
-			},
-			"role_based_enforcement_vlan_list": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("VLANs on which Role-based ACLs are enforced").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"vlans": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VLAN id").String,
-							Required:            true,
-						},
-					},
 				},
 			},
 			"role_based_enforcement_vlan_lists": schema.ListAttribute{

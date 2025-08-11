@@ -13,16 +13,13 @@ attributes:
     tf_name: sxp_enable
     example: true
   - yang_name: Cisco-IOS-XE-cts:sxp/default/password/type
-    tf_name: sxp_default_password_type
     example: 0
   - yang_name: Cisco-IOS-XE-cts:sxp/default/password/secret
-    tf_name: sxp_default_password_secret
     example: MySecretPassword
   - yang_name: Cisco-IOS-XE-cts:sxp/retry/period
-    tf_name: sxp_retry_period
     example: 60
   - yang_name: Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf
-    tf_name: sxp_connection_peer_ipv4_no_vrf
+    tf_name: sxp_connection_peers_ipv4
     type: List
     attributes:
       - yang_name: ipv4
@@ -45,7 +42,7 @@ attributes:
       - yang_name: max-time
         example: 300
   - yang_name: Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf
-    tf_name: sxp_connection_peer_ipv4_with_vrf
+    tf_name: sxp_connection_peers_ipv4_vrf
     type: List
     attributes:
       - yang_name: ipv4
@@ -71,7 +68,6 @@ attributes:
       - yang_name: max-time
         example: 300
   - yang_name: Cisco-IOS-XE-cts:sxp/speaker/hold-time
-    tf_name: sxp_speaker_hold_time
     example: 300
   - yang_name: Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time
     tf_name: sxp_listener_hold_min_time
@@ -80,17 +76,7 @@ attributes:
     tf_name: sxp_listener_hold_max_time
     example: 300
   - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/logging-interval
-    tf_name: role_based_enforcement_logging_interval
     example: 300
-  - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/vlan-list
-    tf_name: role_based_enforcement_vlan_list
-    type: List
-    exclude_test: true
-    attributes:
-      - yang_name: id
-        tf_name: vlans
-        id: true
-        example: 100
   - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists
     tf_name: role_based_enforcement_vlan_lists
     exclude_test: true

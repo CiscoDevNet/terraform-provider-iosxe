@@ -5,7 +5,7 @@ resource "iosxe_cts" "example" {
   sxp_default_password_type   = "0"
   sxp_default_password_secret = "MySecretPassword"
   sxp_retry_period            = 60
-  sxp_connection_peer_ipv4_no_vrf = [
+  sxp_connection_peers_ipv4 = [
     {
       ip              = "2.2.2.2"
       source_ip       = "3.3.3.3"
@@ -16,7 +16,7 @@ resource "iosxe_cts" "example" {
       max_time        = 300
     }
   ]
-  sxp_connection_peer_ipv4_with_vrf = [
+  sxp_connection_peers_ipv4_vrf = [
     {
       ip              = "4.4.4.4"
       vrf             = "VRF1"
