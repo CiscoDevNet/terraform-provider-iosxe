@@ -1,0 +1,40 @@
+---
+name: IP host
+path: Cisco-IOS-XE-native:native/ip/host
+doc_category: System
+attributes:
+  - yang_name: host-list
+    tf_name: host_lists
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: test.router.com
+      - yang_name: ip-list-ordered
+        tf_name: ip_list
+        example: 3.3.3.3
+  - yang_name: vrf
+    tf_name: vrf
+    type: List
+    attributes:
+      - yang_name: vrf-name
+        tf_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: host-name
+        type: List
+        attributes:
+          - yang_name: host-name
+            id: true
+            example: test.router.com
+          - yang_name: ip-list
+            example: 2.2.2.2
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
