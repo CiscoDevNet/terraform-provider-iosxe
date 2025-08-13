@@ -38,6 +38,12 @@ resource "iosxe_system" "example" {
     }
   ]
   memory_free_low_watermark_processor = 203038
+  ip_host_lists = [
+    {
+      name    = "test.router.com"
+      ip_list = ["3.3.3.3"]
+    }
+  ]
 }
 ```
 
@@ -84,6 +90,8 @@ resource "iosxe_system" "example" {
   - Range: `0`-`65535`
 - `ip_domain_name` (String) Define the default domain name
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
+- `ip_host_lists` (Attributes List) (see [below for nested schema](#nestedatt--ip_host_lists))
+- `ip_host_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_host_vrfs))
 - `ip_http_access_class` (Number) Restrict http server access by access-class
   - Range: `1`-`99`
 - `ip_http_active_session_modules` (String) Set active session modules
@@ -163,6 +171,7 @@ resource "iosxe_system" "example" {
 - `redundancy_mode` (String) redundancy mode for this chassis
   - Choices: `none`, `rpr`, `rpr-plus`, `sso`
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
+- `vrf_host_names` (Attributes List) Name of host (see [below for nested schema](#nestedatt--vrf_host_names))
 
 ### Read-Only
 
@@ -182,6 +191,26 @@ Required:
 Required:
 
 - `path` (String)
+
+
+<a id="nestedatt--ip_host_lists"></a>
+### Nested Schema for `ip_host_lists`
+
+Required:
+
+- `name` (String) Name of host
+
+Optional:
+
+- `ip_list` (List of String) Host IP address
+
+
+<a id="nestedatt--ip_host_vrfs"></a>
+### Nested Schema for `ip_host_vrfs`
+
+Required:
+
+- `vrf` (String) VRF name
 
 
 <a id="nestedatt--ip_http_authentication_aaa_command_authorization"></a>
@@ -233,6 +262,18 @@ Optional:
 - `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
 - `transport_https_ipv4_port` (Number) port number
   - Range: `1`-`65535`
+
+
+<a id="nestedatt--vrf_host_names"></a>
+### Nested Schema for `vrf_host_names`
+
+Required:
+
+- `host_name` (String) Name of host
+
+Optional:
+
+- `ip_list` (List of String) Host IP address
 
 ## Import
 

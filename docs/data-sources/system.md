@@ -57,6 +57,8 @@ data "iosxe_system" "example" {
 - `ip_domain_lookup_source_interface_vlan` (Number) Iosxr Vlans
 - `ip_domain_name` (String) Define the default domain name
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
+- `ip_host_lists` (Attributes List) (see [below for nested schema](#nestedatt--ip_host_lists))
+- `ip_host_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_host_vrfs))
 - `ip_http_access_class` (Number) Restrict http server access by access-class
 - `ip_http_active_session_modules` (String) Set active session modules
 - `ip_http_authentication_aaa` (Boolean) Use AAA access control methods
@@ -123,6 +125,7 @@ data "iosxe_system" "example" {
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
+- `vrf_host_names` (Attributes List) Name of host (see [below for nested schema](#nestedatt--vrf_host_names))
 
 <a id="nestedatt--boot_system_bootfiles"></a>
 ### Nested Schema for `boot_system_bootfiles`
@@ -138,6 +141,23 @@ Read-Only:
 Read-Only:
 
 - `path` (String)
+
+
+<a id="nestedatt--ip_host_lists"></a>
+### Nested Schema for `ip_host_lists`
+
+Read-Only:
+
+- `ip_list` (List of String) Host IP address
+- `name` (String) Name of host
+
+
+<a id="nestedatt--ip_host_vrfs"></a>
+### Nested Schema for `ip_host_vrfs`
+
+Read-Only:
+
+- `vrf` (String) VRF name
 
 
 <a id="nestedatt--ip_http_authentication_aaa_command_authorization"></a>
@@ -175,3 +195,12 @@ Read-Only:
 - `name` (String)
 - `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
 - `transport_https_ipv4_port` (Number) port number
+
+
+<a id="nestedatt--vrf_host_names"></a>
+### Nested Schema for `vrf_host_names`
+
+Read-Only:
+
+- `host_name` (String) Name of host
+- `ip_list` (List of String) Host IP address

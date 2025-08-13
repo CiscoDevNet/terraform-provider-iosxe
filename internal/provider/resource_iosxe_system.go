@@ -621,6 +621,52 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(0, 255),
 				},
 			},
+			"ip_host_lists": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of host").String,
+							Required:            true,
+						},
+						"ip_list": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Host IP address").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"ip_host_vrfs": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify VRF").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VRF name").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"vrf_host_names": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Name of host").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"host_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of host").String,
+							Required:            true,
+						},
+						"ip_list": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Host IP address").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

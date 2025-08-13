@@ -420,6 +420,35 @@ attributes:
   - yang_name: enable/secret/level
     exclude_test: true
     example: 15
+  - yang_name: ip/host/host-list
+    tf_name: ip_host_lists
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: test.router.com
+      - yang_name: ip-list-ordered
+        tf_name: ip_list
+        example: 3.3.3.3
+  - yang_name: ip/host/vrf
+    tf_name: ip_host_vrfs
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: vrf-name
+        tf_name: vrf
+        id: true
+        example: VRF1
+  - yang_name: ip/host/vrf/host-name
+    tf_name: vrf_host_names
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: host-name
+        id: true
+        example: test.router.com
+      - yang_name: ip-list
+        example: 2.2.2.2
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
