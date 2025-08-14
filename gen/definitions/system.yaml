@@ -232,6 +232,14 @@ attributes:
     tf_name: ip_ssh_version
     example: 2
     exclude_test: true
+  - yang_name: ip/ssh/version
+    tf_name: ip_ssh_version_legacy
+    example: 2
+    exclude_test: true
+  - yang_name: ip/ssh/time-out
+    example: 120
+  - yang_name: ip/ssh/authentication-retries
+    example: 3
   - yang_name: ip/ssh/source-interface-config/interface-choice/Loopback/Loopback
     xpath: ip/ssh/source-interface-config/Loopback
     tf_name: ip_ssh_source_interface_loopback

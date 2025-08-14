@@ -345,6 +345,18 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Specify protocol version supported",
 				Computed:            true,
 			},
+			"ip_ssh_version_legacy": schema.Int64Attribute{
+				MarkdownDescription: "Specify protocol version supported. DEPRECATED, Use ssh-version instead",
+				Computed:            true,
+			},
+			"ip_ssh_time_out": schema.Int64Attribute{
+				MarkdownDescription: "Specify SSH time-out interval",
+				Computed:            true,
+			},
+			"ip_ssh_authentication_retries": schema.Int64Attribute{
+				MarkdownDescription: "Specify number of authentication retries",
+				Computed:            true,
+			},
 			"ip_ssh_source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,

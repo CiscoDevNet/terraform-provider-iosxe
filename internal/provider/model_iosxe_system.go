@@ -100,6 +100,9 @@ type System struct {
 	IpForwardProtocolNd                                    types.Bool                                          `tfsdk:"ip_forward_protocol_nd"`
 	IpScpServerEnable                                      types.Bool                                          `tfsdk:"ip_scp_server_enable"`
 	IpSshVersion                                           types.String                                        `tfsdk:"ip_ssh_version"`
+	IpSshVersionLegacy                                     types.Int64                                         `tfsdk:"ip_ssh_version_legacy"`
+	IpSshTimeOut                                           types.Int64                                         `tfsdk:"ip_ssh_time_out"`
+	IpSshAuthenticationRetries                             types.Int64                                         `tfsdk:"ip_ssh_authentication_retries"`
 	IpSshSourceInterfaceLoopback                           types.Int64                                         `tfsdk:"ip_ssh_source_interface_loopback"`
 	IpSshSourceInterfaceVlan                               types.Int64                                         `tfsdk:"ip_ssh_source_interface_vlan"`
 	IpSshSourceInterfaceGigabitEthernet                    types.String                                        `tfsdk:"ip_ssh_source_interface_gigabit_ethernet"`
@@ -201,6 +204,9 @@ type SystemData struct {
 	IpForwardProtocolNd                                    types.Bool                                          `tfsdk:"ip_forward_protocol_nd"`
 	IpScpServerEnable                                      types.Bool                                          `tfsdk:"ip_scp_server_enable"`
 	IpSshVersion                                           types.String                                        `tfsdk:"ip_ssh_version"`
+	IpSshVersionLegacy                                     types.Int64                                         `tfsdk:"ip_ssh_version_legacy"`
+	IpSshTimeOut                                           types.Int64                                         `tfsdk:"ip_ssh_time_out"`
+	IpSshAuthenticationRetries                             types.Int64                                         `tfsdk:"ip_ssh_authentication_retries"`
 	IpSshSourceInterfaceLoopback                           types.Int64                                         `tfsdk:"ip_ssh_source_interface_loopback"`
 	IpSshSourceInterfaceVlan                               types.Int64                                         `tfsdk:"ip_ssh_source_interface_vlan"`
 	IpSshSourceInterfaceGigabitEthernet                    types.String                                        `tfsdk:"ip_ssh_source_interface_gigabit_ethernet"`
@@ -501,6 +507,15 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.IpSshVersion.IsNull() && !data.IpSshVersion.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.ssh-version", data.IpSshVersion.ValueString())
+	}
+	if !data.IpSshVersionLegacy.IsNull() && !data.IpSshVersionLegacy.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.version", strconv.FormatInt(data.IpSshVersionLegacy.ValueInt64(), 10))
+	}
+	if !data.IpSshTimeOut.IsNull() && !data.IpSshTimeOut.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.time-out", strconv.FormatInt(data.IpSshTimeOut.ValueInt64(), 10))
+	}
+	if !data.IpSshAuthenticationRetries.IsNull() && !data.IpSshAuthenticationRetries.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.authentication-retries", strconv.FormatInt(data.IpSshAuthenticationRetries.ValueInt64(), 10))
 	}
 	if !data.IpSshSourceInterfaceLoopback.IsNull() && !data.IpSshSourceInterfaceLoopback.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.source-interface-config.Loopback", strconv.FormatInt(data.IpSshSourceInterfaceLoopback.ValueInt64(), 10))
@@ -1159,6 +1174,21 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpSshVersion = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.ssh.version"); value.Exists() && !data.IpSshVersionLegacy.IsNull() {
+		data.IpSshVersionLegacy = types.Int64Value(value.Int())
+	} else {
+		data.IpSshVersionLegacy = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.ssh.time-out"); value.Exists() && !data.IpSshTimeOut.IsNull() {
+		data.IpSshTimeOut = types.Int64Value(value.Int())
+	} else {
+		data.IpSshTimeOut = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.ssh.authentication-retries"); value.Exists() && !data.IpSshAuthenticationRetries.IsNull() {
+		data.IpSshAuthenticationRetries = types.Int64Value(value.Int())
+	} else {
+		data.IpSshAuthenticationRetries = types.Int64Null()
+	}
 	if value := res.Get(prefix + "ip.ssh.source-interface-config.Loopback"); value.Exists() && !data.IpSshSourceInterfaceLoopback.IsNull() {
 		data.IpSshSourceInterfaceLoopback = types.Int64Value(value.Int())
 	} else {
@@ -1696,6 +1726,15 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.ssh.ssh-version"); value.Exists() {
 		data.IpSshVersion = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.ssh.version"); value.Exists() {
+		data.IpSshVersionLegacy = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.ssh.time-out"); value.Exists() {
+		data.IpSshTimeOut = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.ssh.authentication-retries"); value.Exists() {
+		data.IpSshAuthenticationRetries = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.ssh.source-interface-config.Loopback"); value.Exists() {
 		data.IpSshSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
@@ -2111,6 +2150,15 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.ssh.ssh-version"); value.Exists() {
 		data.IpSshVersion = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.ssh.version"); value.Exists() {
+		data.IpSshVersionLegacy = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.ssh.time-out"); value.Exists() {
+		data.IpSshTimeOut = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.ssh.authentication-retries"); value.Exists() {
+		data.IpSshAuthenticationRetries = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "ip.ssh.source-interface-config.Loopback"); value.Exists() {
 		data.IpSshSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
@@ -2433,6 +2481,15 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.IpSshSourceInterfaceLoopback.IsNull() && data.IpSshSourceInterfaceLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/source-interface-config/Loopback", state.getPath()))
+	}
+	if !state.IpSshAuthenticationRetries.IsNull() && data.IpSshAuthenticationRetries.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/authentication-retries", state.getPath()))
+	}
+	if !state.IpSshTimeOut.IsNull() && data.IpSshTimeOut.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/time-out", state.getPath()))
+	}
+	if !state.IpSshVersionLegacy.IsNull() && data.IpSshVersionLegacy.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/version", state.getPath()))
 	}
 	if !state.IpSshVersion.IsNull() && data.IpSshVersion.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ssh/ssh-version", state.getPath()))
@@ -2925,6 +2982,15 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpSshSourceInterfaceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/source-interface-config/Loopback", data.getPath()))
+	}
+	if !data.IpSshAuthenticationRetries.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/authentication-retries", data.getPath()))
+	}
+	if !data.IpSshTimeOut.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/time-out", data.getPath()))
+	}
+	if !data.IpSshVersionLegacy.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/version", data.getPath()))
 	}
 	if !data.IpSshVersion.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ssh/ssh-version", data.getPath()))
