@@ -533,6 +533,56 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Set exec level password",
 				Computed:            true,
 			},
+			"ip_host_lists": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Name of host",
+							Computed:            true,
+						},
+						"ip_list": schema.ListAttribute{
+							MarkdownDescription: "Host IP address",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ip_host_vrfs": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify VRF",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VRF name",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"vrf_host_names": schema.ListNestedAttribute{
+				MarkdownDescription: "Name of host",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"host_name": schema.StringAttribute{
+							MarkdownDescription: "Name of host",
+							Computed:            true,
+						},
+						"ip_list": schema.ListAttribute{
+							MarkdownDescription: "Host IP address",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"diagnostic_event_log_size": schema.Int64Attribute{
+				MarkdownDescription: "Configure event log size Number of entries <1-10000>",
+				Computed:            true,
+			},
 		},
 	}
 }
