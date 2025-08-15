@@ -23,4 +23,6 @@ resource "iosxe_system" "example" {
     }
   ]
   memory_free_low_watermark_processor = 203038
+  ip_ssh_time_out                     = 120
+  ip_ssh_authentication_retries       = 3
 }
