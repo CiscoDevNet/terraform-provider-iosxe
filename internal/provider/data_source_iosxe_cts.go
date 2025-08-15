@@ -83,7 +83,7 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"sxp_default_password_secret": schema.StringAttribute{
+			"sxp_default_password": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 			},

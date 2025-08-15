@@ -34,7 +34,7 @@ data "iosxe_cts" "example" {
 - `sgt` (Number) Local device security group
 - `sxp_connection_peers_ipv4` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4))
 - `sxp_connection_peers_ipv4_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4_vrf))
-- `sxp_default_password_secret` (String)
+- `sxp_default_password` (String)
 - `sxp_default_password_type` (String)
 - `sxp_enable` (Boolean) Enable CTS SXP support
 - `sxp_listener_hold_max_time` (Number) Enter maximum allowed Hold Time in seconds

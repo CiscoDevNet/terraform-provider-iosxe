@@ -1,10 +1,10 @@
 resource "iosxe_cts" "example" {
-  authorization_list          = "Tacacs-GROUP"
-  sgt                         = 200
-  sxp_enable                  = true
-  sxp_default_password_type   = "0"
-  sxp_default_password_secret = "MySecretPassword"
-  sxp_retry_period            = 60
+  authorization_list        = "Tacacs-GROUP"
+  sgt                       = 200
+  sxp_enable                = true
+  sxp_default_password_type = "0"
+  sxp_default_password      = "MySecretPassword"
+  sxp_retry_period          = 60
   sxp_connection_peers_ipv4 = [
     {
       ip              = "2.2.2.2"

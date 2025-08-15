@@ -40,7 +40,7 @@ func TestAccDataSourceIosxeCTS(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sgt", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sxp_enable", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sxp_default_password_type", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sxp_default_password_secret", "MySecretPassword"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sxp_default_password", "MySecretPassword"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sxp_retry_period", "60"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sxp_connection_peers_ipv4.0.ip", "2.2.2.2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sxp_connection_peers_ipv4.0.source_ip", "3.3.3.3"))
@@ -100,7 +100,7 @@ func testAccDataSourceIosxeCTSConfig() string {
 	config += `	sgt = 200` + "\n"
 	config += `	sxp_enable = true` + "\n"
 	config += `	sxp_default_password_type = "0"` + "\n"
-	config += `	sxp_default_password_secret = "MySecretPassword"` + "\n"
+	config += `	sxp_default_password = "MySecretPassword"` + "\n"
 	config += `	sxp_retry_period = 60` + "\n"
 	config += `	sxp_connection_peers_ipv4 = [{` + "\n"
 	config += `		ip = "2.2.2.2"` + "\n"

@@ -111,7 +111,7 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringvalidator.OneOf("0", "6", "7"),
 				},
 			},
-			"sxp_default_password_secret": schema.StringAttribute{
+			"sxp_default_password": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 				Validators: []validator.String{

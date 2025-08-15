@@ -14,12 +14,12 @@ This resource can manage the CTS configuration.
 
 ```terraform
 resource "iosxe_cts" "example" {
-  authorization_list          = "Tacacs-GROUP"
-  sgt                         = 200
-  sxp_enable                  = true
-  sxp_default_password_type   = "0"
-  sxp_default_password_secret = "MySecretPassword"
-  sxp_retry_period            = 60
+  authorization_list        = "Tacacs-GROUP"
+  sgt                       = 200
+  sxp_enable                = true
+  sxp_default_password_type = "0"
+  sxp_default_password      = "MySecretPassword"
+  sxp_retry_period          = 60
   sxp_connection_peers_ipv4 = [
     {
       ip              = "2.2.2.2"
@@ -67,7 +67,7 @@ resource "iosxe_cts" "example" {
   - Range: `2`-`65519`
 - `sxp_connection_peers_ipv4` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4))
 - `sxp_connection_peers_ipv4_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4_vrf))
-- `sxp_default_password_secret` (String)
+- `sxp_default_password` (String)
 - `sxp_default_password_type` (String) - Choices: `0`, `6`, `7`
 - `sxp_enable` (Boolean) Enable CTS SXP support
 - `sxp_listener_hold_max_time` (Number) Enter maximum allowed Hold Time in seconds

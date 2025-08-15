@@ -14,6 +14,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-cts:sxp/default/password/type
     example: 0
   - yang_name: Cisco-IOS-XE-cts:sxp/default/password/secret
+    tf_name: sxp_default_password
     example: MySecretPassword
   - yang_name: Cisco-IOS-XE-cts:sxp/retry/period
     example: 60
@@ -75,7 +76,6 @@ attributes:
   - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/logging-interval
     example: 300
   - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists
-    tf_name: role_based_enforcement_vlan_lists
     exclude_test: true
     example: 300
   - yang_name: Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new

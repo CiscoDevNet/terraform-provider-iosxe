@@ -45,7 +45,7 @@ type CTS struct {
 	Sgt                                 types.Int64                    `tfsdk:"sgt"`
 	SxpEnable                           types.Bool                     `tfsdk:"sxp_enable"`
 	SxpDefaultPasswordType              types.String                   `tfsdk:"sxp_default_password_type"`
-	SxpDefaultPasswordSecret            types.String                   `tfsdk:"sxp_default_password_secret"`
+	SxpDefaultPassword                  types.String                   `tfsdk:"sxp_default_password"`
 	SxpRetryPeriod                      types.Int64                    `tfsdk:"sxp_retry_period"`
 	SxpConnectionPeersIpv4              []CTSSxpConnectionPeersIpv4    `tfsdk:"sxp_connection_peers_ipv4"`
 	SxpConnectionPeersIpv4Vrf           []CTSSxpConnectionPeersIpv4Vrf `tfsdk:"sxp_connection_peers_ipv4_vrf"`
@@ -64,7 +64,7 @@ type CTSData struct {
 	Sgt                                 types.Int64                    `tfsdk:"sgt"`
 	SxpEnable                           types.Bool                     `tfsdk:"sxp_enable"`
 	SxpDefaultPasswordType              types.String                   `tfsdk:"sxp_default_password_type"`
-	SxpDefaultPasswordSecret            types.String                   `tfsdk:"sxp_default_password_secret"`
+	SxpDefaultPassword                  types.String                   `tfsdk:"sxp_default_password"`
 	SxpRetryPeriod                      types.Int64                    `tfsdk:"sxp_retry_period"`
 	SxpConnectionPeersIpv4              []CTSSxpConnectionPeersIpv4    `tfsdk:"sxp_connection_peers_ipv4"`
 	SxpConnectionPeersIpv4Vrf           []CTSSxpConnectionPeersIpv4Vrf `tfsdk:"sxp_connection_peers_ipv4_vrf"`
@@ -136,8 +136,8 @@ func (data CTS) toBody(ctx context.Context) string {
 	if !data.SxpDefaultPasswordType.IsNull() && !data.SxpDefaultPasswordType.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.default.password.type", data.SxpDefaultPasswordType.ValueString())
 	}
-	if !data.SxpDefaultPasswordSecret.IsNull() && !data.SxpDefaultPasswordSecret.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.default.password.secret", data.SxpDefaultPasswordSecret.ValueString())
+	if !data.SxpDefaultPassword.IsNull() && !data.SxpDefaultPassword.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.default.password.secret", data.SxpDefaultPassword.ValueString())
 	}
 	if !data.SxpRetryPeriod.IsNull() && !data.SxpRetryPeriod.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.retry.period", strconv.FormatInt(data.SxpRetryPeriod.ValueInt64(), 10))
@@ -253,10 +253,10 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SxpDefaultPasswordType = types.StringNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.default.password.secret"); value.Exists() && !data.SxpDefaultPasswordSecret.IsNull() {
-		data.SxpDefaultPasswordSecret = types.StringValue(value.String())
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.default.password.secret"); value.Exists() && !data.SxpDefaultPassword.IsNull() {
+		data.SxpDefaultPassword = types.StringValue(value.String())
 	} else {
-		data.SxpDefaultPasswordSecret = types.StringNull()
+		data.SxpDefaultPassword = types.StringNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.retry.period"); value.Exists() && !data.SxpRetryPeriod.IsNull() {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
@@ -442,7 +442,7 @@ func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 		data.SxpDefaultPasswordType = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.default.password.secret"); value.Exists() {
-		data.SxpDefaultPasswordSecret = types.StringValue(value.String())
+		data.SxpDefaultPassword = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.retry.period"); value.Exists() {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
@@ -556,7 +556,7 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SxpDefaultPasswordType = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.default.password.secret"); value.Exists() {
-		data.SxpDefaultPasswordSecret = types.StringValue(value.String())
+		data.SxpDefaultPassword = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.retry.period"); value.Exists() {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
@@ -801,7 +801,7 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 	if !state.SxpRetryPeriod.IsNull() && data.SxpRetryPeriod.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/retry/period", state.getPath()))
 	}
-	if !state.SxpDefaultPasswordSecret.IsNull() && data.SxpDefaultPasswordSecret.IsNull() {
+	if !state.SxpDefaultPassword.IsNull() && data.SxpDefaultPassword.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/default/password/secret", state.getPath()))
 	}
 	if !state.SxpDefaultPasswordType.IsNull() && data.SxpDefaultPasswordType.IsNull() {
@@ -867,7 +867,7 @@ func (data *CTS) getDeletePaths(ctx context.Context) []string {
 	if !data.SxpRetryPeriod.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/retry/period", data.getPath()))
 	}
-	if !data.SxpDefaultPasswordSecret.IsNull() {
+	if !data.SxpDefaultPassword.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/default/password/secret", data.getPath()))
 	}
 	if !data.SxpDefaultPasswordType.IsNull() {
