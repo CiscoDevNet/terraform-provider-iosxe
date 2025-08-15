@@ -38,6 +38,7 @@ data "iosxe_system" "example" {
 - `cisp_enable` (Boolean) Enable CISP
 - `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
 - `diagnostic_bootup_level` (String) Select diagnostic level
+- `diagnostic_event_log_size` (Number) Configure event log size Number of entries <1-10000>
 - `enable_secret` (String)
 - `enable_secret_level` (Number) Set exec level password
 - `enable_secret_type` (String)

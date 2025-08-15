@@ -567,6 +567,10 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					},
 				},
 			},
+			"diagnostic_event_log_size": schema.Int64Attribute{
+				MarkdownDescription: "Configure event log size Number of entries <1-10000>",
+				Computed:            true,
+			},
 		},
 	}
 }

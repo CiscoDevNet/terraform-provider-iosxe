@@ -69,6 +69,8 @@ resource "iosxe_system" "example" {
 - `device` (String) A device name from the provider configuration.
 - `diagnostic_bootup_level` (String) Select diagnostic level
   - Choices: `complete`, `minimal`
+- `diagnostic_event_log_size` (Number) Configure event log size Number of entries <1-10000>
+  - Range: `1`-`10000`
 - `enable_secret` (String)
 - `enable_secret_level` (Number) Set exec level password
   - Range: `0`-`255`

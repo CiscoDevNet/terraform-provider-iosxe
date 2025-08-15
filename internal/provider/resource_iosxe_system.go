@@ -667,6 +667,13 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
+			"diagnostic_event_log_size": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure event log size Number of entries <1-10000>").AddIntegerRangeDescription(1, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10000),
+				},
+			},
 		},
 	}
 }

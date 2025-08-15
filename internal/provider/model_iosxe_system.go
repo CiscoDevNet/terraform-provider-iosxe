@@ -139,6 +139,7 @@ type System struct {
 	IpHostLists                                            []SystemIpHostLists                                 `tfsdk:"ip_host_lists"`
 	IpHostVrfs                                             []SystemIpHostVrfs                                  `tfsdk:"ip_host_vrfs"`
 	VrfHostNames                                           []SystemVrfHostNames                                `tfsdk:"vrf_host_names"`
+	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
 }
 
 type SystemData struct {
@@ -243,6 +244,7 @@ type SystemData struct {
 	IpHostLists                                            []SystemIpHostLists                                 `tfsdk:"ip_host_lists"`
 	IpHostVrfs                                             []SystemIpHostVrfs                                  `tfsdk:"ip_host_vrfs"`
 	VrfHostNames                                           []SystemVrfHostNames                                `tfsdk:"vrf_host_names"`
+	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -617,6 +619,9 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.EnableSecretLevel.IsNull() && !data.EnableSecretLevel.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.level", strconv.FormatInt(data.EnableSecretLevel.ValueInt64(), 10))
+	}
+	if !data.DiagnosticEventLogSize.IsNull() && !data.DiagnosticEventLogSize.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-diagnostics:diagnostic.event-log.size", strconv.FormatInt(data.DiagnosticEventLogSize.ValueInt64(), 10))
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1564,6 +1569,11 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.VrfHostNames[i].IpList = types.ListNull(types.StringType)
 		}
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.event-log.size"); value.Exists() && !data.DiagnosticEventLogSize.IsNull() {
+		data.DiagnosticEventLogSize = types.Int64Value(value.Int())
+	} else {
+		data.DiagnosticEventLogSize = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2021,6 +2031,9 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 			data.VrfHostNames = append(data.VrfHostNames, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.event-log.size"); value.Exists() {
+		data.DiagnosticEventLogSize = types.Int64Value(value.Int())
 	}
 }
 
@@ -2480,6 +2493,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.event-log.size"); value.Exists() {
+		data.DiagnosticEventLogSize = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2488,6 +2504,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.DiagnosticEventLogSize.IsNull() && data.DiagnosticEventLogSize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-diagnostics:diagnostic/event-log/size", state.getPath()))
+	}
 	for i := range state.VrfHostNames {
 		stateKeyValues := [...]string{state.VrfHostNames[i].HostName.ValueString()}
 
@@ -3163,6 +3182,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.DiagnosticEventLogSize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-diagnostics:diagnostic/event-log/size", data.getPath()))
+	}
 	for i := range data.VrfHostNames {
 		keyValues := [...]string{data.VrfHostNames[i].HostName.ValueString()}
 

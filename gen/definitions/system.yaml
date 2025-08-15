@@ -449,6 +449,9 @@ attributes:
         example: test.router.com
       - yang_name: ip-list
         example: 2.2.2.2
+  - yang_name: Cisco-IOS-XE-diagnostics:diagnostic/event-log/size
+    example: 1000
+    exclude_test: true  
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
