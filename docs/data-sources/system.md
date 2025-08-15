@@ -92,6 +92,7 @@ data "iosxe_system" "example" {
 - `ip_routing` (Boolean) Enable or disable IP routing
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
 - `ip_source_route` (Boolean) Process packets with source routing header options
+- `ip_ssh_authentication_retries` (Number) Specify number of authentication retries
 - `ip_ssh_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_ssh_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_ssh_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
@@ -101,7 +102,9 @@ data "iosxe_system" "example" {
 - `ip_ssh_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
 - `ip_ssh_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
 - `ip_ssh_source_interface_vlan` (Number) Iosxr Vlans
+- `ip_ssh_time_out` (Number) Specify SSH time-out interval
 - `ip_ssh_version` (String) Specify protocol version supported
+- `ip_ssh_version_legacy` (Number) Specify protocol version supported. DEPRECATED, Use ssh-version instead
 - `ip_tacacs_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_tacacs_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_tacacs_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z

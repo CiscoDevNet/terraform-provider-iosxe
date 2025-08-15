@@ -29,4 +29,6 @@ resource "iosxe_system" "example" {
       ip_list = ["3.3.3.3"]
     }
   ]
+  ip_ssh_time_out                     = 120
+  ip_ssh_authentication_retries       = 3
 }

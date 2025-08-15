@@ -11,6 +11,7 @@ description: |-
 
 - Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`
 - Add `ip_host_lists`, `ip_host_vrfs` attributes to `iosxe_system` resource and data source
+- Add `ip_ssh_version_legacy`, `ip_ssh_time_out` and `ip_ssh_authentication_retries` attributes to `iosxe_system` resource and data source
 
 ## 0.7.0
 

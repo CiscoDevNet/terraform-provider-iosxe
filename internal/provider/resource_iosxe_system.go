@@ -415,6 +415,27 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.OneOf("2"),
 				},
 			},
+			"ip_ssh_version_legacy": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify protocol version supported. DEPRECATED, Use ssh-version instead").AddIntegerRangeDescription(1, 2).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2),
+				},
+			},
+			"ip_ssh_time_out": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify SSH time-out interval").AddIntegerRangeDescription(1, 120).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 120),
+				},
+			},
+			"ip_ssh_authentication_retries": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify number of authentication retries").AddIntegerRangeDescription(0, 5).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 5),
+				},
+			},
 			"ip_ssh_source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
 				Optional:            true,
