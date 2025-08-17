@@ -236,6 +236,7 @@ attributes:
     tf_name: ip_ssh_version_legacy
     example: 2
     exclude_test: true
+    allow_import_changes: true
   - yang_name: ip/ssh/time-out
     example: 120
   - yang_name: ip/ssh/authentication-retries
