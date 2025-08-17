@@ -22,6 +22,8 @@ attributes:
       - Loopback
       - Vlan
       - Port-channel
+      - Port-channel-subinterface/Port-channel
+      - Tunnel
     example: Loopback
   - yang_name: name
     example: 1
