@@ -30,6 +30,7 @@ data "iosxe_msdp" "example" {
 - `originator_id` (String) Configure MSDP Originator ID
 - `passwords` (Attributes List) MSDP peer on which the password is to be set (see [below for nested schema](#nestedatt--passwords))
 - `peers` (Attributes List) Configure an MSDP peer (see [below for nested schema](#nestedatt--peers))
+- `vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--vrfs))
 
 <a id="nestedatt--passwords"></a>
 ### Nested Schema for `passwords`
@@ -43,6 +44,36 @@ Read-Only:
 
 <a id="nestedatt--peers"></a>
 ### Nested Schema for `peers`
+
+Read-Only:
+
+- `addr` (String)
+- `connect_source_loopback` (Number) Loopback interface
+- `remote_as` (Number) Configured AS number
+
+
+<a id="nestedatt--vrfs"></a>
+### Nested Schema for `vrfs`
+
+Read-Only:
+
+- `originator_id` (String) Configure MSDP Originator ID
+- `passwords` (Attributes List) MSDP peer on which the password is to be set (see [below for nested schema](#nestedatt--vrfs--passwords))
+- `peers` (Attributes List) Configure an MSDP peer (see [below for nested schema](#nestedatt--vrfs--peers))
+- `vrf` (String)
+
+<a id="nestedatt--vrfs--passwords"></a>
+### Nested Schema for `vrfs.passwords`
+
+Read-Only:
+
+- `addr` (String)
+- `encryption` (Number)
+- `password` (String)
+
+
+<a id="nestedatt--vrfs--peers"></a>
+### Nested Schema for `vrfs.peers`
 
 Read-Only:
 

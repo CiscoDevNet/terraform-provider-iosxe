@@ -41,6 +41,14 @@ func TestAccIosxeMSDP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "passwords.0.addr", "10.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "passwords.0.encryption", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "passwords.0.password", "Cisco123"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.originator_id", "Loopback200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.peers.0.addr", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.peers.0.remote_as", "65000"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.peers.0.connect_source_loopback", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.passwords.0.addr", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.passwords.0.encryption", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.passwords.0.password", "Cisco123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -80,6 +88,24 @@ func iosxeMSDPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeMSDPPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"address-family/ipv4" = ""
+	}
+}
+
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/interface/Loopback=200"
+	attributes = {
+		"name" = "200"
+		"vrf/forwarding" = "VRF1"
+	}
+	depends_on = [iosxe_restconf.PreReq0, ]
+}
+
+resource "iosxe_restconf" "PreReq2" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
 	attributes = {
 		"name" = "100"
@@ -94,7 +120,7 @@ resource "iosxe_restconf" "PreReq0" {
 
 func testAccIosxeMSDPConfig_minimum() string {
 	config := `resource "iosxe_msdp" "test" {` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -116,7 +142,21 @@ func testAccIosxeMSDPConfig_all() string {
 	config += `		encryption = 0` + "\n"
 	config += `		password = "Cisco123"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	vrfs = [{` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `		originator_id = "Loopback200"` + "\n"
+	config += `		peers = [{` + "\n"
+	config += `			addr = "10.1.1.1"` + "\n"
+	config += `			remote_as = 65000` + "\n"
+	config += `			connect_source_loopback = 200` + "\n"
+	config += `		}]` + "\n"
+	config += `		passwords = [{` + "\n"
+	config += `			addr = "10.1.1.1"` + "\n"
+	config += `			encryption = 0` + "\n"
+	config += `			password = "Cisco123"` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

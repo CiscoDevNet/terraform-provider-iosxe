@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 0.8.0 (unreleased)
+
+- BREAKING CHANGE: Combine `iosxe_msdp` and `iosxe_msdp_vrf` resources and data sources into single `iosxe_msdp` resource and data source
+
 ## 0.7.1
 
 - Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`

@@ -29,6 +29,26 @@ resource "iosxe_msdp" "example" {
       password   = "Cisco123"
     }
   ]
+  vrfs = [
+    {
+      vrf           = "VRF1"
+      originator_id = "Loopback200"
+      peers = [
+        {
+          addr                    = "10.1.1.1"
+          remote_as               = 65000
+          connect_source_loopback = 200
+        }
+      ]
+      passwords = [
+        {
+          addr       = "10.1.1.1"
+          encryption = 0
+          password   = "Cisco123"
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -43,6 +63,7 @@ resource "iosxe_msdp" "example" {
 - `originator_id` (String) Configure MSDP Originator ID
 - `passwords` (Attributes List) MSDP peer on which the password is to be set (see [below for nested schema](#nestedatt--passwords))
 - `peers` (Attributes List) Configure an MSDP peer (see [below for nested schema](#nestedatt--peers))
+- `vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--vrfs))
 
 ### Read-Only
 
@@ -63,6 +84,47 @@ Optional:
 
 <a id="nestedatt--peers"></a>
 ### Nested Schema for `peers`
+
+Required:
+
+- `addr` (String)
+
+Optional:
+
+- `connect_source_loopback` (Number) Loopback interface
+  - Range: `0`-`2147483647`
+- `remote_as` (Number) Configured AS number
+  - Range: `1`-`65535`
+
+
+<a id="nestedatt--vrfs"></a>
+### Nested Schema for `vrfs`
+
+Required:
+
+- `vrf` (String)
+
+Optional:
+
+- `originator_id` (String) Configure MSDP Originator ID
+- `passwords` (Attributes List) MSDP peer on which the password is to be set (see [below for nested schema](#nestedatt--vrfs--passwords))
+- `peers` (Attributes List) Configure an MSDP peer (see [below for nested schema](#nestedatt--vrfs--peers))
+
+<a id="nestedatt--vrfs--passwords"></a>
+### Nested Schema for `vrfs.passwords`
+
+Required:
+
+- `addr` (String)
+- `password` (String)
+
+Optional:
+
+- `encryption` (Number) - Range: `0`-`7`
+
+
+<a id="nestedatt--vrfs--peers"></a>
+### Nested Schema for `vrfs.peers`
 
 Required:
 
