@@ -1,5 +1,5 @@
 ---
-name: Static Route VRF
+name: Static Routes VRF
 path: Cisco-IOS-XE-native:native/ip/route/vrf=%s
 no_delete_attributes: true
 skip_minimum_test: true

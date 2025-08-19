@@ -37,26 +37,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &StaticRouteVRFDataSource{}
-	_ datasource.DataSourceWithConfigure = &StaticRouteVRFDataSource{}
+	_ datasource.DataSource              = &StaticRoutesVRFDataSource{}
+	_ datasource.DataSourceWithConfigure = &StaticRoutesVRFDataSource{}
 )
 
-func NewStaticRouteVRFDataSource() datasource.DataSource {
-	return &StaticRouteVRFDataSource{}
+func NewStaticRoutesVRFDataSource() datasource.DataSource {
+	return &StaticRoutesVRFDataSource{}
 }
 
-type StaticRouteVRFDataSource struct {
+type StaticRoutesVRFDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *StaticRouteVRFDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_static_route_vrf"
+func (d *StaticRoutesVRFDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_static_routes_vrf"
 }
 
-func (d *StaticRouteVRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *StaticRoutesVRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the Static Route VRF configuration.",
+		MarkdownDescription: "This data source can read the Static Routes VRF configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -155,7 +155,7 @@ func (d *StaticRouteVRFDataSource) Schema(ctx context.Context, req datasource.Sc
 	}
 }
 
-func (d *StaticRouteVRFDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *StaticRoutesVRFDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -167,8 +167,8 @@ func (d *StaticRouteVRFDataSource) Configure(_ context.Context, req datasource.C
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *StaticRouteVRFDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config StaticRouteVRFData
+func (d *StaticRoutesVRFDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config StaticRoutesVRFData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -187,7 +187,7 @@ func (d *StaticRouteVRFDataSource) Read(ctx context.Context, req datasource.Read
 
 	res, err := device.Client.GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = StaticRouteVRFData{Device: config.Device}
+		config = StaticRoutesVRFData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

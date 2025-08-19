@@ -2,6 +2,7 @@
 
 - BREAKING CHANGE: Combine `iosxe_msdp` and `iosxe_msdp_vrf` resources and data sources into single `iosxe_msdp` resource and data source
 - BREAKING CHANGE: Combine `iosxe_pim` and `iosxe_pim_vrf` resources and data sources into single `iosxe_pim` resource and data source
+- BREAKING CHANGE: Rename `iosxe_static_route_vrf` resource and data source to `iosxe_static_routes_vrf`
 
 ## 0.7.1
 

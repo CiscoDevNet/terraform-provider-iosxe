@@ -46,26 +46,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &StaticRouteVRFResource{}
-	_ resource.ResourceWithImportState = &StaticRouteVRFResource{}
+	_ resource.Resource                = &StaticRoutesVRFResource{}
+	_ resource.ResourceWithImportState = &StaticRoutesVRFResource{}
 )
 
-func NewStaticRouteVRFResource() resource.Resource {
-	return &StaticRouteVRFResource{}
+func NewStaticRoutesVRFResource() resource.Resource {
+	return &StaticRoutesVRFResource{}
 }
 
-type StaticRouteVRFResource struct {
+type StaticRoutesVRFResource struct {
 	data *IosxeProviderData
 }
 
-func (r *StaticRouteVRFResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_static_route_vrf"
+func (r *StaticRoutesVRFResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_static_routes_vrf"
 }
 
-func (r *StaticRouteVRFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *StaticRoutesVRFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Static Route VRF configuration.",
+		MarkdownDescription: "This resource can manage the Static Routes VRF configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -191,7 +191,7 @@ func (r *StaticRouteVRFResource) Schema(ctx context.Context, req resource.Schema
 	}
 }
 
-func (r *StaticRouteVRFResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *StaticRoutesVRFResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -203,8 +203,8 @@ func (r *StaticRouteVRFResource) Configure(_ context.Context, req resource.Confi
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *StaticRouteVRFResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan StaticRouteVRF
+func (r *StaticRoutesVRFResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan StaticRoutesVRF
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -271,8 +271,8 @@ func (r *StaticRouteVRFResource) Create(ctx context.Context, req resource.Create
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *StaticRouteVRFResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state StaticRouteVRF
+func (r *StaticRoutesVRFResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state StaticRoutesVRF
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -292,7 +292,7 @@ func (r *StaticRouteVRFResource) Read(ctx context.Context, req resource.ReadRequ
 	if device.Managed {
 		res, err := device.Client.GetData(state.Id.ValueString())
 		if res.StatusCode == 404 {
-			state = StaticRouteVRF{Device: state.Device, Id: state.Id}
+			state = StaticRoutesVRF{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -325,8 +325,8 @@ func (r *StaticRouteVRFResource) Read(ctx context.Context, req resource.ReadRequ
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *StaticRouteVRFResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state StaticRouteVRF
+func (r *StaticRoutesVRFResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state StaticRoutesVRF
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -409,8 +409,8 @@ func (r *StaticRouteVRFResource) Update(ctx context.Context, req resource.Update
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *StaticRouteVRFResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state StaticRouteVRF
+func (r *StaticRoutesVRFResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state StaticRoutesVRF
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -470,7 +470,7 @@ func (r *StaticRouteVRFResource) Delete(ctx context.Context, req resource.Delete
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *StaticRouteVRFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *StaticRoutesVRFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -489,7 +489,7 @@ func (r *StaticRouteVRFResource) ImportState(ctx context.Context, req resource.I
 	}
 
 	// construct path for 'id' attribute
-	var state StaticRouteVRF
+	var state StaticRoutesVRF
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
