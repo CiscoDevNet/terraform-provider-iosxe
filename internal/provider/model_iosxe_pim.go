@@ -54,6 +54,7 @@ type PIM struct {
 	RpAddressBidir                types.Bool        `tfsdk:"rp_address_bidir"`
 	RpAddresses                   []PIMRpAddresses  `tfsdk:"rp_addresses"`
 	RpCandidates                  []PIMRpCandidates `tfsdk:"rp_candidates"`
+	Vrfs                          []PIMVrfs         `tfsdk:"vrfs"`
 }
 
 type PIMData struct {
@@ -72,6 +73,7 @@ type PIMData struct {
 	RpAddressBidir                types.Bool        `tfsdk:"rp_address_bidir"`
 	RpAddresses                   []PIMRpAddresses  `tfsdk:"rp_addresses"`
 	RpCandidates                  []PIMRpCandidates `tfsdk:"rp_candidates"`
+	Vrfs                          []PIMVrfs         `tfsdk:"vrfs"`
 }
 type PIMRpAddresses struct {
 	AccessList types.String `tfsdk:"access_list"`
@@ -80,6 +82,36 @@ type PIMRpAddresses struct {
 	Bidir      types.Bool   `tfsdk:"bidir"`
 }
 type PIMRpCandidates struct {
+	Interface types.String `tfsdk:"interface"`
+	GroupList types.String `tfsdk:"group_list"`
+	Interval  types.Int64  `tfsdk:"interval"`
+	Priority  types.Int64  `tfsdk:"priority"`
+	Bidir     types.Bool   `tfsdk:"bidir"`
+}
+type PIMVrfs struct {
+	Vrf                           types.String          `tfsdk:"vrf"`
+	Autorp                        types.Bool            `tfsdk:"autorp"`
+	AutorpListener                types.Bool            `tfsdk:"autorp_listener"`
+	BsrCandidateLoopback          types.Int64           `tfsdk:"bsr_candidate_loopback"`
+	BsrCandidateMask              types.Int64           `tfsdk:"bsr_candidate_mask"`
+	BsrCandidatePriority          types.Int64           `tfsdk:"bsr_candidate_priority"`
+	BsrCandidateAcceptRpCandidate types.String          `tfsdk:"bsr_candidate_accept_rp_candidate"`
+	SsmRange                      types.String          `tfsdk:"ssm_range"`
+	SsmDefault                    types.Bool            `tfsdk:"ssm_default"`
+	RpAddress                     types.String          `tfsdk:"rp_address"`
+	RpAddressOverride             types.Bool            `tfsdk:"rp_address_override"`
+	RpAddressBidir                types.Bool            `tfsdk:"rp_address_bidir"`
+	CacheRpfOif                   types.Bool            `tfsdk:"cache_rpf_oif"`
+	RpAddresses                   []PIMVrfsRpAddresses  `tfsdk:"rp_addresses"`
+	RpCandidates                  []PIMVrfsRpCandidates `tfsdk:"rp_candidates"`
+}
+type PIMVrfsRpAddresses struct {
+	AccessList types.String `tfsdk:"access_list"`
+	RpAddress  types.String `tfsdk:"rp_address"`
+	Override   types.Bool   `tfsdk:"override"`
+	Bidir      types.Bool   `tfsdk:"bidir"`
+}
+type PIMVrfsRpCandidates struct {
 	Interface types.String `tfsdk:"interface"`
 	GroupList types.String `tfsdk:"group_list"`
 	Interval  types.Int64  `tfsdk:"interval"`
@@ -196,6 +228,103 @@ func (data PIM) toBody(ctx context.Context) string {
 			if !item.Bidir.IsNull() && !item.Bidir.IsUnknown() {
 				if item.Bidir.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:rp-candidate"+"."+strconv.Itoa(index)+"."+"bidir", map[string]string{})
+				}
+			}
+		}
+	}
+	if len(data.Vrfs) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf", []interface{}{})
+		for index, item := range data.Vrfs {
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"id", item.Vrf.ValueString())
+			}
+			if !item.Autorp.IsNull() && !item.Autorp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"autorp-container.autorp", item.Autorp.ValueBool())
+			}
+			if !item.AutorpListener.IsNull() && !item.AutorpListener.IsUnknown() {
+				if item.AutorpListener.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"autorp-container.listener", map[string]string{})
+				}
+			}
+			if !item.BsrCandidateLoopback.IsNull() && !item.BsrCandidateLoopback.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"bsr-candidate.Loopback", strconv.FormatInt(item.BsrCandidateLoopback.ValueInt64(), 10))
+			}
+			if !item.BsrCandidateMask.IsNull() && !item.BsrCandidateMask.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"bsr-candidate.mask", strconv.FormatInt(item.BsrCandidateMask.ValueInt64(), 10))
+			}
+			if !item.BsrCandidatePriority.IsNull() && !item.BsrCandidatePriority.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"bsr-candidate.priority", strconv.FormatInt(item.BsrCandidatePriority.ValueInt64(), 10))
+			}
+			if !item.BsrCandidateAcceptRpCandidate.IsNull() && !item.BsrCandidateAcceptRpCandidate.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"bsr-candidate.accept-rp-candidate", item.BsrCandidateAcceptRpCandidate.ValueString())
+			}
+			if !item.SsmRange.IsNull() && !item.SsmRange.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"ssm.range", item.SsmRange.ValueString())
+			}
+			if !item.SsmDefault.IsNull() && !item.SsmDefault.IsUnknown() {
+				if item.SsmDefault.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"ssm.default", map[string]string{})
+				}
+			}
+			if !item.RpAddress.IsNull() && !item.RpAddress.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address-conf.address", item.RpAddress.ValueString())
+			}
+			if !item.RpAddressOverride.IsNull() && !item.RpAddressOverride.IsUnknown() {
+				if item.RpAddressOverride.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address-conf.override", map[string]string{})
+				}
+			}
+			if !item.RpAddressBidir.IsNull() && !item.RpAddressBidir.IsUnknown() {
+				if item.RpAddressBidir.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address-conf.bidir", map[string]string{})
+				}
+			}
+			if !item.CacheRpfOif.IsNull() && !item.CacheRpfOif.IsUnknown() {
+				if item.CacheRpfOif.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"cache.rpf-oif", map[string]string{})
+				}
+			}
+			if len(item.RpAddresses) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address-list", []interface{}{})
+				for cindex, citem := range item.RpAddresses {
+					if !citem.AccessList.IsNull() && !citem.AccessList.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address-list"+"."+strconv.Itoa(cindex)+"."+"access-list", citem.AccessList.ValueString())
+					}
+					if !citem.RpAddress.IsNull() && !citem.RpAddress.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address-list"+"."+strconv.Itoa(cindex)+"."+"rp-address", citem.RpAddress.ValueString())
+					}
+					if !citem.Override.IsNull() && !citem.Override.IsUnknown() {
+						if citem.Override.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address-list"+"."+strconv.Itoa(cindex)+"."+"override", map[string]string{})
+						}
+					}
+					if !citem.Bidir.IsNull() && !citem.Bidir.IsUnknown() {
+						if citem.Bidir.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-address-list"+"."+strconv.Itoa(cindex)+"."+"bidir", map[string]string{})
+						}
+					}
+				}
+			}
+			if len(item.RpCandidates) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-candidate", []interface{}{})
+				for cindex, citem := range item.RpCandidates {
+					if !citem.Interface.IsNull() && !citem.Interface.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-candidate"+"."+strconv.Itoa(cindex)+"."+"interface", citem.Interface.ValueString())
+					}
+					if !citem.GroupList.IsNull() && !citem.GroupList.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-candidate"+"."+strconv.Itoa(cindex)+"."+"group-list", citem.GroupList.ValueString())
+					}
+					if !citem.Interval.IsNull() && !citem.Interval.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-candidate"+"."+strconv.Itoa(cindex)+"."+"interval", strconv.FormatInt(citem.Interval.ValueInt64(), 10))
+					}
+					if !citem.Priority.IsNull() && !citem.Priority.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-candidate"+"."+strconv.Itoa(cindex)+"."+"priority", strconv.FormatInt(citem.Priority.ValueInt64(), 10))
+					}
+					if !citem.Bidir.IsNull() && !citem.Bidir.IsUnknown() {
+						if citem.Bidir.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-multicast:vrf"+"."+strconv.Itoa(index)+"."+"rp-candidate"+"."+strconv.Itoa(cindex)+"."+"bidir", map[string]string{})
+						}
+					}
 				}
 			}
 		}
@@ -390,6 +519,222 @@ func (data *PIM) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.RpCandidates[i].Bidir = types.BoolNull()
 		}
 	}
+	for i := range data.Vrfs {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-multicast:vrf").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("id"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
+			data.Vrfs[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Vrf = types.StringNull()
+		}
+		if value := r.Get("autorp-container.autorp"); !data.Vrfs[i].Autorp.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].Autorp = types.BoolValue(value.Bool())
+			}
+		} else {
+			data.Vrfs[i].Autorp = types.BoolNull()
+		}
+		if value := r.Get("autorp-container.listener"); !data.Vrfs[i].AutorpListener.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].AutorpListener = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].AutorpListener = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].AutorpListener = types.BoolNull()
+		}
+		if value := r.Get("bsr-candidate.Loopback"); value.Exists() && !data.Vrfs[i].BsrCandidateLoopback.IsNull() {
+			data.Vrfs[i].BsrCandidateLoopback = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].BsrCandidateLoopback = types.Int64Null()
+		}
+		if value := r.Get("bsr-candidate.mask"); value.Exists() && !data.Vrfs[i].BsrCandidateMask.IsNull() {
+			data.Vrfs[i].BsrCandidateMask = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].BsrCandidateMask = types.Int64Null()
+		}
+		if value := r.Get("bsr-candidate.priority"); value.Exists() && !data.Vrfs[i].BsrCandidatePriority.IsNull() {
+			data.Vrfs[i].BsrCandidatePriority = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].BsrCandidatePriority = types.Int64Null()
+		}
+		if value := r.Get("bsr-candidate.accept-rp-candidate"); value.Exists() && !data.Vrfs[i].BsrCandidateAcceptRpCandidate.IsNull() {
+			data.Vrfs[i].BsrCandidateAcceptRpCandidate = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].BsrCandidateAcceptRpCandidate = types.StringNull()
+		}
+		if value := r.Get("ssm.range"); value.Exists() && !data.Vrfs[i].SsmRange.IsNull() {
+			data.Vrfs[i].SsmRange = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].SsmRange = types.StringNull()
+		}
+		if value := r.Get("ssm.default"); !data.Vrfs[i].SsmDefault.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].SsmDefault = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].SsmDefault = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].SsmDefault = types.BoolNull()
+		}
+		if value := r.Get("rp-address-conf.address"); value.Exists() && !data.Vrfs[i].RpAddress.IsNull() {
+			data.Vrfs[i].RpAddress = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].RpAddress = types.StringNull()
+		}
+		if value := r.Get("rp-address-conf.override"); !data.Vrfs[i].RpAddressOverride.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].RpAddressOverride = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].RpAddressOverride = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].RpAddressOverride = types.BoolNull()
+		}
+		if value := r.Get("rp-address-conf.bidir"); !data.Vrfs[i].RpAddressBidir.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].RpAddressBidir = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].RpAddressBidir = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].RpAddressBidir = types.BoolNull()
+		}
+		if value := r.Get("cache.rpf-oif"); !data.Vrfs[i].CacheRpfOif.IsNull() {
+			if value.Exists() {
+				data.Vrfs[i].CacheRpfOif = types.BoolValue(true)
+			} else {
+				data.Vrfs[i].CacheRpfOif = types.BoolValue(false)
+			}
+		} else {
+			data.Vrfs[i].CacheRpfOif = types.BoolNull()
+		}
+		for ci := range data.Vrfs[i].RpAddresses {
+			keys := [...]string{"access-list"}
+			keyValues := [...]string{data.Vrfs[i].RpAddresses[ci].AccessList.ValueString()}
+
+			var cr gjson.Result
+			r.Get("rp-address-list").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("access-list"); value.Exists() && !data.Vrfs[i].RpAddresses[ci].AccessList.IsNull() {
+				data.Vrfs[i].RpAddresses[ci].AccessList = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].RpAddresses[ci].AccessList = types.StringNull()
+			}
+			if value := cr.Get("rp-address"); value.Exists() && !data.Vrfs[i].RpAddresses[ci].RpAddress.IsNull() {
+				data.Vrfs[i].RpAddresses[ci].RpAddress = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].RpAddresses[ci].RpAddress = types.StringNull()
+			}
+			if value := cr.Get("override"); !data.Vrfs[i].RpAddresses[ci].Override.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].RpAddresses[ci].Override = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].RpAddresses[ci].Override = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].RpAddresses[ci].Override = types.BoolNull()
+			}
+			if value := cr.Get("bidir"); !data.Vrfs[i].RpAddresses[ci].Bidir.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].RpAddresses[ci].Bidir = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].RpAddresses[ci].Bidir = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].RpAddresses[ci].Bidir = types.BoolNull()
+			}
+		}
+		for ci := range data.Vrfs[i].RpCandidates {
+			keys := [...]string{"interface"}
+			keyValues := [...]string{data.Vrfs[i].RpCandidates[ci].Interface.ValueString()}
+
+			var cr gjson.Result
+			r.Get("rp-candidate").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("interface"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].Interface.IsNull() {
+				data.Vrfs[i].RpCandidates[ci].Interface = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].RpCandidates[ci].Interface = types.StringNull()
+			}
+			if value := cr.Get("group-list"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].GroupList.IsNull() {
+				data.Vrfs[i].RpCandidates[ci].GroupList = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].RpCandidates[ci].GroupList = types.StringNull()
+			}
+			if value := cr.Get("interval"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].Interval.IsNull() {
+				data.Vrfs[i].RpCandidates[ci].Interval = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].RpCandidates[ci].Interval = types.Int64Null()
+			}
+			if value := cr.Get("priority"); value.Exists() && !data.Vrfs[i].RpCandidates[ci].Priority.IsNull() {
+				data.Vrfs[i].RpCandidates[ci].Priority = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].RpCandidates[ci].Priority = types.Int64Null()
+			}
+			if value := cr.Get("bidir"); !data.Vrfs[i].RpCandidates[ci].Bidir.IsNull() {
+				if value.Exists() {
+					data.Vrfs[i].RpCandidates[ci].Bidir = types.BoolValue(true)
+				} else {
+					data.Vrfs[i].RpCandidates[ci].Bidir = types.BoolValue(false)
+				}
+			} else {
+				data.Vrfs[i].RpCandidates[ci].Bidir = types.BoolNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -490,6 +835,114 @@ func (data *PIM) fromBody(ctx context.Context, res gjson.Result) {
 				item.Bidir = types.BoolValue(false)
 			}
 			data.RpCandidates = append(data.RpCandidates, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
+		data.Vrfs = make([]PIMVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PIMVrfs{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("autorp-container.autorp"); cValue.Exists() {
+				item.Autorp = types.BoolValue(cValue.Bool())
+			} else {
+				item.Autorp = types.BoolNull()
+			}
+			if cValue := v.Get("autorp-container.listener"); cValue.Exists() {
+				item.AutorpListener = types.BoolValue(true)
+			} else {
+				item.AutorpListener = types.BoolValue(false)
+			}
+			if cValue := v.Get("bsr-candidate.Loopback"); cValue.Exists() {
+				item.BsrCandidateLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("bsr-candidate.mask"); cValue.Exists() {
+				item.BsrCandidateMask = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("bsr-candidate.priority"); cValue.Exists() {
+				item.BsrCandidatePriority = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("bsr-candidate.accept-rp-candidate"); cValue.Exists() {
+				item.BsrCandidateAcceptRpCandidate = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ssm.range"); cValue.Exists() {
+				item.SsmRange = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ssm.default"); cValue.Exists() {
+				item.SsmDefault = types.BoolValue(true)
+			} else {
+				item.SsmDefault = types.BoolValue(false)
+			}
+			if cValue := v.Get("rp-address-conf.address"); cValue.Exists() {
+				item.RpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("rp-address-conf.override"); cValue.Exists() {
+				item.RpAddressOverride = types.BoolValue(true)
+			} else {
+				item.RpAddressOverride = types.BoolValue(false)
+			}
+			if cValue := v.Get("rp-address-conf.bidir"); cValue.Exists() {
+				item.RpAddressBidir = types.BoolValue(true)
+			} else {
+				item.RpAddressBidir = types.BoolValue(false)
+			}
+			if cValue := v.Get("cache.rpf-oif"); cValue.Exists() {
+				item.CacheRpfOif = types.BoolValue(true)
+			} else {
+				item.CacheRpfOif = types.BoolValue(false)
+			}
+			if cValue := v.Get("rp-address-list"); cValue.Exists() {
+				item.RpAddresses = make([]PIMVrfsRpAddresses, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := PIMVrfsRpAddresses{}
+					if ccValue := cv.Get("access-list"); ccValue.Exists() {
+						cItem.AccessList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("rp-address"); ccValue.Exists() {
+						cItem.RpAddress = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("override"); ccValue.Exists() {
+						cItem.Override = types.BoolValue(true)
+					} else {
+						cItem.Override = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("bidir"); ccValue.Exists() {
+						cItem.Bidir = types.BoolValue(true)
+					} else {
+						cItem.Bidir = types.BoolValue(false)
+					}
+					item.RpAddresses = append(item.RpAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("rp-candidate"); cValue.Exists() {
+				item.RpCandidates = make([]PIMVrfsRpCandidates, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := PIMVrfsRpCandidates{}
+					if ccValue := cv.Get("interface"); ccValue.Exists() {
+						cItem.Interface = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("group-list"); ccValue.Exists() {
+						cItem.GroupList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("interval"); ccValue.Exists() {
+						cItem.Interval = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("priority"); ccValue.Exists() {
+						cItem.Priority = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("bidir"); ccValue.Exists() {
+						cItem.Bidir = types.BoolValue(true)
+					} else {
+						cItem.Bidir = types.BoolValue(false)
+					}
+					item.RpCandidates = append(item.RpCandidates, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
 			return true
 		})
 	}
@@ -596,6 +1049,114 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-multicast:vrf"); value.Exists() {
+		data.Vrfs = make([]PIMVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := PIMVrfs{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("autorp-container.autorp"); cValue.Exists() {
+				item.Autorp = types.BoolValue(cValue.Bool())
+			} else {
+				item.Autorp = types.BoolNull()
+			}
+			if cValue := v.Get("autorp-container.listener"); cValue.Exists() {
+				item.AutorpListener = types.BoolValue(true)
+			} else {
+				item.AutorpListener = types.BoolValue(false)
+			}
+			if cValue := v.Get("bsr-candidate.Loopback"); cValue.Exists() {
+				item.BsrCandidateLoopback = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("bsr-candidate.mask"); cValue.Exists() {
+				item.BsrCandidateMask = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("bsr-candidate.priority"); cValue.Exists() {
+				item.BsrCandidatePriority = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("bsr-candidate.accept-rp-candidate"); cValue.Exists() {
+				item.BsrCandidateAcceptRpCandidate = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ssm.range"); cValue.Exists() {
+				item.SsmRange = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ssm.default"); cValue.Exists() {
+				item.SsmDefault = types.BoolValue(true)
+			} else {
+				item.SsmDefault = types.BoolValue(false)
+			}
+			if cValue := v.Get("rp-address-conf.address"); cValue.Exists() {
+				item.RpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("rp-address-conf.override"); cValue.Exists() {
+				item.RpAddressOverride = types.BoolValue(true)
+			} else {
+				item.RpAddressOverride = types.BoolValue(false)
+			}
+			if cValue := v.Get("rp-address-conf.bidir"); cValue.Exists() {
+				item.RpAddressBidir = types.BoolValue(true)
+			} else {
+				item.RpAddressBidir = types.BoolValue(false)
+			}
+			if cValue := v.Get("cache.rpf-oif"); cValue.Exists() {
+				item.CacheRpfOif = types.BoolValue(true)
+			} else {
+				item.CacheRpfOif = types.BoolValue(false)
+			}
+			if cValue := v.Get("rp-address-list"); cValue.Exists() {
+				item.RpAddresses = make([]PIMVrfsRpAddresses, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := PIMVrfsRpAddresses{}
+					if ccValue := cv.Get("access-list"); ccValue.Exists() {
+						cItem.AccessList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("rp-address"); ccValue.Exists() {
+						cItem.RpAddress = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("override"); ccValue.Exists() {
+						cItem.Override = types.BoolValue(true)
+					} else {
+						cItem.Override = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("bidir"); ccValue.Exists() {
+						cItem.Bidir = types.BoolValue(true)
+					} else {
+						cItem.Bidir = types.BoolValue(false)
+					}
+					item.RpAddresses = append(item.RpAddresses, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("rp-candidate"); cValue.Exists() {
+				item.RpCandidates = make([]PIMVrfsRpCandidates, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := PIMVrfsRpCandidates{}
+					if ccValue := cv.Get("interface"); ccValue.Exists() {
+						cItem.Interface = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("group-list"); ccValue.Exists() {
+						cItem.GroupList = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("interval"); ccValue.Exists() {
+						cItem.Interval = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("priority"); ccValue.Exists() {
+						cItem.Priority = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("bidir"); ccValue.Exists() {
+						cItem.Bidir = types.BoolValue(true)
+					} else {
+						cItem.Bidir = types.BoolValue(false)
+					}
+					item.RpCandidates = append(item.RpCandidates, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -604,6 +1165,135 @@ func (data *PIMData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Vrfs {
+		stateKeyValues := [...]string{state.Vrfs[i].Vrf.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vrfs[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vrfs {
+			found = true
+			if state.Vrfs[i].Vrf.ValueString() != data.Vrfs[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Vrfs[i].RpCandidates {
+					cstateKeyValues := [...]string{state.Vrfs[i].RpCandidates[ci].Interface.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].RpCandidates[ci].Interface.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].RpCandidates {
+						found = true
+						if state.Vrfs[i].RpCandidates[ci].Interface.ValueString() != data.Vrfs[j].RpCandidates[cj].Interface.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].RpCandidates[ci].Bidir.IsNull() && data.Vrfs[j].RpCandidates[cj].Bidir.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-candidate=%v/bidir", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].RpCandidates[ci].Priority.IsNull() && data.Vrfs[j].RpCandidates[cj].Priority.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-candidate=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].RpCandidates[ci].Interval.IsNull() && data.Vrfs[j].RpCandidates[cj].Interval.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-candidate=%v/interval", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].RpCandidates[ci].GroupList.IsNull() && data.Vrfs[j].RpCandidates[cj].GroupList.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-candidate=%v/group-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-candidate=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Vrfs[i].RpAddresses {
+					cstateKeyValues := [...]string{state.Vrfs[i].RpAddresses[ci].AccessList.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].RpAddresses[ci].AccessList.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].RpAddresses {
+						found = true
+						if state.Vrfs[i].RpAddresses[ci].AccessList.ValueString() != data.Vrfs[j].RpAddresses[cj].AccessList.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].RpAddresses[ci].Bidir.IsNull() && data.Vrfs[j].RpAddresses[cj].Bidir.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-list=%v/bidir", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].RpAddresses[ci].Override.IsNull() && data.Vrfs[j].RpAddresses[cj].Override.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-list=%v/override", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].RpAddresses[ci].RpAddress.IsNull() && data.Vrfs[j].RpAddresses[cj].RpAddress.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-list=%v/rp-address", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				if !state.Vrfs[i].RpAddressBidir.IsNull() && data.Vrfs[j].RpAddressBidir.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-conf/bidir", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].RpAddressOverride.IsNull() && data.Vrfs[j].RpAddressOverride.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-conf/override", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].RpAddress.IsNull() && data.Vrfs[j].RpAddress.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-conf/address", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].SsmDefault.IsNull() && data.Vrfs[j].SsmDefault.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/ssm/default", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].SsmRange.IsNull() && data.Vrfs[j].SsmRange.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/ssm/range", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].BsrCandidateAcceptRpCandidate.IsNull() && data.Vrfs[j].BsrCandidateAcceptRpCandidate.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/bsr-candidate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].BsrCandidatePriority.IsNull() && data.Vrfs[j].BsrCandidatePriority.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/bsr-candidate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].BsrCandidateMask.IsNull() && data.Vrfs[j].BsrCandidateMask.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/bsr-candidate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].BsrCandidateLoopback.IsNull() && data.Vrfs[j].BsrCandidateLoopback.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/bsr-candidate", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].AutorpListener.IsNull() && data.Vrfs[j].AutorpListener.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/autorp-container/listener", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Autorp.IsNull() && data.Vrfs[j].Autorp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/autorp-container/autorp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.RpCandidates {
 		stateKeyValues := [...]string{state.RpCandidates[i].Interface.ValueString()}
 
@@ -719,6 +1409,42 @@ func (data *PIM) getDeletedItems(ctx context.Context, state PIM) []string {
 func (data *PIM) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	for i := range data.Vrfs {
+		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+
+		for ci := range data.Vrfs[i].RpCandidates {
+			ckeyValues := [...]string{data.Vrfs[i].RpCandidates[ci].Interface.ValueString()}
+			if !data.Vrfs[i].RpCandidates[ci].Bidir.IsNull() && !data.Vrfs[i].RpCandidates[ci].Bidir.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-candidate=%v/bidir", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+		}
+
+		for ci := range data.Vrfs[i].RpAddresses {
+			ckeyValues := [...]string{data.Vrfs[i].RpAddresses[ci].AccessList.ValueString()}
+			if !data.Vrfs[i].RpAddresses[ci].Bidir.IsNull() && !data.Vrfs[i].RpAddresses[ci].Bidir.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-list=%v/bidir", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.Vrfs[i].RpAddresses[ci].Override.IsNull() && !data.Vrfs[i].RpAddresses[ci].Override.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-list=%v/override", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+		}
+		if !data.Vrfs[i].CacheRpfOif.IsNull() && !data.Vrfs[i].CacheRpfOif.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/cache/rpf-oif", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vrfs[i].RpAddressBidir.IsNull() && !data.Vrfs[i].RpAddressBidir.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-conf/bidir", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vrfs[i].RpAddressOverride.IsNull() && !data.Vrfs[i].RpAddressOverride.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/rp-address-conf/override", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vrfs[i].SsmDefault.IsNull() && !data.Vrfs[i].SsmDefault.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/ssm/default", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vrfs[i].AutorpListener.IsNull() && !data.Vrfs[i].AutorpListener.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v/autorp-container/listener", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
 	for i := range data.RpCandidates {
 		keyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
 		if !data.RpCandidates[i].Bidir.IsNull() && !data.RpCandidates[i].Bidir.ValueBool() {
@@ -757,6 +1483,11 @@ func (data *PIM) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *PIM) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Vrfs {
+		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-multicast:vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.RpCandidates {
 		keyValues := [...]string{data.RpCandidates[i].Interface.ValueString()}
 

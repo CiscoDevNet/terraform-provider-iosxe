@@ -66,7 +66,100 @@ attributes:
         example: 10
       - yang_name: bidir
         example: false
+  - yang_name: Cisco-IOS-XE-multicast:vrf
+    tf_name: vrfs
+    type: List
+    attributes:
+      - yang_name: id
+        tf_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: autorp-container/autorp
+        tf_name: autorp
+        example: false
+      - yang_name: autorp-container/listener
+        tf_name: autorp_listener
+        example: false
+      - yang_name: bsr-candidate/interface-choice/Loopback/Loopback
+        xpath: bsr-candidate/Loopback
+        tf_name: bsr_candidate_loopback
+        delete_parent: true
+        example: 200
+      - yang_name: bsr-candidate/mask
+        delete_parent: true
+        example: 30
+      - yang_name: bsr-candidate/priority
+        delete_parent: true
+        example: 10
+      - yang_name: bsr-candidate/accept-rp-candidate
+        delete_parent: true
+        exclude_test: true
+        example: 10
+      - yang_name: ssm/range
+        example: 10
+      - yang_name: ssm/default
+        example: false
+      - yang_name: rp-address-conf/address
+        tf_name: rp_address
+        example: 19.19.19.19
+      - yang_name: rp-address-conf/override
+        tf_name: rp_address_override
+        example: false
+      - yang_name: rp-address-conf/bidir
+        tf_name: rp_address_bidir
+        example: false
+      - yang_name: cache/rpf-oif
+        example: true
+        no_delete: true
+        exclude_example: true
+      - yang_name: rp-address-list
+        tf_name: rp_addresses
+        type: List
+        attributes:
+          - yang_name: access-list
+            example: 10
+            id: true
+          - yang_name: rp-address
+            example: 10.10.10.10
+          - yang_name: override
+            example: false
+          - yang_name: bidir
+            example: false
+      - yang_name: rp-candidate
+        tf_name: rp_candidates
+        type: List
+        attributes:
+          - yang_name: interface
+            example: Loopback200
+            id: true
+          - yang_name: group-list
+            exclude_test: true
+            example: 10
+          - yang_name: interval
+            example: 100
+          - yang_name: priority
+            example: 10
+          - yang_name: bidir
+            example: false
 test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=200
+    attributes:
+      - name: name
+        value: 200
+      - name: vrf/forwarding
+        value: VRF1
+      - name: ip/address/primary/address
+        value: 200.200.200.200
+      - name: ip/address/primary/mask
+        value: 255.255.255.255
+    dependencies: [0]
   - path: Cisco-IOS-XE-native:native/interface/Loopback=100
     attributes:
       - name: name
