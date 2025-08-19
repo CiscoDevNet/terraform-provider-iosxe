@@ -250,6 +250,8 @@ type SNMPServer struct {
 	SnmpCommunities                               []SNMPServerSnmpCommunities `tfsdk:"snmp_communities"`
 	Contexts                                      []SNMPServerContexts        `tfsdk:"contexts"`
 	Views                                         []SNMPServerViews           `tfsdk:"views"`
+	Groups                                        []SNMPServerGroups          `tfsdk:"groups"`
+	Users                                         []SNMPServerUsers           `tfsdk:"users"`
 }
 
 type SNMPServerData struct {
@@ -464,6 +466,8 @@ type SNMPServerData struct {
 	SnmpCommunities                               []SNMPServerSnmpCommunities `tfsdk:"snmp_communities"`
 	Contexts                                      []SNMPServerContexts        `tfsdk:"contexts"`
 	Views                                         []SNMPServerViews           `tfsdk:"views"`
+	Groups                                        []SNMPServerGroups          `tfsdk:"groups"`
+	Users                                         []SNMPServerUsers           `tfsdk:"users"`
 }
 type SNMPServerHosts struct {
 	IpAddress       types.String `tfsdk:"ip_address"`
@@ -485,6 +489,43 @@ type SNMPServerViews struct {
 	Name   types.String `tfsdk:"name"`
 	Mib    types.String `tfsdk:"mib"`
 	IncExl types.String `tfsdk:"inc_exl"`
+}
+type SNMPServerGroups struct {
+	Name       types.String                 `tfsdk:"name"`
+	V3Security []SNMPServerGroupsV3Security `tfsdk:"v3_security"`
+}
+type SNMPServerUsers struct {
+	Username                        types.String `tfsdk:"username"`
+	Grpname                         types.String `tfsdk:"grpname"`
+	V3AuthAlgorithm                 types.String `tfsdk:"v3_auth_algorithm"`
+	V3AuthPassword                  types.String `tfsdk:"v3_auth_password"`
+	V3AuthPrivAesAlgorithm          types.String `tfsdk:"v3_auth_priv_aes_algorithm"`
+	V3AuthPrivAesPassword           types.String `tfsdk:"v3_auth_priv_aes_password"`
+	V3AuthPrivAesAccessIpv6Acl      types.String `tfsdk:"v3_auth_priv_aes_access_ipv6_acl"`
+	V3AuthPrivAesAccessStandardAcl  types.Int64  `tfsdk:"v3_auth_priv_aes_access_standard_acl"`
+	V3AuthPrivAesAccessAclName      types.String `tfsdk:"v3_auth_priv_aes_access_acl_name"`
+	V3AuthPrivDesPassword           types.String `tfsdk:"v3_auth_priv_des_password"`
+	V3AuthPrivDesAccessIpv6Acl      types.String `tfsdk:"v3_auth_priv_des_access_ipv6_acl"`
+	V3AuthPrivDesAccessStandardAcl  types.Int64  `tfsdk:"v3_auth_priv_des_access_standard_acl"`
+	V3AuthPrivDesAccessAclName      types.String `tfsdk:"v3_auth_priv_des_access_acl_name"`
+	V3AuthPrivDes3Password          types.String `tfsdk:"v3_auth_priv_des3_password"`
+	V3AuthPrivDes3AccessIpv6Acl     types.String `tfsdk:"v3_auth_priv_des3_access_ipv6_acl"`
+	V3AuthPrivDes3AccessStandardAcl types.Int64  `tfsdk:"v3_auth_priv_des3_access_standard_acl"`
+	V3AuthPrivDes3AccessAclName     types.String `tfsdk:"v3_auth_priv_des3_access_acl_name"`
+	V3AuthAccessIpv6Acl             types.String `tfsdk:"v3_auth_access_ipv6_acl"`
+	V3AuthAccessStandardAcl         types.Int64  `tfsdk:"v3_auth_access_standard_acl"`
+	V3AuthAccessAclName             types.String `tfsdk:"v3_auth_access_acl_name"`
+}
+type SNMPServerGroupsV3Security struct {
+	SecurityLevel     types.String `tfsdk:"security_level"`
+	ContextNode       types.String `tfsdk:"context_node"`
+	MatchNode         types.String `tfsdk:"match_node"`
+	ReadNode          types.String `tfsdk:"read_node"`
+	WriteNode         types.String `tfsdk:"write_node"`
+	NotifyNode        types.String `tfsdk:"notify_node"`
+	AccessIpv6Acl     types.String `tfsdk:"access_ipv6_acl"`
+	AccessStandardAcl types.Int64  `tfsdk:"access_standard_acl"`
+	AccessAclName     types.String `tfsdk:"access_acl_name"`
 }
 
 // End of section. //template:end types
@@ -1527,6 +1568,111 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 			}
 			if !item.IncExl.IsNull() && !item.IncExl.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:view"+"."+strconv.Itoa(index)+"."+"inc-exl", item.IncExl.ValueString())
+			}
+		}
+	}
+	if len(data.Groups) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group", []interface{}{})
+		for index, item := range data.Groups {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"id", item.Name.ValueString())
+			}
+			if len(item.V3Security) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list", []interface{}{})
+				for cindex, citem := range item.V3Security {
+					if !citem.SecurityLevel.IsNull() && !citem.SecurityLevel.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"security-level", citem.SecurityLevel.ValueString())
+					}
+					if !citem.ContextNode.IsNull() && !citem.ContextNode.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"context-node", citem.ContextNode.ValueString())
+					}
+					if !citem.MatchNode.IsNull() && !citem.MatchNode.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"match-node", citem.MatchNode.ValueString())
+					}
+					if !citem.ReadNode.IsNull() && !citem.ReadNode.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"read-node", citem.ReadNode.ValueString())
+					}
+					if !citem.WriteNode.IsNull() && !citem.WriteNode.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"write-node", citem.WriteNode.ValueString())
+					}
+					if !citem.NotifyNode.IsNull() && !citem.NotifyNode.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"notify-node", citem.NotifyNode.ValueString())
+					}
+					if !citem.AccessIpv6Acl.IsNull() && !citem.AccessIpv6Acl.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"access-config.ipv6-acl", citem.AccessIpv6Acl.ValueString())
+					}
+					if !citem.AccessStandardAcl.IsNull() && !citem.AccessStandardAcl.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"access-config.standard-acl", strconv.FormatInt(citem.AccessStandardAcl.ValueInt64(), 10))
+					}
+					if !citem.AccessAclName.IsNull() && !citem.AccessAclName.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:group"+"."+strconv.Itoa(index)+"."+"v3.security-level-list"+"."+strconv.Itoa(cindex)+"."+"access-config.acl-name", citem.AccessAclName.ValueString())
+					}
+				}
+			}
+		}
+	}
+	if len(data.Users) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names", []interface{}{})
+		for index, item := range data.Users {
+			if !item.Username.IsNull() && !item.Username.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"username", item.Username.ValueString())
+			}
+			if !item.Grpname.IsNull() && !item.Grpname.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"grpname", item.Grpname.ValueString())
+			}
+			if !item.V3AuthAlgorithm.IsNull() && !item.V3AuthAlgorithm.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.algorithm", item.V3AuthAlgorithm.ValueString())
+			}
+			if !item.V3AuthPassword.IsNull() && !item.V3AuthPassword.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.password", item.V3AuthPassword.ValueString())
+			}
+			if !item.V3AuthPrivAesAlgorithm.IsNull() && !item.V3AuthPrivAesAlgorithm.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.algorithm", item.V3AuthPrivAesAlgorithm.ValueString())
+			}
+			if !item.V3AuthPrivAesPassword.IsNull() && !item.V3AuthPrivAesPassword.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.password", item.V3AuthPrivAesPassword.ValueString())
+			}
+			if !item.V3AuthPrivAesAccessIpv6Acl.IsNull() && !item.V3AuthPrivAesAccessIpv6Acl.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.access-config.ipv6-acl", item.V3AuthPrivAesAccessIpv6Acl.ValueString())
+			}
+			if !item.V3AuthPrivAesAccessStandardAcl.IsNull() && !item.V3AuthPrivAesAccessStandardAcl.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.access-config.standard-acl", strconv.FormatInt(item.V3AuthPrivAesAccessStandardAcl.ValueInt64(), 10))
+			}
+			if !item.V3AuthPrivAesAccessAclName.IsNull() && !item.V3AuthPrivAesAccessAclName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.aes.access-config.acl-name", item.V3AuthPrivAesAccessAclName.ValueString())
+			}
+			if !item.V3AuthPrivDesPassword.IsNull() && !item.V3AuthPrivDesPassword.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.password", item.V3AuthPrivDesPassword.ValueString())
+			}
+			if !item.V3AuthPrivDesAccessIpv6Acl.IsNull() && !item.V3AuthPrivDesAccessIpv6Acl.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.access-config.ipv6-acl", item.V3AuthPrivDesAccessIpv6Acl.ValueString())
+			}
+			if !item.V3AuthPrivDesAccessStandardAcl.IsNull() && !item.V3AuthPrivDesAccessStandardAcl.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.access-config.standard-acl", strconv.FormatInt(item.V3AuthPrivDesAccessStandardAcl.ValueInt64(), 10))
+			}
+			if !item.V3AuthPrivDesAccessAclName.IsNull() && !item.V3AuthPrivDesAccessAclName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des.access-config.acl-name", item.V3AuthPrivDesAccessAclName.ValueString())
+			}
+			if !item.V3AuthPrivDes3Password.IsNull() && !item.V3AuthPrivDes3Password.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des3.password", item.V3AuthPrivDes3Password.ValueString())
+			}
+			if !item.V3AuthPrivDes3AccessIpv6Acl.IsNull() && !item.V3AuthPrivDes3AccessIpv6Acl.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des3.access-config.ipv6-acl", item.V3AuthPrivDes3AccessIpv6Acl.ValueString())
+			}
+			if !item.V3AuthPrivDes3AccessStandardAcl.IsNull() && !item.V3AuthPrivDes3AccessStandardAcl.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des3.access-config.standard-acl", strconv.FormatInt(item.V3AuthPrivDes3AccessStandardAcl.ValueInt64(), 10))
+			}
+			if !item.V3AuthPrivDes3AccessAclName.IsNull() && !item.V3AuthPrivDes3AccessAclName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.priv-config.des3.access-config.acl-name", item.V3AuthPrivDes3AccessAclName.ValueString())
+			}
+			if !item.V3AuthAccessIpv6Acl.IsNull() && !item.V3AuthAccessIpv6Acl.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.access-config.ipv6-acl", item.V3AuthAccessIpv6Acl.ValueString())
+			}
+			if !item.V3AuthAccessStandardAcl.IsNull() && !item.V3AuthAccessStandardAcl.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.access-config.standard-acl", strconv.FormatInt(item.V3AuthAccessStandardAcl.ValueInt64(), 10))
+			}
+			if !item.V3AuthAccessAclName.IsNull() && !item.V3AuthAccessAclName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:user.names"+"."+strconv.Itoa(index)+"."+"v3.auth-config.access-config.acl-name", item.V3AuthAccessAclName.ValueString())
 			}
 		}
 	}
@@ -3412,6 +3558,228 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Views[i].IncExl = types.StringNull()
 		}
 	}
+	for i := range data.Groups {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Groups[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-snmp:group").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("id"); value.Exists() && !data.Groups[i].Name.IsNull() {
+			data.Groups[i].Name = types.StringValue(value.String())
+		} else {
+			data.Groups[i].Name = types.StringNull()
+		}
+		for ci := range data.Groups[i].V3Security {
+			keys := [...]string{"security-level"}
+			keyValues := [...]string{data.Groups[i].V3Security[ci].SecurityLevel.ValueString()}
+
+			var cr gjson.Result
+			r.Get("v3.security-level-list").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("security-level"); value.Exists() && !data.Groups[i].V3Security[ci].SecurityLevel.IsNull() {
+				data.Groups[i].V3Security[ci].SecurityLevel = types.StringValue(value.String())
+			} else {
+				data.Groups[i].V3Security[ci].SecurityLevel = types.StringNull()
+			}
+			if value := cr.Get("context-node"); value.Exists() && !data.Groups[i].V3Security[ci].ContextNode.IsNull() {
+				data.Groups[i].V3Security[ci].ContextNode = types.StringValue(value.String())
+			} else {
+				data.Groups[i].V3Security[ci].ContextNode = types.StringNull()
+			}
+			if value := cr.Get("match-node"); value.Exists() && !data.Groups[i].V3Security[ci].MatchNode.IsNull() {
+				data.Groups[i].V3Security[ci].MatchNode = types.StringValue(value.String())
+			} else {
+				data.Groups[i].V3Security[ci].MatchNode = types.StringNull()
+			}
+			if value := cr.Get("read-node"); value.Exists() && !data.Groups[i].V3Security[ci].ReadNode.IsNull() {
+				data.Groups[i].V3Security[ci].ReadNode = types.StringValue(value.String())
+			} else {
+				data.Groups[i].V3Security[ci].ReadNode = types.StringNull()
+			}
+			if value := cr.Get("write-node"); value.Exists() && !data.Groups[i].V3Security[ci].WriteNode.IsNull() {
+				data.Groups[i].V3Security[ci].WriteNode = types.StringValue(value.String())
+			} else {
+				data.Groups[i].V3Security[ci].WriteNode = types.StringNull()
+			}
+			if value := cr.Get("notify-node"); value.Exists() && !data.Groups[i].V3Security[ci].NotifyNode.IsNull() {
+				data.Groups[i].V3Security[ci].NotifyNode = types.StringValue(value.String())
+			} else {
+				data.Groups[i].V3Security[ci].NotifyNode = types.StringNull()
+			}
+			if value := cr.Get("access-config.ipv6-acl"); value.Exists() && !data.Groups[i].V3Security[ci].AccessIpv6Acl.IsNull() {
+				data.Groups[i].V3Security[ci].AccessIpv6Acl = types.StringValue(value.String())
+			} else {
+				data.Groups[i].V3Security[ci].AccessIpv6Acl = types.StringNull()
+			}
+			if value := cr.Get("access-config.standard-acl"); value.Exists() && !data.Groups[i].V3Security[ci].AccessStandardAcl.IsNull() {
+				data.Groups[i].V3Security[ci].AccessStandardAcl = types.Int64Value(value.Int())
+			} else {
+				data.Groups[i].V3Security[ci].AccessStandardAcl = types.Int64Null()
+			}
+			if value := cr.Get("access-config.acl-name"); value.Exists() && !data.Groups[i].V3Security[ci].AccessAclName.IsNull() {
+				data.Groups[i].V3Security[ci].AccessAclName = types.StringValue(value.String())
+			} else {
+				data.Groups[i].V3Security[ci].AccessAclName = types.StringNull()
+			}
+		}
+	}
+	for i := range data.Users {
+		keys := [...]string{"username", "grpname"}
+		keyValues := [...]string{data.Users[i].Username.ValueString(), data.Users[i].Grpname.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-snmp:user.names").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("username"); value.Exists() && !data.Users[i].Username.IsNull() {
+			data.Users[i].Username = types.StringValue(value.String())
+		} else {
+			data.Users[i].Username = types.StringNull()
+		}
+		if value := r.Get("grpname"); value.Exists() && !data.Users[i].Grpname.IsNull() {
+			data.Users[i].Grpname = types.StringValue(value.String())
+		} else {
+			data.Users[i].Grpname = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.algorithm"); value.Exists() && !data.Users[i].V3AuthAlgorithm.IsNull() {
+			data.Users[i].V3AuthAlgorithm = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthAlgorithm = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.password"); value.Exists() && !data.Users[i].V3AuthPassword.IsNull() {
+			data.Users[i].V3AuthPassword = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPassword = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.aes.algorithm"); value.Exists() && !data.Users[i].V3AuthPrivAesAlgorithm.IsNull() {
+			data.Users[i].V3AuthPrivAesAlgorithm = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivAesAlgorithm = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.aes.password"); value.Exists() && !data.Users[i].V3AuthPrivAesPassword.IsNull() {
+			data.Users[i].V3AuthPrivAesPassword = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivAesPassword = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.aes.access-config.ipv6-acl"); value.Exists() && !data.Users[i].V3AuthPrivAesAccessIpv6Acl.IsNull() {
+			data.Users[i].V3AuthPrivAesAccessIpv6Acl = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivAesAccessIpv6Acl = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.aes.access-config.standard-acl"); value.Exists() && !data.Users[i].V3AuthPrivAesAccessStandardAcl.IsNull() {
+			data.Users[i].V3AuthPrivAesAccessStandardAcl = types.Int64Value(value.Int())
+		} else {
+			data.Users[i].V3AuthPrivAesAccessStandardAcl = types.Int64Null()
+		}
+		if value := r.Get("v3.auth-config.priv-config.aes.access-config.acl-name"); value.Exists() && !data.Users[i].V3AuthPrivAesAccessAclName.IsNull() {
+			data.Users[i].V3AuthPrivAesAccessAclName = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivAesAccessAclName = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.des.password"); value.Exists() && !data.Users[i].V3AuthPrivDesPassword.IsNull() {
+			data.Users[i].V3AuthPrivDesPassword = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivDesPassword = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.des.access-config.ipv6-acl"); value.Exists() && !data.Users[i].V3AuthPrivDesAccessIpv6Acl.IsNull() {
+			data.Users[i].V3AuthPrivDesAccessIpv6Acl = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivDesAccessIpv6Acl = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.des.access-config.standard-acl"); value.Exists() && !data.Users[i].V3AuthPrivDesAccessStandardAcl.IsNull() {
+			data.Users[i].V3AuthPrivDesAccessStandardAcl = types.Int64Value(value.Int())
+		} else {
+			data.Users[i].V3AuthPrivDesAccessStandardAcl = types.Int64Null()
+		}
+		if value := r.Get("v3.auth-config.priv-config.des.access-config.acl-name"); value.Exists() && !data.Users[i].V3AuthPrivDesAccessAclName.IsNull() {
+			data.Users[i].V3AuthPrivDesAccessAclName = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivDesAccessAclName = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.des3.password"); value.Exists() && !data.Users[i].V3AuthPrivDes3Password.IsNull() {
+			data.Users[i].V3AuthPrivDes3Password = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivDes3Password = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.des3.access-config.ipv6-acl"); value.Exists() && !data.Users[i].V3AuthPrivDes3AccessIpv6Acl.IsNull() {
+			data.Users[i].V3AuthPrivDes3AccessIpv6Acl = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivDes3AccessIpv6Acl = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.priv-config.des3.access-config.standard-acl"); value.Exists() && !data.Users[i].V3AuthPrivDes3AccessStandardAcl.IsNull() {
+			data.Users[i].V3AuthPrivDes3AccessStandardAcl = types.Int64Value(value.Int())
+		} else {
+			data.Users[i].V3AuthPrivDes3AccessStandardAcl = types.Int64Null()
+		}
+		if value := r.Get("v3.auth-config.priv-config.des3.access-config.acl-name"); value.Exists() && !data.Users[i].V3AuthPrivDes3AccessAclName.IsNull() {
+			data.Users[i].V3AuthPrivDes3AccessAclName = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthPrivDes3AccessAclName = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.access-config.ipv6-acl"); value.Exists() && !data.Users[i].V3AuthAccessIpv6Acl.IsNull() {
+			data.Users[i].V3AuthAccessIpv6Acl = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthAccessIpv6Acl = types.StringNull()
+		}
+		if value := r.Get("v3.auth-config.access-config.standard-acl"); value.Exists() && !data.Users[i].V3AuthAccessStandardAcl.IsNull() {
+			data.Users[i].V3AuthAccessStandardAcl = types.Int64Value(value.Int())
+		} else {
+			data.Users[i].V3AuthAccessStandardAcl = types.Int64Null()
+		}
+		if value := r.Get("v3.auth-config.access-config.acl-name"); value.Exists() && !data.Users[i].V3AuthAccessAclName.IsNull() {
+			data.Users[i].V3AuthAccessAclName = types.StringValue(value.String())
+		} else {
+			data.Users[i].V3AuthAccessAclName = types.StringNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -4450,6 +4818,120 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 				item.IncExl = types.StringValue(cValue.String())
 			}
 			data.Views = append(data.Views, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:group"); value.Exists() {
+		data.Groups = make([]SNMPServerGroups, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SNMPServerGroups{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.security-level-list"); cValue.Exists() {
+				item.V3Security = make([]SNMPServerGroupsV3Security, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := SNMPServerGroupsV3Security{}
+					if ccValue := cv.Get("security-level"); ccValue.Exists() {
+						cItem.SecurityLevel = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("context-node"); ccValue.Exists() {
+						cItem.ContextNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("match-node"); ccValue.Exists() {
+						cItem.MatchNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("read-node"); ccValue.Exists() {
+						cItem.ReadNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("write-node"); ccValue.Exists() {
+						cItem.WriteNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("notify-node"); ccValue.Exists() {
+						cItem.NotifyNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("access-config.ipv6-acl"); ccValue.Exists() {
+						cItem.AccessIpv6Acl = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("access-config.standard-acl"); ccValue.Exists() {
+						cItem.AccessStandardAcl = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("access-config.acl-name"); ccValue.Exists() {
+						cItem.AccessAclName = types.StringValue(ccValue.String())
+					}
+					item.V3Security = append(item.V3Security, cItem)
+					return true
+				})
+			}
+			data.Groups = append(data.Groups, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:user.names"); value.Exists() {
+		data.Users = make([]SNMPServerUsers, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SNMPServerUsers{}
+			if cValue := v.Get("username"); cValue.Exists() {
+				item.Username = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("grpname"); cValue.Exists() {
+				item.Grpname = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.algorithm"); cValue.Exists() {
+				item.V3AuthAlgorithm = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.password"); cValue.Exists() {
+				item.V3AuthPassword = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.algorithm"); cValue.Exists() {
+				item.V3AuthPrivAesAlgorithm = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.password"); cValue.Exists() {
+				item.V3AuthPrivAesPassword = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.access-config.ipv6-acl"); cValue.Exists() {
+				item.V3AuthPrivAesAccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.access-config.standard-acl"); cValue.Exists() {
+				item.V3AuthPrivAesAccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.access-config.acl-name"); cValue.Exists() {
+				item.V3AuthPrivAesAccessAclName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des.password"); cValue.Exists() {
+				item.V3AuthPrivDesPassword = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des.access-config.ipv6-acl"); cValue.Exists() {
+				item.V3AuthPrivDesAccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des.access-config.standard-acl"); cValue.Exists() {
+				item.V3AuthPrivDesAccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des.access-config.acl-name"); cValue.Exists() {
+				item.V3AuthPrivDesAccessAclName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des3.password"); cValue.Exists() {
+				item.V3AuthPrivDes3Password = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des3.access-config.ipv6-acl"); cValue.Exists() {
+				item.V3AuthPrivDes3AccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des3.access-config.standard-acl"); cValue.Exists() {
+				item.V3AuthPrivDes3AccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des3.access-config.acl-name"); cValue.Exists() {
+				item.V3AuthPrivDes3AccessAclName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.access-config.ipv6-acl"); cValue.Exists() {
+				item.V3AuthAccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.access-config.standard-acl"); cValue.Exists() {
+				item.V3AuthAccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("v3.auth-config.access-config.acl-name"); cValue.Exists() {
+				item.V3AuthAccessAclName = types.StringValue(cValue.String())
+			}
+			data.Users = append(data.Users, item)
 			return true
 		})
 	}
@@ -5494,6 +5976,120 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:group"); value.Exists() {
+		data.Groups = make([]SNMPServerGroups, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SNMPServerGroups{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.security-level-list"); cValue.Exists() {
+				item.V3Security = make([]SNMPServerGroupsV3Security, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := SNMPServerGroupsV3Security{}
+					if ccValue := cv.Get("security-level"); ccValue.Exists() {
+						cItem.SecurityLevel = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("context-node"); ccValue.Exists() {
+						cItem.ContextNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("match-node"); ccValue.Exists() {
+						cItem.MatchNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("read-node"); ccValue.Exists() {
+						cItem.ReadNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("write-node"); ccValue.Exists() {
+						cItem.WriteNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("notify-node"); ccValue.Exists() {
+						cItem.NotifyNode = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("access-config.ipv6-acl"); ccValue.Exists() {
+						cItem.AccessIpv6Acl = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("access-config.standard-acl"); ccValue.Exists() {
+						cItem.AccessStandardAcl = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("access-config.acl-name"); ccValue.Exists() {
+						cItem.AccessAclName = types.StringValue(ccValue.String())
+					}
+					item.V3Security = append(item.V3Security, cItem)
+					return true
+				})
+			}
+			data.Groups = append(data.Groups, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:user.names"); value.Exists() {
+		data.Users = make([]SNMPServerUsers, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SNMPServerUsers{}
+			if cValue := v.Get("username"); cValue.Exists() {
+				item.Username = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("grpname"); cValue.Exists() {
+				item.Grpname = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.algorithm"); cValue.Exists() {
+				item.V3AuthAlgorithm = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.password"); cValue.Exists() {
+				item.V3AuthPassword = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.algorithm"); cValue.Exists() {
+				item.V3AuthPrivAesAlgorithm = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.password"); cValue.Exists() {
+				item.V3AuthPrivAesPassword = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.access-config.ipv6-acl"); cValue.Exists() {
+				item.V3AuthPrivAesAccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.access-config.standard-acl"); cValue.Exists() {
+				item.V3AuthPrivAesAccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.aes.access-config.acl-name"); cValue.Exists() {
+				item.V3AuthPrivAesAccessAclName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des.password"); cValue.Exists() {
+				item.V3AuthPrivDesPassword = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des.access-config.ipv6-acl"); cValue.Exists() {
+				item.V3AuthPrivDesAccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des.access-config.standard-acl"); cValue.Exists() {
+				item.V3AuthPrivDesAccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des.access-config.acl-name"); cValue.Exists() {
+				item.V3AuthPrivDesAccessAclName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des3.password"); cValue.Exists() {
+				item.V3AuthPrivDes3Password = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des3.access-config.ipv6-acl"); cValue.Exists() {
+				item.V3AuthPrivDes3AccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des3.access-config.standard-acl"); cValue.Exists() {
+				item.V3AuthPrivDes3AccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("v3.auth-config.priv-config.des3.access-config.acl-name"); cValue.Exists() {
+				item.V3AuthPrivDes3AccessAclName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.access-config.ipv6-acl"); cValue.Exists() {
+				item.V3AuthAccessIpv6Acl = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("v3.auth-config.access-config.standard-acl"); cValue.Exists() {
+				item.V3AuthAccessStandardAcl = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("v3.auth-config.access-config.acl-name"); cValue.Exists() {
+				item.V3AuthAccessAclName = types.StringValue(cValue.String())
+			}
+			data.Users = append(data.Users, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -5502,6 +6098,165 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Users {
+		stateKeyValues := [...]string{state.Users[i].Username.ValueString(), state.Users[i].Grpname.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Users[i].Username.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Users[i].Grpname.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Users {
+			found = true
+			if state.Users[i].Username.ValueString() != data.Users[j].Username.ValueString() {
+				found = false
+			}
+			if state.Users[i].Grpname.ValueString() != data.Users[j].Grpname.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Users[i].V3AuthAccessAclName.IsNull() && data.Users[j].V3AuthAccessAclName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/access-config/acl-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthAccessStandardAcl.IsNull() && data.Users[j].V3AuthAccessStandardAcl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/access-config/standard-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthAccessIpv6Acl.IsNull() && data.Users[j].V3AuthAccessIpv6Acl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/access-config/ipv6-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivDes3AccessAclName.IsNull() && data.Users[j].V3AuthPrivDes3AccessAclName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/des3/access-config/acl-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivDes3AccessStandardAcl.IsNull() && data.Users[j].V3AuthPrivDes3AccessStandardAcl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/des3/access-config/standard-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivDes3AccessIpv6Acl.IsNull() && data.Users[j].V3AuthPrivDes3AccessIpv6Acl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/des3/access-config/ipv6-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivDes3Password.IsNull() && data.Users[j].V3AuthPrivDes3Password.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/des3/password", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivDesAccessAclName.IsNull() && data.Users[j].V3AuthPrivDesAccessAclName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/des/access-config/acl-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivDesAccessStandardAcl.IsNull() && data.Users[j].V3AuthPrivDesAccessStandardAcl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/des/access-config/standard-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivDesAccessIpv6Acl.IsNull() && data.Users[j].V3AuthPrivDesAccessIpv6Acl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/des/access-config/ipv6-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivDesPassword.IsNull() && data.Users[j].V3AuthPrivDesPassword.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/des/password", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivAesAccessAclName.IsNull() && data.Users[j].V3AuthPrivAesAccessAclName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/aes/access-config/acl-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivAesAccessStandardAcl.IsNull() && data.Users[j].V3AuthPrivAesAccessStandardAcl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/aes/access-config/standard-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivAesAccessIpv6Acl.IsNull() && data.Users[j].V3AuthPrivAesAccessIpv6Acl.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/aes/access-config/ipv6-acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivAesPassword.IsNull() && data.Users[j].V3AuthPrivAesPassword.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/aes/password", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPrivAesAlgorithm.IsNull() && data.Users[j].V3AuthPrivAesAlgorithm.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/priv-config/aes/algorithm", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthPassword.IsNull() && data.Users[j].V3AuthPassword.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/password", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Users[i].V3AuthAlgorithm.IsNull() && data.Users[j].V3AuthAlgorithm.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v/v3/auth-config/algorithm", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Groups {
+		stateKeyValues := [...]string{state.Groups[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Groups[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Groups {
+			found = true
+			if state.Groups[i].Name.ValueString() != data.Groups[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Groups[i].V3Security {
+					cstateKeyValues := [...]string{state.Groups[i].V3Security[ci].SecurityLevel.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Groups[i].V3Security[ci].SecurityLevel.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Groups[j].V3Security {
+						found = true
+						if state.Groups[i].V3Security[ci].SecurityLevel.ValueString() != data.Groups[j].V3Security[cj].SecurityLevel.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Groups[i].V3Security[ci].AccessAclName.IsNull() && data.Groups[j].V3Security[cj].AccessAclName.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v/access-config/acl-name", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Groups[i].V3Security[ci].AccessStandardAcl.IsNull() && data.Groups[j].V3Security[cj].AccessStandardAcl.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v/access-config/standard-acl", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Groups[i].V3Security[ci].AccessIpv6Acl.IsNull() && data.Groups[j].V3Security[cj].AccessIpv6Acl.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v/access-config/ipv6-acl", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Groups[i].V3Security[ci].NotifyNode.IsNull() && data.Groups[j].V3Security[cj].NotifyNode.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v/notify-node", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Groups[i].V3Security[ci].WriteNode.IsNull() && data.Groups[j].V3Security[cj].WriteNode.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v/write-node", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Groups[i].V3Security[ci].ReadNode.IsNull() && data.Groups[j].V3Security[cj].ReadNode.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v/read-node", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Groups[i].V3Security[ci].MatchNode.IsNull() && data.Groups[j].V3Security[cj].MatchNode.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v/match-node", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Groups[i].V3Security[ci].ContextNode.IsNull() && data.Groups[j].V3Security[cj].ContextNode.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v/context-node", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v/v3/security-level-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Views {
 		stateKeyValues := [...]string{state.Views[i].Name.ValueString(), state.Views[i].Mib.ValueString()}
 
@@ -6779,6 +7534,16 @@ func (data *SNMPServer) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Users {
+		keyValues := [...]string{data.Users[i].Username.ValueString(), data.Users[i].Grpname.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:user/names=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Groups {
+		keyValues := [...]string{data.Groups[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:group=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.Views {
 		keyValues := [...]string{data.Views[i].Name.ValueString(), data.Views[i].Mib.ValueString()}
 
