@@ -8,7 +8,7 @@ attributes:
   - yang_name: proxy/disable
     example: true
   - yang_name: entry/learn
-    example: true
+    example: 1000
     exclude_test: true
   - yang_name: inspection/filter
     tf_name: inspection_filters
