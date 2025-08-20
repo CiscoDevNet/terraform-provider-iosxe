@@ -39,8 +39,6 @@ func TestAccIosxeCommunityListStandard(t *testing.T) {
 	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_community_list_standard.test", "name", "CLS1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_community_list_standard.test", "deny_entries.0", "65000:500"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_community_list_standard.test", "permit_entries.0", "65000:501"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

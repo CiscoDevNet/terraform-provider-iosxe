@@ -39,16 +39,16 @@ type CommunityListStandard struct {
 	Device        types.String `tfsdk:"device"`
 	Id            types.String `tfsdk:"id"`
 	Name          types.String `tfsdk:"name"`
-	DenyEntries   types.List   `tfsdk:"deny_entries"`
-	PermitEntries types.List   `tfsdk:"permit_entries"`
+	DenyEntries   types.Set    `tfsdk:"deny_entries"`
+	PermitEntries types.Set    `tfsdk:"permit_entries"`
 }
 
 type CommunityListStandardData struct {
 	Device        types.String `tfsdk:"device"`
 	Id            types.String `tfsdk:"id"`
 	Name          types.String `tfsdk:"name"`
-	DenyEntries   types.List   `tfsdk:"deny_entries"`
-	PermitEntries types.List   `tfsdk:"permit_entries"`
+	DenyEntries   types.Set    `tfsdk:"deny_entries"`
+	PermitEntries types.Set    `tfsdk:"permit_entries"`
 }
 
 // End of section. //template:end types
@@ -111,14 +111,14 @@ func (data *CommunityListStandard) updateFromBody(ctx context.Context, res gjson
 		data.Name = types.StringNull()
 	}
 	if value := res.Get(prefix + "deny.deny-list"); value.Exists() && !data.DenyEntries.IsNull() {
-		data.DenyEntries = helpers.GetStringList(value.Array())
+		data.DenyEntries = helpers.GetStringSet(value.Array())
 	} else {
-		data.DenyEntries = types.ListNull(types.StringType)
+		data.DenyEntries = types.SetNull(types.StringType)
 	}
 	if value := res.Get(prefix + "permit.permit-list"); value.Exists() && !data.PermitEntries.IsNull() {
-		data.PermitEntries = helpers.GetStringList(value.Array())
+		data.PermitEntries = helpers.GetStringSet(value.Array())
 	} else {
-		data.PermitEntries = types.ListNull(types.StringType)
+		data.PermitEntries = types.SetNull(types.StringType)
 	}
 }
 
@@ -132,14 +132,14 @@ func (data *CommunityListStandard) fromBody(ctx context.Context, res gjson.Resul
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "deny.deny-list"); value.Exists() {
-		data.DenyEntries = helpers.GetStringList(value.Array())
+		data.DenyEntries = helpers.GetStringSet(value.Array())
 	} else {
-		data.DenyEntries = types.ListNull(types.StringType)
+		data.DenyEntries = types.SetNull(types.StringType)
 	}
 	if value := res.Get(prefix + "permit.permit-list"); value.Exists() {
-		data.PermitEntries = helpers.GetStringList(value.Array())
+		data.PermitEntries = helpers.GetStringSet(value.Array())
 	} else {
-		data.PermitEntries = types.ListNull(types.StringType)
+		data.PermitEntries = types.SetNull(types.StringType)
 	}
 }
 
@@ -153,14 +153,14 @@ func (data *CommunityListStandardData) fromBody(ctx context.Context, res gjson.R
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "deny.deny-list"); value.Exists() {
-		data.DenyEntries = helpers.GetStringList(value.Array())
+		data.DenyEntries = helpers.GetStringSet(value.Array())
 	} else {
-		data.DenyEntries = types.ListNull(types.StringType)
+		data.DenyEntries = types.SetNull(types.StringType)
 	}
 	if value := res.Get(prefix + "permit.permit-list"); value.Exists() {
-		data.PermitEntries = helpers.GetStringList(value.Array())
+		data.PermitEntries = helpers.GetStringSet(value.Array())
 	} else {
-		data.PermitEntries = types.ListNull(types.StringType)
+		data.PermitEntries = types.SetNull(types.StringType)
 	}
 }
 

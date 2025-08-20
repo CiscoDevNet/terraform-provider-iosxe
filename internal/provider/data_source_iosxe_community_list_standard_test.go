@@ -36,8 +36,6 @@ func TestAccDataSourceIosxeCommunityListStandard(t *testing.T) {
 		t.Skip("skipping test, set environment variable IOSXE1712")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_community_list_standard.test", "deny_entries.0", "65000:500"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_community_list_standard.test", "permit_entries.0", "65000:501"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

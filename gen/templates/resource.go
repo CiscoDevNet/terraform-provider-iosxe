@@ -93,7 +93,7 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 			},
 			{{- end}}
 			{{- range  .Attributes}}
-			"{{.TfName}}": schema.{{if eq .Type "List"}}ListNested{{else if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else}}{{.Type}}{{end}}Attribute{
+			"{{.TfName}}": schema.{{if eq .Type "List"}}ListNested{{else if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}Set{{else}}{{.Type}}{{end}}Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("{{.Description}}")
 					{{- if len .EnumValues -}}
 					.AddStringEnumDescription({{range .EnumValues}}"{{.}}", {{end}})
@@ -105,9 +105,9 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 					.AddDefaultValueDescription("{{.DefaultValue}}")
 					{{- end -}}
 					.String,
-				{{- if eq .Type "StringList"}}
+				{{- if or (eq .Type "StringList") (eq .Type "StringSet")}}
 				ElementType:         types.StringType,
-				{{- else if eq .Type "Int64List"}}
+				{{- else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}
 				ElementType:         types.Int64Type,
 				{{- end}}
 				{{- if or .Id .Reference .Mandatory}}
@@ -156,7 +156,7 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						{{- range  .Attributes}}
-						"{{.TfName}}": schema.{{if eq .Type "List"}}ListNested{{else if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else}}{{.Type}}{{end}}Attribute{
+						"{{.TfName}}": schema.{{if eq .Type "List"}}ListNested{{else if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}Set{{else}}{{.Type}}{{end}}Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("{{.Description}}")
 								{{- if len .EnumValues -}}
 								.AddStringEnumDescription({{range .EnumValues}}"{{.}}", {{end}})
@@ -171,9 +171,9 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 								.AddDefaultValueDescription("{{.DefaultValue}}")
 								{{- end -}}
 								.String,
-							{{- if eq .Type "StringList"}}
+							{{- if or (eq .Type "StringList") (eq .Type "StringSet")}}
 							ElementType:         types.StringType,
-							{{- else if eq .Type "Int64List"}}
+							{{- else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}
 							ElementType:         types.Int64Type,
 							{{- end}}
 							{{- if or .Id .Mandatory}}
@@ -213,7 +213,7 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
 									{{- range  .Attributes}}
-									"{{.TfName}}": schema.{{if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else}}{{.Type}}{{end}}Attribute{
+									"{{.TfName}}": schema.{{if or (eq .Type "StringList") (eq .Type "Int64List")}}List{{else if or (eq .Type "StringSet") (eq .Type "Int64Set")}}Set{{else}}{{.Type}}{{end}}Attribute{
 										MarkdownDescription: helpers.NewAttributeDescription("{{.Description}}")
 											{{- if len .EnumValues -}}
 											.AddStringEnumDescription({{range .EnumValues}}"{{.}}", {{end}})
@@ -228,9 +228,9 @@ func (r *{{camelCase .Name}}Resource) Schema(ctx context.Context, req resource.S
 											.AddDefaultValueDescription("{{.DefaultValue}}")
 											{{- end -}}
 											.String,
-										{{- if eq .Type "StringList"}}
+										{{- if or (eq .Type "StringList") (eq .Type "StringSet")}}
 										ElementType:         types.StringType,
-										{{- else if eq .Type "Int64List"}}
+										{{- else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}
 										ElementType:         types.Int64Type,
 										{{- end}}
 										{{- if or .Id .Mandatory}}
