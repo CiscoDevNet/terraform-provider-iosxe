@@ -9,6 +9,7 @@
 ## 0.7.1
 
 - Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`
+- Add `ip_host_lists`, `ip_host_vrfs`, and `diagnostic_event_log_size` attributes to `iosxe_system` resource and data source
 - Add `ip_ssh_version_legacy`, `ip_ssh_time_out` and `ip_ssh_authentication_retries` attributes to `iosxe_system` resource and data source
 - Add subinterface option to `iosxe_interface_mpls`, `iosxe_interface_ospf`, `iosxe_interface_ospfv3` and `iosxe_interface_pim` resources and data sources
 
