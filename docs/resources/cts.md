@@ -14,7 +14,39 @@ This resource can manage the CTS configuration.
 
 ```terraform
 resource "iosxe_cts" "example" {
-  authorization_list = "Tacacs-GROUP"
+  authorization_list        = "Tacacs-GROUP"
+  sgt                       = 200
+  sxp_enable                = true
+  sxp_default_password_type = "0"
+  sxp_default_password      = "MySecretPassword"
+  sxp_retry_period          = 60
+  sxp_connection_peers_ipv4 = [
+    {
+      ip              = "2.2.2.2"
+      source_ip       = "3.3.3.3"
+      password        = "default"
+      connection_mode = "local"
+      option          = "listener"
+      hold_time       = 60
+      max_time        = 300
+    }
+  ]
+  sxp_connection_peers_ipv4_vrf = [
+    {
+      ip              = "4.4.4.4"
+      vrf             = "VRF1"
+      source_ip       = "5.5.5.5"
+      password        = "default"
+      connection_mode = "local"
+      option          = "listener"
+      hold_time       = 60
+      max_time        = 300
+    }
+  ]
+  sxp_speaker_hold_time                   = 300
+  sxp_listener_hold_min_time              = 60
+  sxp_listener_hold_max_time              = 300
+  role_based_enforcement_logging_interval = 300
 }
 ```
 
@@ -27,10 +59,73 @@ resource "iosxe_cts" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `role_based_enforcement_logging_interval` (Number) Configure sgacl logging interval
+  - Range: `5`-`86400`
+- `role_based_enforcement_vlan_lists` (List of Number) VLANs on which Role-based ACLs are enforced
+- `role_based_permissions_default_acl_name` (List of String) Role-based Access-list name
+- `sgt` (Number) Local device security group
+  - Range: `2`-`65519`
+- `sxp_connection_peers_ipv4` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4))
+- `sxp_connection_peers_ipv4_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4_vrf))
+- `sxp_default_password` (String)
+- `sxp_default_password_type` (String) - Choices: `0`, `6`, `7`
+- `sxp_enable` (Boolean) Enable CTS SXP support
+- `sxp_listener_hold_max_time` (Number) Enter maximum allowed Hold Time in seconds
+  - Range: `1`-`65534`
+- `sxp_listener_hold_min_time` (Number) Enter minimum allowed Hold Time in seconds
+  - Range: `1`-`65534`
+- `sxp_retry_period` (Number) Enter retry period value for sxp connection in seconds
+  - Range: `0`-`64000`
+- `sxp_speaker_hold_time` (Number) Enter speaker hold-time value in seconds
+  - Range: `1`-`65534`
 
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--sxp_connection_peers_ipv4"></a>
+### Nested Schema for `sxp_connection_peers_ipv4`
+
+Required:
+
+- `ip` (String) Enter SXP Peer IP address (IPv4)
+
+Optional:
+
+- `connection_mode` (String) Mode of connection
+  - Choices: `local`, `peer`
+- `hold_time` (Number) Minimum hold time period
+  - Range: `0`-`65535`
+- `max_time` (Number) Maximum hold time period
+  - Range: `0`-`65535`
+- `option` (String) Role of a device speaker/listener/both
+  - Choices: `both`, `listener`, `speaker`
+- `password` (String) Password type
+  - Choices: `default`, `key-chain`, `none`
+- `source_ip` (String) Enter SXP Source IP address (IPv4)
+
+
+<a id="nestedatt--sxp_connection_peers_ipv4_vrf"></a>
+### Nested Schema for `sxp_connection_peers_ipv4_vrf`
+
+Required:
+
+- `ip` (String) Enter SXP Peer IP address (IPv4)
+- `vrf` (String) VRF details
+
+Optional:
+
+- `connection_mode` (String) Mode of connection
+  - Choices: `local`, `peer`
+- `hold_time` (Number) Minimum hold time period
+  - Range: `0`-`65535`
+- `max_time` (Number) Maximum hold time period
+  - Range: `0`-`65535`
+- `option` (String) Role of a device speaker/listener/both
+  - Choices: `both`, `listener`, `speaker`
+- `password` (String) Password type
+  - Choices: `default`, `key-chain`, `none`
+- `source_ip` (String) Enter SXP Source IP address (IPv4)
 
 ## Import
 

@@ -28,3 +28,44 @@ data "iosxe_cts" "example" {
 
 - `authorization_list` (String) Local authorization list to use for CTS
 - `id` (String) The path of the retrieved object.
+- `role_based_enforcement_logging_interval` (Number) Configure sgacl logging interval
+- `role_based_enforcement_vlan_lists` (List of Number) VLANs on which Role-based ACLs are enforced
+- `role_based_permissions_default_acl_name` (List of String) Role-based Access-list name
+- `sgt` (Number) Local device security group
+- `sxp_connection_peers_ipv4` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4))
+- `sxp_connection_peers_ipv4_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4_vrf))
+- `sxp_default_password` (String)
+- `sxp_default_password_type` (String)
+- `sxp_enable` (Boolean) Enable CTS SXP support
+- `sxp_listener_hold_max_time` (Number) Enter maximum allowed Hold Time in seconds
+- `sxp_listener_hold_min_time` (Number) Enter minimum allowed Hold Time in seconds
+- `sxp_retry_period` (Number) Enter retry period value for sxp connection in seconds
+- `sxp_speaker_hold_time` (Number) Enter speaker hold-time value in seconds
+
+<a id="nestedatt--sxp_connection_peers_ipv4"></a>
+### Nested Schema for `sxp_connection_peers_ipv4`
+
+Read-Only:
+
+- `connection_mode` (String) Mode of connection
+- `hold_time` (Number) Minimum hold time period
+- `ip` (String) Enter SXP Peer IP address (IPv4)
+- `max_time` (Number) Maximum hold time period
+- `option` (String) Role of a device speaker/listener/both
+- `password` (String) Password type
+- `source_ip` (String) Enter SXP Source IP address (IPv4)
+
+
+<a id="nestedatt--sxp_connection_peers_ipv4_vrf"></a>
+### Nested Schema for `sxp_connection_peers_ipv4_vrf`
+
+Read-Only:
+
+- `connection_mode` (String) Mode of connection
+- `hold_time` (Number) Minimum hold time period
+- `ip` (String) Enter SXP Peer IP address (IPv4)
+- `max_time` (Number) Maximum hold time period
+- `option` (String) Role of a device speaker/listener/both
+- `password` (String) Password type
+- `source_ip` (String) Enter SXP Source IP address (IPv4)
+- `vrf` (String) VRF details
