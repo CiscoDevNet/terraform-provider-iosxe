@@ -38,32 +38,36 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type AAAAccounting struct {
-	Device                         types.String              `tfsdk:"device"`
-	Id                             types.String              `tfsdk:"id"`
-	DeleteMode                     types.String              `tfsdk:"delete_mode"`
-	UpdateNewinfoPeriodic          types.Int64               `tfsdk:"update_newinfo_periodic"`
-	Identities                     []AAAAccountingIdentities `tfsdk:"identities"`
-	IdentityDefaultStartStopGroup1 types.String              `tfsdk:"identity_default_start_stop_group1"`
-	IdentityDefaultStartStopGroup2 types.String              `tfsdk:"identity_default_start_stop_group2"`
-	IdentityDefaultStartStopGroup3 types.String              `tfsdk:"identity_default_start_stop_group3"`
-	IdentityDefaultStartStopGroup4 types.String              `tfsdk:"identity_default_start_stop_group4"`
-	Execs                          []AAAAccountingExecs      `tfsdk:"execs"`
-	Networks                       []AAAAccountingNetworks   `tfsdk:"networks"`
-	SystemGuaranteeFirst           types.Bool                `tfsdk:"system_guarantee_first"`
+	Device                         types.String               `tfsdk:"device"`
+	Id                             types.String               `tfsdk:"id"`
+	DeleteMode                     types.String               `tfsdk:"delete_mode"`
+	UpdateNewinfoPeriodic          types.Int64                `tfsdk:"update_newinfo_periodic"`
+	Identities                     []AAAAccountingIdentities  `tfsdk:"identities"`
+	IdentityDefaultStartStopGroup1 types.String               `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2 types.String               `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3 types.String               `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4 types.String               `tfsdk:"identity_default_start_stop_group4"`
+	Networks                       []AAAAccountingNetworks    `tfsdk:"networks"`
+	SystemGuaranteeFirst           types.Bool                 `tfsdk:"system_guarantee_first"`
+	Commands                       []AAAAccountingCommands    `tfsdk:"commands"`
+	Connections                    []AAAAccountingConnections `tfsdk:"connections"`
+	Execs                          []AAAAccountingExecs       `tfsdk:"execs"`
 }
 
 type AAAAccountingData struct {
-	Device                         types.String              `tfsdk:"device"`
-	Id                             types.String              `tfsdk:"id"`
-	UpdateNewinfoPeriodic          types.Int64               `tfsdk:"update_newinfo_periodic"`
-	Identities                     []AAAAccountingIdentities `tfsdk:"identities"`
-	IdentityDefaultStartStopGroup1 types.String              `tfsdk:"identity_default_start_stop_group1"`
-	IdentityDefaultStartStopGroup2 types.String              `tfsdk:"identity_default_start_stop_group2"`
-	IdentityDefaultStartStopGroup3 types.String              `tfsdk:"identity_default_start_stop_group3"`
-	IdentityDefaultStartStopGroup4 types.String              `tfsdk:"identity_default_start_stop_group4"`
-	Execs                          []AAAAccountingExecs      `tfsdk:"execs"`
-	Networks                       []AAAAccountingNetworks   `tfsdk:"networks"`
-	SystemGuaranteeFirst           types.Bool                `tfsdk:"system_guarantee_first"`
+	Device                         types.String               `tfsdk:"device"`
+	Id                             types.String               `tfsdk:"id"`
+	UpdateNewinfoPeriodic          types.Int64                `tfsdk:"update_newinfo_periodic"`
+	Identities                     []AAAAccountingIdentities  `tfsdk:"identities"`
+	IdentityDefaultStartStopGroup1 types.String               `tfsdk:"identity_default_start_stop_group1"`
+	IdentityDefaultStartStopGroup2 types.String               `tfsdk:"identity_default_start_stop_group2"`
+	IdentityDefaultStartStopGroup3 types.String               `tfsdk:"identity_default_start_stop_group3"`
+	IdentityDefaultStartStopGroup4 types.String               `tfsdk:"identity_default_start_stop_group4"`
+	Networks                       []AAAAccountingNetworks    `tfsdk:"networks"`
+	SystemGuaranteeFirst           types.Bool                 `tfsdk:"system_guarantee_first"`
+	Commands                       []AAAAccountingCommands    `tfsdk:"commands"`
+	Connections                    []AAAAccountingConnections `tfsdk:"connections"`
+	Execs                          []AAAAccountingExecs       `tfsdk:"execs"`
 }
 type AAAAccountingIdentities struct {
 	Name                    types.String `tfsdk:"name"`
@@ -75,14 +79,67 @@ type AAAAccountingIdentities struct {
 	StartStopGroup3         types.String `tfsdk:"start_stop_group3"`
 	StartStopGroup4         types.String `tfsdk:"start_stop_group4"`
 }
-type AAAAccountingExecs struct {
-	Name            types.String `tfsdk:"name"`
-	StartStopGroup1 types.String `tfsdk:"start_stop_group1"`
-}
 type AAAAccountingNetworks struct {
 	Id              types.String `tfsdk:"id"`
 	StartStopGroup1 types.String `tfsdk:"start_stop_group1"`
 	StartStopGroup2 types.String `tfsdk:"start_stop_group2"`
+}
+type AAAAccountingCommands struct {
+	Level                        types.Int64  `tfsdk:"level"`
+	ListName                     types.String `tfsdk:"list_name"`
+	CommandsConfigActionType     types.String `tfsdk:"commands_config_action_type"`
+	CommandsConfigBroadcast      types.Bool   `tfsdk:"commands_config_broadcast"`
+	CommandsConfigGroupBroadcast types.Bool   `tfsdk:"commands_config_group_broadcast"`
+	CommandsConfigGroupLogger    types.Bool   `tfsdk:"commands_config_group_logger"`
+	CommandsConfigGroup1         types.String `tfsdk:"commands_config_group1"`
+	CommandsConfigGroup2         types.String `tfsdk:"commands_config_group2"`
+	CommandsConfigGroup3         types.String `tfsdk:"commands_config_group3"`
+	CommandsConfigGroup4         types.String `tfsdk:"commands_config_group4"`
+}
+type AAAAccountingConnections struct {
+	Name               types.String `tfsdk:"name"`
+	Default            types.Bool   `tfsdk:"default"`
+	None               types.Bool   `tfsdk:"none"`
+	StartStopBroadcast types.Bool   `tfsdk:"start_stop_broadcast"`
+	StartStopLogger    types.Bool   `tfsdk:"start_stop_logger"`
+	StartStopGroup1    types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2    types.String `tfsdk:"start_stop_group2"`
+	StartStopGroup3    types.String `tfsdk:"start_stop_group3"`
+	StartStopGroup4    types.String `tfsdk:"start_stop_group4"`
+	StopOnlyBroadcast  types.Bool   `tfsdk:"stop_only_broadcast"`
+	StopOnlyLogger     types.Bool   `tfsdk:"stop_only_logger"`
+	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
+	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
+	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
+	WaitStartBroadcast types.Bool   `tfsdk:"wait_start_broadcast"`
+	WaitStartLogger    types.Bool   `tfsdk:"wait_start_logger"`
+	WaitStartGroup1    types.String `tfsdk:"wait_start_group1"`
+	WaitStartGroup2    types.String `tfsdk:"wait_start_group2"`
+	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
+	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
+}
+type AAAAccountingExecs struct {
+	Name               types.String `tfsdk:"name"`
+	None               types.Bool   `tfsdk:"none"`
+	StartStopBroadcast types.Bool   `tfsdk:"start_stop_broadcast"`
+	StartStopLogger    types.Bool   `tfsdk:"start_stop_logger"`
+	StartStopGroup1    types.String `tfsdk:"start_stop_group1"`
+	StartStopGroup2    types.String `tfsdk:"start_stop_group2"`
+	StartStopGroup3    types.String `tfsdk:"start_stop_group3"`
+	StartStopGroup4    types.String `tfsdk:"start_stop_group4"`
+	StopOnlyBroadcast  types.Bool   `tfsdk:"stop_only_broadcast"`
+	StopOnlyLogger     types.Bool   `tfsdk:"stop_only_logger"`
+	StopOnlyGroup1     types.String `tfsdk:"stop_only_group1"`
+	StopOnlyGroup2     types.String `tfsdk:"stop_only_group2"`
+	StopOnlyGroup3     types.String `tfsdk:"stop_only_group3"`
+	StopOnlyGroup4     types.String `tfsdk:"stop_only_group4"`
+	WaitStartBroadcast types.Bool   `tfsdk:"wait_start_broadcast"`
+	WaitStartLogger    types.Bool   `tfsdk:"wait_start_logger"`
+	WaitStartGroup1    types.String `tfsdk:"wait_start_group1"`
+	WaitStartGroup2    types.String `tfsdk:"wait_start_group2"`
+	WaitStartGroup3    types.String `tfsdk:"wait_start_group3"`
+	WaitStartGroup4    types.String `tfsdk:"wait_start_group4"`
 }
 
 // End of section. //template:end types
@@ -167,17 +224,6 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.Execs) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec", []interface{}{})
-		for index, item := range data.Execs {
-			if !item.Name.IsNull() && !item.Name.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
-			}
-			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.group1.group", item.StartStopGroup1.ValueString())
-			}
-		}
-	}
 	if len(data.Networks) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network", []interface{}{})
 		for index, item := range data.Networks {
@@ -189,6 +235,210 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 			}
 			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"start-stop.group-config.group2.group", item.StartStopGroup2.ValueString())
+			}
+		}
+	}
+	if len(data.Commands) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands", []interface{}{})
+		for index, item := range data.Commands {
+			if !item.Level.IsNull() && !item.Level.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"level", strconv.FormatInt(item.Level.ValueInt64(), 10))
+			}
+			if !item.ListName.IsNull() && !item.ListName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"list-name", item.ListName.ValueString())
+			}
+			if !item.CommandsConfigActionType.IsNull() && !item.CommandsConfigActionType.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.action-type", item.CommandsConfigActionType.ValueString())
+			}
+			if !item.CommandsConfigBroadcast.IsNull() && !item.CommandsConfigBroadcast.IsUnknown() {
+				if item.CommandsConfigBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.broadcast", map[string]string{})
+				}
+			}
+			if !item.CommandsConfigGroupBroadcast.IsNull() && !item.CommandsConfigGroupBroadcast.IsUnknown() {
+				if item.CommandsConfigGroupBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.broadcast", map[string]string{})
+				}
+			}
+			if !item.CommandsConfigGroupLogger.IsNull() && !item.CommandsConfigGroupLogger.IsUnknown() {
+				if item.CommandsConfigGroupLogger.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.logger", map[string]string{})
+				}
+			}
+			if !item.CommandsConfigGroup1.IsNull() && !item.CommandsConfigGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group1.group", item.CommandsConfigGroup1.ValueString())
+			}
+			if !item.CommandsConfigGroup2.IsNull() && !item.CommandsConfigGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group2.group", item.CommandsConfigGroup2.ValueString())
+			}
+			if !item.CommandsConfigGroup3.IsNull() && !item.CommandsConfigGroup3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group3.group", item.CommandsConfigGroup3.ValueString())
+			}
+			if !item.CommandsConfigGroup4.IsNull() && !item.CommandsConfigGroup4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group4.group", item.CommandsConfigGroup4.ValueString())
+			}
+		}
+	}
+	if len(data.Connections) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection", []interface{}{})
+		for index, item := range data.Connections {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Default.IsNull() && !item.Default.IsUnknown() {
+				if item.Default.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"default", map[string]string{})
+				}
+			}
+			if !item.None.IsNull() && !item.None.IsUnknown() {
+				if item.None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"none", map[string]string{})
+				}
+			}
+			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
+				if item.StartStopBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"start-stop.broadcast", map[string]string{})
+				}
+			}
+			if !item.StartStopLogger.IsNull() && !item.StartStopLogger.IsUnknown() {
+				if item.StartStopLogger.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"start-stop.logger", map[string]string{})
+				}
+			}
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"start-stop.group1.group", item.StartStopGroup1.ValueString())
+			}
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"start-stop.group2.group", item.StartStopGroup2.ValueString())
+			}
+			if !item.StartStopGroup3.IsNull() && !item.StartStopGroup3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"start-stop.group3.group", item.StartStopGroup3.ValueString())
+			}
+			if !item.StartStopGroup4.IsNull() && !item.StartStopGroup4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"start-stop.group4.group", item.StartStopGroup4.ValueString())
+			}
+			if !item.StopOnlyBroadcast.IsNull() && !item.StopOnlyBroadcast.IsUnknown() {
+				if item.StopOnlyBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"stop-only.broadcast", map[string]string{})
+				}
+			}
+			if !item.StopOnlyLogger.IsNull() && !item.StopOnlyLogger.IsUnknown() {
+				if item.StopOnlyLogger.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"stop-only.logger", map[string]string{})
+				}
+			}
+			if !item.StopOnlyGroup1.IsNull() && !item.StopOnlyGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"stop-only.group1.group", item.StopOnlyGroup1.ValueString())
+			}
+			if !item.StopOnlyGroup2.IsNull() && !item.StopOnlyGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"stop-only.group2.group", item.StopOnlyGroup2.ValueString())
+			}
+			if !item.StopOnlyGroup3.IsNull() && !item.StopOnlyGroup3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"stop-only.group3.group", item.StopOnlyGroup3.ValueString())
+			}
+			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"stop-only.group4.group", item.StopOnlyGroup4.ValueString())
+			}
+			if !item.WaitStartBroadcast.IsNull() && !item.WaitStartBroadcast.IsUnknown() {
+				if item.WaitStartBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.broadcast", map[string]string{})
+				}
+			}
+			if !item.WaitStartLogger.IsNull() && !item.WaitStartLogger.IsUnknown() {
+				if item.WaitStartLogger.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.logger", map[string]string{})
+				}
+			}
+			if !item.WaitStartGroup1.IsNull() && !item.WaitStartGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.group1.group", item.WaitStartGroup1.ValueString())
+			}
+			if !item.WaitStartGroup2.IsNull() && !item.WaitStartGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.group2.group", item.WaitStartGroup2.ValueString())
+			}
+			if !item.WaitStartGroup3.IsNull() && !item.WaitStartGroup3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.group3.group", item.WaitStartGroup3.ValueString())
+			}
+			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"connection"+"."+strconv.Itoa(index)+"."+"wait-start.group4.group", item.WaitStartGroup4.ValueString())
+			}
+		}
+	}
+	if len(data.Execs) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec", []interface{}{})
+		for index, item := range data.Execs {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.None.IsNull() && !item.None.IsUnknown() {
+				if item.None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"none", map[string]string{})
+				}
+			}
+			if !item.StartStopBroadcast.IsNull() && !item.StartStopBroadcast.IsUnknown() {
+				if item.StartStopBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.broadcast", map[string]string{})
+				}
+			}
+			if !item.StartStopLogger.IsNull() && !item.StartStopLogger.IsUnknown() {
+				if item.StartStopLogger.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.logger", map[string]string{})
+				}
+			}
+			if !item.StartStopGroup1.IsNull() && !item.StartStopGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.group1.group", item.StartStopGroup1.ValueString())
+			}
+			if !item.StartStopGroup2.IsNull() && !item.StartStopGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.group2.group", item.StartStopGroup2.ValueString())
+			}
+			if !item.StartStopGroup3.IsNull() && !item.StartStopGroup3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.group3.group", item.StartStopGroup3.ValueString())
+			}
+			if !item.StartStopGroup4.IsNull() && !item.StartStopGroup4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"start-stop.group4.group", item.StartStopGroup4.ValueString())
+			}
+			if !item.StopOnlyBroadcast.IsNull() && !item.StopOnlyBroadcast.IsUnknown() {
+				if item.StopOnlyBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"stop-only.broadcast", map[string]string{})
+				}
+			}
+			if !item.StopOnlyLogger.IsNull() && !item.StopOnlyLogger.IsUnknown() {
+				if item.StopOnlyLogger.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"stop-only.logger", map[string]string{})
+				}
+			}
+			if !item.StopOnlyGroup1.IsNull() && !item.StopOnlyGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"stop-only.group1.group", item.StopOnlyGroup1.ValueString())
+			}
+			if !item.StopOnlyGroup2.IsNull() && !item.StopOnlyGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"stop-only.group2.group", item.StopOnlyGroup2.ValueString())
+			}
+			if !item.StopOnlyGroup3.IsNull() && !item.StopOnlyGroup3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"stop-only.group3.group", item.StopOnlyGroup3.ValueString())
+			}
+			if !item.StopOnlyGroup4.IsNull() && !item.StopOnlyGroup4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"stop-only.group4.group", item.StopOnlyGroup4.ValueString())
+			}
+			if !item.WaitStartBroadcast.IsNull() && !item.WaitStartBroadcast.IsUnknown() {
+				if item.WaitStartBroadcast.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.broadcast", map[string]string{})
+				}
+			}
+			if !item.WaitStartLogger.IsNull() && !item.WaitStartLogger.IsUnknown() {
+				if item.WaitStartLogger.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.logger", map[string]string{})
+				}
+			}
+			if !item.WaitStartGroup1.IsNull() && !item.WaitStartGroup1.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group1.group", item.WaitStartGroup1.ValueString())
+			}
+			if !item.WaitStartGroup2.IsNull() && !item.WaitStartGroup2.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group2.group", item.WaitStartGroup2.ValueString())
+			}
+			if !item.WaitStartGroup3.IsNull() && !item.WaitStartGroup3.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group3.group", item.WaitStartGroup3.ValueString())
+			}
+			if !item.WaitStartGroup4.IsNull() && !item.WaitStartGroup4.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec"+"."+strconv.Itoa(index)+"."+"wait-start.group4.group", item.WaitStartGroup4.ValueString())
 			}
 		}
 	}
@@ -305,40 +555,6 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.IdentityDefaultStartStopGroup4 = types.StringNull()
 	}
-	for i := range data.Execs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Execs[i].Name.ValueString()}
-
-		var r gjson.Result
-		res.Get(prefix + "exec").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
-					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("name"); value.Exists() && !data.Execs[i].Name.IsNull() {
-			data.Execs[i].Name = types.StringValue(value.String())
-		} else {
-			data.Execs[i].Name = types.StringNull()
-		}
-		if value := r.Get("start-stop.group1.group"); value.Exists() && !data.Execs[i].StartStopGroup1.IsNull() {
-			data.Execs[i].StartStopGroup1 = types.StringValue(value.String())
-		} else {
-			data.Execs[i].StartStopGroup1 = types.StringNull()
-		}
-	}
 	for i := range data.Networks {
 		keys := [...]string{"id"}
 		keyValues := [...]string{data.Networks[i].Id.ValueString()}
@@ -384,6 +600,405 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 		}
 	} else {
 		data.SystemGuaranteeFirst = types.BoolNull()
+	}
+	for i := range data.Commands {
+		keys := [...]string{"level", "list-name"}
+		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "commands").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("level"); value.Exists() && !data.Commands[i].Level.IsNull() {
+			data.Commands[i].Level = types.Int64Value(value.Int())
+		} else {
+			data.Commands[i].Level = types.Int64Null()
+		}
+		if value := r.Get("list-name"); value.Exists() && !data.Commands[i].ListName.IsNull() {
+			data.Commands[i].ListName = types.StringValue(value.String())
+		} else {
+			data.Commands[i].ListName = types.StringNull()
+		}
+		if value := r.Get("commands-config.action-type"); value.Exists() && !data.Commands[i].CommandsConfigActionType.IsNull() {
+			data.Commands[i].CommandsConfigActionType = types.StringValue(value.String())
+		} else {
+			data.Commands[i].CommandsConfigActionType = types.StringNull()
+		}
+		if value := r.Get("commands-config.broadcast"); !data.Commands[i].CommandsConfigBroadcast.IsNull() {
+			if value.Exists() {
+				data.Commands[i].CommandsConfigBroadcast = types.BoolValue(true)
+			} else {
+				data.Commands[i].CommandsConfigBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].CommandsConfigBroadcast = types.BoolNull()
+		}
+		if value := r.Get("commands-config.group-config.broadcast"); !data.Commands[i].CommandsConfigGroupBroadcast.IsNull() {
+			if value.Exists() {
+				data.Commands[i].CommandsConfigGroupBroadcast = types.BoolValue(true)
+			} else {
+				data.Commands[i].CommandsConfigGroupBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].CommandsConfigGroupBroadcast = types.BoolNull()
+		}
+		if value := r.Get("commands-config.group-config.logger"); !data.Commands[i].CommandsConfigGroupLogger.IsNull() {
+			if value.Exists() {
+				data.Commands[i].CommandsConfigGroupLogger = types.BoolValue(true)
+			} else {
+				data.Commands[i].CommandsConfigGroupLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].CommandsConfigGroupLogger = types.BoolNull()
+		}
+		if value := r.Get("commands-config.group-config.group1.group"); value.Exists() && !data.Commands[i].CommandsConfigGroup1.IsNull() {
+			data.Commands[i].CommandsConfigGroup1 = types.StringValue(value.String())
+		} else {
+			data.Commands[i].CommandsConfigGroup1 = types.StringNull()
+		}
+		if value := r.Get("commands-config.group-config.group2.group"); value.Exists() && !data.Commands[i].CommandsConfigGroup2.IsNull() {
+			data.Commands[i].CommandsConfigGroup2 = types.StringValue(value.String())
+		} else {
+			data.Commands[i].CommandsConfigGroup2 = types.StringNull()
+		}
+		if value := r.Get("commands-config.group-config.group3.group"); value.Exists() && !data.Commands[i].CommandsConfigGroup3.IsNull() {
+			data.Commands[i].CommandsConfigGroup3 = types.StringValue(value.String())
+		} else {
+			data.Commands[i].CommandsConfigGroup3 = types.StringNull()
+		}
+		if value := r.Get("commands-config.group-config.group4.group"); value.Exists() && !data.Commands[i].CommandsConfigGroup4.IsNull() {
+			data.Commands[i].CommandsConfigGroup4 = types.StringValue(value.String())
+		} else {
+			data.Commands[i].CommandsConfigGroup4 = types.StringNull()
+		}
+	}
+	for i := range data.Connections {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Connections[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "connection").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Connections[i].Name.IsNull() {
+			data.Connections[i].Name = types.StringValue(value.String())
+		} else {
+			data.Connections[i].Name = types.StringNull()
+		}
+		if value := r.Get("default"); !data.Connections[i].Default.IsNull() {
+			if value.Exists() {
+				data.Connections[i].Default = types.BoolValue(true)
+			} else {
+				data.Connections[i].Default = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].Default = types.BoolNull()
+		}
+		if value := r.Get("none"); !data.Connections[i].None.IsNull() {
+			if value.Exists() {
+				data.Connections[i].None = types.BoolValue(true)
+			} else {
+				data.Connections[i].None = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].None = types.BoolNull()
+		}
+		if value := r.Get("start-stop.broadcast"); !data.Connections[i].StartStopBroadcast.IsNull() {
+			if value.Exists() {
+				data.Connections[i].StartStopBroadcast = types.BoolValue(true)
+			} else {
+				data.Connections[i].StartStopBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].StartStopBroadcast = types.BoolNull()
+		}
+		if value := r.Get("start-stop.logger"); !data.Connections[i].StartStopLogger.IsNull() {
+			if value.Exists() {
+				data.Connections[i].StartStopLogger = types.BoolValue(true)
+			} else {
+				data.Connections[i].StartStopLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].StartStopLogger = types.BoolNull()
+		}
+		if value := r.Get("start-stop.group1.group"); value.Exists() && !data.Connections[i].StartStopGroup1.IsNull() {
+			data.Connections[i].StartStopGroup1 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StartStopGroup1 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group2.group"); value.Exists() && !data.Connections[i].StartStopGroup2.IsNull() {
+			data.Connections[i].StartStopGroup2 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StartStopGroup2 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group3.group"); value.Exists() && !data.Connections[i].StartStopGroup3.IsNull() {
+			data.Connections[i].StartStopGroup3 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StartStopGroup3 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group4.group"); value.Exists() && !data.Connections[i].StartStopGroup4.IsNull() {
+			data.Connections[i].StartStopGroup4 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StartStopGroup4 = types.StringNull()
+		}
+		if value := r.Get("stop-only.broadcast"); !data.Connections[i].StopOnlyBroadcast.IsNull() {
+			if value.Exists() {
+				data.Connections[i].StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				data.Connections[i].StopOnlyBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].StopOnlyBroadcast = types.BoolNull()
+		}
+		if value := r.Get("stop-only.logger"); !data.Connections[i].StopOnlyLogger.IsNull() {
+			if value.Exists() {
+				data.Connections[i].StopOnlyLogger = types.BoolValue(true)
+			} else {
+				data.Connections[i].StopOnlyLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].StopOnlyLogger = types.BoolNull()
+		}
+		if value := r.Get("stop-only.group1.group"); value.Exists() && !data.Connections[i].StopOnlyGroup1.IsNull() {
+			data.Connections[i].StopOnlyGroup1 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StopOnlyGroup1 = types.StringNull()
+		}
+		if value := r.Get("stop-only.group2.group"); value.Exists() && !data.Connections[i].StopOnlyGroup2.IsNull() {
+			data.Connections[i].StopOnlyGroup2 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StopOnlyGroup2 = types.StringNull()
+		}
+		if value := r.Get("stop-only.group3.group"); value.Exists() && !data.Connections[i].StopOnlyGroup3.IsNull() {
+			data.Connections[i].StopOnlyGroup3 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StopOnlyGroup3 = types.StringNull()
+		}
+		if value := r.Get("stop-only.group4.group"); value.Exists() && !data.Connections[i].StopOnlyGroup4.IsNull() {
+			data.Connections[i].StopOnlyGroup4 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].StopOnlyGroup4 = types.StringNull()
+		}
+		if value := r.Get("wait-start.broadcast"); !data.Connections[i].WaitStartBroadcast.IsNull() {
+			if value.Exists() {
+				data.Connections[i].WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				data.Connections[i].WaitStartBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].WaitStartBroadcast = types.BoolNull()
+		}
+		if value := r.Get("wait-start.logger"); !data.Connections[i].WaitStartLogger.IsNull() {
+			if value.Exists() {
+				data.Connections[i].WaitStartLogger = types.BoolValue(true)
+			} else {
+				data.Connections[i].WaitStartLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Connections[i].WaitStartLogger = types.BoolNull()
+		}
+		if value := r.Get("wait-start.group1.group"); value.Exists() && !data.Connections[i].WaitStartGroup1.IsNull() {
+			data.Connections[i].WaitStartGroup1 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].WaitStartGroup1 = types.StringNull()
+		}
+		if value := r.Get("wait-start.group2.group"); value.Exists() && !data.Connections[i].WaitStartGroup2.IsNull() {
+			data.Connections[i].WaitStartGroup2 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].WaitStartGroup2 = types.StringNull()
+		}
+		if value := r.Get("wait-start.group3.group"); value.Exists() && !data.Connections[i].WaitStartGroup3.IsNull() {
+			data.Connections[i].WaitStartGroup3 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].WaitStartGroup3 = types.StringNull()
+		}
+		if value := r.Get("wait-start.group4.group"); value.Exists() && !data.Connections[i].WaitStartGroup4.IsNull() {
+			data.Connections[i].WaitStartGroup4 = types.StringValue(value.String())
+		} else {
+			data.Connections[i].WaitStartGroup4 = types.StringNull()
+		}
+	}
+	for i := range data.Execs {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "exec").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Execs[i].Name.IsNull() {
+			data.Execs[i].Name = types.StringValue(value.String())
+		} else {
+			data.Execs[i].Name = types.StringNull()
+		}
+		if value := r.Get("none"); !data.Execs[i].None.IsNull() {
+			if value.Exists() {
+				data.Execs[i].None = types.BoolValue(true)
+			} else {
+				data.Execs[i].None = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].None = types.BoolNull()
+		}
+		if value := r.Get("start-stop.broadcast"); !data.Execs[i].StartStopBroadcast.IsNull() {
+			if value.Exists() {
+				data.Execs[i].StartStopBroadcast = types.BoolValue(true)
+			} else {
+				data.Execs[i].StartStopBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].StartStopBroadcast = types.BoolNull()
+		}
+		if value := r.Get("start-stop.logger"); !data.Execs[i].StartStopLogger.IsNull() {
+			if value.Exists() {
+				data.Execs[i].StartStopLogger = types.BoolValue(true)
+			} else {
+				data.Execs[i].StartStopLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].StartStopLogger = types.BoolNull()
+		}
+		if value := r.Get("start-stop.group1.group"); value.Exists() && !data.Execs[i].StartStopGroup1.IsNull() {
+			data.Execs[i].StartStopGroup1 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StartStopGroup1 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group2.group"); value.Exists() && !data.Execs[i].StartStopGroup2.IsNull() {
+			data.Execs[i].StartStopGroup2 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StartStopGroup2 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group3.group"); value.Exists() && !data.Execs[i].StartStopGroup3.IsNull() {
+			data.Execs[i].StartStopGroup3 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StartStopGroup3 = types.StringNull()
+		}
+		if value := r.Get("start-stop.group4.group"); value.Exists() && !data.Execs[i].StartStopGroup4.IsNull() {
+			data.Execs[i].StartStopGroup4 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StartStopGroup4 = types.StringNull()
+		}
+		if value := r.Get("stop-only.broadcast"); !data.Execs[i].StopOnlyBroadcast.IsNull() {
+			if value.Exists() {
+				data.Execs[i].StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				data.Execs[i].StopOnlyBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].StopOnlyBroadcast = types.BoolNull()
+		}
+		if value := r.Get("stop-only.logger"); !data.Execs[i].StopOnlyLogger.IsNull() {
+			if value.Exists() {
+				data.Execs[i].StopOnlyLogger = types.BoolValue(true)
+			} else {
+				data.Execs[i].StopOnlyLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].StopOnlyLogger = types.BoolNull()
+		}
+		if value := r.Get("stop-only.group1.group"); value.Exists() && !data.Execs[i].StopOnlyGroup1.IsNull() {
+			data.Execs[i].StopOnlyGroup1 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StopOnlyGroup1 = types.StringNull()
+		}
+		if value := r.Get("stop-only.group2.group"); value.Exists() && !data.Execs[i].StopOnlyGroup2.IsNull() {
+			data.Execs[i].StopOnlyGroup2 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StopOnlyGroup2 = types.StringNull()
+		}
+		if value := r.Get("stop-only.group3.group"); value.Exists() && !data.Execs[i].StopOnlyGroup3.IsNull() {
+			data.Execs[i].StopOnlyGroup3 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StopOnlyGroup3 = types.StringNull()
+		}
+		if value := r.Get("stop-only.group4.group"); value.Exists() && !data.Execs[i].StopOnlyGroup4.IsNull() {
+			data.Execs[i].StopOnlyGroup4 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].StopOnlyGroup4 = types.StringNull()
+		}
+		if value := r.Get("wait-start.broadcast"); !data.Execs[i].WaitStartBroadcast.IsNull() {
+			if value.Exists() {
+				data.Execs[i].WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				data.Execs[i].WaitStartBroadcast = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].WaitStartBroadcast = types.BoolNull()
+		}
+		if value := r.Get("wait-start.logger"); !data.Execs[i].WaitStartLogger.IsNull() {
+			if value.Exists() {
+				data.Execs[i].WaitStartLogger = types.BoolValue(true)
+			} else {
+				data.Execs[i].WaitStartLogger = types.BoolValue(false)
+			}
+		} else {
+			data.Execs[i].WaitStartLogger = types.BoolNull()
+		}
+		if value := r.Get("wait-start.group1.group"); value.Exists() && !data.Execs[i].WaitStartGroup1.IsNull() {
+			data.Execs[i].WaitStartGroup1 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].WaitStartGroup1 = types.StringNull()
+		}
+		if value := r.Get("wait-start.group2.group"); value.Exists() && !data.Execs[i].WaitStartGroup2.IsNull() {
+			data.Execs[i].WaitStartGroup2 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].WaitStartGroup2 = types.StringNull()
+		}
+		if value := r.Get("wait-start.group3.group"); value.Exists() && !data.Execs[i].WaitStartGroup3.IsNull() {
+			data.Execs[i].WaitStartGroup3 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].WaitStartGroup3 = types.StringNull()
+		}
+		if value := r.Get("wait-start.group4.group"); value.Exists() && !data.Execs[i].WaitStartGroup4.IsNull() {
+			data.Execs[i].WaitStartGroup4 = types.StringValue(value.String())
+		} else {
+			data.Execs[i].WaitStartGroup4 = types.StringNull()
+		}
 	}
 }
 
@@ -449,20 +1064,6 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "identity.default.start-stop.group-config.group4.group"); value.Exists() {
 		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "exec"); value.Exists() {
-		data.Execs = make([]AAAAccountingExecs, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingExecs{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("start-stop.group1.group"); cValue.Exists() {
-				item.StartStopGroup1 = types.StringValue(cValue.String())
-			}
-			data.Execs = append(data.Execs, item)
-			return true
-		})
-	}
 	if value := res.Get(prefix + "network"); value.Exists() {
 		data.Networks = make([]AAAAccountingNetworks, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -484,6 +1085,219 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 		data.SystemGuaranteeFirst = types.BoolValue(value.Bool())
 	} else {
 		data.SystemGuaranteeFirst = types.BoolNull()
+	}
+	if value := res.Get(prefix + "commands"); value.Exists() {
+		data.Commands = make([]AAAAccountingCommands, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingCommands{}
+			if cValue := v.Get("level"); cValue.Exists() {
+				item.Level = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("list-name"); cValue.Exists() {
+				item.ListName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.action-type"); cValue.Exists() {
+				item.CommandsConfigActionType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.broadcast"); cValue.Exists() {
+				item.CommandsConfigBroadcast = types.BoolValue(true)
+			} else {
+				item.CommandsConfigBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("commands-config.group-config.broadcast"); cValue.Exists() {
+				item.CommandsConfigGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.CommandsConfigGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("commands-config.group-config.logger"); cValue.Exists() {
+				item.CommandsConfigGroupLogger = types.BoolValue(true)
+			} else {
+				item.CommandsConfigGroupLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("commands-config.group-config.group1.group"); cValue.Exists() {
+				item.CommandsConfigGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.group-config.group2.group"); cValue.Exists() {
+				item.CommandsConfigGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.group-config.group3.group"); cValue.Exists() {
+				item.CommandsConfigGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.group-config.group4.group"); cValue.Exists() {
+				item.CommandsConfigGroup4 = types.StringValue(cValue.String())
+			}
+			data.Commands = append(data.Commands, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "connection"); value.Exists() {
+		data.Connections = make([]AAAAccountingConnections, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingConnections{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("default"); cValue.Exists() {
+				item.Default = types.BoolValue(true)
+			} else {
+				item.Default = types.BoolValue(false)
+			}
+			if cValue := v.Get("none"); cValue.Exists() {
+				item.None = types.BoolValue(true)
+			} else {
+				item.None = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.logger"); cValue.Exists() {
+				item.StartStopLogger = types.BoolValue(true)
+			} else {
+				item.StartStopLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group2.group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group3.group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group4.group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.broadcast"); cValue.Exists() {
+				item.StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				item.StopOnlyBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("stop-only.logger"); cValue.Exists() {
+				item.StopOnlyLogger = types.BoolValue(true)
+			} else {
+				item.StopOnlyLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("stop-only.group1.group"); cValue.Exists() {
+				item.StopOnlyGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group2.group"); cValue.Exists() {
+				item.StopOnlyGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group3.group"); cValue.Exists() {
+				item.StopOnlyGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group4.group"); cValue.Exists() {
+				item.StopOnlyGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.broadcast"); cValue.Exists() {
+				item.WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				item.WaitStartBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("wait-start.logger"); cValue.Exists() {
+				item.WaitStartLogger = types.BoolValue(true)
+			} else {
+				item.WaitStartLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("wait-start.group1.group"); cValue.Exists() {
+				item.WaitStartGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group2.group"); cValue.Exists() {
+				item.WaitStartGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group3.group"); cValue.Exists() {
+				item.WaitStartGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group4.group"); cValue.Exists() {
+				item.WaitStartGroup4 = types.StringValue(cValue.String())
+			}
+			data.Connections = append(data.Connections, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "exec"); value.Exists() {
+		data.Execs = make([]AAAAccountingExecs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingExecs{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("none"); cValue.Exists() {
+				item.None = types.BoolValue(true)
+			} else {
+				item.None = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.logger"); cValue.Exists() {
+				item.StartStopLogger = types.BoolValue(true)
+			} else {
+				item.StartStopLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group2.group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group3.group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group4.group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.broadcast"); cValue.Exists() {
+				item.StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				item.StopOnlyBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("stop-only.logger"); cValue.Exists() {
+				item.StopOnlyLogger = types.BoolValue(true)
+			} else {
+				item.StopOnlyLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("stop-only.group1.group"); cValue.Exists() {
+				item.StopOnlyGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group2.group"); cValue.Exists() {
+				item.StopOnlyGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group3.group"); cValue.Exists() {
+				item.StopOnlyGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group4.group"); cValue.Exists() {
+				item.StopOnlyGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.broadcast"); cValue.Exists() {
+				item.WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				item.WaitStartBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("wait-start.logger"); cValue.Exists() {
+				item.WaitStartLogger = types.BoolValue(true)
+			} else {
+				item.WaitStartLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("wait-start.group1.group"); cValue.Exists() {
+				item.WaitStartGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group2.group"); cValue.Exists() {
+				item.WaitStartGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group3.group"); cValue.Exists() {
+				item.WaitStartGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group4.group"); cValue.Exists() {
+				item.WaitStartGroup4 = types.StringValue(cValue.String())
+			}
+			data.Execs = append(data.Execs, item)
+			return true
+		})
 	}
 }
 
@@ -549,20 +1363,6 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "identity.default.start-stop.group-config.group4.group"); value.Exists() {
 		data.IdentityDefaultStartStopGroup4 = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "exec"); value.Exists() {
-		data.Execs = make([]AAAAccountingExecs, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := AAAAccountingExecs{}
-			if cValue := v.Get("name"); cValue.Exists() {
-				item.Name = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("start-stop.group1.group"); cValue.Exists() {
-				item.StartStopGroup1 = types.StringValue(cValue.String())
-			}
-			data.Execs = append(data.Execs, item)
-			return true
-		})
-	}
 	if value := res.Get(prefix + "network"); value.Exists() {
 		data.Networks = make([]AAAAccountingNetworks, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -585,6 +1385,219 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SystemGuaranteeFirst = types.BoolNull()
 	}
+	if value := res.Get(prefix + "commands"); value.Exists() {
+		data.Commands = make([]AAAAccountingCommands, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingCommands{}
+			if cValue := v.Get("level"); cValue.Exists() {
+				item.Level = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("list-name"); cValue.Exists() {
+				item.ListName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.action-type"); cValue.Exists() {
+				item.CommandsConfigActionType = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.broadcast"); cValue.Exists() {
+				item.CommandsConfigBroadcast = types.BoolValue(true)
+			} else {
+				item.CommandsConfigBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("commands-config.group-config.broadcast"); cValue.Exists() {
+				item.CommandsConfigGroupBroadcast = types.BoolValue(true)
+			} else {
+				item.CommandsConfigGroupBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("commands-config.group-config.logger"); cValue.Exists() {
+				item.CommandsConfigGroupLogger = types.BoolValue(true)
+			} else {
+				item.CommandsConfigGroupLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("commands-config.group-config.group1.group"); cValue.Exists() {
+				item.CommandsConfigGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.group-config.group2.group"); cValue.Exists() {
+				item.CommandsConfigGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.group-config.group3.group"); cValue.Exists() {
+				item.CommandsConfigGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("commands-config.group-config.group4.group"); cValue.Exists() {
+				item.CommandsConfigGroup4 = types.StringValue(cValue.String())
+			}
+			data.Commands = append(data.Commands, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "connection"); value.Exists() {
+		data.Connections = make([]AAAAccountingConnections, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingConnections{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("default"); cValue.Exists() {
+				item.Default = types.BoolValue(true)
+			} else {
+				item.Default = types.BoolValue(false)
+			}
+			if cValue := v.Get("none"); cValue.Exists() {
+				item.None = types.BoolValue(true)
+			} else {
+				item.None = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.logger"); cValue.Exists() {
+				item.StartStopLogger = types.BoolValue(true)
+			} else {
+				item.StartStopLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group2.group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group3.group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group4.group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.broadcast"); cValue.Exists() {
+				item.StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				item.StopOnlyBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("stop-only.logger"); cValue.Exists() {
+				item.StopOnlyLogger = types.BoolValue(true)
+			} else {
+				item.StopOnlyLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("stop-only.group1.group"); cValue.Exists() {
+				item.StopOnlyGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group2.group"); cValue.Exists() {
+				item.StopOnlyGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group3.group"); cValue.Exists() {
+				item.StopOnlyGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group4.group"); cValue.Exists() {
+				item.StopOnlyGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.broadcast"); cValue.Exists() {
+				item.WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				item.WaitStartBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("wait-start.logger"); cValue.Exists() {
+				item.WaitStartLogger = types.BoolValue(true)
+			} else {
+				item.WaitStartLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("wait-start.group1.group"); cValue.Exists() {
+				item.WaitStartGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group2.group"); cValue.Exists() {
+				item.WaitStartGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group3.group"); cValue.Exists() {
+				item.WaitStartGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group4.group"); cValue.Exists() {
+				item.WaitStartGroup4 = types.StringValue(cValue.String())
+			}
+			data.Connections = append(data.Connections, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "exec"); value.Exists() {
+		data.Execs = make([]AAAAccountingExecs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAccountingExecs{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("none"); cValue.Exists() {
+				item.None = types.BoolValue(true)
+			} else {
+				item.None = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.broadcast"); cValue.Exists() {
+				item.StartStopBroadcast = types.BoolValue(true)
+			} else {
+				item.StartStopBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.logger"); cValue.Exists() {
+				item.StartStopLogger = types.BoolValue(true)
+			} else {
+				item.StartStopLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("start-stop.group1.group"); cValue.Exists() {
+				item.StartStopGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group2.group"); cValue.Exists() {
+				item.StartStopGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group3.group"); cValue.Exists() {
+				item.StartStopGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("start-stop.group4.group"); cValue.Exists() {
+				item.StartStopGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.broadcast"); cValue.Exists() {
+				item.StopOnlyBroadcast = types.BoolValue(true)
+			} else {
+				item.StopOnlyBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("stop-only.logger"); cValue.Exists() {
+				item.StopOnlyLogger = types.BoolValue(true)
+			} else {
+				item.StopOnlyLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("stop-only.group1.group"); cValue.Exists() {
+				item.StopOnlyGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group2.group"); cValue.Exists() {
+				item.StopOnlyGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group3.group"); cValue.Exists() {
+				item.StopOnlyGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("stop-only.group4.group"); cValue.Exists() {
+				item.StopOnlyGroup4 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.broadcast"); cValue.Exists() {
+				item.WaitStartBroadcast = types.BoolValue(true)
+			} else {
+				item.WaitStartBroadcast = types.BoolValue(false)
+			}
+			if cValue := v.Get("wait-start.logger"); cValue.Exists() {
+				item.WaitStartLogger = types.BoolValue(true)
+			} else {
+				item.WaitStartLogger = types.BoolValue(false)
+			}
+			if cValue := v.Get("wait-start.group1.group"); cValue.Exists() {
+				item.WaitStartGroup1 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group2.group"); cValue.Exists() {
+				item.WaitStartGroup2 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group3.group"); cValue.Exists() {
+				item.WaitStartGroup3 = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("wait-start.group4.group"); cValue.Exists() {
+				item.WaitStartGroup4 = types.StringValue(cValue.String())
+			}
+			data.Execs = append(data.Execs, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -593,6 +1606,228 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccounting) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Execs {
+		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Execs[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Execs {
+			found = true
+			if state.Execs[i].Name.ValueString() != data.Execs[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Execs[i].WaitStartGroup4.IsNull() && data.Execs[j].WaitStartGroup4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].WaitStartGroup3.IsNull() && data.Execs[j].WaitStartGroup3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].WaitStartGroup2.IsNull() && data.Execs[j].WaitStartGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].WaitStartGroup1.IsNull() && data.Execs[j].WaitStartGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].WaitStartLogger.IsNull() && data.Execs[j].WaitStartLogger.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].WaitStartBroadcast.IsNull() && data.Execs[j].WaitStartBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/wait-start/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StopOnlyGroup4.IsNull() && data.Execs[j].StopOnlyGroup4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/stop-only/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StopOnlyGroup3.IsNull() && data.Execs[j].StopOnlyGroup3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/stop-only/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StopOnlyGroup2.IsNull() && data.Execs[j].StopOnlyGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/stop-only/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StopOnlyGroup1.IsNull() && data.Execs[j].StopOnlyGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/stop-only/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StopOnlyLogger.IsNull() && data.Execs[j].StopOnlyLogger.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/stop-only/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StopOnlyBroadcast.IsNull() && data.Execs[j].StopOnlyBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/stop-only/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StartStopGroup4.IsNull() && data.Execs[j].StartStopGroup4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/start-stop/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StartStopGroup3.IsNull() && data.Execs[j].StartStopGroup3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/start-stop/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StartStopGroup2.IsNull() && data.Execs[j].StartStopGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/start-stop/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StartStopGroup1.IsNull() && data.Execs[j].StartStopGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/start-stop/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StartStopLogger.IsNull() && data.Execs[j].StartStopLogger.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/start-stop/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].StartStopBroadcast.IsNull() && data.Execs[j].StartStopBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/start-stop/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Execs[i].None.IsNull() && data.Execs[j].None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Connections {
+		stateKeyValues := [...]string{state.Connections[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Connections[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Connections {
+			found = true
+			if state.Connections[i].Name.ValueString() != data.Connections[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Connections[i].WaitStartGroup4.IsNull() && data.Connections[j].WaitStartGroup4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].WaitStartGroup3.IsNull() && data.Connections[j].WaitStartGroup3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].WaitStartGroup2.IsNull() && data.Connections[j].WaitStartGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].WaitStartGroup1.IsNull() && data.Connections[j].WaitStartGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].WaitStartLogger.IsNull() && data.Connections[j].WaitStartLogger.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].WaitStartBroadcast.IsNull() && data.Connections[j].WaitStartBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/wait-start/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StopOnlyGroup4.IsNull() && data.Connections[j].StopOnlyGroup4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/stop-only/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StopOnlyGroup3.IsNull() && data.Connections[j].StopOnlyGroup3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/stop-only/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StopOnlyGroup2.IsNull() && data.Connections[j].StopOnlyGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/stop-only/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StopOnlyGroup1.IsNull() && data.Connections[j].StopOnlyGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/stop-only/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StopOnlyLogger.IsNull() && data.Connections[j].StopOnlyLogger.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/stop-only/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StopOnlyBroadcast.IsNull() && data.Connections[j].StopOnlyBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/stop-only/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StartStopGroup4.IsNull() && data.Connections[j].StartStopGroup4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/start-stop/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StartStopGroup3.IsNull() && data.Connections[j].StartStopGroup3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/start-stop/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StartStopGroup2.IsNull() && data.Connections[j].StartStopGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/start-stop/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StartStopGroup1.IsNull() && data.Connections[j].StartStopGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/start-stop/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StartStopLogger.IsNull() && data.Connections[j].StartStopLogger.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/start-stop/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].StartStopBroadcast.IsNull() && data.Connections[j].StartStopBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/start-stop/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].None.IsNull() && data.Connections[j].None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Connections[i].Default.IsNull() && data.Connections[j].Default.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v/default", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/connection=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.Commands {
+		stateKeyValues := [...]string{strconv.FormatInt(state.Commands[i].Level.ValueInt64(), 10), state.Commands[i].ListName.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Commands[i].Level.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Commands[i].ListName.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Commands {
+			found = true
+			if state.Commands[i].Level.ValueInt64() != data.Commands[j].Level.ValueInt64() {
+				found = false
+			}
+			if state.Commands[i].ListName.ValueString() != data.Commands[j].ListName.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Commands[i].CommandsConfigGroup4.IsNull() && data.Commands[j].CommandsConfigGroup4.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].CommandsConfigGroup3.IsNull() && data.Commands[j].CommandsConfigGroup3.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].CommandsConfigGroup2.IsNull() && data.Commands[j].CommandsConfigGroup2.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].CommandsConfigGroup1.IsNull() && data.Commands[j].CommandsConfigGroup1.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].CommandsConfigGroupLogger.IsNull() && data.Commands[j].CommandsConfigGroupLogger.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].CommandsConfigGroupBroadcast.IsNull() && data.Commands[j].CommandsConfigGroupBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].CommandsConfigBroadcast.IsNull() && data.Commands[j].CommandsConfigBroadcast.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].CommandsConfigActionType.IsNull() && data.Commands[j].CommandsConfigActionType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/action-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.SystemGuaranteeFirst.IsNull() && data.SystemGuaranteeFirst.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/system/guarantee-first", state.getPath()))
 	}
@@ -625,34 +1860,6 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/network=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.Execs {
-		stateKeyValues := [...]string{state.Execs[i].Name.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Execs[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Execs {
-			found = true
-			if state.Execs[i].Name.ValueString() != data.Execs[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Execs[i].StartStopGroup1.IsNull() && data.Execs[j].StartStopGroup1.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v/start-stop/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/exec=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	if !state.IdentityDefaultStartStopGroup4.IsNull() && data.IdentityDefaultStartStopGroup4.IsNull() {
@@ -727,6 +1934,72 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	for i := range data.Execs {
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
+		if !data.Execs[i].WaitStartLogger.IsNull() && !data.Execs[i].WaitStartLogger.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/wait-start/logger", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].WaitStartBroadcast.IsNull() && !data.Execs[i].WaitStartBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/wait-start/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].StopOnlyLogger.IsNull() && !data.Execs[i].StopOnlyLogger.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/stop-only/logger", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].StopOnlyBroadcast.IsNull() && !data.Execs[i].StopOnlyBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/stop-only/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].StartStopLogger.IsNull() && !data.Execs[i].StartStopLogger.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/start-stop/logger", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].StartStopBroadcast.IsNull() && !data.Execs[i].StartStopBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/start-stop/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Execs[i].None.IsNull() && !data.Execs[i].None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/exec=%v/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
+	for i := range data.Connections {
+		keyValues := [...]string{data.Connections[i].Name.ValueString()}
+		if !data.Connections[i].WaitStartLogger.IsNull() && !data.Connections[i].WaitStartLogger.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/wait-start/logger", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Connections[i].WaitStartBroadcast.IsNull() && !data.Connections[i].WaitStartBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/wait-start/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Connections[i].StopOnlyLogger.IsNull() && !data.Connections[i].StopOnlyLogger.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/stop-only/logger", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Connections[i].StopOnlyBroadcast.IsNull() && !data.Connections[i].StopOnlyBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/stop-only/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Connections[i].StartStopLogger.IsNull() && !data.Connections[i].StartStopLogger.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/start-stop/logger", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Connections[i].StartStopBroadcast.IsNull() && !data.Connections[i].StartStopBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/start-stop/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Connections[i].None.IsNull() && !data.Connections[i].None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Connections[i].Default.IsNull() && !data.Connections[i].Default.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/connection=%v/default", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
+	for i := range data.Commands {
+		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+		if !data.Commands[i].CommandsConfigGroupLogger.IsNull() && !data.Commands[i].CommandsConfigGroupLogger.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/commands-config/group-config/logger", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].CommandsConfigGroupBroadcast.IsNull() && !data.Commands[i].CommandsConfigGroupBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/commands-config/group-config/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].CommandsConfigBroadcast.IsNull() && !data.Commands[i].CommandsConfigBroadcast.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/commands-config/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
 	for i := range data.Identities {
 		keyValues := [...]string{data.Identities[i].Name.ValueString()}
 		if !data.Identities[i].StartStopGroupLogger.IsNull() && !data.Identities[i].StartStopGroupLogger.ValueBool() {
@@ -749,6 +2022,21 @@ func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Execs {
+		keyValues := [...]string{data.Execs[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Connections {
+		keyValues := [...]string{data.Connections[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/connection=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.Commands {
+		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/commands=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	if !data.SystemGuaranteeFirst.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/system/guarantee-first", data.getPath()))
 	}
@@ -756,11 +2044,6 @@ func (data *AAAAccounting) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.Networks[i].Id.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/network=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.Execs {
-		keyValues := [...]string{data.Execs[i].Name.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/exec=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.IdentityDefaultStartStopGroup4.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/identity/default/start-stop/group-config/group4/group", data.getPath()))

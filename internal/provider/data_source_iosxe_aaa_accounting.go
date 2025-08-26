@@ -127,22 +127,6 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Use Server-group",
 				Computed:            true,
 			},
-			"execs": schema.ListNestedAttribute{
-				MarkdownDescription: "For starting an exec (shell).",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-						"start_stop_group1": schema.StringAttribute{
-							MarkdownDescription: "Use Server-group",
-							Computed:            true,
-						},
-					},
-				},
-			},
 			"networks": schema.ListNestedAttribute{
 				MarkdownDescription: "For network services. (PPP, SLIP, ARAP)",
 				Computed:            true,
@@ -166,6 +150,234 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 			"system_guarantee_first": schema.BoolAttribute{
 				MarkdownDescription: "Guarantee system accounting as first record.",
 				Computed:            true,
+			},
+			"commands": schema.ListNestedAttribute{
+				MarkdownDescription: "For exec (shell) commands.",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"level": schema.Int64Attribute{
+							MarkdownDescription: "Enable level",
+							Computed:            true,
+						},
+						"list_name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"commands_config_action_type": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"commands_config_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"commands_config_group_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"commands_config_group_logger": schema.BoolAttribute{
+							MarkdownDescription: "Use system logger for Accounting",
+							Computed:            true,
+						},
+						"commands_config_group1": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"commands_config_group2": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"commands_config_group3": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"commands_config_group4": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"connections": schema.ListNestedAttribute{
+				MarkdownDescription: "For outbound connections. (telnet, rlogin)",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"default": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"none": schema.BoolAttribute{
+							MarkdownDescription: "No accounting.",
+							Computed:            true,
+						},
+						"start_stop_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"start_stop_logger": schema.BoolAttribute{
+							MarkdownDescription: "Use system logger for Accounting",
+							Computed:            true,
+						},
+						"start_stop_group1": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group2": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group3": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group4": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"stop_only_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"stop_only_logger": schema.BoolAttribute{
+							MarkdownDescription: "Use system logger for Accounting",
+							Computed:            true,
+						},
+						"stop_only_group1": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"stop_only_group2": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"stop_only_group3": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"stop_only_group4": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"wait_start_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"wait_start_logger": schema.BoolAttribute{
+							MarkdownDescription: "Use system logger for Accounting",
+							Computed:            true,
+						},
+						"wait_start_group1": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"wait_start_group2": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"wait_start_group3": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"wait_start_group4": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"execs": schema.ListNestedAttribute{
+				MarkdownDescription: "For starting an exec (shell).",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"none": schema.BoolAttribute{
+							MarkdownDescription: "No accounting.",
+							Computed:            true,
+						},
+						"start_stop_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"start_stop_logger": schema.BoolAttribute{
+							MarkdownDescription: "Use system logger for Accounting",
+							Computed:            true,
+						},
+						"start_stop_group1": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group2": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group3": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"start_stop_group4": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"stop_only_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"stop_only_logger": schema.BoolAttribute{
+							MarkdownDescription: "Use system logger for Accounting",
+							Computed:            true,
+						},
+						"stop_only_group1": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"stop_only_group2": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"stop_only_group3": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"stop_only_group4": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"wait_start_broadcast": schema.BoolAttribute{
+							MarkdownDescription: "Use Broadcast for Accounting",
+							Computed:            true,
+						},
+						"wait_start_logger": schema.BoolAttribute{
+							MarkdownDescription: "Use system logger for Accounting",
+							Computed:            true,
+						},
+						"wait_start_group1": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"wait_start_group2": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"wait_start_group3": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"wait_start_group4": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+					},
+				},
 			},
 		},
 	}
