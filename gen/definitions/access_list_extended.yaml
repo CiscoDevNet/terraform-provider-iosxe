@@ -210,3 +210,18 @@ attributes:
         tf_name: destination_port_equal_10
         example: 2010
         exclude_test: true
+      - yang_name: ace-rule/icmp-msg-choice/icmp-msg-type-code/msg-type
+        xpath: ace-rule/msg-type
+        tf_name: icmp_msg_type
+        example: echo-request
+        exclude_test: true
+      - yang_name: ace-rule/icmp-msg-choice/icmp-msg-type-code/msg-code
+        xpath: ace-rule/msg-code
+        tf_name: icmp_msg_code
+        example: 0
+        exclude_test: true
+      - yang_name: ace-rule/icmp-msg-choice/named-msg-type-case/named-msg-type
+        xpath: ace-rule/named-msg-type
+        tf_name: icmp_named_msg_type
+        example: echo-request
+        exclude_test: true
