@@ -113,7 +113,7 @@ func (r *CryptoIKEv2Resource) Schema(ctx context.Context, req resource.SchemaReq
 					stringvalidator.OneOf("on-demand", "periodic"),
 				},
 			},
-			"http_url_cert_leaf": schema.BoolAttribute{
+			"http_url_cert": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable certificate lookup based on HTTP-based URL").String,
 				Optional:            true,
 			},

@@ -36,7 +36,7 @@ func TestAccDataSourceIosxeCryptoIKEv2(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd_retry_interval", "5"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "dpd_query", "periodic"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "http_url_cert_leaf", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_ikev2.test", "http_url_cert", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -63,7 +63,7 @@ func testAccDataSourceIosxeCryptoIKEv2Config() string {
 	config += `	dpd = 10` + "\n"
 	config += `	dpd_retry_interval = 5` + "\n"
 	config += `	dpd_query = "periodic"` + "\n"
-	config += `	http_url_cert_leaf = true` + "\n"
+	config += `	http_url_cert = true` + "\n"
 	config += `}` + "\n"
 
 	config += `
