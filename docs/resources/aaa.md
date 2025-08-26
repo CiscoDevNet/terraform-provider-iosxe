@@ -44,6 +44,7 @@ resource "iosxe_aaa" "example" {
         }
       ]
       ip_tacacs_source_interface_loopback = 0
+      vrf                                 = "VRF1"
     }
   ]
 }
@@ -57,6 +58,10 @@ resource "iosxe_aaa" "example" {
 - `device` (String) A device name from the provider configuration.
 - `group_server_radius` (Attributes List) Radius server-group definition (see [below for nested schema](#nestedatt--group_server_radius))
 - `group_server_tacacsplus` (Attributes List) Tacacs+ server-group definition (see [below for nested schema](#nestedatt--group_server_tacacsplus))
+- `local_auth_max_fail_attempts` (Number) Max failed attempts to lock the user
+  - Range: `1`-`65535`
+- `local_authentication_type` (String)
+- `local_authorization` (String)
 - `new_model` (Boolean) Enable NEW access control commands and functions.(Disables OLD commands.)
 - `server_radius_dynamic_author` (Boolean) Local server profile for RFC 3576 support
 - `server_radius_dynamic_author_clients` (Attributes List) Specify a RADIUS client (see [below for nested schema](#nestedatt--server_radius_dynamic_author_clients))
@@ -119,6 +124,7 @@ Optional:
 - `ip_tacacs_source_interface_vlan` (Number) Iosxr Vlans
   - Range: `0`-`65535`
 - `server_names` (Attributes List) Name of tacacs server (see [below for nested schema](#nestedatt--group_server_tacacsplus--server_names))
+- `vrf` (String) Configure forwarding table
 
 <a id="nestedatt--group_server_tacacsplus--server_names"></a>
 ### Nested Schema for `group_server_tacacsplus.server_names`

@@ -249,7 +249,29 @@ func (r *AAAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 							MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
 							Optional:            true,
 						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Configure forwarding table").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 32),
+							},
+						},
 					},
+				},
+			},
+			"local_authentication_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"local_authorization": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"local_auth_max_fail_attempts": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Max failed attempts to lock the user").AddIntegerRangeDescription(1, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
 				},
 			},
 		},

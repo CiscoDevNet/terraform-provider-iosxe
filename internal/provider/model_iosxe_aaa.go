@@ -46,6 +46,9 @@ type AAA struct {
 	ServerRadiusDynamicAuthorClients []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
 	GroupServerRadius                []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
 	GroupServerTacacsplus            []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
+	LocalAuthenticationType          types.String                          `tfsdk:"local_authentication_type"`
+	LocalAuthorization               types.String                          `tfsdk:"local_authorization"`
+	LocalAuthMaxFailAttempts         types.Int64                           `tfsdk:"local_auth_max_fail_attempts"`
 }
 
 type AAAData struct {
@@ -57,6 +60,9 @@ type AAAData struct {
 	ServerRadiusDynamicAuthorClients []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
 	GroupServerRadius                []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
 	GroupServerTacacsplus            []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
+	LocalAuthenticationType          types.String                          `tfsdk:"local_authentication_type"`
+	LocalAuthorization               types.String                          `tfsdk:"local_authorization"`
+	LocalAuthMaxFailAttempts         types.Int64                           `tfsdk:"local_auth_max_fail_attempts"`
 }
 type AAAServerRadiusDynamicAuthorClients struct {
 	Ip            types.String `tfsdk:"ip"`
@@ -88,6 +94,7 @@ type AAAGroupServerTacacsplus struct {
 	IpTacacsSourceInterfaceTwentyFiveGigabitEthernet types.String                          `tfsdk:"ip_tacacs_source_interface_twenty_five_gigabit_ethernet"`
 	IpTacacsSourceInterfaceFortyGigabitEthernet      types.String                          `tfsdk:"ip_tacacs_source_interface_forty_gigabit_ethernet"`
 	IpTacacsSourceInterfaceHundredGigabitEthernet    types.String                          `tfsdk:"ip_tacacs_source_interface_hundred_gigabit_ethernet"`
+	Vrf                                              types.String                          `tfsdk:"vrf"`
 }
 type AAAGroupServerRadiusServerNames struct {
 	Name types.String `tfsdk:"name"`
@@ -137,6 +144,15 @@ func (data AAA) toBody(ctx context.Context) string {
 	}
 	if !data.SessionId.IsNull() && !data.SessionId.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:session-id", data.SessionId.ValueString())
+	}
+	if !data.LocalAuthenticationType.IsNull() && !data.LocalAuthenticationType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:local.authentication.authorization.authen-type", data.LocalAuthenticationType.ValueString())
+	}
+	if !data.LocalAuthorization.IsNull() && !data.LocalAuthorization.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:local.authentication.authorization.authorization", data.LocalAuthorization.ValueString())
+	}
+	if !data.LocalAuthMaxFailAttempts.IsNull() && !data.LocalAuthMaxFailAttempts.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail", strconv.FormatInt(data.LocalAuthMaxFailAttempts.ValueInt64(), 10))
 	}
 	if len(data.ServerRadiusDynamicAuthorClients) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:server.radius.dynamic-author.client", []interface{}{})
@@ -227,6 +243,9 @@ func (data AAA) toBody(ctx context.Context) string {
 			}
 			if !item.IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() && !item.IpTacacsSourceInterfaceHundredGigabitEthernet.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.tacacsplus"+"."+strconv.Itoa(index)+"."+"ip.tacacs.source-interface.HundredGigE", item.IpTacacsSourceInterfaceHundredGigabitEthernet.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.tacacsplus"+"."+strconv.Itoa(index)+"."+"ip.vrf.forwarding", item.Vrf.ValueString())
 			}
 			if len(item.ServerNames) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:group.server.tacacsplus"+"."+strconv.Itoa(index)+"."+"server.name", []interface{}{})
@@ -517,6 +536,26 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.GroupServerTacacsplus[i].IpTacacsSourceInterfaceHundredGigabitEthernet = types.StringNull()
 		}
+		if value := r.Get("ip.vrf.forwarding"); value.Exists() && !data.GroupServerTacacsplus[i].Vrf.IsNull() {
+			data.GroupServerTacacsplus[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.GroupServerTacacsplus[i].Vrf = types.StringNull()
+		}
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.authorization.authen-type"); value.Exists() && !data.LocalAuthenticationType.IsNull() {
+		data.LocalAuthenticationType = types.StringValue(value.String())
+	} else {
+		data.LocalAuthenticationType = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.authorization.authorization"); value.Exists() && !data.LocalAuthorization.IsNull() {
+		data.LocalAuthorization = types.StringValue(value.String())
+	} else {
+		data.LocalAuthorization = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail"); value.Exists() && !data.LocalAuthMaxFailAttempts.IsNull() {
+		data.LocalAuthMaxFailAttempts = types.Int64Value(value.Int())
+	} else {
+		data.LocalAuthMaxFailAttempts = types.Int64Null()
 	}
 }
 
@@ -653,9 +692,21 @@ func (data *AAA) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("ip.tacacs.source-interface.HundredGigE"); cValue.Exists() {
 				item.IpTacacsSourceInterfaceHundredGigabitEthernet = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("ip.vrf.forwarding"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
 			data.GroupServerTacacsplus = append(data.GroupServerTacacsplus, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.authorization.authen-type"); value.Exists() {
+		data.LocalAuthenticationType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.authorization.authorization"); value.Exists() {
+		data.LocalAuthorization = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail"); value.Exists() {
+		data.LocalAuthMaxFailAttempts = types.Int64Value(value.Int())
 	}
 }
 
@@ -792,9 +843,21 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("ip.tacacs.source-interface.HundredGigE"); cValue.Exists() {
 				item.IpTacacsSourceInterfaceHundredGigabitEthernet = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("ip.vrf.forwarding"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
 			data.GroupServerTacacsplus = append(data.GroupServerTacacsplus, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.authorization.authen-type"); value.Exists() {
+		data.LocalAuthenticationType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.authorization.authorization"); value.Exists() {
+		data.LocalAuthorization = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail"); value.Exists() {
+		data.LocalAuthMaxFailAttempts = types.Int64Value(value.Int())
 	}
 }
 
@@ -804,6 +867,15 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 	deletedItems := make([]string, 0)
+	if !state.LocalAuthMaxFailAttempts.IsNull() && data.LocalAuthMaxFailAttempts.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:local/authentication/attempts/max-fail", state.getPath()))
+	}
+	if !state.LocalAuthorization.IsNull() && data.LocalAuthorization.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:local/authentication/authorization/authorization", state.getPath()))
+	}
+	if !state.LocalAuthenticationType.IsNull() && data.LocalAuthenticationType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:local/authentication/authorization/authen-type", state.getPath()))
+	}
 	for i := range state.GroupServerTacacsplus {
 		stateKeyValues := [...]string{state.GroupServerTacacsplus[i].Name.ValueString()}
 
@@ -822,6 +894,9 @@ func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 				found = false
 			}
 			if found {
+				if !state.GroupServerTacacsplus[i].Vrf.IsNull() && data.GroupServerTacacsplus[j].Vrf.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/vrf/forwarding", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.GroupServerTacacsplus[i].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() && data.GroupServerTacacsplus[j].IpTacacsSourceInterfaceHundredGigabitEthernet.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:group/server/tacacsplus=%v/ip/tacacs/source-interface/HundredGigE", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -1025,6 +1100,15 @@ func (data *AAA) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *AAA) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.LocalAuthMaxFailAttempts.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:local/authentication/attempts/max-fail", data.getPath()))
+	}
+	if !data.LocalAuthorization.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:local/authentication/authorization/authorization", data.getPath()))
+	}
+	if !data.LocalAuthenticationType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:local/authentication/authorization/authen-type", data.getPath()))
+	}
 	for i := range data.GroupServerTacacsplus {
 		keyValues := [...]string{data.GroupServerTacacsplus[i].Name.ValueString()}
 
