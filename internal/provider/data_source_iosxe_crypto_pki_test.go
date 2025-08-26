@@ -38,6 +38,7 @@ func TestAccDataSourceIosxeCryptoPKI(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_pki.test", "trustpoints.0.id", "trustpoint1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_pki.test", "trustpoints.0.enrollment_pkcs12", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_pki.test", "trustpoints.0.enrollment_pkcs12_legacy", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_crypto_pki.test", "trustpoints.0.revocation_check.0", "none"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -64,6 +65,7 @@ func testAccDataSourceIosxeCryptoPKIConfig() string {
 	config += `	trustpoints = [{` + "\n"
 	config += `		id = "trustpoint1"` + "\n"
 	config += `		enrollment_pkcs12 = true` + "\n"
+	config += `		enrollment_pkcs12_legacy = true` + "\n"
 	config += `		revocation_check = ["none"]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

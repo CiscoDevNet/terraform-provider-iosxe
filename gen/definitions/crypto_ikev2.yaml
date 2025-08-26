@@ -17,3 +17,6 @@ attributes:
     tf_name: dpd_query
     delete_parent: true
     example: periodic
+  - yang_name: http-url/cert
+    delete_parent: true
+    example: true

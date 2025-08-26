@@ -40,6 +40,7 @@ func TestAccIosxeCryptoPKI(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_pki.test", "trustpoints.0.id", "trustpoint1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_pki.test", "trustpoints.0.enrollment_pkcs12", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_pki.test", "trustpoints.0.enrollment_pkcs12_legacy", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_pki.test", "trustpoints.0.revocation_check.0", "none"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -57,7 +58,7 @@ func TestAccIosxeCryptoPKI(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeCryptoPKIImportStateIdFunc("iosxe_crypto_pki.test"),
-				ImportStateVerifyIgnore: []string{"trustpoints", "trustpoints.0.enrollment_selfsigned", "trustpoints.0.enrollment_mode_ra", "trustpoints.0.enrollment_terminal"},
+				ImportStateVerifyIgnore: []string{"trustpoints", "trustpoints.0.enrollment_selfsigned", "trustpoints.0.enrollment_selfsigned_legacy", "trustpoints.0.enrollment_mode_ra", "trustpoints.0.enrollment_terminal"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -97,6 +98,7 @@ func testAccIosxeCryptoPKIConfig_all() string {
 	config += `	trustpoints = [{` + "\n"
 	config += `		id = "trustpoint1"` + "\n"
 	config += `		enrollment_pkcs12 = true` + "\n"
+	config += `		enrollment_pkcs12_legacy = true` + "\n"
 	config += `		revocation_check = ["none"]` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"

@@ -50,16 +50,18 @@ type CryptoPKIData struct {
 	Trustpoints []CryptoPKITrustpoints `tfsdk:"trustpoints"`
 }
 type CryptoPKITrustpoints struct {
-	Id                   types.String `tfsdk:"id"`
-	EnrollmentPkcs12     types.Bool   `tfsdk:"enrollment_pkcs12"`
-	EnrollmentSelfsigned types.Bool   `tfsdk:"enrollment_selfsigned"`
-	EnrollmentModeRa     types.Bool   `tfsdk:"enrollment_mode_ra"`
-	EnrollmentTerminal   types.Bool   `tfsdk:"enrollment_terminal"`
-	RevocationCheck      types.List   `tfsdk:"revocation_check"`
-	SubjectName          types.String `tfsdk:"subject_name"`
-	Rsakeypair           types.String `tfsdk:"rsakeypair"`
-	Usage                types.String `tfsdk:"usage"`
-	SourceInterface      types.String `tfsdk:"source_interface"`
+	Id                         types.String `tfsdk:"id"`
+	EnrollmentPkcs12           types.Bool   `tfsdk:"enrollment_pkcs12"`
+	EnrollmentSelfsigned       types.Bool   `tfsdk:"enrollment_selfsigned"`
+	EnrollmentPkcs12Legacy     types.Bool   `tfsdk:"enrollment_pkcs12_legacy"`
+	EnrollmentSelfsignedLegacy types.Bool   `tfsdk:"enrollment_selfsigned_legacy"`
+	EnrollmentModeRa           types.Bool   `tfsdk:"enrollment_mode_ra"`
+	EnrollmentTerminal         types.Bool   `tfsdk:"enrollment_terminal"`
+	RevocationCheck            types.List   `tfsdk:"revocation_check"`
+	SubjectName                types.String `tfsdk:"subject_name"`
+	Rsakeypair                 types.String `tfsdk:"rsakeypair"`
+	Usage                      types.String `tfsdk:"usage"`
+	SourceInterface            types.String `tfsdk:"source_interface"`
 }
 
 // End of section. //template:end types
@@ -104,6 +106,16 @@ func (data CryptoPKI) toBody(ctx context.Context) string {
 			}
 			if !item.EnrollmentSelfsigned.IsNull() && !item.EnrollmentSelfsigned.IsUnknown() {
 				if item.EnrollmentSelfsigned.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"enrollment.enrollment-method.selfsigned", map[string]string{})
+				}
+			}
+			if !item.EnrollmentPkcs12Legacy.IsNull() && !item.EnrollmentPkcs12Legacy.IsUnknown() {
+				if item.EnrollmentPkcs12Legacy.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"enrollment.pkcs12", map[string]string{})
+				}
+			}
+			if !item.EnrollmentSelfsignedLegacy.IsNull() && !item.EnrollmentSelfsignedLegacy.IsUnknown() {
+				if item.EnrollmentSelfsignedLegacy.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"enrollment.enrollment-method.selfsigned", map[string]string{})
 				}
 			}
@@ -194,6 +206,24 @@ func (data *CryptoPKI) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Trustpoints[i].EnrollmentSelfsigned = types.BoolNull()
 		}
+		if value := r.Get("enrollment.pkcs12"); !data.Trustpoints[i].EnrollmentPkcs12Legacy.IsNull() {
+			if value.Exists() {
+				data.Trustpoints[i].EnrollmentPkcs12Legacy = types.BoolValue(true)
+			} else {
+				data.Trustpoints[i].EnrollmentPkcs12Legacy = types.BoolValue(false)
+			}
+		} else {
+			data.Trustpoints[i].EnrollmentPkcs12Legacy = types.BoolNull()
+		}
+		if value := r.Get("enrollment.enrollment-method.selfsigned"); !data.Trustpoints[i].EnrollmentSelfsignedLegacy.IsNull() {
+			if value.Exists() {
+				data.Trustpoints[i].EnrollmentSelfsignedLegacy = types.BoolValue(true)
+			} else {
+				data.Trustpoints[i].EnrollmentSelfsignedLegacy = types.BoolValue(false)
+			}
+		} else {
+			data.Trustpoints[i].EnrollmentSelfsignedLegacy = types.BoolNull()
+		}
 		if value := r.Get("enrollment.mode.ra"); !data.Trustpoints[i].EnrollmentModeRa.IsNull() {
 			if value.Exists() {
 				data.Trustpoints[i].EnrollmentModeRa = types.BoolValue(true)
@@ -266,6 +296,16 @@ func (data *CryptoPKI) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.EnrollmentSelfsigned = types.BoolValue(false)
 			}
+			if cValue := v.Get("enrollment.pkcs12"); cValue.Exists() {
+				item.EnrollmentPkcs12Legacy = types.BoolValue(true)
+			} else {
+				item.EnrollmentPkcs12Legacy = types.BoolValue(false)
+			}
+			if cValue := v.Get("enrollment.enrollment-method.selfsigned"); cValue.Exists() {
+				item.EnrollmentSelfsignedLegacy = types.BoolValue(true)
+			} else {
+				item.EnrollmentSelfsignedLegacy = types.BoolValue(false)
+			}
 			if cValue := v.Get("enrollment.mode.ra"); cValue.Exists() {
 				item.EnrollmentModeRa = types.BoolValue(true)
 			} else {
@@ -324,6 +364,16 @@ func (data *CryptoPKIData) fromBody(ctx context.Context, res gjson.Result) {
 				item.EnrollmentSelfsigned = types.BoolValue(true)
 			} else {
 				item.EnrollmentSelfsigned = types.BoolValue(false)
+			}
+			if cValue := v.Get("enrollment.pkcs12"); cValue.Exists() {
+				item.EnrollmentPkcs12Legacy = types.BoolValue(true)
+			} else {
+				item.EnrollmentPkcs12Legacy = types.BoolValue(false)
+			}
+			if cValue := v.Get("enrollment.enrollment-method.selfsigned"); cValue.Exists() {
+				item.EnrollmentSelfsignedLegacy = types.BoolValue(true)
+			} else {
+				item.EnrollmentSelfsignedLegacy = types.BoolValue(false)
 			}
 			if cValue := v.Get("enrollment.mode.ra"); cValue.Exists() {
 				item.EnrollmentModeRa = types.BoolValue(true)
@@ -421,6 +471,12 @@ func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []s
 				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && data.Trustpoints[j].EnrollmentModeRa.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/mode/ra", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
+				if !state.Trustpoints[i].EnrollmentSelfsignedLegacy.IsNull() && data.Trustpoints[j].EnrollmentSelfsignedLegacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Trustpoints[i].EnrollmentPkcs12Legacy.IsNull() && data.Trustpoints[j].EnrollmentPkcs12Legacy.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/pkcs12", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && data.Trustpoints[j].EnrollmentSelfsigned.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -452,6 +508,12 @@ func (data *CryptoPKI) getEmptyLeafsDelete(ctx context.Context) []string {
 		}
 		if !data.Trustpoints[i].EnrollmentModeRa.IsNull() && !data.Trustpoints[i].EnrollmentModeRa.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/mode/ra", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Trustpoints[i].EnrollmentSelfsignedLegacy.IsNull() && !data.Trustpoints[i].EnrollmentSelfsignedLegacy.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Trustpoints[i].EnrollmentPkcs12Legacy.IsNull() && !data.Trustpoints[i].EnrollmentPkcs12Legacy.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/pkcs12", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.Trustpoints[i].EnrollmentSelfsigned.IsNull() && !data.Trustpoints[i].EnrollmentSelfsigned.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/trustpoint=%v/enrollment/enrollment-method/selfsigned", data.getPath(), strings.Join(keyValues[:], ",")))

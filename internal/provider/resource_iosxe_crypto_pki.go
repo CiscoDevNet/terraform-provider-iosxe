@@ -101,6 +101,14 @@ func (r *CryptoPKIResource) Schema(ctx context.Context, req resource.SchemaReque
 							MarkdownDescription: helpers.NewAttributeDescription("Generate a Self Signed Certificate").String,
 							Optional:            true,
 						},
+						"enrollment_pkcs12_legacy": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"enrollment_selfsigned_legacy": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Generate a Self Signed Certificate").String,
+							Optional:            true,
+						},
 						"enrollment_mode_ra": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Registration Authority mode").String,
 							Optional:            true,

@@ -16,9 +16,10 @@ This resource can manage the Crypto PKI configuration.
 resource "iosxe_crypto_pki" "example" {
   trustpoints = [
     {
-      id                = "trustpoint1"
-      enrollment_pkcs12 = true
-      revocation_check  = ["none"]
+      id                       = "trustpoint1"
+      enrollment_pkcs12        = true
+      enrollment_pkcs12_legacy = true
+      revocation_check         = ["none"]
     }
   ]
 }
@@ -49,7 +50,9 @@ Optional:
 
 - `enrollment_mode_ra` (Boolean) Registration Authority mode
 - `enrollment_pkcs12` (Boolean) Enroll via pkcs12
+- `enrollment_pkcs12_legacy` (Boolean)
 - `enrollment_selfsigned` (Boolean) Generate a Self Signed Certificate
+- `enrollment_selfsigned_legacy` (Boolean) Generate a Self Signed Certificate
 - `enrollment_terminal` (Boolean) Enroll via the terminal (cut-and-paste)
 - `revocation_check` (List of String) Revocation checking options
 - `rsakeypair` (String) RSA keypair label
