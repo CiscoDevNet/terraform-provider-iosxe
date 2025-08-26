@@ -83,7 +83,7 @@ func (d *CryptoIKEv2DataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"http_url_cert": schema.BoolAttribute{
+			"http_url_cert_leaf": schema.BoolAttribute{
 				MarkdownDescription: "Enable certificate lookup based on HTTP-based URL",
 				Computed:            true,
 			},

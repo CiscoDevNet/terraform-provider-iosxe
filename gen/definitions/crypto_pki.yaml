@@ -21,15 +21,6 @@ attributes:
         tf_name: enrollment_selfsigned
         example: true
         exclude_test: true
-      - yang_name: enrollment/pkcs12
-        xpath: enrollment/pkcs12
-        tf_name: enrollment_pkcs12_legacy
-        example: true
-      - yang_name: enrollment/selfsigned
-        xpath: enrollment/enrollment-method/selfsigned
-        tf_name: enrollment_selfsigned_legacy
-        example: true
-        exclude_test: true
       - yang_name: enrollment/mode/ra
         example: true
         exclude_test: true

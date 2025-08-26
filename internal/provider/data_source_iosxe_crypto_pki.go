@@ -84,14 +84,6 @@ func (d *CryptoPKIDataSource) Schema(ctx context.Context, req datasource.SchemaR
 							MarkdownDescription: "Generate a Self Signed Certificate",
 							Computed:            true,
 						},
-						"enrollment_pkcs12_legacy": schema.BoolAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
-						"enrollment_selfsigned_legacy": schema.BoolAttribute{
-							MarkdownDescription: "Generate a Self Signed Certificate",
-							Computed:            true,
-						},
 						"enrollment_mode_ra": schema.BoolAttribute{
 							MarkdownDescription: "Registration Authority mode",
 							Computed:            true,

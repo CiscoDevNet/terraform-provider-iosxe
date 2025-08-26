@@ -43,7 +43,7 @@ type CryptoIKEv2 struct {
 	Dpd              types.Int64  `tfsdk:"dpd"`
 	DpdRetryInterval types.Int64  `tfsdk:"dpd_retry_interval"`
 	DpdQuery         types.String `tfsdk:"dpd_query"`
-	HttpUrlCert      types.Bool   `tfsdk:"http_url_cert"`
+	HttpUrlCertLeaf  types.Bool   `tfsdk:"http_url_cert_leaf"`
 }
 
 type CryptoIKEv2Data struct {
@@ -53,7 +53,7 @@ type CryptoIKEv2Data struct {
 	Dpd              types.Int64  `tfsdk:"dpd"`
 	DpdRetryInterval types.Int64  `tfsdk:"dpd_retry_interval"`
 	DpdQuery         types.String `tfsdk:"dpd_query"`
-	HttpUrlCert      types.Bool   `tfsdk:"http_url_cert"`
+	HttpUrlCertLeaf  types.Bool   `tfsdk:"http_url_cert_leaf"`
 }
 
 // End of section. //template:end types
@@ -97,10 +97,8 @@ func (data CryptoIKEv2) toBody(ctx context.Context) string {
 	if !data.DpdQuery.IsNull() && !data.DpdQuery.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dpd-container.dpd-query", data.DpdQuery.ValueString())
 	}
-	if !data.HttpUrlCert.IsNull() && !data.HttpUrlCert.IsUnknown() {
-		if data.HttpUrlCert.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"http-url.cert", map[string]string{})
-		}
+	if !data.HttpUrlCertLeaf.IsNull() && !data.HttpUrlCertLeaf.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"http-url.cert-leaf", data.HttpUrlCertLeaf.ValueBool())
 	}
 	return body
 }
@@ -134,14 +132,12 @@ func (data *CryptoIKEv2) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.DpdQuery = types.StringNull()
 	}
-	if value := res.Get(prefix + "http-url.cert"); !data.HttpUrlCert.IsNull() {
+	if value := res.Get(prefix + "http-url.cert-leaf"); !data.HttpUrlCertLeaf.IsNull() {
 		if value.Exists() {
-			data.HttpUrlCert = types.BoolValue(true)
-		} else {
-			data.HttpUrlCert = types.BoolValue(false)
+			data.HttpUrlCertLeaf = types.BoolValue(value.Bool())
 		}
 	} else {
-		data.HttpUrlCert = types.BoolNull()
+		data.HttpUrlCertLeaf = types.BoolNull()
 	}
 }
 
@@ -166,10 +162,10 @@ func (data *CryptoIKEv2) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "dpd-container.dpd-query"); value.Exists() {
 		data.DpdQuery = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "http-url.cert"); value.Exists() {
-		data.HttpUrlCert = types.BoolValue(true)
+	if value := res.Get(prefix + "http-url.cert-leaf"); value.Exists() {
+		data.HttpUrlCertLeaf = types.BoolValue(value.Bool())
 	} else {
-		data.HttpUrlCert = types.BoolValue(false)
+		data.HttpUrlCertLeaf = types.BoolNull()
 	}
 }
 
@@ -194,10 +190,10 @@ func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "dpd-container.dpd-query"); value.Exists() {
 		data.DpdQuery = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "http-url.cert"); value.Exists() {
-		data.HttpUrlCert = types.BoolValue(true)
+	if value := res.Get(prefix + "http-url.cert-leaf"); value.Exists() {
+		data.HttpUrlCertLeaf = types.BoolValue(value.Bool())
 	} else {
-		data.HttpUrlCert = types.BoolValue(false)
+		data.HttpUrlCertLeaf = types.BoolNull()
 	}
 }
 
@@ -207,7 +203,7 @@ func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2) []string {
 	deletedItems := make([]string, 0)
-	if !state.HttpUrlCert.IsNull() && data.HttpUrlCert.IsNull() {
+	if !state.HttpUrlCertLeaf.IsNull() && data.HttpUrlCertLeaf.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/http-url", state.getPath()))
 	}
 	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
@@ -232,9 +228,6 @@ func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2)
 
 func (data *CryptoIKEv2) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
-	if !data.HttpUrlCert.IsNull() && !data.HttpUrlCert.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/http-url/cert", data.getPath()))
-	}
 
 	return emptyLeafsDelete
 }
@@ -245,7 +238,7 @@ func (data *CryptoIKEv2) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *CryptoIKEv2) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.HttpUrlCert.IsNull() {
+	if !data.HttpUrlCertLeaf.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/http-url", data.getPath()))
 	}
 	if !data.DpdQuery.IsNull() {

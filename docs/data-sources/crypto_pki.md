@@ -36,9 +36,7 @@ Read-Only:
 
 - `enrollment_mode_ra` (Boolean) Registration Authority mode
 - `enrollment_pkcs12` (Boolean) Enroll via pkcs12
-- `enrollment_pkcs12_legacy` (Boolean)
 - `enrollment_selfsigned` (Boolean) Generate a Self Signed Certificate
-- `enrollment_selfsigned_legacy` (Boolean) Generate a Self Signed Certificate
 - `enrollment_terminal` (Boolean) Enroll via the terminal (cut-and-paste)
 - `id` (String)
 - `revocation_check` (List of String) Revocation checking options
