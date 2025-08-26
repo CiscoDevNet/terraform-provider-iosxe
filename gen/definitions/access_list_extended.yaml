@@ -161,3 +161,52 @@ attributes:
         tf_name: log_input
         example: true
         exclude_test: true
+      - yang_name: ace-rule/icmp-msg-choice/named-msg-type-case/named-msg-type
+        xpath: ace-rule/named-msg-type
+        tf_name: named_msg_type
+        example: traceroute
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port2
+        xpath: ace-rule/dst-eq-port2
+        tf_name: destination_port_equal_2
+        example: 2002
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port3
+        xpath: ace-rule/dst-eq-port3
+        tf_name: destination_port_equal_3
+        example: 2003
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port4
+        xpath: ace-rule/dst-eq-port4
+        tf_name: destination_port_equal_4
+        example: 2004
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port5
+        xpath: ace-rule/dst-eq-port5
+        tf_name: destination_port_equal_5
+        example: 2005
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port6
+        xpath: ace-rule/dst-eq-port6
+        tf_name: destination_port_equal_6
+        example: 2006
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port7
+        xpath: ace-rule/dst-eq-port7
+        tf_name: destination_port_equal_7
+        example: 2007
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port8
+        xpath: ace-rule/dst-eq-port8
+        tf_name: destination_port_equal_8
+        example: 2008
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port9
+        xpath: ace-rule/dst-eq-port9
+        tf_name: destination_port_equal_9
+        example: 2009
+        exclude_test: true
+      - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port10
+        xpath: ace-rule/dst-eq-port10
+        tf_name: destination_port_equal_10
+        example: 2010
+        exclude_test: true

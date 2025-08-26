@@ -35,6 +35,7 @@ resource "iosxe_access_list_extended" "example" {
       urg                         = true
       dscp                        = "46"
       log                         = true
+      named_msg_type              = "traceroute"
     }
   ]
 }
@@ -72,6 +73,15 @@ Optional:
 - `destination_host` (String) A single destination host
 - `destination_object_group` (String) Destination network object group
 - `destination_port_equal` (String) Match only packets on a given port number up to 10 ports
+- `destination_port_equal_10` (String)
+- `destination_port_equal_2` (String)
+- `destination_port_equal_3` (String)
+- `destination_port_equal_4` (String)
+- `destination_port_equal_5` (String)
+- `destination_port_equal_6` (String)
+- `destination_port_equal_7` (String)
+- `destination_port_equal_8` (String)
+- `destination_port_equal_9` (String)
 - `destination_port_greater_than` (String) Match only packets with a greater port number
 - `destination_port_lesser_than` (String) Match only packets with a lower port number
 - `destination_port_range_from` (String) Match only packets in the range of port numbers
@@ -84,6 +94,7 @@ Optional:
 - `fragments` (Boolean) Check non-initial fragments
 - `log` (Boolean) Log matches against this entry
 - `log_input` (Boolean) Log matches against this entry, including input interface
+- `named_msg_type` (String) - Choices: `administratively-prohibited`, `alternate-address`, `conversion-error`, `dod-host-prohibited`, `dod-net-prohibited`, `echo`, `echo-reply`, `general-parameter-problem`, `host-isolated`, `host-precedence-unreachable`, `host-redirect`, `host-tos-redirect`, `host-tos-unreachable`, `host-unknown`, `host-unreachable`, `information-reply`, `information-request`, `mask-reply`, `mask-request`, `mobile-redirect`, `net-redirect`, `net-tos-redirect`, `net-tos-unreachable`, `net-unreachable`, `network-unknown`, `no-room-for-option`, `option-missing`, `packet-too-big`, `parameter-problem`, `port-unreachable`, `precedence-unreachable`, `protocol-unreachable`, `reassembly-timeout`, `redirect`, `router-advertisement`, `router-solicitation`, `source-quench`, `source-route-failed`, `time-exceeded`, `timestamp-reply`, `timestamp-request`, `traceroute`, `ttl-exceeded`, `unreachable`
 - `precedence` (String) Match packets with given precedence value
 - `psh` (Boolean) Match on the PSH bit
 - `remark` (String) Access list entry comment
