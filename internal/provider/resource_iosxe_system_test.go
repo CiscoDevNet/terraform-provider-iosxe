@@ -66,10 +66,10 @@ func TestAccIosxeSystem(t *testing.T) {
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_forward_protocol_nd", "true"))
 	}
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_host_lists.0.name", "test.router.com"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_host_lists.0.ip_list.0", "3.3.3.3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_authentication_retries", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_host_lists.0.name", "test.router.com"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_host_lists.0.ip_list.0", "3.3.3.3"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -171,12 +171,12 @@ func testAccIosxeSystemConfig_all() string {
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_forward_protocol_nd = true` + "\n"
 	}
+	config += `	ip_ssh_time_out = 120` + "\n"
+	config += `	ip_ssh_authentication_retries = 3` + "\n"
 	config += `	ip_host_lists = [{` + "\n"
 	config += `		name = "test.router.com"` + "\n"
 	config += `		ip_list = ["3.3.3.3"]` + "\n"
 	config += `	}]` + "\n"
-	config += `	ip_ssh_time_out = 120` + "\n"
-	config += `	ip_ssh_authentication_retries = 3` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

@@ -23,12 +23,12 @@ resource "iosxe_system" "example" {
     }
   ]
   memory_free_low_watermark_processor = 203038
+  ip_ssh_time_out                     = 120
+  ip_ssh_authentication_retries       = 3
   ip_host_lists = [
     {
       name    = "test.router.com"
       ip_list = ["3.3.3.3"]
     }
   ]
-  ip_ssh_time_out                     = 120
-  ip_ssh_authentication_retries       = 3
 }
