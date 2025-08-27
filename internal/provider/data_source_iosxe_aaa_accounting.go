@@ -164,35 +164,35 @@ func (d *AAAAccountingDataSource) Schema(ctx context.Context, req datasource.Sch
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"commands_config_action_type": schema.StringAttribute{
+						"action_type": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"commands_config_broadcast": schema.BoolAttribute{
+						"broadcast": schema.BoolAttribute{
 							MarkdownDescription: "Use Broadcast for Accounting",
 							Computed:            true,
 						},
-						"commands_config_group_broadcast": schema.BoolAttribute{
+						"group_broadcast": schema.BoolAttribute{
 							MarkdownDescription: "Use Broadcast for Accounting",
 							Computed:            true,
 						},
-						"commands_config_group_logger": schema.BoolAttribute{
+						"group_logger": schema.BoolAttribute{
 							MarkdownDescription: "Use system logger for Accounting",
 							Computed:            true,
 						},
-						"commands_config_group1": schema.StringAttribute{
+						"group1_group": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},
-						"commands_config_group2": schema.StringAttribute{
+						"group2_group": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},
-						"commands_config_group3": schema.StringAttribute{
+						"group3_group": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},
-						"commands_config_group4": schema.StringAttribute{
+						"group4_group": schema.StringAttribute{
 							MarkdownDescription: "Use Server-group",
 							Computed:            true,
 						},

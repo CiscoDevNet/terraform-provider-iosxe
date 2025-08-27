@@ -58,7 +58,7 @@ resource "iosxe_aaa" "example" {
 - `device` (String) A device name from the provider configuration.
 - `group_server_radius` (Attributes List) Radius server-group definition (see [below for nested schema](#nestedatt--group_server_radius))
 - `group_server_tacacsplus` (Attributes List) Tacacs+ server-group definition (see [below for nested schema](#nestedatt--group_server_tacacsplus))
-- `local_auth_max_fail_attempts` (Number) Max failed attempts to lock the user
+- `local_authentication_max_fail_attempts` (Number) Max failed attempts to lock the user
   - Range: `1`-`65535`
 - `local_authentication_type` (String)
 - `local_authorization` (String)

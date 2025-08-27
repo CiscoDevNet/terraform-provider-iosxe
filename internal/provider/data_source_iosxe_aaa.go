@@ -231,7 +231,7 @@ func (d *AAADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"local_auth_max_fail_attempts": schema.Int64Attribute{
+			"local_authentication_max_fail_attempts": schema.Int64Attribute{
 				MarkdownDescription: "Max failed attempts to lock the user",
 				Computed:            true,
 			},

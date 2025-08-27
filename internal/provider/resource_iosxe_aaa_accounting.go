@@ -188,38 +188,38 @@ func (r *AAAAccountingResource) Schema(ctx context.Context, req resource.SchemaR
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"commands_config_action_type": schema.StringAttribute{
+						"action_type": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("start-stop", "stop-only").String,
 							Optional:            true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("start-stop", "stop-only"),
 							},
 						},
-						"commands_config_broadcast": schema.BoolAttribute{
+						"broadcast": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
 							Optional:            true,
 						},
-						"commands_config_group_broadcast": schema.BoolAttribute{
+						"group_broadcast": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Broadcast for Accounting").String,
 							Optional:            true,
 						},
-						"commands_config_group_logger": schema.BoolAttribute{
+						"group_logger": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use system logger for Accounting").String,
 							Optional:            true,
 						},
-						"commands_config_group1": schema.StringAttribute{
+						"group1_group": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},
-						"commands_config_group2": schema.StringAttribute{
+						"group2_group": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},
-						"commands_config_group3": schema.StringAttribute{
+						"group3_group": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},
-						"commands_config_group4": schema.StringAttribute{
+						"group4_group": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
 							Optional:            true,
 						},

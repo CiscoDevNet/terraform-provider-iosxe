@@ -38,31 +38,31 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type AAA struct {
-	Device                           types.String                          `tfsdk:"device"`
-	Id                               types.String                          `tfsdk:"id"`
-	NewModel                         types.Bool                            `tfsdk:"new_model"`
-	ServerRadiusDynamicAuthor        types.Bool                            `tfsdk:"server_radius_dynamic_author"`
-	SessionId                        types.String                          `tfsdk:"session_id"`
-	ServerRadiusDynamicAuthorClients []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
-	GroupServerRadius                []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
-	GroupServerTacacsplus            []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
-	LocalAuthenticationType          types.String                          `tfsdk:"local_authentication_type"`
-	LocalAuthorization               types.String                          `tfsdk:"local_authorization"`
-	LocalAuthMaxFailAttempts         types.Int64                           `tfsdk:"local_auth_max_fail_attempts"`
+	Device                             types.String                          `tfsdk:"device"`
+	Id                                 types.String                          `tfsdk:"id"`
+	NewModel                           types.Bool                            `tfsdk:"new_model"`
+	ServerRadiusDynamicAuthor          types.Bool                            `tfsdk:"server_radius_dynamic_author"`
+	SessionId                          types.String                          `tfsdk:"session_id"`
+	ServerRadiusDynamicAuthorClients   []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
+	GroupServerRadius                  []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
+	GroupServerTacacsplus              []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
+	LocalAuthenticationType            types.String                          `tfsdk:"local_authentication_type"`
+	LocalAuthorization                 types.String                          `tfsdk:"local_authorization"`
+	LocalAuthenticationMaxFailAttempts types.Int64                           `tfsdk:"local_authentication_max_fail_attempts"`
 }
 
 type AAAData struct {
-	Device                           types.String                          `tfsdk:"device"`
-	Id                               types.String                          `tfsdk:"id"`
-	NewModel                         types.Bool                            `tfsdk:"new_model"`
-	ServerRadiusDynamicAuthor        types.Bool                            `tfsdk:"server_radius_dynamic_author"`
-	SessionId                        types.String                          `tfsdk:"session_id"`
-	ServerRadiusDynamicAuthorClients []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
-	GroupServerRadius                []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
-	GroupServerTacacsplus            []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
-	LocalAuthenticationType          types.String                          `tfsdk:"local_authentication_type"`
-	LocalAuthorization               types.String                          `tfsdk:"local_authorization"`
-	LocalAuthMaxFailAttempts         types.Int64                           `tfsdk:"local_auth_max_fail_attempts"`
+	Device                             types.String                          `tfsdk:"device"`
+	Id                                 types.String                          `tfsdk:"id"`
+	NewModel                           types.Bool                            `tfsdk:"new_model"`
+	ServerRadiusDynamicAuthor          types.Bool                            `tfsdk:"server_radius_dynamic_author"`
+	SessionId                          types.String                          `tfsdk:"session_id"`
+	ServerRadiusDynamicAuthorClients   []AAAServerRadiusDynamicAuthorClients `tfsdk:"server_radius_dynamic_author_clients"`
+	GroupServerRadius                  []AAAGroupServerRadius                `tfsdk:"group_server_radius"`
+	GroupServerTacacsplus              []AAAGroupServerTacacsplus            `tfsdk:"group_server_tacacsplus"`
+	LocalAuthenticationType            types.String                          `tfsdk:"local_authentication_type"`
+	LocalAuthorization                 types.String                          `tfsdk:"local_authorization"`
+	LocalAuthenticationMaxFailAttempts types.Int64                           `tfsdk:"local_authentication_max_fail_attempts"`
 }
 type AAAServerRadiusDynamicAuthorClients struct {
 	Ip            types.String `tfsdk:"ip"`
@@ -151,8 +151,8 @@ func (data AAA) toBody(ctx context.Context) string {
 	if !data.LocalAuthorization.IsNull() && !data.LocalAuthorization.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:local.authentication.authorization.authorization", data.LocalAuthorization.ValueString())
 	}
-	if !data.LocalAuthMaxFailAttempts.IsNull() && !data.LocalAuthMaxFailAttempts.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail", strconv.FormatInt(data.LocalAuthMaxFailAttempts.ValueInt64(), 10))
+	if !data.LocalAuthenticationMaxFailAttempts.IsNull() && !data.LocalAuthenticationMaxFailAttempts.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail", strconv.FormatInt(data.LocalAuthenticationMaxFailAttempts.ValueInt64(), 10))
 	}
 	if len(data.ServerRadiusDynamicAuthorClients) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:server.radius.dynamic-author.client", []interface{}{})
@@ -552,10 +552,10 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.LocalAuthorization = types.StringNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail"); value.Exists() && !data.LocalAuthMaxFailAttempts.IsNull() {
-		data.LocalAuthMaxFailAttempts = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail"); value.Exists() && !data.LocalAuthenticationMaxFailAttempts.IsNull() {
+		data.LocalAuthenticationMaxFailAttempts = types.Int64Value(value.Int())
 	} else {
-		data.LocalAuthMaxFailAttempts = types.Int64Null()
+		data.LocalAuthenticationMaxFailAttempts = types.Int64Null()
 	}
 }
 
@@ -706,7 +706,7 @@ func (data *AAA) fromBody(ctx context.Context, res gjson.Result) {
 		data.LocalAuthorization = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail"); value.Exists() {
-		data.LocalAuthMaxFailAttempts = types.Int64Value(value.Int())
+		data.LocalAuthenticationMaxFailAttempts = types.Int64Value(value.Int())
 	}
 }
 
@@ -857,7 +857,7 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 		data.LocalAuthorization = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:local.authentication.attempts.max-fail"); value.Exists() {
-		data.LocalAuthMaxFailAttempts = types.Int64Value(value.Int())
+		data.LocalAuthenticationMaxFailAttempts = types.Int64Value(value.Int())
 	}
 }
 
@@ -867,7 +867,7 @@ func (data *AAAData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *AAA) getDeletedItems(ctx context.Context, state AAA) []string {
 	deletedItems := make([]string, 0)
-	if !state.LocalAuthMaxFailAttempts.IsNull() && data.LocalAuthMaxFailAttempts.IsNull() {
+	if !state.LocalAuthenticationMaxFailAttempts.IsNull() && data.LocalAuthenticationMaxFailAttempts.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:local/authentication/attempts/max-fail", state.getPath()))
 	}
 	if !state.LocalAuthorization.IsNull() && data.LocalAuthorization.IsNull() {
@@ -1100,7 +1100,7 @@ func (data *AAA) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *AAA) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.LocalAuthMaxFailAttempts.IsNull() {
+	if !data.LocalAuthenticationMaxFailAttempts.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:local/authentication/attempts/max-fail", data.getPath()))
 	}
 	if !data.LocalAuthorization.IsNull() {

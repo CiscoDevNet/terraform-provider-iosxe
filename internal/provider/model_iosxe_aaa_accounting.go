@@ -85,16 +85,16 @@ type AAAAccountingNetworks struct {
 	StartStopGroup2 types.String `tfsdk:"start_stop_group2"`
 }
 type AAAAccountingCommands struct {
-	Level                        types.Int64  `tfsdk:"level"`
-	ListName                     types.String `tfsdk:"list_name"`
-	CommandsConfigActionType     types.String `tfsdk:"commands_config_action_type"`
-	CommandsConfigBroadcast      types.Bool   `tfsdk:"commands_config_broadcast"`
-	CommandsConfigGroupBroadcast types.Bool   `tfsdk:"commands_config_group_broadcast"`
-	CommandsConfigGroupLogger    types.Bool   `tfsdk:"commands_config_group_logger"`
-	CommandsConfigGroup1         types.String `tfsdk:"commands_config_group1"`
-	CommandsConfigGroup2         types.String `tfsdk:"commands_config_group2"`
-	CommandsConfigGroup3         types.String `tfsdk:"commands_config_group3"`
-	CommandsConfigGroup4         types.String `tfsdk:"commands_config_group4"`
+	Level          types.Int64  `tfsdk:"level"`
+	ListName       types.String `tfsdk:"list_name"`
+	ActionType     types.String `tfsdk:"action_type"`
+	Broadcast      types.Bool   `tfsdk:"broadcast"`
+	GroupBroadcast types.Bool   `tfsdk:"group_broadcast"`
+	GroupLogger    types.Bool   `tfsdk:"group_logger"`
+	Group1Group    types.String `tfsdk:"group1_group"`
+	Group2Group    types.String `tfsdk:"group2_group"`
+	Group3Group    types.String `tfsdk:"group3_group"`
+	Group4Group    types.String `tfsdk:"group4_group"`
 }
 type AAAAccountingConnections struct {
 	Name               types.String `tfsdk:"name"`
@@ -247,35 +247,35 @@ func (data AAAAccounting) toBody(ctx context.Context) string {
 			if !item.ListName.IsNull() && !item.ListName.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"list-name", item.ListName.ValueString())
 			}
-			if !item.CommandsConfigActionType.IsNull() && !item.CommandsConfigActionType.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.action-type", item.CommandsConfigActionType.ValueString())
+			if !item.ActionType.IsNull() && !item.ActionType.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.action-type", item.ActionType.ValueString())
 			}
-			if !item.CommandsConfigBroadcast.IsNull() && !item.CommandsConfigBroadcast.IsUnknown() {
-				if item.CommandsConfigBroadcast.ValueBool() {
+			if !item.Broadcast.IsNull() && !item.Broadcast.IsUnknown() {
+				if item.Broadcast.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.broadcast", map[string]string{})
 				}
 			}
-			if !item.CommandsConfigGroupBroadcast.IsNull() && !item.CommandsConfigGroupBroadcast.IsUnknown() {
-				if item.CommandsConfigGroupBroadcast.ValueBool() {
+			if !item.GroupBroadcast.IsNull() && !item.GroupBroadcast.IsUnknown() {
+				if item.GroupBroadcast.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.broadcast", map[string]string{})
 				}
 			}
-			if !item.CommandsConfigGroupLogger.IsNull() && !item.CommandsConfigGroupLogger.IsUnknown() {
-				if item.CommandsConfigGroupLogger.ValueBool() {
+			if !item.GroupLogger.IsNull() && !item.GroupLogger.IsUnknown() {
+				if item.GroupLogger.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.logger", map[string]string{})
 				}
 			}
-			if !item.CommandsConfigGroup1.IsNull() && !item.CommandsConfigGroup1.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group1.group", item.CommandsConfigGroup1.ValueString())
+			if !item.Group1Group.IsNull() && !item.Group1Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group1.group", item.Group1Group.ValueString())
 			}
-			if !item.CommandsConfigGroup2.IsNull() && !item.CommandsConfigGroup2.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group2.group", item.CommandsConfigGroup2.ValueString())
+			if !item.Group2Group.IsNull() && !item.Group2Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group2.group", item.Group2Group.ValueString())
 			}
-			if !item.CommandsConfigGroup3.IsNull() && !item.CommandsConfigGroup3.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group3.group", item.CommandsConfigGroup3.ValueString())
+			if !item.Group3Group.IsNull() && !item.Group3Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group3.group", item.Group3Group.ValueString())
 			}
-			if !item.CommandsConfigGroup4.IsNull() && !item.CommandsConfigGroup4.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group4.group", item.CommandsConfigGroup4.ValueString())
+			if !item.Group4Group.IsNull() && !item.Group4Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"commands-config.group-config.group4.group", item.Group4Group.ValueString())
 			}
 		}
 	}
@@ -634,57 +634,57 @@ func (data *AAAAccounting) updateFromBody(ctx context.Context, res gjson.Result)
 		} else {
 			data.Commands[i].ListName = types.StringNull()
 		}
-		if value := r.Get("commands-config.action-type"); value.Exists() && !data.Commands[i].CommandsConfigActionType.IsNull() {
-			data.Commands[i].CommandsConfigActionType = types.StringValue(value.String())
+		if value := r.Get("commands-config.action-type"); value.Exists() && !data.Commands[i].ActionType.IsNull() {
+			data.Commands[i].ActionType = types.StringValue(value.String())
 		} else {
-			data.Commands[i].CommandsConfigActionType = types.StringNull()
+			data.Commands[i].ActionType = types.StringNull()
 		}
-		if value := r.Get("commands-config.broadcast"); !data.Commands[i].CommandsConfigBroadcast.IsNull() {
+		if value := r.Get("commands-config.broadcast"); !data.Commands[i].Broadcast.IsNull() {
 			if value.Exists() {
-				data.Commands[i].CommandsConfigBroadcast = types.BoolValue(true)
+				data.Commands[i].Broadcast = types.BoolValue(true)
 			} else {
-				data.Commands[i].CommandsConfigBroadcast = types.BoolValue(false)
+				data.Commands[i].Broadcast = types.BoolValue(false)
 			}
 		} else {
-			data.Commands[i].CommandsConfigBroadcast = types.BoolNull()
+			data.Commands[i].Broadcast = types.BoolNull()
 		}
-		if value := r.Get("commands-config.group-config.broadcast"); !data.Commands[i].CommandsConfigGroupBroadcast.IsNull() {
+		if value := r.Get("commands-config.group-config.broadcast"); !data.Commands[i].GroupBroadcast.IsNull() {
 			if value.Exists() {
-				data.Commands[i].CommandsConfigGroupBroadcast = types.BoolValue(true)
+				data.Commands[i].GroupBroadcast = types.BoolValue(true)
 			} else {
-				data.Commands[i].CommandsConfigGroupBroadcast = types.BoolValue(false)
+				data.Commands[i].GroupBroadcast = types.BoolValue(false)
 			}
 		} else {
-			data.Commands[i].CommandsConfigGroupBroadcast = types.BoolNull()
+			data.Commands[i].GroupBroadcast = types.BoolNull()
 		}
-		if value := r.Get("commands-config.group-config.logger"); !data.Commands[i].CommandsConfigGroupLogger.IsNull() {
+		if value := r.Get("commands-config.group-config.logger"); !data.Commands[i].GroupLogger.IsNull() {
 			if value.Exists() {
-				data.Commands[i].CommandsConfigGroupLogger = types.BoolValue(true)
+				data.Commands[i].GroupLogger = types.BoolValue(true)
 			} else {
-				data.Commands[i].CommandsConfigGroupLogger = types.BoolValue(false)
+				data.Commands[i].GroupLogger = types.BoolValue(false)
 			}
 		} else {
-			data.Commands[i].CommandsConfigGroupLogger = types.BoolNull()
+			data.Commands[i].GroupLogger = types.BoolNull()
 		}
-		if value := r.Get("commands-config.group-config.group1.group"); value.Exists() && !data.Commands[i].CommandsConfigGroup1.IsNull() {
-			data.Commands[i].CommandsConfigGroup1 = types.StringValue(value.String())
+		if value := r.Get("commands-config.group-config.group1.group"); value.Exists() && !data.Commands[i].Group1Group.IsNull() {
+			data.Commands[i].Group1Group = types.StringValue(value.String())
 		} else {
-			data.Commands[i].CommandsConfigGroup1 = types.StringNull()
+			data.Commands[i].Group1Group = types.StringNull()
 		}
-		if value := r.Get("commands-config.group-config.group2.group"); value.Exists() && !data.Commands[i].CommandsConfigGroup2.IsNull() {
-			data.Commands[i].CommandsConfigGroup2 = types.StringValue(value.String())
+		if value := r.Get("commands-config.group-config.group2.group"); value.Exists() && !data.Commands[i].Group2Group.IsNull() {
+			data.Commands[i].Group2Group = types.StringValue(value.String())
 		} else {
-			data.Commands[i].CommandsConfigGroup2 = types.StringNull()
+			data.Commands[i].Group2Group = types.StringNull()
 		}
-		if value := r.Get("commands-config.group-config.group3.group"); value.Exists() && !data.Commands[i].CommandsConfigGroup3.IsNull() {
-			data.Commands[i].CommandsConfigGroup3 = types.StringValue(value.String())
+		if value := r.Get("commands-config.group-config.group3.group"); value.Exists() && !data.Commands[i].Group3Group.IsNull() {
+			data.Commands[i].Group3Group = types.StringValue(value.String())
 		} else {
-			data.Commands[i].CommandsConfigGroup3 = types.StringNull()
+			data.Commands[i].Group3Group = types.StringNull()
 		}
-		if value := r.Get("commands-config.group-config.group4.group"); value.Exists() && !data.Commands[i].CommandsConfigGroup4.IsNull() {
-			data.Commands[i].CommandsConfigGroup4 = types.StringValue(value.String())
+		if value := r.Get("commands-config.group-config.group4.group"); value.Exists() && !data.Commands[i].Group4Group.IsNull() {
+			data.Commands[i].Group4Group = types.StringValue(value.String())
 		} else {
-			data.Commands[i].CommandsConfigGroup4 = types.StringNull()
+			data.Commands[i].Group4Group = types.StringNull()
 		}
 	}
 	for i := range data.Connections {
@@ -1097,34 +1097,34 @@ func (data *AAAAccounting) fromBody(ctx context.Context, res gjson.Result) {
 				item.ListName = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.action-type"); cValue.Exists() {
-				item.CommandsConfigActionType = types.StringValue(cValue.String())
+				item.ActionType = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.broadcast"); cValue.Exists() {
-				item.CommandsConfigBroadcast = types.BoolValue(true)
+				item.Broadcast = types.BoolValue(true)
 			} else {
-				item.CommandsConfigBroadcast = types.BoolValue(false)
+				item.Broadcast = types.BoolValue(false)
 			}
 			if cValue := v.Get("commands-config.group-config.broadcast"); cValue.Exists() {
-				item.CommandsConfigGroupBroadcast = types.BoolValue(true)
+				item.GroupBroadcast = types.BoolValue(true)
 			} else {
-				item.CommandsConfigGroupBroadcast = types.BoolValue(false)
+				item.GroupBroadcast = types.BoolValue(false)
 			}
 			if cValue := v.Get("commands-config.group-config.logger"); cValue.Exists() {
-				item.CommandsConfigGroupLogger = types.BoolValue(true)
+				item.GroupLogger = types.BoolValue(true)
 			} else {
-				item.CommandsConfigGroupLogger = types.BoolValue(false)
+				item.GroupLogger = types.BoolValue(false)
 			}
 			if cValue := v.Get("commands-config.group-config.group1.group"); cValue.Exists() {
-				item.CommandsConfigGroup1 = types.StringValue(cValue.String())
+				item.Group1Group = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.group-config.group2.group"); cValue.Exists() {
-				item.CommandsConfigGroup2 = types.StringValue(cValue.String())
+				item.Group2Group = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.group-config.group3.group"); cValue.Exists() {
-				item.CommandsConfigGroup3 = types.StringValue(cValue.String())
+				item.Group3Group = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.group-config.group4.group"); cValue.Exists() {
-				item.CommandsConfigGroup4 = types.StringValue(cValue.String())
+				item.Group4Group = types.StringValue(cValue.String())
 			}
 			data.Commands = append(data.Commands, item)
 			return true
@@ -1396,34 +1396,34 @@ func (data *AAAAccountingData) fromBody(ctx context.Context, res gjson.Result) {
 				item.ListName = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.action-type"); cValue.Exists() {
-				item.CommandsConfigActionType = types.StringValue(cValue.String())
+				item.ActionType = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.broadcast"); cValue.Exists() {
-				item.CommandsConfigBroadcast = types.BoolValue(true)
+				item.Broadcast = types.BoolValue(true)
 			} else {
-				item.CommandsConfigBroadcast = types.BoolValue(false)
+				item.Broadcast = types.BoolValue(false)
 			}
 			if cValue := v.Get("commands-config.group-config.broadcast"); cValue.Exists() {
-				item.CommandsConfigGroupBroadcast = types.BoolValue(true)
+				item.GroupBroadcast = types.BoolValue(true)
 			} else {
-				item.CommandsConfigGroupBroadcast = types.BoolValue(false)
+				item.GroupBroadcast = types.BoolValue(false)
 			}
 			if cValue := v.Get("commands-config.group-config.logger"); cValue.Exists() {
-				item.CommandsConfigGroupLogger = types.BoolValue(true)
+				item.GroupLogger = types.BoolValue(true)
 			} else {
-				item.CommandsConfigGroupLogger = types.BoolValue(false)
+				item.GroupLogger = types.BoolValue(false)
 			}
 			if cValue := v.Get("commands-config.group-config.group1.group"); cValue.Exists() {
-				item.CommandsConfigGroup1 = types.StringValue(cValue.String())
+				item.Group1Group = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.group-config.group2.group"); cValue.Exists() {
-				item.CommandsConfigGroup2 = types.StringValue(cValue.String())
+				item.Group2Group = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.group-config.group3.group"); cValue.Exists() {
-				item.CommandsConfigGroup3 = types.StringValue(cValue.String())
+				item.Group3Group = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("commands-config.group-config.group4.group"); cValue.Exists() {
-				item.CommandsConfigGroup4 = types.StringValue(cValue.String())
+				item.Group4Group = types.StringValue(cValue.String())
 			}
 			data.Commands = append(data.Commands, item)
 			return true
@@ -1797,28 +1797,28 @@ func (data *AAAAccounting) getDeletedItems(ctx context.Context, state AAAAccount
 				found = false
 			}
 			if found {
-				if !state.Commands[i].CommandsConfigGroup4.IsNull() && data.Commands[j].CommandsConfigGroup4.IsNull() {
+				if !state.Commands[i].Group4Group.IsNull() && data.Commands[j].Group4Group.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/group4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Commands[i].CommandsConfigGroup3.IsNull() && data.Commands[j].CommandsConfigGroup3.IsNull() {
+				if !state.Commands[i].Group3Group.IsNull() && data.Commands[j].Group3Group.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/group3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Commands[i].CommandsConfigGroup2.IsNull() && data.Commands[j].CommandsConfigGroup2.IsNull() {
+				if !state.Commands[i].Group2Group.IsNull() && data.Commands[j].Group2Group.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/group2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Commands[i].CommandsConfigGroup1.IsNull() && data.Commands[j].CommandsConfigGroup1.IsNull() {
+				if !state.Commands[i].Group1Group.IsNull() && data.Commands[j].Group1Group.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Commands[i].CommandsConfigGroupLogger.IsNull() && data.Commands[j].CommandsConfigGroupLogger.IsNull() {
+				if !state.Commands[i].GroupLogger.IsNull() && data.Commands[j].GroupLogger.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/logger", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Commands[i].CommandsConfigGroupBroadcast.IsNull() && data.Commands[j].CommandsConfigGroupBroadcast.IsNull() {
+				if !state.Commands[i].GroupBroadcast.IsNull() && data.Commands[j].GroupBroadcast.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/group-config/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Commands[i].CommandsConfigBroadcast.IsNull() && data.Commands[j].CommandsConfigBroadcast.IsNull() {
+				if !state.Commands[i].Broadcast.IsNull() && data.Commands[j].Broadcast.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/broadcast", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Commands[i].CommandsConfigActionType.IsNull() && data.Commands[j].CommandsConfigActionType.IsNull() {
+				if !state.Commands[i].ActionType.IsNull() && data.Commands[j].ActionType.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/commands-config/action-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
@@ -1989,13 +1989,13 @@ func (data *AAAAccounting) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.Commands {
 		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
-		if !data.Commands[i].CommandsConfigGroupLogger.IsNull() && !data.Commands[i].CommandsConfigGroupLogger.ValueBool() {
+		if !data.Commands[i].GroupLogger.IsNull() && !data.Commands[i].GroupLogger.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/commands-config/group-config/logger", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Commands[i].CommandsConfigGroupBroadcast.IsNull() && !data.Commands[i].CommandsConfigGroupBroadcast.ValueBool() {
+		if !data.Commands[i].GroupBroadcast.IsNull() && !data.Commands[i].GroupBroadcast.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/commands-config/group-config/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
-		if !data.Commands[i].CommandsConfigBroadcast.IsNull() && !data.Commands[i].CommandsConfigBroadcast.ValueBool() {
+		if !data.Commands[i].Broadcast.IsNull() && !data.Commands[i].Broadcast.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/commands-config/broadcast", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}

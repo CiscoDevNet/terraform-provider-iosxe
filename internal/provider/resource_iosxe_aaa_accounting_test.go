@@ -67,7 +67,7 @@ func TestAccIosxeAAAAccounting(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeAAAAccountingImportStateIdFunc("iosxe_aaa_accounting.test"),
-				ImportStateVerifyIgnore: []string{"commands.0.commands_config_broadcast", "commands.0.commands_config_group_broadcast", "commands.0.commands_config_group_logger"},
+				ImportStateVerifyIgnore: []string{"commands.0.broadcast", "commands.0.group_broadcast", "commands.0.group_logger"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

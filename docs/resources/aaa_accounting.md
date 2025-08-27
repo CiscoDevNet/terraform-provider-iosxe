@@ -78,14 +78,14 @@ Required:
 
 Optional:
 
-- `commands_config_action_type` (String) - Choices: `start-stop`, `stop-only`
-- `commands_config_broadcast` (Boolean) Use Broadcast for Accounting
-- `commands_config_group1` (String) Use Server-group
-- `commands_config_group2` (String) Use Server-group
-- `commands_config_group3` (String) Use Server-group
-- `commands_config_group4` (String) Use Server-group
-- `commands_config_group_broadcast` (Boolean) Use Broadcast for Accounting
-- `commands_config_group_logger` (Boolean) Use system logger for Accounting
+- `action_type` (String) - Choices: `start-stop`, `stop-only`
+- `broadcast` (Boolean) Use Broadcast for Accounting
+- `group1_group` (String) Use Server-group
+- `group2_group` (String) Use Server-group
+- `group3_group` (String) Use Server-group
+- `group4_group` (String) Use Server-group
+- `group_broadcast` (Boolean) Use Broadcast for Accounting
+- `group_logger` (Boolean) Use system logger for Accounting
 
 
 <a id="nestedatt--connections"></a>

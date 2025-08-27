@@ -267,7 +267,7 @@ func (r *AAAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
-			"local_auth_max_fail_attempts": schema.Int64Attribute{
+			"local_authentication_max_fail_attempts": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Max failed attempts to lock the user").AddIntegerRangeDescription(1, 65535).String,
 				Optional:            true,
 				Validators: []validator.Int64{

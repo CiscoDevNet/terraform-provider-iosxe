@@ -29,7 +29,7 @@ data "iosxe_aaa" "example" {
 - `group_server_radius` (Attributes List) Radius server-group definition (see [below for nested schema](#nestedatt--group_server_radius))
 - `group_server_tacacsplus` (Attributes List) Tacacs+ server-group definition (see [below for nested schema](#nestedatt--group_server_tacacsplus))
 - `id` (String) The path of the retrieved object.
-- `local_auth_max_fail_attempts` (Number) Max failed attempts to lock the user
+- `local_authentication_max_fail_attempts` (Number) Max failed attempts to lock the user
 - `local_authentication_type` (String)
 - `local_authorization` (String)
 - `new_model` (Boolean) Enable NEW access control commands and functions.(Disables OLD commands.)

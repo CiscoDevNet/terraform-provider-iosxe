@@ -75,37 +75,39 @@ attributes:
         id: true
       - yang_name: commands-config/commands-choice/others-case/action-type
         xpath: commands-config/action-type
+        tf_name: action_type
         example: accounting
         exclude_test: true
       - yang_name: commands-config/commands-choice/others-case/broadcast
         xpath: commands-config/broadcast
+        tf_name: broadcast
         example: False
         exclude_test: true
       - yang_name: commands-config/commands-choice/others-case/group-config/broadcast
         xpath: commands-config/group-config/broadcast
-        tf_name: commands_config_group_broadcast
+        tf_name: group_broadcast
         example: False
         exclude_test: true
       - yang_name: commands-config/commands-choice/others-case/group-config/logger
         xpath: commands-config/group-config/logger
-        tf_name: commands_config_group_logger
+        tf_name: group_logger
         example: False
         exclude_test: true
       - yang_name: commands-config/commands-choice/others-case/group-config/group1/group
         xpath: commands-config/group-config/group1/group
-        tf_name: commands_config_group1
+        tf_name: group1_group
         exclude_test: true
       - yang_name: commands-config/commands-choice/others-case/group-config/group2/group
         xpath: commands-config/group-config/group2/group
-        tf_name: commands_config_group2
+        tf_name: group2_group 
         exclude_test: true
       - yang_name: commands-config/commands-choice/others-case/group-config/group3/group
         xpath: commands-config/group-config/group3/group
-        tf_name: commands_config_group3
+        tf_name: group3_group
         exclude_test: true
       - yang_name: commands-config/commands-choice/others-case/group-config/group4/group
         xpath: commands-config/group-config/group4/group
-        tf_name: commands_config_group4
+        tf_name: group4_group
         exclude_test: true
   - yang_name: connection
     tf_name: connections
