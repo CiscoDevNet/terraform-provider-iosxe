@@ -220,8 +220,3 @@ attributes:
         tf_name: icmp_msg_code
         example: 0
         exclude_test: true
-      - yang_name: ace-rule/icmp-msg-choice/named-msg-type-case/named-msg-type
-        xpath: ace-rule/named-msg-type
-        tf_name: icmp_named_msg_type
-        example: echo-request
-        exclude_test: true

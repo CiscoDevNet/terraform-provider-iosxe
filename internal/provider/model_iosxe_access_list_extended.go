@@ -102,7 +102,6 @@ type AccessListExtendedEntries struct {
 	DestinationPortEqual10     types.String `tfsdk:"destination_port_equal_10"`
 	IcmpMsgType                types.Int64  `tfsdk:"icmp_msg_type"`
 	IcmpMsgCode                types.Int64  `tfsdk:"icmp_msg_code"`
-	IcmpNamedMsgType           types.String `tfsdk:"icmp_named_msg_type"`
 }
 
 // End of section. //template:end types
@@ -313,9 +312,6 @@ func (data AccessListExtended) toBody(ctx context.Context) string {
 			}
 			if !item.IcmpMsgCode.IsNull() && !item.IcmpMsgCode.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.msg-code", strconv.FormatInt(item.IcmpMsgCode.ValueInt64(), 10))
-			}
-			if !item.IcmpNamedMsgType.IsNull() && !item.IcmpNamedMsgType.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.named-msg-type", item.IcmpNamedMsgType.ValueString())
 			}
 		}
 	}
@@ -657,11 +653,6 @@ func (data *AccessListExtended) updateFromBody(ctx context.Context, res gjson.Re
 		} else {
 			data.Entries[i].IcmpMsgCode = types.Int64Null()
 		}
-		if value := r.Get("ace-rule.named-msg-type"); value.Exists() && !data.Entries[i].IcmpNamedMsgType.IsNull() {
-			data.Entries[i].IcmpNamedMsgType = types.StringValue(value.String())
-		} else {
-			data.Entries[i].IcmpNamedMsgType = types.StringNull()
-		}
 	}
 }
 
@@ -851,9 +842,6 @@ func (data *AccessListExtended) fromBody(ctx context.Context, res gjson.Result) 
 			}
 			if cValue := v.Get("ace-rule.msg-code"); cValue.Exists() {
 				item.IcmpMsgCode = types.Int64Value(cValue.Int())
-			}
-			if cValue := v.Get("ace-rule.named-msg-type"); cValue.Exists() {
-				item.IcmpNamedMsgType = types.StringValue(cValue.String())
 			}
 			data.Entries = append(data.Entries, item)
 			return true
@@ -1048,9 +1036,6 @@ func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Resu
 			if cValue := v.Get("ace-rule.msg-code"); cValue.Exists() {
 				item.IcmpMsgCode = types.Int64Value(cValue.Int())
 			}
-			if cValue := v.Get("ace-rule.named-msg-type"); cValue.Exists() {
-				item.IcmpNamedMsgType = types.StringValue(cValue.String())
-			}
 			data.Entries = append(data.Entries, item)
 			return true
 		})
@@ -1081,9 +1066,6 @@ func (data *AccessListExtended) getDeletedItems(ctx context.Context, state Acces
 				found = false
 			}
 			if found {
-				if !state.Entries[i].IcmpNamedMsgType.IsNull() && data.Entries[j].IcmpNamedMsgType.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/named-msg-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				if !state.Entries[i].IcmpMsgCode.IsNull() && data.Entries[j].IcmpMsgCode.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/msg-code", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}

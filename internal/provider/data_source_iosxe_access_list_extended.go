@@ -276,10 +276,6 @@ func (d *AccessListExtendedDataSource) Schema(ctx context.Context, req datasourc
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"icmp_named_msg_type": schema.StringAttribute{
-							MarkdownDescription: "",
-							Computed:            true,
-						},
 					},
 				},
 			},

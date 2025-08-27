@@ -327,13 +327,6 @@ func (r *AccessListExtendedResource) Schema(ctx context.Context, req resource.Sc
 								int64validator.Between(0, 255),
 							},
 						},
-						"icmp_named_msg_type": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("administratively-prohibited", "alternate-address", "conversion-error", "dod-host-prohibited", "dod-net-prohibited", "echo", "echo-reply", "general-parameter-problem", "host-isolated", "host-precedence-unreachable", "host-redirect", "host-tos-redirect", "host-tos-unreachable", "host-unknown", "host-unreachable", "information-reply", "information-request", "mask-reply", "mask-request", "mobile-redirect", "net-redirect", "net-tos-redirect", "net-tos-unreachable", "net-unreachable", "network-unknown", "no-room-for-option", "option-missing", "packet-too-big", "parameter-problem", "port-unreachable", "precedence-unreachable", "protocol-unreachable", "reassembly-timeout", "redirect", "router-advertisement", "router-solicitation", "source-quench", "source-route-failed", "time-exceeded", "timestamp-reply", "timestamp-request", "traceroute", "ttl-exceeded", "unreachable").String,
-							Optional:            true,
-							Validators: []validator.String{
-								stringvalidator.OneOf("administratively-prohibited", "alternate-address", "conversion-error", "dod-host-prohibited", "dod-net-prohibited", "echo", "echo-reply", "general-parameter-problem", "host-isolated", "host-precedence-unreachable", "host-redirect", "host-tos-redirect", "host-tos-unreachable", "host-unknown", "host-unreachable", "information-reply", "information-request", "mask-reply", "mask-request", "mobile-redirect", "net-redirect", "net-tos-redirect", "net-tos-unreachable", "net-unreachable", "network-unknown", "no-room-for-option", "option-missing", "packet-too-big", "parameter-problem", "port-unreachable", "precedence-unreachable", "protocol-unreachable", "reassembly-timeout", "redirect", "router-advertisement", "router-solicitation", "source-quench", "source-route-failed", "time-exceeded", "timestamp-reply", "timestamp-request", "traceroute", "ttl-exceeded", "unreachable"),
-							},
-						},
 					},
 				},
 			},
