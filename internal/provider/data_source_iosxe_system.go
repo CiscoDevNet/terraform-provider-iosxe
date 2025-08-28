@@ -643,6 +643,10 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "dns classification by domain",
 				Computed:            true,
 			},
+			"ip_multicast_route_limit": schema.Int64Attribute{
+				MarkdownDescription: "Maximum number of multicast routes",
+				Computed:            true,
+			},
 		},
 	}
 }

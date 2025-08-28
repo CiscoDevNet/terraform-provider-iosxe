@@ -517,6 +517,9 @@ attributes:
   - yang_name: ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default
     tf_name: ip_nbar_classification_dns_classify_by_domain
     example: true
+  - yang_name: ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit
+    tf_name: ip_multicast_route_limit
+    example: 200000
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

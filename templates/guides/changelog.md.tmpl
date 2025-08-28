@@ -19,6 +19,7 @@ description: |-
 - Add `ipv4_unicast_admin_distances`, `ipv4_unicast_distance_bgp_external`, `ipv4_unicast_distance_bgp_internal` and `ipv4_unicast_distance_bgp_local` attributes to `iosxe_iosxe_bgp_address_family_ipv4` resource and data source
 - Add `ipv4_unicast_admin_distances`, `ipv4_unicast_distance_bgp_external`, `ipv4_unicast_distance_bgp_internal` and `ipv4_unicast_distance_bgp_local` attributes to `iosxe_iosxe_bgp_address_family_ipv4_vrf` resource and data source
 - Add `track_objects` attribute to `iosxe_system` resource and data source
+- Add `ip_multicast_route_limit` to `iosxe_system` resource and data source
 
 ## 0.8.0
 
