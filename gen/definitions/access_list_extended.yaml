@@ -163,7 +163,7 @@ attributes:
         exclude_test: true
       - yang_name: ace-rule/icmp-msg-choice/named-msg-type-case/named-msg-type
         xpath: ace-rule/named-msg-type
-        tf_name: named_msg_type
+        tf_name: icmp_named_msg_type
         example: traceroute
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port2
         xpath: ace-rule/dst-eq-port2

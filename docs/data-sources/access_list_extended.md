@@ -67,9 +67,9 @@ Read-Only:
 - `fragments` (Boolean) Check non-initial fragments
 - `icmp_msg_code` (Number)
 - `icmp_msg_type` (Number)
+- `icmp_named_msg_type` (String)
 - `log` (Boolean) Log matches against this entry
 - `log_input` (Boolean) Log matches against this entry, including input interface
-- `named_msg_type` (String)
 - `precedence` (String) Match packets with given precedence value
 - `psh` (Boolean) Match on the PSH bit
 - `remark` (String) Access list entry comment

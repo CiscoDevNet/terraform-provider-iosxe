@@ -90,7 +90,7 @@ type AccessListExtendedEntries struct {
 	Tos                        types.String `tfsdk:"tos"`
 	Log                        types.Bool   `tfsdk:"log"`
 	LogInput                   types.Bool   `tfsdk:"log_input"`
-	NamedMsgType               types.String `tfsdk:"named_msg_type"`
+	IcmpNamedMsgType           types.String `tfsdk:"icmp_named_msg_type"`
 	DestinationPortEqual2      types.String `tfsdk:"destination_port_equal_2"`
 	DestinationPortEqual3      types.String `tfsdk:"destination_port_equal_3"`
 	DestinationPortEqual4      types.String `tfsdk:"destination_port_equal_4"`
@@ -277,8 +277,8 @@ func (data AccessListExtended) toBody(ctx context.Context) string {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.log-input", map[string]string{})
 				}
 			}
-			if !item.NamedMsgType.IsNull() && !item.NamedMsgType.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.named-msg-type", item.NamedMsgType.ValueString())
+			if !item.IcmpNamedMsgType.IsNull() && !item.IcmpNamedMsgType.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.named-msg-type", item.IcmpNamedMsgType.ValueString())
 			}
 			if !item.DestinationPortEqual2.IsNull() && !item.DestinationPortEqual2.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-list-seq-rule"+"."+strconv.Itoa(index)+"."+"ace-rule.dst-eq-port2", item.DestinationPortEqual2.ValueString())
@@ -593,10 +593,10 @@ func (data *AccessListExtended) updateFromBody(ctx context.Context, res gjson.Re
 		} else {
 			data.Entries[i].LogInput = types.BoolNull()
 		}
-		if value := r.Get("ace-rule.named-msg-type"); value.Exists() && !data.Entries[i].NamedMsgType.IsNull() {
-			data.Entries[i].NamedMsgType = types.StringValue(value.String())
+		if value := r.Get("ace-rule.named-msg-type"); value.Exists() && !data.Entries[i].IcmpNamedMsgType.IsNull() {
+			data.Entries[i].IcmpNamedMsgType = types.StringValue(value.String())
 		} else {
-			data.Entries[i].NamedMsgType = types.StringNull()
+			data.Entries[i].IcmpNamedMsgType = types.StringNull()
 		}
 		if value := r.Get("ace-rule.dst-eq-port2"); value.Exists() && !data.Entries[i].DestinationPortEqual2.IsNull() {
 			data.Entries[i].DestinationPortEqual2 = types.StringValue(value.String())
@@ -808,7 +808,7 @@ func (data *AccessListExtended) fromBody(ctx context.Context, res gjson.Result) 
 				item.LogInput = types.BoolValue(false)
 			}
 			if cValue := v.Get("ace-rule.named-msg-type"); cValue.Exists() {
-				item.NamedMsgType = types.StringValue(cValue.String())
+				item.IcmpNamedMsgType = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ace-rule.dst-eq-port2"); cValue.Exists() {
 				item.DestinationPortEqual2 = types.StringValue(cValue.String())
@@ -1001,7 +1001,7 @@ func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Resu
 				item.LogInput = types.BoolValue(false)
 			}
 			if cValue := v.Get("ace-rule.named-msg-type"); cValue.Exists() {
-				item.NamedMsgType = types.StringValue(cValue.String())
+				item.IcmpNamedMsgType = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ace-rule.dst-eq-port2"); cValue.Exists() {
 				item.DestinationPortEqual2 = types.StringValue(cValue.String())
@@ -1099,7 +1099,7 @@ func (data *AccessListExtended) getDeletedItems(ctx context.Context, state Acces
 				if !state.Entries[i].DestinationPortEqual2.IsNull() && data.Entries[j].DestinationPortEqual2.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/dst-eq-port2", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.Entries[i].NamedMsgType.IsNull() && data.Entries[j].NamedMsgType.IsNull() {
+				if !state.Entries[i].IcmpNamedMsgType.IsNull() && data.Entries[j].IcmpNamedMsgType.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/access-list-seq-rule=%v/ace-rule/named-msg-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Entries[i].LogInput.IsNull() && data.Entries[j].LogInput.IsNull() {

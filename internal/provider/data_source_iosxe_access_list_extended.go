@@ -228,7 +228,7 @@ func (d *AccessListExtendedDataSource) Schema(ctx context.Context, req datasourc
 							MarkdownDescription: "Log matches against this entry, including input interface",
 							Computed:            true,
 						},
-						"named_msg_type": schema.StringAttribute{
+						"icmp_named_msg_type": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},

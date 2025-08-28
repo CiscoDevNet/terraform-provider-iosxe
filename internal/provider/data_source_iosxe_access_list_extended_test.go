@@ -50,7 +50,7 @@ func TestAccDataSourceIosxeAccessListExtended(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_extended.test", "entries.0.urg", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_extended.test", "entries.0.dscp", "46"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_extended.test", "entries.0.log", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_extended.test", "entries.0.named_msg_type", "traceroute"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_access_list_extended.test", "entries.0.icmp_named_msg_type", "traceroute"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -92,7 +92,7 @@ func testAccDataSourceIosxeAccessListExtendedConfig() string {
 	config += `		urg = true` + "\n"
 	config += `		dscp = "46"` + "\n"
 	config += `		log = true` + "\n"
-	config += `		named_msg_type = "traceroute"` + "\n"
+	config += `		icmp_named_msg_type = "traceroute"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 
