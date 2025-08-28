@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"strconv"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -44,6 +45,16 @@ type License struct {
 	BootLevelNetworkEssentialsAddon types.String `tfsdk:"boot_level_network_essentials_addon"`
 	SmartTransportType              types.String `tfsdk:"smart_transport_type"`
 	SmartUrlCslu                    types.String `tfsdk:"smart_url_cslu"`
+	AcceptAgreement                 types.Bool   `tfsdk:"accept_agreement"`
+	AcceptEnd                       types.Bool   `tfsdk:"accept_end"`
+	AcceptUser                      types.Bool   `tfsdk:"accept_user"`
+	UdiPid                          types.String `tfsdk:"udi_pid"`
+	UdiSn                           types.String `tfsdk:"udi_sn"`
+	FeatureName                     types.String `tfsdk:"feature_name"`
+	FeaturePortBulk                 types.Bool   `tfsdk:"feature_port_bulk"`
+	FeaturePortOnegig               types.Int64  `tfsdk:"feature_port_onegig"`
+	FeaturePortB6xonegig            types.Int64  `tfsdk:"feature_port_b_6xonegig"`
+	FeaturePortTengig               types.Int64  `tfsdk:"feature_port_tengig"`
 }
 
 type LicenseData struct {
@@ -55,6 +66,16 @@ type LicenseData struct {
 	BootLevelNetworkEssentialsAddon types.String `tfsdk:"boot_level_network_essentials_addon"`
 	SmartTransportType              types.String `tfsdk:"smart_transport_type"`
 	SmartUrlCslu                    types.String `tfsdk:"smart_url_cslu"`
+	AcceptAgreement                 types.Bool   `tfsdk:"accept_agreement"`
+	AcceptEnd                       types.Bool   `tfsdk:"accept_end"`
+	AcceptUser                      types.Bool   `tfsdk:"accept_user"`
+	UdiPid                          types.String `tfsdk:"udi_pid"`
+	UdiSn                           types.String `tfsdk:"udi_sn"`
+	FeatureName                     types.String `tfsdk:"feature_name"`
+	FeaturePortBulk                 types.Bool   `tfsdk:"feature_port_bulk"`
+	FeaturePortOnegig               types.Int64  `tfsdk:"feature_port_onegig"`
+	FeaturePortB6xonegig            types.Int64  `tfsdk:"feature_port_b_6xonegig"`
+	FeaturePortTengig               types.Int64  `tfsdk:"feature_port_tengig"`
 }
 
 // End of section. //template:end types
@@ -108,6 +129,44 @@ func (data License) toBody(ctx context.Context) string {
 	if !data.SmartUrlCslu.IsNull() && !data.SmartUrlCslu.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"smart.url.cslu", data.SmartUrlCslu.ValueString())
 	}
+	if !data.AcceptAgreement.IsNull() && !data.AcceptAgreement.IsUnknown() {
+		if data.AcceptAgreement.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"accept.agreement", map[string]string{})
+		}
+	}
+	if !data.AcceptEnd.IsNull() && !data.AcceptEnd.IsUnknown() {
+		if data.AcceptEnd.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"accept.end", map[string]string{})
+		}
+	}
+	if !data.AcceptUser.IsNull() && !data.AcceptUser.IsUnknown() {
+		if data.AcceptUser.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"accept.user", map[string]string{})
+		}
+	}
+	if !data.UdiPid.IsNull() && !data.UdiPid.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"udi.pid", data.UdiPid.ValueString())
+	}
+	if !data.UdiSn.IsNull() && !data.UdiSn.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"udi.sn", data.UdiSn.ValueString())
+	}
+	if !data.FeatureName.IsNull() && !data.FeatureName.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"feature.name", data.FeatureName.ValueString())
+	}
+	if !data.FeaturePortBulk.IsNull() && !data.FeaturePortBulk.IsUnknown() {
+		if data.FeaturePortBulk.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"feature.port.bulk", map[string]string{})
+		}
+	}
+	if !data.FeaturePortOnegig.IsNull() && !data.FeaturePortOnegig.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"feature.port.onegig", strconv.FormatInt(data.FeaturePortOnegig.ValueInt64(), 10))
+	}
+	if !data.FeaturePortB6xonegig.IsNull() && !data.FeaturePortB6xonegig.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"feature.port.b-6xonegig", strconv.FormatInt(data.FeaturePortB6xonegig.ValueInt64(), 10))
+	}
+	if !data.FeaturePortTengig.IsNull() && !data.FeaturePortTengig.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"feature.port.tengig", strconv.FormatInt(data.FeaturePortTengig.ValueInt64(), 10))
+	}
 	return body
 }
 
@@ -158,6 +217,72 @@ func (data *License) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SmartUrlCslu = types.StringNull()
 	}
+	if value := res.Get(prefix + "accept.agreement"); !data.AcceptAgreement.IsNull() {
+		if value.Exists() {
+			data.AcceptAgreement = types.BoolValue(true)
+		} else {
+			data.AcceptAgreement = types.BoolValue(false)
+		}
+	} else {
+		data.AcceptAgreement = types.BoolNull()
+	}
+	if value := res.Get(prefix + "accept.end"); !data.AcceptEnd.IsNull() {
+		if value.Exists() {
+			data.AcceptEnd = types.BoolValue(true)
+		} else {
+			data.AcceptEnd = types.BoolValue(false)
+		}
+	} else {
+		data.AcceptEnd = types.BoolNull()
+	}
+	if value := res.Get(prefix + "accept.user"); !data.AcceptUser.IsNull() {
+		if value.Exists() {
+			data.AcceptUser = types.BoolValue(true)
+		} else {
+			data.AcceptUser = types.BoolValue(false)
+		}
+	} else {
+		data.AcceptUser = types.BoolNull()
+	}
+	if value := res.Get(prefix + "udi.pid"); value.Exists() && !data.UdiPid.IsNull() {
+		data.UdiPid = types.StringValue(value.String())
+	} else {
+		data.UdiPid = types.StringNull()
+	}
+	if value := res.Get(prefix + "udi.sn"); value.Exists() && !data.UdiSn.IsNull() {
+		data.UdiSn = types.StringValue(value.String())
+	} else {
+		data.UdiSn = types.StringNull()
+	}
+	if value := res.Get(prefix + "feature.name"); value.Exists() && !data.FeatureName.IsNull() {
+		data.FeatureName = types.StringValue(value.String())
+	} else {
+		data.FeatureName = types.StringNull()
+	}
+	if value := res.Get(prefix + "feature.port.bulk"); !data.FeaturePortBulk.IsNull() {
+		if value.Exists() {
+			data.FeaturePortBulk = types.BoolValue(true)
+		} else {
+			data.FeaturePortBulk = types.BoolValue(false)
+		}
+	} else {
+		data.FeaturePortBulk = types.BoolNull()
+	}
+	if value := res.Get(prefix + "feature.port.onegig"); value.Exists() && !data.FeaturePortOnegig.IsNull() {
+		data.FeaturePortOnegig = types.Int64Value(value.Int())
+	} else {
+		data.FeaturePortOnegig = types.Int64Null()
+	}
+	if value := res.Get(prefix + "feature.port.b-6xonegig"); value.Exists() && !data.FeaturePortB6xonegig.IsNull() {
+		data.FeaturePortB6xonegig = types.Int64Value(value.Int())
+	} else {
+		data.FeaturePortB6xonegig = types.Int64Null()
+	}
+	if value := res.Get(prefix + "feature.port.tengig"); value.Exists() && !data.FeaturePortTengig.IsNull() {
+		data.FeaturePortTengig = types.Int64Value(value.Int())
+	} else {
+		data.FeaturePortTengig = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -190,6 +315,44 @@ func (data *License) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "smart.url.cslu"); value.Exists() {
 		data.SmartUrlCslu = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "accept.agreement"); value.Exists() {
+		data.AcceptAgreement = types.BoolValue(true)
+	} else {
+		data.AcceptAgreement = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "accept.end"); value.Exists() {
+		data.AcceptEnd = types.BoolValue(true)
+	} else {
+		data.AcceptEnd = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "accept.user"); value.Exists() {
+		data.AcceptUser = types.BoolValue(true)
+	} else {
+		data.AcceptUser = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "udi.pid"); value.Exists() {
+		data.UdiPid = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "udi.sn"); value.Exists() {
+		data.UdiSn = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "feature.name"); value.Exists() {
+		data.FeatureName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "feature.port.bulk"); value.Exists() {
+		data.FeaturePortBulk = types.BoolValue(true)
+	} else {
+		data.FeaturePortBulk = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "feature.port.onegig"); value.Exists() {
+		data.FeaturePortOnegig = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "feature.port.b-6xonegig"); value.Exists() {
+		data.FeaturePortB6xonegig = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "feature.port.tengig"); value.Exists() {
+		data.FeaturePortTengig = types.Int64Value(value.Int())
 	}
 }
 
@@ -224,6 +387,44 @@ func (data *LicenseData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "smart.url.cslu"); value.Exists() {
 		data.SmartUrlCslu = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "accept.agreement"); value.Exists() {
+		data.AcceptAgreement = types.BoolValue(true)
+	} else {
+		data.AcceptAgreement = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "accept.end"); value.Exists() {
+		data.AcceptEnd = types.BoolValue(true)
+	} else {
+		data.AcceptEnd = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "accept.user"); value.Exists() {
+		data.AcceptUser = types.BoolValue(true)
+	} else {
+		data.AcceptUser = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "udi.pid"); value.Exists() {
+		data.UdiPid = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "udi.sn"); value.Exists() {
+		data.UdiSn = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "feature.name"); value.Exists() {
+		data.FeatureName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "feature.port.bulk"); value.Exists() {
+		data.FeaturePortBulk = types.BoolValue(true)
+	} else {
+		data.FeaturePortBulk = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "feature.port.onegig"); value.Exists() {
+		data.FeaturePortOnegig = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "feature.port.b-6xonegig"); value.Exists() {
+		data.FeaturePortB6xonegig = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "feature.port.tengig"); value.Exists() {
+		data.FeaturePortTengig = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -232,6 +433,36 @@ func (data *LicenseData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *License) getDeletedItems(ctx context.Context, state License) []string {
 	deletedItems := make([]string, 0)
+	if !state.FeaturePortTengig.IsNull() && data.FeaturePortTengig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/feature/port/tengig", state.getPath()))
+	}
+	if !state.FeaturePortB6xonegig.IsNull() && data.FeaturePortB6xonegig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/feature/port/b-6xonegig", state.getPath()))
+	}
+	if !state.FeaturePortOnegig.IsNull() && data.FeaturePortOnegig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/feature/port/onegig", state.getPath()))
+	}
+	if !state.FeaturePortBulk.IsNull() && data.FeaturePortBulk.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/feature/port/bulk", state.getPath()))
+	}
+	if !state.FeatureName.IsNull() && data.FeatureName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/feature/name", state.getPath()))
+	}
+	if !state.UdiSn.IsNull() && data.UdiSn.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/udi/sn", state.getPath()))
+	}
+	if !state.UdiPid.IsNull() && data.UdiPid.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/udi/pid", state.getPath()))
+	}
+	if !state.AcceptUser.IsNull() && data.AcceptUser.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/accept/user", state.getPath()))
+	}
+	if !state.AcceptEnd.IsNull() && data.AcceptEnd.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/accept/end", state.getPath()))
+	}
+	if !state.AcceptAgreement.IsNull() && data.AcceptAgreement.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/accept/agreement", state.getPath()))
+	}
 	if !state.SmartUrlCslu.IsNull() && data.SmartUrlCslu.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/smart/url/cslu", state.getPath()))
 	}
@@ -260,6 +491,18 @@ func (data *License) getDeletedItems(ctx context.Context, state License) []strin
 
 func (data *License) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.FeaturePortBulk.IsNull() && !data.FeaturePortBulk.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/feature/port/bulk", data.getPath()))
+	}
+	if !data.AcceptUser.IsNull() && !data.AcceptUser.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/accept/user", data.getPath()))
+	}
+	if !data.AcceptEnd.IsNull() && !data.AcceptEnd.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/accept/end", data.getPath()))
+	}
+	if !data.AcceptAgreement.IsNull() && !data.AcceptAgreement.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/accept/agreement", data.getPath()))
+	}
 	if !data.BootLevelNetworkEssentials.IsNull() && !data.BootLevelNetworkEssentials.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/boot/level/network-essentials", data.getPath()))
 	}
@@ -276,6 +519,36 @@ func (data *License) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *License) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.FeaturePortTengig.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/feature/port/tengig", data.getPath()))
+	}
+	if !data.FeaturePortB6xonegig.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/feature/port/b-6xonegig", data.getPath()))
+	}
+	if !data.FeaturePortOnegig.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/feature/port/onegig", data.getPath()))
+	}
+	if !data.FeaturePortBulk.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/feature/port/bulk", data.getPath()))
+	}
+	if !data.FeatureName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/feature/name", data.getPath()))
+	}
+	if !data.UdiSn.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/udi/sn", data.getPath()))
+	}
+	if !data.UdiPid.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/udi/pid", data.getPath()))
+	}
+	if !data.AcceptUser.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/accept/user", data.getPath()))
+	}
+	if !data.AcceptEnd.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/accept/end", data.getPath()))
+	}
+	if !data.AcceptAgreement.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/accept/agreement", data.getPath()))
+	}
 	if !data.SmartUrlCslu.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/smart/url/cslu", data.getPath()))
 	}
