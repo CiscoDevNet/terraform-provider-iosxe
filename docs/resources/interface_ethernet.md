@@ -82,6 +82,11 @@ resource "iosxe_interface_ethernet" "example" {
   load_interval                    = 30
   snmp_trap_link_status            = false
   logging_event_link_status_enable = false
+  cdp_enable                       = true
+  cdp_tlv_app                      = false
+  cdp_tlv_location                 = false
+  cdp_tlv_server_location          = false
+  ip_nat_inside                    = true
 }
 ```
 
@@ -144,6 +149,10 @@ resource "iosxe_interface_ethernet" "example" {
 - `bfd_template` (String) BFD template
 - `bpduguard_disable` (Boolean) Disable BPDU guard for this interface
 - `bpduguard_enable` (Boolean) Enable BPDU guard for this interface
+- `cdp_enable` (Boolean) Enable CDP on interface
+- `cdp_tlv_app` (Boolean) Enable/Configure Application TLV
+- `cdp_tlv_location` (Boolean) Exchange location information
+- `cdp_tlv_server_location` (Boolean) Enable CDP location server on interface
 - `channel_group_mode` (String) Etherchannel Mode of the interface
   - Choices: `active`, `auto`, `desirable`, `on`, `passive`
 - `channel_group_number` (Number) - Range: `1`-`512`
@@ -185,6 +194,8 @@ resource "iosxe_interface_ethernet" "example" {
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_dhcp_snooping_trust` (Boolean) DHCP Snooping trust config
 - `ip_flow_monitors` (Attributes List) Apply a Flow Monitor (see [below for nested schema](#nestedatt--ip_flow_monitors))
+- `ip_nat_inside` (Boolean) Inside interface for address translation
+- `ip_nat_outside` (Boolean) Outside interface for address translation
 - `ip_nbar_protocol_discovery` (Boolean) Enable protocol discovery for both ipv4 and ipv6
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages

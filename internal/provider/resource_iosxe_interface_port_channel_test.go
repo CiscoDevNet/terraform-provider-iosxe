@@ -81,6 +81,7 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "snmp_trap_link_status", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "logging_event_link_status_enable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "negotiation_auto", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -202,6 +203,7 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	load_interval = 30` + "\n"
 	config += `	snmp_trap_link_status = true` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
+	config += `	negotiation_auto = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

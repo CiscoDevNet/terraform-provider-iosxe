@@ -54,6 +54,7 @@ resource "iosxe_interface_port_channel" "example" {
   load_interval                    = 30
   snmp_trap_link_status            = true
   logging_event_link_status_enable = false
+  negotiation_auto                 = true
 }
 ```
 
@@ -121,6 +122,7 @@ resource "iosxe_interface_port_channel" "example" {
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+- `negotiation_auto` (Boolean) Enable link autonegotiation
 - `shutdown` (Boolean) Shutdown the selected interface
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode
