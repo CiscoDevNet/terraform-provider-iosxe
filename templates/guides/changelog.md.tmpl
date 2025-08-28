@@ -14,6 +14,7 @@ description: |-
 - BREAKING CHANGE: Rename `iosxe_static_route_vrf` resource and data source to `iosxe_static_routes_vrf`
 - BREAKING CHANGE: Combine `iosxe_snmp_server`, `iosxe_snmp_server_group` and `iosxe_snmp_server_user` resources and data sources into single `iosxe_snmp_server` resource and data source
 - Change`permit_entries` and `deny_entries` attributes of `iosxe_community_list_standard` resource and data source from Lists to Sets
+- Add `accept_agreement`, `accept_end`, `accept_user`, `udi_pid`, `udi_sn`, `feature_name`, `feature_port_bulk`, `feature_port_onegig`, `feature_port_b_6xonegig`, and `feature_port_tengig` to `iosxe_license` resource and data source
 
 ## 0.7.1
 
