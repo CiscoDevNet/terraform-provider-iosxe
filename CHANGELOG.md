@@ -5,8 +5,10 @@
 - BREAKING CHANGE: Rename `iosxe_static_route_vrf` resource and data source to `iosxe_static_routes_vrf`
 - BREAKING CHANGE: Combine `iosxe_snmp_server`, `iosxe_snmp_server_group` and `iosxe_snmp_server_user` resources and data sources into single `iosxe_snmp_server` resource and data source
 - Change`permit_entries` and `deny_entries` attributes of `iosxe_community_list_standard` resource and data source from Lists to Sets
+- Add `filter_lists_cdp` to `iosxe_device_sensor` resource and data source
 - Add `cdp_enable`,`cdp_tlv_app`,`cdp_tlv_location`,`cdp_tlv_server_location`,`ip_nat_inside`, and `ip_nat_outside` to `iosxe_interface_ethernet` resource and data source
 - Add `negotiation_auto` to `iosxe_interface_port_channel` resource and data source
+
 ## 0.7.1
 
 - Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`
