@@ -5,6 +5,7 @@
 - BREAKING CHANGE: Rename `iosxe_static_route_vrf` resource and data source to `iosxe_static_routes_vrf`
 - BREAKING CHANGE: Combine `iosxe_snmp_server`, `iosxe_snmp_server_group` and `iosxe_snmp_server_user` resources and data sources into single `iosxe_snmp_server` resource and data source
 - Change`permit_entries` and `deny_entries` attributes of `iosxe_community_list_standard` resource and data source from Lists to Sets
+- Add `enable_traps_bgp`,`enable_traps_cbgp2`,`enable_traps_ospfv3_errors`,`enable_traps_ospfv3_state_change`,`vrf_hosts`,`enable_traps_bgp`,`enable_traps_cbgp2`,`enable_traps_ospfv3_errors`,`enable_traps_ospfv3_state_change`,`ip_address`,`vrf`,`community_or_user`,`version`,`encryption`, and `security_level` to `iosxe_snmp_server` resource and data source
 
 ## 0.7.1
 
