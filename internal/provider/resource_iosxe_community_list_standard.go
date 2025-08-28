@@ -82,12 +82,12 @@ func (r *CommunityListStandardResource) Schema(ctx context.Context, req resource
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"deny_entries": schema.ListAttribute{
+			"deny_entries": schema.SetAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				ElementType:         types.StringType,
 				Optional:            true,
 			},
-			"permit_entries": schema.ListAttribute{
+			"permit_entries": schema.SetAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				ElementType:         types.StringType,
 				Optional:            true,

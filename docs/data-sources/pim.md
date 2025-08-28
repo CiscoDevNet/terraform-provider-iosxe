@@ -40,6 +40,7 @@ data "iosxe_pim" "example" {
 - `rp_candidates` (Attributes List) To be a PIM version 2 RP candidate (see [below for nested schema](#nestedatt--rp_candidates))
 - `ssm_default` (Boolean) Use 232/8 group range for SSM
 - `ssm_range` (String) ACL for group range to be used for SSM
+- `vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--vrfs))
 
 <a id="nestedatt--rp_addresses"></a>
 ### Nested Schema for `rp_addresses`
@@ -54,6 +55,50 @@ Read-Only:
 
 <a id="nestedatt--rp_candidates"></a>
 ### Nested Schema for `rp_candidates`
+
+Read-Only:
+
+- `bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+- `group_list` (String) IP Access list
+- `interface` (String) Autonomic-Networking virtual interface
+- `interval` (Number) RP candidate advertisement interval
+- `priority` (Number) RP candidate priority
+
+
+<a id="nestedatt--vrfs"></a>
+### Nested Schema for `vrfs`
+
+Read-Only:
+
+- `autorp` (Boolean) Configure AutoRP global operations
+- `autorp_listener` (Boolean) Allow AutoRP packets across sparse mode interface
+- `bsr_candidate_accept_rp_candidate` (String) BSR RP candidate filter
+- `bsr_candidate_loopback` (Number) Loopback interface
+- `bsr_candidate_mask` (Number) Hash Mask length for RP selection
+- `bsr_candidate_priority` (Number) Priority value for candidate bootstrap router
+- `cache_rpf_oif` (Boolean) Cache outgoing interface RPF info
+- `rp_address` (String) IP address of Rendezvous-point for group
+- `rp_address_bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+- `rp_address_override` (Boolean) Overrides dynamically learnt RP mappings
+- `rp_addresses` (Attributes List) PIM RP-address (Rendezvous Point) (see [below for nested schema](#nestedatt--vrfs--rp_addresses))
+- `rp_candidates` (Attributes List) To be a PIM version 2 RP candidate (see [below for nested schema](#nestedatt--vrfs--rp_candidates))
+- `ssm_default` (Boolean) Use 232/8 group range for SSM
+- `ssm_range` (String) ACL for group range to be used for SSM
+- `vrf` (String)
+
+<a id="nestedatt--vrfs--rp_addresses"></a>
+### Nested Schema for `vrfs.rp_addresses`
+
+Read-Only:
+
+- `access_list` (String) IP Access-list
+- `bidir` (Boolean) Group range treated in bidirectional shared-tree mode
+- `override` (Boolean) Overrides dynamically learnt RP mappings
+- `rp_address` (String) IP address of Rendezvous-point for group
+
+
+<a id="nestedatt--vrfs--rp_candidates"></a>
+### Nested Schema for `vrfs.rp_candidates`
 
 Read-Only:
 

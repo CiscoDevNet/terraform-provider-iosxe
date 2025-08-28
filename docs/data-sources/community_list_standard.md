@@ -31,6 +31,6 @@ data "iosxe_community_list_standard" "example" {
 
 ### Read-Only
 
-- `deny_entries` (List of String)
+- `deny_entries` (Set of String)
 - `id` (String) The path of the retrieved object.
-- `permit_entries` (List of String)
+- `permit_entries` (Set of String)

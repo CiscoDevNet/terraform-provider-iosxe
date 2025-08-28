@@ -296,6 +296,25 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "views.0.name", "VIEW1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "views.0.mib", "interfaces"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "views.0.inc_exl", "included"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.name", "GROUP1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.security_level", "priv"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.context_node", "CON1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.match_node", "exact"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.read_node", "VIEW1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.write_node", "VIEW2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.notify_node", "VIEW3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.access_ipv6_acl", "V6ACL1"))
+	if os.Getenv("IOSXE1712") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.access_acl_name", "ACL1"))
+	}
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.username", "USER1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.grpname", "GROUP1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_algorithm", "sha"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_password", "Cisco123"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_algorithm", "128"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_password", "Cisco123"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_access_ipv6_acl", "V6ACL1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_priv_aes_access_acl_name", "ACL123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -598,6 +617,31 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		name = "VIEW1"` + "\n"
 	config += `		mib = "interfaces"` + "\n"
 	config += `		inc_exl = "included"` + "\n"
+	config += `	}]` + "\n"
+	config += `	groups = [{` + "\n"
+	config += `		name = "GROUP1"` + "\n"
+	config += `		v3_security = [{` + "\n"
+	config += `			security_level = "priv"` + "\n"
+	config += `			context_node = "CON1"` + "\n"
+	config += `			match_node = "exact"` + "\n"
+	config += `			read_node = "VIEW1"` + "\n"
+	config += `			write_node = "VIEW2"` + "\n"
+	config += `			notify_node = "VIEW3"` + "\n"
+	config += `			access_ipv6_acl = "V6ACL1"` + "\n"
+	if os.Getenv("IOSXE1712") != "" {
+		config += `			access_acl_name = "ACL1"` + "\n"
+	}
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	users = [{` + "\n"
+	config += `		username = "USER1"` + "\n"
+	config += `		grpname = "GROUP1"` + "\n"
+	config += `		v3_auth_algorithm = "sha"` + "\n"
+	config += `		v3_auth_password = "Cisco123"` + "\n"
+	config += `		v3_auth_priv_aes_algorithm = "128"` + "\n"
+	config += `		v3_auth_priv_aes_password = "Cisco123"` + "\n"
+	config += `		v3_auth_priv_aes_access_ipv6_acl = "V6ACL1"` + "\n"
+	config += `		v3_auth_priv_aes_access_acl_name = "ACL123"` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"

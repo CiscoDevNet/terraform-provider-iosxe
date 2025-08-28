@@ -38,26 +38,26 @@ import (
 // End of section. //template:end imports
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
-type StaticRouteVRF struct {
-	Device types.String           `tfsdk:"device"`
-	Id     types.String           `tfsdk:"id"`
-	Vrf    types.String           `tfsdk:"vrf"`
-	Routes []StaticRouteVRFRoutes `tfsdk:"routes"`
+type StaticRoutesVRF struct {
+	Device types.String            `tfsdk:"device"`
+	Id     types.String            `tfsdk:"id"`
+	Vrf    types.String            `tfsdk:"vrf"`
+	Routes []StaticRoutesVRFRoutes `tfsdk:"routes"`
 }
 
-type StaticRouteVRFData struct {
-	Device types.String           `tfsdk:"device"`
-	Id     types.String           `tfsdk:"id"`
-	Vrf    types.String           `tfsdk:"vrf"`
-	Routes []StaticRouteVRFRoutes `tfsdk:"routes"`
+type StaticRoutesVRFData struct {
+	Device types.String            `tfsdk:"device"`
+	Id     types.String            `tfsdk:"id"`
+	Vrf    types.String            `tfsdk:"vrf"`
+	Routes []StaticRoutesVRFRoutes `tfsdk:"routes"`
 }
-type StaticRouteVRFRoutes struct {
-	Prefix            types.String                            `tfsdk:"prefix"`
-	Mask              types.String                            `tfsdk:"mask"`
-	NextHops          []StaticRouteVRFRoutesNextHops          `tfsdk:"next_hops"`
-	NextHopsWithTrack []StaticRouteVRFRoutesNextHopsWithTrack `tfsdk:"next_hops_with_track"`
+type StaticRoutesVRFRoutes struct {
+	Prefix            types.String                             `tfsdk:"prefix"`
+	Mask              types.String                             `tfsdk:"mask"`
+	NextHops          []StaticRoutesVRFRoutesNextHops          `tfsdk:"next_hops"`
+	NextHopsWithTrack []StaticRoutesVRFRoutesNextHopsWithTrack `tfsdk:"next_hops_with_track"`
 }
-type StaticRouteVRFRoutesNextHops struct {
+type StaticRoutesVRFRoutesNextHops struct {
 	NextHop   types.String `tfsdk:"next_hop"`
 	Distance  types.Int64  `tfsdk:"distance"`
 	Global    types.Bool   `tfsdk:"global"`
@@ -65,7 +65,7 @@ type StaticRouteVRFRoutesNextHops struct {
 	Permanent types.Bool   `tfsdk:"permanent"`
 	Tag       types.Int64  `tfsdk:"tag"`
 }
-type StaticRouteVRFRoutesNextHopsWithTrack struct {
+type StaticRoutesVRFRoutesNextHopsWithTrack struct {
 	NextHop     types.String `tfsdk:"next_hop"`
 	Name        types.String `tfsdk:"name"`
 	TrackIdName types.Int64  `tfsdk:"track_id_name"`
@@ -78,16 +78,16 @@ type StaticRouteVRFRoutesNextHopsWithTrack struct {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getPath
 
-func (data StaticRouteVRF) getPath() string {
+func (data StaticRoutesVRF) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/ip/route/vrf=%s", url.QueryEscape(fmt.Sprintf("%v", data.Vrf.ValueString())))
 }
 
-func (data StaticRouteVRFData) getPath() string {
+func (data StaticRoutesVRFData) getPath() string {
 	return fmt.Sprintf("Cisco-IOS-XE-native:native/ip/route/vrf=%s", url.QueryEscape(fmt.Sprintf("%v", data.Vrf.ValueString())))
 }
 
 // if last path element has a key -> remove it
-func (data StaticRouteVRF) getPathShort() string {
+func (data StaticRoutesVRF) getPathShort() string {
 	path := data.getPath()
 	re := regexp.MustCompile(`(.*)=[^\/]*$`)
 	matches := re.FindStringSubmatch(path)
@@ -101,7 +101,7 @@ func (data StaticRouteVRF) getPathShort() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
 
-func (data StaticRouteVRF) toBody(ctx context.Context) string {
+func (data StaticRoutesVRF) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if !data.Vrf.IsNull() && !data.Vrf.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"name", data.Vrf.ValueString())
@@ -176,7 +176,7 @@ func (data StaticRouteVRF) toBody(ctx context.Context) string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
-func (data *StaticRouteVRF) updateFromBody(ctx context.Context, res gjson.Result) {
+func (data *StaticRoutesVRF) updateFromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
@@ -346,15 +346,15 @@ func (data *StaticRouteVRF) updateFromBody(ctx context.Context, res gjson.Result
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
-func (data *StaticRouteVRF) fromBody(ctx context.Context, res gjson.Result) {
+func (data *StaticRoutesVRF) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "ip-route-interface-forwarding-list"); value.Exists() {
-		data.Routes = make([]StaticRouteVRFRoutes, 0)
+		data.Routes = make([]StaticRoutesVRFRoutes, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := StaticRouteVRFRoutes{}
+			item := StaticRoutesVRFRoutes{}
 			if cValue := v.Get("prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -362,9 +362,9 @@ func (data *StaticRouteVRF) fromBody(ctx context.Context, res gjson.Result) {
 				item.Mask = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("fwd-list"); cValue.Exists() {
-				item.NextHops = make([]StaticRouteVRFRoutesNextHops, 0)
+				item.NextHops = make([]StaticRoutesVRFRoutesNextHops, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := StaticRouteVRFRoutesNextHops{}
+					cItem := StaticRoutesVRFRoutesNextHops{}
 					if ccValue := cv.Get("fwd"); ccValue.Exists() {
 						cItem.NextHop = types.StringValue(ccValue.String())
 					}
@@ -392,9 +392,9 @@ func (data *StaticRouteVRF) fromBody(ctx context.Context, res gjson.Result) {
 				})
 			}
 			if cValue := v.Get("fwd-list-with-track"); cValue.Exists() {
-				item.NextHopsWithTrack = make([]StaticRouteVRFRoutesNextHopsWithTrack, 0)
+				item.NextHopsWithTrack = make([]StaticRoutesVRFRoutesNextHopsWithTrack, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := StaticRouteVRFRoutesNextHopsWithTrack{}
+					cItem := StaticRoutesVRFRoutesNextHopsWithTrack{}
 					if ccValue := cv.Get("fwd"); ccValue.Exists() {
 						cItem.NextHop = types.StringValue(ccValue.String())
 					}
@@ -429,15 +429,15 @@ func (data *StaticRouteVRF) fromBody(ctx context.Context, res gjson.Result) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyData
 
-func (data *StaticRouteVRFData) fromBody(ctx context.Context, res gjson.Result) {
+func (data *StaticRoutesVRFData) fromBody(ctx context.Context, res gjson.Result) {
 	prefix := helpers.LastElement(data.getPath()) + "."
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "ip-route-interface-forwarding-list"); value.Exists() {
-		data.Routes = make([]StaticRouteVRFRoutes, 0)
+		data.Routes = make([]StaticRoutesVRFRoutes, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := StaticRouteVRFRoutes{}
+			item := StaticRoutesVRFRoutes{}
 			if cValue := v.Get("prefix"); cValue.Exists() {
 				item.Prefix = types.StringValue(cValue.String())
 			}
@@ -445,9 +445,9 @@ func (data *StaticRouteVRFData) fromBody(ctx context.Context, res gjson.Result) 
 				item.Mask = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("fwd-list"); cValue.Exists() {
-				item.NextHops = make([]StaticRouteVRFRoutesNextHops, 0)
+				item.NextHops = make([]StaticRoutesVRFRoutesNextHops, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := StaticRouteVRFRoutesNextHops{}
+					cItem := StaticRoutesVRFRoutesNextHops{}
 					if ccValue := cv.Get("fwd"); ccValue.Exists() {
 						cItem.NextHop = types.StringValue(ccValue.String())
 					}
@@ -475,9 +475,9 @@ func (data *StaticRouteVRFData) fromBody(ctx context.Context, res gjson.Result) 
 				})
 			}
 			if cValue := v.Get("fwd-list-with-track"); cValue.Exists() {
-				item.NextHopsWithTrack = make([]StaticRouteVRFRoutesNextHopsWithTrack, 0)
+				item.NextHopsWithTrack = make([]StaticRoutesVRFRoutesNextHopsWithTrack, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := StaticRouteVRFRoutesNextHopsWithTrack{}
+					cItem := StaticRoutesVRFRoutesNextHopsWithTrack{}
 					if ccValue := cv.Get("fwd"); ccValue.Exists() {
 						cItem.NextHop = types.StringValue(ccValue.String())
 					}
@@ -512,7 +512,7 @@ func (data *StaticRouteVRFData) fromBody(ctx context.Context, res gjson.Result) 
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
-func (data *StaticRouteVRF) getDeletedItems(ctx context.Context, state StaticRouteVRF) []string {
+func (data *StaticRoutesVRF) getDeletedItems(ctx context.Context, state StaticRoutesVRF) []string {
 	deletedItems := make([]string, 0)
 	for i := range state.Routes {
 		stateKeyValues := [...]string{state.Routes[i].Prefix.ValueString(), state.Routes[i].Mask.ValueString()}
@@ -633,7 +633,7 @@ func (data *StaticRouteVRF) getDeletedItems(ctx context.Context, state StaticRou
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
-func (data *StaticRouteVRF) getEmptyLeafsDelete(ctx context.Context) []string {
+func (data *StaticRoutesVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
 	for i := range data.Routes {
@@ -664,7 +664,7 @@ func (data *StaticRouteVRF) getEmptyLeafsDelete(ctx context.Context) []string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletePaths
 
-func (data *StaticRouteVRF) getDeletePaths(ctx context.Context) []string {
+func (data *StaticRoutesVRF) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
 	for i := range data.Routes {
 		keyValues := [...]string{data.Routes[i].Prefix.ValueString(), data.Routes[i].Mask.ValueString()}

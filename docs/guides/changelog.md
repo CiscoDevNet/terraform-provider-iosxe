@@ -7,11 +7,21 @@ description: |-
 
 # Changelog
 
-## 0.7.1 (unreleased)
+## 0.8.0 (unreleased)
+
+- BREAKING CHANGE: Combine `iosxe_msdp` and `iosxe_msdp_vrf` resources and data sources into single `iosxe_msdp` resource and data source
+- BREAKING CHANGE: Combine `iosxe_pim` and `iosxe_pim_vrf` resources and data sources into single `iosxe_pim` resource and data source
+- BREAKING CHANGE: Rename `iosxe_static_route_vrf` resource and data source to `iosxe_static_routes_vrf`
+- BREAKING CHANGE: Combine `iosxe_snmp_server`, `iosxe_snmp_server_group` and `iosxe_snmp_server_user` resources and data sources into single `iosxe_snmp_server` resource and data source
+- Change`permit_entries` and `deny_entries` attributes of `iosxe_community_list_standard` resource and data source from Lists to Sets
+- Add `filter_lists_cdp` to `iosxe_device_sensor` resource and data source
+
+## 0.7.1
 
 - Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`
 - Add `ip_hosts`, `ip_hosts_vrfs`, `name`, `ips`, `vrf`, `hosts`, `subscriber_templating`, `call_home_contact_email`, `call_home_cisco_tac_1_profile_active`, `call_home_cisco_tac_1_destination_transport_method`, `ip_ftp_passive`, `tftp_source_interface_gigabit_ethernet`, `tftp_source_interface_loopback`, `version`, and `multilink_ppp_bundle_name` to `iosxe_system` resource and data source
 - Add `ip_ssh_version_legacy`, `ip_ssh_time_out` and `ip_ssh_authentication_retries` attributes to `iosxe_system` resource and data source
+- Add subinterface option to `iosxe_interface_mpls`, `iosxe_interface_ospf`, `iosxe_interface_ospfv3` and `iosxe_interface_pim` resources and data sources
 
 ## 0.7.0
 

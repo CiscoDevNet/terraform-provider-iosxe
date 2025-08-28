@@ -163,6 +163,118 @@ func (d *PIMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
+			"vrfs": schema.ListNestedAttribute{
+				MarkdownDescription: "Select VPN Routing/Forwarding instance",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"autorp": schema.BoolAttribute{
+							MarkdownDescription: "Configure AutoRP global operations",
+							Computed:            true,
+						},
+						"autorp_listener": schema.BoolAttribute{
+							MarkdownDescription: "Allow AutoRP packets across sparse mode interface",
+							Computed:            true,
+						},
+						"bsr_candidate_loopback": schema.Int64Attribute{
+							MarkdownDescription: "Loopback interface",
+							Computed:            true,
+						},
+						"bsr_candidate_mask": schema.Int64Attribute{
+							MarkdownDescription: "Hash Mask length for RP selection",
+							Computed:            true,
+						},
+						"bsr_candidate_priority": schema.Int64Attribute{
+							MarkdownDescription: "Priority value for candidate bootstrap router",
+							Computed:            true,
+						},
+						"bsr_candidate_accept_rp_candidate": schema.StringAttribute{
+							MarkdownDescription: "BSR RP candidate filter",
+							Computed:            true,
+						},
+						"ssm_range": schema.StringAttribute{
+							MarkdownDescription: "ACL for group range to be used for SSM",
+							Computed:            true,
+						},
+						"ssm_default": schema.BoolAttribute{
+							MarkdownDescription: "Use 232/8 group range for SSM",
+							Computed:            true,
+						},
+						"rp_address": schema.StringAttribute{
+							MarkdownDescription: "IP address of Rendezvous-point for group",
+							Computed:            true,
+						},
+						"rp_address_override": schema.BoolAttribute{
+							MarkdownDescription: "Overrides dynamically learnt RP mappings",
+							Computed:            true,
+						},
+						"rp_address_bidir": schema.BoolAttribute{
+							MarkdownDescription: "Group range treated in bidirectional shared-tree mode",
+							Computed:            true,
+						},
+						"cache_rpf_oif": schema.BoolAttribute{
+							MarkdownDescription: "Cache outgoing interface RPF info",
+							Computed:            true,
+						},
+						"rp_addresses": schema.ListNestedAttribute{
+							MarkdownDescription: "PIM RP-address (Rendezvous Point)",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"access_list": schema.StringAttribute{
+										MarkdownDescription: "IP Access-list",
+										Computed:            true,
+									},
+									"rp_address": schema.StringAttribute{
+										MarkdownDescription: "IP address of Rendezvous-point for group",
+										Computed:            true,
+									},
+									"override": schema.BoolAttribute{
+										MarkdownDescription: "Overrides dynamically learnt RP mappings",
+										Computed:            true,
+									},
+									"bidir": schema.BoolAttribute{
+										MarkdownDescription: "Group range treated in bidirectional shared-tree mode",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"rp_candidates": schema.ListNestedAttribute{
+							MarkdownDescription: "To be a PIM version 2 RP candidate",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"interface": schema.StringAttribute{
+										MarkdownDescription: "Autonomic-Networking virtual interface",
+										Computed:            true,
+									},
+									"group_list": schema.StringAttribute{
+										MarkdownDescription: "IP Access list",
+										Computed:            true,
+									},
+									"interval": schema.Int64Attribute{
+										MarkdownDescription: "RP candidate advertisement interval",
+										Computed:            true,
+									},
+									"priority": schema.Int64Attribute{
+										MarkdownDescription: "RP candidate priority",
+										Computed:            true,
+									},
+									"bidir": schema.BoolAttribute{
+										MarkdownDescription: "Group range treated in bidirectional shared-tree mode",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

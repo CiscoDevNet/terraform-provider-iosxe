@@ -20,7 +20,7 @@ attribute:
   yang_scope: str(required=False)  # When trying to find a matching element in the YANG model, limit the scope by proving the parent element name here
   tf_name: str(required=False)  # Optionally provide a Terraform name for the attribute, otherwise it will be derived from the YANG name
   xpath: str(required=False)  # Optionally provide an XPath for the attribute, otherwise it will be derived from 'yang_name'
-  type: enum('String', 'Int64', 'Bool', 'List', 'StringList', 'Int64List', required=False)  # Terraform type of the attribute
+  type: enum('String', 'Int64', 'Bool', 'List', 'StringList', 'Int64List', 'StringSet', 'Int64Set', required=False)  # Terraform type of the attribute
   type_yang_bool: enum('empty', 'presence', 'boolean', required=False)  # There are three possible ways of representing a boolean in YANG
   id: bool(required=False)  # Set to true if the attribute is used to identify an element in a list
   reference: bool(required=False)  # Set to true if the attribute is a reference being used in the path (URL) of the REST endpoint

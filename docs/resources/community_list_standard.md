@@ -29,9 +29,9 @@ resource "iosxe_community_list_standard" "example" {
 
 ### Optional
 
-- `deny_entries` (List of String)
+- `deny_entries` (Set of String)
 - `device` (String) A device name from the provider configuration.
-- `permit_entries` (List of String)
+- `permit_entries` (Set of String)
 
 ### Read-Only
 

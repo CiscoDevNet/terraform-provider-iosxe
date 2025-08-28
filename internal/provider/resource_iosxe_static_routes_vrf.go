@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -45,26 +46,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &SNMPServerUserResource{}
-	_ resource.ResourceWithImportState = &SNMPServerUserResource{}
+	_ resource.Resource                = &StaticRoutesVRFResource{}
+	_ resource.ResourceWithImportState = &StaticRoutesVRFResource{}
 )
 
-func NewSNMPServerUserResource() resource.Resource {
-	return &SNMPServerUserResource{}
+func NewStaticRoutesVRFResource() resource.Resource {
+	return &StaticRoutesVRFResource{}
 }
 
-type SNMPServerUserResource struct {
+type StaticRoutesVRFResource struct {
 	data *IosxeProviderData
 }
 
-func (r *SNMPServerUserResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_snmp_server_user"
+func (r *StaticRoutesVRFResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_static_routes_vrf"
 }
 
-func (r *SNMPServerUserResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *StaticRoutesVRFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the SNMP Server User configuration.",
+		MarkdownDescription: "This resource can manage the Static Routes VRF configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -78,139 +79,119 @@ func (r *SNMPServerUserResource) Schema(ctx context.Context, req resource.Schema
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"username": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Name of the user").String,
+			"vrf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"grpname": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Group to which the user belongs").String,
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
-			"v3_auth_algorithm": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use HMAC SHA/MD5 algorithm for authentication").AddStringEnumDescription("md5", "sha").String,
+			"routes": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("md5", "sha"),
-				},
-			},
-			"v3_auth_password": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
-				Required:            true,
-			},
-			"v3_auth_priv_aes_algorithm": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("128", "192", "256").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("128", "192", "256"),
-				},
-			},
-			"v3_auth_priv_aes_password": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
-				Optional:            true,
-			},
-			"v3_auth_priv_aes_access_ipv6_acl": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 194),
-				},
-			},
-			"v3_auth_priv_aes_access_standard_acl": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 99),
-				},
-			},
-			"v3_auth_priv_aes_access_acl_name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 183),
-				},
-			},
-			"v3_auth_priv_des_password": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
-				Optional:            true,
-			},
-			"v3_auth_priv_des_access_ipv6_acl": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 194),
-				},
-			},
-			"v3_auth_priv_des_access_standard_acl": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 99),
-				},
-			},
-			"v3_auth_priv_des_access_acl_name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 183),
-				},
-			},
-			"v3_auth_priv_des3_password": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
-				Optional:            true,
-			},
-			"v3_auth_priv_des3_access_ipv6_acl": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 194),
-				},
-			},
-			"v3_auth_priv_des3_access_standard_acl": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 99),
-				},
-			},
-			"v3_auth_priv_des3_access_acl_name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 183),
-				},
-			},
-			"v3_auth_access_ipv6_acl": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 194),
-				},
-			},
-			"v3_auth_access_standard_acl": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 99),
-				},
-			},
-			"v3_auth_access_acl_name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 183),
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"prefix": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"mask": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"next_hops": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"next_hop": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify the next hop as an ip-address or interface name").String,
+										Required:            true,
+									},
+									"distance": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 255),
+										},
+									},
+									"global": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Next hop address is global").String,
+										Optional:            true,
+									},
+									"name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify name of the next hop").String,
+										Optional:            true,
+									},
+									"permanent": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("permanent route").String,
+										Optional:            true,
+									},
+									"tag": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Set tag for this route").AddIntegerRangeDescription(1, 4294967295).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 4294967295),
+										},
+									},
+								},
+							},
+						},
+						"next_hops_with_track": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"next_hop": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify the next hop as an ip-address or interface name").String,
+										Required:            true,
+									},
+									"name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify name of the next hop").String,
+										Optional:            true,
+									},
+									"track_id_name": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Track number").AddIntegerRangeDescription(1, 1000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 1000),
+										},
+									},
+									"distance": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 255),
+										},
+									},
+									"tag": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Set tag for this route").AddIntegerRangeDescription(1, 4294967295).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 4294967295),
+										},
+									},
+									"permanent": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("permanent route").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},
 	}
 }
 
-func (r *SNMPServerUserResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *StaticRoutesVRFResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -222,8 +203,8 @@ func (r *SNMPServerUserResource) Configure(_ context.Context, req resource.Confi
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *SNMPServerUserResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan SNMPServerUser
+func (r *StaticRoutesVRFResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan StaticRoutesVRF
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -290,8 +271,8 @@ func (r *SNMPServerUserResource) Create(ctx context.Context, req resource.Create
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *SNMPServerUserResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state SNMPServerUser
+func (r *StaticRoutesVRFResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state StaticRoutesVRF
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -311,7 +292,7 @@ func (r *SNMPServerUserResource) Read(ctx context.Context, req resource.ReadRequ
 	if device.Managed {
 		res, err := device.Client.GetData(state.Id.ValueString())
 		if res.StatusCode == 404 {
-			state = SNMPServerUser{Device: state.Device, Id: state.Id}
+			state = StaticRoutesVRF{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -344,8 +325,8 @@ func (r *SNMPServerUserResource) Read(ctx context.Context, req resource.ReadRequ
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *SNMPServerUserResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state SNMPServerUser
+func (r *StaticRoutesVRFResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state StaticRoutesVRF
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -428,8 +409,8 @@ func (r *SNMPServerUserResource) Update(ctx context.Context, req resource.Update
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *SNMPServerUserResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state SNMPServerUser
+func (r *StaticRoutesVRFResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state StaticRoutesVRF
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -489,27 +470,26 @@ func (r *SNMPServerUserResource) Delete(ctx context.Context, req resource.Delete
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *SNMPServerUserResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *StaticRoutesVRFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 2 && len(idParts) != 3 {
-		expectedIdentifier := "Expected import identifier with format: '<username>,<grpname>'"
-		expectedIdentifier += " or '<username>,<grpname>,<device>'"
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<vrf>'"
+		expectedIdentifier += " or '<vrf>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("username"), idParts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("grpname"), idParts[1])...)
-	if len(idParts) == 3 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("vrf"), idParts[0])...)
+	if len(idParts) == 2 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state SNMPServerUser
+	var state StaticRoutesVRF
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

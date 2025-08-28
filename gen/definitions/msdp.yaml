@@ -29,7 +29,55 @@ attributes:
         example: 0
       - yang_name: password
         example: Cisco123
+  - yang_name: vrf
+    tf_name: vrfs
+    type: List
+    attributes:
+      - yang_name: name
+        tf_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: originator-id
+        example: Loopback200
+      - yang_name: peer
+        tf_name: peers
+        type: List
+        attributes:
+          - yang_name: addr
+            example: 10.1.1.1
+            id: true
+          - yang_name: remote-as
+            example: 65000
+          - yang_name: connect-source/interface-choice/Loopback/Loopback
+            xpath: connect-source/Loopback
+            tf_name: connect_source_loopback
+            example: 200
+      - yang_name: password/peer-list
+        tf_name: passwords
+        type: List
+        attributes:
+          - yang_name: addr
+            example: 10.1.1.1
+            id: true
+          - yang_name: encryption
+            example: 0
+          - yang_name: password
+            example: Cisco123
 test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=200
+    attributes:
+      - name: name
+        value: 200
+      - name: vrf/forwarding
+        value: VRF1
+    dependencies: [0]
   - path: Cisco-IOS-XE-native:native/interface/Loopback=100
     attributes:
       - name: name

@@ -44,6 +44,7 @@ type MSDP struct {
 	OriginatorId types.String    `tfsdk:"originator_id"`
 	Peers        []MSDPPeers     `tfsdk:"peers"`
 	Passwords    []MSDPPasswords `tfsdk:"passwords"`
+	Vrfs         []MSDPVrfs      `tfsdk:"vrfs"`
 }
 
 type MSDPData struct {
@@ -52,6 +53,7 @@ type MSDPData struct {
 	OriginatorId types.String    `tfsdk:"originator_id"`
 	Peers        []MSDPPeers     `tfsdk:"peers"`
 	Passwords    []MSDPPasswords `tfsdk:"passwords"`
+	Vrfs         []MSDPVrfs      `tfsdk:"vrfs"`
 }
 type MSDPPeers struct {
 	Addr                  types.String `tfsdk:"addr"`
@@ -59,6 +61,22 @@ type MSDPPeers struct {
 	ConnectSourceLoopback types.Int64  `tfsdk:"connect_source_loopback"`
 }
 type MSDPPasswords struct {
+	Addr       types.String `tfsdk:"addr"`
+	Encryption types.Int64  `tfsdk:"encryption"`
+	Password   types.String `tfsdk:"password"`
+}
+type MSDPVrfs struct {
+	Vrf          types.String        `tfsdk:"vrf"`
+	OriginatorId types.String        `tfsdk:"originator_id"`
+	Peers        []MSDPVrfsPeers     `tfsdk:"peers"`
+	Passwords    []MSDPVrfsPasswords `tfsdk:"passwords"`
+}
+type MSDPVrfsPeers struct {
+	Addr                  types.String `tfsdk:"addr"`
+	RemoteAs              types.Int64  `tfsdk:"remote_as"`
+	ConnectSourceLoopback types.Int64  `tfsdk:"connect_source_loopback"`
+}
+type MSDPVrfsPasswords struct {
 	Addr       types.String `tfsdk:"addr"`
 	Encryption types.Int64  `tfsdk:"encryption"`
 	Password   types.String `tfsdk:"password"`
@@ -121,6 +139,45 @@ func (data MSDP) toBody(ctx context.Context) string {
 			}
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"password.peer-list"+"."+strconv.Itoa(index)+"."+"password", item.Password.ValueString())
+			}
+		}
+	}
+	if len(data.Vrfs) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf", []interface{}{})
+		for index, item := range data.Vrfs {
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"name", item.Vrf.ValueString())
+			}
+			if !item.OriginatorId.IsNull() && !item.OriginatorId.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"originator-id", item.OriginatorId.ValueString())
+			}
+			if len(item.Peers) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"peer", []interface{}{})
+				for cindex, citem := range item.Peers {
+					if !citem.Addr.IsNull() && !citem.Addr.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"peer"+"."+strconv.Itoa(cindex)+"."+"addr", citem.Addr.ValueString())
+					}
+					if !citem.RemoteAs.IsNull() && !citem.RemoteAs.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"peer"+"."+strconv.Itoa(cindex)+"."+"remote-as", strconv.FormatInt(citem.RemoteAs.ValueInt64(), 10))
+					}
+					if !citem.ConnectSourceLoopback.IsNull() && !citem.ConnectSourceLoopback.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"peer"+"."+strconv.Itoa(cindex)+"."+"connect-source.Loopback", strconv.FormatInt(citem.ConnectSourceLoopback.ValueInt64(), 10))
+					}
+				}
+			}
+			if len(item.Passwords) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"password.peer-list", []interface{}{})
+				for cindex, citem := range item.Passwords {
+					if !citem.Addr.IsNull() && !citem.Addr.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"password.peer-list"+"."+strconv.Itoa(cindex)+"."+"addr", citem.Addr.ValueString())
+					}
+					if !citem.Encryption.IsNull() && !citem.Encryption.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"password.peer-list"+"."+strconv.Itoa(cindex)+"."+"encryption", strconv.FormatInt(citem.Encryption.ValueInt64(), 10))
+					}
+					if !citem.Password.IsNull() && !citem.Password.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"password.peer-list"+"."+strconv.Itoa(cindex)+"."+"password", citem.Password.ValueString())
+					}
+				}
 			}
 		}
 	}
@@ -219,6 +276,118 @@ func (data *MSDP) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Passwords[i].Password = types.StringNull()
 		}
 	}
+	for i := range data.Vrfs {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "vrf").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.Vrfs[i].Vrf.IsNull() {
+			data.Vrfs[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].Vrf = types.StringNull()
+		}
+		if value := r.Get("originator-id"); value.Exists() && !data.Vrfs[i].OriginatorId.IsNull() {
+			data.Vrfs[i].OriginatorId = types.StringValue(value.String())
+		} else {
+			data.Vrfs[i].OriginatorId = types.StringNull()
+		}
+		for ci := range data.Vrfs[i].Peers {
+			keys := [...]string{"addr"}
+			keyValues := [...]string{data.Vrfs[i].Peers[ci].Addr.ValueString()}
+
+			var cr gjson.Result
+			r.Get("peer").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("addr"); value.Exists() && !data.Vrfs[i].Peers[ci].Addr.IsNull() {
+				data.Vrfs[i].Peers[ci].Addr = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Peers[ci].Addr = types.StringNull()
+			}
+			if value := cr.Get("remote-as"); value.Exists() && !data.Vrfs[i].Peers[ci].RemoteAs.IsNull() {
+				data.Vrfs[i].Peers[ci].RemoteAs = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].Peers[ci].RemoteAs = types.Int64Null()
+			}
+			if value := cr.Get("connect-source.Loopback"); value.Exists() && !data.Vrfs[i].Peers[ci].ConnectSourceLoopback.IsNull() {
+				data.Vrfs[i].Peers[ci].ConnectSourceLoopback = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].Peers[ci].ConnectSourceLoopback = types.Int64Null()
+			}
+		}
+		for ci := range data.Vrfs[i].Passwords {
+			keys := [...]string{"addr"}
+			keyValues := [...]string{data.Vrfs[i].Passwords[ci].Addr.ValueString()}
+
+			var cr gjson.Result
+			r.Get("password.peer-list").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("addr"); value.Exists() && !data.Vrfs[i].Passwords[ci].Addr.IsNull() {
+				data.Vrfs[i].Passwords[ci].Addr = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Passwords[ci].Addr = types.StringNull()
+			}
+			if value := cr.Get("encryption"); value.Exists() && !data.Vrfs[i].Passwords[ci].Encryption.IsNull() {
+				data.Vrfs[i].Passwords[ci].Encryption = types.Int64Value(value.Int())
+			} else {
+				data.Vrfs[i].Passwords[ci].Encryption = types.Int64Null()
+			}
+			if value := cr.Get("password"); value.Exists() && !data.Vrfs[i].Passwords[ci].Password.IsNull() {
+				data.Vrfs[i].Passwords[ci].Password = types.StringValue(value.String())
+			} else {
+				data.Vrfs[i].Passwords[ci].Password = types.StringNull()
+			}
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -264,6 +433,54 @@ func (data *MSDP) fromBody(ctx context.Context, res gjson.Result) {
 				item.Password = types.StringValue(cValue.String())
 			}
 			data.Passwords = append(data.Passwords, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "vrf"); value.Exists() {
+		data.Vrfs = make([]MSDPVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := MSDPVrfs{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("originator-id"); cValue.Exists() {
+				item.OriginatorId = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("peer"); cValue.Exists() {
+				item.Peers = make([]MSDPVrfsPeers, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := MSDPVrfsPeers{}
+					if ccValue := cv.Get("addr"); ccValue.Exists() {
+						cItem.Addr = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("remote-as"); ccValue.Exists() {
+						cItem.RemoteAs = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("connect-source.Loopback"); ccValue.Exists() {
+						cItem.ConnectSourceLoopback = types.Int64Value(ccValue.Int())
+					}
+					item.Peers = append(item.Peers, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("password.peer-list"); cValue.Exists() {
+				item.Passwords = make([]MSDPVrfsPasswords, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := MSDPVrfsPasswords{}
+					if ccValue := cv.Get("addr"); ccValue.Exists() {
+						cItem.Addr = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("encryption"); ccValue.Exists() {
+						cItem.Encryption = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("password"); ccValue.Exists() {
+						cItem.Password = types.StringValue(ccValue.String())
+					}
+					item.Passwords = append(item.Passwords, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
 			return true
 		})
 	}
@@ -315,6 +532,54 @@ func (data *MSDPData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "vrf"); value.Exists() {
+		data.Vrfs = make([]MSDPVrfs, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := MSDPVrfs{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("originator-id"); cValue.Exists() {
+				item.OriginatorId = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("peer"); cValue.Exists() {
+				item.Peers = make([]MSDPVrfsPeers, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := MSDPVrfsPeers{}
+					if ccValue := cv.Get("addr"); ccValue.Exists() {
+						cItem.Addr = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("remote-as"); ccValue.Exists() {
+						cItem.RemoteAs = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("connect-source.Loopback"); ccValue.Exists() {
+						cItem.ConnectSourceLoopback = types.Int64Value(ccValue.Int())
+					}
+					item.Peers = append(item.Peers, cItem)
+					return true
+				})
+			}
+			if cValue := v.Get("password.peer-list"); cValue.Exists() {
+				item.Passwords = make([]MSDPVrfsPasswords, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := MSDPVrfsPasswords{}
+					if ccValue := cv.Get("addr"); ccValue.Exists() {
+						cItem.Addr = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("encryption"); ccValue.Exists() {
+						cItem.Encryption = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("password"); ccValue.Exists() {
+						cItem.Password = types.StringValue(ccValue.String())
+					}
+					item.Passwords = append(item.Passwords, cItem)
+					return true
+				})
+			}
+			data.Vrfs = append(data.Vrfs, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -323,6 +588,96 @@ func (data *MSDPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *MSDP) getDeletedItems(ctx context.Context, state MSDP) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Vrfs {
+		stateKeyValues := [...]string{state.Vrfs[i].Vrf.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vrfs[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vrfs {
+			found = true
+			if state.Vrfs[i].Vrf.ValueString() != data.Vrfs[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				for ci := range state.Vrfs[i].Passwords {
+					cstateKeyValues := [...]string{state.Vrfs[i].Passwords[ci].Addr.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Passwords[ci].Addr.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Passwords {
+						found = true
+						if state.Vrfs[i].Passwords[ci].Addr.ValueString() != data.Vrfs[j].Passwords[cj].Addr.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Passwords[ci].Password.IsNull() && data.Vrfs[j].Passwords[cj].Password.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/password/peer-list=%v/password", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].Passwords[ci].Encryption.IsNull() && data.Vrfs[j].Passwords[cj].Encryption.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/password/peer-list=%v/encryption", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/password/peer-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				for ci := range state.Vrfs[i].Peers {
+					cstateKeyValues := [...]string{state.Vrfs[i].Peers[ci].Addr.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Peers[ci].Addr.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Peers {
+						found = true
+						if state.Vrfs[i].Peers[ci].Addr.ValueString() != data.Vrfs[j].Peers[cj].Addr.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Peers[ci].ConnectSourceLoopback.IsNull() && data.Vrfs[j].Peers[cj].ConnectSourceLoopback.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/peer=%v/connect-source/Loopback", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Vrfs[i].Peers[ci].RemoteAs.IsNull() && data.Vrfs[j].Peers[cj].RemoteAs.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/peer=%v/remote-as", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							break
+						}
+					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/peer=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
+				}
+				if !state.Vrfs[i].OriginatorId.IsNull() && data.Vrfs[j].OriginatorId.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/originator-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Passwords {
 		stateKeyValues := [...]string{state.Passwords[i].Addr.ValueString()}
 
@@ -408,6 +763,11 @@ func (data *MSDP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *MSDP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Vrfs {
+		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.Passwords {
 		keyValues := [...]string{data.Passwords[i].Addr.ValueString()}
 

@@ -971,6 +971,150 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 					},
 				},
 			},
+			"groups": schema.ListNestedAttribute{
+				MarkdownDescription: "Define a User Security Model group",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"v3_security": schema.ListNestedAttribute{
+							MarkdownDescription: "DEPRECATED group using security Level",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"security_level": schema.StringAttribute{
+										MarkdownDescription: "DEPRECATED security level type",
+										Computed:            true,
+									},
+									"context_node": schema.StringAttribute{
+										MarkdownDescription: "DEPRECATED specify a context to associate these views for the group",
+										Computed:            true,
+									},
+									"match_node": schema.StringAttribute{
+										MarkdownDescription: "DEPRECATED context name match criteria",
+										Computed:            true,
+									},
+									"read_node": schema.StringAttribute{
+										MarkdownDescription: "DEPRECATED specify a read view for the group",
+										Computed:            true,
+									},
+									"write_node": schema.StringAttribute{
+										MarkdownDescription: "DEPRECATED specify a write view for the group",
+										Computed:            true,
+									},
+									"notify_node": schema.StringAttribute{
+										MarkdownDescription: "DEPRECATED specify a notify view for the group",
+										Computed:            true,
+									},
+									"access_ipv6_acl": schema.StringAttribute{
+										MarkdownDescription: "Specify IPv6 Named Access-List",
+										Computed:            true,
+									},
+									"access_standard_acl": schema.Int64Attribute{
+										MarkdownDescription: "Standard IP Access-list allowing access with this community string",
+										Computed:            true,
+									},
+									"access_acl_name": schema.StringAttribute{
+										MarkdownDescription: "Access-list name",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"users": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"username": schema.StringAttribute{
+							MarkdownDescription: "Name of the user",
+							Computed:            true,
+						},
+						"grpname": schema.StringAttribute{
+							MarkdownDescription: "Group to which the user belongs",
+							Computed:            true,
+						},
+						"v3_auth_algorithm": schema.StringAttribute{
+							MarkdownDescription: "Use HMAC SHA/MD5 algorithm for authentication",
+							Computed:            true,
+						},
+						"v3_auth_password": schema.StringAttribute{
+							MarkdownDescription: "Authentication password for user",
+							Computed:            true,
+						},
+						"v3_auth_priv_aes_algorithm": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"v3_auth_priv_aes_password": schema.StringAttribute{
+							MarkdownDescription: "Authentication password for user",
+							Computed:            true,
+						},
+						"v3_auth_priv_aes_access_ipv6_acl": schema.StringAttribute{
+							MarkdownDescription: "Specify IPv6 Named Access-List",
+							Computed:            true,
+						},
+						"v3_auth_priv_aes_access_standard_acl": schema.Int64Attribute{
+							MarkdownDescription: "Standard IP Access-list allowing access with this community string",
+							Computed:            true,
+						},
+						"v3_auth_priv_aes_access_acl_name": schema.StringAttribute{
+							MarkdownDescription: "Access-list name",
+							Computed:            true,
+						},
+						"v3_auth_priv_des_password": schema.StringAttribute{
+							MarkdownDescription: "Authentication password for user",
+							Computed:            true,
+						},
+						"v3_auth_priv_des_access_ipv6_acl": schema.StringAttribute{
+							MarkdownDescription: "Specify IPv6 Named Access-List",
+							Computed:            true,
+						},
+						"v3_auth_priv_des_access_standard_acl": schema.Int64Attribute{
+							MarkdownDescription: "Standard IP Access-list allowing access with this community string",
+							Computed:            true,
+						},
+						"v3_auth_priv_des_access_acl_name": schema.StringAttribute{
+							MarkdownDescription: "Access-list name",
+							Computed:            true,
+						},
+						"v3_auth_priv_des3_password": schema.StringAttribute{
+							MarkdownDescription: "Authentication password for user",
+							Computed:            true,
+						},
+						"v3_auth_priv_des3_access_ipv6_acl": schema.StringAttribute{
+							MarkdownDescription: "Specify IPv6 Named Access-List",
+							Computed:            true,
+						},
+						"v3_auth_priv_des3_access_standard_acl": schema.Int64Attribute{
+							MarkdownDescription: "Standard IP Access-list allowing access with this community string",
+							Computed:            true,
+						},
+						"v3_auth_priv_des3_access_acl_name": schema.StringAttribute{
+							MarkdownDescription: "Access-list name",
+							Computed:            true,
+						},
+						"v3_auth_access_ipv6_acl": schema.StringAttribute{
+							MarkdownDescription: "Specify IPv6 Named Access-List",
+							Computed:            true,
+						},
+						"v3_auth_access_standard_acl": schema.Int64Attribute{
+							MarkdownDescription: "Standard IP Access-list allowing access with this community string",
+							Computed:            true,
+						},
+						"v3_auth_access_acl_name": schema.StringAttribute{
+							MarkdownDescription: "Access-list name",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

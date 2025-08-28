@@ -1046,6 +1046,207 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 					},
 				},
 			},
+			"groups": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Define a User Security Model group").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"v3_security": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED group using security Level").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"security_level": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED security level type").AddStringEnumDescription("auth", "noauth", "priv").String,
+										Required:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("auth", "noauth", "priv"),
+										},
+									},
+									"context_node": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED specify a context to associate these views for the group").String,
+										Optional:            true,
+									},
+									"match_node": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED context name match criteria").AddStringEnumDescription("exact", "prefix").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("exact", "prefix"),
+										},
+									},
+									"read_node": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED specify a read view for the group").String,
+										Optional:            true,
+									},
+									"write_node": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED specify a write view for the group").String,
+										Optional:            true,
+									},
+									"notify_node": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("DEPRECATED specify a notify view for the group").String,
+										Optional:            true,
+									},
+									"access_ipv6_acl": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.LengthBetween(1, 194),
+										},
+									},
+									"access_standard_acl": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 99),
+										},
+									},
+									"access_acl_name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.LengthBetween(1, 183),
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"users": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"username": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of the user").String,
+							Required:            true,
+						},
+						"grpname": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Group to which the user belongs").String,
+							Required:            true,
+						},
+						"v3_auth_algorithm": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use HMAC SHA/MD5 algorithm for authentication").AddStringEnumDescription("md5", "sha").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("md5", "sha"),
+							},
+						},
+						"v3_auth_password": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
+							Required:            true,
+						},
+						"v3_auth_priv_aes_algorithm": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("128", "192", "256").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("128", "192", "256"),
+							},
+						},
+						"v3_auth_priv_aes_password": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
+							Optional:            true,
+						},
+						"v3_auth_priv_aes_access_ipv6_acl": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 194),
+							},
+						},
+						"v3_auth_priv_aes_access_standard_acl": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 99),
+							},
+						},
+						"v3_auth_priv_aes_access_acl_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 183),
+							},
+						},
+						"v3_auth_priv_des_password": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
+							Optional:            true,
+						},
+						"v3_auth_priv_des_access_ipv6_acl": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 194),
+							},
+						},
+						"v3_auth_priv_des_access_standard_acl": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 99),
+							},
+						},
+						"v3_auth_priv_des_access_acl_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 183),
+							},
+						},
+						"v3_auth_priv_des3_password": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
+							Optional:            true,
+						},
+						"v3_auth_priv_des3_access_ipv6_acl": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 194),
+							},
+						},
+						"v3_auth_priv_des3_access_standard_acl": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 99),
+							},
+						},
+						"v3_auth_priv_des3_access_acl_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 183),
+							},
+						},
+						"v3_auth_access_ipv6_acl": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 194),
+							},
+						},
+						"v3_auth_access_standard_acl": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Standard IP Access-list allowing access with this community string").AddIntegerRangeDescription(1, 99).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 99),
+							},
+						},
+						"v3_auth_access_acl_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Access-list name").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 183),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

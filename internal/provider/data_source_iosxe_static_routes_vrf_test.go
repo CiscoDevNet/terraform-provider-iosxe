@@ -30,22 +30,22 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeStaticRouteVRF(t *testing.T) {
+func TestAccDataSourceIosxeStaticRoutesVRF(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.prefix", "6.6.6.6"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.mask", "255.255.255.255"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.next_hop", "7.7.7.7"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.distance", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.global", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.name", "Route1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.permanent", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_route_vrf.test", "routes.0.next_hops.0.tag", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_routes_vrf.test", "routes.0.prefix", "6.6.6.6"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_routes_vrf.test", "routes.0.mask", "255.255.255.255"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_routes_vrf.test", "routes.0.next_hops.0.next_hop", "7.7.7.7"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_routes_vrf.test", "routes.0.next_hops.0.distance", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_routes_vrf.test", "routes.0.next_hops.0.global", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_routes_vrf.test", "routes.0.next_hops.0.name", "Route1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_routes_vrf.test", "routes.0.next_hops.0.permanent", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_static_routes_vrf.test", "routes.0.next_hops.0.tag", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeStaticRouteVRFPrerequisitesConfig + testAccDataSourceIosxeStaticRouteVRFConfig(),
+				Config: testAccDataSourceIosxeStaticRoutesVRFPrerequisitesConfig + testAccDataSourceIosxeStaticRoutesVRFConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -55,7 +55,7 @@ func TestAccDataSourceIosxeStaticRouteVRF(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccDataSourceIosxeStaticRouteVRFPrerequisitesConfig = `
+const testAccDataSourceIosxeStaticRoutesVRFPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
@@ -71,8 +71,8 @@ resource "iosxe_restconf" "PreReq0" {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeStaticRouteVRFConfig() string {
-	config := `resource "iosxe_static_route_vrf" "test" {` + "\n"
+func testAccDataSourceIosxeStaticRoutesVRFConfig() string {
+	config := `resource "iosxe_static_routes_vrf" "test" {` + "\n"
 	config += `	vrf = "VRF1"` + "\n"
 	config += `	routes = [{` + "\n"
 	config += `		prefix = "6.6.6.6"` + "\n"
@@ -90,9 +90,9 @@ func testAccDataSourceIosxeStaticRouteVRFConfig() string {
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_static_route_vrf" "test" {
+		data "iosxe_static_routes_vrf" "test" {
 			vrf = "VRF1"
-			depends_on = [iosxe_static_route_vrf.test]
+			depends_on = [iosxe_static_routes_vrf.test]
 		}
 	`
 	return config

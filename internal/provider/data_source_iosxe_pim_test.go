@@ -50,6 +50,26 @@ func TestAccDataSourceIosxePIM(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "rp_candidates.0.interval", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "rp_candidates.0.priority", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "rp_candidates.0.bidir", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.autorp", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.autorp_listener", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.bsr_candidate_loopback", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.bsr_candidate_mask", "30"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.bsr_candidate_priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.ssm_range", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.ssm_default", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_address", "19.19.19.19"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_address_override", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_address_bidir", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.cache_rpf_oif", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_addresses.0.access_list", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_addresses.0.rp_address", "10.10.10.10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_addresses.0.override", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_addresses.0.bidir", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_candidates.0.interface", "Loopback200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_candidates.0.interval", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_candidates.0.priority", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_pim.test", "vrfs.0.rp_candidates.0.bidir", "false"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -67,6 +87,26 @@ func TestAccDataSourceIosxePIM(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxePIMPrerequisitesConfig = `
 resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"address-family/ipv4" = ""
+	}
+}
+
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/interface/Loopback=200"
+	attributes = {
+		"name" = "200"
+		"vrf/forwarding" = "VRF1"
+		"ip/address/primary/address" = "200.200.200.200"
+		"ip/address/primary/mask" = "255.255.255.255"
+	}
+	depends_on = [iosxe_restconf.PreReq0, ]
+}
+
+resource "iosxe_restconf" "PreReq2" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
 	attributes = {
 		"name" = "100"
@@ -107,7 +147,33 @@ func testAccDataSourceIosxePIMConfig() string {
 	config += `		priority = 10` + "\n"
 	config += `		bidir = false` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	vrfs = [{` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `		autorp = false` + "\n"
+	config += `		autorp_listener = false` + "\n"
+	config += `		bsr_candidate_loopback = 200` + "\n"
+	config += `		bsr_candidate_mask = 30` + "\n"
+	config += `		bsr_candidate_priority = 10` + "\n"
+	config += `		ssm_range = "10"` + "\n"
+	config += `		ssm_default = false` + "\n"
+	config += `		rp_address = "19.19.19.19"` + "\n"
+	config += `		rp_address_override = false` + "\n"
+	config += `		rp_address_bidir = false` + "\n"
+	config += `		cache_rpf_oif = true` + "\n"
+	config += `		rp_addresses = [{` + "\n"
+	config += `			access_list = "10"` + "\n"
+	config += `			rp_address = "10.10.10.10"` + "\n"
+	config += `			override = false` + "\n"
+	config += `			bidir = false` + "\n"
+	config += `		}]` + "\n"
+	config += `		rp_candidates = [{` + "\n"
+	config += `			interface = "Loopback200"` + "\n"
+	config += `			interval = 100` + "\n"
+	config += `			priority = 10` + "\n"
+	config += `			bidir = false` + "\n"
+	config += `		}]` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

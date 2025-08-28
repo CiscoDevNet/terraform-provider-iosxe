@@ -812,6 +812,136 @@ attributes:
         id: true
       - yang_name: inc-exl
         example: included
+  - yang_name: Cisco-IOS-XE-snmp:group
+    tf_name: groups
+    type: List
+    attributes:
+      - yang_name: id
+        tf_name: name
+        id: true
+        example: GROUP1
+      - yang_name: security-model/v3/v3/security-level-list
+        xpath: v3/security-level-list
+        tf_name: v3_security
+        type: List
+        attributes:
+          - yang_name: security-level
+            example: priv
+            id: true
+          - yang_name: context-node
+            example: CON1
+          - yang_name: match-node
+            example: exact
+          - yang_name: read-node
+            example: VIEW1
+          - yang_name: write-node
+            example: VIEW2
+          - yang_name: notify-node
+            example: VIEW3
+          - yang_name: access-config/ipv6-acl
+            tf_name: access_ipv6_acl
+            example: V6ACL1
+          - yang_name: access-config/access-option/standard-acl/standard-acl
+            xpath: access-config/standard-acl
+            tf_name: access_standard_acl
+            example: 1
+            exclude_test: true
+          - yang_name: access-config/access-option/acl-name/acl-name
+            xpath: access-config/acl-name
+            tf_name: access_acl_name
+            example: ACL1
+            test_tags: [IOSXE1712]
+  - yang_name: Cisco-IOS-XE-snmp:user/names
+    tf_name: users
+    type: List
+    attributes:
+      - yang_name: username
+        id: true
+        example: USER1
+      - yang_name: grpname
+        id: true
+        example: GROUP1
+      - yang_name: v3/auth-config/algorithm
+        tf_name: v3_auth_algorithm
+        example: sha
+      - yang_name: v3/auth-config/password
+        tf_name: v3_auth_password
+        example: Cisco123
+      - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/algorithm
+        xpath: v3/auth-config/priv-config/aes/algorithm
+        tf_name: v3_auth_priv_aes_algorithm
+        example: 128
+      - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/password
+        xpath: v3/auth-config/priv-config/aes/password
+        tf_name: v3_auth_priv_aes_password
+        example: Cisco123
+      - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/access-config/ipv6-acl
+        xpath: v3/auth-config/priv-config/aes/access-config/ipv6-acl
+        tf_name: v3_auth_priv_aes_access_ipv6_acl
+        example: V6ACL1
+      - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/access-config/access-option/standard-acl/standard-acl
+        xpath: v3/auth-config/priv-config/aes/access-config/standard-acl
+        tf_name: v3_auth_priv_aes_access_standard_acl
+        example: 1
+        exclude_test: true
+      - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/access-config/access-option/acl-name/acl-name
+        xpath: v3/auth-config/priv-config/aes/access-config/acl-name
+        tf_name: v3_auth_priv_aes_access_acl_name
+        example: ACL123
+      - yang_name: v3/auth-config/priv-config/priv-option/des/des/password
+        xpath: v3/auth-config/priv-config/des/password
+        tf_name: v3_auth_priv_des_password
+        example: Cisco123
+        exclude_test: true
+      - yang_name: v3/auth-config/priv-config/priv-option/des/des/access-config/ipv6-acl
+        xpath: v3/auth-config/priv-config/des/access-config/ipv6-acl
+        tf_name: v3_auth_priv_des_access_ipv6_acl
+        example: V6ACL1
+        exclude_test: true
+      - yang_name: v3/auth-config/priv-config/priv-option/des/des/access-config/access-option/standard-acl/standard-acl
+        xpath: v3/auth-config/priv-config/des/access-config/standard-acl
+        tf_name: v3_auth_priv_des_access_standard_acl
+        example: 1
+        exclude_test: true
+      - yang_name: v3/auth-config/priv-config/priv-option/des/des/access-config/access-option/acl-name/acl-name
+        xpath: v3/auth-config/priv-config/des/access-config/acl-name
+        tf_name: v3_auth_priv_des_access_acl_name
+        example: ACL123
+        exclude_test: true
+      - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/password
+        xpath: v3/auth-config/priv-config/des3/password
+        tf_name: v3_auth_priv_des3_password
+        example: Cisco123
+        exclude_test: true
+      - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/access-config/ipv6-acl
+        xpath: v3/auth-config/priv-config/des3/access-config/ipv6-acl
+        tf_name: v3_auth_priv_des3_access_ipv6_acl
+        example: V6ACL1
+        exclude_test: true
+      - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/access-config/access-option/standard-acl/standard-acl
+        xpath: v3/auth-config/priv-config/des3/access-config/standard-acl
+        tf_name: v3_auth_priv_des3_access_standard_acl
+        example: 1
+        exclude_test: true
+      - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/access-config/access-option/acl-name/acl-name
+        xpath: v3/auth-config/priv-config/des3/access-config/acl-name
+        tf_name: v3_auth_priv_des3_access_acl_name
+        example: ACL123
+        exclude_test: true
+      - yang_name: v3/auth-config/access-config/ipv6-acl
+        tf_name: v3_auth_access_ipv6_acl
+        example: V6ACL1
+        exclude_test: true
+      - yang_name: v3/auth-config/access-config/access-option/standard-acl/standard-acl
+        xpath: v3/auth-config/access-config/standard-acl
+        tf_name: v3_auth_access_standard_acl
+        example: 1
+        exclude_test: true
+      - yang_name: v3/auth-config/access-config/access-option/acl-name/acl-name
+        xpath: v3/auth-config/access-config/acl-name
+        tf_name: v3_auth_access_acl_name
+        example: ACL123
+        exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/interface/Loopback=1

@@ -1,4 +1,4 @@
-resource "iosxe_static_route_vrf" "example" {
+resource "iosxe_static_routes_vrf" "example" {
   vrf = "VRF1"
   routes = [
     {

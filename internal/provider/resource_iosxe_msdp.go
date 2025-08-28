@@ -138,6 +138,71 @@ func (r *MSDPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					},
 				},
 			},
+			"vrfs": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Select VPN Routing/Forwarding instance").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"originator_id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Configure MSDP Originator ID").String,
+							Optional:            true,
+						},
+						"peers": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Configure an MSDP peer").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"addr": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+									},
+									"remote_as": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Configured AS number").AddIntegerRangeDescription(1, 65535).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(1, 65535),
+										},
+									},
+									"connect_source_loopback": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 2147483647),
+										},
+									},
+								},
+							},
+						},
+						"passwords": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("MSDP peer on which the password is to be set").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"addr": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+									},
+									"encryption": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 7).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 7),
+										},
+									},
+									"password": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

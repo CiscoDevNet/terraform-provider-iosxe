@@ -37,26 +37,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &MSDPVRFDataSource{}
-	_ datasource.DataSourceWithConfigure = &MSDPVRFDataSource{}
+	_ datasource.DataSource              = &StaticRoutesVRFDataSource{}
+	_ datasource.DataSourceWithConfigure = &StaticRoutesVRFDataSource{}
 )
 
-func NewMSDPVRFDataSource() datasource.DataSource {
-	return &MSDPVRFDataSource{}
+func NewStaticRoutesVRFDataSource() datasource.DataSource {
+	return &StaticRoutesVRFDataSource{}
 }
 
-type MSDPVRFDataSource struct {
+type StaticRoutesVRFDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *MSDPVRFDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_msdp_vrf"
+func (d *StaticRoutesVRFDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_static_routes_vrf"
 }
 
-func (d *MSDPVRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *StaticRoutesVRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the MSDP VRF configuration.",
+		MarkdownDescription: "This data source can read the Static Routes VRF configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -71,46 +71,82 @@ func (d *MSDPVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"originator_id": schema.StringAttribute{
-				MarkdownDescription: "Configure MSDP Originator ID",
-				Computed:            true,
-			},
-			"peers": schema.ListNestedAttribute{
-				MarkdownDescription: "Configure an MSDP peer",
+			"routes": schema.ListNestedAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"addr": schema.StringAttribute{
+						"prefix": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"remote_as": schema.Int64Attribute{
-							MarkdownDescription: "Configured AS number",
-							Computed:            true,
-						},
-						"connect_source_loopback": schema.Int64Attribute{
-							MarkdownDescription: "Loopback interface",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"passwords": schema.ListNestedAttribute{
-				MarkdownDescription: "MSDP peer on which the password is to be set",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"addr": schema.StringAttribute{
+						"mask": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"encryption": schema.Int64Attribute{
+						"next_hops": schema.ListNestedAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"next_hop": schema.StringAttribute{
+										MarkdownDescription: "Specify the next hop as an ip-address or interface name",
+										Computed:            true,
+									},
+									"distance": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"global": schema.BoolAttribute{
+										MarkdownDescription: "Next hop address is global",
+										Computed:            true,
+									},
+									"name": schema.StringAttribute{
+										MarkdownDescription: "Specify name of the next hop",
+										Computed:            true,
+									},
+									"permanent": schema.BoolAttribute{
+										MarkdownDescription: "permanent route",
+										Computed:            true,
+									},
+									"tag": schema.Int64Attribute{
+										MarkdownDescription: "Set tag for this route",
+										Computed:            true,
+									},
+								},
+							},
 						},
-						"password": schema.StringAttribute{
+						"next_hops_with_track": schema.ListNestedAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"next_hop": schema.StringAttribute{
+										MarkdownDescription: "Specify the next hop as an ip-address or interface name",
+										Computed:            true,
+									},
+									"name": schema.StringAttribute{
+										MarkdownDescription: "Specify name of the next hop",
+										Computed:            true,
+									},
+									"track_id_name": schema.Int64Attribute{
+										MarkdownDescription: "Track number",
+										Computed:            true,
+									},
+									"distance": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"tag": schema.Int64Attribute{
+										MarkdownDescription: "Set tag for this route",
+										Computed:            true,
+									},
+									"permanent": schema.BoolAttribute{
+										MarkdownDescription: "permanent route",
+										Computed:            true,
+									},
+								},
+							},
 						},
 					},
 				},
@@ -119,7 +155,7 @@ func (d *MSDPVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 	}
 }
 
-func (d *MSDPVRFDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *StaticRoutesVRFDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -131,8 +167,8 @@ func (d *MSDPVRFDataSource) Configure(_ context.Context, req datasource.Configur
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *MSDPVRFDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config MSDPVRFData
+func (d *StaticRoutesVRFDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config StaticRoutesVRFData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -151,7 +187,7 @@ func (d *MSDPVRFDataSource) Read(ctx context.Context, req datasource.ReadRequest
 
 	res, err := device.Client.GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = MSDPVRFData{Device: config.Device}
+		config = StaticRoutesVRFData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

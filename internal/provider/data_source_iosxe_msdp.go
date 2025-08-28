@@ -111,6 +111,62 @@ func (d *MSDPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 					},
 				},
 			},
+			"vrfs": schema.ListNestedAttribute{
+				MarkdownDescription: "Select VPN Routing/Forwarding instance",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"originator_id": schema.StringAttribute{
+							MarkdownDescription: "Configure MSDP Originator ID",
+							Computed:            true,
+						},
+						"peers": schema.ListNestedAttribute{
+							MarkdownDescription: "Configure an MSDP peer",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"addr": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"remote_as": schema.Int64Attribute{
+										MarkdownDescription: "Configured AS number",
+										Computed:            true,
+									},
+									"connect_source_loopback": schema.Int64Attribute{
+										MarkdownDescription: "Loopback interface",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"passwords": schema.ListNestedAttribute{
+							MarkdownDescription: "MSDP peer on which the password is to be set",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"addr": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"encryption": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"password": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }

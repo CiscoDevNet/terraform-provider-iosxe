@@ -203,6 +203,7 @@ data "iosxe_snmp_server" "example" {
 - `enable_traps_vrfmib_vrf_up` (Boolean)
 - `enable_traps_vrrp` (Boolean) Enable SNMP vrrp traps
 - `enable_traps_vtp` (Boolean)
+- `groups` (Attributes List) Define a User Security Model group (see [below for nested schema](#nestedatt--groups))
 - `hosts` (Attributes List) Specify hosts keyed by (ip-address, community-or-user) (see [below for nested schema](#nestedatt--hosts))
 - `id` (String) The path of the retrieved object.
 - `ifindex_persist` (Boolean) Persist interface indices
@@ -235,6 +236,7 @@ data "iosxe_snmp_server" "example" {
 - `trap_source_port_channel_subinterface` (String)
 - `trap_source_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
 - `trap_source_vlan` (Number) Iosxr Vlans
+- `users` (Attributes List) (see [below for nested schema](#nestedatt--users))
 - `views` (Attributes List) Define an SNMPv2 MIB view (see [below for nested schema](#nestedatt--views))
 
 <a id="nestedatt--contexts"></a>
@@ -243,6 +245,31 @@ data "iosxe_snmp_server" "example" {
 Read-Only:
 
 - `name` (String)
+
+
+<a id="nestedatt--groups"></a>
+### Nested Schema for `groups`
+
+Read-Only:
+
+- `name` (String)
+- `v3_security` (Attributes List) DEPRECATED group using security Level (see [below for nested schema](#nestedatt--groups--v3_security))
+
+<a id="nestedatt--groups--v3_security"></a>
+### Nested Schema for `groups.v3_security`
+
+Read-Only:
+
+- `access_acl_name` (String) Access-list name
+- `access_ipv6_acl` (String) Specify IPv6 Named Access-List
+- `access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
+- `context_node` (String) DEPRECATED specify a context to associate these views for the group
+- `match_node` (String) DEPRECATED context name match criteria
+- `notify_node` (String) DEPRECATED specify a notify view for the group
+- `read_node` (String) DEPRECATED specify a read view for the group
+- `security_level` (String) DEPRECATED security level type
+- `write_node` (String) DEPRECATED specify a write view for the group
+
 
 
 <a id="nestedatt--hosts"></a>
@@ -266,6 +293,33 @@ Read-Only:
 - `name` (String)
 - `permission` (String)
 - `view` (String) Restrict this community to a named MIB view
+
+
+<a id="nestedatt--users"></a>
+### Nested Schema for `users`
+
+Read-Only:
+
+- `grpname` (String) Group to which the user belongs
+- `username` (String) Name of the user
+- `v3_auth_access_acl_name` (String) Access-list name
+- `v3_auth_access_ipv6_acl` (String) Specify IPv6 Named Access-List
+- `v3_auth_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
+- `v3_auth_algorithm` (String) Use HMAC SHA/MD5 algorithm for authentication
+- `v3_auth_password` (String) Authentication password for user
+- `v3_auth_priv_aes_access_acl_name` (String) Access-list name
+- `v3_auth_priv_aes_access_ipv6_acl` (String) Specify IPv6 Named Access-List
+- `v3_auth_priv_aes_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
+- `v3_auth_priv_aes_algorithm` (String)
+- `v3_auth_priv_aes_password` (String) Authentication password for user
+- `v3_auth_priv_des3_access_acl_name` (String) Access-list name
+- `v3_auth_priv_des3_access_ipv6_acl` (String) Specify IPv6 Named Access-List
+- `v3_auth_priv_des3_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
+- `v3_auth_priv_des3_password` (String) Authentication password for user
+- `v3_auth_priv_des_access_acl_name` (String) Access-list name
+- `v3_auth_priv_des_access_ipv6_acl` (String) Specify IPv6 Named Access-List
+- `v3_auth_priv_des_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
+- `v3_auth_priv_des_password` (String) Authentication password for user
 
 
 <a id="nestedatt--views"></a>

@@ -71,12 +71,12 @@ func (d *CommunityListStandardDataSource) Schema(ctx context.Context, req dataso
 				MarkdownDescription: "",
 				Required:            true,
 			},
-			"deny_entries": schema.ListAttribute{
+			"deny_entries": schema.SetAttribute{
 				MarkdownDescription: "",
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
-			"permit_entries": schema.ListAttribute{
+			"permit_entries": schema.SetAttribute{
 				MarkdownDescription: "",
 				ElementType:         types.StringType,
 				Computed:            true,
