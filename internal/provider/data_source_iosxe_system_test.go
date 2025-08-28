@@ -71,6 +71,7 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_contact_email", "email@test.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_cisco_tac_1_profile_active", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_cisco_tac_1_destination_transport_method", "email"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_multicast_route_limit", "200000"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -141,6 +142,7 @@ func testAccDataSourceIosxeSystemConfig() string {
 	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
+	config += `	ip_multicast_route_limit = 200000` + "\n"
 	config += `	ip_hosts = [{` + "\n"
 	config += `		name = "test.router.com"` + "\n"
 	config += `		ips = ["3.3.3.3"]` + "\n"
