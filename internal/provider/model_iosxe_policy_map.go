@@ -78,6 +78,11 @@ type PolicyMapClassesActions struct {
 	ShapeAveragePercent                  types.Int64  `tfsdk:"shape_average_percent"`
 	ShapeAverageBurstSizeSustained       types.Int64  `tfsdk:"shape_average_burst_size_sustained"`
 	ShapeAverageMs                       types.Bool   `tfsdk:"shape_average_ms"`
+	PoliceTargetBitrateConformTransmit   types.Bool   `tfsdk:"police_target_bitrate_conform_transmit"`
+	PoliceTargetBitrateExceedTransmit    types.Bool   `tfsdk:"police_target_bitrate_exceed_transmit"`
+	PoliceTargetBitrate                  types.Int64  `tfsdk:"police_target_bitrate"`
+	PoliceTargetBitrateConformBurstByte  types.Int64  `tfsdk:"police_target_bitrate_conform_burst_byte"`
+	PoliceTargetBitrateExcessBurstByte   types.Int64  `tfsdk:"police_target_bitrate_excess_burst_byte"`
 }
 
 // End of section. //template:end types
@@ -181,6 +186,25 @@ func (data PolicyMap) toBody(ctx context.Context) string {
 						if citem.ShapeAverageMs.ValueBool() {
 							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list"+"."+strconv.Itoa(cindex)+"."+"shape.average.ms", map[string]string{})
 						}
+					}
+					if !citem.PoliceTargetBitrateConformTransmit.IsNull() && !citem.PoliceTargetBitrateConformTransmit.IsUnknown() {
+						if citem.PoliceTargetBitrateConformTransmit.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list"+"."+strconv.Itoa(cindex)+"."+"police-target-bitrate.police.actions.conform-transmit.conform-action.transmit", map[string]string{})
+						}
+					}
+					if !citem.PoliceTargetBitrateExceedTransmit.IsNull() && !citem.PoliceTargetBitrateExceedTransmit.IsUnknown() {
+						if citem.PoliceTargetBitrateExceedTransmit.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list"+"."+strconv.Itoa(cindex)+"."+"police-target-bitrate.police.actions.exceed-transmit.exceed-action.transmit", map[string]string{})
+						}
+					}
+					if !citem.PoliceTargetBitrate.IsNull() && !citem.PoliceTargetBitrate.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list"+"."+strconv.Itoa(cindex)+"."+"police-target-bitrate.police.bit-rate", strconv.FormatInt(citem.PoliceTargetBitrate.ValueInt64(), 10))
+					}
+					if !citem.PoliceTargetBitrateConformBurstByte.IsNull() && !citem.PoliceTargetBitrateConformBurstByte.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list"+"."+strconv.Itoa(cindex)+"."+"police-target-bitrate.police.confirm_burst-byte", strconv.FormatInt(citem.PoliceTargetBitrateConformBurstByte.ValueInt64(), 10))
+					}
+					if !citem.PoliceTargetBitrateExcessBurstByte.IsNull() && !citem.PoliceTargetBitrateExcessBurstByte.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"class"+"."+strconv.Itoa(index)+"."+"action-list"+"."+strconv.Itoa(cindex)+"."+"police-target-bitrate.police.excess_burst-byte", strconv.FormatInt(citem.PoliceTargetBitrateExcessBurstByte.ValueInt64(), 10))
 					}
 				}
 			}
@@ -357,6 +381,39 @@ func (data *PolicyMap) updateFromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				data.Classes[i].Actions[ci].ShapeAverageMs = types.BoolNull()
 			}
+			if value := cr.Get("police-target-bitrate.police.actions.conform-transmit.conform-action.transmit"); !data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.IsNull() {
+				if value.Exists() {
+					data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit = types.BoolValue(true)
+				} else {
+					data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit = types.BoolValue(false)
+				}
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit = types.BoolNull()
+			}
+			if value := cr.Get("police-target-bitrate.police.actions.exceed-transmit.exceed-action.transmit"); !data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.IsNull() {
+				if value.Exists() {
+					data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit = types.BoolValue(true)
+				} else {
+					data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit = types.BoolValue(false)
+				}
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit = types.BoolNull()
+			}
+			if value := cr.Get("police-target-bitrate.police.bit-rate"); value.Exists() && !data.Classes[i].Actions[ci].PoliceTargetBitrate.IsNull() {
+				data.Classes[i].Actions[ci].PoliceTargetBitrate = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrate = types.Int64Null()
+			}
+			if value := cr.Get("police-target-bitrate.police.confirm_burst-byte"); value.Exists() && !data.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte.IsNull() {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte = types.Int64Null()
+			}
+			if value := cr.Get("police-target-bitrate.police.excess_burst-byte"); value.Exists() && !data.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte.IsNull() {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte = types.Int64Value(value.Int())
+			} else {
+				data.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte = types.Int64Null()
+			}
 		}
 	}
 }
@@ -441,6 +498,25 @@ func (data *PolicyMap) fromBody(ctx context.Context, res gjson.Result) {
 						cItem.ShapeAverageMs = types.BoolValue(true)
 					} else {
 						cItem.ShapeAverageMs = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.actions.conform-transmit.conform-action.transmit"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateConformTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceTargetBitrateConformTransmit = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.actions.exceed-transmit.exceed-action.transmit"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateExceedTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceTargetBitrateExceedTransmit = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.bit-rate"); ccValue.Exists() {
+						cItem.PoliceTargetBitrate = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.confirm_burst-byte"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateConformBurstByte = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.excess_burst-byte"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateExcessBurstByte = types.Int64Value(ccValue.Int())
 					}
 					item.Actions = append(item.Actions, cItem)
 					return true
@@ -533,6 +609,25 @@ func (data *PolicyMapData) fromBody(ctx context.Context, res gjson.Result) {
 					} else {
 						cItem.ShapeAverageMs = types.BoolValue(false)
 					}
+					if ccValue := cv.Get("police-target-bitrate.police.actions.conform-transmit.conform-action.transmit"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateConformTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceTargetBitrateConformTransmit = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.actions.exceed-transmit.exceed-action.transmit"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateExceedTransmit = types.BoolValue(true)
+					} else {
+						cItem.PoliceTargetBitrateExceedTransmit = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.bit-rate"); ccValue.Exists() {
+						cItem.PoliceTargetBitrate = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.confirm_burst-byte"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateConformBurstByte = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("police-target-bitrate.police.excess_burst-byte"); ccValue.Exists() {
+						cItem.PoliceTargetBitrateExcessBurstByte = types.Int64Value(ccValue.Int())
+					}
 					item.Actions = append(item.Actions, cItem)
 					return true
 				})
@@ -585,6 +680,21 @@ func (data *PolicyMap) getDeletedItems(ctx context.Context, state PolicyMap) []s
 							found = false
 						}
 						if found {
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExcessBurstByte.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateExcessBurstByte.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/police-target-bitrate/police/excess_burst-byte", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateConformBurstByte.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateConformBurstByte.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/police-target-bitrate/police/confirm_burst-byte", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrate.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrate.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/police-target-bitrate/police/bit-rate", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateExceedTransmit.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.IsNull() && data.Classes[j].Actions[cj].PoliceTargetBitrateConformTransmit.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/police-target-bitrate/police/actions/conform-transmit/conform-action/transmit", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							if !state.Classes[i].Actions[ci].ShapeAverageMs.IsNull() && data.Classes[j].Actions[cj].ShapeAverageMs.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/ms", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
@@ -669,6 +779,12 @@ func (data *PolicyMap) getEmptyLeafsDelete(ctx context.Context) []string {
 
 		for ci := range data.Classes[i].Actions {
 			ckeyValues := [...]string{data.Classes[i].Actions[ci].Type.ValueString()}
+			if !data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.IsNull() && !data.Classes[i].Actions[ci].PoliceTargetBitrateExceedTransmit.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class=%v/action-list=%v/police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.IsNull() && !data.Classes[i].Actions[ci].PoliceTargetBitrateConformTransmit.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class=%v/action-list=%v/police-target-bitrate/police/actions/conform-transmit/conform-action/transmit", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
 			if !data.Classes[i].Actions[ci].ShapeAverageMs.IsNull() && !data.Classes[i].Actions[ci].ShapeAverageMs.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/class=%v/action-list=%v/shape/average/ms", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}

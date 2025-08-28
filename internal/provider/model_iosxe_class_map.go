@@ -58,6 +58,9 @@ type ClassMap struct {
 	MatchResultTypeMethodMabAuthoritative     types.Bool                               `tfsdk:"match_result_type_method_mab_authoritative"`
 	MatchDscp                                 types.List                               `tfsdk:"match_dscp"`
 	Description                               types.String                             `tfsdk:"description"`
+	MatchAccessGroupName                      types.List                               `tfsdk:"match_access_group_name"`
+	MatchIpDscp                               types.List                               `tfsdk:"match_ip_dscp"`
+	MatchIpPrecedence                         types.List                               `tfsdk:"match_ip_precedence"`
 }
 
 type ClassMapData struct {
@@ -80,6 +83,9 @@ type ClassMapData struct {
 	MatchResultTypeMethodMabAuthoritative     types.Bool                               `tfsdk:"match_result_type_method_mab_authoritative"`
 	MatchDscp                                 types.List                               `tfsdk:"match_dscp"`
 	Description                               types.String                             `tfsdk:"description"`
+	MatchAccessGroupName                      types.List                               `tfsdk:"match_access_group_name"`
+	MatchIpDscp                               types.List                               `tfsdk:"match_ip_dscp"`
+	MatchIpPrecedence                         types.List                               `tfsdk:"match_ip_precedence"`
 }
 type ClassMapMatchActivatedServiceTemplates struct {
 	ServiceName types.String `tfsdk:"service_name"`
@@ -185,6 +191,21 @@ func (data ClassMap) toBody(ctx context.Context) string {
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"description", data.Description.ValueString())
+	}
+	if !data.MatchAccessGroupName.IsNull() && !data.MatchAccessGroupName.IsUnknown() {
+		var values []string
+		data.MatchAccessGroupName.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.access-group.name", values)
+	}
+	if !data.MatchIpDscp.IsNull() && !data.MatchIpDscp.IsUnknown() {
+		var values []string
+		data.MatchIpDscp.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ip.dscp", values)
+	}
+	if !data.MatchIpPrecedence.IsNull() && !data.MatchIpPrecedence.IsUnknown() {
+		var values []string
+		data.MatchIpPrecedence.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.ip.precedence", values)
 	}
 	if len(data.MatchActivatedServiceTemplates) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"match.activated-service-template", []interface{}{})
@@ -355,6 +376,21 @@ func (data *ClassMap) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Description = types.StringNull()
 	}
+	if value := res.Get(prefix + "match.access-group.name"); value.Exists() && !data.MatchAccessGroupName.IsNull() {
+		data.MatchAccessGroupName = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchAccessGroupName = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.ip.dscp"); value.Exists() && !data.MatchIpDscp.IsNull() {
+		data.MatchIpDscp = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIpDscp = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.ip.precedence"); value.Exists() && !data.MatchIpPrecedence.IsNull() {
+		data.MatchIpPrecedence = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIpPrecedence = types.ListNull(types.StringType)
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -445,6 +481,21 @@ func (data *ClassMap) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "match.access-group.name"); value.Exists() {
+		data.MatchAccessGroupName = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchAccessGroupName = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.ip.dscp"); value.Exists() {
+		data.MatchIpDscp = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIpDscp = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.ip.precedence"); value.Exists() {
+		data.MatchIpPrecedence = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIpPrecedence = types.ListNull(types.StringType)
 	}
 }
 
@@ -537,6 +588,21 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "match.access-group.name"); value.Exists() {
+		data.MatchAccessGroupName = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchAccessGroupName = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.ip.dscp"); value.Exists() {
+		data.MatchIpDscp = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIpDscp = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "match.ip.precedence"); value.Exists() {
+		data.MatchIpPrecedence = helpers.GetStringList(value.Array())
+	} else {
+		data.MatchIpPrecedence = types.ListNull(types.StringType)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -545,6 +611,69 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []string {
 	deletedItems := make([]string, 0)
+	if !state.MatchIpPrecedence.IsNull() {
+		if data.MatchIpPrecedence.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ip/precedence", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIpPrecedence.ElementsAs(ctx, &dataValues, false)
+			state.MatchIpPrecedence.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ip/precedence=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	if !state.MatchIpDscp.IsNull() {
+		if data.MatchIpDscp.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ip/dscp", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIpDscp.ElementsAs(ctx, &dataValues, false)
+			state.MatchIpDscp.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/ip/dscp=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	if !state.MatchAccessGroupName.IsNull() {
+		if data.MatchAccessGroupName.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/match/access-group/name", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.MatchAccessGroupName.ElementsAs(ctx, &dataValues, false)
+			state.MatchAccessGroupName.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/match/access-group/name=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
 	if !state.Description.IsNull() && data.Description.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/description", state.getPath()))
 	}
@@ -702,6 +831,15 @@ func (data *ClassMap) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *ClassMap) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.MatchIpPrecedence.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ip/precedence", data.getPath()))
+	}
+	if !data.MatchIpDscp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/ip/dscp", data.getPath()))
+	}
+	if !data.MatchAccessGroupName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/match/access-group/name", data.getPath()))
+	}
 	if !data.Description.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/description", data.getPath()))
 	}

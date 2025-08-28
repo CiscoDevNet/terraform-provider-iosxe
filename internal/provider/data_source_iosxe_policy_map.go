@@ -161,6 +161,26 @@ func (d *PolicyMapDataSource) Schema(ctx context.Context, req datasource.SchemaR
 										MarkdownDescription: "milliseconds",
 										Computed:            true,
 									},
+									"police_target_bitrate_conform_transmit": schema.BoolAttribute{
+										MarkdownDescription: "transmit packet",
+										Computed:            true,
+									},
+									"police_target_bitrate_exceed_transmit": schema.BoolAttribute{
+										MarkdownDescription: "transmit packet",
+										Computed:            true,
+									},
+									"police_target_bitrate": schema.Int64Attribute{
+										MarkdownDescription: "Target bit rate (bits per second) (postfix k, m, g optional),decimal point allowed",
+										Computed:            true,
+									},
+									"police_target_bitrate_conform_burst_byte": schema.Int64Attribute{
+										MarkdownDescription: "Burst Byte",
+										Computed:            true,
+									},
+									"police_target_bitrate_excess_burst_byte": schema.Int64Attribute{
+										MarkdownDescription: "Burst Byte",
+										Computed:            true,
+									},
 								},
 							},
 						},

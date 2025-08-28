@@ -229,6 +229,35 @@ func (r *PolicyMapResource) Schema(ctx context.Context, req resource.SchemaReque
 										MarkdownDescription: helpers.NewAttributeDescription("milliseconds").String,
 										Optional:            true,
 									},
+									"police_target_bitrate_conform_transmit": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
+										Optional:            true,
+									},
+									"police_target_bitrate_exceed_transmit": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("transmit packet").String,
+										Optional:            true,
+									},
+									"police_target_bitrate": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Target bit rate (bits per second) (postfix k, m, g optional),decimal point allowed").AddIntegerRangeDescription(8000, 100000000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(8000, 100000000000),
+										},
+									},
+									"police_target_bitrate_conform_burst_byte": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Burst Byte").AddIntegerRangeDescription(100, 512000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 512000000),
+										},
+									},
+									"police_target_bitrate_excess_burst_byte": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Burst Byte").AddIntegerRangeDescription(100, 512000000).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(100, 512000000),
+										},
+									},
 								},
 							},
 						},

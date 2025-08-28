@@ -145,6 +145,21 @@ func (d *ClassMapDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 				MarkdownDescription: "Class-Map description",
 				Computed:            true,
 			},
+			"match_access_group_name": schema.ListAttribute{
+				MarkdownDescription: "Named Access List",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"match_ip_dscp": schema.ListAttribute{
+				MarkdownDescription: "Match IP DSCP (DiffServ CodePoints)",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"match_ip_precedence": schema.ListAttribute{
+				MarkdownDescription: "Match IP precedence",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
 		},
 	}
 }

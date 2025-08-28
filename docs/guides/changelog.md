@@ -15,6 +15,8 @@ description: |-
 - BREAKING CHANGE: Combine `iosxe_snmp_server`, `iosxe_snmp_server_group` and `iosxe_snmp_server_user` resources and data sources into single `iosxe_snmp_server` resource and data source
 - Change`permit_entries` and `deny_entries` attributes of `iosxe_community_list_standard` resource and data source from Lists to Sets
 - Add `filter_lists_cdp` to `iosxe_device_sensor` resource and data source
+- Add `match_access_group_name`, `match_ip_dscp`, and `match_ip_precedence` to `iosxe_class_map` resource and data source
+- Add `police_target_bitrate_conform_transmit`, `police_target_bitrate_exceed_transmit`, `police_target_bitrate`, `police_target_bitrate_conform_burst_byte`, and `police_target_bitrate_excess_burst_byte` to `iosxe_policy_map` resource and data source
 
 ## 0.7.1
 

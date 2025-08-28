@@ -33,11 +33,14 @@ data "iosxe_class_map" "example" {
 
 - `description` (String) Class-Map description
 - `id` (String) The path of the retrieved object.
+- `match_access_group_name` (List of String) Named Access List
 - `match_activated_service_templates` (Attributes List) match name of service template activated on session (see [below for nested schema](#nestedatt--match_activated_service_templates))
 - `match_authorization_status_authorized` (Boolean) authorized
 - `match_authorization_status_unauthorized` (Boolean) unauthorized
 - `match_authorizing_method_priority_greater_than` (List of Number) greater than
 - `match_dscp` (List of String) Match DSCP in IP(v4) and IPv6 packets
+- `match_ip_dscp` (List of String) Match IP DSCP (DiffServ CodePoints)
+- `match_ip_precedence` (List of String) Match IP precedence
 - `match_method_dot1x` (Boolean) dot1x
 - `match_method_mab` (Boolean) mab
 - `match_result_type_aaa_timeout` (Boolean) aaa timeout type

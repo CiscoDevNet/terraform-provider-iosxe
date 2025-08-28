@@ -104,6 +104,31 @@ attributes:
             tf_name: shape_average_ms
             example: 1000
             exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-target-bitrate-case/police-target-bitrate/police/actions/conform-transmit/conform-action/transmit
+            xpath: police-target-bitrate/police/actions/conform-transmit/conform-action/transmit
+            tf_name: police_target_bitrate_conform_transmit
+            example: true
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-target-bitrate-case/police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit
+            xpath: police-target-bitrate/police/actions/exceed-transmit/exceed-action/transmit
+            tf_name: police_target_bitrate_exceed_transmit
+            example: true
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-target-bitrate-case/police-target-bitrate/police/bit-rate
+            xpath: police-target-bitrate/police/bit-rate
+            tf_name: police_target_bitrate
+            example: 1000
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-target-bitrate-case/police-target-bitrate/police/confirm_burst-byte
+            xpath: police-target-bitrate/police/confirm_burst-byte
+            tf_name: police_target_bitrate_conform_burst_byte
+            example: 10000
+            exclude_test: true
+          - yang_name: action-param/police-case/police-choice/police-target-bitrate-case/police-target-bitrate/police/excess_burst-byte
+            xpath: police-target-bitrate/police/excess_burst-byte
+            tf_name: police_target_bitrate_excess_burst_byte
+            example: 10000
+            exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CLASS1
