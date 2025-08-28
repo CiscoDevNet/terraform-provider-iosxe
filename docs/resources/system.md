@@ -40,12 +40,15 @@ resource "iosxe_system" "example" {
   memory_free_low_watermark_processor = 203038
   ip_ssh_time_out                     = 120
   ip_ssh_authentication_retries       = 3
-  ip_host_lists = [
+  ip_hosts = [
     {
-      name    = "test.router.com"
-      ip_list = ["3.3.3.3"]
+      name = "test.router.com"
+      ips  = ["3.3.3.3"]
     }
   ]
+  call_home_contact_email                            = "email@test.com"
+  call_home_cisco_tac_1_profile_active               = true
+  call_home_cisco_tac_1_destination_transport_method = "email"
 }
 ```
 
@@ -66,6 +69,10 @@ resource "iosxe_system" "example" {
 - `archive_write_memory` (Boolean) Enable automatic backup generation during write memory
 - `boot_system_bootfiles` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_bootfiles))
 - `boot_system_flash_files` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_flash_files))
+- `call_home_cisco_tac_1_destination_transport_method` (String) To specify transport method for this profile
+  - Choices: `email`, `http`
+- `call_home_cisco_tac_1_profile_active` (Boolean) Activate the current profile
+- `call_home_contact_email` (String) Use email address
 - `cisp_enable` (Boolean) Enable CISP
 - `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
 - `device` (String) A device name from the provider configuration.
@@ -94,8 +101,9 @@ resource "iosxe_system" "example" {
   - Range: `0`-`65535`
 - `ip_domain_name` (String) Define the default domain name
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
-- `ip_host_lists` (Attributes List) (see [below for nested schema](#nestedatt--ip_host_lists))
-- `ip_host_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_host_vrfs))
+- `ip_ftp_passive` (Boolean) Connect using passive mode
+- `ip_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ip_hosts))
+- `ip_hosts_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_hosts_vrfs))
 - `ip_http_access_class` (Number) Restrict http server access by access-class
   - Range: `1`-`99`
 - `ip_http_active_session_modules` (String) Set active session modules
@@ -176,12 +184,18 @@ resource "iosxe_system" "example" {
 - `mtu` (Number) - Range: `1500`-`9198`
 - `multicast_routing_switch` (Boolean) Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.
 - `multicast_routing_vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--multicast_routing_vrfs))
+- `multilink_ppp_bundle_name` (String) Select method for naming multilink bundles
+  - Choices: `authenticated`, `both`, `endpoint`, `rfc`
 - `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
   - Choices: `none`, `rpr`, `rpr-plus`, `sso`
+- `subscriber_templating` (Boolean) Configure subscriber templating
+- `tftp_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `tftp_source_interface_loopback` (Number) Loopback interface
+  - Range: `0`-`2147483647`
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
-- `vrf_host_names` (Attributes List) Name of host (see [below for nested schema](#nestedatt--vrf_host_names))
+- `version` (String) Version
 
 ### Read-Only
 
@@ -203,8 +217,8 @@ Required:
 - `path` (String)
 
 
-<a id="nestedatt--ip_host_lists"></a>
-### Nested Schema for `ip_host_lists`
+<a id="nestedatt--ip_hosts"></a>
+### Nested Schema for `ip_hosts`
 
 Required:
 
@@ -212,15 +226,31 @@ Required:
 
 Optional:
 
-- `ip_list` (List of String) Host IP address
+- `ips` (List of String) Host IP address
 
 
-<a id="nestedatt--ip_host_vrfs"></a>
-### Nested Schema for `ip_host_vrfs`
+<a id="nestedatt--ip_hosts_vrfs"></a>
+### Nested Schema for `ip_hosts_vrfs`
 
 Required:
 
 - `vrf` (String) VRF name
+
+Optional:
+
+- `hosts` (Attributes List) Name of host (see [below for nested schema](#nestedatt--ip_hosts_vrfs--hosts))
+
+<a id="nestedatt--ip_hosts_vrfs--hosts"></a>
+### Nested Schema for `ip_hosts_vrfs.hosts`
+
+Required:
+
+- `name` (String) Name of host
+
+Optional:
+
+- `ips` (List of String) Host IP address
+
 
 
 <a id="nestedatt--ip_http_authentication_aaa_command_authorization"></a>
@@ -272,18 +302,6 @@ Optional:
 - `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
 - `transport_https_ipv4_port` (Number) port number
   - Range: `1`-`65535`
-
-
-<a id="nestedatt--vrf_host_names"></a>
-### Nested Schema for `vrf_host_names`
-
-Required:
-
-- `host_name` (String) Name of host
-
-Optional:
-
-- `ip_list` (List of String) Host IP address
 
 ## Import
 

@@ -25,10 +25,13 @@ resource "iosxe_system" "example" {
   memory_free_low_watermark_processor = 203038
   ip_ssh_time_out                     = 120
   ip_ssh_authentication_retries       = 3
-  ip_host_lists = [
+  ip_hosts = [
     {
-      name    = "test.router.com"
-      ip_list = ["3.3.3.3"]
+      name = "test.router.com"
+      ips  = ["3.3.3.3"]
     }
   ]
+  call_home_contact_email                            = "email@test.com"
+  call_home_cisco_tac_1_profile_active               = true
+  call_home_cisco_tac_1_destination_transport_method = "email"
 }

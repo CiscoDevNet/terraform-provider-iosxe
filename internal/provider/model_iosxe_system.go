@@ -139,10 +139,18 @@ type System struct {
 	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
-	IpHostLists                                            []SystemIpHostLists                                 `tfsdk:"ip_host_lists"`
-	IpHostVrfs                                             []SystemIpHostVrfs                                  `tfsdk:"ip_host_vrfs"`
-	VrfHostNames                                           []SystemVrfHostNames                                `tfsdk:"vrf_host_names"`
+	IpHosts                                                []SystemIpHosts                                     `tfsdk:"ip_hosts"`
+	IpHostsVrfs                                            []SystemIpHostsVrfs                                 `tfsdk:"ip_hosts_vrfs"`
 	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
+	SubscriberTemplating                                   types.Bool                                          `tfsdk:"subscriber_templating"`
+	CallHomeContactEmail                                   types.String                                        `tfsdk:"call_home_contact_email"`
+	CallHomeCiscoTac1ProfileActive                         types.Bool                                          `tfsdk:"call_home_cisco_tac_1_profile_active"`
+	CallHomeCiscoTac1DestinationTransportMethod            types.String                                        `tfsdk:"call_home_cisco_tac_1_destination_transport_method"`
+	IpFtpPassive                                           types.Bool                                          `tfsdk:"ip_ftp_passive"`
+	TftpSourceInterfaceGigabitEthernet                     types.String                                        `tfsdk:"tftp_source_interface_gigabit_ethernet"`
+	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
+	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
+	Version                                                types.String                                        `tfsdk:"version"`
 }
 
 type SystemData struct {
@@ -247,10 +255,18 @@ type SystemData struct {
 	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
-	IpHostLists                                            []SystemIpHostLists                                 `tfsdk:"ip_host_lists"`
-	IpHostVrfs                                             []SystemIpHostVrfs                                  `tfsdk:"ip_host_vrfs"`
-	VrfHostNames                                           []SystemVrfHostNames                                `tfsdk:"vrf_host_names"`
+	IpHosts                                                []SystemIpHosts                                     `tfsdk:"ip_hosts"`
+	IpHostsVrfs                                            []SystemIpHostsVrfs                                 `tfsdk:"ip_hosts_vrfs"`
 	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
+	SubscriberTemplating                                   types.Bool                                          `tfsdk:"subscriber_templating"`
+	CallHomeContactEmail                                   types.String                                        `tfsdk:"call_home_contact_email"`
+	CallHomeCiscoTac1ProfileActive                         types.Bool                                          `tfsdk:"call_home_cisco_tac_1_profile_active"`
+	CallHomeCiscoTac1DestinationTransportMethod            types.String                                        `tfsdk:"call_home_cisco_tac_1_destination_transport_method"`
+	IpFtpPassive                                           types.Bool                                          `tfsdk:"ip_ftp_passive"`
+	TftpSourceInterfaceGigabitEthernet                     types.String                                        `tfsdk:"tftp_source_interface_gigabit_ethernet"`
+	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
+	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
+	Version                                                types.String                                        `tfsdk:"version"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -275,16 +291,17 @@ type SystemBootSystemFlashFiles struct {
 type SystemBootSystemBootfiles struct {
 	Path types.String `tfsdk:"path"`
 }
-type SystemIpHostLists struct {
-	Name   types.String `tfsdk:"name"`
-	IpList types.List   `tfsdk:"ip_list"`
+type SystemIpHosts struct {
+	Name types.String `tfsdk:"name"`
+	Ips  types.List   `tfsdk:"ips"`
 }
-type SystemIpHostVrfs struct {
-	Vrf types.String `tfsdk:"vrf"`
+type SystemIpHostsVrfs struct {
+	Vrf   types.String             `tfsdk:"vrf"`
+	Hosts []SystemIpHostsVrfsHosts `tfsdk:"hosts"`
 }
-type SystemVrfHostNames struct {
-	HostName types.String `tfsdk:"host_name"`
-	IpList   types.List   `tfsdk:"ip_list"`
+type SystemIpHostsVrfsHosts struct {
+	Name types.String `tfsdk:"name"`
+	Ips  types.List   `tfsdk:"ips"`
 }
 
 // End of section. //template:end types
@@ -638,6 +655,35 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.DiagnosticEventLogSize.IsNull() && !data.DiagnosticEventLogSize.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-diagnostics:diagnostic.event-log.size", strconv.FormatInt(data.DiagnosticEventLogSize.ValueInt64(), 10))
 	}
+	if !data.SubscriberTemplating.IsNull() && !data.SubscriberTemplating.IsUnknown() {
+		if data.SubscriberTemplating.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"subscriber.templating", map[string]string{})
+		}
+	}
+	if !data.CallHomeContactEmail.IsNull() && !data.CallHomeContactEmail.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"call-home.Cisco-IOS-XE-call-home:contact-email-addr", data.CallHomeContactEmail.ValueString())
+	}
+	if !data.CallHomeCiscoTac1ProfileActive.IsNull() && !data.CallHomeCiscoTac1ProfileActive.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.active", data.CallHomeCiscoTac1ProfileActive.ValueBool())
+	}
+	if !data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() && !data.CallHomeCiscoTac1DestinationTransportMethod.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.destination.transport-method", data.CallHomeCiscoTac1DestinationTransportMethod.ValueString())
+	}
+	if !data.IpFtpPassive.IsNull() && !data.IpFtpPassive.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ftp.passive-enable", data.IpFtpPassive.ValueBool())
+	}
+	if !data.TftpSourceInterfaceGigabitEthernet.IsNull() && !data.TftpSourceInterfaceGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.GigabitEthernet", data.TftpSourceInterfaceGigabitEthernet.ValueString())
+	}
+	if !data.TftpSourceInterfaceLoopback.IsNull() && !data.TftpSourceInterfaceLoopback.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.Loopback", strconv.FormatInt(data.TftpSourceInterfaceLoopback.ValueInt64(), 10))
+	}
+	if !data.MultilinkPppBundleName.IsNull() && !data.MultilinkPppBundleName.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"multilink.Cisco-IOS-XE-ppp:bundle-name", data.MultilinkPppBundleName.ValueString())
+	}
+	if !data.Version.IsNull() && !data.Version.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"version", data.Version.ValueString())
+	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
 		for index, item := range data.MulticastRoutingVrfs {
@@ -705,37 +751,37 @@ func (data System) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.IpHostLists) > 0 {
+	if len(data.IpHosts) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.host-list", []interface{}{})
-		for index, item := range data.IpHostLists {
+		for index, item := range data.IpHosts {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.host-list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
-			if !item.IpList.IsNull() && !item.IpList.IsUnknown() {
+			if !item.Ips.IsNull() && !item.Ips.IsUnknown() {
 				var values []string
-				item.IpList.ElementsAs(ctx, &values, false)
+				item.Ips.ElementsAs(ctx, &values, false)
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.host-list"+"."+strconv.Itoa(index)+"."+"ip-list-ordered", values)
 			}
 		}
 	}
-	if len(data.IpHostVrfs) > 0 {
+	if len(data.IpHostsVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf", []interface{}{})
-		for index, item := range data.IpHostVrfs {
+		for index, item := range data.IpHostsVrfs {
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf"+"."+strconv.Itoa(index)+"."+"vrf-name", item.Vrf.ValueString())
 			}
-		}
-	}
-	if len(data.VrfHostNames) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf.host-name", []interface{}{})
-		for index, item := range data.VrfHostNames {
-			if !item.HostName.IsNull() && !item.HostName.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf.host-name"+"."+strconv.Itoa(index)+"."+"host-name", item.HostName.ValueString())
-			}
-			if !item.IpList.IsNull() && !item.IpList.IsUnknown() {
-				var values []string
-				item.IpList.ElementsAs(ctx, &values, false)
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf.host-name"+"."+strconv.Itoa(index)+"."+"ip-list", values)
+			if len(item.Hosts) > 0 {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf"+"."+strconv.Itoa(index)+"."+"host-name", []interface{}{})
+				for cindex, citem := range item.Hosts {
+					if !citem.Name.IsNull() && !citem.Name.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf"+"."+strconv.Itoa(index)+"."+"host-name"+"."+strconv.Itoa(cindex)+"."+"host-name", citem.Name.ValueString())
+					}
+					if !citem.Ips.IsNull() && !citem.Ips.IsUnknown() {
+						var values []string
+						citem.Ips.ElementsAs(ctx, &values, false)
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf"+"."+strconv.Itoa(index)+"."+"host-name"+"."+strconv.Itoa(cindex)+"."+"ip-list", values)
+					}
+				}
 			}
 		}
 	}
@@ -1502,9 +1548,9 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableSecretLevel = types.Int64Null()
 	}
-	for i := range data.IpHostLists {
+	for i := range data.IpHosts {
 		keys := [...]string{"name"}
-		keyValues := [...]string{data.IpHostLists[i].Name.ValueString()}
+		keyValues := [...]string{data.IpHosts[i].Name.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "ip.host.host-list").ForEach(
@@ -1525,20 +1571,20 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.IpHostLists[i].Name.IsNull() {
-			data.IpHostLists[i].Name = types.StringValue(value.String())
+		if value := r.Get("name"); value.Exists() && !data.IpHosts[i].Name.IsNull() {
+			data.IpHosts[i].Name = types.StringValue(value.String())
 		} else {
-			data.IpHostLists[i].Name = types.StringNull()
+			data.IpHosts[i].Name = types.StringNull()
 		}
-		if value := r.Get("ip-list-ordered"); value.Exists() && !data.IpHostLists[i].IpList.IsNull() {
-			data.IpHostLists[i].IpList = helpers.GetStringList(value.Array())
+		if value := r.Get("ip-list-ordered"); value.Exists() && !data.IpHosts[i].Ips.IsNull() {
+			data.IpHosts[i].Ips = helpers.GetStringList(value.Array())
 		} else {
-			data.IpHostLists[i].IpList = types.ListNull(types.StringType)
+			data.IpHosts[i].Ips = types.ListNull(types.StringType)
 		}
 	}
-	for i := range data.IpHostVrfs {
+	for i := range data.IpHostsVrfs {
 		keys := [...]string{"vrf-name"}
-		keyValues := [...]string{data.IpHostVrfs[i].Vrf.ValueString()}
+		keyValues := [...]string{data.IpHostsVrfs[i].Vrf.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "ip.host.vrf").ForEach(
@@ -1559,50 +1605,103 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("vrf-name"); value.Exists() && !data.IpHostVrfs[i].Vrf.IsNull() {
-			data.IpHostVrfs[i].Vrf = types.StringValue(value.String())
+		if value := r.Get("vrf-name"); value.Exists() && !data.IpHostsVrfs[i].Vrf.IsNull() {
+			data.IpHostsVrfs[i].Vrf = types.StringValue(value.String())
 		} else {
-			data.IpHostVrfs[i].Vrf = types.StringNull()
+			data.IpHostsVrfs[i].Vrf = types.StringNull()
 		}
-	}
-	for i := range data.VrfHostNames {
-		keys := [...]string{"host-name"}
-		keyValues := [...]string{data.VrfHostNames[i].HostName.ValueString()}
+		for ci := range data.IpHostsVrfs[i].Hosts {
+			keys := [...]string{"host-name"}
+			keyValues := [...]string{data.IpHostsVrfs[i].Hosts[ci].Name.ValueString()}
 
-		var r gjson.Result
-		res.Get(prefix + "ip.host.vrf.host-name").ForEach(
-			func(_, v gjson.Result) bool {
-				found := false
-				for ik := range keys {
-					if v.Get(keys[ik]).String() == keyValues[ik] {
-						found = true
-						continue
+			var cr gjson.Result
+			r.Get("host-name").ForEach(
+				func(_, v gjson.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
 					}
-					found = false
-					break
-				}
-				if found {
-					r = v
-					return false
-				}
-				return true
-			},
-		)
-		if value := r.Get("host-name"); value.Exists() && !data.VrfHostNames[i].HostName.IsNull() {
-			data.VrfHostNames[i].HostName = types.StringValue(value.String())
-		} else {
-			data.VrfHostNames[i].HostName = types.StringNull()
-		}
-		if value := r.Get("ip-list"); value.Exists() && !data.VrfHostNames[i].IpList.IsNull() {
-			data.VrfHostNames[i].IpList = helpers.GetStringList(value.Array())
-		} else {
-			data.VrfHostNames[i].IpList = types.ListNull(types.StringType)
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := cr.Get("host-name"); value.Exists() && !data.IpHostsVrfs[i].Hosts[ci].Name.IsNull() {
+				data.IpHostsVrfs[i].Hosts[ci].Name = types.StringValue(value.String())
+			} else {
+				data.IpHostsVrfs[i].Hosts[ci].Name = types.StringNull()
+			}
+			if value := cr.Get("ip-list"); value.Exists() && !data.IpHostsVrfs[i].Hosts[ci].Ips.IsNull() {
+				data.IpHostsVrfs[i].Hosts[ci].Ips = helpers.GetStringList(value.Array())
+			} else {
+				data.IpHostsVrfs[i].Hosts[ci].Ips = types.ListNull(types.StringType)
+			}
 		}
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.event-log.size"); value.Exists() && !data.DiagnosticEventLogSize.IsNull() {
 		data.DiagnosticEventLogSize = types.Int64Value(value.Int())
 	} else {
 		data.DiagnosticEventLogSize = types.Int64Null()
+	}
+	if value := res.Get(prefix + "subscriber.templating"); !data.SubscriberTemplating.IsNull() {
+		if value.Exists() {
+			data.SubscriberTemplating = types.BoolValue(true)
+		} else {
+			data.SubscriberTemplating = types.BoolValue(false)
+		}
+	} else {
+		data.SubscriberTemplating = types.BoolNull()
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:contact-email-addr"); value.Exists() && !data.CallHomeContactEmail.IsNull() {
+		data.CallHomeContactEmail = types.StringValue(value.String())
+	} else {
+		data.CallHomeContactEmail = types.StringNull()
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.active"); !data.CallHomeCiscoTac1ProfileActive.IsNull() {
+		if value.Exists() {
+			data.CallHomeCiscoTac1ProfileActive = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.CallHomeCiscoTac1ProfileActive = types.BoolNull()
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.destination.transport-method"); value.Exists() && !data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() {
+		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
+	} else {
+		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.ftp.passive-enable"); !data.IpFtpPassive.IsNull() {
+		if value.Exists() {
+			data.IpFtpPassive = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpFtpPassive = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.GigabitEthernet"); value.Exists() && !data.TftpSourceInterfaceGigabitEthernet.IsNull() {
+		data.TftpSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.TftpSourceInterfaceGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.Loopback"); value.Exists() && !data.TftpSourceInterfaceLoopback.IsNull() {
+		data.TftpSourceInterfaceLoopback = types.Int64Value(value.Int())
+	} else {
+		data.TftpSourceInterfaceLoopback = types.Int64Null()
+	}
+	if value := res.Get(prefix + "multilink.Cisco-IOS-XE-ppp:bundle-name"); value.Exists() && !data.MultilinkPppBundleName.IsNull() {
+		data.MultilinkPppBundleName = types.StringValue(value.String())
+	} else {
+		data.MultilinkPppBundleName = types.StringNull()
+	}
+	if value := res.Get(prefix + "version"); value.Exists() && !data.Version.IsNull() {
+		data.Version = types.StringValue(value.String())
+	} else {
+		data.Version = types.StringNull()
 	}
 }
 
@@ -2029,50 +2128,83 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableSecretLevel = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ip.host.host-list"); value.Exists() {
-		data.IpHostLists = make([]SystemIpHostLists, 0)
+		data.IpHosts = make([]SystemIpHosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHostLists{}
+			item := SystemIpHosts{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ip-list-ordered"); cValue.Exists() {
-				item.IpList = helpers.GetStringList(cValue.Array())
+				item.Ips = helpers.GetStringList(cValue.Array())
 			} else {
-				item.IpList = types.ListNull(types.StringType)
+				item.Ips = types.ListNull(types.StringType)
 			}
-			data.IpHostLists = append(data.IpHostLists, item)
+			data.IpHosts = append(data.IpHosts, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "ip.host.vrf"); value.Exists() {
-		data.IpHostVrfs = make([]SystemIpHostVrfs, 0)
+		data.IpHostsVrfs = make([]SystemIpHostsVrfs, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHostVrfs{}
+			item := SystemIpHostsVrfs{}
 			if cValue := v.Get("vrf-name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
-			data.IpHostVrfs = append(data.IpHostVrfs, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "ip.host.vrf.host-name"); value.Exists() {
-		data.VrfHostNames = make([]SystemVrfHostNames, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemVrfHostNames{}
 			if cValue := v.Get("host-name"); cValue.Exists() {
-				item.HostName = types.StringValue(cValue.String())
+				item.Hosts = make([]SystemIpHostsVrfsHosts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := SystemIpHostsVrfsHosts{}
+					if ccValue := cv.Get("host-name"); ccValue.Exists() {
+						cItem.Name = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("ip-list"); ccValue.Exists() {
+						cItem.Ips = helpers.GetStringList(ccValue.Array())
+					} else {
+						cItem.Ips = types.ListNull(types.StringType)
+					}
+					item.Hosts = append(item.Hosts, cItem)
+					return true
+				})
 			}
-			if cValue := v.Get("ip-list"); cValue.Exists() {
-				item.IpList = helpers.GetStringList(cValue.Array())
-			} else {
-				item.IpList = types.ListNull(types.StringType)
-			}
-			data.VrfHostNames = append(data.VrfHostNames, item)
+			data.IpHostsVrfs = append(data.IpHostsVrfs, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.event-log.size"); value.Exists() {
 		data.DiagnosticEventLogSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "subscriber.templating"); value.Exists() {
+		data.SubscriberTemplating = types.BoolValue(true)
+	} else {
+		data.SubscriberTemplating = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:contact-email-addr"); value.Exists() {
+		data.CallHomeContactEmail = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.active"); value.Exists() {
+		data.CallHomeCiscoTac1ProfileActive = types.BoolValue(value.Bool())
+	} else {
+		data.CallHomeCiscoTac1ProfileActive = types.BoolNull()
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.destination.transport-method"); value.Exists() {
+		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ftp.passive-enable"); value.Exists() {
+		data.IpFtpPassive = types.BoolValue(value.Bool())
+	} else {
+		data.IpFtpPassive = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.GigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.Loopback"); value.Exists() {
+		data.TftpSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "multilink.Cisco-IOS-XE-ppp:bundle-name"); value.Exists() {
+		data.MultilinkPppBundleName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "version"); value.Exists() {
+		data.Version = types.StringValue(value.String())
 	}
 }
 
@@ -2499,50 +2631,83 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableSecretLevel = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ip.host.host-list"); value.Exists() {
-		data.IpHostLists = make([]SystemIpHostLists, 0)
+		data.IpHosts = make([]SystemIpHosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHostLists{}
+			item := SystemIpHosts{}
 			if cValue := v.Get("name"); cValue.Exists() {
 				item.Name = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ip-list-ordered"); cValue.Exists() {
-				item.IpList = helpers.GetStringList(cValue.Array())
+				item.Ips = helpers.GetStringList(cValue.Array())
 			} else {
-				item.IpList = types.ListNull(types.StringType)
+				item.Ips = types.ListNull(types.StringType)
 			}
-			data.IpHostLists = append(data.IpHostLists, item)
+			data.IpHosts = append(data.IpHosts, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "ip.host.vrf"); value.Exists() {
-		data.IpHostVrfs = make([]SystemIpHostVrfs, 0)
+		data.IpHostsVrfs = make([]SystemIpHostsVrfs, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHostVrfs{}
+			item := SystemIpHostsVrfs{}
 			if cValue := v.Get("vrf-name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
-			data.IpHostVrfs = append(data.IpHostVrfs, item)
-			return true
-		})
-	}
-	if value := res.Get(prefix + "ip.host.vrf.host-name"); value.Exists() {
-		data.VrfHostNames = make([]SystemVrfHostNames, 0)
-		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemVrfHostNames{}
 			if cValue := v.Get("host-name"); cValue.Exists() {
-				item.HostName = types.StringValue(cValue.String())
+				item.Hosts = make([]SystemIpHostsVrfsHosts, 0)
+				cValue.ForEach(func(ck, cv gjson.Result) bool {
+					cItem := SystemIpHostsVrfsHosts{}
+					if ccValue := cv.Get("host-name"); ccValue.Exists() {
+						cItem.Name = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("ip-list"); ccValue.Exists() {
+						cItem.Ips = helpers.GetStringList(ccValue.Array())
+					} else {
+						cItem.Ips = types.ListNull(types.StringType)
+					}
+					item.Hosts = append(item.Hosts, cItem)
+					return true
+				})
 			}
-			if cValue := v.Get("ip-list"); cValue.Exists() {
-				item.IpList = helpers.GetStringList(cValue.Array())
-			} else {
-				item.IpList = types.ListNull(types.StringType)
-			}
-			data.VrfHostNames = append(data.VrfHostNames, item)
+			data.IpHostsVrfs = append(data.IpHostsVrfs, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.event-log.size"); value.Exists() {
 		data.DiagnosticEventLogSize = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "subscriber.templating"); value.Exists() {
+		data.SubscriberTemplating = types.BoolValue(true)
+	} else {
+		data.SubscriberTemplating = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:contact-email-addr"); value.Exists() {
+		data.CallHomeContactEmail = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.active"); value.Exists() {
+		data.CallHomeCiscoTac1ProfileActive = types.BoolValue(value.Bool())
+	} else {
+		data.CallHomeCiscoTac1ProfileActive = types.BoolNull()
+	}
+	if value := res.Get(prefix + "call-home.Cisco-IOS-XE-call-home:tac-profile.profile.CiscoTAC-1.destination.transport-method"); value.Exists() {
+		data.CallHomeCiscoTac1DestinationTransportMethod = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.ftp.passive-enable"); value.Exists() {
+		data.IpFtpPassive = types.BoolValue(value.Bool())
+	} else {
+		data.IpFtpPassive = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.GigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.Loopback"); value.Exists() {
+		data.TftpSourceInterfaceLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "multilink.Cisco-IOS-XE-ppp:bundle-name"); value.Exists() {
+		data.MultilinkPppBundleName = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "version"); value.Exists() {
+		data.Version = types.StringValue(value.String())
 	}
 }
 
@@ -2552,14 +2717,41 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.Version.IsNull() && data.Version.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/version", state.getPath()))
+	}
+	if !state.MultilinkPppBundleName.IsNull() && data.MultilinkPppBundleName.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/multilink/Cisco-IOS-XE-ppp:bundle-name", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceLoopback.IsNull() && data.TftpSourceInterfaceLoopback.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/Loopback", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceGigabitEthernet.IsNull() && data.TftpSourceInterfaceGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/GigabitEthernet", state.getPath()))
+	}
+	if !state.IpFtpPassive.IsNull() && data.IpFtpPassive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/ftp/passive-enable", state.getPath()))
+	}
+	if !state.CallHomeCiscoTac1DestinationTransportMethod.IsNull() && data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method", state.getPath()))
+	}
+	if !state.CallHomeCiscoTac1ProfileActive.IsNull() && data.CallHomeCiscoTac1ProfileActive.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/active", state.getPath()))
+	}
+	if !state.CallHomeContactEmail.IsNull() && data.CallHomeContactEmail.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/call-home/Cisco-IOS-XE-call-home:contact-email-addr", state.getPath()))
+	}
+	if !state.SubscriberTemplating.IsNull() && data.SubscriberTemplating.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/subscriber/templating", state.getPath()))
+	}
 	if !state.DiagnosticEventLogSize.IsNull() && data.DiagnosticEventLogSize.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-diagnostics:diagnostic/event-log/size", state.getPath()))
 	}
-	for i := range state.VrfHostNames {
-		stateKeyValues := [...]string{state.VrfHostNames[i].HostName.ValueString()}
+	for i := range state.IpHostsVrfs {
+		stateKeyValues := [...]string{state.IpHostsVrfs[i].Vrf.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.VrfHostNames[i].HostName.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.IpHostsVrfs[i].Vrf.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2567,58 +2759,58 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		}
 
 		found := false
-		for j := range data.VrfHostNames {
+		for j := range data.IpHostsVrfs {
 			found = true
-			if state.VrfHostNames[i].HostName.ValueString() != data.VrfHostNames[j].HostName.ValueString() {
+			if state.IpHostsVrfs[i].Vrf.ValueString() != data.IpHostsVrfs[j].Vrf.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.VrfHostNames[i].IpList.IsNull() {
-					if data.VrfHostNames[j].IpList.IsNull() {
-						deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf/host-name=%v/ip-list", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-					} else {
-						var dataValues, stateValues []string
-						data.VrfHostNames[i].IpList.ElementsAs(ctx, &dataValues, false)
-						state.VrfHostNames[j].IpList.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
+				for ci := range state.IpHostsVrfs[i].Hosts {
+					cstateKeyValues := [...]string{state.IpHostsVrfs[i].Hosts[ci].Name.ValueString()}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.IpHostsVrfs[i].Hosts[ci].Name.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.IpHostsVrfs[j].Hosts {
+						found = true
+						if state.IpHostsVrfs[i].Hosts[ci].Name.ValueString() != data.IpHostsVrfs[j].Hosts[cj].Name.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.IpHostsVrfs[i].Hosts[ci].Ips.IsNull() {
+								if data.IpHostsVrfs[j].Hosts[cj].Ips.IsNull() {
+									deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf=%v/host-name=%v/ip-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+								} else {
+									var dataValues, stateValues []string
+									data.IpHostsVrfs[i].Hosts[ci].Ips.ElementsAs(ctx, &dataValues, false)
+									state.IpHostsVrfs[j].Hosts[cj].Ips.ElementsAs(ctx, &stateValues, false)
+									for _, v := range stateValues {
+										found := false
+										for _, vv := range dataValues {
+											if v == vv {
+												found = true
+												break
+											}
+										}
+										if !found {
+											deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf=%v/host-name=%v/ip-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ","), v))
+										}
+									}
 								}
 							}
-							if !found {
-								deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf/host-name=%v/ip-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
-							}
+							break
 						}
 					}
+					if !found {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf=%v/host-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+					}
 				}
-				break
-			}
-		}
-		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf/host-name=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-		}
-	}
-	for i := range state.IpHostVrfs {
-		stateKeyValues := [...]string{state.IpHostVrfs[i].Vrf.ValueString()}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.IpHostVrfs[i].Vrf.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.IpHostVrfs {
-			found = true
-			if state.IpHostVrfs[i].Vrf.ValueString() != data.IpHostVrfs[j].Vrf.ValueString() {
-				found = false
-			}
-			if found {
 				break
 			}
 		}
@@ -2626,11 +2818,11 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
-	for i := range state.IpHostLists {
-		stateKeyValues := [...]string{state.IpHostLists[i].Name.ValueString()}
+	for i := range state.IpHosts {
+		stateKeyValues := [...]string{state.IpHosts[i].Name.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.IpHostLists[i].Name.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.IpHosts[i].Name.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2638,19 +2830,19 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		}
 
 		found := false
-		for j := range data.IpHostLists {
+		for j := range data.IpHosts {
 			found = true
-			if state.IpHostLists[i].Name.ValueString() != data.IpHostLists[j].Name.ValueString() {
+			if state.IpHosts[i].Name.ValueString() != data.IpHosts[j].Name.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.IpHostLists[i].IpList.IsNull() {
-					if data.IpHostLists[j].IpList.IsNull() {
+				if !state.IpHosts[i].Ips.IsNull() {
+					if data.IpHosts[j].Ips.IsNull() {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/host-list=%v/ip-list-ordered", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 					} else {
 						var dataValues, stateValues []string
-						data.IpHostLists[i].IpList.ElementsAs(ctx, &dataValues, false)
-						state.IpHostLists[j].IpList.ElementsAs(ctx, &stateValues, false)
+						data.IpHosts[i].Ips.ElementsAs(ctx, &dataValues, false)
+						state.IpHosts[j].Ips.ElementsAs(ctx, &stateValues, false)
 						for _, v := range stateValues {
 							found := false
 							for _, vv := range dataValues {
@@ -3162,6 +3354,9 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.SubscriberTemplating.IsNull() && !data.SubscriberTemplating.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber/templating", data.getPath()))
+	}
 
 	if !data.IpScpServerEnable.IsNull() && !data.IpScpServerEnable.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/scp/server/enable", data.getPath()))
@@ -3239,21 +3434,43 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.Version.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))
+	}
+	if !data.MultilinkPppBundleName.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/multilink/Cisco-IOS-XE-ppp:bundle-name", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceLoopback.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/Loopback", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/GigabitEthernet", data.getPath()))
+	}
+	if !data.IpFtpPassive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/ftp/passive-enable", data.getPath()))
+	}
+	if !data.CallHomeCiscoTac1DestinationTransportMethod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method", data.getPath()))
+	}
+	if !data.CallHomeCiscoTac1ProfileActive.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/active", data.getPath()))
+	}
+	if !data.CallHomeContactEmail.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/call-home/Cisco-IOS-XE-call-home:contact-email-addr", data.getPath()))
+	}
+	if !data.SubscriberTemplating.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/subscriber/templating", data.getPath()))
+	}
 	if !data.DiagnosticEventLogSize.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-diagnostics:diagnostic/event-log/size", data.getPath()))
 	}
-	for i := range data.VrfHostNames {
-		keyValues := [...]string{data.VrfHostNames[i].HostName.ValueString()}
-
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/host/vrf/host-name=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	for i := range data.IpHostVrfs {
-		keyValues := [...]string{data.IpHostVrfs[i].Vrf.ValueString()}
+	for i := range data.IpHostsVrfs {
+		keyValues := [...]string{data.IpHostsVrfs[i].Vrf.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/host/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
-	for i := range data.IpHostLists {
-		keyValues := [...]string{data.IpHostLists[i].Name.ValueString()}
+	for i := range data.IpHosts {
+		keyValues := [...]string{data.IpHosts[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/host/host-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

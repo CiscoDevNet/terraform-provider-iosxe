@@ -66,8 +66,11 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_ssh_authentication_retries", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_host_lists.0.name", "test.router.com"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_host_lists.0.ip_list.0", "3.3.3.3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_contact_email", "email@test.com"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_cisco_tac_1_profile_active", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_cisco_tac_1_destination_transport_method", "email"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -138,10 +141,13 @@ func testAccDataSourceIosxeSystemConfig() string {
 	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
-	config += `	ip_host_lists = [{` + "\n"
+	config += `	ip_hosts = [{` + "\n"
 	config += `		name = "test.router.com"` + "\n"
-	config += `		ip_list = ["3.3.3.3"]` + "\n"
+	config += `		ips = ["3.3.3.3"]` + "\n"
 	config += `	}]` + "\n"
+	config += `	call_home_contact_email = "email@test.com"` + "\n"
+	config += `	call_home_cisco_tac_1_profile_active = true` + "\n"
+	config += `	call_home_cisco_tac_1_destination_transport_method = "email"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

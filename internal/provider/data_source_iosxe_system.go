@@ -533,7 +533,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Set exec level password",
 				Computed:            true,
 			},
-			"ip_host_lists": schema.ListNestedAttribute{
+			"ip_hosts": schema.ListNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -542,7 +542,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							MarkdownDescription: "Name of host",
 							Computed:            true,
 						},
-						"ip_list": schema.ListAttribute{
+						"ips": schema.ListAttribute{
 							MarkdownDescription: "Host IP address",
 							ElementType:         types.StringType,
 							Computed:            true,
@@ -550,7 +550,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					},
 				},
 			},
-			"ip_host_vrfs": schema.ListNestedAttribute{
+			"ip_hosts_vrfs": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify VRF",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -559,28 +559,64 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							MarkdownDescription: "VRF name",
 							Computed:            true,
 						},
-					},
-				},
-			},
-			"vrf_host_names": schema.ListNestedAttribute{
-				MarkdownDescription: "Name of host",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"host_name": schema.StringAttribute{
+						"hosts": schema.ListNestedAttribute{
 							MarkdownDescription: "Name of host",
 							Computed:            true,
-						},
-						"ip_list": schema.ListAttribute{
-							MarkdownDescription: "Host IP address",
-							ElementType:         types.StringType,
-							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"name": schema.StringAttribute{
+										MarkdownDescription: "Name of host",
+										Computed:            true,
+									},
+									"ips": schema.ListAttribute{
+										MarkdownDescription: "Host IP address",
+										ElementType:         types.StringType,
+										Computed:            true,
+									},
+								},
+							},
 						},
 					},
 				},
 			},
 			"diagnostic_event_log_size": schema.Int64Attribute{
 				MarkdownDescription: "Configure event log size Number of entries <1-10000>",
+				Computed:            true,
+			},
+			"subscriber_templating": schema.BoolAttribute{
+				MarkdownDescription: "Configure subscriber templating",
+				Computed:            true,
+			},
+			"call_home_contact_email": schema.StringAttribute{
+				MarkdownDescription: "Use email address",
+				Computed:            true,
+			},
+			"call_home_cisco_tac_1_profile_active": schema.BoolAttribute{
+				MarkdownDescription: "Activate the current profile",
+				Computed:            true,
+			},
+			"call_home_cisco_tac_1_destination_transport_method": schema.StringAttribute{
+				MarkdownDescription: "To specify transport method for this profile",
+				Computed:            true,
+			},
+			"ip_ftp_passive": schema.BoolAttribute{
+				MarkdownDescription: "Connect using passive mode",
+				Computed:            true,
+			},
+			"tftp_source_interface_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "GigabitEthernet IEEE 802.3z",
+				Computed:            true,
+			},
+			"tftp_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: "Loopback interface",
+				Computed:            true,
+			},
+			"multilink_ppp_bundle_name": schema.StringAttribute{
+				MarkdownDescription: "Select method for naming multilink bundles",
+				Computed:            true,
+			},
+			"version": schema.StringAttribute{
+				MarkdownDescription: "Version",
 				Computed:            true,
 			},
 		},

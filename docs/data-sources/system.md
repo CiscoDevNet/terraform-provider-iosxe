@@ -35,6 +35,9 @@ data "iosxe_system" "example" {
 - `archive_write_memory` (Boolean) Enable automatic backup generation during write memory
 - `boot_system_bootfiles` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_bootfiles))
 - `boot_system_flash_files` (Attributes List) (see [below for nested schema](#nestedatt--boot_system_flash_files))
+- `call_home_cisco_tac_1_destination_transport_method` (String) To specify transport method for this profile
+- `call_home_cisco_tac_1_profile_active` (Boolean) Activate the current profile
+- `call_home_contact_email` (String) Use email address
 - `cisp_enable` (Boolean) Enable CISP
 - `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
 - `diagnostic_bootup_level` (String) Select diagnostic level
@@ -58,8 +61,9 @@ data "iosxe_system" "example" {
 - `ip_domain_lookup_source_interface_vlan` (Number) Iosxr Vlans
 - `ip_domain_name` (String) Define the default domain name
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
-- `ip_host_lists` (Attributes List) (see [below for nested schema](#nestedatt--ip_host_lists))
-- `ip_host_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_host_vrfs))
+- `ip_ftp_passive` (Boolean) Connect using passive mode
+- `ip_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ip_hosts))
+- `ip_hosts_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_hosts_vrfs))
 - `ip_http_access_class` (Number) Restrict http server access by access-class
 - `ip_http_active_session_modules` (String) Set active session modules
 - `ip_http_authentication_aaa` (Boolean) Use AAA access control methods
@@ -125,11 +129,15 @@ data "iosxe_system" "example" {
 - `mtu` (Number)
 - `multicast_routing_switch` (Boolean) Enable IP multicast forwarding, some XE devices use this option instead of `multicast_routing`.
 - `multicast_routing_vrfs` (Attributes List) Select VPN Routing/Forwarding instance (see [below for nested schema](#nestedatt--multicast_routing_vrfs))
+- `multilink_ppp_bundle_name` (String) Select method for naming multilink bundles
 - `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
+- `subscriber_templating` (Boolean) Configure subscriber templating
+- `tftp_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `tftp_source_interface_loopback` (Number) Loopback interface
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
-- `vrf_host_names` (Attributes List) Name of host (see [below for nested schema](#nestedatt--vrf_host_names))
+- `version` (String) Version
 
 <a id="nestedatt--boot_system_bootfiles"></a>
 ### Nested Schema for `boot_system_bootfiles`
@@ -147,21 +155,31 @@ Read-Only:
 - `path` (String)
 
 
-<a id="nestedatt--ip_host_lists"></a>
-### Nested Schema for `ip_host_lists`
+<a id="nestedatt--ip_hosts"></a>
+### Nested Schema for `ip_hosts`
 
 Read-Only:
 
-- `ip_list` (List of String) Host IP address
+- `ips` (List of String) Host IP address
 - `name` (String) Name of host
 
 
-<a id="nestedatt--ip_host_vrfs"></a>
-### Nested Schema for `ip_host_vrfs`
+<a id="nestedatt--ip_hosts_vrfs"></a>
+### Nested Schema for `ip_hosts_vrfs`
 
 Read-Only:
 
+- `hosts` (Attributes List) Name of host (see [below for nested schema](#nestedatt--ip_hosts_vrfs--hosts))
 - `vrf` (String) VRF name
+
+<a id="nestedatt--ip_hosts_vrfs--hosts"></a>
+### Nested Schema for `ip_hosts_vrfs.hosts`
+
+Read-Only:
+
+- `ips` (List of String) Host IP address
+- `name` (String) Name of host
+
 
 
 <a id="nestedatt--ip_http_authentication_aaa_command_authorization"></a>
@@ -199,12 +217,3 @@ Read-Only:
 - `name` (String)
 - `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
 - `transport_https_ipv4_port` (Number) port number
-
-
-<a id="nestedatt--vrf_host_names"></a>
-### Nested Schema for `vrf_host_names`
-
-Read-Only:
-
-- `host_name` (String) Name of host
-- `ip_list` (List of String) Host IP address
