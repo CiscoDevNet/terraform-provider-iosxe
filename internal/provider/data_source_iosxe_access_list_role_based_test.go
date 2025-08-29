@@ -21,7 +21,6 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,24 +30,14 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeSpanningTree(t *testing.T) {
-	if os.Getenv("C9000V") == "" {
-		t.Skip("skipping test, set environment variable C9000V")
-	}
+func TestAccDataSourceIosxeAccessListRoleBased(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_spanning_tree.test", "mode", "mst"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_spanning_tree.test", "loopguard_default", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_spanning_tree.test", "portfast_default", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_spanning_tree.test", "portfast_bpduguard_default", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_spanning_tree.test", "extend_system_id", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_spanning_tree.test", "mst_instances.0.id", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_spanning_tree.test", "mst_instances.0.vlan_ids.0", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeSpanningTreeConfig(),
+				Config: testAccDataSourceIosxeAccessListRoleBasedConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -62,22 +51,15 @@ func TestAccDataSourceIosxeSpanningTree(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeSpanningTreeConfig() string {
-	config := `resource "iosxe_spanning_tree" "test" {` + "\n"
-	config += `	mode = "mst"` + "\n"
-	config += `	loopguard_default = true` + "\n"
-	config += `	portfast_default = true` + "\n"
-	config += `	portfast_bpduguard_default = true` + "\n"
-	config += `	extend_system_id = true` + "\n"
-	config += `	mst_instances = [{` + "\n"
-	config += `		id = 1` + "\n"
-	config += `		vlan_ids = [10]` + "\n"
-	config += `	}]` + "\n"
+func testAccDataSourceIosxeAccessListRoleBasedConfig() string {
+	config := `resource "iosxe_access_list_role_based" "test" {` + "\n"
+	config += `	name = "RBACL1"` + "\n"
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_spanning_tree" "test" {
-			depends_on = [iosxe_spanning_tree.test]
+		data "iosxe_access_list_role_based" "test" {
+			name = "RBACL1"
+			depends_on = [iosxe_access_list_role_based.test]
 		}
 	`
 	return config

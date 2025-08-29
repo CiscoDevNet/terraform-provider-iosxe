@@ -32,29 +32,25 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeCryptoIKEv2(t *testing.T) {
+func TestAccIosxeAccessListRoleBased(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2.test", "nat_keepalive", "20"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2.test", "dpd", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2.test", "dpd_retry_interval", "5"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2.test", "dpd_query", "periodic"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2.test", "http_url_cert", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_access_list_role_based.test", "name", "RBACL1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeCryptoIKEv2Config_minimum(),
+				Config: testAccIosxeAccessListRoleBasedConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeCryptoIKEv2Config_all(),
+				Config: testAccIosxeAccessListRoleBasedConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_crypto_ikev2.test",
+				ResourceName:            "iosxe_access_list_role_based.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeCryptoIKEv2ImportStateIdFunc("iosxe_crypto_ikev2.test"),
+				ImportStateIdFunc:       iosxeAccessListRoleBasedImportStateIdFunc("iosxe_access_list_role_based.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -66,10 +62,12 @@ func TestAccIosxeCryptoIKEv2(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeCryptoIKEv2ImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxeAccessListRoleBasedImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
 
-		return fmt.Sprintf(""), nil
+		return fmt.Sprintf("%s", Name), nil
 	}
 }
 
@@ -80,8 +78,9 @@ func iosxeCryptoIKEv2ImportStateIdFunc(resourceName string) resource.ImportState
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeCryptoIKEv2Config_minimum() string {
-	config := `resource "iosxe_crypto_ikev2" "test" {` + "\n"
+func testAccIosxeAccessListRoleBasedConfig_minimum() string {
+	config := `resource "iosxe_access_list_role_based" "test" {` + "\n"
+	config += `	name = "RBACL1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -90,13 +89,9 @@ func testAccIosxeCryptoIKEv2Config_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeCryptoIKEv2Config_all() string {
-	config := `resource "iosxe_crypto_ikev2" "test" {` + "\n"
-	config += `	nat_keepalive = 20` + "\n"
-	config += `	dpd = 10` + "\n"
-	config += `	dpd_retry_interval = 5` + "\n"
-	config += `	dpd_query = "periodic"` + "\n"
-	config += `	http_url_cert = true` + "\n"
+func testAccIosxeAccessListRoleBasedConfig_all() string {
+	config := `resource "iosxe_access_list_role_based" "test" {` + "\n"
+	config += `	name = "RBACL1"` + "\n"
 	config += `}` + "\n"
 	return config
 }

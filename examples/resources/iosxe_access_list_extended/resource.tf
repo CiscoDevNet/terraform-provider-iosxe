@@ -20,6 +20,7 @@ resource "iosxe_access_list_extended" "example" {
       urg                         = true
       dscp                        = "46"
       log                         = true
+      icmp_named_msg_type         = "traceroute"
     }
   ]
 }

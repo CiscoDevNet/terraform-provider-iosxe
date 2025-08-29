@@ -26,6 +26,7 @@ data "iosxe_device_sensor" "example" {
 
 ### Read-Only
 
+- `filter_lists_cdp` (Attributes List) Protocol Filter List (see [below for nested schema](#nestedatt--filter_lists_cdp))
 - `filter_lists_dhcp` (Attributes List) Protocol Filter List (see [below for nested schema](#nestedatt--filter_lists_dhcp))
 - `filter_lists_lldp` (Attributes List) Protocol Filter List (see [below for nested schema](#nestedatt--filter_lists_lldp))
 - `filter_spec_cdp_excludes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_cdp_excludes))
@@ -36,6 +37,19 @@ data "iosxe_device_sensor" "example" {
 - `filter_spec_lldp_includes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_lldp_includes))
 - `id` (String) The path of the retrieved object.
 - `notify_all_changes` (Boolean) Trigger identity update when TLVs are added/modified/removed
+
+<a id="nestedatt--filter_lists_cdp"></a>
+### Nested Schema for `filter_lists_cdp`
+
+Read-Only:
+
+- `name` (String)
+- `tlv_name_address_type` (Boolean) Address Type
+- `tlv_name_capabilities_type` (Boolean) Capabilities Type
+- `tlv_name_device_name` (Boolean) Device Name
+- `tlv_name_platform_type` (Boolean) Platform Type
+- `tlv_name_port_id_type` (Boolean) Port Id type
+
 
 <a id="nestedatt--filter_lists_dhcp"></a>
 ### Nested Schema for `filter_lists_dhcp`
