@@ -642,6 +642,104 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(0, 255),
 				},
 			},
+			"ip_hosts": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of host").String,
+							Required:            true,
+						},
+						"ips": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Host IP address").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"ip_hosts_vrf": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify VRF").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VRF name").String,
+							Required:            true,
+						},
+						"hosts": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Name of host").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Name of host").String,
+										Required:            true,
+									},
+									"ips": schema.ListAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Host IP address").String,
+										ElementType:         types.StringType,
+										Optional:            true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"diagnostic_event_log_size": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure event log size Number of entries <1-10000>").AddIntegerRangeDescription(1, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10000),
+				},
+			},
+			"subscriber_templating": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure subscriber templating").String,
+				Optional:            true,
+			},
+			"call_home_contact_email": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use email address").String,
+				Optional:            true,
+			},
+			"call_home_cisco_tac_1_profile_active": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Activate the current profile").String,
+				Optional:            true,
+			},
+			"call_home_cisco_tac_1_destination_transport_method": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("To specify transport method for this profile").AddStringEnumDescription("email", "http").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("email", "http"),
+				},
+			},
+			"ip_ftp_passive": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Connect using passive mode").String,
+				Optional:            true,
+			},
+			"tftp_source_interface_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
+				Optional:            true,
+			},
+			"tftp_source_interface_loopback": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 2147483647),
+				},
+			},
+			"multilink_ppp_bundle_name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Select method for naming multilink bundles").AddStringEnumDescription("authenticated", "both", "endpoint", "rfc").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("authenticated", "both", "endpoint", "rfc"),
+				},
+			},
+			"version": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Version").String,
+				Optional:            true,
+			},
 		},
 	}
 }

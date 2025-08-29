@@ -91,6 +91,46 @@ func (d *LicenseDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				MarkdownDescription: "Specify the URL to be used for sending utility usage reports.",
 				Computed:            true,
 			},
+			"accept_agreement": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"accept_end": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"accept_user": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"udi_pid": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"udi_sn": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"feature_name": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"feature_port_bulk": schema.BoolAttribute{
+				MarkdownDescription: "Enable Bulk port licenses",
+				Computed:            true,
+			},
+			"feature_port_onegig": schema.Int64Attribute{
+				MarkdownDescription: "Enable 1G port bundles",
+				Computed:            true,
+			},
+			"feature_port_b_6xonegig": schema.Int64Attribute{
+				MarkdownDescription: "Enable 6x1G port bundles",
+				Computed:            true,
+			},
+			"feature_port_tengig": schema.Int64Attribute{
+				MarkdownDescription: "Enable 10G port bundles",
+				Computed:            true,
+			},
 		},
 	}
 }

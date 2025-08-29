@@ -29,6 +29,9 @@ data "iosxe_aaa" "example" {
 - `group_server_radius` (Attributes List) Radius server-group definition (see [below for nested schema](#nestedatt--group_server_radius))
 - `group_server_tacacsplus` (Attributes List) Tacacs+ server-group definition (see [below for nested schema](#nestedatt--group_server_tacacsplus))
 - `id` (String) The path of the retrieved object.
+- `local_authentication_max_fail_attempts` (Number) Max failed attempts to lock the user
+- `local_authentication_type` (String)
+- `local_authorization` (String)
 - `new_model` (Boolean) Enable NEW access control commands and functions.(Disables OLD commands.)
 - `server_radius_dynamic_author` (Boolean) Local server profile for RFC 3576 support
 - `server_radius_dynamic_author_clients` (Attributes List) Specify a RADIUS client (see [below for nested schema](#nestedatt--server_radius_dynamic_author_clients))
@@ -76,6 +79,7 @@ Read-Only:
 - `ip_tacacs_source_interface_vlan` (Number) Iosxr Vlans
 - `name` (String) Server-group name with max string length 32
 - `server_names` (Attributes List) Name of tacacs server (see [below for nested schema](#nestedatt--group_server_tacacsplus--server_names))
+- `vrf` (String) Configure forwarding table
 
 <a id="nestedatt--group_server_tacacsplus--server_names"></a>
 ### Nested Schema for `group_server_tacacsplus.server_names`

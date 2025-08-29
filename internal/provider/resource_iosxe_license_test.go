@@ -57,7 +57,7 @@ func TestAccIosxeLicense(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeLicenseImportStateIdFunc("iosxe_license.test"),
-				ImportStateVerifyIgnore: []string{"boot_level_network_essentials"},
+				ImportStateVerifyIgnore: []string{"boot_level_network_essentials", "accept_agreement", "accept_end", "accept_user", "feature_port_bulk"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

@@ -150,3 +150,132 @@ attributes:
         tf_name: a4_group
         example: RGROUP4
         exclude_test: true
+  - yang_name: commands
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: level
+        example: 15
+        id: true
+      - yang_name: list-name
+        example: COMMAND_LIST
+        id: true
+      - yang_name: a1/auth-exec-choice/group/group
+        xpath: a1/group
+        example: A1GROUP
+        exclude_test: true
+      - yang_name: a1/auth-exec-choice/local/local
+        xpath: a1/local
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-exec-choice/if-authenticated/if-authenticated
+        xpath: a1/if-authenticated
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-exec-choice/none/none
+        xpath: a1/none
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-exec-choice/radius/radius
+        xpath: a1/radius
+        example: true
+        exclude_test: true
+      - yang_name: a1/auth-exec-choice/tacacs/tacacs
+        xpath: a1/tacacs
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/group/group
+        xpath: a2/group
+        example: A2GROUP
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/local/local
+        xpath: a2/local
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/if-authenticated/if-authenticated
+        xpath: a2/if-authenticated
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/none/none
+        xpath: a2/none
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/radius/radius
+        xpath: a2/radius
+        example: true
+        exclude_test: true
+      - yang_name: a2/auth-exec-choice/tacacs/tacacs
+        xpath: a2/tacacs
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/group/group
+        xpath: a3/group
+        example: A3GROUP
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/local/local
+        xpath: a3/local
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/if-authenticated/if-authenticated
+        xpath: a3/if-authenticated
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/none/none
+        xpath: a3/none
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/radius/radius
+        xpath: a3/radius
+        example: true
+        exclude_test: true
+      - yang_name: a3/auth-exec-choice/tacacs/tacacs
+        xpath: a3/tacacs
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/group/group
+        xpath: a4/group
+        example: A4GROUP
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/local/local
+        xpath: a4/local
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/if-authenticated/if-authenticated
+        xpath: a4/if-authenticated
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/none/none
+        xpath: a4/none
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/radius/radius
+        xpath: a4/radius
+        example: true
+        exclude_test: true
+      - yang_name: a4/auth-exec-choice/tacacs/tacacs
+        xpath: a4/tacacs
+        example: true
+        exclude_test: true
+  - yang_name: config-commands
+    example: true
+    exclude_test: true
+  - yang_name: configuration/config-list
+    tf_name: config_lists
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: CONFIG1
+      - yang_name: group1/auth_configuration/cache/cache
+        xpath: group1/cache
+        example: GROUP1CACHE
+      - yang_name: group1/auth_configuration/group/group
+        xpath: group1/group
+        example: GROUP1
+      - yang_name: group1/auth_configuration/radius/radius
+        xpath: group1/radius
+        example: true
+      - yang_name: group1/auth_configuration/tacacs/tacacs
+        xpath: group1/tacacs
+        example: true

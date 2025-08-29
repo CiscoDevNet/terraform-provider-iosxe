@@ -203,6 +203,8 @@ attributes:
         tf_name: name
         id: true
         example: POLICY1
+  - yang_name: Cisco-IOS-XE-ethernet:negotiation/auto
+    example: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

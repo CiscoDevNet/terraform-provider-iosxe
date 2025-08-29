@@ -26,10 +26,20 @@ data "iosxe_license" "example" {
 
 ### Read-Only
 
+- `accept_agreement` (Boolean)
+- `accept_end` (Boolean)
+- `accept_user` (Boolean)
 - `boot_level_network_advantage` (Boolean) License Level Network-Advantage
 - `boot_level_network_advantage_addon` (String) select add-on to include
 - `boot_level_network_essentials` (Boolean) License Level Network-Essentials
 - `boot_level_network_essentials_addon` (String) select add-on to include
+- `feature_name` (String)
+- `feature_port_b_6xonegig` (Number) Enable 6x1G port bundles
+- `feature_port_bulk` (Boolean) Enable Bulk port licenses
+- `feature_port_onegig` (Number) Enable 1G port bundles
+- `feature_port_tengig` (Number) Enable 10G port bundles
 - `id` (String) The path of the retrieved object.
 - `smart_transport_type` (String) The transport type. If transport-type is set to        callhome then any additional transport settings must        be done from the callhome CLI.        If the transport-type is set to smart, additional        settings are available below.        If the transport-type is set to cslu,        url needs to be set for cisco smart license utility.        If the transport-type is set to off, user has to manually        upload the usage reports.
 - `smart_url_cslu` (String) Specify the URL to be used for sending utility usage reports.
+- `udi_pid` (String)
+- `udi_sn` (String)

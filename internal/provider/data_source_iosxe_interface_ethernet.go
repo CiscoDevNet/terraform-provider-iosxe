@@ -615,6 +615,30 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
+			"cdp_enable": schema.BoolAttribute{
+				MarkdownDescription: "Enable CDP on interface",
+				Computed:            true,
+			},
+			"cdp_tlv_app": schema.BoolAttribute{
+				MarkdownDescription: "Enable/Configure Application TLV",
+				Computed:            true,
+			},
+			"cdp_tlv_location": schema.BoolAttribute{
+				MarkdownDescription: "Exchange location information",
+				Computed:            true,
+			},
+			"cdp_tlv_server_location": schema.BoolAttribute{
+				MarkdownDescription: "Enable CDP location server on interface",
+				Computed:            true,
+			},
+			"ip_nat_inside": schema.BoolAttribute{
+				MarkdownDescription: "Inside interface for address translation",
+				Computed:            true,
+			},
+			"ip_nat_outside": schema.BoolAttribute{
+				MarkdownDescription: "Outside interface for address translation",
+				Computed:            true,
+			},
 		},
 	}
 }

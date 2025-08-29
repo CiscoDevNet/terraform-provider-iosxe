@@ -216,8 +216,24 @@ func (d *AAADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "Hundred GigabitEthernet",
 							Computed:            true,
 						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "Configure forwarding table",
+							Computed:            true,
+						},
 					},
 				},
+			},
+			"local_authentication_type": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"local_authorization": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"local_authentication_max_fail_attempts": schema.Int64Attribute{
+				MarkdownDescription: "Max failed attempts to lock the user",
+				Computed:            true,
 			},
 		},
 	}

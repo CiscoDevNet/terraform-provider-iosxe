@@ -67,4 +67,9 @@ resource "iosxe_interface_ethernet" "example" {
   load_interval                    = 30
   snmp_trap_link_status            = false
   logging_event_link_status_enable = false
+  cdp_enable                       = true
+  cdp_tlv_app                      = false
+  cdp_tlv_location                 = false
+  cdp_tlv_server_location          = false
+  ip_nat_inside                    = true
 }

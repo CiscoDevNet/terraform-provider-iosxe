@@ -409,6 +409,10 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 					},
 				},
 			},
+			"negotiation_auto": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable link autonegotiation").String,
+				Optional:            true,
+			},
 		},
 	}
 }

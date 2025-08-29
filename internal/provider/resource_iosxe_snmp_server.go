@@ -178,6 +178,54 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 								stringvalidator.OneOf("0", "6", "7"),
 							},
 						},
+						"security_level": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("auth", "noauth", "priv").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("auth", "noauth", "priv"),
+							},
+						},
+					},
+				},
+			},
+			"vrf_hosts": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify hosts keyed by (ip-address, vrf, community-or-user)").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ip_address": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VPN Routing instance for this host").String,
+							Required:            true,
+						},
+						"community_or_user": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("SNMPv1/v2c community string or SNMPv3 user name").String,
+							Optional:            true,
+						},
+						"version": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("SNMP version to use for notification messages").AddStringEnumDescription("1", "2c", "3").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "2c", "3"),
+							},
+						},
+						"encryption": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specifies an encryption type for community string").AddStringEnumDescription("0", "6", "7").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("0", "6", "7"),
+							},
+						},
+						"security_level": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("auth", "noauth", "priv").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("auth", "noauth", "priv"),
+							},
+						},
 					},
 				},
 			},
@@ -849,6 +897,22 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"enable_traps_voice": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable SNMP voice traps").String,
+				Optional:            true,
+			},
+			"enable_traps_bgp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow BGP state change traps (OBSOLETE)").String,
+				Optional:            true,
+			},
+			"enable_traps_cbgp2": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable BGP MIBv2 traps (OBSOLETE - please use snmp configuration in Cisco-IOS-XE-bgp.yang)").String,
+				Optional:            true,
+			},
+			"enable_traps_ospfv3_errors": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Error traps").String,
+				Optional:            true,
+			},
+			"enable_traps_ospfv3_state_change": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("State change traps").String,
 				Optional:            true,
 			},
 			"source_interface_informs_gigabit_ethernet": schema.StringAttribute{

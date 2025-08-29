@@ -29,6 +29,7 @@ resource "iosxe_aaa" "example" {
         }
       ]
       ip_tacacs_source_interface_loopback = 0
+      vrf                                 = "VRF1"
     }
   ]
 }

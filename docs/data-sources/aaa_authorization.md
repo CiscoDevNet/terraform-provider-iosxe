@@ -26,9 +26,57 @@ data "iosxe_aaa_authorization" "example" {
 
 ### Read-Only
 
+- `commands` (Attributes List) For exec (shell) commands. (see [below for nested schema](#nestedatt--commands))
+- `config_commands` (Boolean) For configuration mode commands.
+- `config_lists` (Attributes List) (see [below for nested schema](#nestedatt--config_lists))
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `id` (String) The path of the retrieved object.
 - `networks` (Attributes List) For network services. (PPP, SLIP, ARAP) (see [below for nested schema](#nestedatt--networks))
+
+<a id="nestedatt--commands"></a>
+### Nested Schema for `commands`
+
+Read-Only:
+
+- `a1_group` (String) Use Server-group
+- `a1_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a1_local` (Boolean) Use local database
+- `a1_none` (Boolean) No authorization (always succeeds)
+- `a1_radius` (Boolean) Use RADIUS data for authorization
+- `a1_tacacs` (Boolean) Use TACACS+
+- `a2_group` (String) Use Server-group
+- `a2_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a2_local` (Boolean)
+- `a2_none` (Boolean) No authorization (always succeeds)
+- `a2_radius` (Boolean) Use RADIUS
+- `a2_tacacs` (Boolean) Use TACACS+
+- `a3_group` (String) Use Server-group
+- `a3_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a3_local` (Boolean)
+- `a3_none` (Boolean) No authorization (always succeeds)
+- `a3_radius` (Boolean) Use RADIUS data for authorization
+- `a3_tacacs` (Boolean) Use TACACS+
+- `a4_group` (String) Use Server-group
+- `a4_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a4_local` (Boolean)
+- `a4_none` (Boolean) No authorization (always succeeds)
+- `a4_radius` (Boolean) Use RADIUS data for authorization
+- `a4_tacacs` (Boolean) Use TACACS+
+- `level` (Number) Enable level
+- `list_name` (String)
+
+
+<a id="nestedatt--config_lists"></a>
+### Nested Schema for `config_lists`
+
+Read-Only:
+
+- `group1_cache` (String) Use Cached-group
+- `group1_group` (String) Use Server-group
+- `group1_radius` (Boolean) Use list of all Radius hosts
+- `group1_tacacs` (Boolean) Use TACACS+
+- `name` (String) Named authorization method list for configuration service.
+
 
 <a id="nestedatt--execs"></a>
 ### Nested Schema for `execs`

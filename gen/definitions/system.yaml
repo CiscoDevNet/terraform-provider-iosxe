@@ -429,6 +429,74 @@ attributes:
   - yang_name: enable/secret/level
     exclude_test: true
     example: 15
+  - yang_name: ip/host/host-list
+    tf_name: ip_hosts
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: test.router.com
+      - yang_name: ip-list-ordered
+        tf_name: ips
+        example: 3.3.3.3
+  - yang_name: ip/host/vrf
+    tf_name: ip_hosts_vrf
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: vrf-name
+        tf_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: host-name
+        tf_name: hosts
+        type: List
+        exclude_test: true
+        attributes:
+          - yang_name: host-name
+            tf_name: name
+            id: true
+            example: test.router.com
+          - yang_name: ip-list
+            tf_name: ips
+            example: 2.2.2.2
+  - yang_name: Cisco-IOS-XE-diagnostics:diagnostic/event-log/size
+    example: 1000
+    exclude_test: true
+  - yang_name: subscriber/templating
+    example: true
+    exclude_test: true
+  - yang_name: call-home/Cisco-IOS-XE-call-home:contact-email-addr
+    tf_name: call_home_contact_email
+    example: email@test.com
+  - yang_name: call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/active
+    tf_name: call_home_cisco_tac_1_profile_active
+    example: true
+  - yang_name: call-home/Cisco-IOS-XE-call-home:tac-profile/profile/CiscoTAC-1/destination/transport-method
+    tf_name: call_home_cisco_tac_1_destination_transport_method
+    example: email
+  - yang_name: ip/ftp/passive-enable
+    tf_name: ip_ftp_passive
+    example: true
+    exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: ip/tftp/source-interface/GigabitEthernet
+    tf_name: tftp_source_interface_gigabit_ethernet
+    example: 1/0/1
+    exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/Loopback/Loopback
+    xpath: ip/tftp/source-interface/Loopback
+    tf_name: tftp_source_interface_loopback
+    example: 100
+    exclude_test: true
+  - yang_name: multilink/Cisco-IOS-XE-ppp:bundle-name
+    tf_name: multilink_ppp_bundle_name
+    example: BUNDLE1
+    exclude_test: true
+  - yang_name: version
+    example: 17.15.1
+    allow_import_changes: true
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

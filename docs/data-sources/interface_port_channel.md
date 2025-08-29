@@ -78,6 +78,7 @@ data "iosxe_interface_port_channel" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `load_interval` (Number) Specify interval for load calculation for an interface
 - `logging_event_link_status_enable` (Boolean) UPDOWN and CHANGE messages
+- `negotiation_auto` (Boolean) Enable link autonegotiation
 - `shutdown` (Boolean) Shutdown the selected interface
 - `snmp_trap_link_status` (Boolean) Allow SNMP LINKUP and LINKDOWN traps
 - `spanning_tree_guard` (String) Change an interface's spanning tree guard mode

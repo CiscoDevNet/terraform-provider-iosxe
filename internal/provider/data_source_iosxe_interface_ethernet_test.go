@@ -91,6 +91,11 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "snmp_trap_link_status", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "logging_event_link_status_enable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_enable", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_app", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_location", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_server_location", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_nat_inside", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -223,6 +228,11 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	load_interval = 30` + "\n"
 	config += `	snmp_trap_link_status = false` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
+	config += `	cdp_enable = true` + "\n"
+	config += `	cdp_tlv_app = false` + "\n"
+	config += `	cdp_tlv_location = false` + "\n"
+	config += `	cdp_tlv_server_location = false` + "\n"
+	config += `	ip_nat_inside = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 
