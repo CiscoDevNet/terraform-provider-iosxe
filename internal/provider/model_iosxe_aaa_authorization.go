@@ -38,18 +38,24 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type AAAAuthorization struct {
-	Device     types.String               `tfsdk:"device"`
-	Id         types.String               `tfsdk:"id"`
-	DeleteMode types.String               `tfsdk:"delete_mode"`
-	Execs      []AAAAuthorizationExecs    `tfsdk:"execs"`
-	Networks   []AAAAuthorizationNetworks `tfsdk:"networks"`
+	Device         types.String                  `tfsdk:"device"`
+	Id             types.String                  `tfsdk:"id"`
+	DeleteMode     types.String                  `tfsdk:"delete_mode"`
+	Execs          []AAAAuthorizationExecs       `tfsdk:"execs"`
+	Networks       []AAAAuthorizationNetworks    `tfsdk:"networks"`
+	Commands       []AAAAuthorizationCommands    `tfsdk:"commands"`
+	ConfigCommands types.Bool                    `tfsdk:"config_commands"`
+	ConfigLists    []AAAAuthorizationConfigLists `tfsdk:"config_lists"`
 }
 
 type AAAAuthorizationData struct {
-	Device   types.String               `tfsdk:"device"`
-	Id       types.String               `tfsdk:"id"`
-	Execs    []AAAAuthorizationExecs    `tfsdk:"execs"`
-	Networks []AAAAuthorizationNetworks `tfsdk:"networks"`
+	Device         types.String                  `tfsdk:"device"`
+	Id             types.String                  `tfsdk:"id"`
+	Execs          []AAAAuthorizationExecs       `tfsdk:"execs"`
+	Networks       []AAAAuthorizationNetworks    `tfsdk:"networks"`
+	Commands       []AAAAuthorizationCommands    `tfsdk:"commands"`
+	ConfigCommands types.Bool                    `tfsdk:"config_commands"`
+	ConfigLists    []AAAAuthorizationConfigLists `tfsdk:"config_lists"`
 }
 type AAAAuthorizationExecs struct {
 	Name              types.String `tfsdk:"name"`
@@ -85,6 +91,41 @@ type AAAAuthorizationNetworks struct {
 	A4Local types.Bool   `tfsdk:"a4_local"`
 	A4Group types.String `tfsdk:"a4_group"`
 }
+type AAAAuthorizationCommands struct {
+	Level             types.Int64  `tfsdk:"level"`
+	ListName          types.String `tfsdk:"list_name"`
+	A1Group           types.String `tfsdk:"a1_group"`
+	A1Local           types.Bool   `tfsdk:"a1_local"`
+	A1IfAuthenticated types.Bool   `tfsdk:"a1_if_authenticated"`
+	A1None            types.Bool   `tfsdk:"a1_none"`
+	A1Radius          types.Bool   `tfsdk:"a1_radius"`
+	A1Tacacs          types.Bool   `tfsdk:"a1_tacacs"`
+	A2Group           types.String `tfsdk:"a2_group"`
+	A2Local           types.Bool   `tfsdk:"a2_local"`
+	A2IfAuthenticated types.Bool   `tfsdk:"a2_if_authenticated"`
+	A2None            types.Bool   `tfsdk:"a2_none"`
+	A2Radius          types.Bool   `tfsdk:"a2_radius"`
+	A2Tacacs          types.Bool   `tfsdk:"a2_tacacs"`
+	A3Group           types.String `tfsdk:"a3_group"`
+	A3Local           types.Bool   `tfsdk:"a3_local"`
+	A3IfAuthenticated types.Bool   `tfsdk:"a3_if_authenticated"`
+	A3None            types.Bool   `tfsdk:"a3_none"`
+	A3Radius          types.Bool   `tfsdk:"a3_radius"`
+	A3Tacacs          types.Bool   `tfsdk:"a3_tacacs"`
+	A4Group           types.String `tfsdk:"a4_group"`
+	A4Local           types.Bool   `tfsdk:"a4_local"`
+	A4IfAuthenticated types.Bool   `tfsdk:"a4_if_authenticated"`
+	A4None            types.Bool   `tfsdk:"a4_none"`
+	A4Radius          types.Bool   `tfsdk:"a4_radius"`
+	A4Tacacs          types.Bool   `tfsdk:"a4_tacacs"`
+}
+type AAAAuthorizationConfigLists struct {
+	Name         types.String `tfsdk:"name"`
+	Group1Cache  types.String `tfsdk:"group1_cache"`
+	Group1Group  types.String `tfsdk:"group1_group"`
+	Group1Radius types.Bool   `tfsdk:"group1_radius"`
+	Group1Tacacs types.Bool   `tfsdk:"group1_tacacs"`
+}
 
 // End of section. //template:end types
 
@@ -115,6 +156,11 @@ func (data AAAAuthorization) getPathShort() string {
 
 func (data AAAAuthorization) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
+	if !data.ConfigCommands.IsNull() && !data.ConfigCommands.IsUnknown() {
+		if data.ConfigCommands.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"config-commands", map[string]string{})
+		}
+	}
 	if len(data.Execs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"exec", []interface{}{})
 		for index, item := range data.Execs {
@@ -252,6 +298,153 @@ func (data AAAAuthorization) toBody(ctx context.Context) string {
 			}
 			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"network"+"."+strconv.Itoa(index)+"."+"a4.group", item.A4Group.ValueString())
+			}
+		}
+	}
+	if len(data.Commands) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands", []interface{}{})
+		for index, item := range data.Commands {
+			if !item.Level.IsNull() && !item.Level.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"level", strconv.FormatInt(item.Level.ValueInt64(), 10))
+			}
+			if !item.ListName.IsNull() && !item.ListName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"list-name", item.ListName.ValueString())
+			}
+			if !item.A1Group.IsNull() && !item.A1Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a1.group", item.A1Group.ValueString())
+			}
+			if !item.A1Local.IsNull() && !item.A1Local.IsUnknown() {
+				if item.A1Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a1.local", map[string]string{})
+				}
+			}
+			if !item.A1IfAuthenticated.IsNull() && !item.A1IfAuthenticated.IsUnknown() {
+				if item.A1IfAuthenticated.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a1.if-authenticated", map[string]string{})
+				}
+			}
+			if !item.A1None.IsNull() && !item.A1None.IsUnknown() {
+				if item.A1None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a1.none", map[string]string{})
+				}
+			}
+			if !item.A1Radius.IsNull() && !item.A1Radius.IsUnknown() {
+				if item.A1Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a1.radius", map[string]string{})
+				}
+			}
+			if !item.A1Tacacs.IsNull() && !item.A1Tacacs.IsUnknown() {
+				if item.A1Tacacs.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a1.tacacs", map[string]string{})
+				}
+			}
+			if !item.A2Group.IsNull() && !item.A2Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a2.group", item.A2Group.ValueString())
+			}
+			if !item.A2Local.IsNull() && !item.A2Local.IsUnknown() {
+				if item.A2Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a2.local", map[string]string{})
+				}
+			}
+			if !item.A2IfAuthenticated.IsNull() && !item.A2IfAuthenticated.IsUnknown() {
+				if item.A2IfAuthenticated.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a2.if-authenticated", map[string]string{})
+				}
+			}
+			if !item.A2None.IsNull() && !item.A2None.IsUnknown() {
+				if item.A2None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a2.none", map[string]string{})
+				}
+			}
+			if !item.A2Radius.IsNull() && !item.A2Radius.IsUnknown() {
+				if item.A2Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a2.radius", map[string]string{})
+				}
+			}
+			if !item.A2Tacacs.IsNull() && !item.A2Tacacs.IsUnknown() {
+				if item.A2Tacacs.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a2.tacacs", map[string]string{})
+				}
+			}
+			if !item.A3Group.IsNull() && !item.A3Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a3.group", item.A3Group.ValueString())
+			}
+			if !item.A3Local.IsNull() && !item.A3Local.IsUnknown() {
+				if item.A3Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a3.local", map[string]string{})
+				}
+			}
+			if !item.A3IfAuthenticated.IsNull() && !item.A3IfAuthenticated.IsUnknown() {
+				if item.A3IfAuthenticated.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a3.if-authenticated", map[string]string{})
+				}
+			}
+			if !item.A3None.IsNull() && !item.A3None.IsUnknown() {
+				if item.A3None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a3.none", map[string]string{})
+				}
+			}
+			if !item.A3Radius.IsNull() && !item.A3Radius.IsUnknown() {
+				if item.A3Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a3.radius", map[string]string{})
+				}
+			}
+			if !item.A3Tacacs.IsNull() && !item.A3Tacacs.IsUnknown() {
+				if item.A3Tacacs.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a3.tacacs", map[string]string{})
+				}
+			}
+			if !item.A4Group.IsNull() && !item.A4Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a4.group", item.A4Group.ValueString())
+			}
+			if !item.A4Local.IsNull() && !item.A4Local.IsUnknown() {
+				if item.A4Local.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a4.local", map[string]string{})
+				}
+			}
+			if !item.A4IfAuthenticated.IsNull() && !item.A4IfAuthenticated.IsUnknown() {
+				if item.A4IfAuthenticated.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a4.if-authenticated", map[string]string{})
+				}
+			}
+			if !item.A4None.IsNull() && !item.A4None.IsUnknown() {
+				if item.A4None.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a4.none", map[string]string{})
+				}
+			}
+			if !item.A4Radius.IsNull() && !item.A4Radius.IsUnknown() {
+				if item.A4Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a4.radius", map[string]string{})
+				}
+			}
+			if !item.A4Tacacs.IsNull() && !item.A4Tacacs.IsUnknown() {
+				if item.A4Tacacs.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"commands"+"."+strconv.Itoa(index)+"."+"a4.tacacs", map[string]string{})
+				}
+			}
+		}
+	}
+	if len(data.ConfigLists) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"configuration.config-list", []interface{}{})
+		for index, item := range data.ConfigLists {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"configuration.config-list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.Group1Cache.IsNull() && !item.Group1Cache.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"configuration.config-list"+"."+strconv.Itoa(index)+"."+"group1.cache", item.Group1Cache.ValueString())
+			}
+			if !item.Group1Group.IsNull() && !item.Group1Group.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"configuration.config-list"+"."+strconv.Itoa(index)+"."+"group1.group", item.Group1Group.ValueString())
+			}
+			if !item.Group1Radius.IsNull() && !item.Group1Radius.IsUnknown() {
+				if item.Group1Radius.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"configuration.config-list"+"."+strconv.Itoa(index)+"."+"group1.radius", map[string]string{})
+				}
+			}
+			if !item.Group1Tacacs.IsNull() && !item.Group1Tacacs.IsUnknown() {
+				if item.Group1Tacacs.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"configuration.config-list"+"."+strconv.Itoa(index)+"."+"group1.tacacs", map[string]string{})
+				}
 			}
 		}
 	}
@@ -545,6 +738,306 @@ func (data *AAAAuthorization) updateFromBody(ctx context.Context, res gjson.Resu
 			data.Networks[i].A4Group = types.StringNull()
 		}
 	}
+	for i := range data.Commands {
+		keys := [...]string{"level", "list-name"}
+		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "commands").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("level"); value.Exists() && !data.Commands[i].Level.IsNull() {
+			data.Commands[i].Level = types.Int64Value(value.Int())
+		} else {
+			data.Commands[i].Level = types.Int64Null()
+		}
+		if value := r.Get("list-name"); value.Exists() && !data.Commands[i].ListName.IsNull() {
+			data.Commands[i].ListName = types.StringValue(value.String())
+		} else {
+			data.Commands[i].ListName = types.StringNull()
+		}
+		if value := r.Get("a1.group"); value.Exists() && !data.Commands[i].A1Group.IsNull() {
+			data.Commands[i].A1Group = types.StringValue(value.String())
+		} else {
+			data.Commands[i].A1Group = types.StringNull()
+		}
+		if value := r.Get("a1.local"); !data.Commands[i].A1Local.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A1Local = types.BoolValue(true)
+			} else {
+				data.Commands[i].A1Local = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A1Local = types.BoolNull()
+		}
+		if value := r.Get("a1.if-authenticated"); !data.Commands[i].A1IfAuthenticated.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A1IfAuthenticated = types.BoolValue(true)
+			} else {
+				data.Commands[i].A1IfAuthenticated = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A1IfAuthenticated = types.BoolNull()
+		}
+		if value := r.Get("a1.none"); !data.Commands[i].A1None.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A1None = types.BoolValue(true)
+			} else {
+				data.Commands[i].A1None = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A1None = types.BoolNull()
+		}
+		if value := r.Get("a1.radius"); !data.Commands[i].A1Radius.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A1Radius = types.BoolValue(true)
+			} else {
+				data.Commands[i].A1Radius = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A1Radius = types.BoolNull()
+		}
+		if value := r.Get("a1.tacacs"); !data.Commands[i].A1Tacacs.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A1Tacacs = types.BoolValue(true)
+			} else {
+				data.Commands[i].A1Tacacs = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A1Tacacs = types.BoolNull()
+		}
+		if value := r.Get("a2.group"); value.Exists() && !data.Commands[i].A2Group.IsNull() {
+			data.Commands[i].A2Group = types.StringValue(value.String())
+		} else {
+			data.Commands[i].A2Group = types.StringNull()
+		}
+		if value := r.Get("a2.local"); !data.Commands[i].A2Local.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A2Local = types.BoolValue(true)
+			} else {
+				data.Commands[i].A2Local = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A2Local = types.BoolNull()
+		}
+		if value := r.Get("a2.if-authenticated"); !data.Commands[i].A2IfAuthenticated.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A2IfAuthenticated = types.BoolValue(true)
+			} else {
+				data.Commands[i].A2IfAuthenticated = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A2IfAuthenticated = types.BoolNull()
+		}
+		if value := r.Get("a2.none"); !data.Commands[i].A2None.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A2None = types.BoolValue(true)
+			} else {
+				data.Commands[i].A2None = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A2None = types.BoolNull()
+		}
+		if value := r.Get("a2.radius"); !data.Commands[i].A2Radius.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A2Radius = types.BoolValue(true)
+			} else {
+				data.Commands[i].A2Radius = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A2Radius = types.BoolNull()
+		}
+		if value := r.Get("a2.tacacs"); !data.Commands[i].A2Tacacs.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A2Tacacs = types.BoolValue(true)
+			} else {
+				data.Commands[i].A2Tacacs = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A2Tacacs = types.BoolNull()
+		}
+		if value := r.Get("a3.group"); value.Exists() && !data.Commands[i].A3Group.IsNull() {
+			data.Commands[i].A3Group = types.StringValue(value.String())
+		} else {
+			data.Commands[i].A3Group = types.StringNull()
+		}
+		if value := r.Get("a3.local"); !data.Commands[i].A3Local.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A3Local = types.BoolValue(true)
+			} else {
+				data.Commands[i].A3Local = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A3Local = types.BoolNull()
+		}
+		if value := r.Get("a3.if-authenticated"); !data.Commands[i].A3IfAuthenticated.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A3IfAuthenticated = types.BoolValue(true)
+			} else {
+				data.Commands[i].A3IfAuthenticated = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A3IfAuthenticated = types.BoolNull()
+		}
+		if value := r.Get("a3.none"); !data.Commands[i].A3None.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A3None = types.BoolValue(true)
+			} else {
+				data.Commands[i].A3None = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A3None = types.BoolNull()
+		}
+		if value := r.Get("a3.radius"); !data.Commands[i].A3Radius.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A3Radius = types.BoolValue(true)
+			} else {
+				data.Commands[i].A3Radius = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A3Radius = types.BoolNull()
+		}
+		if value := r.Get("a3.tacacs"); !data.Commands[i].A3Tacacs.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A3Tacacs = types.BoolValue(true)
+			} else {
+				data.Commands[i].A3Tacacs = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A3Tacacs = types.BoolNull()
+		}
+		if value := r.Get("a4.group"); value.Exists() && !data.Commands[i].A4Group.IsNull() {
+			data.Commands[i].A4Group = types.StringValue(value.String())
+		} else {
+			data.Commands[i].A4Group = types.StringNull()
+		}
+		if value := r.Get("a4.local"); !data.Commands[i].A4Local.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A4Local = types.BoolValue(true)
+			} else {
+				data.Commands[i].A4Local = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A4Local = types.BoolNull()
+		}
+		if value := r.Get("a4.if-authenticated"); !data.Commands[i].A4IfAuthenticated.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A4IfAuthenticated = types.BoolValue(true)
+			} else {
+				data.Commands[i].A4IfAuthenticated = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A4IfAuthenticated = types.BoolNull()
+		}
+		if value := r.Get("a4.none"); !data.Commands[i].A4None.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A4None = types.BoolValue(true)
+			} else {
+				data.Commands[i].A4None = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A4None = types.BoolNull()
+		}
+		if value := r.Get("a4.radius"); !data.Commands[i].A4Radius.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A4Radius = types.BoolValue(true)
+			} else {
+				data.Commands[i].A4Radius = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A4Radius = types.BoolNull()
+		}
+		if value := r.Get("a4.tacacs"); !data.Commands[i].A4Tacacs.IsNull() {
+			if value.Exists() {
+				data.Commands[i].A4Tacacs = types.BoolValue(true)
+			} else {
+				data.Commands[i].A4Tacacs = types.BoolValue(false)
+			}
+		} else {
+			data.Commands[i].A4Tacacs = types.BoolNull()
+		}
+	}
+	if value := res.Get(prefix + "config-commands"); !data.ConfigCommands.IsNull() {
+		if value.Exists() {
+			data.ConfigCommands = types.BoolValue(true)
+		} else {
+			data.ConfigCommands = types.BoolValue(false)
+		}
+	} else {
+		data.ConfigCommands = types.BoolNull()
+	}
+	for i := range data.ConfigLists {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.ConfigLists[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "configuration.config-list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.ConfigLists[i].Name.IsNull() {
+			data.ConfigLists[i].Name = types.StringValue(value.String())
+		} else {
+			data.ConfigLists[i].Name = types.StringNull()
+		}
+		if value := r.Get("group1.cache"); value.Exists() && !data.ConfigLists[i].Group1Cache.IsNull() {
+			data.ConfigLists[i].Group1Cache = types.StringValue(value.String())
+		} else {
+			data.ConfigLists[i].Group1Cache = types.StringNull()
+		}
+		if value := r.Get("group1.group"); value.Exists() && !data.ConfigLists[i].Group1Group.IsNull() {
+			data.ConfigLists[i].Group1Group = types.StringValue(value.String())
+		} else {
+			data.ConfigLists[i].Group1Group = types.StringNull()
+		}
+		if value := r.Get("group1.radius"); !data.ConfigLists[i].Group1Radius.IsNull() {
+			if value.Exists() {
+				data.ConfigLists[i].Group1Radius = types.BoolValue(true)
+			} else {
+				data.ConfigLists[i].Group1Radius = types.BoolValue(false)
+			}
+		} else {
+			data.ConfigLists[i].Group1Radius = types.BoolNull()
+		}
+		if value := r.Get("group1.tacacs"); !data.ConfigLists[i].Group1Tacacs.IsNull() {
+			if value.Exists() {
+				data.ConfigLists[i].Group1Tacacs = types.BoolValue(true)
+			} else {
+				data.ConfigLists[i].Group1Tacacs = types.BoolValue(false)
+			}
+		} else {
+			data.ConfigLists[i].Group1Tacacs = types.BoolNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -699,6 +1192,164 @@ func (data *AAAAuthorization) fromBody(ctx context.Context, res gjson.Result) {
 				item.A4Group = types.StringValue(cValue.String())
 			}
 			data.Networks = append(data.Networks, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "commands"); value.Exists() {
+		data.Commands = make([]AAAAuthorizationCommands, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAuthorizationCommands{}
+			if cValue := v.Get("level"); cValue.Exists() {
+				item.Level = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("list-name"); cValue.Exists() {
+				item.ListName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1.group"); cValue.Exists() {
+				item.A1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1.local"); cValue.Exists() {
+				item.A1Local = types.BoolValue(true)
+			} else {
+				item.A1Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.if-authenticated"); cValue.Exists() {
+				item.A1IfAuthenticated = types.BoolValue(true)
+			} else {
+				item.A1IfAuthenticated = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.none"); cValue.Exists() {
+				item.A1None = types.BoolValue(true)
+			} else {
+				item.A1None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.radius"); cValue.Exists() {
+				item.A1Radius = types.BoolValue(true)
+			} else {
+				item.A1Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.tacacs"); cValue.Exists() {
+				item.A1Tacacs = types.BoolValue(true)
+			} else {
+				item.A1Tacacs = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.group"); cValue.Exists() {
+				item.A2Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2.local"); cValue.Exists() {
+				item.A2Local = types.BoolValue(true)
+			} else {
+				item.A2Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.if-authenticated"); cValue.Exists() {
+				item.A2IfAuthenticated = types.BoolValue(true)
+			} else {
+				item.A2IfAuthenticated = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.none"); cValue.Exists() {
+				item.A2None = types.BoolValue(true)
+			} else {
+				item.A2None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.radius"); cValue.Exists() {
+				item.A2Radius = types.BoolValue(true)
+			} else {
+				item.A2Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.tacacs"); cValue.Exists() {
+				item.A2Tacacs = types.BoolValue(true)
+			} else {
+				item.A2Tacacs = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.group"); cValue.Exists() {
+				item.A3Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a3.local"); cValue.Exists() {
+				item.A3Local = types.BoolValue(true)
+			} else {
+				item.A3Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.if-authenticated"); cValue.Exists() {
+				item.A3IfAuthenticated = types.BoolValue(true)
+			} else {
+				item.A3IfAuthenticated = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.none"); cValue.Exists() {
+				item.A3None = types.BoolValue(true)
+			} else {
+				item.A3None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.radius"); cValue.Exists() {
+				item.A3Radius = types.BoolValue(true)
+			} else {
+				item.A3Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.tacacs"); cValue.Exists() {
+				item.A3Tacacs = types.BoolValue(true)
+			} else {
+				item.A3Tacacs = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.group"); cValue.Exists() {
+				item.A4Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a4.local"); cValue.Exists() {
+				item.A4Local = types.BoolValue(true)
+			} else {
+				item.A4Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.if-authenticated"); cValue.Exists() {
+				item.A4IfAuthenticated = types.BoolValue(true)
+			} else {
+				item.A4IfAuthenticated = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.none"); cValue.Exists() {
+				item.A4None = types.BoolValue(true)
+			} else {
+				item.A4None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.radius"); cValue.Exists() {
+				item.A4Radius = types.BoolValue(true)
+			} else {
+				item.A4Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.tacacs"); cValue.Exists() {
+				item.A4Tacacs = types.BoolValue(true)
+			} else {
+				item.A4Tacacs = types.BoolValue(false)
+			}
+			data.Commands = append(data.Commands, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "config-commands"); value.Exists() {
+		data.ConfigCommands = types.BoolValue(true)
+	} else {
+		data.ConfigCommands = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "configuration.config-list"); value.Exists() {
+		data.ConfigLists = make([]AAAAuthorizationConfigLists, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAuthorizationConfigLists{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group1.cache"); cValue.Exists() {
+				item.Group1Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group1.group"); cValue.Exists() {
+				item.Group1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group1.radius"); cValue.Exists() {
+				item.Group1Radius = types.BoolValue(true)
+			} else {
+				item.Group1Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("group1.tacacs"); cValue.Exists() {
+				item.Group1Tacacs = types.BoolValue(true)
+			} else {
+				item.Group1Tacacs = types.BoolValue(false)
+			}
+			data.ConfigLists = append(data.ConfigLists, item)
 			return true
 		})
 	}
@@ -859,6 +1510,164 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 			return true
 		})
 	}
+	if value := res.Get(prefix + "commands"); value.Exists() {
+		data.Commands = make([]AAAAuthorizationCommands, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAuthorizationCommands{}
+			if cValue := v.Get("level"); cValue.Exists() {
+				item.Level = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("list-name"); cValue.Exists() {
+				item.ListName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1.group"); cValue.Exists() {
+				item.A1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a1.local"); cValue.Exists() {
+				item.A1Local = types.BoolValue(true)
+			} else {
+				item.A1Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.if-authenticated"); cValue.Exists() {
+				item.A1IfAuthenticated = types.BoolValue(true)
+			} else {
+				item.A1IfAuthenticated = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.none"); cValue.Exists() {
+				item.A1None = types.BoolValue(true)
+			} else {
+				item.A1None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.radius"); cValue.Exists() {
+				item.A1Radius = types.BoolValue(true)
+			} else {
+				item.A1Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a1.tacacs"); cValue.Exists() {
+				item.A1Tacacs = types.BoolValue(true)
+			} else {
+				item.A1Tacacs = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.group"); cValue.Exists() {
+				item.A2Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a2.local"); cValue.Exists() {
+				item.A2Local = types.BoolValue(true)
+			} else {
+				item.A2Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.if-authenticated"); cValue.Exists() {
+				item.A2IfAuthenticated = types.BoolValue(true)
+			} else {
+				item.A2IfAuthenticated = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.none"); cValue.Exists() {
+				item.A2None = types.BoolValue(true)
+			} else {
+				item.A2None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.radius"); cValue.Exists() {
+				item.A2Radius = types.BoolValue(true)
+			} else {
+				item.A2Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a2.tacacs"); cValue.Exists() {
+				item.A2Tacacs = types.BoolValue(true)
+			} else {
+				item.A2Tacacs = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.group"); cValue.Exists() {
+				item.A3Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a3.local"); cValue.Exists() {
+				item.A3Local = types.BoolValue(true)
+			} else {
+				item.A3Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.if-authenticated"); cValue.Exists() {
+				item.A3IfAuthenticated = types.BoolValue(true)
+			} else {
+				item.A3IfAuthenticated = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.none"); cValue.Exists() {
+				item.A3None = types.BoolValue(true)
+			} else {
+				item.A3None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.radius"); cValue.Exists() {
+				item.A3Radius = types.BoolValue(true)
+			} else {
+				item.A3Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a3.tacacs"); cValue.Exists() {
+				item.A3Tacacs = types.BoolValue(true)
+			} else {
+				item.A3Tacacs = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.group"); cValue.Exists() {
+				item.A4Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("a4.local"); cValue.Exists() {
+				item.A4Local = types.BoolValue(true)
+			} else {
+				item.A4Local = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.if-authenticated"); cValue.Exists() {
+				item.A4IfAuthenticated = types.BoolValue(true)
+			} else {
+				item.A4IfAuthenticated = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.none"); cValue.Exists() {
+				item.A4None = types.BoolValue(true)
+			} else {
+				item.A4None = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.radius"); cValue.Exists() {
+				item.A4Radius = types.BoolValue(true)
+			} else {
+				item.A4Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("a4.tacacs"); cValue.Exists() {
+				item.A4Tacacs = types.BoolValue(true)
+			} else {
+				item.A4Tacacs = types.BoolValue(false)
+			}
+			data.Commands = append(data.Commands, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "config-commands"); value.Exists() {
+		data.ConfigCommands = types.BoolValue(true)
+	} else {
+		data.ConfigCommands = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "configuration.config-list"); value.Exists() {
+		data.ConfigLists = make([]AAAAuthorizationConfigLists, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := AAAAuthorizationConfigLists{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group1.cache"); cValue.Exists() {
+				item.Group1Cache = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group1.group"); cValue.Exists() {
+				item.Group1Group = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("group1.radius"); cValue.Exists() {
+				item.Group1Radius = types.BoolValue(true)
+			} else {
+				item.Group1Radius = types.BoolValue(false)
+			}
+			if cValue := v.Get("group1.tacacs"); cValue.Exists() {
+				item.Group1Tacacs = types.BoolValue(true)
+			} else {
+				item.Group1Tacacs = types.BoolValue(false)
+			}
+			data.ConfigLists = append(data.ConfigLists, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -867,6 +1676,149 @@ func (data *AAAAuthorizationData) fromBody(ctx context.Context, res gjson.Result
 
 func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuthorization) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.ConfigLists {
+		stateKeyValues := [...]string{state.ConfigLists[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.ConfigLists[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.ConfigLists {
+			found = true
+			if state.ConfigLists[i].Name.ValueString() != data.ConfigLists[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.ConfigLists[i].Group1Tacacs.IsNull() && data.ConfigLists[j].Group1Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/configuration/config-list=%v/group1/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.ConfigLists[i].Group1Radius.IsNull() && data.ConfigLists[j].Group1Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/configuration/config-list=%v/group1/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.ConfigLists[i].Group1Group.IsNull() && data.ConfigLists[j].Group1Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/configuration/config-list=%v/group1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.ConfigLists[i].Group1Cache.IsNull() && data.ConfigLists[j].Group1Cache.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/configuration/config-list=%v/group1/cache", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/configuration/config-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	if !state.ConfigCommands.IsNull() && data.ConfigCommands.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/config-commands", state.getPath()))
+	}
+	for i := range state.Commands {
+		stateKeyValues := [...]string{strconv.FormatInt(state.Commands[i].Level.ValueInt64(), 10), state.Commands[i].ListName.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Commands[i].Level.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Commands[i].ListName.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Commands {
+			found = true
+			if state.Commands[i].Level.ValueInt64() != data.Commands[j].Level.ValueInt64() {
+				found = false
+			}
+			if state.Commands[i].ListName.ValueString() != data.Commands[j].ListName.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Commands[i].A4Tacacs.IsNull() && data.Commands[j].A4Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a4/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A4Radius.IsNull() && data.Commands[j].A4Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a4/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A4None.IsNull() && data.Commands[j].A4None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a4/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A4IfAuthenticated.IsNull() && data.Commands[j].A4IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a4/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A4Local.IsNull() && data.Commands[j].A4Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a4/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A4Group.IsNull() && data.Commands[j].A4Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a4/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A3Tacacs.IsNull() && data.Commands[j].A3Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a3/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A3Radius.IsNull() && data.Commands[j].A3Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a3/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A3None.IsNull() && data.Commands[j].A3None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a3/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A3IfAuthenticated.IsNull() && data.Commands[j].A3IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a3/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A3Local.IsNull() && data.Commands[j].A3Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a3/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A3Group.IsNull() && data.Commands[j].A3Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a3/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A2Tacacs.IsNull() && data.Commands[j].A2Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a2/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A2Radius.IsNull() && data.Commands[j].A2Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a2/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A2None.IsNull() && data.Commands[j].A2None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a2/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A2IfAuthenticated.IsNull() && data.Commands[j].A2IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a2/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A2Local.IsNull() && data.Commands[j].A2Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a2/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A2Group.IsNull() && data.Commands[j].A2Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a2/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A1Tacacs.IsNull() && data.Commands[j].A1Tacacs.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a1/tacacs", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A1Radius.IsNull() && data.Commands[j].A1Radius.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a1/radius", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A1None.IsNull() && data.Commands[j].A1None.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a1/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A1IfAuthenticated.IsNull() && data.Commands[j].A1IfAuthenticated.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a1/if-authenticated", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A1Local.IsNull() && data.Commands[j].A1Local.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a1/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Commands[i].A1Group.IsNull() && data.Commands[j].A1Group.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v/a1/group", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/commands=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Networks {
 		stateKeyValues := [...]string{state.Networks[i].Id.ValueString()}
 
@@ -1012,6 +1964,83 @@ func (data *AAAAuthorization) getDeletedItems(ctx context.Context, state AAAAuth
 func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	for i := range data.ConfigLists {
+		keyValues := [...]string{data.ConfigLists[i].Name.ValueString()}
+		if !data.ConfigLists[i].Group1Tacacs.IsNull() && !data.ConfigLists[i].Group1Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/configuration/config-list=%v/group1/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.ConfigLists[i].Group1Radius.IsNull() && !data.ConfigLists[i].Group1Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/configuration/config-list=%v/group1/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+	if !data.ConfigCommands.IsNull() && !data.ConfigCommands.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/config-commands", data.getPath()))
+	}
+
+	for i := range data.Commands {
+		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+		if !data.Commands[i].A4Tacacs.IsNull() && !data.Commands[i].A4Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a4/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A4Radius.IsNull() && !data.Commands[i].A4Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a4/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A4None.IsNull() && !data.Commands[i].A4None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a4/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A4IfAuthenticated.IsNull() && !data.Commands[i].A4IfAuthenticated.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a4/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A4Local.IsNull() && !data.Commands[i].A4Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a4/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A3Tacacs.IsNull() && !data.Commands[i].A3Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a3/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A3Radius.IsNull() && !data.Commands[i].A3Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a3/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A3None.IsNull() && !data.Commands[i].A3None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a3/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A3IfAuthenticated.IsNull() && !data.Commands[i].A3IfAuthenticated.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a3/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A3Local.IsNull() && !data.Commands[i].A3Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a3/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A2Tacacs.IsNull() && !data.Commands[i].A2Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a2/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A2Radius.IsNull() && !data.Commands[i].A2Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a2/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A2None.IsNull() && !data.Commands[i].A2None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a2/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A2IfAuthenticated.IsNull() && !data.Commands[i].A2IfAuthenticated.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a2/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A2Local.IsNull() && !data.Commands[i].A2Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a2/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A1Tacacs.IsNull() && !data.Commands[i].A1Tacacs.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a1/tacacs", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A1Radius.IsNull() && !data.Commands[i].A1Radius.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a1/radius", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A1None.IsNull() && !data.Commands[i].A1None.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a1/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A1IfAuthenticated.IsNull() && !data.Commands[i].A1IfAuthenticated.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a1/if-authenticated", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Commands[i].A1Local.IsNull() && !data.Commands[i].A1Local.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/commands=%v/a1/local", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
 	for i := range data.Networks {
 		keyValues := [...]string{data.Networks[i].Id.ValueString()}
 		if !data.Networks[i].A4Local.IsNull() && !data.Networks[i].A4Local.ValueBool() {
@@ -1089,6 +2118,19 @@ func (data *AAAAuthorization) getEmptyLeafsDelete(ctx context.Context) []string 
 
 func (data *AAAAuthorization) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.ConfigLists {
+		keyValues := [...]string{data.ConfigLists[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/configuration/config-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.ConfigCommands.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/config-commands", data.getPath()))
+	}
+	for i := range data.Commands {
+		keyValues := [...]string{strconv.FormatInt(data.Commands[i].Level.ValueInt64(), 10), data.Commands[i].ListName.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/commands=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.Networks {
 		keyValues := [...]string{data.Networks[i].Id.ValueString()}
 

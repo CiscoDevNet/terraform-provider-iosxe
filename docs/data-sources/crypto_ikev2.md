@@ -29,5 +29,6 @@ data "iosxe_crypto_ikev2" "example" {
 - `dpd` (Number) Enable IKE liveness check for peers
 - `dpd_query` (String)
 - `dpd_retry_interval` (Number)
+- `http_url_cert` (Boolean) Enable certificate lookup based on HTTP-based URL
 - `id` (String) The path of the retrieved object.
 - `nat_keepalive` (Number) Set NAT keepalive interval

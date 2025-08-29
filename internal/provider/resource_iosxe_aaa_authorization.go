@@ -26,6 +26,7 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -215,6 +216,153 @@ func (r *AAAAuthorizationResource) Schema(ctx context.Context, req resource.Sche
 						},
 						"a4_group": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"commands": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("For exec (shell) commands.").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"level": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enable level").AddIntegerRangeDescription(0, 15).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 15),
+							},
+						},
+						"list_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"a1_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a1_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use local database").String,
+							Optional:            true,
+						},
+						"a1_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Succeed if user has authenticated.").String,
+							Optional:            true,
+						},
+						"a1_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No authorization (always succeeds)").String,
+							Optional:            true,
+						},
+						"a1_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use RADIUS data for authorization").String,
+							Optional:            true,
+						},
+						"a1_tacacs": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use TACACS+").String,
+							Optional:            true,
+						},
+						"a2_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"a2_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Succeed if user has authenticated.").String,
+							Optional:            true,
+						},
+						"a2_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No authorization (always succeeds)").String,
+							Optional:            true,
+						},
+						"a2_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use RADIUS").String,
+							Optional:            true,
+						},
+						"a2_tacacs": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use TACACS+").String,
+							Optional:            true,
+						},
+						"a3_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a3_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"a3_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Succeed if user has authenticated.").String,
+							Optional:            true,
+						},
+						"a3_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No authorization (always succeeds)").String,
+							Optional:            true,
+						},
+						"a3_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use RADIUS data for authorization").String,
+							Optional:            true,
+						},
+						"a3_tacacs": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use TACACS+").String,
+							Optional:            true,
+						},
+						"a4_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"a4_local": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"a4_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Succeed if user has authenticated.").String,
+							Optional:            true,
+						},
+						"a4_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("No authorization (always succeeds)").String,
+							Optional:            true,
+						},
+						"a4_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use RADIUS data for authorization").String,
+							Optional:            true,
+						},
+						"a4_tacacs": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use TACACS+").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"config_commands": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("For configuration mode commands.").String,
+				Optional:            true,
+			},
+			"config_lists": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Named authorization method list for configuration service.").String,
+							Required:            true,
+						},
+						"group1_cache": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Cached-group").String,
+							Optional:            true,
+						},
+						"group1_group": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use Server-group").String,
+							Optional:            true,
+						},
+						"group1_radius": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use list of all Radius hosts").String,
+							Optional:            true,
+						},
+						"group1_tacacs": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Use TACACS+").String,
 							Optional:            true,
 						},
 					},

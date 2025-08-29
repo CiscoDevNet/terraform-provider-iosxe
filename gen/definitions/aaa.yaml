@@ -140,3 +140,27 @@ attributes:
         tf_name: ip_tacacs_source_interface_hundred_gigabit_ethernet
         example: 1
         exclude_test: true
+      - yang_name: ip/vrf/forwarding
+        tf_name: vrf
+        example: VRF1
+  - yang_name: Cisco-IOS-XE-aaa:local/authentication/authorization/authen-type
+    tf_name: local_authentication_type
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-aaa:local/authentication/authorization/authorization
+    tf_name: local_authorization
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-aaa:local/authentication/attempts/max-fail
+    tf_name: local_authentication_max_fail_attempts
+    example: 3
+    exclude_test: true
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: rd
+        value: 1:1
+      - name: address-family/ipv4
+        value: ""

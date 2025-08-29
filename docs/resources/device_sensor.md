@@ -36,6 +36,16 @@ resource "iosxe_device_sensor" "example" {
       option_name_client_fqdn            = true
     }
   ]
+  filter_lists_cdp = [
+    {
+      name                       = "cdp1"
+      tlv_name_device_name       = true
+      tlv_name_address_type      = true
+      tlv_name_port_id_type      = true
+      tlv_name_capabilities_type = true
+      tlv_name_platform_type     = true
+    }
+  ]
   filter_spec_dhcp_includes = [
     {
       name = "dhcp1"
@@ -58,6 +68,7 @@ resource "iosxe_device_sensor" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `filter_lists_cdp` (Attributes List) Protocol Filter List (see [below for nested schema](#nestedatt--filter_lists_cdp))
 - `filter_lists_dhcp` (Attributes List) Protocol Filter List (see [below for nested schema](#nestedatt--filter_lists_dhcp))
 - `filter_lists_lldp` (Attributes List) Protocol Filter List (see [below for nested schema](#nestedatt--filter_lists_lldp))
 - `filter_spec_cdp_excludes` (Attributes List) Protocol Filter Spec list (see [below for nested schema](#nestedatt--filter_spec_cdp_excludes))
@@ -71,6 +82,22 @@ resource "iosxe_device_sensor" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--filter_lists_cdp"></a>
+### Nested Schema for `filter_lists_cdp`
+
+Required:
+
+- `name` (String)
+
+Optional:
+
+- `tlv_name_address_type` (Boolean) Address Type
+- `tlv_name_capabilities_type` (Boolean) Capabilities Type
+- `tlv_name_device_name` (Boolean) Device Name
+- `tlv_name_platform_type` (Boolean) Platform Type
+- `tlv_name_port_id_type` (Boolean) Port Id type
+
 
 <a id="nestedatt--filter_lists_dhcp"></a>
 ### Nested Schema for `filter_lists_dhcp`

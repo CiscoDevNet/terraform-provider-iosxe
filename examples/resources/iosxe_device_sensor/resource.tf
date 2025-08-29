@@ -21,6 +21,16 @@ resource "iosxe_device_sensor" "example" {
       option_name_client_fqdn            = true
     }
   ]
+  filter_lists_cdp = [
+    {
+      name                       = "cdp1"
+      tlv_name_device_name       = true
+      tlv_name_address_type      = true
+      tlv_name_port_id_type      = true
+      tlv_name_capabilities_type = true
+      tlv_name_platform_type     = true
+    }
+  ]
   filter_spec_dhcp_includes = [
     {
       name = "dhcp1"

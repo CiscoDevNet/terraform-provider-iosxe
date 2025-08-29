@@ -57,6 +57,7 @@ type SNMPServer struct {
 	EnableTrapsSnmpLinkup                         types.Bool                  `tfsdk:"enable_traps_snmp_linkup"`
 	EnableTrapsSnmpWarmstart                      types.Bool                  `tfsdk:"enable_traps_snmp_warmstart"`
 	Hosts                                         []SNMPServerHosts           `tfsdk:"hosts"`
+	VrfHosts                                      []SNMPServerVrfHosts        `tfsdk:"vrf_hosts"`
 	SystemShutdown                                types.Bool                  `tfsdk:"system_shutdown"`
 	EnableTrapsFlowmon                            types.Bool                  `tfsdk:"enable_traps_flowmon"`
 	EnableTrapsEntityPerfThroughputNotif          types.Bool                  `tfsdk:"enable_traps_entity_perf_throughput_notif"`
@@ -223,6 +224,10 @@ type SNMPServer struct {
 	EnableTrapsSonet                              types.Bool                  `tfsdk:"enable_traps_sonet"`
 	EnableTrapsSrp                                types.Bool                  `tfsdk:"enable_traps_srp"`
 	EnableTrapsVoice                              types.Bool                  `tfsdk:"enable_traps_voice"`
+	EnableTrapsBgp                                types.Bool                  `tfsdk:"enable_traps_bgp"`
+	EnableTrapsCbgp2                              types.Bool                  `tfsdk:"enable_traps_cbgp2"`
+	EnableTrapsOspfv3Errors                       types.Bool                  `tfsdk:"enable_traps_ospfv3_errors"`
+	EnableTrapsOspfv3StateChange                  types.Bool                  `tfsdk:"enable_traps_ospfv3_state_change"`
 	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
 	SourceInterfaceInformsTenGigabitEthernet      types.String                `tfsdk:"source_interface_informs_ten_gigabit_ethernet"`
 	SourceInterfaceInformsFortyGigabitEthernet    types.String                `tfsdk:"source_interface_informs_forty_gigabit_ethernet"`
@@ -273,6 +278,7 @@ type SNMPServerData struct {
 	EnableTrapsSnmpLinkup                         types.Bool                  `tfsdk:"enable_traps_snmp_linkup"`
 	EnableTrapsSnmpWarmstart                      types.Bool                  `tfsdk:"enable_traps_snmp_warmstart"`
 	Hosts                                         []SNMPServerHosts           `tfsdk:"hosts"`
+	VrfHosts                                      []SNMPServerVrfHosts        `tfsdk:"vrf_hosts"`
 	SystemShutdown                                types.Bool                  `tfsdk:"system_shutdown"`
 	EnableTrapsFlowmon                            types.Bool                  `tfsdk:"enable_traps_flowmon"`
 	EnableTrapsEntityPerfThroughputNotif          types.Bool                  `tfsdk:"enable_traps_entity_perf_throughput_notif"`
@@ -439,6 +445,10 @@ type SNMPServerData struct {
 	EnableTrapsSonet                              types.Bool                  `tfsdk:"enable_traps_sonet"`
 	EnableTrapsSrp                                types.Bool                  `tfsdk:"enable_traps_srp"`
 	EnableTrapsVoice                              types.Bool                  `tfsdk:"enable_traps_voice"`
+	EnableTrapsBgp                                types.Bool                  `tfsdk:"enable_traps_bgp"`
+	EnableTrapsCbgp2                              types.Bool                  `tfsdk:"enable_traps_cbgp2"`
+	EnableTrapsOspfv3Errors                       types.Bool                  `tfsdk:"enable_traps_ospfv3_errors"`
+	EnableTrapsOspfv3StateChange                  types.Bool                  `tfsdk:"enable_traps_ospfv3_state_change"`
 	SourceInterfaceInformsGigabitEthernet         types.String                `tfsdk:"source_interface_informs_gigabit_ethernet"`
 	SourceInterfaceInformsTenGigabitEthernet      types.String                `tfsdk:"source_interface_informs_ten_gigabit_ethernet"`
 	SourceInterfaceInformsFortyGigabitEthernet    types.String                `tfsdk:"source_interface_informs_forty_gigabit_ethernet"`
@@ -474,6 +484,15 @@ type SNMPServerHosts struct {
 	CommunityOrUser types.String `tfsdk:"community_or_user"`
 	Version         types.String `tfsdk:"version"`
 	Encryption      types.String `tfsdk:"encryption"`
+	SecurityLevel   types.String `tfsdk:"security_level"`
+}
+type SNMPServerVrfHosts struct {
+	IpAddress       types.String `tfsdk:"ip_address"`
+	Vrf             types.String `tfsdk:"vrf"`
+	CommunityOrUser types.String `tfsdk:"community_or_user"`
+	Version         types.String `tfsdk:"version"`
+	Encryption      types.String `tfsdk:"encryption"`
+	SecurityLevel   types.String `tfsdk:"security_level"`
 }
 type SNMPServerSnmpCommunities struct {
 	Name           types.String `tfsdk:"name"`
@@ -1440,6 +1459,26 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.voice", map[string]string{})
 		}
 	}
+	if !data.EnableTrapsBgp.IsNull() && !data.EnableTrapsBgp.IsUnknown() {
+		if data.EnableTrapsBgp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsCbgp2.IsNull() && !data.EnableTrapsCbgp2.IsUnknown() {
+		if data.EnableTrapsCbgp2.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp-traps.cbgp2", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsOspfv3Errors.IsNull() && !data.EnableTrapsOspfv3Errors.IsUnknown() {
+		if data.EnableTrapsOspfv3Errors.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.errors", map[string]string{})
+		}
+	}
+	if !data.EnableTrapsOspfv3StateChange.IsNull() && !data.EnableTrapsOspfv3StateChange.IsUnknown() {
+		if data.EnableTrapsOspfv3StateChange.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.state-change", map[string]string{})
+		}
+	}
 	if !data.SourceInterfaceInformsGigabitEthernet.IsNull() && !data.SourceInterfaceInformsGigabitEthernet.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet", data.SourceInterfaceInformsGigabitEthernet.ValueString())
 	}
@@ -1526,6 +1565,32 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 			}
 			if !item.Encryption.IsNull() && !item.Encryption.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"encryption", item.Encryption.ValueString())
+			}
+			if !item.SecurityLevel.IsNull() && !item.SecurityLevel.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-community"+"."+strconv.Itoa(index)+"."+"security-level", item.SecurityLevel.ValueString())
+			}
+		}
+	}
+	if len(data.VrfHosts) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community", []interface{}{})
+		for index, item := range data.VrfHosts {
+			if !item.IpAddress.IsNull() && !item.IpAddress.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"ip-address", item.IpAddress.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"vrf", item.Vrf.ValueString())
+			}
+			if !item.CommunityOrUser.IsNull() && !item.CommunityOrUser.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"community-or-user", item.CommunityOrUser.ValueString())
+			}
+			if !item.Version.IsNull() && !item.Version.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"version", item.Version.ValueString())
+			}
+			if !item.Encryption.IsNull() && !item.Encryption.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"encryption", item.Encryption.ValueString())
+			}
+			if !item.SecurityLevel.IsNull() && !item.SecurityLevel.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:host-config.ip-vrf-community"+"."+strconv.Itoa(index)+"."+"security-level", item.SecurityLevel.ValueString())
 			}
 		}
 	}
@@ -1841,6 +1906,65 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Hosts[i].Encryption = types.StringValue(value.String())
 		} else {
 			data.Hosts[i].Encryption = types.StringNull()
+		}
+		if value := r.Get("security-level"); value.Exists() && !data.Hosts[i].SecurityLevel.IsNull() {
+			data.Hosts[i].SecurityLevel = types.StringValue(value.String())
+		} else {
+			data.Hosts[i].SecurityLevel = types.StringNull()
+		}
+	}
+	for i := range data.VrfHosts {
+		keys := [...]string{"ip-address", "vrf"}
+		keyValues := [...]string{data.VrfHosts[i].IpAddress.ValueString(), data.VrfHosts[i].Vrf.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-snmp:host-config.ip-vrf-community").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("ip-address"); value.Exists() && !data.VrfHosts[i].IpAddress.IsNull() {
+			data.VrfHosts[i].IpAddress = types.StringValue(value.String())
+		} else {
+			data.VrfHosts[i].IpAddress = types.StringNull()
+		}
+		if value := r.Get("vrf"); value.Exists() && !data.VrfHosts[i].Vrf.IsNull() {
+			data.VrfHosts[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.VrfHosts[i].Vrf = types.StringNull()
+		}
+		if value := r.Get("community-or-user"); value.Exists() && !data.VrfHosts[i].CommunityOrUser.IsNull() {
+			data.VrfHosts[i].CommunityOrUser = types.StringValue(value.String())
+		} else {
+			data.VrfHosts[i].CommunityOrUser = types.StringNull()
+		}
+		if value := r.Get("version"); value.Exists() && !data.VrfHosts[i].Version.IsNull() {
+			data.VrfHosts[i].Version = types.StringValue(value.String())
+		} else {
+			data.VrfHosts[i].Version = types.StringNull()
+		}
+		if value := r.Get("encryption"); value.Exists() && !data.VrfHosts[i].Encryption.IsNull() {
+			data.VrfHosts[i].Encryption = types.StringValue(value.String())
+		} else {
+			data.VrfHosts[i].Encryption = types.StringNull()
+		}
+		if value := r.Get("security-level"); value.Exists() && !data.VrfHosts[i].SecurityLevel.IsNull() {
+			data.VrfHosts[i].SecurityLevel = types.StringValue(value.String())
+		} else {
+			data.VrfHosts[i].SecurityLevel = types.StringNull()
 		}
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:system-shutdown"); !data.SystemShutdown.IsNull() {
@@ -3321,6 +3445,42 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsVoice = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp"); !data.EnableTrapsBgp.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsBgp = types.BoolValue(true)
+		} else {
+			data.EnableTrapsBgp = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsBgp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp-traps.cbgp2"); !data.EnableTrapsCbgp2.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsCbgp2 = types.BoolValue(true)
+		} else {
+			data.EnableTrapsCbgp2 = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsCbgp2 = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.errors"); !data.EnableTrapsOspfv3Errors.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsOspfv3Errors = types.BoolValue(true)
+		} else {
+			data.EnableTrapsOspfv3Errors = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsOspfv3Errors = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.state-change"); !data.EnableTrapsOspfv3StateChange.IsNull() {
+		if value.Exists() {
+			data.EnableTrapsOspfv3StateChange = types.BoolValue(true)
+		} else {
+			data.EnableTrapsOspfv3StateChange = types.BoolValue(false)
+		}
+	} else {
+		data.EnableTrapsOspfv3StateChange = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() && !data.SourceInterfaceInformsGigabitEthernet.IsNull() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
 	} else {
@@ -3872,7 +4032,36 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("encryption"); cValue.Exists() {
 				item.Encryption = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("security-level"); cValue.Exists() {
+				item.SecurityLevel = types.StringValue(cValue.String())
+			}
 			data.Hosts = append(data.Hosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:host-config.ip-vrf-community"); value.Exists() {
+		data.VrfHosts = make([]SNMPServerVrfHosts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SNMPServerVrfHosts{}
+			if cValue := v.Get("ip-address"); cValue.Exists() {
+				item.IpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("community-or-user"); cValue.Exists() {
+				item.CommunityOrUser = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("version"); cValue.Exists() {
+				item.Version = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("encryption"); cValue.Exists() {
+				item.Encryption = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("security-level"); cValue.Exists() {
+				item.SecurityLevel = types.StringValue(cValue.String())
+			}
+			data.VrfHosts = append(data.VrfHosts, item)
 			return true
 		})
 	}
@@ -4697,6 +4886,26 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableTrapsVoice = types.BoolValue(true)
 	} else {
 		data.EnableTrapsVoice = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp"); value.Exists() {
+		data.EnableTrapsBgp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp-traps.cbgp2"); value.Exists() {
+		data.EnableTrapsCbgp2 = types.BoolValue(true)
+	} else {
+		data.EnableTrapsCbgp2 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.errors"); value.Exists() {
+		data.EnableTrapsOspfv3Errors = types.BoolValue(true)
+	} else {
+		data.EnableTrapsOspfv3Errors = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.state-change"); value.Exists() {
+		data.EnableTrapsOspfv3StateChange = types.BoolValue(true)
+	} else {
+		data.EnableTrapsOspfv3StateChange = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
@@ -5027,7 +5236,36 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("encryption"); cValue.Exists() {
 				item.Encryption = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("security-level"); cValue.Exists() {
+				item.SecurityLevel = types.StringValue(cValue.String())
+			}
 			data.Hosts = append(data.Hosts, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:host-config.ip-vrf-community"); value.Exists() {
+		data.VrfHosts = make([]SNMPServerVrfHosts, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SNMPServerVrfHosts{}
+			if cValue := v.Get("ip-address"); cValue.Exists() {
+				item.IpAddress = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("community-or-user"); cValue.Exists() {
+				item.CommunityOrUser = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("version"); cValue.Exists() {
+				item.Version = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("encryption"); cValue.Exists() {
+				item.Encryption = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("security-level"); cValue.Exists() {
+				item.SecurityLevel = types.StringValue(cValue.String())
+			}
+			data.VrfHosts = append(data.VrfHosts, item)
 			return true
 		})
 	}
@@ -5852,6 +6090,26 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 		data.EnableTrapsVoice = types.BoolValue(true)
 	} else {
 		data.EnableTrapsVoice = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp"); value.Exists() {
+		data.EnableTrapsBgp = types.BoolValue(true)
+	} else {
+		data.EnableTrapsBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.bgp-traps.cbgp2"); value.Exists() {
+		data.EnableTrapsCbgp2 = types.BoolValue(true)
+	} else {
+		data.EnableTrapsCbgp2 = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.errors"); value.Exists() {
+		data.EnableTrapsOspfv3Errors = types.BoolValue(true)
+	} else {
+		data.EnableTrapsOspfv3Errors = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.ospfv3.state-change"); value.Exists() {
+		data.EnableTrapsOspfv3StateChange = types.BoolValue(true)
+	} else {
+		data.EnableTrapsOspfv3StateChange = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:source-interface.informs.GigabitEthernet"); value.Exists() {
 		data.SourceInterfaceInformsGigabitEthernet = types.StringValue(value.String())
@@ -6425,6 +6683,18 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 	if !state.SourceInterfaceInformsGigabitEthernet.IsNull() && data.SourceInterfaceInformsGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet", state.getPath()))
 	}
+	if !state.EnableTrapsOspfv3StateChange.IsNull() && data.EnableTrapsOspfv3StateChange.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/state-change", state.getPath()))
+	}
+	if !state.EnableTrapsOspfv3Errors.IsNull() && data.EnableTrapsOspfv3Errors.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors", state.getPath()))
+	}
+	if !state.EnableTrapsCbgp2.IsNull() && data.EnableTrapsCbgp2.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2", state.getPath()))
+	}
+	if !state.EnableTrapsBgp.IsNull() && data.EnableTrapsBgp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp", state.getPath()))
+	}
 	if !state.EnableTrapsVoice.IsNull() && data.EnableTrapsVoice.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/voice", state.getPath()))
 	}
@@ -6923,6 +7193,49 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 	if !state.SystemShutdown.IsNull() && data.SystemShutdown.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:system-shutdown", state.getPath()))
 	}
+	for i := range state.VrfHosts {
+		stateKeyValues := [...]string{state.VrfHosts[i].IpAddress.ValueString(), state.VrfHosts[i].Vrf.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.VrfHosts[i].IpAddress.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.VrfHosts[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.VrfHosts {
+			found = true
+			if state.VrfHosts[i].IpAddress.ValueString() != data.VrfHosts[j].IpAddress.ValueString() {
+				found = false
+			}
+			if state.VrfHosts[i].Vrf.ValueString() != data.VrfHosts[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.VrfHosts[i].SecurityLevel.IsNull() && data.VrfHosts[j].SecurityLevel.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-vrf-community=%v/security-level", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.VrfHosts[i].Encryption.IsNull() && data.VrfHosts[j].Encryption.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-vrf-community=%v/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.VrfHosts[i].Version.IsNull() && data.VrfHosts[j].Version.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-vrf-community=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.VrfHosts[i].CommunityOrUser.IsNull() && data.VrfHosts[j].CommunityOrUser.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-vrf-community=%v/community-or-user", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-vrf-community=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Hosts {
 		stateKeyValues := [...]string{state.Hosts[i].IpAddress.ValueString()}
 
@@ -6941,6 +7254,9 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 				found = false
 			}
 			if found {
+				if !state.Hosts[i].SecurityLevel.IsNull() && data.Hosts[j].SecurityLevel.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v/security-level", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Hosts[i].Encryption.IsNull() && data.Hosts[j].Encryption.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-community=%v/encryption", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -7013,6 +7329,18 @@ func (data *SNMPServer) getDeletedItems(ctx context.Context, state SNMPServer) [
 func (data *SNMPServer) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	if !data.EnableTrapsOspfv3StateChange.IsNull() && !data.EnableTrapsOspfv3StateChange.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/state-change", data.getPath()))
+	}
+	if !data.EnableTrapsOspfv3Errors.IsNull() && !data.EnableTrapsOspfv3Errors.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors", data.getPath()))
+	}
+	if !data.EnableTrapsCbgp2.IsNull() && !data.EnableTrapsCbgp2.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2", data.getPath()))
+	}
+	if !data.EnableTrapsBgp.IsNull() && !data.EnableTrapsBgp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp", data.getPath()))
+	}
 	if !data.EnableTrapsVoice.IsNull() && !data.EnableTrapsVoice.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/voice", data.getPath()))
 	}
@@ -7631,6 +7959,18 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 	if !data.SourceInterfaceInformsGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet", data.getPath()))
 	}
+	if !data.EnableTrapsOspfv3StateChange.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/state-change", data.getPath()))
+	}
+	if !data.EnableTrapsOspfv3Errors.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors", data.getPath()))
+	}
+	if !data.EnableTrapsCbgp2.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2", data.getPath()))
+	}
+	if !data.EnableTrapsBgp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp", data.getPath()))
+	}
 	if !data.EnableTrapsVoice.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:enable/enable-choice/traps/voice", data.getPath()))
 	}
@@ -8128,6 +8468,11 @@ func (data *SNMPServer) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.SystemShutdown.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:system-shutdown", data.getPath()))
+	}
+	for i := range data.VrfHosts {
+		keyValues := [...]string{data.VrfHosts[i].IpAddress.ValueString(), data.VrfHosts[i].Vrf.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-snmp:host-config/ip-vrf-community=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.Hosts {
 		keyValues := [...]string{data.Hosts[i].IpAddress.ValueString()}

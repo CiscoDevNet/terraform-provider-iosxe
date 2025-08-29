@@ -40,6 +40,9 @@ resource "iosxe_aaa_authorization" "example" {
 
 ### Optional
 
+- `commands` (Attributes List) For exec (shell) commands. (see [below for nested schema](#nestedatt--commands))
+- `config_commands` (Boolean) For configuration mode commands.
+- `config_lists` (Attributes List) (see [below for nested schema](#nestedatt--config_lists))
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
@@ -49,6 +52,58 @@ resource "iosxe_aaa_authorization" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--commands"></a>
+### Nested Schema for `commands`
+
+Required:
+
+- `level` (Number) Enable level
+  - Range: `0`-`15`
+- `list_name` (String)
+
+Optional:
+
+- `a1_group` (String) Use Server-group
+- `a1_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a1_local` (Boolean) Use local database
+- `a1_none` (Boolean) No authorization (always succeeds)
+- `a1_radius` (Boolean) Use RADIUS data for authorization
+- `a1_tacacs` (Boolean) Use TACACS+
+- `a2_group` (String) Use Server-group
+- `a2_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a2_local` (Boolean)
+- `a2_none` (Boolean) No authorization (always succeeds)
+- `a2_radius` (Boolean) Use RADIUS
+- `a2_tacacs` (Boolean) Use TACACS+
+- `a3_group` (String) Use Server-group
+- `a3_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a3_local` (Boolean)
+- `a3_none` (Boolean) No authorization (always succeeds)
+- `a3_radius` (Boolean) Use RADIUS data for authorization
+- `a3_tacacs` (Boolean) Use TACACS+
+- `a4_group` (String) Use Server-group
+- `a4_if_authenticated` (Boolean) Succeed if user has authenticated.
+- `a4_local` (Boolean)
+- `a4_none` (Boolean) No authorization (always succeeds)
+- `a4_radius` (Boolean) Use RADIUS data for authorization
+- `a4_tacacs` (Boolean) Use TACACS+
+
+
+<a id="nestedatt--config_lists"></a>
+### Nested Schema for `config_lists`
+
+Required:
+
+- `name` (String) Named authorization method list for configuration service.
+
+Optional:
+
+- `group1_cache` (String) Use Cached-group
+- `group1_group` (String) Use Server-group
+- `group1_radius` (Boolean) Use list of all Radius hosts
+- `group1_tacacs` (Boolean) Use TACACS+
+
 
 <a id="nestedatt--execs"></a>
 ### Nested Schema for `execs`

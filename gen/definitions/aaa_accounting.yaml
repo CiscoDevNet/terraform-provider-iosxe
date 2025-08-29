@@ -46,17 +46,6 @@ attributes:
   - yang_name: identity/default/start-stop/group-config/group4/group
     tf_name: identity_default_start_stop_group4
     example: RADIUS-GROUP4
-  - yang_name: exec
-    tf_name: execs
-    type: List
-    attributes:
-      - yang_name: name
-        id: true
-        example: default
-      - yang_name: accounting-choice/start-stop/start-stop/group1/group
-        xpath: start-stop/group1/group
-        tf_name: start_stop_group1
-        example: T-Group
   - yang_name: network
     tf_name: networks
     type: List
@@ -74,3 +63,205 @@ attributes:
     xpath: system/guarantee-first
     tf_name: system_guarantee_first
     example: false
+  - yang_name: commands
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: level
+        example: 15
+        id: true
+      - yang_name: list-name
+        example: COMMAND_LIST
+        id: true
+      - yang_name: commands-config/commands-choice/others-case/action-type
+        xpath: commands-config/action-type
+        tf_name: action_type
+        example: accounting
+        exclude_test: true
+      - yang_name: commands-config/commands-choice/others-case/broadcast
+        xpath: commands-config/broadcast
+        tf_name: broadcast
+        example: False
+        exclude_test: true
+      - yang_name: commands-config/commands-choice/others-case/group-config/broadcast
+        xpath: commands-config/group-config/broadcast
+        tf_name: group_broadcast
+        example: False
+        exclude_test: true
+      - yang_name: commands-config/commands-choice/others-case/group-config/logger
+        xpath: commands-config/group-config/logger
+        tf_name: group_logger
+        example: False
+        exclude_test: true
+      - yang_name: commands-config/commands-choice/others-case/group-config/group1/group
+        xpath: commands-config/group-config/group1/group
+        tf_name: group1_group
+        exclude_test: true
+      - yang_name: commands-config/commands-choice/others-case/group-config/group2/group
+        xpath: commands-config/group-config/group2/group
+        tf_name: group2_group 
+        exclude_test: true
+      - yang_name: commands-config/commands-choice/others-case/group-config/group3/group
+        xpath: commands-config/group-config/group3/group
+        tf_name: group3_group
+        exclude_test: true
+      - yang_name: commands-config/commands-choice/others-case/group-config/group4/group
+        xpath: commands-config/group-config/group4/group
+        tf_name: group4_group
+        exclude_test: true
+  - yang_name: connection
+    tf_name: connections
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: CONN1
+      - yang_name: default
+        example: false
+      - yang_name: accounting-choice/none/none
+        xpath: none
+        example: True
+      - yang_name: accounting-choice/start-stop/start-stop/broadcast
+        xpath: start-stop/broadcast
+        example: False
+      - yang_name: accounting-choice/start-stop/start-stop/logger
+        xpath: start-stop/logger
+        example: False
+      - yang_name: accounting-choice/start-stop/start-stop/group1/group
+        xpath: start-stop/group1/group
+        tf_name: start_stop_group1
+        example: GROUP1
+      - yang_name: accounting-choice/start-stop/start-stop/group2/group
+        xpath: start-stop/group2/group
+        tf_name: start_stop_group2
+        example: GROUP2
+      - yang_name: accounting-choice/start-stop/start-stop/group3/group
+        xpath: start-stop/group3/group
+        tf_name: start_stop_group3
+        example: GROUP3
+      - yang_name: accounting-choice/start-stop/start-stop/group4/group
+        xpath: start-stop/group4/group
+        tf_name: start_stop_group4
+        example: GROUP4
+      - yang_name: accounting-choice/stop-only/stop-only/broadcast
+        xpath: stop-only/broadcast
+        example: False
+      - yang_name: accounting-choice/stop-only/stop-only/logger
+        xpath: stop-only/logger
+        example: False
+      - yang_name: accounting-choice/stop-only/stop-only/group1/group
+        xpath: stop-only/group1/group
+        tf_name: stop_only_group1
+        example: GROUP1
+      - yang_name: accounting-choice/stop-only/stop-only/group2/group
+        xpath: stop-only/group2/group
+        tf_name: stop_only_group2
+        example: GROUP2
+      - yang_name: accounting-choice/stop-only/stop-only/group3/group
+        xpath: stop-only/group3/group
+        tf_name: stop_only_group3
+        example: GROUP3
+      - yang_name: accounting-choice/stop-only/stop-only/group4/group
+        xpath: stop-only/group4/group
+        tf_name: stop_only_group4
+        example: GROUP4
+      - yang_name: accounting-choice/wait-start/wait-start/broadcast
+        xpath: wait-start/broadcast
+        example: False
+      - yang_name: accounting-choice/wait-start/wait-start/logger
+        xpath: wait-start/logger
+        example: False
+      - yang_name: accounting-choice/wait-start/wait-start/group1/group
+        xpath: wait-start/group1/group
+        tf_name: wait_start_group1
+        example: GROUP1
+      - yang_name: accounting-choice/wait-start/wait-start/group2/group
+        xpath: wait-start/group2/group
+        tf_name: wait_start_group2
+        example: GROUP2
+      - yang_name: accounting-choice/wait-start/wait-start/group3/group
+        xpath: wait-start/group3/group
+        tf_name: wait_start_group3
+        example: GROUP3
+      - yang_name: accounting-choice/wait-start/wait-start/group4/group
+        xpath: wait-start/group4/group
+        tf_name: wait_start_group4
+        example: GROUP4
+  - yang_name: exec
+    tf_name: execs
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: default
+      - yang_name: accounting-choice/none/none
+        xpath: none
+        example: True
+      - yang_name: accounting-choice/start-stop/start-stop/broadcast
+        xpath: start-stop/broadcast
+        example: False
+      - yang_name: accounting-choice/start-stop/start-stop/logger
+        xpath: start-stop/logger
+        example: False
+      - yang_name: accounting-choice/start-stop/start-stop/group1/group
+        xpath: start-stop/group1/group
+        tf_name: start_stop_group1
+        example: GROUP1
+      - yang_name: accounting-choice/start-stop/start-stop/group2/group
+        xpath: start-stop/group2/group
+        tf_name: start_stop_group2
+        example: GROUP2
+      - yang_name: accounting-choice/start-stop/start-stop/group3/group
+        xpath: start-stop/group3/group
+        tf_name: start_stop_group3
+        example: GROUP3
+      - yang_name: accounting-choice/start-stop/start-stop/group4/group
+        xpath: start-stop/group4/group
+        tf_name: start_stop_group4
+        example: GROUP4
+      - yang_name: accounting-choice/stop-only/stop-only/broadcast
+        xpath: stop-only/broadcast
+        example: False
+      - yang_name: accounting-choice/stop-only/stop-only/logger
+        xpath: stop-only/logger
+        example: False
+      - yang_name: accounting-choice/stop-only/stop-only/group1/group
+        xpath: stop-only/group1/group
+        tf_name: stop_only_group1
+        example: GROUP1
+      - yang_name: accounting-choice/stop-only/stop-only/group2/group
+        xpath: stop-only/group2/group
+        tf_name: stop_only_group2
+        example: GROUP2
+      - yang_name: accounting-choice/stop-only/stop-only/group3/group
+        xpath: stop-only/group3/group
+        tf_name: stop_only_group3
+        example: GROUP3
+      - yang_name: accounting-choice/stop-only/stop-only/group4/group
+        xpath: stop-only/group4/group
+        tf_name: stop_only_group4
+        example: GROUP4
+      - yang_name: accounting-choice/wait-start/wait-start/broadcast
+        xpath: wait-start/broadcast
+        example: False
+      - yang_name: accounting-choice/wait-start/wait-start/logger
+        xpath: wait-start/logger
+        example: False
+      - yang_name: accounting-choice/wait-start/wait-start/group1/group
+        xpath: wait-start/group1/group
+        tf_name: wait_start_group1
+        example: GROUP1
+      - yang_name: accounting-choice/wait-start/wait-start/group2/group
+        xpath: wait-start/group2/group
+        tf_name: wait_start_group2
+        example: GROUP2
+      - yang_name: accounting-choice/wait-start/wait-start/group3/group
+        xpath: wait-start/group3/group
+        tf_name: wait_start_group3
+        example: GROUP3
+      - yang_name: accounting-choice/wait-start/wait-start/group4/group
+        xpath: wait-start/group4/group
+        tf_name: wait_start_group4
+        example: GROUP4
