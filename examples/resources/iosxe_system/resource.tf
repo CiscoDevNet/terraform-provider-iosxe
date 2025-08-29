@@ -34,4 +34,5 @@ resource "iosxe_system" "example" {
   call_home_contact_email                            = "email@test.com"
   call_home_cisco_tac_1_profile_active               = true
   call_home_cisco_tac_1_destination_transport_method = "email"
+  ip_nbar_classification_dns_classify_by_domain      = true
 }
