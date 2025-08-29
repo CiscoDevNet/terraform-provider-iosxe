@@ -48,12 +48,13 @@ func TestAccDataSourceIosxeAAA(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_server_tacacsplus.0.name", "tacacs-group"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_server_tacacsplus.0.server_names.0.name", "tacacs_10.10.15.12"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_server_tacacsplus.0.ip_tacacs_source_interface_loopback", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa.test", "group_server_tacacsplus.0.vrf", "VRF1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeAAAConfig(),
+				Config: testAccDataSourceIosxeAAAPrerequisitesConfig + testAccDataSourceIosxeAAAConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -63,6 +64,19 @@ func TestAccDataSourceIosxeAAA(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
+const testAccDataSourceIosxeAAAPrerequisitesConfig = `
+resource "iosxe_restconf" "PreReq0" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"rd" = "1:1"
+		"address-family/ipv4" = ""
+	}
+}
+
+`
+
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
@@ -90,7 +104,9 @@ func testAccDataSourceIosxeAAAConfig() string {
 	config += `			name = "tacacs_10.10.15.12"` + "\n"
 	config += `		}]` + "\n"
 	config += `		ip_tacacs_source_interface_loopback = 0` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
 	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

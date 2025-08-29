@@ -40,7 +40,6 @@ import (
 type SpanningTree struct {
 	Device                   types.String               `tfsdk:"device"`
 	Id                       types.String               `tfsdk:"id"`
-	DeleteMode               types.String               `tfsdk:"delete_mode"`
 	Mode                     types.String               `tfsdk:"mode"`
 	LoopguardDefault         types.Bool                 `tfsdk:"loopguard_default"`
 	PortfastDefault          types.Bool                 `tfsdk:"portfast_default"`

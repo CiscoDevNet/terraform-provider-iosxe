@@ -57,6 +57,26 @@ attributes:
         example: 2c
       - yang_name: encryption
         example: 7
+      - yang_name: security-level
+        example: 1
+  - yang_name: Cisco-IOS-XE-snmp:host-config/ip-vrf-community
+    tf_name: vrf_hosts
+    type: List
+    attributes:
+      - yang_name: ip-address
+        id: true
+        example: 11.1.1.1
+      - yang_name: vrf
+        id: true
+        example: VRF1
+      - yang_name: community-or-user
+        example: 08116C5D1A0E550518
+      - yang_name: version
+        example: 2c
+      - yang_name: encryption
+        example: 7
+      - yang_name: security-level
+        example: 1
   - yang_name: Cisco-IOS-XE-snmp:system-shutdown
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/flowmon
@@ -661,6 +681,22 @@ attributes:
     tf_name: enable_traps_voice
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp
+    tf_name: enable_traps_bgp
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2
+    tf_name: enable_traps_cbgp2
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors
+    tf_name: enable_traps_ospfv3_errors
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/state-change
+    tf_name: enable_traps_ospfv3_state_change
+    example: true
+    test_tags: [C8000V]
   - yang_name: Cisco-IOS-XE-snmp:source-interface/informs/interface-choice/GigabitEthernet/GigabitEthernet
     xpath: Cisco-IOS-XE-snmp:source-interface/informs/GigabitEthernet
     tf_name: source_interface_informs_gigabit_ethernet
@@ -948,3 +984,10 @@ test_prerequisites:
     attributes:
       - name: name
         value: 1
+  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+    no_delete: true
+    attributes:
+      - name: name
+        value: VRF1
+      - name: address-family/ipv4
+        value: ""

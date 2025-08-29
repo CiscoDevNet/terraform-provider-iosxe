@@ -45,8 +45,6 @@ func TestAccDataSourceIosxeAAAAccounting(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identity_default_start_stop_group2", "RADIUS-GROUP2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identity_default_start_stop_group3", "RADIUS-GROUP3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "identity_default_start_stop_group4", "RADIUS-GROUP4"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "execs.0.name", "default"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "execs.0.start_stop_group1", "T-Group"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "networks.0.id", "network1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "networks.0.start_stop_group1", "radius"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_aaa_accounting.test", "networks.0.start_stop_group2", "tacacs+"))
@@ -88,10 +86,6 @@ func testAccDataSourceIosxeAAAAccountingConfig() string {
 	config += `	identity_default_start_stop_group2 = "RADIUS-GROUP2"` + "\n"
 	config += `	identity_default_start_stop_group3 = "RADIUS-GROUP3"` + "\n"
 	config += `	identity_default_start_stop_group4 = "RADIUS-GROUP4"` + "\n"
-	config += `	execs = [{` + "\n"
-	config += `		name = "default"` + "\n"
-	config += `		start_stop_group1 = "T-Group"` + "\n"
-	config += `	}]` + "\n"
 	config += `	networks = [{` + "\n"
 	config += `		id = "network1"` + "\n"
 	config += `		start_stop_group1 = "radius"` + "\n"

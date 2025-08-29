@@ -1,0 +1,139 @@
+---
+name: Access List Role Based
+path: Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:role-based=%v
+no_delete_attributes: true
+doc_category: System
+attributes:
+  - yang_name: name
+    example: RBACL1
+  - yang_name: access-list-seq-rule
+    tf_name: entries
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: sequence
+        example: 10
+        id: true
+      - yang_name: remark
+        example: Description
+      - yang_name: ace-rule/action
+        example: permit
+      - yang_name: ace-rule/protocol
+        example: tcp
+      - yang_name: ace-rule/ack
+        tf_name: ack
+        example: true    
+      - yang_name: ace-rule/fin
+        tf_name: fin
+        example: true
+      - yang_name: ace-rule/psh
+        tf_name: psh
+        example: true
+      - yang_name: ace-rule/rst
+        tf_name: rst
+        example: true
+      - yang_name: ace-rule/syn
+        tf_name: syn
+        example: true
+      - yang_name: ace-rule/urg
+        tf_name: urg
+        example: true
+      - yang_name: ace-rule/established
+        tf_name: established
+        example: true
+      - yang_name: ace-rule/dscp
+        tf_name: dscp
+        example: ef
+      - yang_name: ace-rule/fragments
+        tf_name: fragments
+        example: true
+      - yang_name: ace-rule/option
+        tf_name: option
+        example: 82
+      - yang_name: ace-rule/precedence
+        tf_name: precedence
+        example: critical
+      - yang_name: ace-rule/time-range
+        tf_name: time_range
+        exclude_test: true
+      - yang_name: ace-rule/tos
+        tf_name: tos
+        example: 8
+      - yang_name: ace-rule/log
+        tf_name: log
+        example: true
+      - yang_name: ace-rule/log-input
+        tf_name: log_input
+        example: true
+      - yang_name: ace-rule/match-all/plusack
+        tf_name: match_all_plusack
+        example: true
+      - yang_name: ace-rule/match-all/plusfin
+        tf_name: match_all_plusfin
+        example: true
+      - yang_name: ace-rule/match-all/pluspsh
+        tf_name: match_all_pluspsh
+        example: true
+      - yang_name: ace-rule/match-all/plusrst
+        tf_name: match_all_plusrst
+        example: true
+      - yang_name: ace-rule/match-all/plussyn
+        tf_name: match_all_plussyn
+        example: true
+      - yang_name: ace-rule/match-all/plusurg
+        tf_name: match_all_plusurg
+        example: true
+      - yang_name: ace-rule/match-all/minusack
+        tf_name: match_all_minusack
+        example: true
+      - yang_name: ace-rule/match-all/minusfin
+        tf_name: match_all_minusfin
+        example: true
+      - yang_name: ace-rule/match-all/minuspsh
+        tf_name: match_all_minuspsh
+        example: true
+      - yang_name: ace-rule/match-all/minusrst
+        tf_name: match_all_minusrst
+        example: true
+      - yang_name: ace-rule/match-all/minussyn
+        tf_name: match_all_minussyn
+        example: true
+      - yang_name: ace-rule/match-all/minusurg
+        tf_name: match_all_minusurg
+        example: true
+      - yang_name: ace-rule/match-any/plusack
+        tf_name: match_any_plusack
+        example: true
+      - yang_name: ace-rule/match-any/plusfin
+        tf_name: match_any_plusfin
+        example: true
+      - yang_name: ace-rule/match-any/pluspsh
+        tf_name: match_any_pluspsh
+        example: true
+      - yang_name: ace-rule/match-any/plusrst
+        tf_name: match_any_plusrst
+        example: true
+      - yang_name: ace-rule/match-any/plussyn
+        tf_name: match_any_plussyn
+        example: true
+      - yang_name: ace-rule/match-any/plusurg
+        tf_name: match_any_plusurg
+        example: true
+      - yang_name: ace-rule/match-any/minusack
+        tf_name: match_any_minusack
+        example: true
+      - yang_name: ace-rule/match-any/minusfin
+        tf_name: match_any_minusfin
+        example: true
+      - yang_name: ace-rule/match-any/minuspsh
+        tf_name: match_any_minuspsh
+        example: true
+      - yang_name: ace-rule/match-any/minusrst
+        tf_name: match_any_minusrst
+        example: true
+      - yang_name: ace-rule/match-any/minussyn
+        tf_name: match_any_minussyn
+        example: true
+      - yang_name: ace-rule/match-any/minusurg
+        tf_name: match_any_minusurg
+        example: true

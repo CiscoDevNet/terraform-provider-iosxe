@@ -22,7 +22,6 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -33,31 +32,26 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeLicense(t *testing.T) {
-	if os.Getenv("LICENSE") == "" {
-		t.Skip("skipping test, set environment variable LICENSE")
-	}
+func TestAccIosxeAccessListRoleBased(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_license.test", "boot_level_network_advantage", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_license.test", "boot_level_network_advantage_addon", "dna-advantage"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_license.test", "smart_transport_type", "Off"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_access_list_role_based.test", "name", "RBACL1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeLicenseConfig_minimum(),
+				Config: testAccIosxeAccessListRoleBasedConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeLicenseConfig_all(),
+				Config: testAccIosxeAccessListRoleBasedConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_license.test",
+				ResourceName:            "iosxe_access_list_role_based.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeLicenseImportStateIdFunc("iosxe_license.test"),
-				ImportStateVerifyIgnore: []string{"boot_level_network_essentials", "accept_agreement", "accept_end", "accept_user", "feature_port_bulk"},
+				ImportStateIdFunc:       iosxeAccessListRoleBasedImportStateIdFunc("iosxe_access_list_role_based.test"),
+				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -68,10 +62,12 @@ func TestAccIosxeLicense(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeLicenseImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxeAccessListRoleBasedImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		Name := primary.Attributes["name"]
 
-		return fmt.Sprintf(""), nil
+		return fmt.Sprintf("%s", Name), nil
 	}
 }
 
@@ -82,8 +78,9 @@ func iosxeLicenseImportStateIdFunc(resourceName string) resource.ImportStateIdFu
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeLicenseConfig_minimum() string {
-	config := `resource "iosxe_license" "test" {` + "\n"
+func testAccIosxeAccessListRoleBasedConfig_minimum() string {
+	config := `resource "iosxe_access_list_role_based" "test" {` + "\n"
+	config += `	name = "RBACL1"` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -92,11 +89,9 @@ func testAccIosxeLicenseConfig_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeLicenseConfig_all() string {
-	config := `resource "iosxe_license" "test" {` + "\n"
-	config += `	boot_level_network_advantage = true` + "\n"
-	config += `	boot_level_network_advantage_addon = "dna-advantage"` + "\n"
-	config += `	smart_transport_type = "Off"` + "\n"
+func testAccIosxeAccessListRoleBasedConfig_all() string {
+	config := `resource "iosxe_access_list_role_based" "test" {` + "\n"
+	config += `	name = "RBACL1"` + "\n"
 	config += `}` + "\n"
 	return config
 }

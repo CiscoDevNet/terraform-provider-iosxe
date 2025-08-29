@@ -203,6 +203,150 @@ func (d *AAAAuthorizationDataSource) Schema(ctx context.Context, req datasource.
 					},
 				},
 			},
+			"commands": schema.ListNestedAttribute{
+				MarkdownDescription: "For exec (shell) commands.",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"level": schema.Int64Attribute{
+							MarkdownDescription: "Enable level",
+							Computed:            true,
+						},
+						"list_name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a1_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a1_local": schema.BoolAttribute{
+							MarkdownDescription: "Use local database",
+							Computed:            true,
+						},
+						"a1_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: "Succeed if user has authenticated.",
+							Computed:            true,
+						},
+						"a1_none": schema.BoolAttribute{
+							MarkdownDescription: "No authorization (always succeeds)",
+							Computed:            true,
+						},
+						"a1_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use RADIUS data for authorization",
+							Computed:            true,
+						},
+						"a1_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+						"a2_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a2_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a2_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: "Succeed if user has authenticated.",
+							Computed:            true,
+						},
+						"a2_none": schema.BoolAttribute{
+							MarkdownDescription: "No authorization (always succeeds)",
+							Computed:            true,
+						},
+						"a2_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use RADIUS",
+							Computed:            true,
+						},
+						"a2_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+						"a3_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a3_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a3_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: "Succeed if user has authenticated.",
+							Computed:            true,
+						},
+						"a3_none": schema.BoolAttribute{
+							MarkdownDescription: "No authorization (always succeeds)",
+							Computed:            true,
+						},
+						"a3_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use RADIUS data for authorization",
+							Computed:            true,
+						},
+						"a3_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+						"a4_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"a4_local": schema.BoolAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"a4_if_authenticated": schema.BoolAttribute{
+							MarkdownDescription: "Succeed if user has authenticated.",
+							Computed:            true,
+						},
+						"a4_none": schema.BoolAttribute{
+							MarkdownDescription: "No authorization (always succeeds)",
+							Computed:            true,
+						},
+						"a4_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use RADIUS data for authorization",
+							Computed:            true,
+						},
+						"a4_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"config_commands": schema.BoolAttribute{
+				MarkdownDescription: "For configuration mode commands.",
+				Computed:            true,
+			},
+			"config_lists": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Named authorization method list for configuration service.",
+							Computed:            true,
+						},
+						"group1_cache": schema.StringAttribute{
+							MarkdownDescription: "Use Cached-group",
+							Computed:            true,
+						},
+						"group1_group": schema.StringAttribute{
+							MarkdownDescription: "Use Server-group",
+							Computed:            true,
+						},
+						"group1_radius": schema.BoolAttribute{
+							MarkdownDescription: "Use list of all Radius hosts",
+							Computed:            true,
+						},
+						"group1_tacacs": schema.BoolAttribute{
+							MarkdownDescription: "Use TACACS+",
+							Computed:            true,
+						},
+					},
+				},
+			},
 		},
 	}
 }

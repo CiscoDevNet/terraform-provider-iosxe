@@ -45,26 +45,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &LicenseResource{}
-	_ resource.ResourceWithImportState = &LicenseResource{}
+	_ resource.Resource                = &AccessListRoleBasedResource{}
+	_ resource.ResourceWithImportState = &AccessListRoleBasedResource{}
 )
 
-func NewLicenseResource() resource.Resource {
-	return &LicenseResource{}
+func NewAccessListRoleBasedResource() resource.Resource {
+	return &AccessListRoleBasedResource{}
 }
 
-type LicenseResource struct {
+type AccessListRoleBasedResource struct {
 	data *IosxeProviderData
 }
 
-func (r *LicenseResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_license"
+func (r *AccessListRoleBasedResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_access_list_role_based"
 }
 
-func (r *LicenseResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *AccessListRoleBasedResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the License configuration.",
+		MarkdownDescription: "This resource can manage the Access List Role Based configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -78,100 +78,207 @@ func (r *LicenseResource) Schema(ctx context.Context, req resource.SchemaRequest
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"delete_mode": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("all", "attributes"),
+			"name": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"boot_level_network_advantage": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("License Level Network-Advantage").String,
-				Optional:            true,
-			},
-			"boot_level_network_advantage_addon": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("select add-on to include").AddStringEnumDescription("dna-advantage", "dna-essentials").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("dna-advantage", "dna-essentials"),
-				},
-			},
-			"boot_level_network_essentials": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("License Level Network-Essentials").String,
-				Optional:            true,
-			},
-			"boot_level_network_essentials_addon": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("select add-on to include").AddStringEnumDescription("dna-essentials").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("dna-essentials"),
-				},
-			},
-			"smart_transport_type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("The transport type. If transport-type is set to        callhome then any additional transport settings must        be done from the callhome CLI.        If the transport-type is set to smart, additional        settings are available below.        If the transport-type is set to cslu,        url needs to be set for cisco smart license utility.        If the transport-type is set to off, user has to manually        upload the usage reports.").AddStringEnumDescription("Off", "automatic", "callhome", "cslu", "smart").String,
-				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("Off", "automatic", "callhome", "cslu", "smart"),
-				},
-			},
-			"smart_url_cslu": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify the URL to be used for sending utility usage reports.").String,
-				Optional:            true,
-			},
-			"accept_agreement": schema.BoolAttribute{
+			"entries": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
-			},
-			"accept_end": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"accept_user": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"udi_pid": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"udi_sn": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"feature_name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"feature_port_bulk": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable Bulk port licenses").String,
-				Optional:            true,
-			},
-			"feature_port_onegig": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable 1G port bundles").AddIntegerRangeDescription(1, 2).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2),
-				},
-			},
-			"feature_port_b_6xonegig": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable 6x1G port bundles").AddIntegerRangeDescription(1, 2).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2),
-				},
-			},
-			"feature_port_tengig": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable 10G port bundles").AddIntegerRangeDescription(1, 2).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2),
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"sequence": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Sequence number for this entry").AddIntegerRangeDescription(1, 2147483647).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 2147483647),
+							},
+						},
+						"remark": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Access list entry comment").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.LengthBetween(1, 100),
+							},
+						},
+						"ace_rule_action": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("deny", "permit").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("deny", "permit"),
+							},
+						},
+						"ace_rule_protocol": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"ack": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the ACK bit").String,
+							Optional:            true,
+						},
+						"fin": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the FIN bit").String,
+							Optional:            true,
+						},
+						"psh": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the PSH bit").String,
+							Optional:            true,
+						},
+						"rst": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the RST bit").String,
+							Optional:            true,
+						},
+						"syn": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the SYN bit").String,
+							Optional:            true,
+						},
+						"urg": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on the URG bit").String,
+							Optional:            true,
+						},
+						"established": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match established connections").String,
+							Optional:            true,
+						},
+						"dscp": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given dscp value").String,
+							Optional:            true,
+						},
+						"fragments": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Check non-initial fragments").String,
+							Optional:            true,
+						},
+						"option": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given IP Options value").String,
+							Optional:            true,
+						},
+						"precedence": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given precedence value").String,
+							Optional:            true,
+						},
+						"time_range": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify a time-range").String,
+							Optional:            true,
+						},
+						"tos": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match packets with given TOS value").String,
+							Optional:            true,
+						},
+						"log": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry").String,
+							Optional:            true,
+						},
+						"log_input": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Log matches against this entry, including input interface").String,
+							Optional:            true,
+						},
+						"match_all_plusack": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on ACK set").String,
+							Optional:            true,
+						},
+						"match_all_plusfin": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on FIN set").String,
+							Optional:            true,
+						},
+						"match_all_pluspsh": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on PSH set").String,
+							Optional:            true,
+						},
+						"match_all_plusrst": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on RST set").String,
+							Optional:            true,
+						},
+						"match_all_plussyn": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on SYN set").String,
+							Optional:            true,
+						},
+						"match_all_plusurg": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on URG set").String,
+							Optional:            true,
+						},
+						"match_all_minusack": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on ACK not set").String,
+							Optional:            true,
+						},
+						"match_all_minusfin": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on FIN not set").String,
+							Optional:            true,
+						},
+						"match_all_minuspsh": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on PSH not set").String,
+							Optional:            true,
+						},
+						"match_all_minusrst": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on RST not set").String,
+							Optional:            true,
+						},
+						"match_all_minussyn": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on SYN not set").String,
+							Optional:            true,
+						},
+						"match_all_minusurg": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on URG not set").String,
+							Optional:            true,
+						},
+						"match_any_plusack": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on ACK set").String,
+							Optional:            true,
+						},
+						"match_any_plusfin": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on FIN set").String,
+							Optional:            true,
+						},
+						"match_any_pluspsh": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on PSH set").String,
+							Optional:            true,
+						},
+						"match_any_plusrst": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on RST set").String,
+							Optional:            true,
+						},
+						"match_any_plussyn": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on SYN set").String,
+							Optional:            true,
+						},
+						"match_any_plusurg": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on URG set").String,
+							Optional:            true,
+						},
+						"match_any_minusack": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on ACK not set").String,
+							Optional:            true,
+						},
+						"match_any_minusfin": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on FIN not set").String,
+							Optional:            true,
+						},
+						"match_any_minuspsh": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on PSH not set").String,
+							Optional:            true,
+						},
+						"match_any_minusrst": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on RST not set").String,
+							Optional:            true,
+						},
+						"match_any_minussyn": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on SYN not set").String,
+							Optional:            true,
+						},
+						"match_any_minusurg": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Match on URG not set").String,
+							Optional:            true,
+						},
+					},
 				},
 			},
 		},
 	}
 }
 
-func (r *LicenseResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *AccessListRoleBasedResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -183,8 +290,8 @@ func (r *LicenseResource) Configure(_ context.Context, req resource.ConfigureReq
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *LicenseResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan License
+func (r *AccessListRoleBasedResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan AccessListRoleBased
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -251,8 +358,8 @@ func (r *LicenseResource) Create(ctx context.Context, req resource.CreateRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *LicenseResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state License
+func (r *AccessListRoleBasedResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state AccessListRoleBased
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -272,7 +379,7 @@ func (r *LicenseResource) Read(ctx context.Context, req resource.ReadRequest, re
 	if device.Managed {
 		res, err := device.Client.GetData(state.Id.ValueString())
 		if res.StatusCode == 404 {
-			state = License{Device: state.Device, Id: state.Id}
+			state = AccessListRoleBased{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -305,8 +412,8 @@ func (r *LicenseResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *LicenseResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state License
+func (r *AccessListRoleBasedResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state AccessListRoleBased
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -389,8 +496,8 @@ func (r *LicenseResource) Update(ctx context.Context, req resource.UpdateRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *LicenseResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state License
+func (r *AccessListRoleBasedResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state AccessListRoleBased
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -409,11 +516,6 @@ func (r *LicenseResource) Delete(ctx context.Context, req resource.DeleteRequest
 
 	if device.Managed {
 		deleteMode := "all"
-		if state.DeleteMode.ValueString() == "all" {
-			deleteMode = "all"
-		} else if state.DeleteMode.ValueString() == "attributes" {
-			deleteMode = "attributes"
-		}
 
 		if deleteMode == "all" {
 			res, err := device.Client.DeleteData(state.Id.ValueString())
@@ -455,25 +557,31 @@ func (r *LicenseResource) Delete(ctx context.Context, req resource.DeleteRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *LicenseResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *AccessListRoleBasedResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 0 && len(idParts) != 1 {
-		expectedIdentifier := "Expected import identifier with format: ''"
-		expectedIdentifier += " or '<device>'"
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<name>'"
+		expectedIdentifier += " or '<name>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	if len(idParts) == 1 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("name"), idParts[0])...)
+	if len(idParts) == 2 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state License
+	var state AccessListRoleBased
+	diags := resp.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)
