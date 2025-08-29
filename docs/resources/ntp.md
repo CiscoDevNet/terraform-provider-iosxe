@@ -50,6 +50,9 @@ resource "iosxe_ntp" "example" {
           key        = 1
           prefer     = true
           version    = 2
+          burst      = true
+          iburst     = true
+          periodic   = true
         }
       ]
     }
@@ -210,8 +213,11 @@ Required:
 
 Optional:
 
+- `burst` (Boolean) Send a burst when peer is reachable (Default)
+- `iburst` (Boolean) Send a burst when peer is unreachable (Default)
 - `key` (Number) Configure peer authentication key
   - Range: `1`-`4294967295`
+- `periodic` (Boolean) Check server availability periodically and switch to a new server if required
 - `prefer` (Boolean) Prefer this peer when possible
 - `version` (Number) Configure NTP version
   - Range: `1`-`4`
