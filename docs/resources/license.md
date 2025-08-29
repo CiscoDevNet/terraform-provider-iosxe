@@ -25,6 +25,9 @@ resource "iosxe_license" "example" {
 
 ### Optional
 
+- `accept_agreement` (Boolean)
+- `accept_end` (Boolean)
+- `accept_user` (Boolean)
 - `boot_level_network_advantage` (Boolean) License Level Network-Advantage
 - `boot_level_network_advantage_addon` (String) select add-on to include
   - Choices: `dna-advantage`, `dna-essentials`
@@ -34,9 +37,19 @@ resource "iosxe_license" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `feature_name` (String)
+- `feature_port_b_6xonegig` (Number) Enable 6x1G port bundles
+  - Range: `1`-`2`
+- `feature_port_bulk` (Boolean) Enable Bulk port licenses
+- `feature_port_onegig` (Number) Enable 1G port bundles
+  - Range: `1`-`2`
+- `feature_port_tengig` (Number) Enable 10G port bundles
+  - Range: `1`-`2`
 - `smart_transport_type` (String) The transport type. If transport-type is set to        callhome then any additional transport settings must        be done from the callhome CLI.        If the transport-type is set to smart, additional        settings are available below.        If the transport-type is set to cslu,        url needs to be set for cisco smart license utility.        If the transport-type is set to off, user has to manually        upload the usage reports.
   - Choices: `Off`, `automatic`, `callhome`, `cslu`, `smart`
 - `smart_url_cslu` (String) Specify the URL to be used for sending utility usage reports.
+- `udi_pid` (String)
+- `udi_sn` (String)
 
 ### Read-Only
 

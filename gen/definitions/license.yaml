@@ -27,3 +27,33 @@ attributes:
   - yang_name: smart/url/cslu
     example: https://licensing.corporate/cslu/v1/pi/corporate.onprem
     exclude_test: true
+  - yang_name: accept/agreement
+    example: true
+    exclude_test: true
+  - yang_name: accept/end
+    example: true
+    exclude_test: true
+  - yang_name: accept/user
+    example: true
+    exclude_test: true
+  - yang_name: udi/pid
+    example: C9300-24UX
+    exclude_test: true
+  - yang_name: udi/sn
+    example: C9KDUMMYSN
+    exclude_test: true
+  - yang_name: feature/name
+    example: dna-advantage
+    exclude_test: true
+  - yang_name: feature/port/bulk
+    example: true
+    exclude_test: true
+  - yang_name: feature/port/onegig
+    example: 8
+    exclude_test: true
+  - yang_name: feature/port/b-6xonegig
+    example: 12
+    exclude_test: true
+  - yang_name: feature/port/tengig
+    example: 3
+    exclude_test: true
