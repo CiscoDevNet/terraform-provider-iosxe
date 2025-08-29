@@ -137,6 +137,7 @@ data "iosxe_system" "example" {
 - `subscriber_templating` (Boolean) Configure subscriber templating
 - `tftp_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
 - `tftp_source_interface_loopback` (Number) Loopback interface
+- `track_objects` (Attributes List) (see [below for nested schema](#nestedatt--track_objects))
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
 - `version` (String) Version
 
@@ -218,3 +219,13 @@ Read-Only:
 - `name` (String)
 - `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
 - `transport_https_ipv4_port` (Number) port number
+
+
+<a id="nestedatt--track_objects"></a>
+### Nested Schema for `track_objects`
+
+Read-Only:
+
+- `track_ip_sla_number` (Number) Entry number
+- `track_ip_sla_reachability` (Boolean) Reachability
+- `track_object_number` (String) Tracked object

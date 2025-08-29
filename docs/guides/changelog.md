@@ -10,6 +10,7 @@ description: |-
 ## 0.8.1 (unreleased)
 
 - Add `ip_nbar_classification_dns_classify_by_domain` attribute to `iosxe_system` resource and data source
+- Add `track_object_number`, `track_ip_sla_number`, and `track_ip_sla_reachability` to `iosxe_system` resource and data source
 
 ## 0.8.0
 
