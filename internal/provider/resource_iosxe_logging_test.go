@@ -45,6 +45,7 @@ func TestAccIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "trap_severity", "informational"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "origin_id_type", "hostname"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "source_interface", "Loopback0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "console", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "source_interfaces_vrf.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "source_interfaces_vrf.0.interface_name", "Loopback100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_logging.test", "ipv4_hosts.0.ipv4_host", "1.1.1.1"))
@@ -158,6 +159,7 @@ func testAccIosxeLoggingConfig_all() string {
 	config += `	trap_severity = "informational"` + "\n"
 	config += `	origin_id_type = "hostname"` + "\n"
 	config += `	source_interface = "Loopback0"` + "\n"
+	config += `	console = true` + "\n"
 	config += `	source_interfaces_vrf = [{` + "\n"
 	config += `		vrf = "VRF1"` + "\n"
 	config += `		interface_name = "Loopback100"` + "\n"
