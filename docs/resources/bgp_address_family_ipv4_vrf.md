@@ -44,6 +44,16 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
           backdoor  = true
         }
       ]
+      admin_distances = [
+        {
+          distance  = 200
+          source_ip = "10.1.1.1"
+          wildcard  = "0.0.0.0"
+        }
+      ]
+      distance_bgp_external = 20
+      distance_bgp_internal = 200
+      distance_bgp_local    = 200
     }
   ]
 }
@@ -77,6 +87,10 @@ Required:
 
 Optional:
 
+- `admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--vrfs--admin_distances))
+- `distance_bgp_external` (Number) - Range: `1`-`255`
+- `distance_bgp_internal` (Number) - Range: `1`-`255`
+- `distance_bgp_local` (Number) - Range: `1`-`255`
 - `ipv4_unicast_advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
 - `ipv4_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_aggregate_addresses))
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks))
@@ -85,6 +99,20 @@ Optional:
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
 - `ipv4_unicast_router_id_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
+
+<a id="nestedatt--vrfs--admin_distances"></a>
+### Nested Schema for `vrfs.admin_distances`
+
+Required:
+
+- `distance` (Number) - Range: `1`-`255`
+- `source_ip` (String)
+- `wildcard` (String)
+
+Optional:
+
+- `acl` (String)
+
 
 <a id="nestedatt--vrfs--ipv4_unicast_aggregate_addresses"></a>
 ### Nested Schema for `vrfs.ipv4_unicast_aggregate_addresses`

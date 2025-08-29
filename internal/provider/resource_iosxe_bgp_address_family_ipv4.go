@@ -27,6 +27,7 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -183,6 +184,60 @@ func (r *BGPAddressFamilyIPv4Resource) Schema(ctx context.Context, req resource.
 							Optional:            true,
 						},
 					},
+				},
+			},
+			"admin_distances": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"distance": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 255),
+							},
+						},
+						"source_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"wildcard": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
+						"acl": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"distance_bgp_external": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 255),
+				},
+			},
+			"distance_bgp_internal": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 255),
+				},
+			},
+			"distance_bgp_local": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 255),
 				},
 			},
 		},
