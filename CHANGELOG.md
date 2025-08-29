@@ -5,6 +5,8 @@
 - BREAKING CHANGE: Rename `iosxe_static_route_vrf` resource and data source to `iosxe_static_routes_vrf`
 - BREAKING CHANGE: Combine `iosxe_snmp_server`, `iosxe_snmp_server_group` and `iosxe_snmp_server_user` resources and data sources into single `iosxe_snmp_server` resource and data source
 - Change`permit_entries` and `deny_entries` attributes of `iosxe_community_list_standard` resource and data source from Lists to Sets
+- Add `icmp_named_msg_type`, `destination_port_equal_2`, `destination_port_equal_3`, `destination_port_equal_4`, `destination_port_equal_5`, `destination_port_equal_6`, `destination_port_equal_7`, `destination_port_equal_8`, `destination_port_equal_9`, `destination_port_equal_10`, `icmp_msg_type`, and `icmp_msg_code` attributes to `iosxe_access_list_extended` resource and data source
+- Add `name`, `entries`, `sequence`, `remark`, `ace_rule_action`, `ace_rule_protocol`, `ack`, `fin`, `psh`, `rst`, `syn`, `urg`, `established`, `dscp`, `fragments`, `option`, `precedence`, `time_range`, `tos`, `log`, `log_input`, `match_all_plusack`, `match_all_plusfin`, `match_all_pluspsh`, `match_all_plusrst`, `match_all_plussyn`, `match_all_plusurg`, `match_all_minusack`, `match_all_minusfin`, `match_all_minuspsh`, `match_all_minusrst`, `match_all_minussyn`, `match_all_minusurg`, `match_any_plusack`, `match_any_plusfin`, `match_any_pluspsh`, `match_any_plusrst`, `match_any_plussyn`, `match_any_plusurg`, `match_any_minusack`, `match_any_minusfin`, `match_any_minuspsh`, `match_any_minusrst`, `match_any_minussyn`, and `match_any_minusurg` attributes to `iosxe_access_list_role_based` resource and data source
 - Add `filter_lists_cdp` to `iosxe_device_sensor` resource and data source
 
 ## 0.7.1

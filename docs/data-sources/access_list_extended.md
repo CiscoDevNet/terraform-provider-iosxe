@@ -46,6 +46,15 @@ Read-Only:
 - `destination_host` (String) A single destination host
 - `destination_object_group` (String) Destination network object group
 - `destination_port_equal` (String) Match only packets on a given port number up to 10 ports
+- `destination_port_equal_10` (String)
+- `destination_port_equal_2` (String)
+- `destination_port_equal_3` (String)
+- `destination_port_equal_4` (String)
+- `destination_port_equal_5` (String)
+- `destination_port_equal_6` (String)
+- `destination_port_equal_7` (String)
+- `destination_port_equal_8` (String)
+- `destination_port_equal_9` (String)
 - `destination_port_greater_than` (String) Match only packets with a greater port number
 - `destination_port_lesser_than` (String) Match only packets with a lower port number
 - `destination_port_range_from` (String) Match only packets in the range of port numbers
@@ -56,6 +65,9 @@ Read-Only:
 - `established` (Boolean) Match established connections
 - `fin` (Boolean) Match on the FIN bit
 - `fragments` (Boolean) Check non-initial fragments
+- `icmp_msg_code` (Number)
+- `icmp_msg_type` (Number)
+- `icmp_named_msg_type` (String)
 - `log` (Boolean) Log matches against this entry
 - `log_input` (Boolean) Log matches against this entry, including input interface
 - `precedence` (String) Match packets with given precedence value
