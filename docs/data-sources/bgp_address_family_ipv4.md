@@ -33,12 +33,27 @@ data "iosxe_bgp_address_family_ipv4" "example" {
 
 ### Read-Only
 
+- `admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--admin_distances))
+- `distance_bgp_external` (Number)
+- `distance_bgp_internal` (Number)
+- `distance_bgp_local` (Number)
 - `id` (String) The path of the retrieved object.
 - `ipv4_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--ipv4_unicast_aggregate_addresses))
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
+
+<a id="nestedatt--admin_distances"></a>
+### Nested Schema for `admin_distances`
+
+Read-Only:
+
+- `acl` (String)
+- `distance` (Number)
+- `source_ip` (String)
+- `wildcard` (String)
+
 
 <a id="nestedatt--ipv4_unicast_aggregate_addresses"></a>
 ### Nested Schema for `ipv4_unicast_aggregate_addresses`
