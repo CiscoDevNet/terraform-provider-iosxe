@@ -1,11 +1,11 @@
 ---
 name: NAT
 path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat
-doc_category: Routing
+doc_category: System
 no_delete_attributes: true
 attributes:
   - yang_name: inside/source/list-interface/list
-    tf_name: inside_source_interface_lists
+    tf_name: inside_source_interfaces
     type: List
     attributes:
       - yang_name: id
