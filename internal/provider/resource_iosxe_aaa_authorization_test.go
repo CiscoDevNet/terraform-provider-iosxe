@@ -64,7 +64,7 @@ func TestAccIosxeAAAAuthorization(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeAAAAuthorizationImportStateIdFunc("iosxe_aaa_authorization.test"),
-				ImportStateVerifyIgnore: []string{"execs.0.a1_local", "execs.0.a1_radius", "execs.0.a1_tacacs", "execs.0.a1_if_authenticated", "execs.0.a2_local", "execs.0.a2_radius", "execs.0.a2_tacacs", "execs.0.a2_if_authenticated", "execs.0.a3_local", "execs.0.a3_radius", "execs.0.a3_tacacs", "execs.0.a3_if_authenticated", "execs.0.a4_radius", "execs.0.a4_tacacs", "execs.0.a4_if_authenticated", "networks.0.a1_local", "networks.0.a2_local", "networks.0.a3_local"},
+				ImportStateVerifyIgnore: []string{"execs.0.a1_local", "execs.0.a1_radius", "execs.0.a1_tacacs", "execs.0.a1_if_authenticated", "execs.0.a2_local", "execs.0.a2_radius", "execs.0.a2_tacacs", "execs.0.a2_if_authenticated", "execs.0.a3_local", "execs.0.a3_radius", "execs.0.a3_tacacs", "execs.0.a3_if_authenticated", "execs.0.a4_radius", "execs.0.a4_tacacs", "execs.0.a4_if_authenticated", "networks.0.a1_local", "networks.0.a2_local", "networks.0.a3_local", "commands.0.a1_local", "commands.0.a1_if_authenticated", "commands.0.a1_none", "commands.0.a1_radius", "commands.0.a1_tacacs", "commands.0.a2_local", "commands.0.a2_if_authenticated", "commands.0.a2_none", "commands.0.a2_radius", "commands.0.a2_tacacs", "commands.0.a3_local", "commands.0.a3_if_authenticated", "commands.0.a3_none", "commands.0.a3_radius", "commands.0.a3_tacacs", "commands.0.a4_local", "commands.0.a4_if_authenticated", "commands.0.a4_none", "commands.0.a4_radius", "commands.0.a4_tacacs", "config_commands"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

@@ -47,8 +47,6 @@ func TestAccIosxeAAAAccounting(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identity_default_start_stop_group2", "RADIUS-GROUP2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identity_default_start_stop_group3", "RADIUS-GROUP3"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "identity_default_start_stop_group4", "RADIUS-GROUP4"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "execs.0.name", "default"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "execs.0.start_stop_group1", "T-Group"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "networks.0.id", "network1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "networks.0.start_stop_group1", "radius"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa_accounting.test", "networks.0.start_stop_group2", "tacacs+"))
@@ -69,7 +67,7 @@ func TestAccIosxeAAAAccounting(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeAAAAccountingImportStateIdFunc("iosxe_aaa_accounting.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"commands.0.broadcast", "commands.0.group_broadcast", "commands.0.group_logger"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -121,10 +119,6 @@ func testAccIosxeAAAAccountingConfig_all() string {
 	config += `	identity_default_start_stop_group2 = "RADIUS-GROUP2"` + "\n"
 	config += `	identity_default_start_stop_group3 = "RADIUS-GROUP3"` + "\n"
 	config += `	identity_default_start_stop_group4 = "RADIUS-GROUP4"` + "\n"
-	config += `	execs = [{` + "\n"
-	config += `		name = "default"` + "\n"
-	config += `		start_stop_group1 = "T-Group"` + "\n"
-	config += `	}]` + "\n"
 	config += `	networks = [{` + "\n"
 	config += `		id = "network1"` + "\n"
 	config += `		start_stop_group1 = "radius"` + "\n"
