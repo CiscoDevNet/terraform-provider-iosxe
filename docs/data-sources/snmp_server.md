@@ -38,6 +38,7 @@ data "iosxe_snmp_server" "example" {
 - `enable_traps_alarm_type` (String)
 - `enable_traps_auth_framework_sec_violation` (Boolean)
 - `enable_traps_bfd` (Boolean)
+- `enable_traps_bgp` (Boolean) Allow BGP state change traps (OBSOLETE)
 - `enable_traps_bgp_cbgp2` (Boolean) Enable BGP MIBv2 traps
 - `enable_traps_bridge_newroot` (Boolean)
 - `enable_traps_bridge_topologychange` (Boolean)
@@ -46,6 +47,7 @@ data "iosxe_snmp_server" "example" {
 - `enable_traps_call_home_message_send_fail` (Boolean)
 - `enable_traps_call_home_server_fail` (Boolean)
 - `enable_traps_casa` (Boolean) Enable SNMP casa traps
+- `enable_traps_cbgp2` (Boolean) Enable BGP MIBv2 traps (OBSOLETE - please use snmp configuration in Cisco-IOS-XE-bgp.yang)
 - `enable_traps_cef_inconsistency` (Boolean)
 - `enable_traps_cef_peer_fib_state_change` (Boolean)
 - `enable_traps_cef_peer_state_change` (Boolean)
@@ -156,6 +158,8 @@ data "iosxe_snmp_server" "example" {
 - `enable_traps_ospf_shamlink_neighbor` (Boolean) Sham link neighbor state changes
 - `enable_traps_ospfv3_config_errors` (Boolean) Enable all traps of errors
 - `enable_traps_ospfv3_config_state_change` (Boolean) Enable all traps of state-change
+- `enable_traps_ospfv3_errors` (Boolean) Error traps
+- `enable_traps_ospfv3_state_change` (Boolean) State change traps
 - `enable_traps_pfr` (Boolean) Allow SNMP PFR traps
 - `enable_traps_pim_invalid_pim_message` (Boolean) Enable invalid pim message trap
 - `enable_traps_pim_neighbor_change` (Boolean) Enable neighbor change trap
@@ -238,6 +242,7 @@ data "iosxe_snmp_server" "example" {
 - `trap_source_vlan` (Number) Iosxr Vlans
 - `users` (Attributes List) (see [below for nested schema](#nestedatt--users))
 - `views` (Attributes List) Define an SNMPv2 MIB view (see [below for nested schema](#nestedatt--views))
+- `vrf_hosts` (Attributes List) Specify hosts keyed by (ip-address, vrf, community-or-user) (see [below for nested schema](#nestedatt--vrf_hosts))
 
 <a id="nestedatt--contexts"></a>
 ### Nested Schema for `contexts`
@@ -280,6 +285,7 @@ Read-Only:
 - `community_or_user` (String) SNMPv1/v2c community string or SNMPv3 user name
 - `encryption` (String) Specifies an encryption type for community string
 - `ip_address` (String)
+- `security_level` (String)
 - `version` (String) SNMP version to use for notification messages
 
 
@@ -330,3 +336,16 @@ Read-Only:
 - `inc_exl` (String)
 - `mib` (String)
 - `name` (String)
+
+
+<a id="nestedatt--vrf_hosts"></a>
+### Nested Schema for `vrf_hosts`
+
+Read-Only:
+
+- `community_or_user` (String) SNMPv1/v2c community string or SNMPv3 user name
+- `encryption` (String) Specifies an encryption type for community string
+- `ip_address` (String)
+- `security_level` (String)
+- `version` (String) SNMP version to use for notification messages
+- `vrf` (String) VPN Routing instance for this host

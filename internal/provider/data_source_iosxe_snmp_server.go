@@ -148,6 +148,42 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 							MarkdownDescription: "Specifies an encryption type for community string",
 							Computed:            true,
 						},
+						"security_level": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"vrf_hosts": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify hosts keyed by (ip-address, vrf, community-or-user)",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"ip_address": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VPN Routing instance for this host",
+							Computed:            true,
+						},
+						"community_or_user": schema.StringAttribute{
+							MarkdownDescription: "SNMPv1/v2c community string or SNMPv3 user name",
+							Computed:            true,
+						},
+						"version": schema.StringAttribute{
+							MarkdownDescription: "SNMP version to use for notification messages",
+							Computed:            true,
+						},
+						"encryption": schema.StringAttribute{
+							MarkdownDescription: "Specifies an encryption type for community string",
+							Computed:            true,
+						},
+						"security_level": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
 					},
 				},
 			},
@@ -813,6 +849,22 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 			},
 			"enable_traps_voice": schema.BoolAttribute{
 				MarkdownDescription: "Enable SNMP voice traps",
+				Computed:            true,
+			},
+			"enable_traps_bgp": schema.BoolAttribute{
+				MarkdownDescription: "Allow BGP state change traps (OBSOLETE)",
+				Computed:            true,
+			},
+			"enable_traps_cbgp2": schema.BoolAttribute{
+				MarkdownDescription: "Enable BGP MIBv2 traps (OBSOLETE - please use snmp configuration in Cisco-IOS-XE-bgp.yang)",
+				Computed:            true,
+			},
+			"enable_traps_ospfv3_errors": schema.BoolAttribute{
+				MarkdownDescription: "Error traps",
+				Computed:            true,
+			},
+			"enable_traps_ospfv3_state_change": schema.BoolAttribute{
+				MarkdownDescription: "State change traps",
 				Computed:            true,
 			},
 			"source_interface_informs_gigabit_ethernet": schema.StringAttribute{

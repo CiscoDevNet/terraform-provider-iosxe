@@ -53,6 +53,13 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.community_or_user", "08116C5D1A0E550518"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.version", "2c"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.encryption", "7"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.security_level", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.ip_address", "11.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.community_or_user", "08116C5D1A0E550518"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.version", "2c"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.encryption", "7"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.security_level", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "system_shutdown", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flowmon", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_perf_throughput_notif", "true"))
@@ -284,6 +291,18 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrrp", "true"))
 	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_bgp", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_cbgp2", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospfv3_errors", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospfv3_state_change", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_informs_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "source_interface_traps_loopback", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "trap_source_loopback", "1"))
@@ -338,6 +357,15 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	delete = false
+	attributes = {
+		"name" = "VRF1"
+		"address-family/ipv4" = ""
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -368,6 +396,15 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		community_or_user = "08116C5D1A0E550518"` + "\n"
 	config += `		version = "2c"` + "\n"
 	config += `		encryption = "7"` + "\n"
+	config += `		security_level = "1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	vrf_hosts = [{` + "\n"
+	config += `		ip_address = "11.1.1.1"` + "\n"
+	config += `		vrf = "VRF1"` + "\n"
+	config += `		community_or_user = "08116C5D1A0E550518"` + "\n"
+	config += `		version = "2c"` + "\n"
+	config += `		encryption = "7"` + "\n"
+	config += `		security_level = "1"` + "\n"
 	config += `	}]` + "\n"
 	config += `	system_shutdown = true` + "\n"
 	config += `	enable_traps_flowmon = true` + "\n"
@@ -600,6 +637,18 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	if os.Getenv("C8000V") != "" {
 		config += `	enable_traps_vrrp = true` + "\n"
 	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_bgp = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_cbgp2 = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ospfv3_errors = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	enable_traps_ospfv3_state_change = true` + "\n"
+	}
 	config += `	source_interface_informs_loopback = 1` + "\n"
 	config += `	source_interface_traps_loopback = 1` + "\n"
 	config += `	trap_source_loopback = 1` + "\n"
@@ -643,7 +692,7 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		v3_auth_priv_aes_access_ipv6_acl = "V6ACL1"` + "\n"
 	config += `		v3_auth_priv_aes_access_acl_name = "ACL123"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `
