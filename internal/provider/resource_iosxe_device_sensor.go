@@ -156,6 +156,38 @@ func (r *DeviceSensorResource) Schema(ctx context.Context, req resource.SchemaRe
 					},
 				},
 			},
+			"filter_lists_cdp": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Protocol Filter List").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"tlv_name_device_name": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Device Name").String,
+							Optional:            true,
+						},
+						"tlv_name_address_type": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Address Type").String,
+							Optional:            true,
+						},
+						"tlv_name_port_id_type": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Port Id type").String,
+							Optional:            true,
+						},
+						"tlv_name_capabilities_type": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Capabilities Type").String,
+							Optional:            true,
+						},
+						"tlv_name_platform_type": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Platform Type").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
 			"filter_spec_dhcp_includes": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Protocol Filter Spec list").String,
 				Optional:            true,

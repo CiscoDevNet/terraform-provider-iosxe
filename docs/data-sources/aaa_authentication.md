@@ -35,6 +35,26 @@ data "iosxe_aaa_authentication" "example" {
 - `dot1x_default_a3_local` (Boolean) Use local username authentication
 - `dot1x_default_a4_group` (String) Use Server-group
 - `dot1x_default_a4_local` (Boolean) Use local username authentication
+- `enable_default_group1_cache` (String) Privileged command level(enable) authentication using cached group
+- `enable_default_group1_enable` (Boolean) Privileged command level(enable) authentication using enable password
+- `enable_default_group1_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
+- `enable_default_group1_line` (Boolean) Privileged command level(enable) authentication using line password
+- `enable_default_group1_none` (Boolean) No authentication for Privileged command level(enable)
+- `enable_default_group2_cache` (String) Privileged command level(enable) authentication using cached group
+- `enable_default_group2_enable` (Boolean) Privileged command level(enable) authentication using enable password
+- `enable_default_group2_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
+- `enable_default_group2_line` (Boolean) Privileged command level(enable) authentication using line password
+- `enable_default_group2_none` (Boolean) No authentication for Privileged command level(enable)
+- `enable_default_group3_cache` (String) Privileged command level(enable) authentication using cached group
+- `enable_default_group3_enable` (Boolean) Privileged command level(enable) authentication using enable password
+- `enable_default_group3_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
+- `enable_default_group3_line` (Boolean) Privileged command level(enable) authentication using line password
+- `enable_default_group3_none` (Boolean) No authentication for Privileged command level(enable)
+- `enable_default_group4_cache` (String) Privileged command level(enable) authentication using cached group
+- `enable_default_group4_enable` (Boolean) Privileged command level(enable) authentication using enable password
+- `enable_default_group4_group` (String) Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)
+- `enable_default_group4_line` (Boolean) Privileged command level(enable) authentication using line password
+- `enable_default_group4_none` (Boolean) No authentication for Privileged command level(enable)
 - `id` (String) The path of the retrieved object.
 - `logins` (Attributes List) Set authentication lists for logins. (see [below for nested schema](#nestedatt--logins))
 

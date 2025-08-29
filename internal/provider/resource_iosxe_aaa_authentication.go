@@ -284,6 +284,86 @@ func (r *AAAAuthenticationResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Use local username authentication").String,
 				Optional:            true,
 			},
+			"enable_default_group1_cache": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using cached group").String,
+				Optional:            true,
+			},
+			"enable_default_group1_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using enable password").String,
+				Optional:            true,
+			},
+			"enable_default_group1_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)").String,
+				Optional:            true,
+			},
+			"enable_default_group1_line": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using line password").String,
+				Optional:            true,
+			},
+			"enable_default_group1_none": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("No authentication for Privileged command level(enable)").String,
+				Optional:            true,
+			},
+			"enable_default_group2_cache": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using cached group").String,
+				Optional:            true,
+			},
+			"enable_default_group2_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using enable password").String,
+				Optional:            true,
+			},
+			"enable_default_group2_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)").String,
+				Optional:            true,
+			},
+			"enable_default_group2_line": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using line password").String,
+				Optional:            true,
+			},
+			"enable_default_group2_none": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("No authentication for Privileged command level(enable)").String,
+				Optional:            true,
+			},
+			"enable_default_group3_cache": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using cached group").String,
+				Optional:            true,
+			},
+			"enable_default_group3_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using enable password").String,
+				Optional:            true,
+			},
+			"enable_default_group3_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)").String,
+				Optional:            true,
+			},
+			"enable_default_group3_line": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using line password").String,
+				Optional:            true,
+			},
+			"enable_default_group3_none": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("No authentication for Privileged command level(enable)").String,
+				Optional:            true,
+			},
+			"enable_default_group4_cache": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using cached group").String,
+				Optional:            true,
+			},
+			"enable_default_group4_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using enable password").String,
+				Optional:            true,
+			},
+			"enable_default_group4_group": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using radius/tacacs+/ldap server(s)").String,
+				Optional:            true,
+			},
+			"enable_default_group4_line": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Privileged command level(enable) authentication using line password").String,
+				Optional:            true,
+			},
+			"enable_default_group4_none": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("No authentication for Privileged command level(enable)").String,
+				Optional:            true,
+			},
 		},
 	}
 }

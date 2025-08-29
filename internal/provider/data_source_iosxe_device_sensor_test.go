@@ -50,6 +50,12 @@ func TestAccDataSourceIosxeDeviceSensor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_class_identifier", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_client_identifier", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_dhcp.0.option_name_client_fqdn", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_cdp.0.name", "cdp1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_cdp.0.tlv_name_device_name", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_cdp.0.tlv_name_address_type", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_cdp.0.tlv_name_port_id_type", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_cdp.0.tlv_name_capabilities_type", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_lists_cdp.0.tlv_name_platform_type", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_spec_dhcp_includes.0.name", "dhcp1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "filter_spec_lldp_includes.0.name", "lldp1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_device_sensor.test", "notify_all_changes", "true"))
@@ -92,6 +98,14 @@ func testAccDataSourceIosxeDeviceSensorConfig() string {
 	config += `		option_name_class_identifier = true` + "\n"
 	config += `		option_name_client_identifier = true` + "\n"
 	config += `		option_name_client_fqdn = true` + "\n"
+	config += `	}]` + "\n"
+	config += `	filter_lists_cdp = [{` + "\n"
+	config += `		name = "cdp1"` + "\n"
+	config += `		tlv_name_device_name = true` + "\n"
+	config += `		tlv_name_address_type = true` + "\n"
+	config += `		tlv_name_port_id_type = true` + "\n"
+	config += `		tlv_name_capabilities_type = true` + "\n"
+	config += `		tlv_name_platform_type = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	filter_spec_dhcp_includes = [{` + "\n"
 	config += `		name = "dhcp1"` + "\n"

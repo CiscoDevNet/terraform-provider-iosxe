@@ -64,7 +64,6 @@ func TestAccDataSourceIosxeSpanningTree(t *testing.T) {
 
 func testAccDataSourceIosxeSpanningTreeConfig() string {
 	config := `resource "iosxe_spanning_tree" "test" {` + "\n"
-	config += `	delete_mode = "attributes"` + "\n"
 	config += `	mode = "mst"` + "\n"
 	config += `	loopguard_default = true` + "\n"
 	config += `	portfast_default = true` + "\n"

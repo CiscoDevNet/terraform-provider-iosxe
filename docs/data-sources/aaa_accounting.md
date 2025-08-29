@@ -26,6 +26,8 @@ data "iosxe_aaa_accounting" "example" {
 
 ### Read-Only
 
+- `commands` (Attributes List) For exec (shell) commands. (see [below for nested schema](#nestedatt--commands))
+- `connections` (Attributes List) For outbound connections. (telnet, rlogin) (see [below for nested schema](#nestedatt--connections))
 - `execs` (Attributes List) For starting an exec (shell). (see [below for nested schema](#nestedatt--execs))
 - `id` (String) The path of the retrieved object.
 - `identities` (Attributes List) Named Accounting list (max 31 characters, longer will be rejected). (see [below for nested schema](#nestedatt--identities))
@@ -37,13 +39,76 @@ data "iosxe_aaa_accounting" "example" {
 - `system_guarantee_first` (Boolean) Guarantee system accounting as first record.
 - `update_newinfo_periodic` (Number) Periodic intervals to send accounting update records(in minutes)
 
+<a id="nestedatt--commands"></a>
+### Nested Schema for `commands`
+
+Read-Only:
+
+- `action_type` (String)
+- `broadcast` (Boolean) Use Broadcast for Accounting
+- `group1_group` (String) Use Server-group
+- `group2_group` (String) Use Server-group
+- `group3_group` (String) Use Server-group
+- `group4_group` (String) Use Server-group
+- `group_broadcast` (Boolean) Use Broadcast for Accounting
+- `group_logger` (Boolean) Use system logger for Accounting
+- `level` (Number) Enable level
+- `list_name` (String)
+
+
+<a id="nestedatt--connections"></a>
+### Nested Schema for `connections`
+
+Read-Only:
+
+- `default` (Boolean)
+- `name` (String)
+- `none` (Boolean) No accounting.
+- `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
+- `start_stop_group1` (String) Use Server-group
+- `start_stop_group2` (String) Use Server-group
+- `start_stop_group3` (String) Use Server-group
+- `start_stop_group4` (String) Use Server-group
+- `start_stop_logger` (Boolean) Use system logger for Accounting
+- `stop_only_broadcast` (Boolean) Use Broadcast for Accounting
+- `stop_only_group1` (String) Use Server-group
+- `stop_only_group2` (String) Use Server-group
+- `stop_only_group3` (String) Use Server-group
+- `stop_only_group4` (String) Use Server-group
+- `stop_only_logger` (Boolean) Use system logger for Accounting
+- `wait_start_broadcast` (Boolean) Use Broadcast for Accounting
+- `wait_start_group1` (String) Use Server-group
+- `wait_start_group2` (String) Use Server-group
+- `wait_start_group3` (String) Use Server-group
+- `wait_start_group4` (String) Use Server-group
+- `wait_start_logger` (Boolean) Use system logger for Accounting
+
+
 <a id="nestedatt--execs"></a>
 ### Nested Schema for `execs`
 
 Read-Only:
 
 - `name` (String)
+- `none` (Boolean) No accounting.
+- `start_stop_broadcast` (Boolean) Use Broadcast for Accounting
 - `start_stop_group1` (String) Use Server-group
+- `start_stop_group2` (String) Use Server-group
+- `start_stop_group3` (String) Use Server-group
+- `start_stop_group4` (String) Use Server-group
+- `start_stop_logger` (Boolean) Use system logger for Accounting
+- `stop_only_broadcast` (Boolean) Use Broadcast for Accounting
+- `stop_only_group1` (String) Use Server-group
+- `stop_only_group2` (String) Use Server-group
+- `stop_only_group3` (String) Use Server-group
+- `stop_only_group4` (String) Use Server-group
+- `stop_only_logger` (Boolean) Use system logger for Accounting
+- `wait_start_broadcast` (Boolean) Use Broadcast for Accounting
+- `wait_start_group1` (String) Use Server-group
+- `wait_start_group2` (String) Use Server-group
+- `wait_start_group3` (String) Use Server-group
+- `wait_start_group4` (String) Use Server-group
+- `wait_start_logger` (Boolean) Use system logger for Accounting
 
 
 <a id="nestedatt--identities"></a>

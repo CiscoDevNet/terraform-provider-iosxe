@@ -42,6 +42,23 @@ attributes:
         example: true
       - yang_name: option/name/client-fqdn
         example: true
+  - yang_name: filter-list/cdp/list
+    tf_name: filter_lists_cdp
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: cdp1
+      - yang_name: tlv/name/device-name
+        example: true
+      - yang_name: tlv/name/address-type
+        example: true
+      - yang_name: tlv/name/port-id-type
+        example: true
+      - yang_name: tlv/name/capabilities-type
+        example: true
+      - yang_name: tlv/name/platform-type
+        example: true
   - yang_name: filter-spec/dhcp/include/list
     tf_name: filter_spec_dhcp_includes
     type: List

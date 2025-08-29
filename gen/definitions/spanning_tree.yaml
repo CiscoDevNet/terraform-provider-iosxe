@@ -1,6 +1,7 @@
 ---
 name: Spanning Tree
 path: Cisco-IOS-XE-native:native/spanning-tree
+no_delete: true
 test_tags: [C9000V]
 doc_category: Switching
 attributes:
