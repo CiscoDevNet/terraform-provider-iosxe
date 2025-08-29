@@ -47,3 +47,9 @@ attributes:
   - yang_name: description
     example: My description
     exclude_test: true
+  - yang_name: match/access-group/name
+    example: AG1
+  - yang_name: match/ip/dscp
+    example: af41
+  - yang_name: match/ip/precedence
+    example: network

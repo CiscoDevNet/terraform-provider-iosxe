@@ -14,6 +14,8 @@
 - Add `icmp_named_msg_type`, `destination_port_equal_2`, `destination_port_equal_3`, `destination_port_equal_4`, `destination_port_equal_5`, `destination_port_equal_6`, `destination_port_equal_7`, `destination_port_equal_8`, `destination_port_equal_9`, `destination_port_equal_10`, `icmp_msg_type`, and `icmp_msg_code` attributes to `iosxe_access_list_extended` resource and data source
 - Add `iosxe_access_list_role_based` resource and data source
 - Add `filter_lists_cdp` to `iosxe_device_sensor` resource and data source
+- Add `match_access_group_name`, `match_ip_dscp`, and `match_ip_precedence` to `iosxe_class_map` resource and data source
+- Add `police_target_bitrate_conform_transmit`, `police_target_bitrate_exceed_transmit`, `police_target_bitrate`, `police_target_bitrate_conform_burst_byte`, and `police_target_bitrate_excess_burst_byte` to `iosxe_policy_map` resource and data source
 - Add `cdp_enable`,`cdp_tlv_app`,`cdp_tlv_location`,`cdp_tlv_server_location`,`ip_nat_inside`, and `ip_nat_outside` to `iosxe_interface_ethernet` resource and data source
 - Add `negotiation_auto` to `iosxe_interface_port_channel` resource and data source
 - Add `ip_hosts`, `ip_hosts_vrf`, `name`, `ips`, `vrf`, `hosts`, `subscriber_templating`, `call_home_contact_email`, `call_home_cisco_tac_1_profile_active`, `call_home_cisco_tac_1_destination_transport_method`, `ip_ftp_passive`, `tftp_source_interface_gigabit_ethernet`, `tftp_source_interface_loopback`, `version`, and `multilink_ppp_bundle_name` attributes to `iosxe_system` resource and data source

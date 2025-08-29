@@ -78,6 +78,14 @@ Optional:
   - Range: `1`-`100`
 - `bandwidth_remaining_ratio` (Number) ratio for sharing excess bandwidth
   - Range: `1`-`65536`
+- `police_target_bitrate` (Number) Target bit rate (bits per second) (postfix k, m, g optional),decimal point allowed
+  - Range: `8000`-`100000000000`
+- `police_target_bitrate_conform_burst_byte` (Number) Burst Byte
+  - Range: `100`-`512000000`
+- `police_target_bitrate_conform_transmit` (Boolean) transmit packet
+- `police_target_bitrate_exceed_transmit` (Boolean) transmit packet
+- `police_target_bitrate_excess_burst_byte` (Number) Burst Byte
+  - Range: `100`-`512000000`
 - `priority_burst` (Number) - Range: `32`-`2000000`
 - `priority_level` (Number) Multi-Level Priority Queue
   - Range: `1`-`2`

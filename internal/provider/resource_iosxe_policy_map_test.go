@@ -55,7 +55,7 @@ func TestAccIosxePolicyMap(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxePolicyMapImportStateIdFunc("iosxe_policy_map.test"),
-				ImportStateVerifyIgnore: []string{"subscriber", "classes.0.actions.0.shape_average_ms"},
+				ImportStateVerifyIgnore: []string{"subscriber", "classes.0.actions.0.shape_average_ms", "classes.0.actions.0.police_target_bitrate_conform_transmit", "classes.0.actions.0.police_target_bitrate_exceed_transmit"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

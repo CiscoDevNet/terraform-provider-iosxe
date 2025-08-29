@@ -48,6 +48,9 @@ func TestAccIosxeClassMap(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_class_map.test", "match_result_type_method_dot1x_method_timeout", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_class_map.test", "match_method_mab", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_class_map.test", "match_result_type_method_mab_authoritative", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_class_map.test", "match_access_group_name.0", "AG1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_class_map.test", "match_ip_dscp.0", "af41"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_class_map.test", "match_ip_precedence.0", "network"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -121,6 +124,9 @@ func testAccIosxeClassMapConfig_all() string {
 	config += `	match_result_type_method_dot1x_method_timeout = true` + "\n"
 	config += `	match_method_mab = true` + "\n"
 	config += `	match_result_type_method_mab_authoritative = true` + "\n"
+	config += `	match_access_group_name = ["AG1"]` + "\n"
+	config += `	match_ip_dscp = ["af41"]` + "\n"
+	config += `	match_ip_precedence = ["network"]` + "\n"
 	config += `}` + "\n"
 	return config
 }

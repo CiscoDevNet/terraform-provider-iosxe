@@ -170,6 +170,21 @@ func (r *ClassMapResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringvalidator.LengthBetween(1, 200),
 				},
 			},
+			"match_access_group_name": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Named Access List").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"match_ip_dscp": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match IP DSCP (DiffServ CodePoints)").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"match_ip_precedence": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match IP precedence").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
 		},
 	}
 }
