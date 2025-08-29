@@ -140,7 +140,7 @@ type System struct {
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
 	IpHosts                                                []SystemIpHosts                                     `tfsdk:"ip_hosts"`
-	IpHostsVrfs                                            []SystemIpHostsVrfs                                 `tfsdk:"ip_hosts_vrfs"`
+	IpHostsVrf                                             []SystemIpHostsVrf                                  `tfsdk:"ip_hosts_vrf"`
 	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
 	SubscriberTemplating                                   types.Bool                                          `tfsdk:"subscriber_templating"`
 	CallHomeContactEmail                                   types.String                                        `tfsdk:"call_home_contact_email"`
@@ -256,7 +256,7 @@ type SystemData struct {
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
 	IpHosts                                                []SystemIpHosts                                     `tfsdk:"ip_hosts"`
-	IpHostsVrfs                                            []SystemIpHostsVrfs                                 `tfsdk:"ip_hosts_vrfs"`
+	IpHostsVrf                                             []SystemIpHostsVrf                                  `tfsdk:"ip_hosts_vrf"`
 	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
 	SubscriberTemplating                                   types.Bool                                          `tfsdk:"subscriber_templating"`
 	CallHomeContactEmail                                   types.String                                        `tfsdk:"call_home_contact_email"`
@@ -295,11 +295,11 @@ type SystemIpHosts struct {
 	Name types.String `tfsdk:"name"`
 	Ips  types.List   `tfsdk:"ips"`
 }
-type SystemIpHostsVrfs struct {
-	Vrf   types.String             `tfsdk:"vrf"`
-	Hosts []SystemIpHostsVrfsHosts `tfsdk:"hosts"`
+type SystemIpHostsVrf struct {
+	Vrf   types.String            `tfsdk:"vrf"`
+	Hosts []SystemIpHostsVrfHosts `tfsdk:"hosts"`
 }
-type SystemIpHostsVrfsHosts struct {
+type SystemIpHostsVrfHosts struct {
 	Name types.String `tfsdk:"name"`
 	Ips  types.List   `tfsdk:"ips"`
 }
@@ -764,9 +764,9 @@ func (data System) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.IpHostsVrfs) > 0 {
+	if len(data.IpHostsVrf) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf", []interface{}{})
-		for index, item := range data.IpHostsVrfs {
+		for index, item := range data.IpHostsVrf {
 			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf"+"."+strconv.Itoa(index)+"."+"vrf-name", item.Vrf.ValueString())
 			}
@@ -1582,9 +1582,9 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.IpHosts[i].Ips = types.ListNull(types.StringType)
 		}
 	}
-	for i := range data.IpHostsVrfs {
+	for i := range data.IpHostsVrf {
 		keys := [...]string{"vrf-name"}
-		keyValues := [...]string{data.IpHostsVrfs[i].Vrf.ValueString()}
+		keyValues := [...]string{data.IpHostsVrf[i].Vrf.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "ip.host.vrf").ForEach(
@@ -1605,14 +1605,14 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("vrf-name"); value.Exists() && !data.IpHostsVrfs[i].Vrf.IsNull() {
-			data.IpHostsVrfs[i].Vrf = types.StringValue(value.String())
+		if value := r.Get("vrf-name"); value.Exists() && !data.IpHostsVrf[i].Vrf.IsNull() {
+			data.IpHostsVrf[i].Vrf = types.StringValue(value.String())
 		} else {
-			data.IpHostsVrfs[i].Vrf = types.StringNull()
+			data.IpHostsVrf[i].Vrf = types.StringNull()
 		}
-		for ci := range data.IpHostsVrfs[i].Hosts {
+		for ci := range data.IpHostsVrf[i].Hosts {
 			keys := [...]string{"host-name"}
-			keyValues := [...]string{data.IpHostsVrfs[i].Hosts[ci].Name.ValueString()}
+			keyValues := [...]string{data.IpHostsVrf[i].Hosts[ci].Name.ValueString()}
 
 			var cr gjson.Result
 			r.Get("host-name").ForEach(
@@ -1633,15 +1633,15 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 					return true
 				},
 			)
-			if value := cr.Get("host-name"); value.Exists() && !data.IpHostsVrfs[i].Hosts[ci].Name.IsNull() {
-				data.IpHostsVrfs[i].Hosts[ci].Name = types.StringValue(value.String())
+			if value := cr.Get("host-name"); value.Exists() && !data.IpHostsVrf[i].Hosts[ci].Name.IsNull() {
+				data.IpHostsVrf[i].Hosts[ci].Name = types.StringValue(value.String())
 			} else {
-				data.IpHostsVrfs[i].Hosts[ci].Name = types.StringNull()
+				data.IpHostsVrf[i].Hosts[ci].Name = types.StringNull()
 			}
-			if value := cr.Get("ip-list"); value.Exists() && !data.IpHostsVrfs[i].Hosts[ci].Ips.IsNull() {
-				data.IpHostsVrfs[i].Hosts[ci].Ips = helpers.GetStringList(value.Array())
+			if value := cr.Get("ip-list"); value.Exists() && !data.IpHostsVrf[i].Hosts[ci].Ips.IsNull() {
+				data.IpHostsVrf[i].Hosts[ci].Ips = helpers.GetStringList(value.Array())
 			} else {
-				data.IpHostsVrfs[i].Hosts[ci].Ips = types.ListNull(types.StringType)
+				data.IpHostsVrf[i].Hosts[ci].Ips = types.ListNull(types.StringType)
 			}
 		}
 	}
@@ -2144,16 +2144,16 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "ip.host.vrf"); value.Exists() {
-		data.IpHostsVrfs = make([]SystemIpHostsVrfs, 0)
+		data.IpHostsVrf = make([]SystemIpHostsVrf, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHostsVrfs{}
+			item := SystemIpHostsVrf{}
 			if cValue := v.Get("vrf-name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("host-name"); cValue.Exists() {
-				item.Hosts = make([]SystemIpHostsVrfsHosts, 0)
+				item.Hosts = make([]SystemIpHostsVrfHosts, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := SystemIpHostsVrfsHosts{}
+					cItem := SystemIpHostsVrfHosts{}
 					if ccValue := cv.Get("host-name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
@@ -2166,7 +2166,7 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 					return true
 				})
 			}
-			data.IpHostsVrfs = append(data.IpHostsVrfs, item)
+			data.IpHostsVrf = append(data.IpHostsVrf, item)
 			return true
 		})
 	}
@@ -2647,16 +2647,16 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		})
 	}
 	if value := res.Get(prefix + "ip.host.vrf"); value.Exists() {
-		data.IpHostsVrfs = make([]SystemIpHostsVrfs, 0)
+		data.IpHostsVrf = make([]SystemIpHostsVrf, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := SystemIpHostsVrfs{}
+			item := SystemIpHostsVrf{}
 			if cValue := v.Get("vrf-name"); cValue.Exists() {
 				item.Vrf = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("host-name"); cValue.Exists() {
-				item.Hosts = make([]SystemIpHostsVrfsHosts, 0)
+				item.Hosts = make([]SystemIpHostsVrfHosts, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := SystemIpHostsVrfsHosts{}
+					cItem := SystemIpHostsVrfHosts{}
 					if ccValue := cv.Get("host-name"); ccValue.Exists() {
 						cItem.Name = types.StringValue(ccValue.String())
 					}
@@ -2669,7 +2669,7 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 					return true
 				})
 			}
-			data.IpHostsVrfs = append(data.IpHostsVrfs, item)
+			data.IpHostsVrf = append(data.IpHostsVrf, item)
 			return true
 		})
 	}
@@ -2747,11 +2747,11 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	if !state.DiagnosticEventLogSize.IsNull() && data.DiagnosticEventLogSize.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-diagnostics:diagnostic/event-log/size", state.getPath()))
 	}
-	for i := range state.IpHostsVrfs {
-		stateKeyValues := [...]string{state.IpHostsVrfs[i].Vrf.ValueString()}
+	for i := range state.IpHostsVrf {
+		stateKeyValues := [...]string{state.IpHostsVrf[i].Vrf.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.IpHostsVrfs[i].Vrf.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.IpHostsVrf[i].Vrf.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2759,17 +2759,17 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		}
 
 		found := false
-		for j := range data.IpHostsVrfs {
+		for j := range data.IpHostsVrf {
 			found = true
-			if state.IpHostsVrfs[i].Vrf.ValueString() != data.IpHostsVrfs[j].Vrf.ValueString() {
+			if state.IpHostsVrf[i].Vrf.ValueString() != data.IpHostsVrf[j].Vrf.ValueString() {
 				found = false
 			}
 			if found {
-				for ci := range state.IpHostsVrfs[i].Hosts {
-					cstateKeyValues := [...]string{state.IpHostsVrfs[i].Hosts[ci].Name.ValueString()}
+				for ci := range state.IpHostsVrf[i].Hosts {
+					cstateKeyValues := [...]string{state.IpHostsVrf[i].Hosts[ci].Name.ValueString()}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.IpHostsVrfs[i].Hosts[ci].Name.ValueString()).IsZero() {
+					if !reflect.ValueOf(state.IpHostsVrf[i].Hosts[ci].Name.ValueString()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -2777,19 +2777,19 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 					}
 
 					found := false
-					for cj := range data.IpHostsVrfs[j].Hosts {
+					for cj := range data.IpHostsVrf[j].Hosts {
 						found = true
-						if state.IpHostsVrfs[i].Hosts[ci].Name.ValueString() != data.IpHostsVrfs[j].Hosts[cj].Name.ValueString() {
+						if state.IpHostsVrf[i].Hosts[ci].Name.ValueString() != data.IpHostsVrf[j].Hosts[cj].Name.ValueString() {
 							found = false
 						}
 						if found {
-							if !state.IpHostsVrfs[i].Hosts[ci].Ips.IsNull() {
-								if data.IpHostsVrfs[j].Hosts[cj].Ips.IsNull() {
+							if !state.IpHostsVrf[i].Hosts[ci].Ips.IsNull() {
+								if data.IpHostsVrf[j].Hosts[cj].Ips.IsNull() {
 									deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/vrf=%v/host-name=%v/ip-list", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 								} else {
 									var dataValues, stateValues []string
-									data.IpHostsVrfs[i].Hosts[ci].Ips.ElementsAs(ctx, &dataValues, false)
-									state.IpHostsVrfs[j].Hosts[cj].Ips.ElementsAs(ctx, &stateValues, false)
+									data.IpHostsVrf[i].Hosts[ci].Ips.ElementsAs(ctx, &dataValues, false)
+									state.IpHostsVrf[j].Hosts[cj].Ips.ElementsAs(ctx, &stateValues, false)
 									for _, v := range stateValues {
 										found := false
 										for _, vv := range dataValues {
@@ -3464,8 +3464,8 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	if !data.DiagnosticEventLogSize.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-diagnostics:diagnostic/event-log/size", data.getPath()))
 	}
-	for i := range data.IpHostsVrfs {
-		keyValues := [...]string{data.IpHostsVrfs[i].Vrf.ValueString()}
+	for i := range data.IpHostsVrf {
+		keyValues := [...]string{data.IpHostsVrf[i].Vrf.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/host/vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

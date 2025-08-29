@@ -550,7 +550,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					},
 				},
 			},
-			"ip_hosts_vrfs": schema.ListNestedAttribute{
+			"ip_hosts_vrf": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify VRF",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

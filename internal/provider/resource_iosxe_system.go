@@ -659,7 +659,7 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					},
 				},
 			},
-			"ip_hosts_vrfs": schema.ListNestedAttribute{
+			"ip_hosts_vrf": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify VRF").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

@@ -103,7 +103,7 @@ resource "iosxe_system" "example" {
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
 - `ip_ftp_passive` (Boolean) Connect using passive mode
 - `ip_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ip_hosts))
-- `ip_hosts_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_hosts_vrfs))
+- `ip_hosts_vrf` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_hosts_vrf))
 - `ip_http_access_class` (Number) Restrict http server access by access-class
   - Range: `1`-`99`
 - `ip_http_active_session_modules` (String) Set active session modules
@@ -229,8 +229,8 @@ Optional:
 - `ips` (List of String) Host IP address
 
 
-<a id="nestedatt--ip_hosts_vrfs"></a>
-### Nested Schema for `ip_hosts_vrfs`
+<a id="nestedatt--ip_hosts_vrf"></a>
+### Nested Schema for `ip_hosts_vrf`
 
 Required:
 
@@ -238,10 +238,10 @@ Required:
 
 Optional:
 
-- `hosts` (Attributes List) Name of host (see [below for nested schema](#nestedatt--ip_hosts_vrfs--hosts))
+- `hosts` (Attributes List) Name of host (see [below for nested schema](#nestedatt--ip_hosts_vrf--hosts))
 
-<a id="nestedatt--ip_hosts_vrfs--hosts"></a>
-### Nested Schema for `ip_hosts_vrfs.hosts`
+<a id="nestedatt--ip_hosts_vrf--hosts"></a>
+### Nested Schema for `ip_hosts_vrf.hosts`
 
 Required:
 

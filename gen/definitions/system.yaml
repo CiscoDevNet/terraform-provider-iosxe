@@ -440,7 +440,7 @@ attributes:
         tf_name: ips
         example: 3.3.3.3
   - yang_name: ip/host/vrf
-    tf_name: ip_hosts_vrfs
+    tf_name: ip_hosts_vrf
     type: List
     exclude_test: true
     attributes:
@@ -495,6 +495,7 @@ attributes:
     exclude_test: true
   - yang_name: version
     example: 17.15.1
+    allow_import_changes: true
     exclude_test: true
 
 test_prerequisites:
