@@ -96,6 +96,7 @@ type InterfacePortChannel struct {
 	LoggingEventLinkStatusEnable   types.Bool                                           `tfsdk:"logging_event_link_status_enable"`
 	DeviceTracking                 types.Bool                                           `tfsdk:"device_tracking"`
 	DeviceTrackingAttachedPolicies []InterfacePortChannelDeviceTrackingAttachedPolicies `tfsdk:"device_tracking_attached_policies"`
+	NegotiationAuto                types.Bool                                           `tfsdk:"negotiation_auto"`
 }
 
 type InterfacePortChannelData struct {
@@ -155,6 +156,7 @@ type InterfacePortChannelData struct {
 	LoggingEventLinkStatusEnable   types.Bool                                           `tfsdk:"logging_event_link_status_enable"`
 	DeviceTracking                 types.Bool                                           `tfsdk:"device_tracking"`
 	DeviceTrackingAttachedPolicies []InterfacePortChannelDeviceTrackingAttachedPolicies `tfsdk:"device_tracking_attached_policies"`
+	NegotiationAuto                types.Bool                                           `tfsdk:"negotiation_auto"`
 }
 type InterfacePortChannelHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -395,6 +397,9 @@ func (data InterfacePortChannel) toBody(ctx context.Context) string {
 		if data.DeviceTracking.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:device-tracking", map[string]string{})
 		}
+	}
+	if !data.NegotiationAuto.IsNull() && !data.NegotiationAuto.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ethernet:negotiation.auto", data.NegotiationAuto.ValueBool())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -960,6 +965,13 @@ func (data *InterfacePortChannel) updateFromBody(ctx context.Context, res gjson.
 			data.DeviceTrackingAttachedPolicies[i].Name = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:negotiation.auto"); !data.NegotiationAuto.IsNull() {
+		if value.Exists() {
+			data.NegotiationAuto = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.NegotiationAuto = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1239,6 +1251,11 @@ func (data *InterfacePortChannel) fromBody(ctx context.Context, res gjson.Result
 			data.DeviceTrackingAttachedPolicies = append(data.DeviceTrackingAttachedPolicies, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:negotiation.auto"); value.Exists() {
+		data.NegotiationAuto = types.BoolValue(value.Bool())
+	} else {
+		data.NegotiationAuto = types.BoolNull()
 	}
 }
 
@@ -1520,6 +1537,11 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-ethernet:negotiation.auto"); value.Exists() {
+		data.NegotiationAuto = types.BoolValue(value.Bool())
+	} else {
+		data.NegotiationAuto = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -1528,6 +1550,9 @@ func (data *InterfacePortChannelData) fromBody(ctx context.Context, res gjson.Re
 
 func (data *InterfacePortChannel) getDeletedItems(ctx context.Context, state InterfacePortChannel) []string {
 	deletedItems := make([]string, 0)
+	if !state.NegotiationAuto.IsNull() && data.NegotiationAuto.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:negotiation/auto", state.getPath()))
+	}
 	for i := range state.DeviceTrackingAttachedPolicies {
 		stateKeyValues := [...]string{state.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
 
@@ -1895,6 +1920,9 @@ func (data *InterfacePortChannel) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *InterfacePortChannel) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.NegotiationAuto.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:negotiation/auto", data.getPath()))
+	}
 	for i := range data.DeviceTrackingAttachedPolicies {
 		keyValues := [...]string{data.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
 

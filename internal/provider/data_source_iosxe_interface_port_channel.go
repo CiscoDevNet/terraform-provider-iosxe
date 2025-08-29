@@ -331,6 +331,10 @@ func (d *InterfacePortChannelDataSource) Schema(ctx context.Context, req datasou
 					},
 				},
 			},
+			"negotiation_auto": schema.BoolAttribute{
+				MarkdownDescription: "Enable link autonegotiation",
+				Computed:            true,
+			},
 		},
 	}
 }

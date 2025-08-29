@@ -470,6 +470,28 @@ attributes:
         tf_name: name
         id: true
         example: POLICY1
+  - yang_name: 	Cisco-IOS-XE-cdp:cdp/enable
+    example: true
+  - yang_name: 	Cisco-IOS-XE-cdp:cdp/tlv/app-option/default-case/default-wrp/app
+    xpath:	Cisco-IOS-XE-cdp:cdp/tlv/default-wrp/app
+    tf_name: cdp_tlv_app
+    example: false
+  - yang_name: 	Cisco-IOS-XE-cdp:cdp/tlv/location-config
+    tf_name: cdp_tlv_location
+    example: false
+  - yang_name:  Cisco-IOS-XE-cdp:cdp/tlv/server-location-config
+    tf_name: cdp_tlv_server_location
+    example: false
+  - yang_name:  ip/Cisco-IOS-XE-nat:nat/nat-choice/inside/inside
+    xpath:	ip/Cisco-IOS-XE-nat:nat/inside
+    tf_name: ip_nat_inside
+    example: true
+  - yang_name:  ip/Cisco-IOS-XE-nat:nat/nat-choice/outside/outside
+    xpath:	ip/Cisco-IOS-XE-nat:nat/outside
+    tf_name: ip_nat_outside
+    example: true
+    exclude_test: true
+
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
@@ -502,4 +524,3 @@ test_prerequisites:
     attributes:
       - name: template_name
         value: TEMP1
-

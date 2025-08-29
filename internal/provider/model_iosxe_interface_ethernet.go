@@ -157,6 +157,12 @@ type InterfaceEthernet struct {
 	IpNbarProtocolDiscovery                 types.Bool                                        `tfsdk:"ip_nbar_protocol_discovery"`
 	DeviceTracking                          types.Bool                                        `tfsdk:"device_tracking"`
 	DeviceTrackingAttachedPolicies          []InterfaceEthernetDeviceTrackingAttachedPolicies `tfsdk:"device_tracking_attached_policies"`
+	CdpEnable                               types.Bool                                        `tfsdk:"cdp_enable"`
+	CdpTlvApp                               types.Bool                                        `tfsdk:"cdp_tlv_app"`
+	CdpTlvLocation                          types.Bool                                        `tfsdk:"cdp_tlv_location"`
+	CdpTlvServerLocation                    types.Bool                                        `tfsdk:"cdp_tlv_server_location"`
+	IpNatInside                             types.Bool                                        `tfsdk:"ip_nat_inside"`
+	IpNatOutside                            types.Bool                                        `tfsdk:"ip_nat_outside"`
 }
 
 type InterfaceEthernetData struct {
@@ -278,6 +284,12 @@ type InterfaceEthernetData struct {
 	IpNbarProtocolDiscovery                 types.Bool                                        `tfsdk:"ip_nbar_protocol_discovery"`
 	DeviceTracking                          types.Bool                                        `tfsdk:"device_tracking"`
 	DeviceTrackingAttachedPolicies          []InterfaceEthernetDeviceTrackingAttachedPolicies `tfsdk:"device_tracking_attached_policies"`
+	CdpEnable                               types.Bool                                        `tfsdk:"cdp_enable"`
+	CdpTlvApp                               types.Bool                                        `tfsdk:"cdp_tlv_app"`
+	CdpTlvLocation                          types.Bool                                        `tfsdk:"cdp_tlv_location"`
+	CdpTlvServerLocation                    types.Bool                                        `tfsdk:"cdp_tlv_server_location"`
+	IpNatInside                             types.Bool                                        `tfsdk:"ip_nat_inside"`
+	IpNatOutside                            types.Bool                                        `tfsdk:"ip_nat_outside"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -771,6 +783,28 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.IsUnknown() {
 		if data.DeviceTracking.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:device-tracking", map[string]string{})
+		}
+	}
+	if !data.CdpEnable.IsNull() && !data.CdpEnable.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:cdp.enable", data.CdpEnable.ValueBool())
+	}
+	if !data.CdpTlvApp.IsNull() && !data.CdpTlvApp.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:cdp.tlv.default-wrp.app", data.CdpTlvApp.ValueBool())
+	}
+	if !data.CdpTlvLocation.IsNull() && !data.CdpTlvLocation.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:cdp.tlv.location-config", data.CdpTlvLocation.ValueBool())
+	}
+	if !data.CdpTlvServerLocation.IsNull() && !data.CdpTlvServerLocation.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cdp:cdp.tlv.server-location-config", data.CdpTlvServerLocation.ValueBool())
+	}
+	if !data.IpNatInside.IsNull() && !data.IpNatInside.IsUnknown() {
+		if data.IpNatInside.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.inside", map[string]string{})
+		}
+	}
+	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.IsUnknown() {
+		if data.IpNatOutside.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nat:nat.outside", map[string]string{})
 		}
 	}
 	if len(data.HelperAddresses) > 0 {
@@ -1906,6 +1940,52 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 			data.DeviceTrackingAttachedPolicies[i].Name = types.StringNull()
 		}
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.enable"); !data.CdpEnable.IsNull() {
+		if value.Exists() {
+			data.CdpEnable = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.CdpEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.default-wrp.app"); !data.CdpTlvApp.IsNull() {
+		if value.Exists() {
+			data.CdpTlvApp = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.CdpTlvApp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.location-config"); !data.CdpTlvLocation.IsNull() {
+		if value.Exists() {
+			data.CdpTlvLocation = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.CdpTlvLocation = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.server-location-config"); !data.CdpTlvServerLocation.IsNull() {
+		if value.Exists() {
+			data.CdpTlvServerLocation = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.CdpTlvServerLocation = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); !data.IpNatInside.IsNull() {
+		if value.Exists() {
+			data.IpNatInside = types.BoolValue(true)
+		} else {
+			data.IpNatInside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatInside = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); !data.IpNatOutside.IsNull() {
+		if value.Exists() {
+			data.IpNatOutside = types.BoolValue(true)
+		} else {
+			data.IpNatOutside = types.BoolValue(false)
+		}
+	} else {
+		data.IpNatOutside = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2473,6 +2553,36 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 			data.DeviceTrackingAttachedPolicies = append(data.DeviceTrackingAttachedPolicies, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.enable"); value.Exists() {
+		data.CdpEnable = types.BoolValue(value.Bool())
+	} else {
+		data.CdpEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.default-wrp.app"); value.Exists() {
+		data.CdpTlvApp = types.BoolValue(value.Bool())
+	} else {
+		data.CdpTlvApp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.location-config"); value.Exists() {
+		data.CdpTlvLocation = types.BoolValue(value.Bool())
+	} else {
+		data.CdpTlvLocation = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.server-location-config"); value.Exists() {
+		data.CdpTlvServerLocation = types.BoolValue(value.Bool())
+	} else {
+		data.CdpTlvServerLocation = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
 	}
 }
 
@@ -3042,6 +3152,36 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.enable"); value.Exists() {
+		data.CdpEnable = types.BoolValue(value.Bool())
+	} else {
+		data.CdpEnable = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.default-wrp.app"); value.Exists() {
+		data.CdpTlvApp = types.BoolValue(value.Bool())
+	} else {
+		data.CdpTlvApp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.location-config"); value.Exists() {
+		data.CdpTlvLocation = types.BoolValue(value.Bool())
+	} else {
+		data.CdpTlvLocation = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cdp:cdp.tlv.server-location-config"); value.Exists() {
+		data.CdpTlvServerLocation = types.BoolValue(value.Bool())
+	} else {
+		data.CdpTlvServerLocation = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.inside"); value.Exists() {
+		data.IpNatInside = types.BoolValue(true)
+	} else {
+		data.IpNatInside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nat:nat.outside"); value.Exists() {
+		data.IpNatOutside = types.BoolValue(true)
+	} else {
+		data.IpNatOutside = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -3050,6 +3190,24 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", state.getPath()))
+	}
+	if !state.IpNatInside.IsNull() && data.IpNatInside.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", state.getPath()))
+	}
+	if !state.CdpTlvServerLocation.IsNull() && data.CdpTlvServerLocation.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:cdp/tlv/server-location-config", state.getPath()))
+	}
+	if !state.CdpTlvLocation.IsNull() && data.CdpTlvLocation.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:cdp/tlv/location-config", state.getPath()))
+	}
+	if !state.CdpTlvApp.IsNull() && data.CdpTlvApp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:cdp/tlv/default-wrp/app", state.getPath()))
+	}
+	if !state.CdpEnable.IsNull() && data.CdpEnable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:cdp/enable", state.getPath()))
+	}
 	for i := range state.DeviceTrackingAttachedPolicies {
 		stateKeyValues := [...]string{state.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
 
@@ -3583,6 +3741,12 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 
 func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
+	}
+	if !data.IpNatInside.IsNull() && !data.IpNatInside.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", data.getPath()))
+	}
 
 	if !data.DeviceTracking.IsNull() && !data.DeviceTracking.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-switch:device-tracking", data.getPath()))
@@ -3791,6 +3955,24 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 
 func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpNatOutside.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
+	}
+	if !data.IpNatInside.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/inside", data.getPath()))
+	}
+	if !data.CdpTlvServerLocation.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:cdp/tlv/server-location-config", data.getPath()))
+	}
+	if !data.CdpTlvLocation.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:cdp/tlv/location-config", data.getPath()))
+	}
+	if !data.CdpTlvApp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:cdp/tlv/default-wrp/app", data.getPath()))
+	}
+	if !data.CdpEnable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cdp:cdp/enable", data.getPath()))
+	}
 	for i := range data.DeviceTrackingAttachedPolicies {
 		keyValues := [...]string{data.DeviceTrackingAttachedPolicies[i].Name.ValueString()}
 

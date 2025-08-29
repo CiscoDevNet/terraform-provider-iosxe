@@ -756,6 +756,30 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 			},
+			"cdp_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable CDP on interface").String,
+				Optional:            true,
+			},
+			"cdp_tlv_app": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable/Configure Application TLV").String,
+				Optional:            true,
+			},
+			"cdp_tlv_location": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Exchange location information").String,
+				Optional:            true,
+			},
+			"cdp_tlv_server_location": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable CDP location server on interface").String,
+				Optional:            true,
+			},
+			"ip_nat_inside": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Inside interface for address translation").String,
+				Optional:            true,
+			},
+			"ip_nat_outside": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Outside interface for address translation").String,
+				Optional:            true,
+			},
 		},
 	}
 }
