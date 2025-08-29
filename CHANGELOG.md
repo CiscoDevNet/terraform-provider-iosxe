@@ -7,10 +7,12 @@
 - Change`permit_entries` and `deny_entries` attributes of `iosxe_community_list_standard` resource and data source from Lists to Sets
 - Add `icmp_named_msg_type`, `destination_port_equal_2`, `destination_port_equal_3`, `destination_port_equal_4`, `destination_port_equal_5`, `destination_port_equal_6`, `destination_port_equal_7`, `destination_port_equal_8`, `destination_port_equal_9`, `destination_port_equal_10`, `icmp_msg_type`, and `icmp_msg_code` attributes to `iosxe_access_list_extended` resource and data source
 - Add `name`, `entries`, `sequence`, `remark`, `ace_rule_action`, `ace_rule_protocol`, `ack`, `fin`, `psh`, `rst`, `syn`, `urg`, `established`, `dscp`, `fragments`, `option`, `precedence`, `time_range`, `tos`, `log`, `log_input`, `match_all_plusack`, `match_all_plusfin`, `match_all_pluspsh`, `match_all_plusrst`, `match_all_plussyn`, `match_all_plusurg`, `match_all_minusack`, `match_all_minusfin`, `match_all_minuspsh`, `match_all_minusrst`, `match_all_minussyn`, `match_all_minusurg`, `match_any_plusack`, `match_any_plusfin`, `match_any_pluspsh`, `match_any_plusrst`, `match_any_plussyn`, `match_any_plusurg`, `match_any_minusack`, `match_any_minusfin`, `match_any_minuspsh`, `match_any_minusrst`, `match_any_minussyn`, and `match_any_minusurg` attributes to `iosxe_access_list_role_based` resource and data source
+- Add `filter_lists_cdp` to `iosxe_device_sensor` resource and data source
 
 ## 0.7.1
 
 - Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`
+- Add `ip_hosts`, `ip_hosts_vrfs`, `name`, `ips`, `vrf`, `hosts`, `subscriber_templating`, `call_home_contact_email`, `call_home_cisco_tac_1_profile_active`, `call_home_cisco_tac_1_destination_transport_method`, `ip_ftp_passive`, `tftp_source_interface_gigabit_ethernet`, `tftp_source_interface_loopback`, `version`, and `multilink_ppp_bundle_name` to `iosxe_system` resource and data source
 - Add `ip_ssh_version_legacy`, `ip_ssh_time_out` and `ip_ssh_authentication_retries` attributes to `iosxe_system` resource and data source
 - Add subinterface option to `iosxe_interface_mpls`, `iosxe_interface_ospf`, `iosxe_interface_ospfv3` and `iosxe_interface_pim` resources and data sources
 

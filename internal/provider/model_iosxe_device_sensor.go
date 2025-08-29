@@ -43,6 +43,7 @@ type DeviceSensor struct {
 	DeleteMode             types.String                         `tfsdk:"delete_mode"`
 	FilterListsLldp        []DeviceSensorFilterListsLldp        `tfsdk:"filter_lists_lldp"`
 	FilterListsDhcp        []DeviceSensorFilterListsDhcp        `tfsdk:"filter_lists_dhcp"`
+	FilterListsCdp         []DeviceSensorFilterListsCdp         `tfsdk:"filter_lists_cdp"`
 	FilterSpecDhcpIncludes []DeviceSensorFilterSpecDhcpIncludes `tfsdk:"filter_spec_dhcp_includes"`
 	FilterSpecDhcpExcludes []DeviceSensorFilterSpecDhcpExcludes `tfsdk:"filter_spec_dhcp_excludes"`
 	FilterSpecLldpIncludes []DeviceSensorFilterSpecLldpIncludes `tfsdk:"filter_spec_lldp_includes"`
@@ -57,6 +58,7 @@ type DeviceSensorData struct {
 	Id                     types.String                         `tfsdk:"id"`
 	FilterListsLldp        []DeviceSensorFilterListsLldp        `tfsdk:"filter_lists_lldp"`
 	FilterListsDhcp        []DeviceSensorFilterListsDhcp        `tfsdk:"filter_lists_dhcp"`
+	FilterListsCdp         []DeviceSensorFilterListsCdp         `tfsdk:"filter_lists_cdp"`
 	FilterSpecDhcpIncludes []DeviceSensorFilterSpecDhcpIncludes `tfsdk:"filter_spec_dhcp_includes"`
 	FilterSpecDhcpExcludes []DeviceSensorFilterSpecDhcpExcludes `tfsdk:"filter_spec_dhcp_excludes"`
 	FilterSpecLldpIncludes []DeviceSensorFilterSpecLldpIncludes `tfsdk:"filter_spec_lldp_includes"`
@@ -82,6 +84,14 @@ type DeviceSensorFilterListsDhcp struct {
 	OptionNameClassIdentifier      types.Bool   `tfsdk:"option_name_class_identifier"`
 	OptionNameClientIdentifier     types.Bool   `tfsdk:"option_name_client_identifier"`
 	OptionNameClientFqdn           types.Bool   `tfsdk:"option_name_client_fqdn"`
+}
+type DeviceSensorFilterListsCdp struct {
+	Name                    types.String `tfsdk:"name"`
+	TlvNameDeviceName       types.Bool   `tfsdk:"tlv_name_device_name"`
+	TlvNameAddressType      types.Bool   `tfsdk:"tlv_name_address_type"`
+	TlvNamePortIdType       types.Bool   `tfsdk:"tlv_name_port_id_type"`
+	TlvNameCapabilitiesType types.Bool   `tfsdk:"tlv_name_capabilities_type"`
+	TlvNamePlatformType     types.Bool   `tfsdk:"tlv_name_platform_type"`
 }
 type DeviceSensorFilterSpecDhcpIncludes struct {
 	Name types.String `tfsdk:"name"`
@@ -208,6 +218,39 @@ func (data DeviceSensor) toBody(ctx context.Context) string {
 			if !item.OptionNameClientFqdn.IsNull() && !item.OptionNameClientFqdn.IsUnknown() {
 				if item.OptionNameClientFqdn.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.dhcp.list"+"."+strconv.Itoa(index)+"."+"option.name.client-fqdn", map[string]string{})
+				}
+			}
+		}
+	}
+	if len(data.FilterListsCdp) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.cdp.list", []interface{}{})
+		for index, item := range data.FilterListsCdp {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.cdp.list"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+			if !item.TlvNameDeviceName.IsNull() && !item.TlvNameDeviceName.IsUnknown() {
+				if item.TlvNameDeviceName.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.cdp.list"+"."+strconv.Itoa(index)+"."+"tlv.name.device-name", map[string]string{})
+				}
+			}
+			if !item.TlvNameAddressType.IsNull() && !item.TlvNameAddressType.IsUnknown() {
+				if item.TlvNameAddressType.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.cdp.list"+"."+strconv.Itoa(index)+"."+"tlv.name.address-type", map[string]string{})
+				}
+			}
+			if !item.TlvNamePortIdType.IsNull() && !item.TlvNamePortIdType.IsUnknown() {
+				if item.TlvNamePortIdType.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.cdp.list"+"."+strconv.Itoa(index)+"."+"tlv.name.port-id-type", map[string]string{})
+				}
+			}
+			if !item.TlvNameCapabilitiesType.IsNull() && !item.TlvNameCapabilitiesType.IsUnknown() {
+				if item.TlvNameCapabilitiesType.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.cdp.list"+"."+strconv.Itoa(index)+"."+"tlv.name.capabilities-type", map[string]string{})
+				}
+			}
+			if !item.TlvNamePlatformType.IsNull() && !item.TlvNamePlatformType.IsUnknown() {
+				if item.TlvNamePlatformType.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"filter-list.cdp.list"+"."+strconv.Itoa(index)+"."+"tlv.name.platform-type", map[string]string{})
 				}
 			}
 		}
@@ -436,6 +479,80 @@ func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) 
 			}
 		} else {
 			data.FilterListsDhcp[i].OptionNameClientFqdn = types.BoolNull()
+		}
+	}
+	for i := range data.FilterListsCdp {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterListsCdp[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "filter-list.cdp.list").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.FilterListsCdp[i].Name.IsNull() {
+			data.FilterListsCdp[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterListsCdp[i].Name = types.StringNull()
+		}
+		if value := r.Get("tlv.name.device-name"); !data.FilterListsCdp[i].TlvNameDeviceName.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNameDeviceName = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNameDeviceName = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNameDeviceName = types.BoolNull()
+		}
+		if value := r.Get("tlv.name.address-type"); !data.FilterListsCdp[i].TlvNameAddressType.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNameAddressType = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNameAddressType = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNameAddressType = types.BoolNull()
+		}
+		if value := r.Get("tlv.name.port-id-type"); !data.FilterListsCdp[i].TlvNamePortIdType.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNamePortIdType = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNamePortIdType = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNamePortIdType = types.BoolNull()
+		}
+		if value := r.Get("tlv.name.capabilities-type"); !data.FilterListsCdp[i].TlvNameCapabilitiesType.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNameCapabilitiesType = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNameCapabilitiesType = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNameCapabilitiesType = types.BoolNull()
+		}
+		if value := r.Get("tlv.name.platform-type"); !data.FilterListsCdp[i].TlvNamePlatformType.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNamePlatformType = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNamePlatformType = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNamePlatformType = types.BoolNull()
 		}
 	}
 	for i := range data.FilterSpecDhcpIncludes {
@@ -714,6 +831,42 @@ func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "filter-list.cdp.list"); value.Exists() {
+		data.FilterListsCdp = make([]DeviceSensorFilterListsCdp, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DeviceSensorFilterListsCdp{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("tlv.name.device-name"); cValue.Exists() {
+				item.TlvNameDeviceName = types.BoolValue(true)
+			} else {
+				item.TlvNameDeviceName = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.address-type"); cValue.Exists() {
+				item.TlvNameAddressType = types.BoolValue(true)
+			} else {
+				item.TlvNameAddressType = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.port-id-type"); cValue.Exists() {
+				item.TlvNamePortIdType = types.BoolValue(true)
+			} else {
+				item.TlvNamePortIdType = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.capabilities-type"); cValue.Exists() {
+				item.TlvNameCapabilitiesType = types.BoolValue(true)
+			} else {
+				item.TlvNameCapabilitiesType = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.platform-type"); cValue.Exists() {
+				item.TlvNamePlatformType = types.BoolValue(true)
+			} else {
+				item.TlvNamePlatformType = types.BoolValue(false)
+			}
+			data.FilterListsCdp = append(data.FilterListsCdp, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "filter-spec.dhcp.include.list"); value.Exists() {
 		data.FilterSpecDhcpIncludes = make([]DeviceSensorFilterSpecDhcpIncludes, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -875,6 +1028,42 @@ func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 				item.OptionNameClientFqdn = types.BoolValue(false)
 			}
 			data.FilterListsDhcp = append(data.FilterListsDhcp, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "filter-list.cdp.list"); value.Exists() {
+		data.FilterListsCdp = make([]DeviceSensorFilterListsCdp, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := DeviceSensorFilterListsCdp{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("tlv.name.device-name"); cValue.Exists() {
+				item.TlvNameDeviceName = types.BoolValue(true)
+			} else {
+				item.TlvNameDeviceName = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.address-type"); cValue.Exists() {
+				item.TlvNameAddressType = types.BoolValue(true)
+			} else {
+				item.TlvNameAddressType = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.port-id-type"); cValue.Exists() {
+				item.TlvNamePortIdType = types.BoolValue(true)
+			} else {
+				item.TlvNamePortIdType = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.capabilities-type"); cValue.Exists() {
+				item.TlvNameCapabilitiesType = types.BoolValue(true)
+			} else {
+				item.TlvNameCapabilitiesType = types.BoolValue(false)
+			}
+			if cValue := v.Get("tlv.name.platform-type"); cValue.Exists() {
+				item.TlvNamePlatformType = types.BoolValue(true)
+			} else {
+				item.TlvNamePlatformType = types.BoolValue(false)
+			}
+			data.FilterListsCdp = append(data.FilterListsCdp, item)
 			return true
 		})
 	}
@@ -1110,6 +1299,46 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-spec/dhcp/include/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	for i := range state.FilterListsCdp {
+		stateKeyValues := [...]string{state.FilterListsCdp[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterListsCdp[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterListsCdp {
+			found = true
+			if state.FilterListsCdp[i].Name.ValueString() != data.FilterListsCdp[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.FilterListsCdp[i].TlvNamePlatformType.IsNull() && data.FilterListsCdp[j].TlvNamePlatformType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/platform-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsCdp[i].TlvNameCapabilitiesType.IsNull() && data.FilterListsCdp[j].TlvNameCapabilitiesType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/capabilities-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsCdp[i].TlvNamePortIdType.IsNull() && data.FilterListsCdp[j].TlvNamePortIdType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/port-id-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsCdp[i].TlvNameAddressType.IsNull() && data.FilterListsCdp[j].TlvNameAddressType.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/address-type", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.FilterListsCdp[i].TlvNameDeviceName.IsNull() && data.FilterListsCdp[j].TlvNameDeviceName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/device-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/filter-list/cdp/list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.FilterListsDhcp {
 		stateKeyValues := [...]string{state.FilterListsDhcp[i].Name.ValueString()}
 
@@ -1210,6 +1439,25 @@ func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/notify/all-changes", data.getPath()))
 	}
 
+	for i := range data.FilterListsCdp {
+		keyValues := [...]string{data.FilterListsCdp[i].Name.ValueString()}
+		if !data.FilterListsCdp[i].TlvNamePlatformType.IsNull() && !data.FilterListsCdp[i].TlvNamePlatformType.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/platform-type", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsCdp[i].TlvNameCapabilitiesType.IsNull() && !data.FilterListsCdp[i].TlvNameCapabilitiesType.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/capabilities-type", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsCdp[i].TlvNamePortIdType.IsNull() && !data.FilterListsCdp[i].TlvNamePortIdType.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/port-id-type", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsCdp[i].TlvNameAddressType.IsNull() && !data.FilterListsCdp[i].TlvNameAddressType.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/address-type", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.FilterListsCdp[i].TlvNameDeviceName.IsNull() && !data.FilterListsCdp[i].TlvNameDeviceName.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/filter-list/cdp/list=%v/tlv/name/device-name", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
 	for i := range data.FilterListsDhcp {
 		keyValues := [...]string{data.FilterListsDhcp[i].Name.ValueString()}
 		if !data.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() && !data.FilterListsDhcp[i].OptionNameClientFqdn.ValueBool() {
@@ -1295,6 +1543,11 @@ func (data *DeviceSensor) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.FilterSpecDhcpIncludes[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-spec/dhcp/include/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.FilterListsCdp {
+		keyValues := [...]string{data.FilterListsCdp[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/filter-list/cdp/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.FilterListsDhcp {
 		keyValues := [...]string{data.FilterListsDhcp[i].Name.ValueString()}

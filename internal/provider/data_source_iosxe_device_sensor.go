@@ -139,6 +139,38 @@ func (d *DeviceSensorDataSource) Schema(ctx context.Context, req datasource.Sche
 					},
 				},
 			},
+			"filter_lists_cdp": schema.ListNestedAttribute{
+				MarkdownDescription: "Protocol Filter List",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"tlv_name_device_name": schema.BoolAttribute{
+							MarkdownDescription: "Device Name",
+							Computed:            true,
+						},
+						"tlv_name_address_type": schema.BoolAttribute{
+							MarkdownDescription: "Address Type",
+							Computed:            true,
+						},
+						"tlv_name_port_id_type": schema.BoolAttribute{
+							MarkdownDescription: "Port Id type",
+							Computed:            true,
+						},
+						"tlv_name_capabilities_type": schema.BoolAttribute{
+							MarkdownDescription: "Capabilities Type",
+							Computed:            true,
+						},
+						"tlv_name_platform_type": schema.BoolAttribute{
+							MarkdownDescription: "Platform Type",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"filter_spec_dhcp_includes": schema.ListNestedAttribute{
 				MarkdownDescription: "Protocol Filter Spec list",
 				Computed:            true,
