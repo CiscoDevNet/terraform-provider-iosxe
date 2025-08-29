@@ -151,6 +151,7 @@ type System struct {
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
+	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
 }
 
 type SystemData struct {
@@ -267,6 +268,7 @@ type SystemData struct {
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
+	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -298,6 +300,11 @@ type SystemIpHosts struct {
 type SystemIpHostsVrf struct {
 	Vrf   types.String            `tfsdk:"vrf"`
 	Hosts []SystemIpHostsVrfHosts `tfsdk:"hosts"`
+}
+type SystemTrackObjects struct {
+	TrackObjectNumber      types.String `tfsdk:"track_object_number"`
+	TrackIpSlaNumber       types.Int64  `tfsdk:"track_ip_sla_number"`
+	TrackIpSlaReachability types.Bool   `tfsdk:"track_ip_sla_reachability"`
 }
 type SystemIpHostsVrfHosts struct {
 	Name types.String `tfsdk:"name"`
@@ -781,6 +788,22 @@ func (data System) toBody(ctx context.Context) string {
 						citem.Ips.ElementsAs(ctx, &values, false)
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.host.vrf"+"."+strconv.Itoa(index)+"."+"host-name"+"."+strconv.Itoa(cindex)+"."+"ip-list", values)
 					}
+				}
+			}
+		}
+	}
+	if len(data.TrackObjects) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2.", []interface{}{})
+		for index, item := range data.TrackObjects {
+			if !item.TrackObjectNumber.IsNull() && !item.TrackObjectNumber.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"object-number", item.TrackObjectNumber.ValueString())
+			}
+			if !item.TrackIpSlaNumber.IsNull() && !item.TrackIpSlaNumber.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"ip.sla.number", strconv.FormatInt(item.TrackIpSlaNumber.ValueInt64(), 10))
+			}
+			if !item.TrackIpSlaReachability.IsNull() && !item.TrackIpSlaReachability.IsUnknown() {
+				if item.TrackIpSlaReachability.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"ip.sla.reachability", map[string]string{})
 				}
 			}
 		}
@@ -1703,6 +1726,49 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Version = types.StringNull()
 	}
+	for i := range data.TrackObjects {
+		keys := [...]string{"object-number"}
+		keyValues := [...]string{data.TrackObjects[i].TrackObjectNumber.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2.").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("object-number"); value.Exists() && !data.TrackObjects[i].TrackObjectNumber.IsNull() {
+			data.TrackObjects[i].TrackObjectNumber = types.StringValue(value.String())
+		} else {
+			data.TrackObjects[i].TrackObjectNumber = types.StringNull()
+		}
+		if value := r.Get("ip.sla.number"); value.Exists() && !data.TrackObjects[i].TrackIpSlaNumber.IsNull() {
+			data.TrackObjects[i].TrackIpSlaNumber = types.Int64Value(value.Int())
+		} else {
+			data.TrackObjects[i].TrackIpSlaNumber = types.Int64Null()
+		}
+		if value := r.Get("ip.sla.reachability"); !data.TrackObjects[i].TrackIpSlaReachability.IsNull() {
+			if value.Exists() {
+				data.TrackObjects[i].TrackIpSlaReachability = types.BoolValue(true)
+			} else {
+				data.TrackObjects[i].TrackIpSlaReachability = types.BoolValue(false)
+			}
+		} else {
+			data.TrackObjects[i].TrackIpSlaReachability = types.BoolNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2205,6 +2271,25 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2."); value.Exists() {
+		data.TrackObjects = make([]SystemTrackObjects, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemTrackObjects{}
+			if cValue := v.Get("object-number"); cValue.Exists() {
+				item.TrackObjectNumber = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.sla.number"); cValue.Exists() {
+				item.TrackIpSlaNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ip.sla.reachability"); cValue.Exists() {
+				item.TrackIpSlaReachability = types.BoolValue(true)
+			} else {
+				item.TrackIpSlaReachability = types.BoolValue(false)
+			}
+			data.TrackObjects = append(data.TrackObjects, item)
+			return true
+		})
 	}
 }
 
@@ -2709,6 +2794,25 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2."); value.Exists() {
+		data.TrackObjects = make([]SystemTrackObjects, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SystemTrackObjects{}
+			if cValue := v.Get("object-number"); cValue.Exists() {
+				item.TrackObjectNumber = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("ip.sla.number"); cValue.Exists() {
+				item.TrackIpSlaNumber = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ip.sla.reachability"); cValue.Exists() {
+				item.TrackIpSlaReachability = types.BoolValue(true)
+			} else {
+				item.TrackIpSlaReachability = types.BoolValue(false)
+			}
+			data.TrackObjects = append(data.TrackObjects, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2717,6 +2821,37 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.TrackObjects {
+		stateKeyValues := [...]string{state.TrackObjects[i].TrackObjectNumber.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.TrackObjects[i].TrackObjectNumber.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.TrackObjects {
+			found = true
+			if state.TrackObjects[i].TrackObjectNumber.ValueString() != data.TrackObjects[j].TrackObjectNumber.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.TrackObjects[i].TrackIpSlaReachability.IsNull() && data.TrackObjects[j].TrackIpSlaReachability.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/reachability", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.TrackObjects[i].TrackIpSlaNumber.IsNull() && data.TrackObjects[j].TrackIpSlaNumber.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.Version.IsNull() && data.Version.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/version", state.getPath()))
 	}
@@ -3354,6 +3489,13 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
+	for i := range data.TrackObjects {
+		keyValues := [...]string{data.TrackObjects[i].TrackObjectNumber.ValueString()}
+		if !data.TrackObjects[i].TrackIpSlaReachability.IsNull() && !data.TrackObjects[i].TrackIpSlaReachability.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/reachability", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
 	if !data.SubscriberTemplating.IsNull() && !data.SubscriberTemplating.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/subscriber/templating", data.getPath()))
 	}
@@ -3434,6 +3576,11 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.TrackObjects {
+		keyValues := [...]string{data.TrackObjects[i].TrackObjectNumber.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	if !data.Version.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))
 	}
