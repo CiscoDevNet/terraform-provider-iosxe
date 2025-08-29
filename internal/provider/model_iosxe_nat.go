@@ -38,21 +38,21 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type NAT struct {
-	Device                     types.String                    `tfsdk:"device"`
-	Id                         types.String                    `tfsdk:"id"`
-	InsideSourceInterfaceLists []NATInsideSourceInterfaceLists `tfsdk:"inside_source_interface_lists"`
+	Device                 types.String                `tfsdk:"device"`
+	Id                     types.String                `tfsdk:"id"`
+	InsideSourceInterfaces []NATInsideSourceInterfaces `tfsdk:"inside_source_interfaces"`
 }
 
 type NATData struct {
-	Device                     types.String                    `tfsdk:"device"`
-	Id                         types.String                    `tfsdk:"id"`
-	InsideSourceInterfaceLists []NATInsideSourceInterfaceLists `tfsdk:"inside_source_interface_lists"`
+	Device                 types.String                `tfsdk:"device"`
+	Id                     types.String                `tfsdk:"id"`
+	InsideSourceInterfaces []NATInsideSourceInterfaces `tfsdk:"inside_source_interfaces"`
 }
-type NATInsideSourceInterfaceLists struct {
-	Id         types.String                              `tfsdk:"id"`
-	Interfaces []NATInsideSourceInterfaceListsInterfaces `tfsdk:"interfaces"`
+type NATInsideSourceInterfaces struct {
+	Id         types.String                          `tfsdk:"id"`
+	Interfaces []NATInsideSourceInterfacesInterfaces `tfsdk:"interfaces"`
 }
-type NATInsideSourceInterfaceListsInterfaces struct {
+type NATInsideSourceInterfacesInterfaces struct {
 	Interface types.String `tfsdk:"interface"`
 	Overload  types.Bool   `tfsdk:"overload"`
 }
@@ -86,9 +86,9 @@ func (data NAT) getPathShort() string {
 
 func (data NAT) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
-	if len(data.InsideSourceInterfaceLists) > 0 {
+	if len(data.InsideSourceInterfaces) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.list-interface.list", []interface{}{})
-		for index, item := range data.InsideSourceInterfaceLists {
+		for index, item := range data.InsideSourceInterfaces {
 			if !item.Id.IsNull() && !item.Id.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inside.source.list-interface.list"+"."+strconv.Itoa(index)+"."+"id", item.Id.ValueString())
 			}
@@ -119,9 +119,9 @@ func (data *NAT) updateFromBody(ctx context.Context, res gjson.Result) {
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	for i := range data.InsideSourceInterfaceLists {
+	for i := range data.InsideSourceInterfaces {
 		keys := [...]string{"id"}
-		keyValues := [...]string{data.InsideSourceInterfaceLists[i].Id.ValueString()}
+		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "inside.source.list-interface.list").ForEach(
@@ -142,14 +142,14 @@ func (data *NAT) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("id"); value.Exists() && !data.InsideSourceInterfaceLists[i].Id.IsNull() {
-			data.InsideSourceInterfaceLists[i].Id = types.StringValue(value.String())
+		if value := r.Get("id"); value.Exists() && !data.InsideSourceInterfaces[i].Id.IsNull() {
+			data.InsideSourceInterfaces[i].Id = types.StringValue(value.String())
 		} else {
-			data.InsideSourceInterfaceLists[i].Id = types.StringNull()
+			data.InsideSourceInterfaces[i].Id = types.StringNull()
 		}
-		for ci := range data.InsideSourceInterfaceLists[i].Interfaces {
+		for ci := range data.InsideSourceInterfaces[i].Interfaces {
 			keys := [...]string{"name"}
-			keyValues := [...]string{data.InsideSourceInterfaceLists[i].Interfaces[ci].Interface.ValueString()}
+			keyValues := [...]string{data.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()}
 
 			var cr gjson.Result
 			r.Get("interface").ForEach(
@@ -170,19 +170,19 @@ func (data *NAT) updateFromBody(ctx context.Context, res gjson.Result) {
 					return true
 				},
 			)
-			if value := cr.Get("name"); value.Exists() && !data.InsideSourceInterfaceLists[i].Interfaces[ci].Interface.IsNull() {
-				data.InsideSourceInterfaceLists[i].Interfaces[ci].Interface = types.StringValue(value.String())
+			if value := cr.Get("name"); value.Exists() && !data.InsideSourceInterfaces[i].Interfaces[ci].Interface.IsNull() {
+				data.InsideSourceInterfaces[i].Interfaces[ci].Interface = types.StringValue(value.String())
 			} else {
-				data.InsideSourceInterfaceLists[i].Interfaces[ci].Interface = types.StringNull()
+				data.InsideSourceInterfaces[i].Interfaces[ci].Interface = types.StringNull()
 			}
-			if value := cr.Get("overload-new"); !data.InsideSourceInterfaceLists[i].Interfaces[ci].Overload.IsNull() {
+			if value := cr.Get("overload-new"); !data.InsideSourceInterfaces[i].Interfaces[ci].Overload.IsNull() {
 				if value.Exists() {
-					data.InsideSourceInterfaceLists[i].Interfaces[ci].Overload = types.BoolValue(true)
+					data.InsideSourceInterfaces[i].Interfaces[ci].Overload = types.BoolValue(true)
 				} else {
-					data.InsideSourceInterfaceLists[i].Interfaces[ci].Overload = types.BoolValue(false)
+					data.InsideSourceInterfaces[i].Interfaces[ci].Overload = types.BoolValue(false)
 				}
 			} else {
-				data.InsideSourceInterfaceLists[i].Interfaces[ci].Overload = types.BoolNull()
+				data.InsideSourceInterfaces[i].Interfaces[ci].Overload = types.BoolNull()
 			}
 		}
 	}
@@ -198,16 +198,16 @@ func (data *NAT) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "inside.source.list-interface.list"); value.Exists() {
-		data.InsideSourceInterfaceLists = make([]NATInsideSourceInterfaceLists, 0)
+		data.InsideSourceInterfaces = make([]NATInsideSourceInterfaces, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NATInsideSourceInterfaceLists{}
+			item := NATInsideSourceInterfaces{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("interface"); cValue.Exists() {
-				item.Interfaces = make([]NATInsideSourceInterfaceListsInterfaces, 0)
+				item.Interfaces = make([]NATInsideSourceInterfacesInterfaces, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := NATInsideSourceInterfaceListsInterfaces{}
+					cItem := NATInsideSourceInterfacesInterfaces{}
 					if ccValue := cv.Get("name"); ccValue.Exists() {
 						cItem.Interface = types.StringValue(ccValue.String())
 					}
@@ -220,7 +220,7 @@ func (data *NAT) fromBody(ctx context.Context, res gjson.Result) {
 					return true
 				})
 			}
-			data.InsideSourceInterfaceLists = append(data.InsideSourceInterfaceLists, item)
+			data.InsideSourceInterfaces = append(data.InsideSourceInterfaces, item)
 			return true
 		})
 	}
@@ -236,16 +236,16 @@ func (data *NATData) fromBody(ctx context.Context, res gjson.Result) {
 		prefix += "0."
 	}
 	if value := res.Get(prefix + "inside.source.list-interface.list"); value.Exists() {
-		data.InsideSourceInterfaceLists = make([]NATInsideSourceInterfaceLists, 0)
+		data.InsideSourceInterfaces = make([]NATInsideSourceInterfaces, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := NATInsideSourceInterfaceLists{}
+			item := NATInsideSourceInterfaces{}
 			if cValue := v.Get("id"); cValue.Exists() {
 				item.Id = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("interface"); cValue.Exists() {
-				item.Interfaces = make([]NATInsideSourceInterfaceListsInterfaces, 0)
+				item.Interfaces = make([]NATInsideSourceInterfacesInterfaces, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
-					cItem := NATInsideSourceInterfaceListsInterfaces{}
+					cItem := NATInsideSourceInterfacesInterfaces{}
 					if ccValue := cv.Get("name"); ccValue.Exists() {
 						cItem.Interface = types.StringValue(ccValue.String())
 					}
@@ -258,7 +258,7 @@ func (data *NATData) fromBody(ctx context.Context, res gjson.Result) {
 					return true
 				})
 			}
-			data.InsideSourceInterfaceLists = append(data.InsideSourceInterfaceLists, item)
+			data.InsideSourceInterfaces = append(data.InsideSourceInterfaces, item)
 			return true
 		})
 	}
@@ -270,11 +270,11 @@ func (data *NATData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *NAT) getDeletedItems(ctx context.Context, state NAT) []string {
 	deletedItems := make([]string, 0)
-	for i := range state.InsideSourceInterfaceLists {
-		stateKeyValues := [...]string{state.InsideSourceInterfaceLists[i].Id.ValueString()}
+	for i := range state.InsideSourceInterfaces {
+		stateKeyValues := [...]string{state.InsideSourceInterfaces[i].Id.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.InsideSourceInterfaceLists[i].Id.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.InsideSourceInterfaces[i].Id.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -282,17 +282,17 @@ func (data *NAT) getDeletedItems(ctx context.Context, state NAT) []string {
 		}
 
 		found := false
-		for j := range data.InsideSourceInterfaceLists {
+		for j := range data.InsideSourceInterfaces {
 			found = true
-			if state.InsideSourceInterfaceLists[i].Id.ValueString() != data.InsideSourceInterfaceLists[j].Id.ValueString() {
+			if state.InsideSourceInterfaces[i].Id.ValueString() != data.InsideSourceInterfaces[j].Id.ValueString() {
 				found = false
 			}
 			if found {
-				for ci := range state.InsideSourceInterfaceLists[i].Interfaces {
-					cstateKeyValues := [...]string{state.InsideSourceInterfaceLists[i].Interfaces[ci].Interface.ValueString()}
+				for ci := range state.InsideSourceInterfaces[i].Interfaces {
+					cstateKeyValues := [...]string{state.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()}
 
 					cemptyKeys := true
-					if !reflect.ValueOf(state.InsideSourceInterfaceLists[i].Interfaces[ci].Interface.ValueString()).IsZero() {
+					if !reflect.ValueOf(state.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()).IsZero() {
 						cemptyKeys = false
 					}
 					if cemptyKeys {
@@ -300,13 +300,13 @@ func (data *NAT) getDeletedItems(ctx context.Context, state NAT) []string {
 					}
 
 					found := false
-					for cj := range data.InsideSourceInterfaceLists[j].Interfaces {
+					for cj := range data.InsideSourceInterfaces[j].Interfaces {
 						found = true
-						if state.InsideSourceInterfaceLists[i].Interfaces[ci].Interface.ValueString() != data.InsideSourceInterfaceLists[j].Interfaces[cj].Interface.ValueString() {
+						if state.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString() != data.InsideSourceInterfaces[j].Interfaces[cj].Interface.ValueString() {
 							found = false
 						}
 						if found {
-							if !state.InsideSourceInterfaceLists[i].Interfaces[ci].Overload.IsNull() && data.InsideSourceInterfaceLists[j].Interfaces[cj].Overload.IsNull() {
+							if !state.InsideSourceInterfaces[i].Interfaces[ci].Overload.IsNull() && data.InsideSourceInterfaces[j].Interfaces[cj].Overload.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/inside/source/list-interface/list=%v/interface=%v/overload-new", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
 							break
@@ -334,12 +334,12 @@ func (data *NAT) getDeletedItems(ctx context.Context, state NAT) []string {
 func (data *NAT) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
-	for i := range data.InsideSourceInterfaceLists {
-		keyValues := [...]string{data.InsideSourceInterfaceLists[i].Id.ValueString()}
+	for i := range data.InsideSourceInterfaces {
+		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
 
-		for ci := range data.InsideSourceInterfaceLists[i].Interfaces {
-			ckeyValues := [...]string{data.InsideSourceInterfaceLists[i].Interfaces[ci].Interface.ValueString()}
-			if !data.InsideSourceInterfaceLists[i].Interfaces[ci].Overload.IsNull() && !data.InsideSourceInterfaceLists[i].Interfaces[ci].Overload.ValueBool() {
+		for ci := range data.InsideSourceInterfaces[i].Interfaces {
+			ckeyValues := [...]string{data.InsideSourceInterfaces[i].Interfaces[ci].Interface.ValueString()}
+			if !data.InsideSourceInterfaces[i].Interfaces[ci].Overload.IsNull() && !data.InsideSourceInterfaces[i].Interfaces[ci].Overload.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/inside/source/list-interface/list=%v/interface=%v/overload-new", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
 		}
@@ -354,8 +354,8 @@ func (data *NAT) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *NAT) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	for i := range data.InsideSourceInterfaceLists {
-		keyValues := [...]string{data.InsideSourceInterfaceLists[i].Id.ValueString()}
+	for i := range data.InsideSourceInterfaces {
+		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/inside/source/list-interface/list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

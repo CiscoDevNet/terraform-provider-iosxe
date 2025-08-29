@@ -75,7 +75,7 @@ func (r *NATResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"inside_source_interface_lists": schema.ListNestedAttribute{
+			"inside_source_interfaces": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify access list describing local addresses").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

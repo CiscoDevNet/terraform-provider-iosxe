@@ -1,5 +1,5 @@
 resource "iosxe_nat" "example" {
-  inside_source_interface_lists = [
+  inside_source_interfaces = [
     {
       id = "10"
       interfaces = [

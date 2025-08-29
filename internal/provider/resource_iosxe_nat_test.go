@@ -34,9 +34,9 @@ import (
 
 func TestAccIosxeNAT(t *testing.T) {
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interface_lists.0.id", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interface_lists.0.interfaces.0.interface", "GigabitEthernet10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interface_lists.0.interfaces.0.overload", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.id", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.interface", "GigabitEthernet10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.overload", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -90,7 +90,7 @@ func testAccIosxeNATConfig_minimum() string {
 
 func testAccIosxeNATConfig_all() string {
 	config := `resource "iosxe_nat" "test" {` + "\n"
-	config += `	inside_source_interface_lists = [{` + "\n"
+	config += `	inside_source_interfaces = [{` + "\n"
 	config += `		id = "10"` + "\n"
 	config += `		interfaces = [{` + "\n"
 	config += `			interface = "GigabitEthernet10"` + "\n"

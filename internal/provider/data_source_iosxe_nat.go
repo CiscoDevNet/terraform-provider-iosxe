@@ -67,7 +67,7 @@ func (d *NATDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"inside_source_interface_lists": schema.ListNestedAttribute{
+			"inside_source_interfaces": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify access list describing local addresses",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
