@@ -139,7 +139,6 @@ type System struct {
 	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
-	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
 	IpHosts                                                []SystemIpHosts                                     `tfsdk:"ip_hosts"`
 	IpHostsVrf                                             []SystemIpHostsVrf                                  `tfsdk:"ip_hosts_vrf"`
 	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
@@ -152,6 +151,7 @@ type System struct {
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
+	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
 }
 
 type SystemData struct {
@@ -256,7 +256,6 @@ type SystemData struct {
 	EnableSecret                                           types.String                                        `tfsdk:"enable_secret"`
 	EnableSecretType                                       types.String                                        `tfsdk:"enable_secret_type"`
 	EnableSecretLevel                                      types.Int64                                         `tfsdk:"enable_secret_level"`
-	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
 	IpHosts                                                []SystemIpHosts                                     `tfsdk:"ip_hosts"`
 	IpHostsVrf                                             []SystemIpHostsVrf                                  `tfsdk:"ip_hosts_vrf"`
 	DiagnosticEventLogSize                                 types.Int64                                         `tfsdk:"diagnostic_event_log_size"`
@@ -269,6 +268,7 @@ type SystemData struct {
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
+	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -654,9 +654,6 @@ func (data System) toBody(ctx context.Context) string {
 	if !data.EnableSecretLevel.IsNull() && !data.EnableSecretLevel.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"enable.secret.level", strconv.FormatInt(data.EnableSecretLevel.ValueInt64(), 10))
 	}
-	if !data.IpMulticastRouteLimit.IsNull() && !data.IpMulticastRouteLimit.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit", strconv.FormatInt(data.IpMulticastRouteLimit.ValueInt64(), 10))
-	}
 	if !data.DiagnosticEventLogSize.IsNull() && !data.DiagnosticEventLogSize.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-diagnostics:diagnostic.event-log.size", strconv.FormatInt(data.DiagnosticEventLogSize.ValueInt64(), 10))
 	}
@@ -688,6 +685,9 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.Version.IsNull() && !data.Version.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"version", data.Version.ValueString())
+	}
+	if !data.IpMulticastRouteLimit.IsNull() && !data.IpMulticastRouteLimit.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit", strconv.FormatInt(data.IpMulticastRouteLimit.ValueInt64(), 10))
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1553,11 +1553,6 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableSecretLevel = types.Int64Null()
 	}
-	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() && !data.IpMulticastRouteLimit.IsNull() {
-		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
-	} else {
-		data.IpMulticastRouteLimit = types.Int64Null()
-	}
 	for i := range data.IpHosts {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.IpHosts[i].Name.ValueString()}
@@ -1712,6 +1707,11 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.Version = types.StringValue(value.String())
 	} else {
 		data.Version = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() && !data.IpMulticastRouteLimit.IsNull() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
+	} else {
+		data.IpMulticastRouteLimit = types.Int64Null()
 	}
 }
 
@@ -2137,9 +2137,6 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "enable.secret.level"); value.Exists() {
 		data.EnableSecretLevel = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
-		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
-	}
 	if value := res.Get(prefix + "ip.host.host-list"); value.Exists() {
 		data.IpHosts = make([]SystemIpHosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -2218,6 +2215,9 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	}
 }
 
@@ -2643,9 +2643,6 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "enable.secret.level"); value.Exists() {
 		data.EnableSecretLevel = types.Int64Value(value.Int())
 	}
-	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
-		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
-	}
 	if value := res.Get(prefix + "ip.host.host-list"); value.Exists() {
 		data.IpHosts = make([]SystemIpHosts, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -2724,6 +2721,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	}
 }
 

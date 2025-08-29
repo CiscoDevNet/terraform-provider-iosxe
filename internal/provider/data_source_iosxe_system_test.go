@@ -142,7 +142,6 @@ func testAccDataSourceIosxeSystemConfig() string {
 	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
-	config += `	ip_multicast_route_limit = 200000` + "\n"
 	config += `	ip_hosts = [{` + "\n"
 	config += `		name = "test.router.com"` + "\n"
 	config += `		ips = ["3.3.3.3"]` + "\n"
@@ -150,6 +149,7 @@ func testAccDataSourceIosxeSystemConfig() string {
 	config += `	call_home_contact_email = "email@test.com"` + "\n"
 	config += `	call_home_cisco_tac_1_profile_active = true` + "\n"
 	config += `	call_home_cisco_tac_1_destination_transport_method = "email"` + "\n"
+	config += `	ip_multicast_route_limit = 200000` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

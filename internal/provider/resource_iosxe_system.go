@@ -642,13 +642,6 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(0, 255),
 				},
 			},
-			"ip_multicast_route_limit": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Maximum number of multicast routes").AddIntegerRangeDescription(1, 2147483647).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 2147483647),
-				},
-			},
 			"ip_hosts": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
@@ -746,6 +739,13 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"version": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Version").String,
 				Optional:            true,
+			},
+			"ip_multicast_route_limit": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum number of multicast routes").AddIntegerRangeDescription(1, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2147483647),
+				},
 			},
 		},
 	}
