@@ -126,7 +126,6 @@ resource "iosxe_snmp_server" "example" {
         {
           security_level  = "priv"
           context_node    = "CON1"
-          match_node      = "exact"
           read_node       = "VIEW1"
           write_node      = "VIEW2"
           notify_node     = "VIEW3"

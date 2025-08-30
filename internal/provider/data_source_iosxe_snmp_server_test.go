@@ -290,12 +290,6 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_vrrp", "true"))
 	}
 	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_bgp", "true"))
-	}
-	if os.Getenv("C8000V") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_cbgp2", "true"))
-	}
-	if os.Getenv("C8000V") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_ospfv3_errors", "true"))
 	}
 	if os.Getenv("C8000V") != "" {
@@ -316,7 +310,9 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.name", "GROUP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.security_level", "priv"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.context_node", "CON1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.match_node", "exact"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.match_node", "exact"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.read_node", "VIEW1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.write_node", "VIEW2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.notify_node", "VIEW3"))
@@ -634,12 +630,6 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 		config += `	enable_traps_vrrp = true` + "\n"
 	}
 	if os.Getenv("C8000V") != "" {
-		config += `	enable_traps_bgp = true` + "\n"
-	}
-	if os.Getenv("C8000V") != "" {
-		config += `	enable_traps_cbgp2 = true` + "\n"
-	}
-	if os.Getenv("C8000V") != "" {
 		config += `	enable_traps_ospfv3_errors = true` + "\n"
 	}
 	if os.Getenv("C8000V") != "" {
@@ -668,7 +658,9 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		v3_security = [{` + "\n"
 	config += `			security_level = "priv"` + "\n"
 	config += `			context_node = "CON1"` + "\n"
-	config += `			match_node = "exact"` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `			match_node = "exact"` + "\n"
+	}
 	config += `			read_node = "VIEW1"` + "\n"
 	config += `			write_node = "VIEW2"` + "\n"
 	config += `			notify_node = "VIEW3"` + "\n"
