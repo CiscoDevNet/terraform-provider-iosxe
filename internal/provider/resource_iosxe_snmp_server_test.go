@@ -312,9 +312,6 @@ func TestAccIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.name", "GROUP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.security_level", "priv"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.context_node", "CON1"))
-	if os.Getenv("IOSXE1715") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.match_node", "exact"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.read_node", "VIEW1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.write_node", "VIEW2"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_snmp_server.test", "groups.0.v3_security.0.notify_node", "VIEW3"))
@@ -692,9 +689,6 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `		v3_security = [{` + "\n"
 	config += `			security_level = "priv"` + "\n"
 	config += `			context_node = "CON1"` + "\n"
-	if os.Getenv("IOSXE1715") != "" {
-		config += `			match_node = "exact"` + "\n"
-	}
 	config += `			read_node = "VIEW1"` + "\n"
 	config += `			write_node = "VIEW2"` + "\n"
 	config += `			notify_node = "VIEW3"` + "\n"

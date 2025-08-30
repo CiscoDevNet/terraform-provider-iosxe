@@ -870,7 +870,7 @@ attributes:
             example: CON1
           - yang_name: match-node
             example: exact
-            test_tags: [IOSXE1715]
+            exclude_test: true
           - yang_name: read-node
             example: VIEW1
           - yang_name: write-node
