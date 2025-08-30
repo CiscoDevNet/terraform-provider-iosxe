@@ -151,6 +151,7 @@ type System struct {
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
+	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
 }
 
 type SystemData struct {
@@ -267,6 +268,7 @@ type SystemData struct {
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
+	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -683,6 +685,9 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.Version.IsNull() && !data.Version.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"version", data.Version.ValueString())
+	}
+	if !data.IpMulticastRouteLimit.IsNull() && !data.IpMulticastRouteLimit.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit", strconv.FormatInt(data.IpMulticastRouteLimit.ValueInt64(), 10))
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1703,6 +1708,11 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Version = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() && !data.IpMulticastRouteLimit.IsNull() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
+	} else {
+		data.IpMulticastRouteLimit = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2205,6 +2215,9 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	}
 }
 
@@ -2709,6 +2722,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2717,6 +2733,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpMulticastRouteLimit.IsNull() && data.IpMulticastRouteLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", state.getPath()))
+	}
 	if !state.Version.IsNull() && data.Version.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/version", state.getPath()))
 	}
@@ -3434,6 +3453,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpMulticastRouteLimit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", data.getPath()))
+	}
 	if !data.Version.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))
 	}
