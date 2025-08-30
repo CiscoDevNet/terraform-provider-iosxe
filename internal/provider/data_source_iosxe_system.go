@@ -619,6 +619,10 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Version",
 				Computed:            true,
 			},
+			"ip_nbar_classification_dns_classify_by_domain": schema.BoolAttribute{
+				MarkdownDescription: "dns classification by domain",
+				Computed:            true,
+			},
 		},
 	}
 }

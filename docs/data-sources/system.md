@@ -83,6 +83,7 @@ data "iosxe_system" "example" {
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
 - `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)
 - `ip_name_servers_vrf` (Attributes List) (see [below for nested schema](#nestedatt--ip_name_servers_vrf))
+- `ip_nbar_classification_dns_classify_by_domain` (Boolean) dns classification by domain
 - `ip_radius_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_radius_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_radius_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z

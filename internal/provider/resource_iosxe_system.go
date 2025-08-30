@@ -740,6 +740,10 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Version").String,
 				Optional:            true,
 			},
+			"ip_nbar_classification_dns_classify_by_domain": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("dns classification by domain").String,
+				Optional:            true,
+			},
 		},
 	}
 }

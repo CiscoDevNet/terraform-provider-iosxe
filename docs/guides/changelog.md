@@ -28,6 +28,7 @@ description: |-
 - Add `cdp_enable`, `cdp_tlv_app`, `cdp_tlv_location`, `cdp_tlv_server_location`, `ip_nat_inside`, and `ip_nat_outside` attributes to `iosxe_interface_ethernet` resource and data source
 - Add `negotiation_auto` attribute to `iosxe_interface_port_channel` resource and data source
 - Add `ip_hosts`, `ip_hosts_vrf`, `name`, `ips`, `vrf`, `hosts`, `subscriber_templating`, `call_home_contact_email`, `call_home_cisco_tac_1_profile_active`, `call_home_cisco_tac_1_destination_transport_method`, `ip_ftp_passive`, `tftp_source_interface_gigabit_ethernet`, `tftp_source_interface_loopback`, `version`, and `multilink_ppp_bundle_name` attributes to `iosxe_system` resource and data source
+- Add `ip_nbar_classification_dns_classify_by_domain` attribute to `iosxe_system` resource and data source
 
 ## 0.7.1
 
