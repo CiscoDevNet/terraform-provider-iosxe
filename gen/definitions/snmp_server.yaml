@@ -870,7 +870,7 @@ attributes:
             example: CON1
           - yang_name: match-node
             example: exact
-            exclude_test: true
+            test_tags: [C9000V]
           - yang_name: read-node
             example: VIEW1
           - yang_name: write-node
@@ -889,7 +889,7 @@ attributes:
             xpath: access-config/acl-name
             tf_name: access_acl_name
             example: ACL1
-            test_tags: [IOSXE1712]
+            exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:user/names
     tf_name: users
     type: List

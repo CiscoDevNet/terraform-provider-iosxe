@@ -310,13 +310,13 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.name", "GROUP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.security_level", "priv"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.context_node", "CON1"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.match_node", "exact"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.read_node", "VIEW1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.write_node", "VIEW2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.notify_node", "VIEW3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.access_ipv6_acl", "V6ACL1"))
-	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "groups.0.v3_security.0.access_acl_name", "ACL1"))
-	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.username", "USER1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.grpname", "GROUP1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "users.0.v3_auth_algorithm", "sha"))
@@ -655,13 +655,13 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		v3_security = [{` + "\n"
 	config += `			security_level = "priv"` + "\n"
 	config += `			context_node = "CON1"` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `			match_node = "exact"` + "\n"
+	}
 	config += `			read_node = "VIEW1"` + "\n"
 	config += `			write_node = "VIEW2"` + "\n"
 	config += `			notify_node = "VIEW3"` + "\n"
 	config += `			access_ipv6_acl = "V6ACL1"` + "\n"
-	if os.Getenv("IOSXE1712") != "" {
-		config += `			access_acl_name = "ACL1"` + "\n"
-	}
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	users = [{` + "\n"
