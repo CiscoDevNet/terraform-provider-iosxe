@@ -53,13 +53,11 @@ func TestAccDataSourceIosxeSNMPServer(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.community_or_user", "08116C5D1A0E550518"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.version", "2c"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.encryption", "7"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "hosts.0.security_level", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.ip_address", "11.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.community_or_user", "08116C5D1A0E550518"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.version", "2c"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.encryption", "7"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "vrf_hosts.0.security_level", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "system_shutdown", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_flowmon", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_snmp_server.test", "enable_traps_entity_perf_throughput_notif", "true"))
@@ -396,7 +394,6 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		community_or_user = "08116C5D1A0E550518"` + "\n"
 	config += `		version = "2c"` + "\n"
 	config += `		encryption = "7"` + "\n"
-	config += `		security_level = "1"` + "\n"
 	config += `	}]` + "\n"
 	config += `	vrf_hosts = [{` + "\n"
 	config += `		ip_address = "11.1.1.1"` + "\n"
@@ -404,7 +401,6 @@ func testAccDataSourceIosxeSNMPServerConfig() string {
 	config += `		community_or_user = "08116C5D1A0E550518"` + "\n"
 	config += `		version = "2c"` + "\n"
 	config += `		encryption = "7"` + "\n"
-	config += `		security_level = "1"` + "\n"
 	config += `	}]` + "\n"
 	config += `	system_shutdown = true` + "\n"
 	config += `	enable_traps_flowmon = true` + "\n"

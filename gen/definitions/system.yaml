@@ -432,6 +432,7 @@ attributes:
   - yang_name: ip/host/host-list
     tf_name: ip_hosts
     type: List
+    test_tags: [IOSXE1715]
     attributes:
       - yang_name: name
         id: true

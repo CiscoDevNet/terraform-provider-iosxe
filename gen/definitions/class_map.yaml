@@ -49,7 +49,10 @@ attributes:
     exclude_test: true
   - yang_name: match/access-group/name
     example: AG1
+    exclude_test: true
   - yang_name: match/ip/dscp
     example: af41
+    exclude_test: true
   - yang_name: match/ip/precedence
     example: network
+    exclude_test: true

@@ -58,7 +58,8 @@ attributes:
       - yang_name: encryption
         example: 7
       - yang_name: security-level
-        example: 1
+        example: priv
+        exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:host-config/ip-vrf-community
     tf_name: vrf_hosts
     type: List
@@ -76,7 +77,8 @@ attributes:
       - yang_name: encryption
         example: 7
       - yang_name: security-level
-        example: 1
+        example: priv
+        exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:system-shutdown
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/flowmon

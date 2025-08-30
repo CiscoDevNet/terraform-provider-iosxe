@@ -18,7 +18,6 @@ resource "iosxe_snmp_server" "example" {
       community_or_user = "08116C5D1A0E550518"
       version           = "2c"
       encryption        = "7"
-      security_level    = "1"
     }
   ]
   vrf_hosts = [
@@ -28,7 +27,6 @@ resource "iosxe_snmp_server" "example" {
       community_or_user = "08116C5D1A0E550518"
       version           = "2c"
       encryption        = "7"
-      security_level    = "1"
     }
   ]
   system_shutdown                           = true
