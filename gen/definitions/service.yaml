@@ -68,3 +68,5 @@ attributes:
     example: true
   - yang_name: call-home
     example: true
+  - yang_name: dhcp-config
+    example: true

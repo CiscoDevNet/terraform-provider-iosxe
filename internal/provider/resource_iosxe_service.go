@@ -171,6 +171,10 @@ func (r *ServiceResource) Schema(ctx context.Context, req resource.SchemaRequest
 				MarkdownDescription: helpers.NewAttributeDescription("Enable call-home service").String,
 				Optional:            true,
 			},
+			"dhcp_config": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable DHCP server and relay agent").String,
+				Optional:            true,
+			},
 		},
 	}
 }

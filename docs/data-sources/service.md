@@ -29,6 +29,7 @@ data "iosxe_service" "example" {
 - `call_home` (Boolean) Enable call-home service
 - `compress_config` (Boolean) Compress the configuration file
 - `dhcp` (Boolean) Enable DHCP server and relay agent
+- `dhcp_config` (Boolean) Enable DHCP server and relay agent
 - `id` (String) The path of the retrieved object.
 - `pad` (Boolean) Enable PAD commands
 - `password_encryption` (Boolean) Encrypt system passwords

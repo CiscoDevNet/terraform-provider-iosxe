@@ -38,6 +38,7 @@ resource "iosxe_service" "example" {
   compress_config                         = true
   sequence_numbers                        = true
   call_home                               = true
+  dhcp_config                             = true
 }
 ```
 
@@ -50,6 +51,7 @@ resource "iosxe_service" "example" {
 - `compress_config` (Boolean) Compress the configuration file
 - `device` (String) A device name from the provider configuration.
 - `dhcp` (Boolean) Enable DHCP server and relay agent
+- `dhcp_config` (Boolean) Enable DHCP server and relay agent
 - `pad` (Boolean) Enable PAD commands
 - `password_encryption` (Boolean) Encrypt system passwords
 - `password_recovery` (Boolean) Enable password recovery

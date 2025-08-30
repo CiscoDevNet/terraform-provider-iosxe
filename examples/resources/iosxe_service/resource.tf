@@ -23,4 +23,5 @@ resource "iosxe_service" "example" {
   compress_config                         = true
   sequence_numbers                        = true
   call_home                               = true
+  dhcp_config                             = true
 }

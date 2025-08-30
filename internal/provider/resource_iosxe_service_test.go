@@ -58,6 +58,7 @@ func TestAccIosxeService(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service.test", "compress_config", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service.test", "sequence_numbers", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service.test", "call_home", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_service.test", "dhcp_config", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -135,6 +136,7 @@ func testAccIosxeServiceConfig_all() string {
 	config += `	compress_config = true` + "\n"
 	config += `	sequence_numbers = true` + "\n"
 	config += `	call_home = true` + "\n"
+	config += `	dhcp_config = true` + "\n"
 	config += `}` + "\n"
 	return config
 }

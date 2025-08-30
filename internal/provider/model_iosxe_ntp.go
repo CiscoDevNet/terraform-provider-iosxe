@@ -137,6 +137,9 @@ type NTPServerVrfsServers struct {
 	Key       types.Int64  `tfsdk:"key"`
 	Prefer    types.Bool   `tfsdk:"prefer"`
 	Version   types.Int64  `tfsdk:"version"`
+	Burst     types.Bool   `tfsdk:"burst"`
+	Iburst    types.Bool   `tfsdk:"iburst"`
+	Periodic  types.Bool   `tfsdk:"periodic"`
 }
 type NTPPeerVrfsPeers struct {
 	IpAddress types.String `tfsdk:"ip_address"`
@@ -314,6 +317,21 @@ func (data NTP) toBody(ctx context.Context) string {
 					}
 					if !citem.Version.IsNull() && !citem.Version.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:server.vrf"+"."+strconv.Itoa(index)+"."+"server-list"+"."+strconv.Itoa(cindex)+"."+"version", strconv.FormatInt(citem.Version.ValueInt64(), 10))
+					}
+					if !citem.Burst.IsNull() && !citem.Burst.IsUnknown() {
+						if citem.Burst.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:server.vrf"+"."+strconv.Itoa(index)+"."+"server-list"+"."+strconv.Itoa(cindex)+"."+"burst-opt", map[string]string{})
+						}
+					}
+					if !citem.Iburst.IsNull() && !citem.Iburst.IsUnknown() {
+						if citem.Iburst.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:server.vrf"+"."+strconv.Itoa(index)+"."+"server-list"+"."+strconv.Itoa(cindex)+"."+"iburst-opt", map[string]string{})
+						}
+					}
+					if !citem.Periodic.IsNull() && !citem.Periodic.IsUnknown() {
+						if citem.Periodic.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:server.vrf"+"."+strconv.Itoa(index)+"."+"server-list"+"."+strconv.Itoa(cindex)+"."+"periodic", map[string]string{})
+						}
 					}
 				}
 			}
@@ -695,6 +713,33 @@ func (data *NTP) updateFromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				data.ServerVrfs[i].Servers[ci].Version = types.Int64Null()
 			}
+			if value := cr.Get("burst-opt"); !data.ServerVrfs[i].Servers[ci].Burst.IsNull() {
+				if value.Exists() {
+					data.ServerVrfs[i].Servers[ci].Burst = types.BoolValue(true)
+				} else {
+					data.ServerVrfs[i].Servers[ci].Burst = types.BoolValue(false)
+				}
+			} else {
+				data.ServerVrfs[i].Servers[ci].Burst = types.BoolNull()
+			}
+			if value := cr.Get("iburst-opt"); !data.ServerVrfs[i].Servers[ci].Iburst.IsNull() {
+				if value.Exists() {
+					data.ServerVrfs[i].Servers[ci].Iburst = types.BoolValue(true)
+				} else {
+					data.ServerVrfs[i].Servers[ci].Iburst = types.BoolValue(false)
+				}
+			} else {
+				data.ServerVrfs[i].Servers[ci].Iburst = types.BoolNull()
+			}
+			if value := cr.Get("periodic"); !data.ServerVrfs[i].Servers[ci].Periodic.IsNull() {
+				if value.Exists() {
+					data.ServerVrfs[i].Servers[ci].Periodic = types.BoolValue(true)
+				} else {
+					data.ServerVrfs[i].Servers[ci].Periodic = types.BoolValue(false)
+				}
+			} else {
+				data.ServerVrfs[i].Servers[ci].Periodic = types.BoolNull()
+			}
 		}
 	}
 	for i := range data.Peers {
@@ -1016,6 +1061,21 @@ func (data *NTP) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("version"); ccValue.Exists() {
 						cItem.Version = types.Int64Value(ccValue.Int())
 					}
+					if ccValue := cv.Get("burst-opt"); ccValue.Exists() {
+						cItem.Burst = types.BoolValue(true)
+					} else {
+						cItem.Burst = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("iburst-opt"); ccValue.Exists() {
+						cItem.Iburst = types.BoolValue(true)
+					} else {
+						cItem.Iburst = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("periodic"); ccValue.Exists() {
+						cItem.Periodic = types.BoolValue(true)
+					} else {
+						cItem.Periodic = types.BoolValue(false)
+					}
 					item.Servers = append(item.Servers, cItem)
 					return true
 				})
@@ -1252,6 +1312,21 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 					}
 					if ccValue := cv.Get("version"); ccValue.Exists() {
 						cItem.Version = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("burst-opt"); ccValue.Exists() {
+						cItem.Burst = types.BoolValue(true)
+					} else {
+						cItem.Burst = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("iburst-opt"); ccValue.Exists() {
+						cItem.Iburst = types.BoolValue(true)
+					} else {
+						cItem.Iburst = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("periodic"); ccValue.Exists() {
+						cItem.Periodic = types.BoolValue(true)
+					} else {
+						cItem.Periodic = types.BoolValue(false)
 					}
 					item.Servers = append(item.Servers, cItem)
 					return true
@@ -1495,6 +1570,15 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 							found = false
 						}
 						if found {
+							if !state.ServerVrfs[i].Servers[ci].Periodic.IsNull() && data.ServerVrfs[j].Servers[cj].Periodic.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/periodic", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ServerVrfs[i].Servers[ci].Iburst.IsNull() && data.ServerVrfs[j].Servers[cj].Iburst.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/iburst-opt", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.ServerVrfs[i].Servers[ci].Burst.IsNull() && data.ServerVrfs[j].Servers[cj].Burst.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/burst-opt", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							if !state.ServerVrfs[i].Servers[ci].Version.IsNull() && data.ServerVrfs[j].Servers[cj].Version.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
@@ -1692,6 +1776,15 @@ func (data *NTP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 		for ci := range data.ServerVrfs[i].Servers {
 			ckeyValues := [...]string{data.ServerVrfs[i].Servers[ci].IpAddress.ValueString()}
+			if !data.ServerVrfs[i].Servers[ci].Periodic.IsNull() && !data.ServerVrfs[i].Servers[ci].Periodic.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/periodic", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ServerVrfs[i].Servers[ci].Iburst.IsNull() && !data.ServerVrfs[i].Servers[ci].Iburst.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/iburst-opt", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.ServerVrfs[i].Servers[ci].Burst.IsNull() && !data.ServerVrfs[i].Servers[ci].Burst.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/burst-opt", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
 			if !data.ServerVrfs[i].Servers[ci].Prefer.IsNull() && !data.ServerVrfs[i].Servers[ci].Prefer.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/vrf=%v/server-list=%v/prefer", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
