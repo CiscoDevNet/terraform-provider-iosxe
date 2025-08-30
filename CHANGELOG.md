@@ -20,6 +20,7 @@
 - Add `negotiation_auto` attribute to `iosxe_interface_port_channel` resource and data source
 - Add `ip_hosts`, `ip_hosts_vrf`, `name`, `ips`, `vrf`, `hosts`, `subscriber_templating`, `call_home_contact_email`, `call_home_cisco_tac_1_profile_active`, `call_home_cisco_tac_1_destination_transport_method`, `ip_ftp_passive`, `tftp_source_interface_gigabit_ethernet`, `tftp_source_interface_loopback`, `version`, and `multilink_ppp_bundle_name` attributes to `iosxe_system` resource and data source
 
+- Add `inside_source_interface_lists`,`id`,`interfaces`,`interface`, and `overload` to `iosxe_nat` resource and data source
 ## 0.7.1
 
 - Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`
