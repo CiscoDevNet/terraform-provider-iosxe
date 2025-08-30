@@ -28,6 +28,8 @@ description: |-
 - Add `cdp_enable`, `cdp_tlv_app`, `cdp_tlv_location`, `cdp_tlv_server_location`, `ip_nat_inside`, and `ip_nat_outside` attributes to `iosxe_interface_ethernet` resource and data source
 - Add `negotiation_auto` attribute to `iosxe_interface_port_channel` resource and data source
 - Add `ip_hosts`, `ip_hosts_vrf`, `name`, `ips`, `vrf`, `hosts`, `subscriber_templating`, `call_home_contact_email`, `call_home_cisco_tac_1_profile_active`, `call_home_cisco_tac_1_destination_transport_method`, `ip_ftp_passive`, `tftp_source_interface_gigabit_ethernet`, `tftp_source_interface_loopback`, `version`, and `multilink_ppp_bundle_name` attributes to `iosxe_system` resource and data source
+- Add `session_timeout`, `stopbits`, `first`, `exec_timeout_minutes`, `exec_timeout_seconds`, `monitor`, `escape_character`, `logging_synchronous`, `transport_output_all`, `transport_output_none`, and `transport_output` attributes for console, aux and vty to `iosxe_line` resource and data source
+- Add `console` attribute to `iosxe_logging` resource and data source
 
 ## 0.7.1
 

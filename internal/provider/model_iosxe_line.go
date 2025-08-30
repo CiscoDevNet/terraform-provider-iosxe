@@ -43,6 +43,7 @@ type Line struct {
 	DeleteMode types.String  `tfsdk:"delete_mode"`
 	Console    []LineConsole `tfsdk:"console"`
 	Vty        []LineVty     `tfsdk:"vty"`
+	Aux        []LineAux     `tfsdk:"aux"`
 }
 
 type LineData struct {
@@ -50,6 +51,7 @@ type LineData struct {
 	Id      types.String  `tfsdk:"id"`
 	Console []LineConsole `tfsdk:"console"`
 	Vty     []LineVty     `tfsdk:"vty"`
+	Aux     []LineAux     `tfsdk:"aux"`
 }
 type LineConsole struct {
 	First               types.String `tfsdk:"first"`
@@ -62,6 +64,11 @@ type LineConsole struct {
 	PasswordLevel       types.Int64  `tfsdk:"password_level"`
 	PasswordType        types.String `tfsdk:"password_type"`
 	Password            types.String `tfsdk:"password"`
+	EscapeCharacter     types.String `tfsdk:"escape_character"`
+	LoggingSynchronous  types.Bool   `tfsdk:"logging_synchronous"`
+	TransportOutputAll  types.Bool   `tfsdk:"transport_output_all"`
+	TransportOutputNone types.Bool   `tfsdk:"transport_output_none"`
+	TransportOutput     types.List   `tfsdk:"transport_output"`
 }
 type LineVty struct {
 	First                      types.Int64            `tfsdk:"first"`
@@ -80,6 +87,22 @@ type LineVty struct {
 	TransportInputAll          types.Bool             `tfsdk:"transport_input_all"`
 	TransportInputNone         types.Bool             `tfsdk:"transport_input_none"`
 	TransportInput             types.List             `tfsdk:"transport_input"`
+	Monitor                    types.Bool             `tfsdk:"monitor"`
+	SessionTimeout             types.Int64            `tfsdk:"session_timeout"`
+	Stopbits                   types.String           `tfsdk:"stopbits"`
+	LoggingSynchronous         types.Bool             `tfsdk:"logging_synchronous"`
+	TransportOutputAll         types.Bool             `tfsdk:"transport_output_all"`
+	TransportOutputNone        types.Bool             `tfsdk:"transport_output_none"`
+	TransportOutput            types.List             `tfsdk:"transport_output"`
+}
+type LineAux struct {
+	First               types.String `tfsdk:"first"`
+	EscapeCharacter     types.String `tfsdk:"escape_character"`
+	LoggingSynchronous  types.Bool   `tfsdk:"logging_synchronous"`
+	ExecTimeoutMinutes  types.Int64  `tfsdk:"exec_timeout_minutes"`
+	ExecTimeoutSeconds  types.Int64  `tfsdk:"exec_timeout_seconds"`
+	Monitor             types.Bool   `tfsdk:"monitor"`
+	TransportOutputNone types.Bool   `tfsdk:"transport_output_none"`
 }
 type LineVtyAccessClasses struct {
 	Direction  types.String `tfsdk:"direction"`
@@ -151,6 +174,29 @@ func (data Line) toBody(ctx context.Context) string {
 			if !item.Password.IsNull() && !item.Password.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"password.secret", item.Password.ValueString())
 			}
+			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"escape-character.char", item.EscapeCharacter.ValueString())
+			}
+			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
+				if item.LoggingSynchronous.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"logging.synchronous", map[string]string{})
+				}
+			}
+			if !item.TransportOutputAll.IsNull() && !item.TransportOutputAll.IsUnknown() {
+				if item.TransportOutputAll.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"transport.output.all", map[string]string{})
+				}
+			}
+			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
+				if item.TransportOutputNone.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"transport.output.none", map[string]string{})
+				}
+			}
+			if !item.TransportOutput.IsNull() && !item.TransportOutput.IsUnknown() {
+				var values []string
+				item.TransportOutput.ElementsAs(ctx, &values, false)
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console"+"."+strconv.Itoa(index)+"."+"transport.output.output", values)
+			}
 		}
 	}
 	if len(data.Vty) > 0 {
@@ -209,6 +255,37 @@ func (data Line) toBody(ctx context.Context) string {
 				item.TransportInput.ElementsAs(ctx, &values, false)
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.input.input", values)
 			}
+			if !item.Monitor.IsNull() && !item.Monitor.IsUnknown() {
+				if item.Monitor.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"monitor", map[string]string{})
+				}
+			}
+			if !item.SessionTimeout.IsNull() && !item.SessionTimeout.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"session-timeout.session-timeout-value", strconv.FormatInt(item.SessionTimeout.ValueInt64(), 10))
+			}
+			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"stopbits", item.Stopbits.ValueString())
+			}
+			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
+				if item.LoggingSynchronous.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"logging.synchronous", map[string]string{})
+				}
+			}
+			if !item.TransportOutputAll.IsNull() && !item.TransportOutputAll.IsUnknown() {
+				if item.TransportOutputAll.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.output.all", map[string]string{})
+				}
+			}
+			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
+				if item.TransportOutputNone.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.output.none", map[string]string{})
+				}
+			}
+			if !item.TransportOutput.IsNull() && !item.TransportOutput.IsUnknown() {
+				var values []string
+				item.TransportOutput.ElementsAs(ctx, &values, false)
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"transport.output.output", values)
+			}
 			if len(item.AccessClasses) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"access-class.acccess-list", []interface{}{})
 				for cindex, citem := range item.AccessClasses {
@@ -223,6 +300,38 @@ func (data Line) toBody(ctx context.Context) string {
 							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vty"+"."+strconv.Itoa(index)+"."+"access-class.acccess-list"+"."+strconv.Itoa(cindex)+"."+"vrf-also", map[string]string{})
 						}
 					}
+				}
+			}
+		}
+	}
+	if len(data.Aux) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux", []interface{}{})
+		for index, item := range data.Aux {
+			if !item.First.IsNull() && !item.First.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"first", item.First.ValueString())
+			}
+			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"escape-character.char", item.EscapeCharacter.ValueString())
+			}
+			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
+				if item.LoggingSynchronous.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"logging.synchronous", map[string]string{})
+				}
+			}
+			if !item.ExecTimeoutMinutes.IsNull() && !item.ExecTimeoutMinutes.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"exec-timeout.minutes", strconv.FormatInt(item.ExecTimeoutMinutes.ValueInt64(), 10))
+			}
+			if !item.ExecTimeoutSeconds.IsNull() && !item.ExecTimeoutSeconds.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"exec-timeout.seconds", strconv.FormatInt(item.ExecTimeoutSeconds.ValueInt64(), 10))
+			}
+			if !item.Monitor.IsNull() && !item.Monitor.IsUnknown() {
+				if item.Monitor.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"monitor", map[string]string{})
+				}
+			}
+			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
+				if item.TransportOutputNone.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"aux"+"."+strconv.Itoa(index)+"."+"transport.output.none", map[string]string{})
 				}
 			}
 		}
@@ -315,6 +424,43 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Console[i].Password = types.StringValue(value.String())
 		} else {
 			data.Console[i].Password = types.StringNull()
+		}
+		if value := r.Get("escape-character.char"); value.Exists() && !data.Console[i].EscapeCharacter.IsNull() {
+			data.Console[i].EscapeCharacter = types.StringValue(value.String())
+		} else {
+			data.Console[i].EscapeCharacter = types.StringNull()
+		}
+		if value := r.Get("logging.synchronous"); !data.Console[i].LoggingSynchronous.IsNull() {
+			if value.Exists() {
+				data.Console[i].LoggingSynchronous = types.BoolValue(true)
+			} else {
+				data.Console[i].LoggingSynchronous = types.BoolValue(false)
+			}
+		} else {
+			data.Console[i].LoggingSynchronous = types.BoolNull()
+		}
+		if value := r.Get("transport.output.all"); !data.Console[i].TransportOutputAll.IsNull() {
+			if value.Exists() {
+				data.Console[i].TransportOutputAll = types.BoolValue(true)
+			} else {
+				data.Console[i].TransportOutputAll = types.BoolValue(false)
+			}
+		} else {
+			data.Console[i].TransportOutputAll = types.BoolNull()
+		}
+		if value := r.Get("transport.output.none"); !data.Console[i].TransportOutputNone.IsNull() {
+			if value.Exists() {
+				data.Console[i].TransportOutputNone = types.BoolValue(true)
+			} else {
+				data.Console[i].TransportOutputNone = types.BoolValue(false)
+			}
+		} else {
+			data.Console[i].TransportOutputNone = types.BoolNull()
+		}
+		if value := r.Get("transport.output.output"); value.Exists() && !data.Console[i].TransportOutput.IsNull() {
+			data.Console[i].TransportOutput = helpers.GetStringList(value.Array())
+		} else {
+			data.Console[i].TransportOutput = types.ListNull(types.StringType)
 		}
 	}
 	for i := range data.Vty {
@@ -470,6 +616,128 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Vty[i].TransportInput = types.ListNull(types.StringType)
 		}
+		if value := r.Get("monitor"); !data.Vty[i].Monitor.IsNull() {
+			if value.Exists() {
+				data.Vty[i].Monitor = types.BoolValue(true)
+			} else {
+				data.Vty[i].Monitor = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].Monitor = types.BoolNull()
+		}
+		if value := r.Get("session-timeout.session-timeout-value"); value.Exists() && !data.Vty[i].SessionTimeout.IsNull() {
+			data.Vty[i].SessionTimeout = types.Int64Value(value.Int())
+		} else {
+			data.Vty[i].SessionTimeout = types.Int64Null()
+		}
+		if value := r.Get("stopbits"); value.Exists() && !data.Vty[i].Stopbits.IsNull() {
+			data.Vty[i].Stopbits = types.StringValue(value.String())
+		} else {
+			data.Vty[i].Stopbits = types.StringNull()
+		}
+		if value := r.Get("logging.synchronous"); !data.Vty[i].LoggingSynchronous.IsNull() {
+			if value.Exists() {
+				data.Vty[i].LoggingSynchronous = types.BoolValue(true)
+			} else {
+				data.Vty[i].LoggingSynchronous = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].LoggingSynchronous = types.BoolNull()
+		}
+		if value := r.Get("transport.output.all"); !data.Vty[i].TransportOutputAll.IsNull() {
+			if value.Exists() {
+				data.Vty[i].TransportOutputAll = types.BoolValue(true)
+			} else {
+				data.Vty[i].TransportOutputAll = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].TransportOutputAll = types.BoolNull()
+		}
+		if value := r.Get("transport.output.none"); !data.Vty[i].TransportOutputNone.IsNull() {
+			if value.Exists() {
+				data.Vty[i].TransportOutputNone = types.BoolValue(true)
+			} else {
+				data.Vty[i].TransportOutputNone = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].TransportOutputNone = types.BoolNull()
+		}
+		if value := r.Get("transport.output.output"); value.Exists() && !data.Vty[i].TransportOutput.IsNull() {
+			data.Vty[i].TransportOutput = helpers.GetStringList(value.Array())
+		} else {
+			data.Vty[i].TransportOutput = types.ListNull(types.StringType)
+		}
+	}
+	for i := range data.Aux {
+		keys := [...]string{"first"}
+		keyValues := [...]string{data.Aux[i].First.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "aux").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("first"); value.Exists() && !data.Aux[i].First.IsNull() {
+			data.Aux[i].First = types.StringValue(value.String())
+		} else {
+			data.Aux[i].First = types.StringNull()
+		}
+		if value := r.Get("escape-character.char"); value.Exists() && !data.Aux[i].EscapeCharacter.IsNull() {
+			data.Aux[i].EscapeCharacter = types.StringValue(value.String())
+		} else {
+			data.Aux[i].EscapeCharacter = types.StringNull()
+		}
+		if value := r.Get("logging.synchronous"); !data.Aux[i].LoggingSynchronous.IsNull() {
+			if value.Exists() {
+				data.Aux[i].LoggingSynchronous = types.BoolValue(true)
+			} else {
+				data.Aux[i].LoggingSynchronous = types.BoolValue(false)
+			}
+		} else {
+			data.Aux[i].LoggingSynchronous = types.BoolNull()
+		}
+		if value := r.Get("exec-timeout.minutes"); value.Exists() && !data.Aux[i].ExecTimeoutMinutes.IsNull() {
+			data.Aux[i].ExecTimeoutMinutes = types.Int64Value(value.Int())
+		} else {
+			data.Aux[i].ExecTimeoutMinutes = types.Int64Null()
+		}
+		if value := r.Get("exec-timeout.seconds"); value.Exists() && !data.Aux[i].ExecTimeoutSeconds.IsNull() {
+			data.Aux[i].ExecTimeoutSeconds = types.Int64Value(value.Int())
+		} else {
+			data.Aux[i].ExecTimeoutSeconds = types.Int64Null()
+		}
+		if value := r.Get("monitor"); !data.Aux[i].Monitor.IsNull() {
+			if value.Exists() {
+				data.Aux[i].Monitor = types.BoolValue(true)
+			} else {
+				data.Aux[i].Monitor = types.BoolValue(false)
+			}
+		} else {
+			data.Aux[i].Monitor = types.BoolNull()
+		}
+		if value := r.Get("transport.output.none"); !data.Aux[i].TransportOutputNone.IsNull() {
+			if value.Exists() {
+				data.Aux[i].TransportOutputNone = types.BoolValue(true)
+			} else {
+				data.Aux[i].TransportOutputNone = types.BoolValue(false)
+			}
+		} else {
+			data.Aux[i].TransportOutputNone = types.BoolNull()
+		}
 	}
 }
 
@@ -517,6 +785,29 @@ func (data *Line) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("password.secret"); cValue.Exists() {
 				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("escape-character.char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("logging.synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.all"); cValue.Exists() {
+				item.TransportOutputAll = types.BoolValue(true)
+			} else {
+				item.TransportOutputAll = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.output"); cValue.Exists() {
+				item.TransportOutput = helpers.GetStringList(cValue.Array())
+			} else {
+				item.TransportOutput = types.ListNull(types.StringType)
 			}
 			data.Console = append(data.Console, item)
 			return true
@@ -598,7 +889,73 @@ func (data *Line) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.TransportInput = types.ListNull(types.StringType)
 			}
+			if cValue := v.Get("monitor"); cValue.Exists() {
+				item.Monitor = types.BoolValue(true)
+			} else {
+				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := v.Get("session-timeout.session-timeout-value"); cValue.Exists() {
+				item.SessionTimeout = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("logging.synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.all"); cValue.Exists() {
+				item.TransportOutputAll = types.BoolValue(true)
+			} else {
+				item.TransportOutputAll = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.output"); cValue.Exists() {
+				item.TransportOutput = helpers.GetStringList(cValue.Array())
+			} else {
+				item.TransportOutput = types.ListNull(types.StringType)
+			}
 			data.Vty = append(data.Vty, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "aux"); value.Exists() {
+		data.Aux = make([]LineAux, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LineAux{}
+			if cValue := v.Get("first"); cValue.Exists() {
+				item.First = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("escape-character.char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("logging.synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := v.Get("exec-timeout.minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("exec-timeout.seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("monitor"); cValue.Exists() {
+				item.Monitor = types.BoolValue(true)
+			} else {
+				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			data.Aux = append(data.Aux, item)
 			return true
 		})
 	}
@@ -649,6 +1006,29 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("password.secret"); cValue.Exists() {
 				item.Password = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("escape-character.char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("logging.synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.all"); cValue.Exists() {
+				item.TransportOutputAll = types.BoolValue(true)
+			} else {
+				item.TransportOutputAll = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.output"); cValue.Exists() {
+				item.TransportOutput = helpers.GetStringList(cValue.Array())
+			} else {
+				item.TransportOutput = types.ListNull(types.StringType)
+			}
 			data.Console = append(data.Console, item)
 			return true
 		})
@@ -729,7 +1109,73 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.TransportInput = types.ListNull(types.StringType)
 			}
+			if cValue := v.Get("monitor"); cValue.Exists() {
+				item.Monitor = types.BoolValue(true)
+			} else {
+				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := v.Get("session-timeout.session-timeout-value"); cValue.Exists() {
+				item.SessionTimeout = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("logging.synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.all"); cValue.Exists() {
+				item.TransportOutputAll = types.BoolValue(true)
+			} else {
+				item.TransportOutputAll = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.output"); cValue.Exists() {
+				item.TransportOutput = helpers.GetStringList(cValue.Array())
+			} else {
+				item.TransportOutput = types.ListNull(types.StringType)
+			}
 			data.Vty = append(data.Vty, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "aux"); value.Exists() {
+		data.Aux = make([]LineAux, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := LineAux{}
+			if cValue := v.Get("first"); cValue.Exists() {
+				item.First = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("escape-character.char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("logging.synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := v.Get("exec-timeout.minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("exec-timeout.seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("monitor"); cValue.Exists() {
+				item.Monitor = types.BoolValue(true)
+			} else {
+				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := v.Get("transport.output.none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			data.Aux = append(data.Aux, item)
 			return true
 		})
 	}
@@ -741,6 +1187,49 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Aux {
+		stateKeyValues := [...]string{state.Aux[i].First.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Aux[i].First.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Aux {
+			found = true
+			if state.Aux[i].First.ValueString() != data.Aux[j].First.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Aux[i].TransportOutputNone.IsNull() && data.Aux[j].TransportOutputNone.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/transport/output/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Aux[i].Monitor.IsNull() && data.Aux[j].Monitor.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/monitor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Aux[i].ExecTimeoutSeconds.IsNull() && data.Aux[j].ExecTimeoutSeconds.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/exec-timeout/seconds", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Aux[i].ExecTimeoutMinutes.IsNull() && data.Aux[j].ExecTimeoutMinutes.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/exec-timeout/minutes", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Aux[i].LoggingSynchronous.IsNull() && data.Aux[j].LoggingSynchronous.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/logging/synchronous", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Aux[i].EscapeCharacter.IsNull() && data.Aux[j].EscapeCharacter.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v/escape-character/char", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/aux=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.Vty {
 		stateKeyValues := [...]string{strconv.FormatInt(state.Vty[i].First.ValueInt64(), 10)}
 
@@ -759,6 +1248,45 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 				found = false
 			}
 			if found {
+				if !state.Vty[i].TransportOutput.IsNull() {
+					if data.Vty[j].TransportOutput.IsNull() {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/output/output", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					} else {
+						var dataValues, stateValues []string
+						data.Vty[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/output/output=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+							}
+						}
+					}
+				}
+				if !state.Vty[i].TransportOutputNone.IsNull() && data.Vty[j].TransportOutputNone.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/output/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].TransportOutputAll.IsNull() && data.Vty[j].TransportOutputAll.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/output/all", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].LoggingSynchronous.IsNull() && data.Vty[j].LoggingSynchronous.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/logging/synchronous", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].Stopbits.IsNull() && data.Vty[j].Stopbits.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/stopbits", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].SessionTimeout.IsNull() && data.Vty[j].SessionTimeout.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/session-timeout/session-timeout-value", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vty[i].Monitor.IsNull() && data.Vty[j].Monitor.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/monitor", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Vty[i].TransportInput.IsNull() {
 					if data.Vty[j].TransportInput.IsNull() {
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/vty=%v/transport/input/input", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -875,6 +1403,39 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 				found = false
 			}
 			if found {
+				if !state.Console[i].TransportOutput.IsNull() {
+					if data.Console[j].TransportOutput.IsNull() {
+						deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/transport/output/output", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					} else {
+						var dataValues, stateValues []string
+						data.Console[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Console[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/transport/output/output=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), v))
+							}
+						}
+					}
+				}
+				if !state.Console[i].TransportOutputNone.IsNull() && data.Console[j].TransportOutputNone.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/transport/output/none", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].TransportOutputAll.IsNull() && data.Console[j].TransportOutputAll.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/transport/output/all", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].LoggingSynchronous.IsNull() && data.Console[j].LoggingSynchronous.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/logging/synchronous", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Console[i].EscapeCharacter.IsNull() && data.Console[j].EscapeCharacter.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/escape-character/char", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Console[i].Password.IsNull() && data.Console[j].Password.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/console=%v/password/secret", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -920,8 +1481,33 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	for i := range data.Aux {
+		keyValues := [...]string{data.Aux[i].First.ValueString()}
+		if !data.Aux[i].TransportOutputNone.IsNull() && !data.Aux[i].TransportOutputNone.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/aux=%v/transport/output/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Aux[i].Monitor.IsNull() && !data.Aux[i].Monitor.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/aux=%v/monitor", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Aux[i].LoggingSynchronous.IsNull() && !data.Aux[i].LoggingSynchronous.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/aux=%v/logging/synchronous", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+	}
+
 	for i := range data.Vty {
 		keyValues := [...]string{strconv.FormatInt(data.Vty[i].First.ValueInt64(), 10)}
+		if !data.Vty[i].TransportOutputNone.IsNull() && !data.Vty[i].TransportOutputNone.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/output/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vty[i].TransportOutputAll.IsNull() && !data.Vty[i].TransportOutputAll.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/output/all", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vty[i].LoggingSynchronous.IsNull() && !data.Vty[i].LoggingSynchronous.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/logging/synchronous", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Vty[i].Monitor.IsNull() && !data.Vty[i].Monitor.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/monitor", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 		if !data.Vty[i].TransportInputNone.IsNull() && !data.Vty[i].TransportInputNone.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/vty=%v/transport/input/none", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
@@ -942,6 +1528,15 @@ func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.Console {
 		keyValues := [...]string{data.Console[i].First.ValueString()}
+		if !data.Console[i].TransportOutputNone.IsNull() && !data.Console[i].TransportOutputNone.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/console=%v/transport/output/none", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Console[i].TransportOutputAll.IsNull() && !data.Console[i].TransportOutputAll.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/console=%v/transport/output/all", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Console[i].LoggingSynchronous.IsNull() && !data.Console[i].LoggingSynchronous.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/console=%v/logging/synchronous", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 		if !data.Console[i].LoginLocal.IsNull() && !data.Console[i].LoginLocal.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/console=%v/login/local", data.getPath(), strings.Join(keyValues[:], ",")))
 		}

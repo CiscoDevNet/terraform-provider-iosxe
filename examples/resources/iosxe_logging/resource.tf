@@ -10,6 +10,7 @@ resource "iosxe_logging" "example" {
   trap_severity     = "informational"
   origin_id_type    = "hostname"
   source_interface  = "Loopback0"
+  console           = true
   source_interfaces_vrf = [
     {
       vrf            = "VRF1"

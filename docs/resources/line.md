@@ -23,6 +23,7 @@ resource "iosxe_line" "example" {
       stopbits             = "1"
       password_type        = "0"
       password             = "testpasswd"
+      logging_synchronous  = true
     }
   ]
   vty = [
@@ -41,9 +42,11 @@ resource "iosxe_line" "example" {
       password_type                = "0"
       password                     = "testpasswd"
       transport_preferred_protocol = "none"
-      escape_character             = "27"
+      escape_character             = "BREAK"
       authorization_exec_default   = true
       transport_input              = ["ssh"]
+      monitor                      = true
+      logging_synchronous          = true
     }
   ]
 }
@@ -54,6 +57,7 @@ resource "iosxe_line" "example" {
 
 ### Optional
 
+- `aux` (Attributes List) Auxiliary line (see [below for nested schema](#nestedatt--aux))
 - `console` (Attributes List) Primary terminal line (see [below for nested schema](#nestedatt--console))
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
@@ -63,6 +67,26 @@ resource "iosxe_line" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--aux"></a>
+### Nested Schema for `aux`
+
+Required:
+
+- `first` (String) Auxiliary line number
+  - Choices: `0`
+
+Optional:
+
+- `escape_character` (String)
+- `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
+  - Range: `0`-`35791`
+- `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
+  - Range: `0`-`2147483`
+- `logging_synchronous` (Boolean) Synchronized message output
+- `monitor` (Boolean) Copy debug output to the current terminal line
+- `transport_output_none` (Boolean) Define no transport protocols for line
+
 
 <a id="nestedatt--console"></a>
 ### Nested Schema for `console`
@@ -74,10 +98,12 @@ Required:
 
 Optional:
 
+- `escape_character` (String)
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
   - Range: `0`-`35791`
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
   - Range: `0`-`2147483`
+- `logging_synchronous` (Boolean) Synchronized message output
 - `login_authentication` (String)
 - `login_local` (Boolean)
 - `password` (String)
@@ -87,6 +113,9 @@ Optional:
 - `privilege_level` (Number) - Range: `0`-`15`
 - `stopbits` (String) Set async line stop bits
   - Choices: `1`, `1.5`, `2`
+- `transport_output` (List of String) Define which protocols to use for outgoing connections
+- `transport_output_all` (Boolean) All protocols
+- `transport_output_none` (Boolean) Define no transport protocols for line
 
 
 <a id="nestedatt--vty"></a>
@@ -109,14 +138,22 @@ Optional:
   - Range: `0`-`2147483`
 - `last` (Number) Vty last line number
   - Range: `1`-`1869`
+- `logging_synchronous` (Boolean) Synchronized message output
 - `login_authentication` (String) Authentication list
+- `monitor` (Boolean) Copy debug output to the current terminal line
 - `password` (String)
 - `password_level` (Number) Set exec level password
   - Range: `0`-`255`
 - `password_type` (String) - Choices: `0`, `6`, `7`
+- `session_timeout` (Number) - Range: `0`-`35791`
+- `stopbits` (String) Set async line stop bits
+  - Choices: `1`, `1.5`, `2`
 - `transport_input` (List of String) Define which protocols to use when connecting to the terminal server
 - `transport_input_all` (Boolean) All protocols
 - `transport_input_none` (Boolean) Define no transport protocols for line
+- `transport_output` (List of String) Define which protocols to use for outgoing connections
+- `transport_output_all` (Boolean) All protocols
+- `transport_output_none` (Boolean) Define no transport protocols for line
 - `transport_preferred_protocol` (String) - Choices: `acercon`, `lat`, `mop`, `nasi`, `none`, `pad`, `rlogin`, `ssh`, `telnet`, `udptn`
 
 <a id="nestedatt--vty--access_classes"></a>

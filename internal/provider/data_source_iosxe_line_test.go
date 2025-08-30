@@ -43,6 +43,7 @@ func TestAccDataSourceIosxeLine(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "console.0.stopbits", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "console.0.password_type", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "console.0.password", "testpasswd"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "console.0.logging_synchronous", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.first", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.last", "27"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.access_classes.0.direction", "in"))
@@ -53,9 +54,11 @@ func TestAccDataSourceIosxeLine(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.password_type", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.password", "testpasswd"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.transport_preferred_protocol", "none"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.escape_character", "27"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.escape_character", "BREAK"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.authorization_exec_default", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.transport_input.0", "ssh"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.monitor", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_line.test", "vty.0.logging_synchronous", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -86,6 +89,7 @@ func testAccDataSourceIosxeLineConfig() string {
 	config += `		stopbits = "1"` + "\n"
 	config += `		password_type = "0"` + "\n"
 	config += `		password = "testpasswd"` + "\n"
+	config += `		logging_synchronous = true` + "\n"
 	config += `	}]` + "\n"
 	config += `	vty = [{` + "\n"
 	config += `		first = 10` + "\n"
@@ -100,9 +104,11 @@ func testAccDataSourceIosxeLineConfig() string {
 	config += `		password_type = "0"` + "\n"
 	config += `		password = "testpasswd"` + "\n"
 	config += `		transport_preferred_protocol = "none"` + "\n"
-	config += `		escape_character = "27"` + "\n"
+	config += `		escape_character = "BREAK"` + "\n"
 	config += `		authorization_exec_default = true` + "\n"
 	config += `		transport_input = ["ssh"]` + "\n"
+	config += `		monitor = true` + "\n"
+	config += `		logging_synchronous = true` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 

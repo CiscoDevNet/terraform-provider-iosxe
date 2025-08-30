@@ -35,6 +35,25 @@ attributes:
       - yang_name: password/secret
         tf_name: password
         example: testpasswd
+      - yang_name: escape-character/char
+        tf_name: escape_character
+        example: BREAK
+        exclude_test: true
+      - yang_name: logging/synchronous
+        example: true
+      - yang_name: transport/output/output-protocol/all-protocol/all
+        xpath: transport/output/all
+        example: true
+        exclude_test: true
+      - yang_name: transport/output/output-protocol/no-protocol/none
+        xpath: transport/output/none
+        example: true
+        exclude_test: true
+      - yang_name: transport/output/output-protocol/other-protocol/output
+        xpath: transport/output/output
+        tf_name: transport_output
+        example: none
+        exclude_test: true
   - yang_name: vty
     tf_name: vty
     type: List
@@ -75,7 +94,7 @@ attributes:
         example: none
       - yang_name: escape-character/char
         tf_name: escape_character
-        example: 27
+        example: BREAK
       - yang_name: authorization/exec/authorization-name
         tf_name: authorization_exec
         example: LIST1
@@ -107,3 +126,49 @@ attributes:
         description: Define which protocols to use when connecting to the terminal server
         example: ssh
         no_augment_config: true
+      - yang_name: monitor
+        example: true
+      - yang_name: session-timeout/session-timeout-value
+        tf_name: session_timeout
+        example: 30
+        exclude_test: true
+      - yang_name: stopbits
+        example: 20
+        exclude_test: true
+      - yang_name: logging/synchronous
+        example: true
+      - yang_name: transport/output/output-protocol/all-protocol/all
+        xpath: transport/output/all
+        example: true
+        exclude_test: true
+      - yang_name: transport/output/output-protocol/no-protocol/none
+        xpath: transport/output/none
+        example: true
+        exclude_test: true
+      - yang_name: transport/output/output-protocol/other-protocol/output
+        xpath: transport/output/output
+        tf_name: transport_output
+        example: none
+        exclude_test: true
+  - yang_name: aux
+    type: List
+    no_delete: true
+    exclude_test: true
+    attributes:
+      - yang_name: first
+        id: true
+        example: 10
+      - yang_name: escape-character/char
+        tf_name: escape_character
+        example: BREAK
+      - yang_name: logging/synchronous
+        example: true
+      - yang_name: exec-timeout/minutes
+        example: 45
+      - yang_name: exec-timeout/seconds
+        example: 25
+      - yang_name: monitor
+        example: true
+      - yang_name: transport/output/output-protocol/no-protocol/none
+        xpath: transport/output/none
+        example: true

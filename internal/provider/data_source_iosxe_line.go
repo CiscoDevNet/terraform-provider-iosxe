@@ -112,6 +112,27 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 							MarkdownDescription: "",
 							Computed:            true,
 						},
+						"escape_character": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"logging_synchronous": schema.BoolAttribute{
+							MarkdownDescription: "Synchronized message output",
+							Computed:            true,
+						},
+						"transport_output_all": schema.BoolAttribute{
+							MarkdownDescription: "All protocols",
+							Computed:            true,
+						},
+						"transport_output_none": schema.BoolAttribute{
+							MarkdownDescription: "Define no transport protocols for line",
+							Computed:            true,
+						},
+						"transport_output": schema.ListAttribute{
+							MarkdownDescription: "Define which protocols to use for outgoing connections",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
 					},
 				},
 			},
@@ -199,6 +220,71 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						"transport_input": schema.ListAttribute{
 							MarkdownDescription: "Define which protocols to use when connecting to the terminal server",
 							ElementType:         types.StringType,
+							Computed:            true,
+						},
+						"monitor": schema.BoolAttribute{
+							MarkdownDescription: "Copy debug output to the current terminal line",
+							Computed:            true,
+						},
+						"session_timeout": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"stopbits": schema.StringAttribute{
+							MarkdownDescription: "Set async line stop bits",
+							Computed:            true,
+						},
+						"logging_synchronous": schema.BoolAttribute{
+							MarkdownDescription: "Synchronized message output",
+							Computed:            true,
+						},
+						"transport_output_all": schema.BoolAttribute{
+							MarkdownDescription: "All protocols",
+							Computed:            true,
+						},
+						"transport_output_none": schema.BoolAttribute{
+							MarkdownDescription: "Define no transport protocols for line",
+							Computed:            true,
+						},
+						"transport_output": schema.ListAttribute{
+							MarkdownDescription: "Define which protocols to use for outgoing connections",
+							ElementType:         types.StringType,
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"aux": schema.ListNestedAttribute{
+				MarkdownDescription: "Auxiliary line",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"first": schema.StringAttribute{
+							MarkdownDescription: "Auxiliary line number",
+							Computed:            true,
+						},
+						"escape_character": schema.StringAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"logging_synchronous": schema.BoolAttribute{
+							MarkdownDescription: "Synchronized message output",
+							Computed:            true,
+						},
+						"exec_timeout_minutes": schema.Int64Attribute{
+							MarkdownDescription: "<0-35791>;;Timeout in minutes",
+							Computed:            true,
+						},
+						"exec_timeout_seconds": schema.Int64Attribute{
+							MarkdownDescription: "<0-2147483>;;Timeout in seconds",
+							Computed:            true,
+						},
+						"monitor": schema.BoolAttribute{
+							MarkdownDescription: "Copy debug output to the current terminal line",
+							Computed:            true,
+						},
+						"transport_output_none": schema.BoolAttribute{
+							MarkdownDescription: "Define no transport protocols for line",
 							Computed:            true,
 						},
 					},
