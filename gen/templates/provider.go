@@ -38,7 +38,7 @@ import (
 )
 
 const (
-	YangPatch = true
+	YangPatch = false
 )
 
 // IosxeProvider defines the provider implementation.
