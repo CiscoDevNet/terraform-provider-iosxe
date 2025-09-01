@@ -1,4 +1,8 @@
-## 0.8.0 (unreleased)
+## 0.8.1 (unreleased)
+
+- Add `ip_nbar_classification_dns_classify_by_domain` attribute to `iosxe_system` resource and data source
+
+## 0.8.0
 
 - BREAKING CHANGE: Combine `iosxe_msdp` and `iosxe_msdp_vrf` resources and data sources into single `iosxe_msdp` resource and data source
 - BREAKING CHANGE: Combine `iosxe_pim` and `iosxe_pim_vrf` resources and data sources into single `iosxe_pim` resource and data source

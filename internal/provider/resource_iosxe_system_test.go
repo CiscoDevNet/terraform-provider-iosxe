@@ -75,6 +75,7 @@ func TestAccIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "call_home_contact_email", "email@test.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "call_home_cisco_tac_1_profile_active", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "call_home_cisco_tac_1_destination_transport_method", "email"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_nbar_classification_dns_classify_by_domain", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -187,6 +188,7 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	call_home_contact_email = "email@test.com"` + "\n"
 	config += `	call_home_cisco_tac_1_profile_active = true` + "\n"
 	config += `	call_home_cisco_tac_1_destination_transport_method = "email"` + "\n"
+	config += `	ip_nbar_classification_dns_classify_by_domain = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
