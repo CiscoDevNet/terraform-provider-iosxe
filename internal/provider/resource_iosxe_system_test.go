@@ -68,8 +68,10 @@ func TestAccIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_authentication_retries", "3"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
+		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "call_home_contact_email", "email@test.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "call_home_cisco_tac_1_profile_active", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "call_home_cisco_tac_1_destination_transport_method", "email"))
@@ -90,7 +92,7 @@ func TestAccIosxeSystem(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeSystemImportStateIdFunc("iosxe_system.test"),
-				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_scp_server_enable", "ip_ssh_version_legacy", "control_plane_service_policy_input", "subscriber_templating", "version"},
+				ImportStateVerifyIgnore: []string{"ip_routing", "ip_multicast_routing", "multicast_routing_switch", "ip_multicast_routing_distributed", "multicast_routing_vrfs.0.distributed", "ip_http_authentication_aaa", "ip_http_authentication_local", "ip_http_server", "ip_http_secure_server", "cisp_enable", "epm_logging", "access_session_mac_move_deny", "archive_write_memory", "archive_log_config_logging_enable", "redundancy", "transceiver_type_all_monitoring", "ip_scp_server_enable", "ip_ssh_version_legacy", "control_plane_service_policy_input", "subscriber_templating", "multilink_ppp_bundle_name", "version"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -177,10 +179,12 @@ func testAccIosxeSystemConfig_all() string {
 	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
-	config += `	ip_hosts = [{` + "\n"
-	config += `		name = "test.router.com"` + "\n"
-	config += `		ips = ["3.3.3.3"]` + "\n"
-	config += `	}]` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	ip_hosts = [{` + "\n"
+		config += `		name = "test.router.com"` + "\n"
+		config += `		ips = ["3.3.3.3"]` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `	call_home_contact_email = "email@test.com"` + "\n"
 	config += `	call_home_cisco_tac_1_profile_active = true` + "\n"
 	config += `	call_home_cisco_tac_1_destination_transport_method = "email"` + "\n"

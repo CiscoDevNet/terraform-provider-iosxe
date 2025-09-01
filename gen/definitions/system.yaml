@@ -432,6 +432,7 @@ attributes:
   - yang_name: ip/host/host-list
     tf_name: ip_hosts
     type: List
+    test_tags: [IOSXE1715]
     attributes:
       - yang_name: name
         id: true
@@ -493,6 +494,7 @@ attributes:
     tf_name: multilink_ppp_bundle_name
     example: BUNDLE1
     exclude_test: true
+    allow_import_changes: true
   - yang_name: version
     example: 17.15.1
     allow_import_changes: true
