@@ -17,7 +17,4 @@ resource "iosxe_class_map" "example" {
   match_result_type_method_dot1x_method_timeout  = true
   match_method_mab                               = true
   match_result_type_method_mab_authoritative     = true
-  match_access_group_name                        = ["AG1"]
-  match_ip_dscp                                  = ["af41"]
-  match_ip_precedence                            = ["network"]
 }

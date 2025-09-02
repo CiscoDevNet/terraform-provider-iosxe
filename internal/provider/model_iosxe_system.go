@@ -151,6 +151,7 @@ type System struct {
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
+	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
 }
 
 type SystemData struct {
@@ -267,6 +268,7 @@ type SystemData struct {
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
+	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -683,6 +685,9 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.Version.IsNull() && !data.Version.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"version", data.Version.ValueString())
+	}
+	if !data.IpNbarClassificationDnsClassifyByDomain.IsNull() && !data.IpNbarClassificationDnsClassifyByDomain.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nbar:nbar.classification.dns.classify-by-domain-with-default", data.IpNbarClassificationDnsClassifyByDomain.ValueBool())
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1703,6 +1708,13 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.Version = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nbar:nbar.classification.dns.classify-by-domain-with-default"); !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
+		if value.Exists() {
+			data.IpNbarClassificationDnsClassifyByDomain = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpNbarClassificationDnsClassifyByDomain = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2205,6 +2217,11 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nbar:nbar.classification.dns.classify-by-domain-with-default"); value.Exists() {
+		data.IpNbarClassificationDnsClassifyByDomain = types.BoolValue(value.Bool())
+	} else {
+		data.IpNbarClassificationDnsClassifyByDomain = types.BoolNull()
 	}
 }
 
@@ -2709,6 +2726,11 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nbar:nbar.classification.dns.classify-by-domain-with-default"); value.Exists() {
+		data.IpNbarClassificationDnsClassifyByDomain = types.BoolValue(value.Bool())
+	} else {
+		data.IpNbarClassificationDnsClassifyByDomain = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2717,6 +2739,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpNbarClassificationDnsClassifyByDomain.IsNull() && data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", state.getPath()))
+	}
 	if !state.Version.IsNull() && data.Version.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/version", state.getPath()))
 	}
@@ -3434,6 +3459,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", data.getPath()))
+	}
 	if !data.Version.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))
 	}
