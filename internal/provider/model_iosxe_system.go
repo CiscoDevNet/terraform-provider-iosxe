@@ -2843,6 +2843,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpNbarClassificationDnsClassifyByDomain.IsNull() && data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", state.getPath()))
+	}
 	for i := range state.TrackObjects {
 		stateKeyValues := [...]string{state.TrackObjects[i].TrackObjectNumber.ValueString()}
 
@@ -2873,9 +2876,6 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
-	}
-	if !state.IpNbarClassificationDnsClassifyByDomain.IsNull() && data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", state.getPath()))
 	}
 	if !state.Version.IsNull() && data.Version.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/version", state.getPath()))
@@ -3601,13 +3601,13 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", data.getPath()))
+	}
 	for i := range data.TrackObjects {
 		keyValues := [...]string{data.TrackObjects[i].TrackObjectNumber.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", data.getPath()))
 	}
 	if !data.Version.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))
