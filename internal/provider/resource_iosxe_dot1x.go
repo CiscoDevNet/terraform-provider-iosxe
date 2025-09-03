@@ -162,6 +162,18 @@ func (r *Dot1xResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 				MarkdownDescription: helpers.NewAttributeDescription("Enable or Disable SysAuthControl").String,
 				Optional:            true,
 			},
+			"guest_vlan_supplicant": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Allow 802.1x capable supplicants to enter Guest Vlan").String,
+				Optional:            true,
+			},
+			"critical_eapol": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Send EAPOL-Success on successful Critical Authentication").String,
+				Optional:            true,
+			},
+			"critical_eapol_block": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Block all EAPoL transaction on Critical Authentication").String,
+				Optional:            true,
+			},
 		},
 	}
 }

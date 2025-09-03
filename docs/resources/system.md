@@ -45,6 +45,8 @@ resource "iosxe_system" "example" {
   call_home_cisco_tac_1_destination_transport_method = "email"
   ip_nbar_classification_dns_classify_by_domain      = true
   ip_multicast_route_limit                           = 200000
+  ip_domain_list_vrf_domain                          = "example.com"
+  ip_domain_list_vrf                                 = "VRF1"
 }
 ```
 
@@ -81,8 +83,15 @@ resource "iosxe_system" "example" {
   - Range: `0`-`255`
 - `enable_secret_type` (String) - Choices: `0`, `4`, `5`, `8`, `9`
 - `epm_logging` (Boolean) Enable EPM logging
+- `ethernet_cfm_alarm_config_delay` (Number) msec (default 2500 msec)
+  - Range: `2500`-`10000`
+- `ethernet_cfm_alarm_config_reset` (Number) msec (default 10000 msec)
+  - Range: `2500`-`10000`
 - `hostname` (String) Set system's network name
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
+- `ip_domain_list_names` (List of String)
+- `ip_domain_list_vrf` (String)
+- `ip_domain_list_vrf_domain` (String)
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
 - `ip_domain_lookup_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_domain_lookup_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
@@ -189,6 +198,10 @@ resource "iosxe_system" "example" {
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
   - Choices: `none`, `rpr`, `rpr-plus`, `sso`
+- `security_passwords_min_length` (Number) Minimum length of passwords
+  - Range: `1`-`16`
+- `standby_redirects` (Boolean)
+- `standby_redirects_enable_disable` (String) - Choices: `disable`, `enable`
 - `subscriber_templating` (Boolean) Configure subscriber templating
 - `tftp_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
 - `tftp_source_interface_loopback` (Number) Loopback interface

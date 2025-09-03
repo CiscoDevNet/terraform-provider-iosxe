@@ -135,6 +135,18 @@ func (d *Dot1xDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 				MarkdownDescription: "Enable or Disable SysAuthControl",
 				Computed:            true,
 			},
+			"guest_vlan_supplicant": schema.BoolAttribute{
+				MarkdownDescription: "Allow 802.1x capable supplicants to enter Guest Vlan",
+				Computed:            true,
+			},
+			"critical_eapol": schema.BoolAttribute{
+				MarkdownDescription: "Send EAPOL-Success on successful Critical Authentication",
+				Computed:            true,
+			},
+			"critical_eapol_block": schema.BoolAttribute{
+				MarkdownDescription: "Block all EAPoL transaction on Critical Authentication",
+				Computed:            true,
+			},
 		},
 	}
 }

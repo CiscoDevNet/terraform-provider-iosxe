@@ -75,6 +75,8 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "call_home_cisco_tac_1_destination_transport_method", "email"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_nbar_classification_dns_classify_by_domain", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_multicast_route_limit", "200000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_list_vrf_domain", "example.com"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_list_vrf", "VRF1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -156,6 +158,8 @@ func testAccDataSourceIosxeSystemConfig() string {
 	config += `	call_home_cisco_tac_1_destination_transport_method = "email"` + "\n"
 	config += `	ip_nbar_classification_dns_classify_by_domain = true` + "\n"
 	config += `	ip_multicast_route_limit = 200000` + "\n"
+	config += `	ip_domain_list_vrf_domain = "example.com"` + "\n"
+	config += `	ip_domain_list_vrf = "VRF1"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
