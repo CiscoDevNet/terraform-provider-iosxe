@@ -139,6 +139,14 @@ attributes:
             example: true
           - yang_name: version
             example: 2
+          - yang_name: burst-opt
+            tf_name: burst
+            example: true
+          - yang_name: iburst-opt
+            tf_name: iburst
+            example: true
+          - yang_name: periodic
+            example: true
   - yang_name: Cisco-IOS-XE-ntp:peer/server-list
     tf_name: peers
     type: List

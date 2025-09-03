@@ -35,6 +35,9 @@ resource "iosxe_ntp" "example" {
           key        = 1
           prefer     = true
           version    = 2
+          burst      = true
+          iburst     = true
+          periodic   = true
         }
       ]
     }

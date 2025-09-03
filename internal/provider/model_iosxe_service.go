@@ -61,6 +61,7 @@ type Service struct {
 	CompressConfig                      types.Bool   `tfsdk:"compress_config"`
 	SequenceNumbers                     types.Bool   `tfsdk:"sequence_numbers"`
 	CallHome                            types.Bool   `tfsdk:"call_home"`
+	DhcpConfig                          types.Bool   `tfsdk:"dhcp_config"`
 }
 
 type ServiceData struct {
@@ -90,6 +91,7 @@ type ServiceData struct {
 	CompressConfig                      types.Bool   `tfsdk:"compress_config"`
 	SequenceNumbers                     types.Bool   `tfsdk:"sequence_numbers"`
 	CallHome                            types.Bool   `tfsdk:"call_home"`
+	DhcpConfig                          types.Bool   `tfsdk:"dhcp_config"`
 }
 
 // End of section. //template:end types
@@ -236,6 +238,9 @@ func (data Service) toBody(ctx context.Context) string {
 		if data.CallHome.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"call-home", map[string]string{})
 		}
+	}
+	if !data.DhcpConfig.IsNull() && !data.DhcpConfig.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"dhcp-config", data.DhcpConfig.ValueBool())
 	}
 	return body
 }
@@ -461,6 +466,13 @@ func (data *Service) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CallHome = types.BoolNull()
 	}
+	if value := res.Get(prefix + "dhcp-config"); !data.DhcpConfig.IsNull() {
+		if value.Exists() {
+			data.DhcpConfig = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.DhcpConfig = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -591,6 +603,11 @@ func (data *Service) fromBody(ctx context.Context, res gjson.Result) {
 		data.CallHome = types.BoolValue(true)
 	} else {
 		data.CallHome = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "dhcp-config"); value.Exists() {
+		data.DhcpConfig = types.BoolValue(value.Bool())
+	} else {
+		data.DhcpConfig = types.BoolNull()
 	}
 }
 
@@ -723,6 +740,11 @@ func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.CallHome = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "dhcp-config"); value.Exists() {
+		data.DhcpConfig = types.BoolValue(value.Bool())
+	} else {
+		data.DhcpConfig = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -731,6 +753,9 @@ func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Service) getDeletedItems(ctx context.Context, state Service) []string {
 	deletedItems := make([]string, 0)
+	if !state.DhcpConfig.IsNull() && data.DhcpConfig.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/dhcp-config", state.getPath()))
+	}
 	if !state.CallHome.IsNull() && data.CallHome.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/call-home", state.getPath()))
 	}
@@ -886,6 +911,9 @@ func (data *Service) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Service) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.DhcpConfig.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/dhcp-config", data.getPath()))
+	}
 	if !data.CallHome.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/call-home", data.getPath()))
 	}
