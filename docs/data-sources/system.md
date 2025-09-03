@@ -226,6 +226,6 @@ Read-Only:
 
 Read-Only:
 
-- `track_ip_sla_number` (Number) Entry number
-- `track_ip_sla_reachability` (Boolean) Reachability
-- `track_object_number` (String) Tracked object
+- `ip_sla_number` (Number) Entry number
+- `ip_sla_reachability` (Boolean) Reachability
+- `number` (String) Tracked object

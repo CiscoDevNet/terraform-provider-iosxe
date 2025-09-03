@@ -304,9 +304,9 @@ type SystemIpHostsVrf struct {
 	Hosts []SystemIpHostsVrfHosts `tfsdk:"hosts"`
 }
 type SystemTrackObjects struct {
-	TrackObjectNumber      types.String `tfsdk:"track_object_number"`
-	TrackIpSlaNumber       types.Int64  `tfsdk:"track_ip_sla_number"`
-	TrackIpSlaReachability types.Bool   `tfsdk:"track_ip_sla_reachability"`
+	Number            types.String `tfsdk:"number"`
+	IpSlaNumber       types.Int64  `tfsdk:"ip_sla_number"`
+	IpSlaReachability types.Bool   `tfsdk:"ip_sla_reachability"`
 }
 type SystemIpHostsVrfHosts struct {
 	Name types.String `tfsdk:"name"`
@@ -800,14 +800,14 @@ func (data System) toBody(ctx context.Context) string {
 	if len(data.TrackObjects) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2.", []interface{}{})
 		for index, item := range data.TrackObjects {
-			if !item.TrackObjectNumber.IsNull() && !item.TrackObjectNumber.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"object-number", item.TrackObjectNumber.ValueString())
+			if !item.Number.IsNull() && !item.Number.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"object-number", item.Number.ValueString())
 			}
-			if !item.TrackIpSlaNumber.IsNull() && !item.TrackIpSlaNumber.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"ip.sla.number", strconv.FormatInt(item.TrackIpSlaNumber.ValueInt64(), 10))
+			if !item.IpSlaNumber.IsNull() && !item.IpSlaNumber.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"ip.sla.number", strconv.FormatInt(item.IpSlaNumber.ValueInt64(), 10))
 			}
-			if !item.TrackIpSlaReachability.IsNull() && !item.TrackIpSlaReachability.IsUnknown() {
-				if item.TrackIpSlaReachability.ValueBool() {
+			if !item.IpSlaReachability.IsNull() && !item.IpSlaReachability.IsUnknown() {
+				if item.IpSlaReachability.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"ip.sla.reachability", map[string]string{})
 				}
 			}
@@ -1733,7 +1733,7 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	}
 	for i := range data.TrackObjects {
 		keys := [...]string{"object-number"}
-		keyValues := [...]string{data.TrackObjects[i].TrackObjectNumber.ValueString()}
+		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2.").ForEach(
@@ -1754,24 +1754,24 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("object-number"); value.Exists() && !data.TrackObjects[i].TrackObjectNumber.IsNull() {
-			data.TrackObjects[i].TrackObjectNumber = types.StringValue(value.String())
+		if value := r.Get("object-number"); value.Exists() && !data.TrackObjects[i].Number.IsNull() {
+			data.TrackObjects[i].Number = types.StringValue(value.String())
 		} else {
-			data.TrackObjects[i].TrackObjectNumber = types.StringNull()
+			data.TrackObjects[i].Number = types.StringNull()
 		}
-		if value := r.Get("ip.sla.number"); value.Exists() && !data.TrackObjects[i].TrackIpSlaNumber.IsNull() {
-			data.TrackObjects[i].TrackIpSlaNumber = types.Int64Value(value.Int())
+		if value := r.Get("ip.sla.number"); value.Exists() && !data.TrackObjects[i].IpSlaNumber.IsNull() {
+			data.TrackObjects[i].IpSlaNumber = types.Int64Value(value.Int())
 		} else {
-			data.TrackObjects[i].TrackIpSlaNumber = types.Int64Null()
+			data.TrackObjects[i].IpSlaNumber = types.Int64Null()
 		}
-		if value := r.Get("ip.sla.reachability"); !data.TrackObjects[i].TrackIpSlaReachability.IsNull() {
+		if value := r.Get("ip.sla.reachability"); !data.TrackObjects[i].IpSlaReachability.IsNull() {
 			if value.Exists() {
-				data.TrackObjects[i].TrackIpSlaReachability = types.BoolValue(true)
+				data.TrackObjects[i].IpSlaReachability = types.BoolValue(true)
 			} else {
-				data.TrackObjects[i].TrackIpSlaReachability = types.BoolValue(false)
+				data.TrackObjects[i].IpSlaReachability = types.BoolValue(false)
 			}
 		} else {
-			data.TrackObjects[i].TrackIpSlaReachability = types.BoolNull()
+			data.TrackObjects[i].IpSlaReachability = types.BoolNull()
 		}
 	}
 	if value := res.Get(prefix + "ip.Cisco-IOS-XE-nbar:nbar.classification.dns.classify-by-domain-with-default"); !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
@@ -2289,15 +2289,15 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SystemTrackObjects{}
 			if cValue := v.Get("object-number"); cValue.Exists() {
-				item.TrackObjectNumber = types.StringValue(cValue.String())
+				item.Number = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ip.sla.number"); cValue.Exists() {
-				item.TrackIpSlaNumber = types.Int64Value(cValue.Int())
+				item.IpSlaNumber = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("ip.sla.reachability"); cValue.Exists() {
-				item.TrackIpSlaReachability = types.BoolValue(true)
+				item.IpSlaReachability = types.BoolValue(true)
 			} else {
-				item.TrackIpSlaReachability = types.BoolValue(false)
+				item.IpSlaReachability = types.BoolValue(false)
 			}
 			data.TrackObjects = append(data.TrackObjects, item)
 			return true
@@ -2816,15 +2816,15 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SystemTrackObjects{}
 			if cValue := v.Get("object-number"); cValue.Exists() {
-				item.TrackObjectNumber = types.StringValue(cValue.String())
+				item.Number = types.StringValue(cValue.String())
 			}
 			if cValue := v.Get("ip.sla.number"); cValue.Exists() {
-				item.TrackIpSlaNumber = types.Int64Value(cValue.Int())
+				item.IpSlaNumber = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("ip.sla.reachability"); cValue.Exists() {
-				item.TrackIpSlaReachability = types.BoolValue(true)
+				item.IpSlaReachability = types.BoolValue(true)
 			} else {
-				item.TrackIpSlaReachability = types.BoolValue(false)
+				item.IpSlaReachability = types.BoolValue(false)
 			}
 			data.TrackObjects = append(data.TrackObjects, item)
 			return true
@@ -2847,10 +2847,10 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", state.getPath()))
 	}
 	for i := range state.TrackObjects {
-		stateKeyValues := [...]string{state.TrackObjects[i].TrackObjectNumber.ValueString()}
+		stateKeyValues := [...]string{state.TrackObjects[i].Number.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.TrackObjects[i].TrackObjectNumber.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.TrackObjects[i].Number.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2860,14 +2860,14 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		found := false
 		for j := range data.TrackObjects {
 			found = true
-			if state.TrackObjects[i].TrackObjectNumber.ValueString() != data.TrackObjects[j].TrackObjectNumber.ValueString() {
+			if state.TrackObjects[i].Number.ValueString() != data.TrackObjects[j].Number.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.TrackObjects[i].TrackIpSlaReachability.IsNull() && data.TrackObjects[j].TrackIpSlaReachability.IsNull() {
+				if !state.TrackObjects[i].IpSlaReachability.IsNull() && data.TrackObjects[j].IpSlaReachability.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/reachability", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
-				if !state.TrackObjects[i].TrackIpSlaNumber.IsNull() && data.TrackObjects[j].TrackIpSlaNumber.IsNull() {
+				if !state.TrackObjects[i].IpSlaNumber.IsNull() && data.TrackObjects[j].IpSlaNumber.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
@@ -3516,8 +3516,8 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
 	for i := range data.TrackObjects {
-		keyValues := [...]string{data.TrackObjects[i].TrackObjectNumber.ValueString()}
-		if !data.TrackObjects[i].TrackIpSlaReachability.IsNull() && !data.TrackObjects[i].TrackIpSlaReachability.ValueBool() {
+		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
+		if !data.TrackObjects[i].IpSlaReachability.IsNull() && !data.TrackObjects[i].IpSlaReachability.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/reachability", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
@@ -3605,7 +3605,7 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", data.getPath()))
 	}
 	for i := range data.TrackObjects {
-		keyValues := [...]string{data.TrackObjects[i].TrackObjectNumber.ValueString()}
+		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

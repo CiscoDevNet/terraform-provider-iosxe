@@ -306,13 +306,13 @@ Optional:
 
 Required:
 
-- `track_object_number` (String) Tracked object
+- `number` (String) Tracked object
 
 Optional:
 
-- `track_ip_sla_number` (Number) Entry number
+- `ip_sla_number` (Number) Entry number
   - Range: `0`-`4294967295`
-- `track_ip_sla_reachability` (Boolean) Reachability
+- `ip_sla_reachability` (Boolean) Reachability
 
 ## Import
 

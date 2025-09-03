@@ -505,16 +505,14 @@ attributes:
     exclude_test: true
     attributes:
       - yang_name: object-number
-        tf_name: track_object_number
+        tf_name: number
         id: true
         example: 1
       - yang_name: track-type/ip-case/ip/sla/number
         xpath: ip/sla/number
-        tf_name: track_ip_sla_number
         example: 20
       - yang_name: track-type/ip-case/ip/sla/option/reachability-case/reachability
         xpath: ip/sla/reachability
-        tf_name: track_ip_sla_reachability
         example: true
   - yang_name: ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default
     tf_name: ip_nbar_classification_dns_classify_by_domain

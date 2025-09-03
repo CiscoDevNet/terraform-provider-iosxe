@@ -745,18 +745,18 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"track_object_number": schema.StringAttribute{
+						"number": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Tracked object").String,
 							Required:            true,
 						},
-						"track_ip_sla_number": schema.Int64Attribute{
+						"ip_sla_number": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Entry number").AddIntegerRangeDescription(0, 4294967295).String,
 							Optional:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(0, 4294967295),
 							},
 						},
-						"track_ip_sla_reachability": schema.BoolAttribute{
+						"ip_sla_reachability": schema.BoolAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Reachability").String,
 							Optional:            true,
 						},
