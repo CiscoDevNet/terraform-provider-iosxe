@@ -15,6 +15,7 @@ description: |-
 - Add `console` attribute to `iosxe_logging` resource and data source
 - Add `burst`, `iburst` and `periodic` attributes to `iosxe_ntp` resource and data source
 - Add `dhcp_config` attribute to `iosxe_service` resource and data source
+- Add `iosxe_ip_sla` resource and data source
 
 ## 0.8.0
 

@@ -1,0 +1,58 @@
+---
+name: SLA
+path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-sla:sla
+doc_category: System
+no_delete: true
+no_augment_config: true
+attributes:
+  - yang_name: entry
+    xpath: entry
+    tf_name: entries
+    type: List
+    description: entries
+    attributes:
+      - yang_name: number
+        xpath: number
+        tf_name: number
+        type: Int64
+        description: Entry Number
+        example: 20
+        id: true
+      - yang_name: sla-param/icmp-echo-case/icmp-echo/destination
+        xpath: icmp-echo/destination
+        tf_name: icmp_echo_destination
+        type: String
+        description: Destination IP address or hostname, broadcast disallowed
+        example: 192.168.10.10
+      - yang_name: sla-param/icmp-echo-case/icmp-echo/source-param/source-ip/source-ip   
+        xpath: icmp-echo/source-ip
+        tf_name: icmp_echo_source_ip
+        type: String
+        description: Source Address
+        example: 192.168.1.1
+  - yang_name: schedule
+    xpath: schedule
+    tf_name: schedules
+    type: List
+    description: schedules
+    attributes:
+      - yang_name: entry-number
+        example: 20
+        xpath: entry-number
+        tf_name: entry_number
+        type: 	Int64
+        description: entry-number
+        id: true
+      - yang_name: life
+        xpath: life
+        tf_name: life
+        type: Int64
+        description: 	Length of time to execute in seconds
+        example: 4000
+      - yang_name: start-time/start-time-param/now-type/now-config
+        xpath: start-time/now-config
+        tf_name: start_time_now
+        type: Bool
+        type_yang_bool: empty
+        description:  	Start now
+        example: true
