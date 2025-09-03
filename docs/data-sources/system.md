@@ -79,6 +79,7 @@ data "iosxe_system" "example" {
 - `ip_http_secure_trustpoint` (String) Set http secure server certificate trustpoint
 - `ip_http_server` (Boolean) Enable http server
 - `ip_http_tls_version` (String) Set TLS version for HTTP secure server
+- `ip_multicast_route_limit` (Number) Maximum number of multicast routes
 - `ip_multicast_routing` (Boolean) Enable IP multicast forwarding
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
 - `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)

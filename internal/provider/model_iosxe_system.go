@@ -153,6 +153,7 @@ type System struct {
 	Version                                                types.String                                        `tfsdk:"version"`
 	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
 	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
+	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
 }
 
 type SystemData struct {
@@ -271,6 +272,7 @@ type SystemData struct {
 	Version                                                types.String                                        `tfsdk:"version"`
 	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
 	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
+	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -695,6 +697,9 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.IpNbarClassificationDnsClassifyByDomain.IsNull() && !data.IpNbarClassificationDnsClassifyByDomain.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-nbar:nbar.classification.dns.classify-by-domain-with-default", data.IpNbarClassificationDnsClassifyByDomain.ValueBool())
+	}
+	if !data.IpMulticastRouteLimit.IsNull() && !data.IpMulticastRouteLimit.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit", strconv.FormatInt(data.IpMulticastRouteLimit.ValueInt64(), 10))
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1781,6 +1786,11 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpNbarClassificationDnsClassifyByDomain = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() && !data.IpMulticastRouteLimit.IsNull() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
+	} else {
+		data.IpMulticastRouteLimit = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2307,6 +2317,9 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpNbarClassificationDnsClassifyByDomain = types.BoolValue(value.Bool())
 	} else {
 		data.IpNbarClassificationDnsClassifyByDomain = types.BoolNull()
+	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	}
 }
 
@@ -2835,6 +2848,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpNbarClassificationDnsClassifyByDomain = types.BoolNull()
 	}
+	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
+		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2843,6 +2859,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpMulticastRouteLimit.IsNull() && data.IpMulticastRouteLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", state.getPath()))
+	}
 	if !state.IpNbarClassificationDnsClassifyByDomain.IsNull() && data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", state.getPath()))
 	}
@@ -3601,6 +3620,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpMulticastRouteLimit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", data.getPath()))
+	}
 	if !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", data.getPath()))
 	}

@@ -44,6 +44,7 @@ resource "iosxe_system" "example" {
   call_home_cisco_tac_1_profile_active               = true
   call_home_cisco_tac_1_destination_transport_method = "email"
   ip_nbar_classification_dns_classify_by_domain      = true
+  ip_multicast_route_limit                           = 200000
 }
 ```
 
@@ -117,6 +118,8 @@ resource "iosxe_system" "example" {
 - `ip_http_server` (Boolean) Enable http server
 - `ip_http_tls_version` (String) Set TLS version for HTTP secure server
   - Choices: `TLSv1.0`, `TLSv1.1`, `TLSv1.2`, `TLSv1.3`
+- `ip_multicast_route_limit` (Number) Maximum number of multicast routes
+  - Range: `1`-`2147483647`
 - `ip_multicast_routing` (Boolean) Enable IP multicast forwarding
 - `ip_multicast_routing_distributed` (Boolean) Distributed multicast switching
 - `ip_name_servers` (List of String) Domain server IPv4/IPv6 address (maximum of 6)

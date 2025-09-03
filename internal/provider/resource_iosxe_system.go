@@ -767,6 +767,13 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("dns classification by domain").String,
 				Optional:            true,
 			},
+			"ip_multicast_route_limit": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum number of multicast routes").AddIntegerRangeDescription(1, 2147483647).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 2147483647),
+				},
+			},
 		},
 	}
 }
