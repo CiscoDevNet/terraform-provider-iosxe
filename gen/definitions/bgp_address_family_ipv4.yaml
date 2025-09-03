@@ -24,7 +24,6 @@ attributes:
       - yang_name: ipv4-mask
         id: true
         example: 255.255.0.0
-
   - yang_name: ipv4-unicast/network/with-mask
     tf_name: ipv4_unicast_networks_mask
     type: List
@@ -53,7 +52,7 @@ attributes:
       - yang_name: backdoor
         example: true
   - yang_name: ipv4-unicast/distance/adm-distance
-    tf_name: admin_distances
+    tf_name: ipv4_unicast_admin_distances
     type: List
     attributes:
       - yang_name: distance
@@ -71,13 +70,12 @@ attributes:
         example: 100
         exclude_test: true
   - yang_name: ipv4-unicast/distance/bgp/extern-as
-    tf_name: distance_bgp_external
+    tf_name: ipv4_unicast_distance_bgp_external
     example: 20
   - yang_name: ipv4-unicast/distance/bgp/internal-as
-    tf_name: distance_bgp_internal
+    tf_name: ipv4_unicast_distance_bgp_internal
     example: 200
   - yang_name: ipv4-unicast/distance/bgp/local
-    tf_name: distance_bgp_local
     example: 200
 
 test_prerequisites:

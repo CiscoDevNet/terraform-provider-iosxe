@@ -49,10 +49,10 @@ type BGPAddressFamilyIPv4 struct {
 	Ipv4UnicastAggregateAddresses    []BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses `tfsdk:"ipv4_unicast_aggregate_addresses"`
 	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4Ipv4UnicastNetworksMask       `tfsdk:"ipv4_unicast_networks_mask"`
 	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4Ipv4UnicastNetworks           `tfsdk:"ipv4_unicast_networks"`
-	AdminDistances                   []BGPAddressFamilyIPv4AdminDistances                `tfsdk:"admin_distances"`
-	DistanceBgpExternal              types.Int64                                         `tfsdk:"distance_bgp_external"`
-	DistanceBgpInternal              types.Int64                                         `tfsdk:"distance_bgp_internal"`
-	DistanceBgpLocal                 types.Int64                                         `tfsdk:"distance_bgp_local"`
+	Ipv4UnicastAdminDistances        []BGPAddressFamilyIPv4Ipv4UnicastAdminDistances     `tfsdk:"ipv4_unicast_admin_distances"`
+	Ipv4UnicastDistanceBgpExternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_external"`
+	Ipv4UnicastDistanceBgpInternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_internal"`
+	Ipv4UnicastDistanceBgpLocal      types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_local"`
 }
 
 type BGPAddressFamilyIPv4Data struct {
@@ -65,10 +65,10 @@ type BGPAddressFamilyIPv4Data struct {
 	Ipv4UnicastAggregateAddresses    []BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses `tfsdk:"ipv4_unicast_aggregate_addresses"`
 	Ipv4UnicastNetworksMask          []BGPAddressFamilyIPv4Ipv4UnicastNetworksMask       `tfsdk:"ipv4_unicast_networks_mask"`
 	Ipv4UnicastNetworks              []BGPAddressFamilyIPv4Ipv4UnicastNetworks           `tfsdk:"ipv4_unicast_networks"`
-	AdminDistances                   []BGPAddressFamilyIPv4AdminDistances                `tfsdk:"admin_distances"`
-	DistanceBgpExternal              types.Int64                                         `tfsdk:"distance_bgp_external"`
-	DistanceBgpInternal              types.Int64                                         `tfsdk:"distance_bgp_internal"`
-	DistanceBgpLocal                 types.Int64                                         `tfsdk:"distance_bgp_local"`
+	Ipv4UnicastAdminDistances        []BGPAddressFamilyIPv4Ipv4UnicastAdminDistances     `tfsdk:"ipv4_unicast_admin_distances"`
+	Ipv4UnicastDistanceBgpExternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_external"`
+	Ipv4UnicastDistanceBgpInternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_internal"`
+	Ipv4UnicastDistanceBgpLocal      types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_local"`
 }
 type BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses struct {
 	Ipv4Address types.String `tfsdk:"ipv4_address"`
@@ -85,7 +85,7 @@ type BGPAddressFamilyIPv4Ipv4UnicastNetworks struct {
 	RouteMap types.String `tfsdk:"route_map"`
 	Backdoor types.Bool   `tfsdk:"backdoor"`
 }
-type BGPAddressFamilyIPv4AdminDistances struct {
+type BGPAddressFamilyIPv4Ipv4UnicastAdminDistances struct {
 	Distance types.Int64  `tfsdk:"distance"`
 	SourceIp types.String `tfsdk:"source_ip"`
 	Wildcard types.String `tfsdk:"wildcard"`
@@ -134,14 +134,14 @@ func (data BGPAddressFamilyIPv4) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.redistribute.static", map[string]string{})
 		}
 	}
-	if !data.DistanceBgpExternal.IsNull() && !data.DistanceBgpExternal.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.bgp.extern-as", strconv.FormatInt(data.DistanceBgpExternal.ValueInt64(), 10))
+	if !data.Ipv4UnicastDistanceBgpExternal.IsNull() && !data.Ipv4UnicastDistanceBgpExternal.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.bgp.extern-as", strconv.FormatInt(data.Ipv4UnicastDistanceBgpExternal.ValueInt64(), 10))
 	}
-	if !data.DistanceBgpInternal.IsNull() && !data.DistanceBgpInternal.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.bgp.internal-as", strconv.FormatInt(data.DistanceBgpInternal.ValueInt64(), 10))
+	if !data.Ipv4UnicastDistanceBgpInternal.IsNull() && !data.Ipv4UnicastDistanceBgpInternal.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.bgp.internal-as", strconv.FormatInt(data.Ipv4UnicastDistanceBgpInternal.ValueInt64(), 10))
 	}
-	if !data.DistanceBgpLocal.IsNull() && !data.DistanceBgpLocal.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.bgp.local", strconv.FormatInt(data.DistanceBgpLocal.ValueInt64(), 10))
+	if !data.Ipv4UnicastDistanceBgpLocal.IsNull() && !data.Ipv4UnicastDistanceBgpLocal.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.bgp.local", strconv.FormatInt(data.Ipv4UnicastDistanceBgpLocal.ValueInt64(), 10))
 	}
 	if len(data.Ipv4UnicastAggregateAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.aggregate-address", []interface{}{})
@@ -189,9 +189,9 @@ func (data BGPAddressFamilyIPv4) toBody(ctx context.Context) string {
 			}
 		}
 	}
-	if len(data.AdminDistances) > 0 {
+	if len(data.Ipv4UnicastAdminDistances) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.adm-distance", []interface{}{})
-		for index, item := range data.AdminDistances {
+		for index, item := range data.Ipv4UnicastAdminDistances {
 			if !item.Distance.IsNull() && !item.Distance.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.adm-distance"+"."+strconv.Itoa(index)+"."+"distance", strconv.FormatInt(item.Distance.ValueInt64(), 10))
 			}
@@ -366,9 +366,9 @@ func (data *BGPAddressFamilyIPv4) updateFromBody(ctx context.Context, res gjson.
 			data.Ipv4UnicastNetworks[i].Backdoor = types.BoolNull()
 		}
 	}
-	for i := range data.AdminDistances {
+	for i := range data.Ipv4UnicastAdminDistances {
 		keys := [...]string{"distance", "srcip", "wildbits"}
-		keyValues := [...]string{strconv.FormatInt(data.AdminDistances[i].Distance.ValueInt64(), 10), data.AdminDistances[i].SourceIp.ValueString(), data.AdminDistances[i].Wildcard.ValueString()}
+		keyValues := [...]string{strconv.FormatInt(data.Ipv4UnicastAdminDistances[i].Distance.ValueInt64(), 10), data.Ipv4UnicastAdminDistances[i].SourceIp.ValueString(), data.Ipv4UnicastAdminDistances[i].Wildcard.ValueString()}
 
 		var r gjson.Result
 		res.Get(prefix + "ipv4-unicast.distance.adm-distance").ForEach(
@@ -389,41 +389,41 @@ func (data *BGPAddressFamilyIPv4) updateFromBody(ctx context.Context, res gjson.
 				return true
 			},
 		)
-		if value := r.Get("distance"); value.Exists() && !data.AdminDistances[i].Distance.IsNull() {
-			data.AdminDistances[i].Distance = types.Int64Value(value.Int())
+		if value := r.Get("distance"); value.Exists() && !data.Ipv4UnicastAdminDistances[i].Distance.IsNull() {
+			data.Ipv4UnicastAdminDistances[i].Distance = types.Int64Value(value.Int())
 		} else {
-			data.AdminDistances[i].Distance = types.Int64Null()
+			data.Ipv4UnicastAdminDistances[i].Distance = types.Int64Null()
 		}
-		if value := r.Get("srcip"); value.Exists() && !data.AdminDistances[i].SourceIp.IsNull() {
-			data.AdminDistances[i].SourceIp = types.StringValue(value.String())
+		if value := r.Get("srcip"); value.Exists() && !data.Ipv4UnicastAdminDistances[i].SourceIp.IsNull() {
+			data.Ipv4UnicastAdminDistances[i].SourceIp = types.StringValue(value.String())
 		} else {
-			data.AdminDistances[i].SourceIp = types.StringNull()
+			data.Ipv4UnicastAdminDistances[i].SourceIp = types.StringNull()
 		}
-		if value := r.Get("wildbits"); value.Exists() && !data.AdminDistances[i].Wildcard.IsNull() {
-			data.AdminDistances[i].Wildcard = types.StringValue(value.String())
+		if value := r.Get("wildbits"); value.Exists() && !data.Ipv4UnicastAdminDistances[i].Wildcard.IsNull() {
+			data.Ipv4UnicastAdminDistances[i].Wildcard = types.StringValue(value.String())
 		} else {
-			data.AdminDistances[i].Wildcard = types.StringNull()
+			data.Ipv4UnicastAdminDistances[i].Wildcard = types.StringNull()
 		}
-		if value := r.Get("acl"); value.Exists() && !data.AdminDistances[i].Acl.IsNull() {
-			data.AdminDistances[i].Acl = types.StringValue(value.String())
+		if value := r.Get("acl"); value.Exists() && !data.Ipv4UnicastAdminDistances[i].Acl.IsNull() {
+			data.Ipv4UnicastAdminDistances[i].Acl = types.StringValue(value.String())
 		} else {
-			data.AdminDistances[i].Acl = types.StringNull()
+			data.Ipv4UnicastAdminDistances[i].Acl = types.StringNull()
 		}
 	}
-	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.extern-as"); value.Exists() && !data.DistanceBgpExternal.IsNull() {
-		data.DistanceBgpExternal = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.extern-as"); value.Exists() && !data.Ipv4UnicastDistanceBgpExternal.IsNull() {
+		data.Ipv4UnicastDistanceBgpExternal = types.Int64Value(value.Int())
 	} else {
-		data.DistanceBgpExternal = types.Int64Null()
+		data.Ipv4UnicastDistanceBgpExternal = types.Int64Null()
 	}
-	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.internal-as"); value.Exists() && !data.DistanceBgpInternal.IsNull() {
-		data.DistanceBgpInternal = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.internal-as"); value.Exists() && !data.Ipv4UnicastDistanceBgpInternal.IsNull() {
+		data.Ipv4UnicastDistanceBgpInternal = types.Int64Value(value.Int())
 	} else {
-		data.DistanceBgpInternal = types.Int64Null()
+		data.Ipv4UnicastDistanceBgpInternal = types.Int64Null()
 	}
-	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.local"); value.Exists() && !data.DistanceBgpLocal.IsNull() {
-		data.DistanceBgpLocal = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.local"); value.Exists() && !data.Ipv4UnicastDistanceBgpLocal.IsNull() {
+		data.Ipv4UnicastDistanceBgpLocal = types.Int64Value(value.Int())
 	} else {
-		data.DistanceBgpLocal = types.Int64Null()
+		data.Ipv4UnicastDistanceBgpLocal = types.Int64Null()
 	}
 }
 
@@ -502,9 +502,9 @@ func (data *BGPAddressFamilyIPv4) fromBody(ctx context.Context, res gjson.Result
 		})
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.adm-distance"); value.Exists() {
-		data.AdminDistances = make([]BGPAddressFamilyIPv4AdminDistances, 0)
+		data.Ipv4UnicastAdminDistances = make([]BGPAddressFamilyIPv4Ipv4UnicastAdminDistances, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv4AdminDistances{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastAdminDistances{}
 			if cValue := v.Get("distance"); cValue.Exists() {
 				item.Distance = types.Int64Value(cValue.Int())
 			}
@@ -517,18 +517,18 @@ func (data *BGPAddressFamilyIPv4) fromBody(ctx context.Context, res gjson.Result
 			if cValue := v.Get("acl"); cValue.Exists() {
 				item.Acl = types.StringValue(cValue.String())
 			}
-			data.AdminDistances = append(data.AdminDistances, item)
+			data.Ipv4UnicastAdminDistances = append(data.Ipv4UnicastAdminDistances, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.extern-as"); value.Exists() {
-		data.DistanceBgpExternal = types.Int64Value(value.Int())
+		data.Ipv4UnicastDistanceBgpExternal = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.internal-as"); value.Exists() {
-		data.DistanceBgpInternal = types.Int64Value(value.Int())
+		data.Ipv4UnicastDistanceBgpInternal = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.local"); value.Exists() {
-		data.DistanceBgpLocal = types.Int64Value(value.Int())
+		data.Ipv4UnicastDistanceBgpLocal = types.Int64Value(value.Int())
 	}
 }
 
@@ -607,9 +607,9 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 		})
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.adm-distance"); value.Exists() {
-		data.AdminDistances = make([]BGPAddressFamilyIPv4AdminDistances, 0)
+		data.Ipv4UnicastAdminDistances = make([]BGPAddressFamilyIPv4Ipv4UnicastAdminDistances, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
-			item := BGPAddressFamilyIPv4AdminDistances{}
+			item := BGPAddressFamilyIPv4Ipv4UnicastAdminDistances{}
 			if cValue := v.Get("distance"); cValue.Exists() {
 				item.Distance = types.Int64Value(cValue.Int())
 			}
@@ -622,18 +622,18 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 			if cValue := v.Get("acl"); cValue.Exists() {
 				item.Acl = types.StringValue(cValue.String())
 			}
-			data.AdminDistances = append(data.AdminDistances, item)
+			data.Ipv4UnicastAdminDistances = append(data.Ipv4UnicastAdminDistances, item)
 			return true
 		})
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.extern-as"); value.Exists() {
-		data.DistanceBgpExternal = types.Int64Value(value.Int())
+		data.Ipv4UnicastDistanceBgpExternal = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.internal-as"); value.Exists() {
-		data.DistanceBgpInternal = types.Int64Value(value.Int())
+		data.Ipv4UnicastDistanceBgpInternal = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.local"); value.Exists() {
-		data.DistanceBgpLocal = types.Int64Value(value.Int())
+		data.Ipv4UnicastDistanceBgpLocal = types.Int64Value(value.Int())
 	}
 }
 
@@ -643,26 +643,26 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 
 func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv4) []string {
 	deletedItems := make([]string, 0)
-	if !state.DistanceBgpLocal.IsNull() && data.DistanceBgpLocal.IsNull() {
+	if !state.Ipv4UnicastDistanceBgpLocal.IsNull() && data.Ipv4UnicastDistanceBgpLocal.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/distance/bgp/local", state.getPath()))
 	}
-	if !state.DistanceBgpInternal.IsNull() && data.DistanceBgpInternal.IsNull() {
+	if !state.Ipv4UnicastDistanceBgpInternal.IsNull() && data.Ipv4UnicastDistanceBgpInternal.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/distance/bgp/internal-as", state.getPath()))
 	}
-	if !state.DistanceBgpExternal.IsNull() && data.DistanceBgpExternal.IsNull() {
+	if !state.Ipv4UnicastDistanceBgpExternal.IsNull() && data.Ipv4UnicastDistanceBgpExternal.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/distance/bgp/extern-as", state.getPath()))
 	}
-	for i := range state.AdminDistances {
-		stateKeyValues := [...]string{strconv.FormatInt(state.AdminDistances[i].Distance.ValueInt64(), 10), state.AdminDistances[i].SourceIp.ValueString(), state.AdminDistances[i].Wildcard.ValueString()}
+	for i := range state.Ipv4UnicastAdminDistances {
+		stateKeyValues := [...]string{strconv.FormatInt(state.Ipv4UnicastAdminDistances[i].Distance.ValueInt64(), 10), state.Ipv4UnicastAdminDistances[i].SourceIp.ValueString(), state.Ipv4UnicastAdminDistances[i].Wildcard.ValueString()}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.AdminDistances[i].Distance.ValueInt64()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4UnicastAdminDistances[i].Distance.ValueInt64()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.AdminDistances[i].SourceIp.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4UnicastAdminDistances[i].SourceIp.ValueString()).IsZero() {
 			emptyKeys = false
 		}
-		if !reflect.ValueOf(state.AdminDistances[i].Wildcard.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Ipv4UnicastAdminDistances[i].Wildcard.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -670,19 +670,19 @@ func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGP
 		}
 
 		found := false
-		for j := range data.AdminDistances {
+		for j := range data.Ipv4UnicastAdminDistances {
 			found = true
-			if state.AdminDistances[i].Distance.ValueInt64() != data.AdminDistances[j].Distance.ValueInt64() {
+			if state.Ipv4UnicastAdminDistances[i].Distance.ValueInt64() != data.Ipv4UnicastAdminDistances[j].Distance.ValueInt64() {
 				found = false
 			}
-			if state.AdminDistances[i].SourceIp.ValueString() != data.AdminDistances[j].SourceIp.ValueString() {
+			if state.Ipv4UnicastAdminDistances[i].SourceIp.ValueString() != data.Ipv4UnicastAdminDistances[j].SourceIp.ValueString() {
 				found = false
 			}
-			if state.AdminDistances[i].Wildcard.ValueString() != data.AdminDistances[j].Wildcard.ValueString() {
+			if state.Ipv4UnicastAdminDistances[i].Wildcard.ValueString() != data.Ipv4UnicastAdminDistances[j].Wildcard.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.AdminDistances[i].Acl.IsNull() && data.AdminDistances[j].Acl.IsNull() {
+				if !state.Ipv4UnicastAdminDistances[i].Acl.IsNull() && data.Ipv4UnicastAdminDistances[j].Acl.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/distance/adm-distance=%v/acl", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
@@ -838,17 +838,17 @@ func (data *BGPAddressFamilyIPv4) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *BGPAddressFamilyIPv4) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.DistanceBgpLocal.IsNull() {
+	if !data.Ipv4UnicastDistanceBgpLocal.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/distance/bgp/local", data.getPath()))
 	}
-	if !data.DistanceBgpInternal.IsNull() {
+	if !data.Ipv4UnicastDistanceBgpInternal.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/distance/bgp/internal-as", data.getPath()))
 	}
-	if !data.DistanceBgpExternal.IsNull() {
+	if !data.Ipv4UnicastDistanceBgpExternal.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/distance/bgp/extern-as", data.getPath()))
 	}
-	for i := range data.AdminDistances {
-		keyValues := [...]string{strconv.FormatInt(data.AdminDistances[i].Distance.ValueInt64(), 10), data.AdminDistances[i].SourceIp.ValueString(), data.AdminDistances[i].Wildcard.ValueString()}
+	for i := range data.Ipv4UnicastAdminDistances {
+		keyValues := [...]string{strconv.FormatInt(data.Ipv4UnicastAdminDistances[i].Distance.ValueInt64(), 10), data.Ipv4UnicastAdminDistances[i].SourceIp.ValueString(), data.Ipv4UnicastAdminDistances[i].Wildcard.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/distance/adm-distance=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}

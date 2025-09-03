@@ -41,12 +41,12 @@ data "iosxe_bgp_address_family_ipv4_vrf" "example" {
 
 Read-Only:
 
-- `admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--vrfs--admin_distances))
-- `distance_bgp_external` (Number)
-- `distance_bgp_internal` (Number)
-- `distance_bgp_local` (Number)
+- `ipv4_unicast_admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_admin_distances))
 - `ipv4_unicast_advertise_l2vpn_evpn` (Boolean) Advertise/export prefixes to l2vpn evpn table
 - `ipv4_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_aggregate_addresses))
+- `ipv4_unicast_distance_bgp_external` (Number)
+- `ipv4_unicast_distance_bgp_internal` (Number)
+- `ipv4_unicast_distance_bgp_local` (Number)
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
@@ -54,8 +54,8 @@ Read-Only:
 - `ipv4_unicast_router_id_loopback` (Number) Loopback interface
 - `name` (String)
 
-<a id="nestedatt--vrfs--admin_distances"></a>
-### Nested Schema for `vrfs.admin_distances`
+<a id="nestedatt--vrfs--ipv4_unicast_admin_distances"></a>
+### Nested Schema for `vrfs.ipv4_unicast_admin_distances`
 
 Read-Only:
 

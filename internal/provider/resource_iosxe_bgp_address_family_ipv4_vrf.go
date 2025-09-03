@@ -214,7 +214,7 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 								},
 							},
 						},
-						"admin_distances": schema.ListNestedAttribute{
+						"ipv4_unicast_admin_distances": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
 							NestedObject: schema.NestedAttributeObject{
@@ -247,21 +247,21 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 								},
 							},
 						},
-						"distance_bgp_external": schema.Int64Attribute{
+						"ipv4_unicast_distance_bgp_external": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
 							Optional:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(1, 255),
 							},
 						},
-						"distance_bgp_internal": schema.Int64Attribute{
+						"ipv4_unicast_distance_bgp_internal": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
 							Optional:            true,
 							Validators: []validator.Int64{
 								int64validator.Between(1, 255),
 							},
 						},
-						"distance_bgp_local": schema.Int64Attribute{
+						"ipv4_unicast_distance_bgp_local": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
 							Optional:            true,
 							Validators: []validator.Int64{
