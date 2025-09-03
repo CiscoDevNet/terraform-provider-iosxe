@@ -16,6 +16,8 @@ description: |-
 - Add `burst`, `iburst` and `periodic` attributes to `iosxe_ntp` resource and data source
 - Add `dhcp_config` attribute to `iosxe_service` resource and data source
 - Add `iosxe_sla` resource and data source
+- Add `admin_distances`, `distance_bgp_external`, `distance_bgp_internal`, `distance_bgp_local`, `distance`, `source_ip`, `wildcard`, and `acl` attributes to `iosxe_iosxe_bgp_address_family_ipv4` resource and data source
+- Add `admin_distances`, `distance_bgp_external`, `distance_bgp_internal`, `distance_bgp_local`, `distance`, `source_ip`, `wildcard`, and `acl` attributes to `iosxe_iosxe_bgp_address_family_ipv4_vrf` resource and data source
 
 ## 0.8.0
 
