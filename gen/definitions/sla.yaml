@@ -6,10 +6,9 @@ no_delete: true
 no_augment_config: true
 attributes:
   - yang_name: entry
-    xpath: entry
     tf_name: entries
     type: List
-    description: entries
+    description: Entries
     attributes:
       - yang_name: number
         xpath: number
@@ -31,28 +30,25 @@ attributes:
         description: Source Address
         example: 192.168.1.1
   - yang_name: schedule
-    xpath: schedule
     tf_name: schedules
     type: List
-    description: schedules
+    description: Schedules
     attributes:
       - yang_name: entry-number
         example: 20
-        xpath: entry-number
         tf_name: entry_number
-        type: 	Int64
-        description: entry-number
+        type: Int64
+        description: Entry number
         id: true
       - yang_name: life
-        xpath: life
         tf_name: life
         type: Int64
-        description: 	Length of time to execute in seconds
+        description: Length of time to execute in seconds
         example: 4000
       - yang_name: start-time/start-time-param/now-type/now-config
         xpath: start-time/now-config
         tf_name: start_time_now
         type: Bool
         type_yang_bool: empty
-        description:  	Start now
+        description: Start now
         example: true

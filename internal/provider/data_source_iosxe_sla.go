@@ -68,7 +68,7 @@ func (d *SLADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				Computed:            true,
 			},
 			"entries": schema.ListNestedAttribute{
-				MarkdownDescription: "entries",
+				MarkdownDescription: "Entries",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -88,12 +88,12 @@ func (d *SLADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				},
 			},
 			"schedules": schema.ListNestedAttribute{
-				MarkdownDescription: "schedules",
+				MarkdownDescription: "Schedules",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"entry_number": schema.Int64Attribute{
-							MarkdownDescription: "entry-number",
+							MarkdownDescription: "Entry number",
 							Computed:            true,
 						},
 						"life": schema.Int64Attribute{

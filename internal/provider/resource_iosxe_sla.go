@@ -76,7 +76,7 @@ func (r *SLAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"entries": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("entries").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Entries").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -96,12 +96,12 @@ func (r *SLAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				},
 			},
 			"schedules": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("schedules").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Schedules").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
 						"entry_number": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("entry-number").String,
+							MarkdownDescription: helpers.NewAttributeDescription("Entry number").String,
 							Required:            true,
 						},
 						"life": schema.Int64Attribute{

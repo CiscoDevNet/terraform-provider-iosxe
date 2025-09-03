@@ -26,9 +26,9 @@ data "iosxe_sla" "example" {
 
 ### Read-Only
 
-- `entries` (Attributes List) entries (see [below for nested schema](#nestedatt--entries))
+- `entries` (Attributes List) Entries (see [below for nested schema](#nestedatt--entries))
 - `id` (String) The path of the retrieved object.
-- `schedules` (Attributes List) schedules (see [below for nested schema](#nestedatt--schedules))
+- `schedules` (Attributes List) Schedules (see [below for nested schema](#nestedatt--schedules))
 
 <a id="nestedatt--entries"></a>
 ### Nested Schema for `entries`
@@ -45,6 +45,6 @@ Read-Only:
 
 Read-Only:
 
-- `entry_number` (Number) entry-number
+- `entry_number` (Number) Entry number
 - `life` (Number) Length of time to execute in seconds
 - `start_time_now` (Boolean) Start now

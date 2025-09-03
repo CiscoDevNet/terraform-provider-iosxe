@@ -37,8 +37,8 @@ resource "iosxe_sla" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
-- `entries` (Attributes List) entries (see [below for nested schema](#nestedatt--entries))
-- `schedules` (Attributes List) schedules (see [below for nested schema](#nestedatt--schedules))
+- `entries` (Attributes List) Entries (see [below for nested schema](#nestedatt--entries))
+- `schedules` (Attributes List) Schedules (see [below for nested schema](#nestedatt--schedules))
 
 ### Read-Only
 
@@ -62,7 +62,7 @@ Optional:
 
 Required:
 
-- `entry_number` (Number) entry-number
+- `entry_number` (Number) Entry number
 
 Optional:
 
