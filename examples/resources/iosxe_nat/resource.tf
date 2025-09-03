@@ -4,7 +4,7 @@ resource "iosxe_nat" "example" {
       id = "10"
       interfaces = [
         {
-          interface = "GigabitEthernet10"
+          interface = "GigabitEthernet4"
           overload  = true
         }
       ]

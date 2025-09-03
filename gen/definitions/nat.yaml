@@ -2,7 +2,7 @@
 name: NAT
 path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat
 doc_category: System
-no_delete_attributes: true
+test_tags: [C8000V]
 attributes:
   - yang_name: inside/source/list-interface/list
     tf_name: inside_source_interfaces
@@ -17,7 +17,7 @@ attributes:
         attributes:
           - yang_name: name
             tf_name: interface
-            example: GigabitEthernet10
+            example: GigabitEthernet4
             id: true
           - yang_name: overload-new
             tf_name: overload

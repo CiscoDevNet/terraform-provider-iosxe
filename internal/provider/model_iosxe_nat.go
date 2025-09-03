@@ -40,6 +40,7 @@ import (
 type NAT struct {
 	Device                 types.String                `tfsdk:"device"`
 	Id                     types.String                `tfsdk:"id"`
+	DeleteMode             types.String                `tfsdk:"delete_mode"`
 	InsideSourceInterfaces []NATInsideSourceInterfaces `tfsdk:"inside_source_interfaces"`
 }
 

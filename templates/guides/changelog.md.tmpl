@@ -10,6 +10,7 @@ description: |-
 ## 0.8.1 (unreleased)
 
 - Add `ip_nbar_classification_dns_classify_by_domain` attribute to `iosxe_system` resource and data source
+- Add `iosxe_nat` resource and data source
 
 ## 0.8.0
 
@@ -35,7 +36,6 @@ description: |-
 - Add `role_based_enforcement_logging_interval`, `role_based_enforcement_vlan_lists`, `role_based_permissions_default_acl_name`, `sgt`, `sxp_connection_peers_ipv4`, `sxp_connection_peers_ipv4_vrf`, `sxp_default_password`, `sxp_default_password_type`, `sxp_enable`, `sxp_listener_hold_max_time`, `sxp_listener_hold_min_time`, `sxp_retry_period` and `sxp_speaker_hold_time` attributes to `iosxe_cts` resource and data source
 - Add `http_url_cert` attribute to `iosxe_crypto_ikev2` resource and data source
 
-- Add `inside_source_interface_lists`,`id`,`interfaces`,`interface`, and `overload` to `iosxe_nat` resource and data source
 ## 0.7.1
 
 - Change type of `transport_input` attribute of `iosxe_line` resource and data source from `String` to `List of String`

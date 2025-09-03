@@ -19,7 +19,7 @@ resource "iosxe_nat" "example" {
       id = "10"
       interfaces = [
         {
-          interface = "GigabitEthernet10"
+          interface = "GigabitEthernet4"
           overload  = true
         }
       ]
@@ -33,6 +33,8 @@ resource "iosxe_nat" "example" {
 
 ### Optional
 
+- `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
+  - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `inside_source_interfaces` (Attributes List) Specify access list describing local addresses (see [below for nested schema](#nestedatt--inside_source_interfaces))
 

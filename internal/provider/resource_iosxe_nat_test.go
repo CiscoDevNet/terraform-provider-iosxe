@@ -22,6 +22,7 @@ package provider
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -33,9 +34,12 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
 func TestAccIosxeNAT(t *testing.T) {
+	if os.Getenv("C8000V") == "" {
+		t.Skip("skipping test, set environment variable C8000V")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.id", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.interface", "GigabitEthernet10"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.interface", "GigabitEthernet4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_nat.test", "inside_source_interfaces.0.interfaces.0.overload", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -93,7 +97,7 @@ func testAccIosxeNATConfig_all() string {
 	config += `	inside_source_interfaces = [{` + "\n"
 	config += `		id = "10"` + "\n"
 	config += `		interfaces = [{` + "\n"
-	config += `			interface = "GigabitEthernet10"` + "\n"
+	config += `			interface = "GigabitEthernet4"` + "\n"
 	config += `			overload = true` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
