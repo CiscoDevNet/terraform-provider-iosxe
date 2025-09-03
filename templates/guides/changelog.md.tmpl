@@ -7,7 +7,14 @@ description: |-
 
 # Changelog
 
-## 0.8.0 (unreleased)
+## 0.8.1 (unreleased)
+
+- Add `ip_nbar_classification_dns_classify_by_domain` attribute to `iosxe_system` resource and data source
+- Add `iosxe_nat` resource and data source
+- Add `session_timeout`, `stopbits`, `first`, `exec_timeout_minutes`, `exec_timeout_seconds`, `monitor`, `escape_character`, `logging_synchronous`, `transport_output_all`, `transport_output_none`, and `transport_output` attributes for console, aux and vty to `iosxe_line` resource and data source
+- Add `console` attribute to `iosxe_logging` resource and data source
+
+## 0.8.0
 
 - BREAKING CHANGE: Combine `iosxe_msdp` and `iosxe_msdp_vrf` resources and data sources into single `iosxe_msdp` resource and data source
 - BREAKING CHANGE: Combine `iosxe_pim` and `iosxe_pim_vrf` resources and data sources into single `iosxe_pim` resource and data source
@@ -28,8 +35,8 @@ description: |-
 - Add `cdp_enable`, `cdp_tlv_app`, `cdp_tlv_location`, `cdp_tlv_server_location`, `ip_nat_inside`, and `ip_nat_outside` attributes to `iosxe_interface_ethernet` resource and data source
 - Add `negotiation_auto` attribute to `iosxe_interface_port_channel` resource and data source
 - Add `ip_hosts`, `ip_hosts_vrf`, `name`, `ips`, `vrf`, `hosts`, `subscriber_templating`, `call_home_contact_email`, `call_home_cisco_tac_1_profile_active`, `call_home_cisco_tac_1_destination_transport_method`, `ip_ftp_passive`, `tftp_source_interface_gigabit_ethernet`, `tftp_source_interface_loopback`, `version`, and `multilink_ppp_bundle_name` attributes to `iosxe_system` resource and data source
-- Add `session_timeout`, `stopbits`, `first`, `exec_timeout_minutes`, `exec_timeout_seconds`, `monitor`, `escape_character`, `logging_synchronous`, `transport_output_all`, `transport_output_none`, and `transport_output` attributes for console, aux and vty to `iosxe_line` resource and data source
-- Add `console` attribute to `iosxe_logging` resource and data source
+- Add `role_based_enforcement_logging_interval`, `role_based_enforcement_vlan_lists`, `role_based_permissions_default_acl_name`, `sgt`, `sxp_connection_peers_ipv4`, `sxp_connection_peers_ipv4_vrf`, `sxp_default_password`, `sxp_default_password_type`, `sxp_enable`, `sxp_listener_hold_max_time`, `sxp_listener_hold_min_time`, `sxp_retry_period` and `sxp_speaker_hold_time` attributes to `iosxe_cts` resource and data source
+- Add `http_url_cert` attribute to `iosxe_crypto_ikev2` resource and data source
 
 ## 0.7.1
 
