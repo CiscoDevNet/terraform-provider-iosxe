@@ -44,10 +44,7 @@ resource "iosxe_system" "example" {
   call_home_cisco_tac_1_profile_active               = true
   call_home_cisco_tac_1_destination_transport_method = "email"
   ip_nbar_classification_dns_classify_by_domain      = true
-  memory_free_low_watermark_processor = 203038
-  ip_ssh_time_out                     = 120
-  ip_ssh_authentication_retries       = 3
-  ip_multicast_route_limit            = 200000
+  ip_multicast_route_limit                           = 200000
 }
 ```
 

@@ -2859,6 +2859,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpMulticastRouteLimit.IsNull() && data.IpMulticastRouteLimit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", state.getPath()))
+	}
 	if !state.IpNbarClassificationDnsClassifyByDomain.IsNull() && data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", state.getPath()))
 	}
@@ -3039,9 +3042,6 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/host/host-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
-	}
-	if !state.IpMulticastRouteLimit.IsNull() && data.IpMulticastRouteLimit.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", state.getPath()))
 	}
 	if !state.EnableSecretLevel.IsNull() && data.EnableSecretLevel.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/enable/secret/level", state.getPath()))
@@ -3620,6 +3620,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpMulticastRouteLimit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", data.getPath()))
+	}
 	if !data.IpNbarClassificationDnsClassifyByDomain.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default", data.getPath()))
 	}
@@ -3667,9 +3670,6 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.IpHosts[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/host/host-list=%v", data.getPath(), strings.Join(keyValues[:], ",")))
-	}
-	if !data.IpMulticastRouteLimit.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", data.getPath()))
 	}
 	if !data.EnableSecretLevel.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/enable/secret/level", data.getPath()))
