@@ -56,6 +56,10 @@ attributes:
   - yang_name: source-interface-conf/interface-name-non-vrf
     tf_name: source_interface
     example: Loopback0
+  - yang_name: console-config/config-options/no-and-default-case/console
+    xpath: console-config/console
+    tf_name: console
+    example: true
   - yang_name: source-interface-conf/source-interface-vrf
     tf_name: source_interfaces_vrf
     type: List

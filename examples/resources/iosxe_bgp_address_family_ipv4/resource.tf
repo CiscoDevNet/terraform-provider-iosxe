@@ -24,4 +24,14 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
       backdoor  = true
     }
   ]
+  ipv4_unicast_admin_distances = [
+    {
+      distance  = 200
+      source_ip = "10.1.1.1"
+      wildcard  = "0.0.0.0"
+    }
+  ]
+  ipv4_unicast_distance_bgp_external = 20
+  ipv4_unicast_distance_bgp_internal = 200
+  ipv4_unicast_distance_bgp_local    = 200
 }

@@ -155,6 +155,27 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 							},
 						},
+						"escape_character": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"logging_synchronous": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").String,
+							Optional:            true,
+						},
+						"transport_output_all": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("All protocols").String,
+							Optional:            true,
+						},
+						"transport_output_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
+							Optional:            true,
+						},
+						"transport_output": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Define which protocols to use for outgoing connections").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
 					},
 				},
 			},
@@ -269,6 +290,86 @@ func (r *LineResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						"transport_input": schema.ListAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Define which protocols to use when connecting to the terminal server").String,
 							ElementType:         types.StringType,
+							Optional:            true,
+						},
+						"monitor": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Copy debug output to the current terminal line").String,
+							Optional:            true,
+						},
+						"session_timeout": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 35791).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 35791),
+							},
+						},
+						"stopbits": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set async line stop bits").AddStringEnumDescription("1", "1.5", "2").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("1", "1.5", "2"),
+							},
+						},
+						"logging_synchronous": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").String,
+							Optional:            true,
+						},
+						"transport_output_all": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("All protocols").String,
+							Optional:            true,
+						},
+						"transport_output_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
+							Optional:            true,
+						},
+						"transport_output": schema.ListAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Define which protocols to use for outgoing connections").String,
+							ElementType:         types.StringType,
+							Optional:            true,
+						},
+					},
+				},
+			},
+			"aux": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Auxiliary line").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"first": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Auxiliary line number").AddStringEnumDescription("0").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("0"),
+							},
+						},
+						"escape_character": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Optional:            true,
+						},
+						"logging_synchronous": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Synchronized message output").String,
+							Optional:            true,
+						},
+						"exec_timeout_minutes": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("<0-35791>;;Timeout in minutes").AddIntegerRangeDescription(0, 35791).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 35791),
+							},
+						},
+						"exec_timeout_seconds": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("<0-2147483>;;Timeout in seconds").AddIntegerRangeDescription(0, 2147483).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 2147483),
+							},
+						},
+						"monitor": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Copy debug output to the current terminal line").String,
+							Optional:            true,
+						},
+						"transport_output_none": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Define no transport protocols for line").String,
 							Optional:            true,
 						},
 					},

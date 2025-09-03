@@ -46,6 +46,12 @@ func TestAccDataSourceIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_networks.0.network", "13.0.0.0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_networks.0.route_map", "RM1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_networks.0.backdoor", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_admin_distances.0.distance", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_admin_distances.0.source_ip", "10.1.1.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_admin_distances.0.wildcard", "0.0.0.0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_distance_bgp_external", "20"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_distance_bgp_internal", "200"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_address_family_ipv4_vrf.test", "vrfs.0.ipv4_unicast_distance_bgp_local", "200"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -123,6 +129,14 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
 	config += `			route_map = "RM1"` + "\n"
 	config += `			backdoor = true` + "\n"
 	config += `		}]` + "\n"
+	config += `		ipv4_unicast_admin_distances = [{` + "\n"
+	config += `			distance = 200` + "\n"
+	config += `			source_ip = "10.1.1.1"` + "\n"
+	config += `			wildcard = "0.0.0.0"` + "\n"
+	config += `		}]` + "\n"
+	config += `		ipv4_unicast_distance_bgp_external = 20` + "\n"
+	config += `		ipv4_unicast_distance_bgp_internal = 200` + "\n"
+	config += `		ipv4_unicast_distance_bgp_local = 200` + "\n"
 	config += `	}]` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
 	config += `}` + "\n"

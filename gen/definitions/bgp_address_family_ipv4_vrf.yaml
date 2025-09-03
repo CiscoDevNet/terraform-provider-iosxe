@@ -80,6 +80,33 @@ attributes:
             tf_name: evpn
             example: true
             exclude_test: true
+      - yang_name: ipv4-unicast/distance/adm-distance
+        tf_name: ipv4_unicast_admin_distances
+        type: List
+        attributes:
+          - yang_name: distance
+            id: true
+            example: 200
+          - yang_name: srcip
+            tf_name: source_ip
+            id: true
+            example: 10.1.1.1
+          - yang_name: wildbits
+            tf_name: wildcard
+            id: true
+            example: 0.0.0.0
+          - yang_name: acl
+            example: 100
+            exclude_test: true
+      - yang_name: ipv4-unicast/distance/bgp/extern-as
+        tf_name: ipv4_unicast_distance_bgp_external
+        example: 20
+      - yang_name: ipv4-unicast/distance/bgp/internal-as
+        tf_name: ipv4_unicast_distance_bgp_internal
+        example: 200
+      - yang_name: ipv4-unicast/distance/bgp/local
+        example: 200
+
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

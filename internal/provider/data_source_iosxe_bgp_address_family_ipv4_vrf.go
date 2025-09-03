@@ -168,6 +168,42 @@ func (d *BGPAddressFamilyIPv4VRFDataSource) Schema(ctx context.Context, req data
 								},
 							},
 						},
+						"ipv4_unicast_admin_distances": schema.ListNestedAttribute{
+							MarkdownDescription: "",
+							Computed:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"distance": schema.Int64Attribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"source_ip": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"wildcard": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"acl": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+								},
+							},
+						},
+						"ipv4_unicast_distance_bgp_external": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"ipv4_unicast_distance_bgp_internal": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"ipv4_unicast_distance_bgp_local": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
 					},
 				},
 			},

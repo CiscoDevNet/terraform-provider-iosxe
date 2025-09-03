@@ -39,6 +39,16 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
       backdoor  = true
     }
   ]
+  ipv4_unicast_admin_distances = [
+    {
+      distance  = 200
+      source_ip = "10.1.1.1"
+      wildcard  = "0.0.0.0"
+    }
+  ]
+  ipv4_unicast_distance_bgp_external = 20
+  ipv4_unicast_distance_bgp_internal = 200
+  ipv4_unicast_distance_bgp_local    = 200
 }
 ```
 
@@ -55,7 +65,11 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `ipv4_unicast_admin_distances` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_unicast_admin_distances))
 - `ipv4_unicast_aggregate_addresses` (Attributes List) Configure BGP aggregate entries (see [below for nested schema](#nestedatt--ipv4_unicast_aggregate_addresses))
+- `ipv4_unicast_distance_bgp_external` (Number) - Range: `1`-`255`
+- `ipv4_unicast_distance_bgp_internal` (Number) - Range: `1`-`255`
+- `ipv4_unicast_distance_bgp_local` (Number) - Range: `1`-`255`
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
@@ -64,6 +78,20 @@ resource "iosxe_bgp_address_family_ipv4" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--ipv4_unicast_admin_distances"></a>
+### Nested Schema for `ipv4_unicast_admin_distances`
+
+Required:
+
+- `distance` (Number) - Range: `1`-`255`
+- `source_ip` (String)
+- `wildcard` (String)
+
+Optional:
+
+- `acl` (String)
+
 
 <a id="nestedatt--ipv4_unicast_aggregate_addresses"></a>
 ### Nested Schema for `ipv4_unicast_aggregate_addresses`

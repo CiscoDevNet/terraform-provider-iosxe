@@ -26,18 +26,35 @@ data "iosxe_line" "example" {
 
 ### Read-Only
 
+- `aux` (Attributes List) Auxiliary line (see [below for nested schema](#nestedatt--aux))
 - `console` (Attributes List) Primary terminal line (see [below for nested schema](#nestedatt--console))
 - `id` (String) The path of the retrieved object.
 - `vty` (Attributes List) Virtual terminal (see [below for nested schema](#nestedatt--vty))
+
+<a id="nestedatt--aux"></a>
+### Nested Schema for `aux`
+
+Read-Only:
+
+- `escape_character` (String)
+- `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
+- `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
+- `first` (String) Auxiliary line number
+- `logging_synchronous` (Boolean) Synchronized message output
+- `monitor` (Boolean) Copy debug output to the current terminal line
+- `transport_output_none` (Boolean) Define no transport protocols for line
+
 
 <a id="nestedatt--console"></a>
 ### Nested Schema for `console`
 
 Read-Only:
 
+- `escape_character` (String)
 - `exec_timeout_minutes` (Number) <0-35791>;;Timeout in minutes
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
 - `first` (String) Console line number
+- `logging_synchronous` (Boolean) Synchronized message output
 - `login_authentication` (String)
 - `login_local` (Boolean)
 - `password` (String)
@@ -45,6 +62,9 @@ Read-Only:
 - `password_type` (String)
 - `privilege_level` (Number)
 - `stopbits` (String) Set async line stop bits
+- `transport_output` (List of String) Define which protocols to use for outgoing connections
+- `transport_output_all` (Boolean) All protocols
+- `transport_output_none` (Boolean) Define no transport protocols for line
 
 
 <a id="nestedatt--vty"></a>
@@ -60,13 +80,20 @@ Read-Only:
 - `exec_timeout_seconds` (Number) <0-2147483>;;Timeout in seconds
 - `first` (Number) Vty first line number
 - `last` (Number) Vty last line number
+- `logging_synchronous` (Boolean) Synchronized message output
 - `login_authentication` (String) Authentication list
+- `monitor` (Boolean) Copy debug output to the current terminal line
 - `password` (String)
 - `password_level` (Number) Set exec level password
 - `password_type` (String)
+- `session_timeout` (Number)
+- `stopbits` (String) Set async line stop bits
 - `transport_input` (List of String) Define which protocols to use when connecting to the terminal server
 - `transport_input_all` (Boolean) All protocols
 - `transport_input_none` (Boolean) Define no transport protocols for line
+- `transport_output` (List of String) Define which protocols to use for outgoing connections
+- `transport_output_all` (Boolean) All protocols
+- `transport_output_none` (Boolean) Define no transport protocols for line
 - `transport_preferred_protocol` (String)
 
 <a id="nestedatt--vty--access_classes"></a>

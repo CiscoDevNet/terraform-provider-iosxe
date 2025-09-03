@@ -131,6 +131,10 @@ func (d *LoggingDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"console": schema.BoolAttribute{
+				MarkdownDescription: "Set console logging parameters",
+				Computed:            true,
+			},
 			"source_interfaces_vrf": schema.ListNestedAttribute{
 				MarkdownDescription: "Specify interface and vrf for source address in logging transactions",
 				Computed:            true,
