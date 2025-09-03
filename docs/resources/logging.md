@@ -25,6 +25,7 @@ resource "iosxe_logging" "example" {
   trap_severity     = "informational"
   origin_id_type    = "hostname"
   source_interface  = "Loopback0"
+  console           = true
   source_interfaces_vrf = [
     {
       vrf            = "VRF1"
@@ -146,6 +147,7 @@ resource "iosxe_logging" "example" {
 - `buffered_severity` (String) DEPRECATED. Logging severity level
 - `buffered_size` (Number) DEPRECATED. Logging buffer size
   - Range: `4096`-`2147483647`
+- `console` (Boolean) Set console logging parameters
 - `console_severity` (String)
 - `device` (String) A device name from the provider configuration.
 - `facility` (String) Facility parameter for syslog messages

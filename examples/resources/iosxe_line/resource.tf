@@ -8,6 +8,7 @@ resource "iosxe_line" "example" {
       stopbits             = "1"
       password_type        = "0"
       password             = "testpasswd"
+      logging_synchronous  = true
     }
   ]
   vty = [
@@ -26,9 +27,11 @@ resource "iosxe_line" "example" {
       password_type                = "0"
       password                     = "testpasswd"
       transport_preferred_protocol = "none"
-      escape_character             = "27"
+      escape_character             = "BREAK"
       authorization_exec_default   = true
       transport_input              = ["ssh"]
+      monitor                      = true
+      logging_synchronous          = true
     }
   ]
 }
