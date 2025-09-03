@@ -51,14 +51,15 @@ func TestAccDataSourceIosxeNTP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "servers.0.key", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "servers.0.prefer", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "servers.0.version", "2"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "servers.0.burst", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "servers.0.iburst", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.name", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.ip_address", "3.4.5.6"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.key", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.prefer", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.version", "2"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.burst", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.iburst", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.periodic", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.burst", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "server_vrfs.0.servers.0.iburst", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "peers.0.ip_address", "5.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "peers.0.source", "Loopback1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_ntp.test", "peers.0.key", "1"))
@@ -140,6 +141,8 @@ func testAccDataSourceIosxeNTPConfig() string {
 	config += `		key = 1` + "\n"
 	config += `		prefer = true` + "\n"
 	config += `		version = 2` + "\n"
+	config += `		burst = false` + "\n"
+	config += `		iburst = false` + "\n"
 	config += `	}]` + "\n"
 	config += `	server_vrfs = [{` + "\n"
 	config += `		name = "VRF1"` + "\n"
@@ -148,9 +151,8 @@ func testAccDataSourceIosxeNTPConfig() string {
 	config += `			key = 1` + "\n"
 	config += `			prefer = true` + "\n"
 	config += `			version = 2` + "\n"
-	config += `			burst = true` + "\n"
-	config += `			iburst = true` + "\n"
-	config += `			periodic = true` + "\n"
+	config += `			burst = false` + "\n"
+	config += `			iburst = false` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
 	config += `	peers = [{` + "\n"

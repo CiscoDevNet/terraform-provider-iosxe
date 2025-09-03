@@ -119,6 +119,15 @@ attributes:
         example: true
       - yang_name: version
         example: 2
+      - yang_name: burst-opt
+        tf_name: burst
+        example: false
+      - yang_name: iburst-opt
+        tf_name: iburst
+        example: false
+      - yang_name: periodic
+        example: true
+        exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:server/vrf
     tf_name: server_vrfs
     type: List
@@ -141,12 +150,13 @@ attributes:
             example: 2
           - yang_name: burst-opt
             tf_name: burst
-            example: true
+            example: false
           - yang_name: iburst-opt
             tf_name: iburst
-            example: true
+            example: false
           - yang_name: periodic
             example: true
+            exclude_test: true
   - yang_name: Cisco-IOS-XE-ntp:peer/server-list
     tf_name: peers
     type: List

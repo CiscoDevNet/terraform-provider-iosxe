@@ -208,6 +208,18 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 							MarkdownDescription: "    Configure NTP version",
 							Computed:            true,
 						},
+						"burst": schema.BoolAttribute{
+							MarkdownDescription: "Send a burst when peer is reachable (Default)",
+							Computed:            true,
+						},
+						"iburst": schema.BoolAttribute{
+							MarkdownDescription: "Send a burst when peer is unreachable (Default)",
+							Computed:            true,
+						},
+						"periodic": schema.BoolAttribute{
+							MarkdownDescription: "Check server availability periodically and switch to a new server if required",
+							Computed:            true,
+						},
 					},
 				},
 			},

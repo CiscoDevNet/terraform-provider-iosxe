@@ -113,6 +113,9 @@ type NTPServers struct {
 	Key       types.Int64  `tfsdk:"key"`
 	Prefer    types.Bool   `tfsdk:"prefer"`
 	Version   types.Int64  `tfsdk:"version"`
+	Burst     types.Bool   `tfsdk:"burst"`
+	Iburst    types.Bool   `tfsdk:"iburst"`
+	Periodic  types.Bool   `tfsdk:"periodic"`
 }
 type NTPServerVrfs struct {
 	Name    types.String           `tfsdk:"name"`
@@ -292,6 +295,21 @@ func (data NTP) toBody(ctx context.Context) string {
 			}
 			if !item.Version.IsNull() && !item.Version.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:server.server-list"+"."+strconv.Itoa(index)+"."+"version", strconv.FormatInt(item.Version.ValueInt64(), 10))
+			}
+			if !item.Burst.IsNull() && !item.Burst.IsUnknown() {
+				if item.Burst.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:server.server-list"+"."+strconv.Itoa(index)+"."+"burst-opt", map[string]string{})
+				}
+			}
+			if !item.Iburst.IsNull() && !item.Iburst.IsUnknown() {
+				if item.Iburst.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:server.server-list"+"."+strconv.Itoa(index)+"."+"iburst-opt", map[string]string{})
+				}
+			}
+			if !item.Periodic.IsNull() && !item.Periodic.IsUnknown() {
+				if item.Periodic.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-ntp:server.server-list"+"."+strconv.Itoa(index)+"."+"periodic", map[string]string{})
+				}
 			}
 		}
 	}
@@ -636,6 +654,33 @@ func (data *NTP) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Servers[i].Version = types.Int64Value(value.Int())
 		} else {
 			data.Servers[i].Version = types.Int64Null()
+		}
+		if value := r.Get("burst-opt"); !data.Servers[i].Burst.IsNull() {
+			if value.Exists() {
+				data.Servers[i].Burst = types.BoolValue(true)
+			} else {
+				data.Servers[i].Burst = types.BoolValue(false)
+			}
+		} else {
+			data.Servers[i].Burst = types.BoolNull()
+		}
+		if value := r.Get("iburst-opt"); !data.Servers[i].Iburst.IsNull() {
+			if value.Exists() {
+				data.Servers[i].Iburst = types.BoolValue(true)
+			} else {
+				data.Servers[i].Iburst = types.BoolValue(false)
+			}
+		} else {
+			data.Servers[i].Iburst = types.BoolNull()
+		}
+		if value := r.Get("periodic"); !data.Servers[i].Periodic.IsNull() {
+			if value.Exists() {
+				data.Servers[i].Periodic = types.BoolValue(true)
+			} else {
+				data.Servers[i].Periodic = types.BoolValue(false)
+			}
+		} else {
+			data.Servers[i].Periodic = types.BoolNull()
 		}
 	}
 	for i := range data.ServerVrfs {
@@ -1032,6 +1077,21 @@ func (data *NTP) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("version"); cValue.Exists() {
 				item.Version = types.Int64Value(cValue.Int())
 			}
+			if cValue := v.Get("burst-opt"); cValue.Exists() {
+				item.Burst = types.BoolValue(true)
+			} else {
+				item.Burst = types.BoolValue(false)
+			}
+			if cValue := v.Get("iburst-opt"); cValue.Exists() {
+				item.Iburst = types.BoolValue(true)
+			} else {
+				item.Iburst = types.BoolValue(false)
+			}
+			if cValue := v.Get("periodic"); cValue.Exists() {
+				item.Periodic = types.BoolValue(true)
+			} else {
+				item.Periodic = types.BoolValue(false)
+			}
 			data.Servers = append(data.Servers, item)
 			return true
 		})
@@ -1283,6 +1343,21 @@ func (data *NTPData) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("version"); cValue.Exists() {
 				item.Version = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("burst-opt"); cValue.Exists() {
+				item.Burst = types.BoolValue(true)
+			} else {
+				item.Burst = types.BoolValue(false)
+			}
+			if cValue := v.Get("iburst-opt"); cValue.Exists() {
+				item.Iburst = types.BoolValue(true)
+			} else {
+				item.Iburst = types.BoolValue(false)
+			}
+			if cValue := v.Get("periodic"); cValue.Exists() {
+				item.Periodic = types.BoolValue(true)
+			} else {
+				item.Periodic = types.BoolValue(false)
 			}
 			data.Servers = append(data.Servers, item)
 			return true
@@ -1620,6 +1695,15 @@ func (data *NTP) getDeletedItems(ctx context.Context, state NTP) []string {
 				found = false
 			}
 			if found {
+				if !state.Servers[i].Periodic.IsNull() && data.Servers[j].Periodic.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/periodic", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Servers[i].Iburst.IsNull() && data.Servers[j].Iburst.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/iburst-opt", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Servers[i].Burst.IsNull() && data.Servers[j].Burst.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/burst-opt", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Servers[i].Version.IsNull() && data.Servers[j].Version.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/version", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -1793,6 +1877,15 @@ func (data *NTP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.Servers {
 		keyValues := [...]string{data.Servers[i].IpAddress.ValueString()}
+		if !data.Servers[i].Periodic.IsNull() && !data.Servers[i].Periodic.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/periodic", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Servers[i].Iburst.IsNull() && !data.Servers[i].Iburst.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/iburst-opt", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Servers[i].Burst.IsNull() && !data.Servers[i].Burst.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/burst-opt", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 		if !data.Servers[i].Prefer.IsNull() && !data.Servers[i].Prefer.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-ntp:server/server-list=%v/prefer", data.getPath(), strings.Join(keyValues[:], ",")))
 		}

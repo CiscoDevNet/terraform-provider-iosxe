@@ -253,6 +253,18 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 								int64validator.Between(1, 4),
 							},
 						},
+						"burst": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is reachable (Default)").String,
+							Optional:            true,
+						},
+						"iburst": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Send a burst when peer is unreachable (Default)").String,
+							Optional:            true,
+						},
+						"periodic": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Check server availability periodically and switch to a new server if required").String,
+							Optional:            true,
+						},
 					},
 				},
 			},

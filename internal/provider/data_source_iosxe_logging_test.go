@@ -35,7 +35,6 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "monitor_severity", "informational"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "buffered_size", "16000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "buffered_severity", "informational"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "console_severity", "informational"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "facility", "local0"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "history_size", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "history_severity", "informational"))
@@ -116,7 +115,6 @@ func testAccDataSourceIosxeLoggingConfig() string {
 	config += `	monitor_severity = "informational"` + "\n"
 	config += `	buffered_size = 16000` + "\n"
 	config += `	buffered_severity = "informational"` + "\n"
-	config += `	console_severity = "informational"` + "\n"
 	config += `	facility = "local0"` + "\n"
 	config += `	history_size = 100` + "\n"
 	config += `	history_severity = "informational"` + "\n"

@@ -18,6 +18,7 @@ attributes:
     xpath: console-config/common-config/console/severity
     tf_name: console_severity
     example: informational
+    exclude_test: true
   - yang_name: facility
     example: local0
   - yang_name: history/size

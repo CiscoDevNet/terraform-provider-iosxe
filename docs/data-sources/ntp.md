@@ -128,8 +128,11 @@ Read-Only:
 
 Read-Only:
 
+- `burst` (Boolean) Send a burst when peer is reachable (Default)
+- `iburst` (Boolean) Send a burst when peer is unreachable (Default)
 - `ip_address` (String) Configure ip/ipv6 address/hostname of peer
 - `key` (Number) Configure peer authentication key
+- `periodic` (Boolean) Check server availability periodically and switch to a new server if required
 - `prefer` (Boolean) Prefer this peer when possible
 - `source` (String) Interface for source address
 - `version` (Number) Configure NTP version

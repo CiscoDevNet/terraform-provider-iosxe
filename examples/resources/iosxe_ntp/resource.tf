@@ -24,6 +24,8 @@ resource "iosxe_ntp" "example" {
       key        = 1
       prefer     = true
       version    = 2
+      burst      = false
+      iburst     = false
     }
   ]
   server_vrfs = [
@@ -35,9 +37,8 @@ resource "iosxe_ntp" "example" {
           key        = 1
           prefer     = true
           version    = 2
-          burst      = true
-          iburst     = true
-          periodic   = true
+          burst      = false
+          iburst     = false
         }
       ]
     }
