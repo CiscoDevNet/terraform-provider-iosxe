@@ -160,6 +160,10 @@ func (r *LoggingResource) Schema(ctx context.Context, req resource.SchemaRequest
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
 			},
+			"console": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set console logging parameters").String,
+				Optional:            true,
+			},
 			"source_interfaces_vrf": schema.ListNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify interface and vrf for source address in logging transactions").String,
 				Optional:            true,

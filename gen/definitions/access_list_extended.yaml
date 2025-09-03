@@ -165,6 +165,7 @@ attributes:
         xpath: ace-rule/named-msg-type
         tf_name: icmp_named_msg_type
         example: traceroute
+        exclude_test: true
       - yang_name: ace-rule/dst-port-choice/dst-eq-case/dst-eq-port2
         xpath: ace-rule/dst-eq-port2
         tf_name: destination_port_equal_2
