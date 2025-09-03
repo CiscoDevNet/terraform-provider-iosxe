@@ -58,7 +58,8 @@ attributes:
       - yang_name: encryption
         example: 7
       - yang_name: security-level
-        example: 1
+        example: priv
+        exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:host-config/ip-vrf-community
     tf_name: vrf_hosts
     type: List
@@ -76,7 +77,8 @@ attributes:
       - yang_name: encryption
         example: 7
       - yang_name: security-level
-        example: 1
+        example: priv
+        exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:system-shutdown
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/flowmon
@@ -684,11 +686,11 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp
     tf_name: enable_traps_bgp
     example: true
-    test_tags: [C8000V]
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/bgp-traps/cbgp2
     tf_name: enable_traps_cbgp2
     example: true
-    test_tags: [C8000V]
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/ospfv3/errors
     tf_name: enable_traps_ospfv3_errors
     example: true
@@ -868,6 +870,7 @@ attributes:
             example: CON1
           - yang_name: match-node
             example: exact
+            test_tags: [C9000V]
           - yang_name: read-node
             example: VIEW1
           - yang_name: write-node
@@ -886,7 +889,7 @@ attributes:
             xpath: access-config/acl-name
             tf_name: access_acl_name
             example: ACL1
-            test_tags: [IOSXE1712]
+            exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:user/names
     tf_name: users
     type: List

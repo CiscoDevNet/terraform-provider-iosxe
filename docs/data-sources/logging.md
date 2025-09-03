@@ -28,6 +28,7 @@ data "iosxe_logging" "example" {
 
 - `buffered_severity` (String) DEPRECATED. Logging severity level
 - `buffered_size` (Number) DEPRECATED. Logging buffer size
+- `console` (Boolean) Set console logging parameters
 - `console_severity` (String)
 - `facility` (String) Facility parameter for syslog messages
 - `file_max_size` (Number)
