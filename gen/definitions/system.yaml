@@ -517,6 +517,36 @@ attributes:
   - yang_name: ip/Cisco-IOS-XE-nbar:nbar/classification/dns/classify-by-domain-with-default
     tf_name: ip_nbar_classification_dns_classify_by_domain
     example: true
+  - yang_name: Cisco-IOS-XE-aaa:security/passwords/min-length
+    tf_name: security_passwords_min_length
+    example: 8
+    exclude_test: true
+  - yang_name: ip/domain/list/domain-name
+    tf_name: ip_domain_list_names
+    example: example.com
+    exclude_test: true
+  - yang_name: ip/domain/list/vrf/domain-name
+    tf_name: ip_domain_list_vrf_domain
+    example: example.com
+  - yang_name: ip/domain/list/vrf/vrf-name
+    tf_name: ip_domain_list_vrf
+    example: VRF1
+  - yang_name: ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay
+    example: 2600
+    exclude_test: true
+  - yang_name: ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/reset
+    example: 10000
+    exclude_test: true
+  - yang_name: standby/redirects-config/redirect_choice/redirects/redirects
+    xpath: standby/redirects-config/redirects
+    tf_name: standby_redirects
+    example: true
+    exclude_test: true
+  - yang_name: standby/redirects-config/redirect_choice/redirect-enable-disable/redirect-enable-disable/redirects
+    xpath: standby/redirects-config/redirect-enable-disable/redirects
+    tf_name: standby_redirects_enable_disable
+    example: false
+    exclude_test: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

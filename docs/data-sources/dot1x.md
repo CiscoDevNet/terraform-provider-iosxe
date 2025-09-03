@@ -28,8 +28,11 @@ data "iosxe_dot1x" "example" {
 
 - `auth_fail_eapol` (Boolean) Send EAPOL-Success on successful auth-fail Authorization
 - `credentials` (Attributes List) Configure 802.1X credentials profiles (see [below for nested schema](#nestedatt--credentials))
+- `critical_eapol` (Boolean) Send EAPOL-Success on successful Critical Authentication
+- `critical_eapol_block` (Boolean) Block all EAPoL transaction on Critical Authentication
 - `critical_eapol_config_block` (Boolean) Block all EAPoL transaction on Critical Authentication
 - `critical_recovery_delay` (Number) Set 802.1x Critical Authentication Recovery Delay period
+- `guest_vlan_supplicant` (Boolean) Allow 802.1x capable supplicants to enter Guest Vlan
 - `id` (String) The path of the retrieved object.
 - `logging_verbose` (Boolean) Show verbose messages in system logs
 - `supplicant_controlled_transient` (Boolean) Controlled access is only applied during authentication

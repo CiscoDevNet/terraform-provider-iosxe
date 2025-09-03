@@ -643,6 +643,39 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "dns classification by domain",
 				Computed:            true,
 			},
+			"security_passwords_min_length": schema.Int64Attribute{
+				MarkdownDescription: "Minimum length of passwords",
+				Computed:            true,
+			},
+			"ip_domain_list_names": schema.ListAttribute{
+				MarkdownDescription: "",
+				ElementType:         types.StringType,
+				Computed:            true,
+			},
+			"ip_domain_list_vrf_domain": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ip_domain_list_vrf": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ethernet_cfm_alarm_config_delay": schema.Int64Attribute{
+				MarkdownDescription: "msec (default 2500 msec)",
+				Computed:            true,
+			},
+			"ethernet_cfm_alarm_config_reset": schema.Int64Attribute{
+				MarkdownDescription: "msec (default 10000 msec)",
+				Computed:            true,
+			},
+			"standby_redirects": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"standby_redirects_enable_disable": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

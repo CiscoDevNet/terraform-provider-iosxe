@@ -492,7 +492,6 @@ attributes:
     example: true
     exclude_test: true
 
-
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
     no_delete: true

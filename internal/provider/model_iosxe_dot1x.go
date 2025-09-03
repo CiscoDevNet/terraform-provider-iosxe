@@ -50,6 +50,9 @@ type Dot1x struct {
 	SupplicantControlledTransient types.Bool         `tfsdk:"supplicant_controlled_transient"`
 	SupplicantForceMulticast      types.Bool         `tfsdk:"supplicant_force_multicast"`
 	SystemAuthControl             types.Bool         `tfsdk:"system_auth_control"`
+	GuestVlanSupplicant           types.Bool         `tfsdk:"guest_vlan_supplicant"`
+	CriticalEapol                 types.Bool         `tfsdk:"critical_eapol"`
+	CriticalEapolBlock            types.Bool         `tfsdk:"critical_eapol_block"`
 }
 
 type Dot1xData struct {
@@ -64,6 +67,9 @@ type Dot1xData struct {
 	SupplicantControlledTransient types.Bool         `tfsdk:"supplicant_controlled_transient"`
 	SupplicantForceMulticast      types.Bool         `tfsdk:"supplicant_force_multicast"`
 	SystemAuthControl             types.Bool         `tfsdk:"system_auth_control"`
+	GuestVlanSupplicant           types.Bool         `tfsdk:"guest_vlan_supplicant"`
+	CriticalEapol                 types.Bool         `tfsdk:"critical_eapol"`
+	CriticalEapolBlock            types.Bool         `tfsdk:"critical_eapol_block"`
 }
 type Dot1xCredentials struct {
 	ProfileName   types.String `tfsdk:"profile_name"`
@@ -138,6 +144,21 @@ func (data Dot1x) toBody(ctx context.Context) string {
 	if !data.SystemAuthControl.IsNull() && !data.SystemAuthControl.IsUnknown() {
 		if data.SystemAuthControl.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:system-auth-control", map[string]string{})
+		}
+	}
+	if !data.GuestVlanSupplicant.IsNull() && !data.GuestVlanSupplicant.IsUnknown() {
+		if data.GuestVlanSupplicant.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:guest-vlan.supplicant", map[string]string{})
+		}
+	}
+	if !data.CriticalEapol.IsNull() && !data.CriticalEapol.IsUnknown() {
+		if data.CriticalEapol.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:critical.eapol-config", map[string]string{})
+		}
+	}
+	if !data.CriticalEapolBlock.IsNull() && !data.CriticalEapolBlock.IsUnknown() {
+		if data.CriticalEapolBlock.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-dot1x:critical.eapol-config.block", map[string]string{})
 		}
 	}
 	if len(data.Credentials) > 0 {
@@ -301,6 +322,33 @@ func (data *Dot1x) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SystemAuthControl = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:guest-vlan.supplicant"); !data.GuestVlanSupplicant.IsNull() {
+		if value.Exists() {
+			data.GuestVlanSupplicant = types.BoolValue(true)
+		} else {
+			data.GuestVlanSupplicant = types.BoolValue(false)
+		}
+	} else {
+		data.GuestVlanSupplicant = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:critical.eapol-config"); !data.CriticalEapol.IsNull() {
+		if value.Exists() {
+			data.CriticalEapol = types.BoolValue(true)
+		} else {
+			data.CriticalEapol = types.BoolValue(false)
+		}
+	} else {
+		data.CriticalEapol = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:critical.eapol-config.block"); !data.CriticalEapolBlock.IsNull() {
+		if value.Exists() {
+			data.CriticalEapolBlock = types.BoolValue(true)
+		} else {
+			data.CriticalEapolBlock = types.BoolValue(false)
+		}
+	} else {
+		data.CriticalEapolBlock = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -376,6 +424,21 @@ func (data *Dot1x) fromBody(ctx context.Context, res gjson.Result) {
 		data.SystemAuthControl = types.BoolValue(true)
 	} else {
 		data.SystemAuthControl = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:guest-vlan.supplicant"); value.Exists() {
+		data.GuestVlanSupplicant = types.BoolValue(true)
+	} else {
+		data.GuestVlanSupplicant = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:critical.eapol-config"); value.Exists() {
+		data.CriticalEapol = types.BoolValue(true)
+	} else {
+		data.CriticalEapol = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:critical.eapol-config.block"); value.Exists() {
+		data.CriticalEapolBlock = types.BoolValue(true)
+	} else {
+		data.CriticalEapolBlock = types.BoolValue(false)
 	}
 }
 
@@ -453,6 +516,21 @@ func (data *Dot1xData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SystemAuthControl = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:guest-vlan.supplicant"); value.Exists() {
+		data.GuestVlanSupplicant = types.BoolValue(true)
+	} else {
+		data.GuestVlanSupplicant = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:critical.eapol-config"); value.Exists() {
+		data.CriticalEapol = types.BoolValue(true)
+	} else {
+		data.CriticalEapol = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-dot1x:critical.eapol-config.block"); value.Exists() {
+		data.CriticalEapolBlock = types.BoolValue(true)
+	} else {
+		data.CriticalEapolBlock = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -461,6 +539,15 @@ func (data *Dot1xData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
 	deletedItems := make([]string, 0)
+	if !state.CriticalEapolBlock.IsNull() && data.CriticalEapolBlock.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", state.getPath()))
+	}
+	if !state.CriticalEapol.IsNull() && data.CriticalEapol.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config", state.getPath()))
+	}
+	if !state.GuestVlanSupplicant.IsNull() && data.GuestVlanSupplicant.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:guest-vlan/supplicant", state.getPath()))
+	}
 	if !state.SystemAuthControl.IsNull() && data.SystemAuthControl.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", state.getPath()))
 	}
@@ -538,6 +625,15 @@ func (data *Dot1x) getDeletedItems(ctx context.Context, state Dot1x) []string {
 
 func (data *Dot1x) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.CriticalEapolBlock.IsNull() && !data.CriticalEapolBlock.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", data.getPath()))
+	}
+	if !data.CriticalEapol.IsNull() && !data.CriticalEapol.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config", data.getPath()))
+	}
+	if !data.GuestVlanSupplicant.IsNull() && !data.GuestVlanSupplicant.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:guest-vlan/supplicant", data.getPath()))
+	}
 	if !data.SystemAuthControl.IsNull() && !data.SystemAuthControl.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", data.getPath()))
 	}
@@ -567,6 +663,15 @@ func (data *Dot1x) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *Dot1x) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.CriticalEapolBlock.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config/block", data.getPath()))
+	}
+	if !data.CriticalEapol.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:critical/eapol-config", data.getPath()))
+	}
+	if !data.GuestVlanSupplicant.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:guest-vlan/supplicant", data.getPath()))
+	}
 	if !data.SystemAuthControl.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-dot1x:system-auth-control", data.getPath()))
 	}

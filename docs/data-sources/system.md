@@ -46,9 +46,14 @@ data "iosxe_system" "example" {
 - `enable_secret_level` (Number) Set exec level password
 - `enable_secret_type` (String)
 - `epm_logging` (Boolean) Enable EPM logging
+- `ethernet_cfm_alarm_config_delay` (Number) msec (default 2500 msec)
+- `ethernet_cfm_alarm_config_reset` (Number) msec (default 10000 msec)
 - `hostname` (String) Set system's network name
 - `id` (String) The path of the retrieved object.
 - `ip_bgp_community_new_format` (Boolean) select aa:nn format for BGP community
+- `ip_domain_list_names` (List of String)
+- `ip_domain_list_vrf` (String)
+- `ip_domain_list_vrf_domain` (String)
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
 - `ip_domain_lookup_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_domain_lookup_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
@@ -134,6 +139,9 @@ data "iosxe_system" "example" {
 - `pnp_profiles` (Attributes List) PNP profile (see [below for nested schema](#nestedatt--pnp_profiles))
 - `redundancy` (Boolean) Enter redundancy mode
 - `redundancy_mode` (String) redundancy mode for this chassis
+- `security_passwords_min_length` (Number) Minimum length of passwords
+- `standby_redirects` (Boolean)
+- `standby_redirects_enable_disable` (String)
 - `subscriber_templating` (Boolean) Configure subscriber templating
 - `tftp_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
 - `tftp_source_interface_loopback` (Number) Loopback interface
