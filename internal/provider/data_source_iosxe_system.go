@@ -619,6 +619,26 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Version",
 				Computed:            true,
 			},
+			"track_objects": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"track_object_number": schema.StringAttribute{
+							MarkdownDescription: "Tracked object",
+							Computed:            true,
+						},
+						"track_ip_sla_number": schema.Int64Attribute{
+							MarkdownDescription: "Entry number",
+							Computed:            true,
+						},
+						"track_ip_sla_reachability": schema.BoolAttribute{
+							MarkdownDescription: "Reachability",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"ip_nbar_classification_dns_classify_by_domain": schema.BoolAttribute{
 				MarkdownDescription: "dns classification by domain",
 				Computed:            true,

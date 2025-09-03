@@ -190,6 +190,7 @@ resource "iosxe_system" "example" {
 - `tftp_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
 - `tftp_source_interface_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
+- `track_objects` (Attributes List) (see [below for nested schema](#nestedatt--track_objects))
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
 - `version` (String) Version
 
@@ -298,6 +299,20 @@ Optional:
 - `transport_https_ipv4_ipv4_address` (String) IPv4 address of the server
 - `transport_https_ipv4_port` (Number) port number
   - Range: `1`-`65535`
+
+
+<a id="nestedatt--track_objects"></a>
+### Nested Schema for `track_objects`
+
+Required:
+
+- `track_object_number` (String) Tracked object
+
+Optional:
+
+- `track_ip_sla_number` (Number) Entry number
+  - Range: `0`-`4294967295`
+- `track_ip_sla_reachability` (Boolean) Reachability
 
 ## Import
 

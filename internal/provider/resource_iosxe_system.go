@@ -740,6 +740,29 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Version").String,
 				Optional:            true,
 			},
+			"track_objects": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"track_object_number": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Tracked object").String,
+							Required:            true,
+						},
+						"track_ip_sla_number": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Entry number").AddIntegerRangeDescription(0, 4294967295).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 4294967295),
+							},
+						},
+						"track_ip_sla_reachability": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Reachability").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
 			"ip_nbar_classification_dns_classify_by_domain": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("dns classification by domain").String,
 				Optional:            true,
