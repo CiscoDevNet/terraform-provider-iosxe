@@ -163,6 +163,10 @@ func (d *ServiceDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				MarkdownDescription: "Enable call-home service",
 				Computed:            true,
 			},
+			"dhcp_config": schema.BoolAttribute{
+				MarkdownDescription: "Enable DHCP server and relay agent",
+				Computed:            true,
+			},
 		},
 	}
 }

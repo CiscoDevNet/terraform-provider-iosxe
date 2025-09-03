@@ -26,11 +26,13 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-restconf"
@@ -42,26 +44,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &ServiceResource{}
-	_ resource.ResourceWithImportState = &ServiceResource{}
+	_ resource.Resource                = &NATResource{}
+	_ resource.ResourceWithImportState = &NATResource{}
 )
 
-func NewServiceResource() resource.Resource {
-	return &ServiceResource{}
+func NewNATResource() resource.Resource {
+	return &NATResource{}
 }
 
-type ServiceResource struct {
+type NATResource struct {
 	data *IosxeProviderData
 }
 
-func (r *ServiceResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_service"
+func (r *NATResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_nat"
 }
 
-func (r *ServiceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *NATResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the Service configuration.",
+		MarkdownDescription: "This resource can manage the NAT configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -75,111 +77,46 @@ func (r *ServiceResource) Schema(ctx context.Context, req resource.SchemaRequest
 					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"pad": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable PAD commands").String,
+			"delete_mode": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.").AddStringEnumDescription("all", "attributes").String,
 				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("all", "attributes"),
+				},
 			},
-			"password_encryption": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Encrypt system passwords").String,
+			"inside_source_interfaces": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify access list describing local addresses").String,
 				Optional:            true,
-			},
-			"password_recovery": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable password recovery").String,
-				Optional:            true,
-			},
-			"timestamps": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp debug/log messages").String,
-				Optional:            true,
-			},
-			"timestamps_debug": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp debug messages").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp with date and time").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime_msec": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include milliseconds in timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime_localtime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use local time zone for timestamps").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime_show_timezone": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Add time zone information to timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_debug_datetime_year": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include year in timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_debug_uptime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp with system uptime").String,
-				Optional:            true,
-			},
-			"timestamps_log": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp log messages").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp with date and time").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime_msec": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include milliseconds in timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime_localtime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use local time zone for timestamps").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime_show_timezone": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Add time zone information to timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_log_datetime_year": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Include year in timestamp").String,
-				Optional:            true,
-			},
-			"timestamps_log_uptime": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Timestamp with system uptime").String,
-				Optional:            true,
-			},
-			"dhcp": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable DHCP server and relay agent").String,
-				Optional:            true,
-			},
-			"tcp_keepalives_in": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Generate keepalives on idle incoming network connections").String,
-				Optional:            true,
-			},
-			"tcp_keepalives_out": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Generate keepalives on idle outgoing network connections").String,
-				Optional:            true,
-			},
-			"compress_config": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Compress the configuration file").String,
-				Optional:            true,
-			},
-			"sequence_numbers": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Stamp logger messages with a sequence number").String,
-				Optional:            true,
-			},
-			"call_home": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable call-home service").String,
-				Optional:            true,
-			},
-			"dhcp_config": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable DHCP server and relay agent").String,
-				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"interfaces": schema.ListNestedAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Specify interface for global address").String,
+							Optional:            true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"interface": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Required:            true,
+									},
+									"overload": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Overload an address translation").String,
+										Optional:            true,
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		},
 	}
 }
 
-func (r *ServiceResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *NATResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -191,8 +128,8 @@ func (r *ServiceResource) Configure(_ context.Context, req resource.ConfigureReq
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *ServiceResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan Service
+func (r *NATResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan NAT
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -259,8 +196,8 @@ func (r *ServiceResource) Create(ctx context.Context, req resource.CreateRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *ServiceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state Service
+func (r *NATResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state NAT
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -280,7 +217,7 @@ func (r *ServiceResource) Read(ctx context.Context, req resource.ReadRequest, re
 	if device.Managed {
 		res, err := device.Client.GetData(state.Id.ValueString())
 		if res.StatusCode == 404 {
-			state = Service{Device: state.Device, Id: state.Id}
+			state = NAT{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -313,8 +250,8 @@ func (r *ServiceResource) Read(ctx context.Context, req resource.ReadRequest, re
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *ServiceResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state Service
+func (r *NATResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state NAT
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -397,8 +334,8 @@ func (r *ServiceResource) Update(ctx context.Context, req resource.UpdateRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *ServiceResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state Service
+func (r *NATResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state NAT
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -416,7 +353,12 @@ func (r *ServiceResource) Delete(ctx context.Context, req resource.DeleteRequest
 	}
 
 	if device.Managed {
-		deleteMode := "attributes"
+		deleteMode := "all"
+		if state.DeleteMode.ValueString() == "all" {
+			deleteMode = "all"
+		} else if state.DeleteMode.ValueString() == "attributes" {
+			deleteMode = "attributes"
+		}
 
 		if deleteMode == "all" {
 			res, err := device.Client.DeleteData(state.Id.ValueString())
@@ -458,7 +400,7 @@ func (r *ServiceResource) Delete(ctx context.Context, req resource.DeleteRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *ServiceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *NATResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
@@ -476,7 +418,7 @@ func (r *ServiceResource) ImportState(ctx context.Context, req resource.ImportSt
 	}
 
 	// construct path for 'id' attribute
-	var state Service
+	var state NAT
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), state.getPath())...)
 
 	helpers.SetFlagImporting(ctx, true, resp.Private, &resp.Diagnostics)

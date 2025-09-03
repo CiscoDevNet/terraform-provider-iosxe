@@ -10,7 +10,12 @@ description: |-
 ## 0.8.1 (unreleased)
 
 - Add `ip_nbar_classification_dns_classify_by_domain` attribute to `iosxe_system` resource and data source
-- Add `number`, `icmp_echo_destination`, `icmp_echo_source_ip`, `entry_number`, `life`, and `start_time_now` attributes to `iosxe_sla` resource and data source
+- Add `iosxe_nat` resource and data source
+- Add `session_timeout`, `stopbits`, `first`, `exec_timeout_minutes`, `exec_timeout_seconds`, `monitor`, `escape_character`, `logging_synchronous`, `transport_output_all`, `transport_output_none`, and `transport_output` attributes for console, aux and vty to `iosxe_line` resource and data source
+- Add `console` attribute to `iosxe_logging` resource and data source
+- Add `burst`, `iburst` and `periodic` attributes to `iosxe_ntp` resource and data source
+- Add `dhcp_config` attribute to `iosxe_service` resource and data source
+- Add `iosxe_ip_sla` resource and data source
 
 ## 0.8.0
 

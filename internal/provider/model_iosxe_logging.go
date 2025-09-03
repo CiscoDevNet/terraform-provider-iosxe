@@ -56,6 +56,7 @@ type Logging struct {
 	FileMinSize           types.Int64                    `tfsdk:"file_min_size"`
 	FileSeverity          types.String                   `tfsdk:"file_severity"`
 	SourceInterface       types.String                   `tfsdk:"source_interface"`
+	Console               types.Bool                     `tfsdk:"console"`
 	SourceInterfacesVrf   []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
 	Ipv4Hosts             []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
 	Ipv4HostsTransport    []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
@@ -86,6 +87,7 @@ type LoggingData struct {
 	FileMinSize           types.Int64                    `tfsdk:"file_min_size"`
 	FileSeverity          types.String                   `tfsdk:"file_severity"`
 	SourceInterface       types.String                   `tfsdk:"source_interface"`
+	Console               types.Bool                     `tfsdk:"console"`
 	SourceInterfacesVrf   []LoggingSourceInterfacesVrf   `tfsdk:"source_interfaces_vrf"`
 	Ipv4Hosts             []LoggingIpv4Hosts             `tfsdk:"ipv4_hosts"`
 	Ipv4HostsTransport    []LoggingIpv4HostsTransport    `tfsdk:"ipv4_hosts_transport"`
@@ -259,6 +261,9 @@ func (data Logging) toBody(ctx context.Context) string {
 	}
 	if !data.SourceInterface.IsNull() && !data.SourceInterface.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source-interface-conf.interface-name-non-vrf", data.SourceInterface.ValueString())
+	}
+	if !data.Console.IsNull() && !data.Console.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"console-config.console", data.Console.ValueBool())
 	}
 	if len(data.SourceInterfacesVrf) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source-interface-conf.source-interface-vrf", []interface{}{})
@@ -550,6 +555,13 @@ func (data *Logging) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.SourceInterface = types.StringValue(value.String())
 	} else {
 		data.SourceInterface = types.StringNull()
+	}
+	if value := res.Get(prefix + "console-config.console"); !data.Console.IsNull() {
+		if value.Exists() {
+			data.Console = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Console = types.BoolNull()
 	}
 	for i := range data.SourceInterfacesVrf {
 		keys := [...]string{"vrf"}
@@ -1266,6 +1278,11 @@ func (data *Logging) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "source-interface-conf.interface-name-non-vrf"); value.Exists() {
 		data.SourceInterface = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "console-config.console"); value.Exists() {
+		data.Console = types.BoolValue(value.Bool())
+	} else {
+		data.Console = types.BoolNull()
+	}
 	if value := res.Get(prefix + "source-interface-conf.source-interface-vrf"); value.Exists() {
 		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrf, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -1584,6 +1601,11 @@ func (data *LoggingData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "source-interface-conf.interface-name-non-vrf"); value.Exists() {
 		data.SourceInterface = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "console-config.console"); value.Exists() {
+		data.Console = types.BoolValue(value.Bool())
+	} else {
+		data.Console = types.BoolNull()
 	}
 	if value := res.Get(prefix + "source-interface-conf.source-interface-vrf"); value.Exists() {
 		data.SourceInterfacesVrf = make([]LoggingSourceInterfacesVrf, 0)
@@ -2415,6 +2437,9 @@ func (data *Logging) getDeletedItems(ctx context.Context, state Logging) []strin
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface-conf/source-interface-vrf=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
+	if !state.Console.IsNull() && data.Console.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/console-config/console", state.getPath()))
+	}
 	if !state.SourceInterface.IsNull() && data.SourceInterface.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/source-interface-conf/interface-name-non-vrf", state.getPath()))
 	}
@@ -2531,6 +2556,9 @@ func (data *Logging) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.SourceInterfacesVrf[i].Vrf.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source-interface-conf/source-interface-vrf=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.Console.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/console-config/console", data.getPath()))
 	}
 	if !data.SourceInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source-interface-conf/interface-name-non-vrf", data.getPath()))
