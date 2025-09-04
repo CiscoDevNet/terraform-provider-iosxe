@@ -17,5 +17,4 @@ resource "iosxe_dot1x" "example" {
   supplicant_controlled_transient = true
   supplicant_force_multicast      = true
   system_auth_control             = true
-  guest_vlan_supplicant           = true
 }

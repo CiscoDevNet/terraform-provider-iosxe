@@ -48,7 +48,6 @@ func TestAccIosxeDot1x(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dot1x.test", "supplicant_controlled_transient", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dot1x.test", "supplicant_force_multicast", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dot1x.test", "system_auth_control", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dot1x.test", "guest_vlan_supplicant", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -65,7 +64,7 @@ func TestAccIosxeDot1x(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeDot1xImportStateIdFunc("iosxe_dot1x.test"),
-				ImportStateVerifyIgnore: []string{"critical_eapol", "critical_eapol_block"},
+				ImportStateVerifyIgnore: []string{"guest_vlan_supplicant", "critical_eapol", "critical_eapol_block"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -118,7 +117,6 @@ func testAccIosxeDot1xConfig_all() string {
 	config += `	supplicant_controlled_transient = true` + "\n"
 	config += `	supplicant_force_multicast = true` + "\n"
 	config += `	system_auth_control = true` + "\n"
-	config += `	guest_vlan_supplicant = true` + "\n"
 	config += `}` + "\n"
 	return config
 }

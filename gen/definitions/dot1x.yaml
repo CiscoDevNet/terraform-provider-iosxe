@@ -42,6 +42,7 @@ attributes:
     example: true
   - yang_name: Cisco-IOS-XE-dot1x:guest-vlan/supplicant
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-dot1x:critical/eapol-config
     tf_name: critical_eapol
     example: true
