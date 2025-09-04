@@ -774,6 +774,51 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(1, 2147483647),
 				},
 			},
+			"security_passwords_min_length": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Minimum length of passwords").AddIntegerRangeDescription(1, 16).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 16),
+				},
+			},
+			"ip_domain_list_names": schema.ListAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				ElementType:         types.StringType,
+				Optional:            true,
+			},
+			"ip_domain_list_vrf_domain": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"ip_domain_list_vrf": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"ethernet_cfm_alarm_config_delay": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("msec (default 2500 msec)").AddIntegerRangeDescription(2500, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(2500, 10000),
+				},
+			},
+			"ethernet_cfm_alarm_config_reset": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("msec (default 10000 msec)").AddIntegerRangeDescription(2500, 10000).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(2500, 10000),
+				},
+			},
+			"standby_redirects": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"standby_redirects_enable_disable": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("disable", "enable").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("disable", "enable"),
+				},
+			},
 		},
 	}
 }

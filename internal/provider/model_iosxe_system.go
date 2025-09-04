@@ -154,6 +154,14 @@ type System struct {
 	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
 	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
 	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
+	SecurityPasswordsMinLength                             types.Int64                                         `tfsdk:"security_passwords_min_length"`
+	IpDomainListNames                                      types.List                                          `tfsdk:"ip_domain_list_names"`
+	IpDomainListVrfDomain                                  types.String                                        `tfsdk:"ip_domain_list_vrf_domain"`
+	IpDomainListVrf                                        types.String                                        `tfsdk:"ip_domain_list_vrf"`
+	EthernetCfmAlarmConfigDelay                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_delay"`
+	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
+	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
+	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
 }
 
 type SystemData struct {
@@ -273,6 +281,14 @@ type SystemData struct {
 	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
 	IpNbarClassificationDnsClassifyByDomain                types.Bool                                          `tfsdk:"ip_nbar_classification_dns_classify_by_domain"`
 	IpMulticastRouteLimit                                  types.Int64                                         `tfsdk:"ip_multicast_route_limit"`
+	SecurityPasswordsMinLength                             types.Int64                                         `tfsdk:"security_passwords_min_length"`
+	IpDomainListNames                                      types.List                                          `tfsdk:"ip_domain_list_names"`
+	IpDomainListVrfDomain                                  types.String                                        `tfsdk:"ip_domain_list_vrf_domain"`
+	IpDomainListVrf                                        types.String                                        `tfsdk:"ip_domain_list_vrf"`
+	EthernetCfmAlarmConfigDelay                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_delay"`
+	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
+	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
+	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -700,6 +716,32 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.IpMulticastRouteLimit.IsNull() && !data.IpMulticastRouteLimit.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit", strconv.FormatInt(data.IpMulticastRouteLimit.ValueInt64(), 10))
+	}
+	if !data.SecurityPasswordsMinLength.IsNull() && !data.SecurityPasswordsMinLength.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:security.passwords.min-length", strconv.FormatInt(data.SecurityPasswordsMinLength.ValueInt64(), 10))
+	}
+	if !data.IpDomainListNames.IsNull() && !data.IpDomainListNames.IsUnknown() {
+		var values []string
+		data.IpDomainListNames.ElementsAs(ctx, &values, false)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.list.domain-name", values)
+	}
+	if !data.IpDomainListVrfDomain.IsNull() && !data.IpDomainListVrfDomain.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.list.vrf.domain-name", data.IpDomainListVrfDomain.ValueString())
+	}
+	if !data.IpDomainListVrf.IsNull() && !data.IpDomainListVrf.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.domain.list.vrf.vrf-name", data.IpDomainListVrf.ValueString())
+	}
+	if !data.EthernetCfmAlarmConfigDelay.IsNull() && !data.EthernetCfmAlarmConfigDelay.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ethernet.Cisco-IOS-XE-ethernet:cfm.alarm-config.delay", strconv.FormatInt(data.EthernetCfmAlarmConfigDelay.ValueInt64(), 10))
+	}
+	if !data.EthernetCfmAlarmConfigReset.IsNull() && !data.EthernetCfmAlarmConfigReset.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ethernet.Cisco-IOS-XE-ethernet:cfm.alarm-config.reset", strconv.FormatInt(data.EthernetCfmAlarmConfigReset.ValueInt64(), 10))
+	}
+	if !data.StandbyRedirects.IsNull() && !data.StandbyRedirects.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"standby.redirects-config.redirects", data.StandbyRedirects.ValueBool())
+	}
+	if !data.StandbyRedirectsEnableDisable.IsNull() && !data.StandbyRedirectsEnableDisable.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"standby.redirects-config.redirect-enable-disable.redirects", data.StandbyRedirectsEnableDisable.ValueString())
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1791,6 +1833,48 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.IpMulticastRouteLimit = types.Int64Null()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:security.passwords.min-length"); value.Exists() && !data.SecurityPasswordsMinLength.IsNull() {
+		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
+	} else {
+		data.SecurityPasswordsMinLength = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.domain.list.domain-name"); value.Exists() && !data.IpDomainListNames.IsNull() {
+		data.IpDomainListNames = helpers.GetStringList(value.Array())
+	} else {
+		data.IpDomainListNames = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "ip.domain.list.vrf.domain-name"); value.Exists() && !data.IpDomainListVrfDomain.IsNull() {
+		data.IpDomainListVrfDomain = types.StringValue(value.String())
+	} else {
+		data.IpDomainListVrfDomain = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.domain.list.vrf.vrf-name"); value.Exists() && !data.IpDomainListVrf.IsNull() {
+		data.IpDomainListVrf = types.StringValue(value.String())
+	} else {
+		data.IpDomainListVrf = types.StringNull()
+	}
+	if value := res.Get(prefix + "ethernet.Cisco-IOS-XE-ethernet:cfm.alarm-config.delay"); value.Exists() && !data.EthernetCfmAlarmConfigDelay.IsNull() {
+		data.EthernetCfmAlarmConfigDelay = types.Int64Value(value.Int())
+	} else {
+		data.EthernetCfmAlarmConfigDelay = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ethernet.Cisco-IOS-XE-ethernet:cfm.alarm-config.reset"); value.Exists() && !data.EthernetCfmAlarmConfigReset.IsNull() {
+		data.EthernetCfmAlarmConfigReset = types.Int64Value(value.Int())
+	} else {
+		data.EthernetCfmAlarmConfigReset = types.Int64Null()
+	}
+	if value := res.Get(prefix + "standby.redirects-config.redirects"); !data.StandbyRedirects.IsNull() {
+		if value.Exists() {
+			data.StandbyRedirects = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.StandbyRedirects = types.BoolNull()
+	}
+	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() && !data.StandbyRedirectsEnableDisable.IsNull() {
+		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
+	} else {
+		data.StandbyRedirectsEnableDisable = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2320,6 +2404,34 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
 		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:security.passwords.min-length"); value.Exists() {
+		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.domain.list.domain-name"); value.Exists() {
+		data.IpDomainListNames = helpers.GetStringList(value.Array())
+	} else {
+		data.IpDomainListNames = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "ip.domain.list.vrf.domain-name"); value.Exists() {
+		data.IpDomainListVrfDomain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.list.vrf.vrf-name"); value.Exists() {
+		data.IpDomainListVrf = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ethernet.Cisco-IOS-XE-ethernet:cfm.alarm-config.delay"); value.Exists() {
+		data.EthernetCfmAlarmConfigDelay = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ethernet.Cisco-IOS-XE-ethernet:cfm.alarm-config.reset"); value.Exists() {
+		data.EthernetCfmAlarmConfigReset = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "standby.redirects-config.redirects"); value.Exists() {
+		data.StandbyRedirects = types.BoolValue(value.Bool())
+	} else {
+		data.StandbyRedirects = types.BoolNull()
+	}
+	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
+		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
 	}
 }
 
@@ -2851,6 +2963,34 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.multicast.Cisco-IOS-XE-multicast:route-limit-container.routelimit"); value.Exists() {
 		data.IpMulticastRouteLimit = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-aaa:security.passwords.min-length"); value.Exists() {
+		data.SecurityPasswordsMinLength = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.domain.list.domain-name"); value.Exists() {
+		data.IpDomainListNames = helpers.GetStringList(value.Array())
+	} else {
+		data.IpDomainListNames = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "ip.domain.list.vrf.domain-name"); value.Exists() {
+		data.IpDomainListVrfDomain = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.domain.list.vrf.vrf-name"); value.Exists() {
+		data.IpDomainListVrf = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ethernet.Cisco-IOS-XE-ethernet:cfm.alarm-config.delay"); value.Exists() {
+		data.EthernetCfmAlarmConfigDelay = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ethernet.Cisco-IOS-XE-ethernet:cfm.alarm-config.reset"); value.Exists() {
+		data.EthernetCfmAlarmConfigReset = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "standby.redirects-config.redirects"); value.Exists() {
+		data.StandbyRedirects = types.BoolValue(value.Bool())
+	} else {
+		data.StandbyRedirects = types.BoolNull()
+	}
+	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
+		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -2859,6 +2999,48 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.StandbyRedirectsEnableDisable.IsNull() && data.StandbyRedirectsEnableDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", state.getPath()))
+	}
+	if !state.StandbyRedirects.IsNull() && data.StandbyRedirects.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/standby/redirects-config/redirects", state.getPath()))
+	}
+	if !state.EthernetCfmAlarmConfigReset.IsNull() && data.EthernetCfmAlarmConfigReset.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/reset", state.getPath()))
+	}
+	if !state.EthernetCfmAlarmConfigDelay.IsNull() && data.EthernetCfmAlarmConfigDelay.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay", state.getPath()))
+	}
+	if !state.IpDomainListVrf.IsNull() && data.IpDomainListVrf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/list/vrf/vrf-name", state.getPath()))
+	}
+	if !state.IpDomainListVrfDomain.IsNull() && data.IpDomainListVrfDomain.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/list/vrf/domain-name", state.getPath()))
+	}
+	if !state.IpDomainListNames.IsNull() {
+		if data.IpDomainListNames.IsNull() {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/list/domain-name", state.getPath()))
+		} else {
+			var dataValues, stateValues []string
+			data.IpDomainListNames.ElementsAs(ctx, &dataValues, false)
+			state.IpDomainListNames.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/list/domain-name=%v", state.getPath(), v))
+				}
+			}
+		}
+	}
+	if !state.SecurityPasswordsMinLength.IsNull() && data.SecurityPasswordsMinLength.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:security/passwords/min-length", state.getPath()))
+	}
 	if !state.IpMulticastRouteLimit.IsNull() && data.IpMulticastRouteLimit.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", state.getPath()))
 	}
@@ -3620,6 +3802,30 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.StandbyRedirectsEnableDisable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", data.getPath()))
+	}
+	if !data.StandbyRedirects.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/standby/redirects-config/redirects", data.getPath()))
+	}
+	if !data.EthernetCfmAlarmConfigReset.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/reset", data.getPath()))
+	}
+	if !data.EthernetCfmAlarmConfigDelay.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay", data.getPath()))
+	}
+	if !data.IpDomainListVrf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/list/vrf/vrf-name", data.getPath()))
+	}
+	if !data.IpDomainListVrfDomain.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/list/vrf/domain-name", data.getPath()))
+	}
+	if !data.IpDomainListNames.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/list/domain-name", data.getPath()))
+	}
+	if !data.SecurityPasswordsMinLength.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:security/passwords/min-length", data.getPath()))
+	}
 	if !data.IpMulticastRouteLimit.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/multicast/Cisco-IOS-XE-multicast:route-limit-container/routelimit", data.getPath()))
 	}
