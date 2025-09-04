@@ -131,6 +131,7 @@ func (d *CryptoIKEv2KeyringDataSource) Schema(ctx context.Context, req datasourc
 						"pre_shared_key_local": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"pre_shared_key_remote_encryption": schema.StringAttribute{
 							MarkdownDescription: "",
@@ -139,6 +140,7 @@ func (d *CryptoIKEv2KeyringDataSource) Schema(ctx context.Context, req datasourc
 						"pre_shared_key_remote": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"pre_shared_key_encryption": schema.StringAttribute{
 							MarkdownDescription: "",
@@ -147,6 +149,7 @@ func (d *CryptoIKEv2KeyringDataSource) Schema(ctx context.Context, req datasourc
 						"pre_shared_key": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 					},
 				},

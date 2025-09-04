@@ -67,7 +67,7 @@ resource "iosxe_cts" "example" {
   - Range: `2`-`65519`
 - `sxp_connection_peers_ipv4` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4))
 - `sxp_connection_peers_ipv4_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4_vrf))
-- `sxp_default_password` (String)
+- `sxp_default_password` (String, Sensitive)
 - `sxp_default_password_type` (String) - Choices: `0`, `6`, `7`
 - `sxp_enable` (Boolean) Enable CTS SXP support
 - `sxp_listener_hold_max_time` (Number) Enter maximum allowed Hold Time in seconds
@@ -100,7 +100,7 @@ Optional:
   - Range: `0`-`65535`
 - `option` (String) Role of a device speaker/listener/both
   - Choices: `both`, `listener`, `speaker`
-- `password` (String) Password type
+- `password` (String, Sensitive) Password type
   - Choices: `default`, `key-chain`, `none`
 - `source_ip` (String) Enter SXP Source IP address (IPv4)
 
@@ -123,7 +123,7 @@ Optional:
   - Range: `0`-`65535`
 - `option` (String) Role of a device speaker/listener/both
   - Choices: `both`, `listener`, `speaker`
-- `password` (String) Password type
+- `password` (String, Sensitive) Password type
   - Choices: `default`, `key-chain`, `none`
 - `source_ip` (String) Enter SXP Source IP address (IPv4)
 

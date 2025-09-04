@@ -124,26 +124,32 @@ func (r *NTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						"md5": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("MD5 authentication").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"cmac_aes_128": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("CMAC-AES-128 (digest length = 128 bits,  key length = [16 or 32] bytes)").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"hmac_sha1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("HMAC-SHA1 (digest length = 160 bits,  key length = [1-32] bytes)").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"hmac_sha2_256": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("HMAC-SHA2-256 (digest length = 256 bits,  key length = [1-32] bytes)").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"sha1": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SHA1 (digest length = 160 bits,  key length = [1-32] bytes)").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"sha2": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SHA-256 (digest length = 256 bits,  key length = [1-32] bytes)").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"encryption_type": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication key encryption type").AddIntegerRangeDescription(0, 4294967295).String,

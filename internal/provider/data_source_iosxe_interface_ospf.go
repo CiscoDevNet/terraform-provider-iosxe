@@ -151,6 +151,7 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 						"md5_auth_key": schema.StringAttribute{
 							MarkdownDescription: "The OSPF password (key) (only the first 16 characters are used)",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"md5_auth_type": schema.Int64Attribute{
 							MarkdownDescription: "Encryption type (0 for not yet encrypted, 7 for proprietary)",

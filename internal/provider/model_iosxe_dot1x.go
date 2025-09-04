@@ -246,16 +246,6 @@ func (data *Dot1x) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Credentials[i].Username = types.StringNull()
 		}
-		if value := r.Get("password.type"); value.Exists() && !data.Credentials[i].PasswordType.IsNull() {
-			data.Credentials[i].PasswordType = types.StringValue(value.String())
-		} else {
-			data.Credentials[i].PasswordType = types.StringNull()
-		}
-		if value := r.Get("password.secret"); value.Exists() && !data.Credentials[i].Password.IsNull() {
-			data.Credentials[i].Password = types.StringValue(value.String())
-		} else {
-			data.Credentials[i].Password = types.StringNull()
-		}
 		if value := r.Get("pki-trustpoint"); value.Exists() && !data.Credentials[i].PkiTrustpoint.IsNull() {
 			data.Credentials[i].PkiTrustpoint = types.StringValue(value.String())
 		} else {

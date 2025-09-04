@@ -106,6 +106,7 @@ func (d *BGPIPv4UnicastVRFNeighborDataSource) Schema(ctx context.Context, req da
 			"password": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"timers_keepalive_interval": schema.Int64Attribute{
 				MarkdownDescription: "",

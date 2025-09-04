@@ -39,7 +39,6 @@ func TestAccDataSourceIosxeVTP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "file", "TEST"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "version", "3"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "interface", "GigabitEthernet1/0/1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "password", "test123"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "password_hidden", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "domain", "TESTDOMAIN"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vtp.test", "mode_transparent", "true"))

@@ -79,8 +79,11 @@ attributes:
         id: true
         example: 1
       - yang_name: md5/auth-key
+        write_only: true
+        sensitive: true
         example: mykey
       - yang_name: md5/auth-type
+        write_only: true
         example: 0
         no_delete: true
 

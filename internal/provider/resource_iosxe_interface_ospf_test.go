@@ -47,8 +47,6 @@ func TestAccIosxeInterfaceOSPF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospf.test", "process_ids.0.id", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospf.test", "process_ids.0.areas.0.area_id", "0"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospf.test", "message_digest_keys.0.id", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospf.test", "message_digest_keys.0.md5_auth_key", "mykey"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ospf.test", "message_digest_keys.0.md5_auth_type", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

@@ -86,6 +86,7 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 			"sxp_default_password": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"sxp_retry_period": schema.Int64Attribute{
 				MarkdownDescription: "Enter retry period value for sxp connection in seconds",
@@ -107,6 +108,7 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 						"password": schema.StringAttribute{
 							MarkdownDescription: "Password type",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"connection_mode": schema.StringAttribute{
 							MarkdownDescription: "Mode of connection",
@@ -147,6 +149,7 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 						"password": schema.StringAttribute{
 							MarkdownDescription: "Password type",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"connection_mode": schema.StringAttribute{
 							MarkdownDescription: "Mode of connection",

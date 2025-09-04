@@ -57,7 +57,7 @@ Read-Only:
 - `logging_synchronous` (Boolean) Synchronized message output
 - `login_authentication` (String)
 - `login_local` (Boolean)
-- `password` (String)
+- `password` (String, Sensitive)
 - `password_level` (Number) Set exec level password
 - `password_type` (String)
 - `privilege_level` (Number)
@@ -83,7 +83,7 @@ Read-Only:
 - `logging_synchronous` (Boolean) Synchronized message output
 - `login_authentication` (String) Authentication list
 - `monitor` (Boolean) Copy debug output to the current terminal line
-- `password` (String)
+- `password` (String, Sensitive)
 - `password_level` (Number) Set exec level password
 - `password_type` (String)
 - `session_timeout` (Number)

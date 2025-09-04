@@ -320,16 +320,6 @@ func (data *AAA) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.ServerRadiusDynamicAuthorClients[i].Ip = types.StringNull()
 		}
-		if value := r.Get("server-key.key"); value.Exists() && !data.ServerRadiusDynamicAuthorClients[i].ServerKeyType.IsNull() {
-			data.ServerRadiusDynamicAuthorClients[i].ServerKeyType = types.StringValue(value.String())
-		} else {
-			data.ServerRadiusDynamicAuthorClients[i].ServerKeyType = types.StringNull()
-		}
-		if value := r.Get("server-key.string"); value.Exists() && !data.ServerRadiusDynamicAuthorClients[i].ServerKey.IsNull() {
-			data.ServerRadiusDynamicAuthorClients[i].ServerKey = types.StringValue(value.String())
-		} else {
-			data.ServerRadiusDynamicAuthorClients[i].ServerKey = types.StringNull()
-		}
 	}
 	for i := range data.GroupServerRadius {
 		keys := [...]string{"name"}

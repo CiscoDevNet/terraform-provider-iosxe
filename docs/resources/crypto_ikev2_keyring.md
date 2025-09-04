@@ -67,11 +67,11 @@ Optional:
 - `ipv4_address` (String)
 - `ipv4_mask` (String)
 - `ipv6_prefix` (String)
-- `pre_shared_key` (String)
+- `pre_shared_key` (String, Sensitive)
 - `pre_shared_key_encryption` (String) - Choices: `0`, `6`
-- `pre_shared_key_local` (String)
+- `pre_shared_key_local` (String, Sensitive)
 - `pre_shared_key_local_encryption` (String) - Choices: `0`, `6`
-- `pre_shared_key_remote` (String)
+- `pre_shared_key_remote` (String, Sensitive)
 - `pre_shared_key_remote_encryption` (String) - Choices: `0`, `6`
 
 ## Import

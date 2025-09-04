@@ -27,6 +27,7 @@ attribute:
   mandatory: bool(required=False)  # Set to true if the attribute is mandatory
   optional: bool(required=False)  # Set to true if the attribute is optional
   write_only: bool(required=False)  # Set to true if the attribute is write-only, meaning we cannot read the value
+  sensitive: bool(required=False)  # Set to true if the attribute is sensitive, meaning it should not show up in clear-text in plan and logs
   exclude_test: bool(required=False)  # Set to true if the attribute should be excluded from the test
   exclude_example: bool(required=False)  # Set to true if the attribute should be excluded from the example
   description: str(required=False)  # Description of the attribute

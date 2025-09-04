@@ -138,6 +138,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Schema(ctx context.Context, req reso
 			"password": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+				Sensitive:           true,
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 52),
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),

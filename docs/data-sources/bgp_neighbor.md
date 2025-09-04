@@ -52,7 +52,7 @@ data "iosxe_bgp_neighbor" "example" {
 - `local_as_no_prepend` (Boolean) Do not prepend local-as to updates from ebgp peers
 - `local_as_replace_as` (Boolean) Replace real AS with local AS in the EBGP updates
 - `log_neighbor_changes` (Boolean) Log neighbor up/down and reset reason
-- `password` (String)
+- `password` (String, Sensitive)
 - `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
 - `peer_group` (String) peer-group name
 - `remote_as` (String) Specify a BGP peer-group remote-as

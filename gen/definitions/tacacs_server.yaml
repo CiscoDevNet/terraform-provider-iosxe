@@ -14,12 +14,14 @@ attributes:
     example: 4
   - yang_name: key/encryption
     tf_name: encryption
+    write_only: true
     example: 0
     requires_replace: true
     delete_parent: true
   - yang_name: key/key
     tf_name: key
-    example: 123
     write_only: true
+    sensitive: true
+    example: 123
     allow_import_changes: true
     delete_parent: true

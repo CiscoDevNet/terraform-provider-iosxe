@@ -86,6 +86,7 @@ func (d *TACACSServerDataSource) Schema(ctx context.Context, req datasource.Sche
 			"key": schema.StringAttribute{
 				MarkdownDescription: "The UNENCRYPTED (cleartext) server key",
 				Computed:            true,
+				Sensitive:           true,
 			},
 		},
 	}

@@ -36,8 +36,6 @@ func TestAccDataSourceIosxeDot1x(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dot1x.test", "credentials.0.profile_name", "profile1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dot1x.test", "credentials.0.description", "credential_profile_name"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dot1x.test", "credentials.0.username", "username1"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dot1x.test", "credentials.0.password_type", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dot1x.test", "credentials.0.password", "password123"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dot1x.test", "credentials.0.pki_trustpoint", "trustpoint1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dot1x.test", "credentials.0.anonymous_id", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_dot1x.test", "critical_eapol_config_block", "true"))

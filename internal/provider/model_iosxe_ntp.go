@@ -490,41 +490,6 @@ func (data *NTP) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.AuthenticationKeys[i].Number = types.Int64Null()
 		}
-		if value := r.Get("md5-cfg"); value.Exists() && !data.AuthenticationKeys[i].Md5.IsNull() {
-			data.AuthenticationKeys[i].Md5 = types.StringValue(value.String())
-		} else {
-			data.AuthenticationKeys[i].Md5 = types.StringNull()
-		}
-		if value := r.Get("cmac-aes-128"); value.Exists() && !data.AuthenticationKeys[i].CmacAes128.IsNull() {
-			data.AuthenticationKeys[i].CmacAes128 = types.StringValue(value.String())
-		} else {
-			data.AuthenticationKeys[i].CmacAes128 = types.StringNull()
-		}
-		if value := r.Get("hmac-sha1"); value.Exists() && !data.AuthenticationKeys[i].HmacSha1.IsNull() {
-			data.AuthenticationKeys[i].HmacSha1 = types.StringValue(value.String())
-		} else {
-			data.AuthenticationKeys[i].HmacSha1 = types.StringNull()
-		}
-		if value := r.Get("hmac-sha2-256"); value.Exists() && !data.AuthenticationKeys[i].HmacSha2256.IsNull() {
-			data.AuthenticationKeys[i].HmacSha2256 = types.StringValue(value.String())
-		} else {
-			data.AuthenticationKeys[i].HmacSha2256 = types.StringNull()
-		}
-		if value := r.Get("sha1"); value.Exists() && !data.AuthenticationKeys[i].Sha1.IsNull() {
-			data.AuthenticationKeys[i].Sha1 = types.StringValue(value.String())
-		} else {
-			data.AuthenticationKeys[i].Sha1 = types.StringNull()
-		}
-		if value := r.Get("sha2"); value.Exists() && !data.AuthenticationKeys[i].Sha2.IsNull() {
-			data.AuthenticationKeys[i].Sha2 = types.StringValue(value.String())
-		} else {
-			data.AuthenticationKeys[i].Sha2 = types.StringNull()
-		}
-		if value := r.Get("encryption-type"); value.Exists() && !data.AuthenticationKeys[i].EncryptionType.IsNull() {
-			data.AuthenticationKeys[i].EncryptionType = types.Int64Value(value.Int())
-		} else {
-			data.AuthenticationKeys[i].EncryptionType = types.Int64Null()
-		}
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-ntp:clock-period"); value.Exists() && !data.ClockPeriod.IsNull() {
 		data.ClockPeriod = types.Int64Value(value.Int())

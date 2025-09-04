@@ -42,8 +42,6 @@ func TestAccIosxeAAA(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "server_radius_dynamic_author", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "session_id", "common"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "server_radius_dynamic_author_clients.0.ip", "11.1.1.1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "server_radius_dynamic_author_clients.0.server_key_type", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "server_radius_dynamic_author_clients.0.server_key", "abcd123"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_server_radius.0.name", "T-Group"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_server_radius.0.server_names.0.name", "TESTRADIUS"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_aaa.test", "group_server_radius.0.ip_radius_source_interface_loopback", "0"))

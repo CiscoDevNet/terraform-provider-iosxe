@@ -49,8 +49,6 @@ func TestAccIosxeBGPNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "fall_over_bfd_strict_mode", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "fall_over_maximum_metric_route_map", "RMAP"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "log_neighbor_changes", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "password_type", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "password", "test1234"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "timers_keepalive_interval", "655"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "timers_holdtime", "866"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_neighbor.test", "timers_minimum_neighbor_hold", "222"))

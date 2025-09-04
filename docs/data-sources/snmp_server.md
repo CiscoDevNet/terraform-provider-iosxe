@@ -282,7 +282,7 @@ Read-Only:
 
 Read-Only:
 
-- `community_or_user` (String) SNMPv1/v2c community string or SNMPv3 user name
+- `community_or_user` (String, Sensitive) SNMPv1/v2c community string or SNMPv3 user name
 - `encryption` (String) Specifies an encryption type for community string
 - `ip_address` (String)
 - `security_level` (String)
@@ -296,7 +296,7 @@ Read-Only:
 
 - `access_list_name` (String) Access-list name
 - `ipv6` (String) Specify IPv6 Named Access-List
-- `name` (String)
+- `name` (String, Sensitive)
 - `permission` (String)
 - `view` (String) Restrict this community to a named MIB view
 
@@ -312,20 +312,20 @@ Read-Only:
 - `v3_auth_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
 - `v3_auth_algorithm` (String) Use HMAC SHA/MD5 algorithm for authentication
-- `v3_auth_password` (String) Authentication password for user
+- `v3_auth_password` (String, Sensitive) Authentication password for user
 - `v3_auth_priv_aes_access_acl_name` (String) Access-list name
 - `v3_auth_priv_aes_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_priv_aes_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
 - `v3_auth_priv_aes_algorithm` (String)
-- `v3_auth_priv_aes_password` (String) Authentication password for user
+- `v3_auth_priv_aes_password` (String, Sensitive) Authentication password for user
 - `v3_auth_priv_des3_access_acl_name` (String) Access-list name
 - `v3_auth_priv_des3_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_priv_des3_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
-- `v3_auth_priv_des3_password` (String) Authentication password for user
+- `v3_auth_priv_des3_password` (String, Sensitive) Authentication password for user
 - `v3_auth_priv_des_access_acl_name` (String) Access-list name
 - `v3_auth_priv_des_access_ipv6_acl` (String) Specify IPv6 Named Access-List
 - `v3_auth_priv_des_access_standard_acl` (Number) Standard IP Access-list allowing access with this community string
-- `v3_auth_priv_des_password` (String) Authentication password for user
+- `v3_auth_priv_des_password` (String, Sensitive) Authentication password for user
 
 
 <a id="nestedatt--views"></a>
@@ -343,7 +343,7 @@ Read-Only:
 
 Read-Only:
 
-- `community_or_user` (String) SNMPv1/v2c community string or SNMPv3 user name
+- `community_or_user` (String, Sensitive) SNMPv1/v2c community string or SNMPv3 user name
 - `encryption` (String) Specifies an encryption type for community string
 - `ip_address` (String)
 - `security_level` (String)

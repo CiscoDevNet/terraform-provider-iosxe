@@ -73,7 +73,7 @@ Optional:
 
 - `anonymous_id` (String) Set the anonymous userid
 - `description` (String) Provide a description for the credentials profile
-- `password` (String)
+- `password` (String, Sensitive)
 - `password_type` (String) - Choices: `0`, `7`
 - `pki_trustpoint` (String) Set the default pki trustpoint
 - `username` (String) Set the authentication userid

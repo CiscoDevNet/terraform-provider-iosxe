@@ -1613,11 +1613,6 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.BootSystemBootfiles[i].Path = types.StringNull()
 		}
 	}
-	if value := res.Get(prefix + "enable.secret.type"); value.Exists() && !data.EnableSecretType.IsNull() {
-		data.EnableSecretType = types.StringValue(value.String())
-	} else {
-		data.EnableSecretType = types.StringNull()
-	}
 	if value := res.Get(prefix + "enable.secret.level"); value.Exists() && !data.EnableSecretLevel.IsNull() {
 		data.EnableSecretLevel = types.Int64Value(value.Int())
 	} else {
@@ -2293,6 +2288,9 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "enable.secret.secret"); value.Exists() {
+		data.EnableSecret = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "enable.secret.type"); value.Exists() {
 		data.EnableSecretType = types.StringValue(value.String())
 	}
@@ -2850,6 +2848,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 			data.BootSystemBootfiles = append(data.BootSystemBootfiles, item)
 			return true
 		})
+	}
+	if value := res.Get(prefix + "enable.secret.secret"); value.Exists() {
+		data.EnableSecret = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "enable.secret.type"); value.Exists() {
 		data.EnableSecretType = types.StringValue(value.String())

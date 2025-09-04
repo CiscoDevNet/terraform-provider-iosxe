@@ -265,16 +265,6 @@ func (data *MSDP) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Passwords[i].Addr = types.StringNull()
 		}
-		if value := r.Get("encryption"); value.Exists() && !data.Passwords[i].Encryption.IsNull() {
-			data.Passwords[i].Encryption = types.Int64Value(value.Int())
-		} else {
-			data.Passwords[i].Encryption = types.Int64Null()
-		}
-		if value := r.Get("password"); value.Exists() && !data.Passwords[i].Password.IsNull() {
-			data.Passwords[i].Password = types.StringValue(value.String())
-		} else {
-			data.Passwords[i].Password = types.StringNull()
-		}
 	}
 	for i := range data.Vrfs {
 		keys := [...]string{"name"}
@@ -375,16 +365,6 @@ func (data *MSDP) updateFromBody(ctx context.Context, res gjson.Result) {
 				data.Vrfs[i].Passwords[ci].Addr = types.StringValue(value.String())
 			} else {
 				data.Vrfs[i].Passwords[ci].Addr = types.StringNull()
-			}
-			if value := cr.Get("encryption"); value.Exists() && !data.Vrfs[i].Passwords[ci].Encryption.IsNull() {
-				data.Vrfs[i].Passwords[ci].Encryption = types.Int64Value(value.Int())
-			} else {
-				data.Vrfs[i].Passwords[ci].Encryption = types.Int64Null()
-			}
-			if value := cr.Get("password"); value.Exists() && !data.Vrfs[i].Passwords[ci].Password.IsNull() {
-				data.Vrfs[i].Passwords[ci].Password = types.StringValue(value.String())
-			} else {
-				data.Vrfs[i].Passwords[ci].Password = types.StringNull()
 			}
 		}
 	}

@@ -128,11 +128,6 @@ func (data *TACACSServer) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.Timeout = types.Int64Null()
 	}
-	if value := res.Get(prefix + "key.encryption"); value.Exists() && !data.Encryption.IsNull() {
-		data.Encryption = types.StringValue(value.String())
-	} else {
-		data.Encryption = types.StringNull()
-	}
 }
 
 // End of section. //template:end updateFromBody
@@ -153,6 +148,9 @@ func (data *TACACSServer) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "key.encryption"); value.Exists() {
 		data.Encryption = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "key.key"); value.Exists() {
+		data.Key = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBody
@@ -172,6 +170,9 @@ func (data *TACACSServerData) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "key.encryption"); value.Exists() {
 		data.Encryption = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "key.key"); value.Exists() {
+		data.Key = types.StringValue(value.String())
 	}
 }
 

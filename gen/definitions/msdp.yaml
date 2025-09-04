@@ -26,8 +26,11 @@ attributes:
         example: 10.1.1.1
         id: true
       - yang_name: encryption
+        write_only: true
         example: 0
       - yang_name: password
+        write_only: true
+        sensitive: true
         example: Cisco123
   - yang_name: vrf
     tf_name: vrfs
@@ -60,8 +63,11 @@ attributes:
             example: 10.1.1.1
             id: true
           - yang_name: encryption
+            write_only: true
             example: 0
           - yang_name: password
+            write_only: true
+            sensitive: true
             example: Cisco123
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

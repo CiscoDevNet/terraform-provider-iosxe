@@ -117,6 +117,7 @@ func (r *TACACSServerResource) Schema(ctx context.Context, req resource.SchemaRe
 			"key": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) server key").String,
 				Optional:            true,
+				Sensitive:           true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 				},

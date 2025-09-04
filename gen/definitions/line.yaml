@@ -31,9 +31,12 @@ attributes:
         example: 7
         exclude_test: true
       - yang_name: password/type
+        write_only: true
         example: 0
       - yang_name: password/secret
         tf_name: password
+        write_only: true
+        sensitive: true
         example: testpasswd
       - yang_name: escape-character/char
         tf_name: escape_character
@@ -83,9 +86,12 @@ attributes:
         example: 7
         exclude_test: true
       - yang_name: password/type
+        write_only: true
         example: 0
       - yang_name: password/secret
         tf_name: password
+        write_only: true
+        sensitive: true
         example: testpasswd
       - yang_name: login/authentication
         example: LOGINAUTH

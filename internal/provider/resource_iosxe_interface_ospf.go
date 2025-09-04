@@ -203,6 +203,7 @@ func (r *InterfaceOSPFResource) Schema(ctx context.Context, req resource.SchemaR
 						"md5_auth_key": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("The OSPF password (key) (only the first 16 characters are used)").String,
 							Optional:            true,
+							Sensitive:           true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 							},

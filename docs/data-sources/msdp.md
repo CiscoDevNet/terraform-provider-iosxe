@@ -39,7 +39,7 @@ Read-Only:
 
 - `addr` (String)
 - `encryption` (Number)
-- `password` (String)
+- `password` (String, Sensitive)
 
 
 <a id="nestedatt--peers"></a>
@@ -69,7 +69,7 @@ Read-Only:
 
 - `addr` (String)
 - `encryption` (Number)
-- `password` (String)
+- `password` (String, Sensitive)
 
 
 <a id="nestedatt--vrfs--peers"></a>

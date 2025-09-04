@@ -38,8 +38,8 @@ data "iosxe_radius" "example" {
 - `automate_tester_username` (String)
 - `id` (String) The path of the retrieved object.
 - `ipv4_address` (String) IPv4 address or Hostname for radius server
-- `key` (String)
-- `pac_key` (String) The UNENCRYPTED (cleartext) server key
+- `key` (String, Sensitive)
+- `pac_key` (String, Sensitive) The UNENCRYPTED (cleartext) server key
 - `pac_key_encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
 - `retransmit` (Number) Number of retries to active server (overrides default)
 - `timeout` (Number) Time to wait for a RADIUS server to reply (overrides default)

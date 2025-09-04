@@ -158,6 +158,7 @@ func (r *CryptoIKEv2KeyringResource) Schema(ctx context.Context, req resource.Sc
 						"pre_shared_key_local": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							Sensitive:           true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 							},
@@ -172,6 +173,7 @@ func (r *CryptoIKEv2KeyringResource) Schema(ctx context.Context, req resource.Sc
 						"pre_shared_key_remote": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							Sensitive:           true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 							},
@@ -186,6 +188,7 @@ func (r *CryptoIKEv2KeyringResource) Schema(ctx context.Context, req resource.Sc
 						"pre_shared_key": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							Sensitive:           true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 							},

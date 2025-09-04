@@ -113,6 +113,7 @@ func (r *AAAResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						"server_key": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							Sensitive:           true,
 							Validators: []validator.String{
 								stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 							},

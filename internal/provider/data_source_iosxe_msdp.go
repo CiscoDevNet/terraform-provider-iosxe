@@ -107,6 +107,7 @@ func (d *MSDPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						"password": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 					},
 				},
@@ -160,6 +161,7 @@ func (d *MSDPDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 									"password": schema.StringAttribute{
 										MarkdownDescription: "",
 										Computed:            true,
+										Sensitive:           true,
 									},
 								},
 							},

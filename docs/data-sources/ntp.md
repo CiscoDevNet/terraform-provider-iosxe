@@ -58,14 +58,14 @@ data "iosxe_ntp" "example" {
 
 Read-Only:
 
-- `cmac_aes_128` (String) CMAC-AES-128 (digest length = 128 bits,  key length = [16 or 32] bytes)
+- `cmac_aes_128` (String, Sensitive) CMAC-AES-128 (digest length = 128 bits,  key length = [16 or 32] bytes)
 - `encryption_type` (Number) Authentication key encryption type
-- `hmac_sha1` (String) HMAC-SHA1 (digest length = 160 bits,  key length = [1-32] bytes)
-- `hmac_sha2_256` (String) HMAC-SHA2-256 (digest length = 256 bits,  key length = [1-32] bytes)
-- `md5` (String) MD5 authentication
+- `hmac_sha1` (String, Sensitive) HMAC-SHA1 (digest length = 160 bits,  key length = [1-32] bytes)
+- `hmac_sha2_256` (String, Sensitive) HMAC-SHA2-256 (digest length = 256 bits,  key length = [1-32] bytes)
+- `md5` (String, Sensitive) MD5 authentication
 - `number` (Number)
-- `sha1` (String) SHA1 (digest length = 160 bits,  key length = [1-32] bytes)
-- `sha2` (String) SHA-256 (digest length = 256 bits,  key length = [1-32] bytes)
+- `sha1` (String, Sensitive) SHA1 (digest length = 160 bits,  key length = [1-32] bytes)
+- `sha2` (String, Sensitive) SHA-256 (digest length = 256 bits,  key length = [1-32] bytes)
 
 
 <a id="nestedatt--peer_vrfs"></a>

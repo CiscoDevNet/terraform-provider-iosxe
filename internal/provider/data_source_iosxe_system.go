@@ -524,6 +524,7 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"enable_secret": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"enable_secret_type": schema.StringAttribute{
 				MarkdownDescription: "",

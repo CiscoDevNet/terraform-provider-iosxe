@@ -37,7 +37,7 @@ resource "iosxe_tacacs_server" "example" {
 - `device` (String) A device name from the provider configuration.
 - `encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
   - Choices: `0`, `6`, `7`
-- `key` (String) The UNENCRYPTED (cleartext) server key
+- `key` (String, Sensitive) The UNENCRYPTED (cleartext) server key
 - `timeout` (Number) Time to wait for this TACACS server to reply (overrides default)
   - Range: `1`-`1000`
 

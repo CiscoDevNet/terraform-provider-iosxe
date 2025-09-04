@@ -34,8 +34,6 @@ func TestAccDataSourceIosxeUsername(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_username.test", "privilege", "15"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_username.test", "description", "User1 description"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_username.test", "password_encryption", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_username.test", "password", "MyPassword"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

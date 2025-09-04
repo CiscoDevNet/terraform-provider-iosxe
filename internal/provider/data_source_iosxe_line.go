@@ -111,6 +111,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						"password": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"escape_character": schema.StringAttribute{
 							MarkdownDescription: "",
@@ -188,6 +189,7 @@ func (d *LineDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						"password": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"login_authentication": schema.StringAttribute{
 							MarkdownDescription: "Authentication list",

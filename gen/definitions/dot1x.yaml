@@ -17,9 +17,12 @@ attributes:
       - yang_name: username
         example: username1
       - yang_name: password/type
+        write_only: true
         example: 0
       - yang_name: password/secret
         tf_name: password
+        write_only: true
+        sensitive: true
         example: password123
       - yang_name: pki-trustpoint
         example: trustpoint1

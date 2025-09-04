@@ -41,8 +41,6 @@ func TestAccIosxeNTP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "access_group_serve_acl", "SACL1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "access_group_serve_only_acl", "SACL1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "authentication_keys.0.number", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "authentication_keys.0.md5", "060506324F41584B564347"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "authentication_keys.0.encryption_type", "7"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "master", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "master_stratum", "5"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_ntp.test", "passive", "false"))

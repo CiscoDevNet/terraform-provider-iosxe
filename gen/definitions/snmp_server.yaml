@@ -52,6 +52,8 @@ attributes:
         id: true
         example: 11.1.1.1
       - yang_name: community-or-user
+        write_only: true
+        sensitive: true
         example: 08116C5D1A0E550518
       - yang_name: version
         example: 2c
@@ -71,6 +73,8 @@ attributes:
         id: true
         example: VRF1
       - yang_name: community-or-user
+        write_only: true
+        sensitive: true
         example: 08116C5D1A0E550518
       - yang_name: version
         example: 2c
@@ -821,6 +825,8 @@ attributes:
     type: List
     attributes:
       - yang_name: name
+        write_only: true
+        sensitive: true
         example: COM1
         id: true
       - yang_name: view
@@ -905,6 +911,8 @@ attributes:
         example: sha
       - yang_name: v3/auth-config/password
         tf_name: v3_auth_password
+        write_only: true
+        sensitive: true
         example: Cisco123
       - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/algorithm
         xpath: v3/auth-config/priv-config/aes/algorithm
@@ -913,6 +921,8 @@ attributes:
       - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/password
         xpath: v3/auth-config/priv-config/aes/password
         tf_name: v3_auth_priv_aes_password
+        write_only: true
+        sensitive: true
         example: Cisco123
       - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/access-config/ipv6-acl
         xpath: v3/auth-config/priv-config/aes/access-config/ipv6-acl
@@ -930,6 +940,8 @@ attributes:
       - yang_name: v3/auth-config/priv-config/priv-option/des/des/password
         xpath: v3/auth-config/priv-config/des/password
         tf_name: v3_auth_priv_des_password
+        write_only: true
+        sensitive: true
         example: Cisco123
         exclude_test: true
       - yang_name: v3/auth-config/priv-config/priv-option/des/des/access-config/ipv6-acl
@@ -950,6 +962,8 @@ attributes:
       - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/password
         xpath: v3/auth-config/priv-config/des3/password
         tf_name: v3_auth_priv_des3_password
+        write_only: true
+        sensitive: true
         example: Cisco123
         exclude_test: true
       - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/access-config/ipv6-acl

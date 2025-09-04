@@ -39,16 +39,12 @@ func TestAccIosxeMSDP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "peers.0.remote_as", "65000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "peers.0.connect_source_loopback", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "passwords.0.addr", "10.1.1.1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "passwords.0.encryption", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "passwords.0.password", "Cisco123"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.originator_id", "Loopback200"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.peers.0.addr", "10.1.1.1"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.peers.0.remote_as", "65000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.peers.0.connect_source_loopback", "200"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.passwords.0.addr", "10.1.1.1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.passwords.0.encryption", "0"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_msdp.test", "vrfs.0.passwords.0.password", "Cisco123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

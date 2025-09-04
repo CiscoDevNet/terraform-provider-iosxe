@@ -33,11 +33,11 @@ resource "iosxe_username" "example" {
 
 - `description` (String) description string with max 128 characters
 - `device` (String) A device name from the provider configuration.
-- `password` (String)
+- `password` (String, Sensitive)
 - `password_encryption` (String) - Choices: `0`, `6`, `7`
 - `privilege` (Number) Set user privilege level
   - Range: `0`-`15`
-- `secret` (String)
+- `secret` (String, Sensitive)
 - `secret_encryption` (String) - Choices: `0`, `5`, `8`, `9`
 
 ### Read-Only

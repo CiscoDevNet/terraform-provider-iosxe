@@ -107,6 +107,7 @@ func (r *UsernameResource) Schema(ctx context.Context, req resource.SchemaReques
 			"password": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+				Sensitive:           true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 				},
@@ -121,6 +122,7 @@ func (r *UsernameResource) Schema(ctx context.Context, req resource.SchemaReques
 			"secret": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+				Sensitive:           true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},

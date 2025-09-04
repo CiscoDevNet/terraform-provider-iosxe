@@ -144,7 +144,7 @@ Required:
 
 Optional:
 
-- `server_key` (String)
+- `server_key` (String, Sensitive)
 - `server_key_type` (String) - Choices: `0`, `6`, `7`
 
 ## Import

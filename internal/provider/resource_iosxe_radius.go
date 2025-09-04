@@ -121,6 +121,7 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"key": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+				Sensitive:           true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 				},
@@ -140,6 +141,7 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"pac_key": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The UNENCRYPTED (cleartext) server key").String,
 				Optional:            true,
+				Sensitive:           true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
 				},

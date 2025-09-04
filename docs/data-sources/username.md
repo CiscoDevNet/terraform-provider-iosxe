@@ -33,8 +33,8 @@ data "iosxe_username" "example" {
 
 - `description` (String) description string with max 128 characters
 - `id` (String) The path of the retrieved object.
-- `password` (String)
+- `password` (String, Sensitive)
 - `password_encryption` (String)
 - `privilege` (Number) Set user privilege level
-- `secret` (String)
+- `secret` (String, Sensitive)
 - `secret_encryption` (String)

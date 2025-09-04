@@ -414,16 +414,6 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.LogNeighborChanges = types.BoolNull()
 	}
-	if value := res.Get(prefix + "password.enctype"); value.Exists() && !data.PasswordType.IsNull() {
-		data.PasswordType = types.Int64Value(value.Int())
-	} else {
-		data.PasswordType = types.Int64Null()
-	}
-	if value := res.Get(prefix + "password.text"); value.Exists() && !data.Password.IsNull() {
-		data.Password = types.StringValue(value.String())
-	} else {
-		data.Password = types.StringNull()
-	}
 	if value := res.Get(prefix + "peer-group.peer-group-name"); value.Exists() && !data.PeerGroup.IsNull() {
 		data.PeerGroup = types.StringValue(value.String())
 	} else {

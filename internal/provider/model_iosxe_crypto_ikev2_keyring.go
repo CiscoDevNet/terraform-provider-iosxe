@@ -263,36 +263,6 @@ func (data *CryptoIKEv2Keyring) updateFromBody(ctx context.Context, res gjson.Re
 		} else {
 			data.Peers[i].IdentityFqdnDomain = types.StringNull()
 		}
-		if value := r.Get("pre-shared-key.local-option.encryption"); value.Exists() && !data.Peers[i].PreSharedKeyLocalEncryption.IsNull() {
-			data.Peers[i].PreSharedKeyLocalEncryption = types.StringValue(value.String())
-		} else {
-			data.Peers[i].PreSharedKeyLocalEncryption = types.StringNull()
-		}
-		if value := r.Get("pre-shared-key.local-option.key"); value.Exists() && !data.Peers[i].PreSharedKeyLocal.IsNull() {
-			data.Peers[i].PreSharedKeyLocal = types.StringValue(value.String())
-		} else {
-			data.Peers[i].PreSharedKeyLocal = types.StringNull()
-		}
-		if value := r.Get("pre-shared-key.remote-option.encryption"); value.Exists() && !data.Peers[i].PreSharedKeyRemoteEncryption.IsNull() {
-			data.Peers[i].PreSharedKeyRemoteEncryption = types.StringValue(value.String())
-		} else {
-			data.Peers[i].PreSharedKeyRemoteEncryption = types.StringNull()
-		}
-		if value := r.Get("pre-shared-key.remote-option.key"); value.Exists() && !data.Peers[i].PreSharedKeyRemote.IsNull() {
-			data.Peers[i].PreSharedKeyRemote = types.StringValue(value.String())
-		} else {
-			data.Peers[i].PreSharedKeyRemote = types.StringNull()
-		}
-		if value := r.Get("pre-shared-key.encryption"); value.Exists() && !data.Peers[i].PreSharedKeyEncryption.IsNull() {
-			data.Peers[i].PreSharedKeyEncryption = types.StringValue(value.String())
-		} else {
-			data.Peers[i].PreSharedKeyEncryption = types.StringNull()
-		}
-		if value := r.Get("pre-shared-key.key"); value.Exists() && !data.Peers[i].PreSharedKey.IsNull() {
-			data.Peers[i].PreSharedKey = types.StringValue(value.String())
-		} else {
-			data.Peers[i].PreSharedKey = types.StringNull()
-		}
 	}
 }
 

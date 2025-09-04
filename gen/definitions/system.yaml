@@ -422,8 +422,10 @@ attributes:
     delete_parent: true
     exclude_test: true
     write_only: true
+    sensitive: true
     example: MySecretPassword
   - yang_name: enable/secret/type
+    write_only: true
     exclude_test: true
     example: 0
   - yang_name: enable/secret/level

@@ -352,16 +352,6 @@ func (data *InterfaceOSPF) updateFromBody(ctx context.Context, res gjson.Result)
 		} else {
 			data.MessageDigestKeys[i].Id = types.Int64Null()
 		}
-		if value := r.Get("md5.auth-key"); value.Exists() && !data.MessageDigestKeys[i].Md5AuthKey.IsNull() {
-			data.MessageDigestKeys[i].Md5AuthKey = types.StringValue(value.String())
-		} else {
-			data.MessageDigestKeys[i].Md5AuthKey = types.StringNull()
-		}
-		if value := r.Get("md5.auth-type"); value.Exists() && !data.MessageDigestKeys[i].Md5AuthType.IsNull() {
-			data.MessageDigestKeys[i].Md5AuthType = types.Int64Value(value.Int())
-		} else {
-			data.MessageDigestKeys[i].Md5AuthType = types.Int64Null()
-		}
 	}
 }
 

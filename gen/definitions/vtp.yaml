@@ -17,10 +17,14 @@ attributes:
     exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:password/password
     tf_name: password
+    write_only: true
+    sensitive: true
     example: test123
   - yang_name: Cisco-IOS-XE-vtp:password/hidden
     example: false
   - yang_name: Cisco-IOS-XE-vtp:password/secret
+    write_only: true
+    sensitive: true
     example: PASSWD123456789
     exclude_test: true
   - yang_name: Cisco-IOS-XE-vtp:pruning

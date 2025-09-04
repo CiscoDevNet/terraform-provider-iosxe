@@ -627,6 +627,7 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"enable_secret": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+				Sensitive:           true,
 			},
 			"enable_secret_type": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "4", "5", "8", "9").String,

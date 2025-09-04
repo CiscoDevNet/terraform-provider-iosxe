@@ -139,6 +139,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 						"community_or_user": schema.StringAttribute{
 							MarkdownDescription: "SNMPv1/v2c community string or SNMPv3 user name",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"version": schema.StringAttribute{
 							MarkdownDescription: "SNMP version to use for notification messages",
@@ -171,6 +172,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 						"community_or_user": schema.StringAttribute{
 							MarkdownDescription: "SNMPv1/v2c community string or SNMPv3 user name",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"version": schema.StringAttribute{
 							MarkdownDescription: "SNMP version to use for notification messages",
@@ -971,6 +973,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 						"name": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"view": schema.StringAttribute{
 							MarkdownDescription: "Restrict this community to a named MIB view",
@@ -1099,6 +1102,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 						"v3_auth_password": schema.StringAttribute{
 							MarkdownDescription: "Authentication password for user",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"v3_auth_priv_aes_algorithm": schema.StringAttribute{
 							MarkdownDescription: "",
@@ -1107,6 +1111,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 						"v3_auth_priv_aes_password": schema.StringAttribute{
 							MarkdownDescription: "Authentication password for user",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"v3_auth_priv_aes_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: "Specify IPv6 Named Access-List",
@@ -1123,6 +1128,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 						"v3_auth_priv_des_password": schema.StringAttribute{
 							MarkdownDescription: "Authentication password for user",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"v3_auth_priv_des_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: "Specify IPv6 Named Access-List",
@@ -1139,6 +1145,7 @@ func (d *SNMPServerDataSource) Schema(ctx context.Context, req datasource.Schema
 						"v3_auth_priv_des3_password": schema.StringAttribute{
 							MarkdownDescription: "Authentication password for user",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"v3_auth_priv_des3_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: "Specify IPv6 Named Access-List",

@@ -94,6 +94,7 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"key": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"automate_tester_username": schema.StringAttribute{
 				MarkdownDescription: "",
@@ -110,6 +111,7 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"pac_key": schema.StringAttribute{
 				MarkdownDescription: "The UNENCRYPTED (cleartext) server key",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"pac_key_encryption": schema.StringAttribute{
 				MarkdownDescription: "0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow",

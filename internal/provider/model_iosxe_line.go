@@ -415,16 +415,6 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Console[i].PasswordLevel = types.Int64Null()
 		}
-		if value := r.Get("password.type"); value.Exists() && !data.Console[i].PasswordType.IsNull() {
-			data.Console[i].PasswordType = types.StringValue(value.String())
-		} else {
-			data.Console[i].PasswordType = types.StringNull()
-		}
-		if value := r.Get("password.secret"); value.Exists() && !data.Console[i].Password.IsNull() {
-			data.Console[i].Password = types.StringValue(value.String())
-		} else {
-			data.Console[i].Password = types.StringNull()
-		}
 		if value := r.Get("escape-character.char"); value.Exists() && !data.Console[i].EscapeCharacter.IsNull() {
 			data.Console[i].EscapeCharacter = types.StringValue(value.String())
 		} else {
@@ -553,16 +543,6 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Vty[i].PasswordLevel = types.Int64Value(value.Int())
 		} else {
 			data.Vty[i].PasswordLevel = types.Int64Null()
-		}
-		if value := r.Get("password.type"); value.Exists() && !data.Vty[i].PasswordType.IsNull() {
-			data.Vty[i].PasswordType = types.StringValue(value.String())
-		} else {
-			data.Vty[i].PasswordType = types.StringNull()
-		}
-		if value := r.Get("password.secret"); value.Exists() && !data.Vty[i].Password.IsNull() {
-			data.Vty[i].Password = types.StringValue(value.String())
-		} else {
-			data.Vty[i].Password = types.StringNull()
 		}
 		if value := r.Get("login.authentication"); value.Exists() && !data.Vty[i].LoginAuthentication.IsNull() {
 			data.Vty[i].LoginAuthentication = types.StringValue(value.String())

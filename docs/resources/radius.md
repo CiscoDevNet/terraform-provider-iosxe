@@ -45,8 +45,8 @@ resource "iosxe_radius" "example" {
 - `automate_tester_username` (String)
 - `device` (String) A device name from the provider configuration.
 - `ipv4_address` (String) IPv4 address or Hostname for radius server
-- `key` (String)
-- `pac_key` (String) The UNENCRYPTED (cleartext) server key
+- `key` (String, Sensitive)
+- `pac_key` (String, Sensitive) The UNENCRYPTED (cleartext) server key
 - `pac_key_encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
   - Choices: `0`, `6`, `7`
 - `retransmit` (Number) Number of retries to active server (overrides default)

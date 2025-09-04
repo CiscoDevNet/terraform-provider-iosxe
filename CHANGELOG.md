@@ -11,6 +11,7 @@
 - Add `ipv4_unicast_admin_distances`, `ipv4_unicast_distance_bgp_external`, `ipv4_unicast_distance_bgp_internal` and `ipv4_unicast_distance_bgp_local` attributes to `iosxe_iosxe_bgp_address_family_ipv4_vrf` resource and data source
 - Add `track_objects`, `ip_multicast_route_limit`, `ip_domain_list_names`, `ip_domain_list_vrf_domain`, `ip_domain_list_vrf`, `ethernet_cfm_alarm_config_delay`, `ethernet_cfm_alarm_config_reset`, `standby_redirects_enable_disable`, `standby_redirects` and `security_passwords_min_length` attributes to `iosxe_system` resource and data source
 - Add `guest_vlan_supplicant`, `critical_eapol` and `critical_eapol_block` attributes to `iosxe_dot1x` resource and data source
+- Mark password and key attributes as sensitive and do not read them from the device
 
 ## 0.8.0
 

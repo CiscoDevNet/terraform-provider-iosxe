@@ -75,7 +75,7 @@ resource "iosxe_msdp" "example" {
 Required:
 
 - `addr` (String)
-- `password` (String)
+- `password` (String, Sensitive)
 
 Optional:
 
@@ -116,7 +116,7 @@ Optional:
 Required:
 
 - `addr` (String)
-- `password` (String)
+- `password` (String, Sensitive)
 
 Optional:
 

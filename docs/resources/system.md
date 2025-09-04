@@ -78,7 +78,7 @@ resource "iosxe_system" "example" {
   - Choices: `complete`, `minimal`
 - `diagnostic_event_log_size` (Number) Configure event log size Number of entries <1-10000>
   - Range: `1`-`10000`
-- `enable_secret` (String)
+- `enable_secret` (String, Sensitive)
 - `enable_secret_level` (Number) Set exec level password
   - Range: `0`-`255`
 - `enable_secret_type` (String) - Choices: `0`, `4`, `5`, `8`, `9`

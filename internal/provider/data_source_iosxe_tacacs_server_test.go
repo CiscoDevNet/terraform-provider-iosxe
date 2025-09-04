@@ -34,7 +34,6 @@ func TestAccDataSourceIosxeTACACSServer(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "address_ipv4", "10.10.15.13"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "timeout", "4"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_tacacs_server.test", "encryption", "0"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

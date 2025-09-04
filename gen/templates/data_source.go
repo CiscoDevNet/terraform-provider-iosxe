@@ -84,6 +84,9 @@ func (d *{{camelCase .Name}}DataSource) Schema(ctx context.Context, req datasour
 				{{- else}}
 				Computed:            true,
 				{{- end}}
+				{{- if .Sensitive}}
+				Sensitive:           true,
+				{{- end}}
 				{{- if eq .Type "List"}}
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
@@ -96,6 +99,9 @@ func (d *{{camelCase .Name}}DataSource) Schema(ctx context.Context, req datasour
 							ElementType:         types.Int64Type,
 							{{- end}}
 							Computed:            true,
+							{{- if .Sensitive}}
+							Sensitive:           true,
+							{{- end}}
 							{{- if eq .Type "List"}}
 							NestedObject: schema.NestedAttributeObject{
 								Attributes: map[string]schema.Attribute{
@@ -108,6 +114,9 @@ func (d *{{camelCase .Name}}DataSource) Schema(ctx context.Context, req datasour
 										ElementType:         types.Int64Type,
 										{{- end}}
 										Computed:            true,
+										{{- if .Sensitive}}
+										Sensitive:           true,
+										{{- end}}
 									},
 									{{- end}}
 								},

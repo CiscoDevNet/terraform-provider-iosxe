@@ -107,6 +107,7 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"password": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("The ascii password for the VTP administrative domain").String,
 				Optional:            true,
+				Sensitive:           true,
 			},
 			"password_hidden": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the VTP password hidden option").String,
@@ -115,6 +116,7 @@ func (r *VTPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"password_secret": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Specify the vtp password in encrypted form").String,
 				Optional:            true,
+				Sensitive:           true,
 			},
 			"pruning": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set the administrative domain to permit pruning").String,

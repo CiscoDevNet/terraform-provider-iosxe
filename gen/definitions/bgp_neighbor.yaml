@@ -64,10 +64,13 @@ attributes:
   - yang_name: password/enctype
     tf_name: password_type
     delete_parent: true
+    write_only: true
     example: 1
   - yang_name: password/text
     tf_name: password
     delete_parent: true
+    write_only: true
+    sensitive: true
     example: test1234
   - yang_name: peer-group/peer-group-name
     tf_name: peer_group

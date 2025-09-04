@@ -158,6 +158,7 @@ func (d *BGPNeighborDataSource) Schema(ctx context.Context, req datasource.Schem
 			"password": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"peer_group": schema.StringAttribute{
 				MarkdownDescription: "peer-group name",

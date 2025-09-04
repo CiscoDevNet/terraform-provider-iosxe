@@ -524,7 +524,7 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 	}
 	{{- range .Attributes}}
 	{{- $cname := toGoName .TfName}}
-	{{- if and (not .Reference) (not .Id) (not .WriteOnly)}}
+	{{- if and (not .Reference) (not .Id)}}
 	{{- if eq .Type "Int64"}}
 	if value := res.Get(prefix+"{{toJsonPath .YangName .XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = types.Int64Value(value.Int())
@@ -581,7 +581,6 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := {{$name}}{{toGoName .TfName}}{}
 			{{- range .Attributes}}
-			{{- if not .WriteOnly}}
 			{{- if eq .Type "Int64"}}
 			if cValue := v.Get("{{toJsonPath .YangName .XPath}}"); cValue.Exists() {
 				item.{{toGoName .TfName}} = types.Int64Value(cValue.Int())
@@ -638,7 +637,6 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
 					cItem := {{$name}}{{$cname}}{{toGoName .TfName}}{}
 					{{- range .Attributes}}
-					{{- if not .WriteOnly}}
 					{{- if eq .Type "Int64"}}
 					if ccValue := cv.Get("{{toJsonPath .YangName .XPath}}"); ccValue.Exists() {
 						cItem.{{toGoName .TfName}} = types.Int64Value(ccValue.Int())
@@ -691,12 +689,10 @@ func (data *{{camelCase .Name}}) fromBody(ctx context.Context, res gjson.Result)
 					}
 					{{- end}}
 					{{- end}}
-					{{- end}}
 					item.{{toGoName .TfName}} = append(item.{{toGoName .TfName}}, cItem)
 					return true
 				})
 			}
-			{{- end}}
 			{{- end}}
 			{{- end}}
 			data.{{toGoName .TfName}} = append(data.{{toGoName .TfName}}, item)

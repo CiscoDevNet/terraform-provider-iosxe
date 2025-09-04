@@ -11,16 +11,20 @@ attributes:
   - yang_name: description
     example: User1 description
   - yang_name: password/encryption
+    write_only: true
     example: 0
   - yang_name: password/password
     tf_name: password
+    write_only: true
+    sensitive: true
     example: MyPassword
   - yang_name: secret/encryption
     example: 0
     exclude_test: true
   - yang_name: secret/secret
     tf_name: secret
+    requires_replace: true
+    write_only: true
+    sensitive: true
     example: MySecretPassword
     exclude_test: true
-    write_only: true
-    requires_replace: true

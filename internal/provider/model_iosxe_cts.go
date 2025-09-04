@@ -248,16 +248,6 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SxpEnable = types.BoolNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.default.password.type"); value.Exists() && !data.SxpDefaultPasswordType.IsNull() {
-		data.SxpDefaultPasswordType = types.StringValue(value.String())
-	} else {
-		data.SxpDefaultPasswordType = types.StringNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.default.password.secret"); value.Exists() && !data.SxpDefaultPassword.IsNull() {
-		data.SxpDefaultPassword = types.StringValue(value.String())
-	} else {
-		data.SxpDefaultPassword = types.StringNull()
-	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.retry.period"); value.Exists() && !data.SxpRetryPeriod.IsNull() {
 		data.SxpRetryPeriod = types.Int64Value(value.Int())
 	} else {
@@ -295,11 +285,6 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.SxpConnectionPeersIpv4[i].SourceIp = types.StringValue(value.String())
 		} else {
 			data.SxpConnectionPeersIpv4[i].SourceIp = types.StringNull()
-		}
-		if value := r.Get("password"); value.Exists() && !data.SxpConnectionPeersIpv4[i].Password.IsNull() {
-			data.SxpConnectionPeersIpv4[i].Password = types.StringValue(value.String())
-		} else {
-			data.SxpConnectionPeersIpv4[i].Password = types.StringNull()
 		}
 		if value := r.Get("mode"); value.Exists() && !data.SxpConnectionPeersIpv4[i].ConnectionMode.IsNull() {
 			data.SxpConnectionPeersIpv4[i].ConnectionMode = types.StringValue(value.String())
@@ -359,11 +344,6 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.SxpConnectionPeersIpv4Vrf[i].SourceIp = types.StringValue(value.String())
 		} else {
 			data.SxpConnectionPeersIpv4Vrf[i].SourceIp = types.StringNull()
-		}
-		if value := r.Get("password"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Password.IsNull() {
-			data.SxpConnectionPeersIpv4Vrf[i].Password = types.StringValue(value.String())
-		} else {
-			data.SxpConnectionPeersIpv4Vrf[i].Password = types.StringNull()
 		}
 		if value := r.Get("mode"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].ConnectionMode.IsNull() {
 			data.SxpConnectionPeersIpv4Vrf[i].ConnectionMode = types.StringValue(value.String())

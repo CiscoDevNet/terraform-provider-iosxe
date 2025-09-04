@@ -86,6 +86,7 @@ func (d *UsernameDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"password": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
+				Sensitive:           true,
 			},
 			"secret_encryption": schema.StringAttribute{
 				MarkdownDescription: "",
@@ -94,6 +95,7 @@ func (d *UsernameDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 			"secret": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
+				Sensitive:           true,
 			},
 		},
 	}

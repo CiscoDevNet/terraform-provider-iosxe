@@ -276,11 +276,6 @@ func (data *VTP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.InterfaceOnly = types.BoolNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:password.password"); value.Exists() && !data.Password.IsNull() {
-		data.Password = types.StringValue(value.String())
-	} else {
-		data.Password = types.StringNull()
-	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:password.hidden"); !data.PasswordHidden.IsNull() {
 		if value.Exists() {
 			data.PasswordHidden = types.BoolValue(true)
@@ -289,15 +284,6 @@ func (data *VTP) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.PasswordHidden = types.BoolNull()
-	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:password.secret"); !data.PasswordSecret.IsNull() {
-		if value.Exists() {
-			data.PasswordSecret = types.BoolValue(true)
-		} else {
-			data.PasswordSecret = types.BoolValue(false)
-		}
-	} else {
-		data.PasswordSecret = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-vtp:pruning"); !data.Pruning.IsNull() {
 		if value.Exists() {

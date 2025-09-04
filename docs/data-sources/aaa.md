@@ -96,5 +96,5 @@ Read-Only:
 Read-Only:
 
 - `ip` (String)
-- `server_key` (String)
+- `server_key` (String, Sensitive)
 - `server_key_type` (String)

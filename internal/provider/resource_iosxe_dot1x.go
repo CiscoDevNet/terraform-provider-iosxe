@@ -116,6 +116,7 @@ func (r *Dot1xResource) Schema(ctx context.Context, req resource.SchemaRequest, 
 						"password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"pki_trustpoint": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Set the default pki trustpoint").String,

@@ -92,7 +92,7 @@ Required:
 
 Optional:
 
-- `md5_auth_key` (String) The OSPF password (key) (only the first 16 characters are used)
+- `md5_auth_key` (String, Sensitive) The OSPF password (key) (only the first 16 characters are used)
 - `md5_auth_type` (Number) Encryption type (0 for not yet encrypted, 7 for proprietary)
   - Range: `0`-`7`
 

@@ -34,7 +34,7 @@ data "iosxe_cts" "example" {
 - `sgt` (Number) Local device security group
 - `sxp_connection_peers_ipv4` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4))
 - `sxp_connection_peers_ipv4_vrf` (Attributes List) (see [below for nested schema](#nestedatt--sxp_connection_peers_ipv4_vrf))
-- `sxp_default_password` (String)
+- `sxp_default_password` (String, Sensitive)
 - `sxp_default_password_type` (String)
 - `sxp_enable` (Boolean) Enable CTS SXP support
 - `sxp_listener_hold_max_time` (Number) Enter maximum allowed Hold Time in seconds
@@ -52,7 +52,7 @@ Read-Only:
 - `ip` (String) Enter SXP Peer IP address (IPv4)
 - `max_time` (Number) Maximum hold time period
 - `option` (String) Role of a device speaker/listener/both
-- `password` (String) Password type
+- `password` (String, Sensitive) Password type
 - `source_ip` (String) Enter SXP Source IP address (IPv4)
 
 
@@ -66,6 +66,6 @@ Read-Only:
 - `ip` (String) Enter SXP Peer IP address (IPv4)
 - `max_time` (Number) Maximum hold time period
 - `option` (String) Role of a device speaker/listener/both
-- `password` (String) Password type
+- `password` (String, Sensitive) Password type
 - `source_ip` (String) Enter SXP Source IP address (IPv4)
 - `vrf` (String) VRF details

@@ -47,7 +47,7 @@ Read-Only:
 
 - `anonymous_id` (String) Set the anonymous userid
 - `description` (String) Provide a description for the credentials profile
-- `password` (String)
+- `password` (String, Sensitive)
 - `password_type` (String)
 - `pki_trustpoint` (String) Set the default pki trustpoint
 - `profile_name` (String) Specify a profile name

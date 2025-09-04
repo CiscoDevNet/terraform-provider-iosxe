@@ -42,7 +42,7 @@ data "iosxe_system" "example" {
 - `control_plane_service_policy_input` (String) Assign policy-map to the input of an interface
 - `diagnostic_bootup_level` (String) Select diagnostic level
 - `diagnostic_event_log_size` (Number) Configure event log size Number of entries <1-10000>
-- `enable_secret` (String)
+- `enable_secret` (String, Sensitive)
 - `enable_secret_level` (Number) Set exec level password
 - `enable_secret_type` (String)
 - `epm_logging` (Boolean) Enable EPM logging

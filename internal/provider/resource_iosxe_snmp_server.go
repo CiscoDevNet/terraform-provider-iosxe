@@ -163,6 +163,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"community_or_user": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SNMPv1/v2c community string or SNMPv3 user name").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"version": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SNMP version to use for notification messages").AddStringEnumDescription("1", "2c", "3").String,
@@ -204,6 +205,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"community_or_user": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SNMPv1/v2c community string or SNMPv3 user name").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"version": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("SNMP version to use for notification messages").AddStringEnumDescription("1", "2c", "3").String,
@@ -1046,6 +1048,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"name": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
+							Sensitive:           true,
 						},
 						"view": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Restrict this community to a named MIB view").String,
@@ -1204,6 +1207,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"v3_auth_password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
 							Required:            true,
+							Sensitive:           true,
 						},
 						"v3_auth_priv_aes_algorithm": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("128", "192", "256").String,
@@ -1215,6 +1219,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"v3_auth_priv_aes_password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"v3_auth_priv_aes_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
@@ -1240,6 +1245,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"v3_auth_priv_des_password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"v3_auth_priv_des_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,
@@ -1265,6 +1271,7 @@ func (r *SNMPServerResource) Schema(ctx context.Context, req resource.SchemaRequ
 						"v3_auth_priv_des3_password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Authentication password for user").String,
 							Optional:            true,
+							Sensitive:           true,
 						},
 						"v3_auth_priv_des3_access_ipv6_acl": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Specify IPv6 Named Access-List").String,

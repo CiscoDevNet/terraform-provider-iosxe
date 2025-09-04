@@ -114,6 +114,7 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 			"sxp_default_password": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
+				Sensitive:           true,
 				Validators: []validator.String{
 					stringvalidator.LengthBetween(1, 162),
 				},
@@ -147,6 +148,7 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						"password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Password type").AddStringEnumDescription("default", "key-chain", "none").String,
 							Optional:            true,
+							Sensitive:           true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("default", "key-chain", "none"),
 							},
@@ -208,6 +210,7 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 						"password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Password type").AddStringEnumDescription("default", "key-chain", "none").String,
 							Optional:            true,
+							Sensitive:           true,
 							Validators: []validator.String{
 								stringvalidator.OneOf("default", "key-chain", "none"),
 							},

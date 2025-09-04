@@ -52,9 +52,9 @@ resource "iosxe_vtp" "example" {
 - `mode_transparent_mst` (Boolean) Set the mode for MST VTP instance
 - `mode_transparent_unknown` (Boolean) Set the mode for unknown VTP instances
 - `mode_transparent_vlan` (Boolean) Set the mode for VLAN VTP instance
-- `password` (String) The ascii password for the VTP administrative domain
+- `password` (String, Sensitive) The ascii password for the VTP administrative domain
 - `password_hidden` (Boolean) Set the VTP password hidden option
-- `password_secret` (Boolean) Specify the vtp password in encrypted form
+- `password_secret` (Boolean, Sensitive) Specify the vtp password in encrypted form
 - `pruning` (Boolean) Set the administrative domain to permit pruning
 - `version` (Number) Set the administrative domain to VTP version
   - Range: `1`-`3`

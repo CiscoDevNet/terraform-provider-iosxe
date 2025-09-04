@@ -24,8 +24,9 @@ attributes:
     example: 3
   - yang_name: key/key
     tf_name: key
-    example: 123
     write_only: true
+    sensitive: true
+    example: 123
     allow_import_changes: true
     delete_parent: true
   - yang_name: automate-tester/username
@@ -38,9 +39,10 @@ attributes:
     example: true
   - yang_name: pac/key/key
     tf_name: pac_key
+    write_only: true
+    sensitive: true
     example: 123
     test_tags: [IOSXE1712]
-    write_only: true
     allow_import_changes: true
     delete_parent: true
   - yang_name: pac/key/encryption

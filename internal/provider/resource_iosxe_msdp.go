@@ -134,6 +134,7 @@ func (r *MSDPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						"password": schema.StringAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
+							Sensitive:           true,
 						},
 					},
 				},
@@ -196,6 +197,7 @@ func (r *MSDPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									"password": schema.StringAttribute{
 										MarkdownDescription: helpers.NewAttributeDescription("").String,
 										Required:            true,
+										Sensitive:           true,
 									},
 								},
 							},

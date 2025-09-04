@@ -63,26 +63,35 @@ attributes:
       - yang_name: pre-shared-key/local-option/encryption-hex/encryption-case/encryption
         xpath: pre-shared-key/local-option/encryption
         tf_name: pre_shared_key_local_encryption
+        write_only: true
         example: 6
       - yang_name: pre-shared-key/local-option/encryption-hex/encryption-case/key
         xpath: pre-shared-key/local-option/key
         tf_name: pre_shared_key_local
+        write_only: true
+        sensitive: true
         example: cisco123
       - yang_name: pre-shared-key/remote-option/encryption-hex/encryption-case/encryption
         xpath: pre-shared-key/remote-option/encryption
         tf_name: pre_shared_key_remote_encryption
+        write_only: true
         example: 6
       - yang_name: pre-shared-key/remote-option/encryption-hex/encryption-case/key
         xpath: pre-shared-key/remote-option/key
         tf_name: pre_shared_key_remote
+        write_only: true
+        sensitive: true
         example: cisco123
       - yang_name: pre-shared-key/encryption-hex/encryption-case/encryption
         xpath: pre-shared-key/encryption
         tf_name: pre_shared_key_encryption
+        write_only: true
         example: 6
         exclude_test: true
       - yang_name: pre-shared-key/encryption-hex/encryption-case/key
         xpath: pre-shared-key/key
         tf_name: pre_shared_key
+        write_only: true
+        sensitive: true
         example: cisco123
         exclude_test: true

@@ -1892,11 +1892,6 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Hosts[i].IpAddress = types.StringNull()
 		}
-		if value := r.Get("community-or-user"); value.Exists() && !data.Hosts[i].CommunityOrUser.IsNull() {
-			data.Hosts[i].CommunityOrUser = types.StringValue(value.String())
-		} else {
-			data.Hosts[i].CommunityOrUser = types.StringNull()
-		}
 		if value := r.Get("version"); value.Exists() && !data.Hosts[i].Version.IsNull() {
 			data.Hosts[i].Version = types.StringValue(value.String())
 		} else {
@@ -1945,11 +1940,6 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.VrfHosts[i].Vrf = types.StringValue(value.String())
 		} else {
 			data.VrfHosts[i].Vrf = types.StringNull()
-		}
-		if value := r.Get("community-or-user"); value.Exists() && !data.VrfHosts[i].CommunityOrUser.IsNull() {
-			data.VrfHosts[i].CommunityOrUser = types.StringValue(value.String())
-		} else {
-			data.VrfHosts[i].CommunityOrUser = types.StringNull()
 		}
 		if value := r.Get("version"); value.Exists() && !data.VrfHosts[i].Version.IsNull() {
 			data.VrfHosts[i].Version = types.StringValue(value.String())
@@ -3624,11 +3614,6 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get("name"); value.Exists() && !data.SnmpCommunities[i].Name.IsNull() {
-			data.SnmpCommunities[i].Name = types.StringValue(value.String())
-		} else {
-			data.SnmpCommunities[i].Name = types.StringNull()
-		}
 		if value := r.Get("view"); value.Exists() && !data.SnmpCommunities[i].View.IsNull() {
 			data.SnmpCommunities[i].View = types.StringValue(value.String())
 		} else {
@@ -3854,20 +3839,10 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Users[i].V3AuthAlgorithm = types.StringNull()
 		}
-		if value := r.Get("v3.auth-config.password"); value.Exists() && !data.Users[i].V3AuthPassword.IsNull() {
-			data.Users[i].V3AuthPassword = types.StringValue(value.String())
-		} else {
-			data.Users[i].V3AuthPassword = types.StringNull()
-		}
 		if value := r.Get("v3.auth-config.priv-config.aes.algorithm"); value.Exists() && !data.Users[i].V3AuthPrivAesAlgorithm.IsNull() {
 			data.Users[i].V3AuthPrivAesAlgorithm = types.StringValue(value.String())
 		} else {
 			data.Users[i].V3AuthPrivAesAlgorithm = types.StringNull()
-		}
-		if value := r.Get("v3.auth-config.priv-config.aes.password"); value.Exists() && !data.Users[i].V3AuthPrivAesPassword.IsNull() {
-			data.Users[i].V3AuthPrivAesPassword = types.StringValue(value.String())
-		} else {
-			data.Users[i].V3AuthPrivAesPassword = types.StringNull()
 		}
 		if value := r.Get("v3.auth-config.priv-config.aes.access-config.ipv6-acl"); value.Exists() && !data.Users[i].V3AuthPrivAesAccessIpv6Acl.IsNull() {
 			data.Users[i].V3AuthPrivAesAccessIpv6Acl = types.StringValue(value.String())
@@ -3884,11 +3859,6 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Users[i].V3AuthPrivAesAccessAclName = types.StringNull()
 		}
-		if value := r.Get("v3.auth-config.priv-config.des.password"); value.Exists() && !data.Users[i].V3AuthPrivDesPassword.IsNull() {
-			data.Users[i].V3AuthPrivDesPassword = types.StringValue(value.String())
-		} else {
-			data.Users[i].V3AuthPrivDesPassword = types.StringNull()
-		}
 		if value := r.Get("v3.auth-config.priv-config.des.access-config.ipv6-acl"); value.Exists() && !data.Users[i].V3AuthPrivDesAccessIpv6Acl.IsNull() {
 			data.Users[i].V3AuthPrivDesAccessIpv6Acl = types.StringValue(value.String())
 		} else {
@@ -3903,11 +3873,6 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Users[i].V3AuthPrivDesAccessAclName = types.StringValue(value.String())
 		} else {
 			data.Users[i].V3AuthPrivDesAccessAclName = types.StringNull()
-		}
-		if value := r.Get("v3.auth-config.priv-config.des3.password"); value.Exists() && !data.Users[i].V3AuthPrivDes3Password.IsNull() {
-			data.Users[i].V3AuthPrivDes3Password = types.StringValue(value.String())
-		} else {
-			data.Users[i].V3AuthPrivDes3Password = types.StringNull()
 		}
 		if value := r.Get("v3.auth-config.priv-config.des3.access-config.ipv6-acl"); value.Exists() && !data.Users[i].V3AuthPrivDes3AccessIpv6Acl.IsNull() {
 			data.Users[i].V3AuthPrivDes3AccessIpv6Acl = types.StringValue(value.String())

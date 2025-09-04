@@ -25,33 +25,46 @@ attributes:
       - yang_name: authtype/md5-cfg/md5-cfg
         xpath: md5-cfg
         tf_name: md5
+        write_only: true
+        sensitive: true
         example: 060506324F41584B564347
       - yang_name: authtype/cmac-aes-128/cmac-aes-128
         xpath: cmac-aes-128
         tf_name: cmac_aes_128
+        write_only: true
+        sensitive: true
         exclude_test: true
         example: 060506324F41584B564347
       - yang_name: authtype/hmac-sha1/hmac-sha1
         xpath: hmac-sha1
         tf_name: hmac_sha1
+        write_only: true
+        sensitive: true
         exclude_test: true
         example: 060506324F41584B564347
       - yang_name: authtype/hmac-sha2-256/hmac-sha2-256
         xpath: hmac-sha2-256
         tf_name: hmac_sha2_256
+        write_only: true
+        sensitive: true
         exclude_test: true
         example: 060506324F41584B564347
       - yang_name: authtype/sha1/sha1
         xpath: sha1
         tf_name: sha1
+        write_only: true
+        sensitive: true
         exclude_test: true
         example: 060506324F41584B564347
       - yang_name: authtype/sha2/sha2
         xpath: sha2
         tf_name: sha2
+        write_only: true
+        sensitive: true
         exclude_test: true
         example: 060506324F41584B564347
       - yang_name: encryption-type
+        write_only: true
         example: 7
   - yang_name: Cisco-IOS-XE-ntp:clock-period
     example: 10

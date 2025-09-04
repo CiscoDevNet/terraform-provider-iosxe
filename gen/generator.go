@@ -129,6 +129,7 @@ type YamlConfigAttribute struct {
 	Mandatory          bool                  `yaml:"mandatory"`
 	Optional           bool                  `yaml:"optional"`
 	WriteOnly          bool                  `yaml:"write_only"`
+	Sensitive          bool                  `yaml:"sensitive"`
 	ExcludeTest        bool                  `yaml:"exclude_test"`
 	ExcludeExample     bool                  `yaml:"exclude_example"`
 	Description        string                `yaml:"description"`

@@ -95,6 +95,7 @@ func (d *AAADataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 						"server_key": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 					},
 				},

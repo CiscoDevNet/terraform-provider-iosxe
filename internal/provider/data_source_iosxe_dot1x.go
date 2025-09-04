@@ -95,6 +95,7 @@ func (d *Dot1xDataSource) Schema(ctx context.Context, req datasource.SchemaReque
 						"password": schema.StringAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"pki_trustpoint": schema.StringAttribute{
 							MarkdownDescription: "Set the default pki trustpoint",

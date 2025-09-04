@@ -31,10 +31,13 @@ attributes:
   - yang_name: password/enctype
     tf_name: password_type
     delete_parent: true
+    write_only: true
     example: 1
   - yang_name: password/text
     tf_name: password
     delete_parent: true
+    write_only: true
+    sensitive: true
     example: LINE
   - yang_name: timers/keepalive-interval
     tf_name: timers_keepalive_interval

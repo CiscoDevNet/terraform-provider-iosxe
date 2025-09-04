@@ -40,10 +40,6 @@ func TestAccIosxeCryptoIKEv2Keyring(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.ipv4_address", "1.2.3.4"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.ipv4_mask", "255.255.255.248"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.identity_key_id", "key1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.pre_shared_key_local_encryption", "6"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.pre_shared_key_local", "cisco123"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.pre_shared_key_remote_encryption", "6"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_crypto_ikev2_keyring.test", "peers.0.pre_shared_key_remote", "cisco123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,

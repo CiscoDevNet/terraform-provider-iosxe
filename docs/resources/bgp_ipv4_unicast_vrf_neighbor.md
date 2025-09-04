@@ -93,7 +93,7 @@ resource "iosxe_bgp_ipv4_unicast_vrf_neighbor" "example" {
 - `log_neighbor_changes_disable` (Boolean) disable
 - `next_hop_self` (Boolean) Disable the next hop calculation for this neighbor
 - `next_hop_self_all` (Boolean) Enable next-hop-self for both eBGP and iBGP received paths
-- `password` (String)
+- `password` (String, Sensitive)
 - `password_type` (Number) Encryption type (0 to disable encryption, 7 for proprietary)
   - Range: `0`-`7`
 - `remote_as` (String) Specify a BGP peer-group remote-as

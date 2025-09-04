@@ -20,9 +20,12 @@ attributes:
         example: 11.1.1.1
       - yang_name: server-key/key
         tf_name: server_key_type
+        write_only: true
         example: 0
       - yang_name: server-key/string
         tf_name: server_key
+        write_only: true
+        sensitive: true
         example: abcd123
   - yang_name: Cisco-IOS-XE-aaa:group/server/radius
     tf_name: group_server_radius

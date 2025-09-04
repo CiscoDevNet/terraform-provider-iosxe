@@ -103,26 +103,32 @@ func (d *NTPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 						"md5": schema.StringAttribute{
 							MarkdownDescription: "MD5 authentication",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"cmac_aes_128": schema.StringAttribute{
 							MarkdownDescription: "CMAC-AES-128 (digest length = 128 bits,  key length = [16 or 32] bytes)",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"hmac_sha1": schema.StringAttribute{
 							MarkdownDescription: "HMAC-SHA1 (digest length = 160 bits,  key length = [1-32] bytes)",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"hmac_sha2_256": schema.StringAttribute{
 							MarkdownDescription: "HMAC-SHA2-256 (digest length = 256 bits,  key length = [1-32] bytes)",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"sha1": schema.StringAttribute{
 							MarkdownDescription: "SHA1 (digest length = 160 bits,  key length = [1-32] bytes)",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"sha2": schema.StringAttribute{
 							MarkdownDescription: "SHA-256 (digest length = 256 bits,  key length = [1-32] bytes)",
 							Computed:            true,
+							Sensitive:           true,
 						},
 						"encryption_type": schema.Int64Attribute{
 							MarkdownDescription: "Authentication key encryption type",
