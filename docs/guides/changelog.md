@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.8.1 (unreleased)
+## 0.8.1
 
 - Add `ip_nbar_classification_dns_classify_by_domain` attribute to `iosxe_system` resource and data source
 - Add `iosxe_nat` resource and data source
