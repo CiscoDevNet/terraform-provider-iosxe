@@ -548,7 +548,7 @@ attributes:
   - yang_name: standby/redirects-config/redirect_choice/redirect-enable-disable/redirect-enable-disable/redirects
     xpath: standby/redirects-config/redirect-enable-disable/redirects
     tf_name: standby_redirects_enable_disable
-    example: false
+    example: disable
     exclude_test: true
 
 test_prerequisites:
