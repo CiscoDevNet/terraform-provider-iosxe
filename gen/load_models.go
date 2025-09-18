@@ -108,6 +108,7 @@ var models = []string{
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-ppp.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-track.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-eem.yang",
+	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-platform.yang",
 }
 
 const (
@@ -156,7 +157,9 @@ func downloadModel(filepath string, url string) error {
 func patchModel(filepath, filename string) error {
 	switch filename {
 	case "Cisco-IOS-XE-eem.yang":
-		return patchEEMModel(filepath)
+		return patchLoggingLevelTypeModel(filepath)
+	case "Cisco-IOS-XE-platform.yang":
+		return patchLoggingLevelTypeModel(filepath)
 	default:
 		// No patch needed for other models
 		return nil
@@ -215,8 +218,8 @@ func extractTypeDefinition(yangFile, typeName string) (string, error) {
 	return strings.Join(typeDefLines, "\n"), nil
 }
 
-// patchEEMModel fixes the ios:logging-level-type reference issue in the EEM model
-func patchEEMModel(filepath string) error {
+// patchLoggingLevelTypeModel fixes the ios:logging-level-type reference issue in models
+func patchLoggingLevelTypeModel(filepath string) error {
 	content, err := os.ReadFile(filepath)
 	if err != nil {
 		return err
