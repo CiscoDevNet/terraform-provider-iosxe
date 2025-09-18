@@ -107,6 +107,7 @@ var models = []string{
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-call-home.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-ppp.yang",
 	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-track.yang",
+	"https://raw.githubusercontent.com/YangModels/yang/main/vendor/cisco/xe/17151/Cisco-IOS-XE-eem.yang",
 }
 
 const (
@@ -116,13 +117,20 @@ const (
 func main() {
 	for _, model := range models {
 		f := strings.Split(model, "/")
-		path := filepath.Join(modelsPath, f[len(f)-1])
+		filename := f[len(f)-1]
+		path := filepath.Join(modelsPath, filename)
 		if _, err := os.Stat(path); err != nil {
 			err := downloadModel(path, model)
 			if err != nil {
 				panic(err)
 			}
 			fmt.Println("Downloaded model: " + path)
+
+			// Apply patches to specific models after download
+			err = patchModel(path, filename)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 }
@@ -142,4 +150,117 @@ func downloadModel(filepath string, url string) error {
 
 	_, err = io.Copy(out, resp.Body)
 	return err
+}
+
+// patchModel applies necessary patches to specific YANG models after download
+func patchModel(filepath, filename string) error {
+	switch filename {
+	case "Cisco-IOS-XE-eem.yang":
+		return patchEEMModel(filepath)
+	default:
+		// No patch needed for other models
+		return nil
+	}
+}
+
+// extractTypeDefinition extracts a typedef from a YANG model file
+func extractTypeDefinition(yangFile, typeName string) (string, error) {
+	content, err := os.ReadFile(yangFile)
+	if err != nil {
+		return "", err
+	}
+
+	lines := strings.Split(string(content), "\n")
+	var typeDefLines []string
+	var inTypeDef bool
+	var braceCount int
+
+	typedefPattern := fmt.Sprintf("typedef %s {", typeName)
+
+	for _, line := range lines {
+		trimmedLine := strings.TrimSpace(line)
+
+		// Start of typedef
+		if strings.Contains(trimmedLine, typedefPattern) {
+			inTypeDef = true
+			// Extract just the type definition part, not the typedef wrapper
+			continue
+		}
+
+		if inTypeDef {
+			// Count braces to know when typedef ends
+			braceCount += strings.Count(line, "{")
+			braceCount -= strings.Count(line, "}")
+
+			// Add line to type definition
+			if braceCount > 0 {
+				// Remove the leading "type " from the first line if present
+				if len(typeDefLines) == 0 && strings.HasPrefix(strings.TrimSpace(line), "type ") {
+					line = strings.TrimPrefix(strings.TrimSpace(line), "type ")
+					line = "    " + line // Maintain indentation
+				}
+				typeDefLines = append(typeDefLines, line)
+			} else if braceCount == 0 && strings.Contains(trimmedLine, "}") {
+				// This is the final closing brace - add it and break
+				typeDefLines = append(typeDefLines, line)
+				break
+			}
+		}
+	}
+
+	if len(typeDefLines) == 0 {
+		return "", fmt.Errorf("typedef %s not found in %s", typeName, yangFile)
+	}
+
+	return strings.Join(typeDefLines, "\n"), nil
+}
+
+// patchEEMModel fixes the ios:logging-level-type reference issue in the EEM model
+func patchEEMModel(filepath string) error {
+	content, err := os.ReadFile(filepath)
+	if err != nil {
+		return err
+	}
+
+	contentStr := string(content)
+
+	// Check if already patched to avoid double-patching
+	if !strings.Contains(contentStr, "type ios:logging-level-type;") {
+		return nil // Already patched
+	}
+
+	// Dynamically extract the type definition from the logging model
+	loggingModelPath := "./gen/models/Cisco-IOS-XE-logging.yang"
+	typeDefinition, err := extractTypeDefinition(loggingModelPath, "logging-level-type")
+	if err != nil {
+		return fmt.Errorf("failed to extract logging-level-type definition: %v", err)
+	}
+
+	// Replace the entire type statement with the dynamically extracted type definition
+	// Need to adjust indentation: typedef uses 4-space indent, but inline usage needs 2-space
+	lines := strings.Split(typeDefinition, "\n")
+	var adjustedLines []string
+	for _, line := range lines {
+		// Remove the typedef-level indentation (4 spaces) and replace with inline-level (2 spaces)
+		if strings.HasPrefix(line, "    ") {
+			// Remove 4 spaces and add 2 spaces
+			adjustedLine := "  " + strings.TrimPrefix(line, "    ")
+			adjustedLines = append(adjustedLines, adjustedLine)
+		} else {
+			adjustedLines = append(adjustedLines, line)
+		}
+	}
+	adjustedDefinition := strings.Join(adjustedLines, "\n")
+	// Trim any leading whitespace from the first line
+	adjustedDefinition = strings.TrimSpace(adjustedDefinition)
+	contentStr = strings.ReplaceAll(contentStr, "type ios:logging-level-type;", "type "+adjustedDefinition)
+
+	// Write the patched content back to file
+	err = os.WriteFile(filepath, []byte(contentStr), 0644)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Applied patch to: " + filepath)
+	return nil
 }
