@@ -10,6 +10,7 @@ description: |-
 ## 0.8.2 (unreleased)
 
 - Fix issue with configuration of track objects using `iosxe_system` resource
+- Add `iosxe_platform` resource and data source
 
 ## 0.8.1
 
