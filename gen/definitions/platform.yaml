@@ -1,0 +1,14 @@
+---
+name: Platform
+path: Cisco-IOS-XE-native:native/platform
+doc_category: System
+no_delete: true
+attributes:
+  - yang_name: Cisco-IOS-XE-platform:punt-keepalive/disable-kernel-core
+    example: true
+  - yang_name: Cisco-IOS-XE-platform:punt-keepalive/settings/fatal-count
+    example: 15
+  - yang_name: Cisco-IOS-XE-platform:punt-keepalive/settings/transmit-interval
+    example: 15
+  - yang_name: Cisco-IOS-XE-platform:punt-keepalive/settings/warning-count
+    example: 15
