@@ -501,7 +501,7 @@ attributes:
     example: 17.15.1
     allow_import_changes: true
     exclude_test: true  
-  - yang_name: track/Cisco-IOS-XE-track:tracked-object-v2/
+  - yang_name: track/Cisco-IOS-XE-track:tracked-object-v2
     tf_name: track_objects
     type: List
     exclude_test: true

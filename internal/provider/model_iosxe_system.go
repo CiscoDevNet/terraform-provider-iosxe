@@ -845,17 +845,17 @@ func (data System) toBody(ctx context.Context) string {
 		}
 	}
 	if len(data.TrackObjects) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2.", []interface{}{})
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2", []interface{}{})
 		for index, item := range data.TrackObjects {
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"object-number", item.Number.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2"+"."+strconv.Itoa(index)+"."+"object-number", item.Number.ValueString())
 			}
 			if !item.IpSlaNumber.IsNull() && !item.IpSlaNumber.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"ip.sla.number", strconv.FormatInt(item.IpSlaNumber.ValueInt64(), 10))
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2"+"."+strconv.Itoa(index)+"."+"ip.sla.number", strconv.FormatInt(item.IpSlaNumber.ValueInt64(), 10))
 			}
 			if !item.IpSlaReachability.IsNull() && !item.IpSlaReachability.IsUnknown() {
 				if item.IpSlaReachability.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2."+"."+strconv.Itoa(index)+"."+"ip.sla.reachability", map[string]string{})
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"track.Cisco-IOS-XE-track:tracked-object-v2"+"."+strconv.Itoa(index)+"."+"ip.sla.reachability", map[string]string{})
 				}
 			}
 		}
@@ -1778,7 +1778,7 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
 
 		var r gjson.Result
-		res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2.").ForEach(
+		res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2").ForEach(
 			func(_, v gjson.Result) bool {
 				found := false
 				for ik := range keys {
@@ -2376,7 +2376,7 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2."); value.Exists() {
+	if value := res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2"); value.Exists() {
 		data.TrackObjects = make([]SystemTrackObjects, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SystemTrackObjects{}
@@ -2937,7 +2937,7 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "version"); value.Exists() {
 		data.Version = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2."); value.Exists() {
+	if value := res.Get(prefix + "track.Cisco-IOS-XE-track:tracked-object-v2"); value.Exists() {
 		data.TrackObjects = make([]SystemTrackObjects, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SystemTrackObjects{}
@@ -3067,16 +3067,16 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 			}
 			if found {
 				if !state.TrackObjects[i].IpSlaReachability.IsNull() && data.TrackObjects[j].IpSlaReachability.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/reachability", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2=%v/ip/sla/reachability", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.TrackObjects[i].IpSlaNumber.IsNull() && data.TrackObjects[j].IpSlaNumber.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2=%v/ip/sla/number", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				break
 			}
 		}
 		if !found {
-			deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	if !state.Version.IsNull() && data.Version.IsNull() {
@@ -3720,7 +3720,7 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	for i := range data.TrackObjects {
 		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
 		if !data.TrackObjects[i].IpSlaReachability.IsNull() && !data.TrackObjects[i].IpSlaReachability.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v/ip/sla/reachability", data.getPath(), strings.Join(keyValues[:], ",")))
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2=%v/ip/sla/reachability", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 	if !data.SubscriberTemplating.IsNull() && !data.SubscriberTemplating.ValueBool() {
@@ -3836,7 +3836,7 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	for i := range data.TrackObjects {
 		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/track/Cisco-IOS-XE-track:tracked-object-v2=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.Version.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/version", data.getPath()))

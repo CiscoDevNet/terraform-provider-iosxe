@@ -1,3 +1,7 @@
+## 0.8.2 (unreleased)
+
+- Fix issue with configuration of track objects using `iosxe_system` resource
+
 ## 0.8.1
 
 - Add `ip_nbar_classification_dns_classify_by_domain` attribute to `iosxe_system` resource and data source
