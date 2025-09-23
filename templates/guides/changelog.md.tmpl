@@ -11,6 +11,7 @@ description: |-
 
 - Fix issue with configuration of track objects using `iosxe_system` resource
 - Add `iosxe_platform` resource and data source
+- Fix issue with `access_session_mac_move_deny` attribute of `iosxe_system` resource
 
 ## 0.8.1
 

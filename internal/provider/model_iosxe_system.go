@@ -516,7 +516,7 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.AccessSessionMacMoveDeny.IsNull() && !data.AccessSessionMacMoveDeny.IsUnknown() {
 		if data.AccessSessionMacMoveDeny.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"access-session.mac-move.deny", map[string]string{})
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:access-session.mac-move.deny", map[string]string{})
 		}
 	}
 	if !data.DiagnosticBootupLevel.IsNull() && !data.DiagnosticBootupLevel.IsUnknown() {
@@ -1250,7 +1250,7 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EpmLogging = types.BoolNull()
 	}
-	if value := res.Get(prefix + "access-session.mac-move.deny"); !data.AccessSessionMacMoveDeny.IsNull() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:access-session.mac-move.deny"); !data.AccessSessionMacMoveDeny.IsNull() {
 		if value.Exists() {
 			data.AccessSessionMacMoveDeny = types.BoolValue(true)
 		} else {
@@ -2091,7 +2091,7 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EpmLogging = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "access-session.mac-move.deny"); value.Exists() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:access-session.mac-move.deny"); value.Exists() {
 		data.AccessSessionMacMoveDeny = types.BoolValue(true)
 	} else {
 		data.AccessSessionMacMoveDeny = types.BoolValue(false)
@@ -2652,7 +2652,7 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EpmLogging = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "access-session.mac-move.deny"); value.Exists() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:access-session.mac-move.deny"); value.Exists() {
 		data.AccessSessionMacMoveDeny = types.BoolValue(true)
 	} else {
 		data.AccessSessionMacMoveDeny = types.BoolValue(false)
@@ -3458,7 +3458,7 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", state.getPath()))
 	}
 	if !state.AccessSessionMacMoveDeny.IsNull() && data.AccessSessionMacMoveDeny.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/access-session/mac-move/deny", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:access-session/mac-move/deny", state.getPath()))
 	}
 	if !state.EpmLogging.IsNull() && data.EpmLogging.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/epm/logging", state.getPath()))
@@ -3743,7 +3743,7 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/archive/write-memory", data.getPath()))
 	}
 	if !data.AccessSessionMacMoveDeny.IsNull() && !data.AccessSessionMacMoveDeny.ValueBool() {
-		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/access-session/mac-move/deny", data.getPath()))
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:access-session/mac-move/deny", data.getPath()))
 	}
 	if !data.EpmLogging.IsNull() && !data.EpmLogging.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/epm/logging", data.getPath()))
@@ -4044,7 +4044,7 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", data.getPath()))
 	}
 	if !data.AccessSessionMacMoveDeny.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/access-session/mac-move/deny", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:access-session/mac-move/deny", data.getPath()))
 	}
 	if !data.EpmLogging.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/epm/logging", data.getPath()))

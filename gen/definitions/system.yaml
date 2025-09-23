@@ -185,7 +185,7 @@ attributes:
   - yang_name: epm/logging
     example: true
     exclude_test: true
-  - yang_name: access-session/mac-move/deny
+  - yang_name: Cisco-IOS-XE-sanet:access-session/mac-move/deny
     example: true
     exclude_test: true
   - yang_name: Cisco-IOS-diagnostics:diagnostic/bootup/level
