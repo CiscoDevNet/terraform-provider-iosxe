@@ -520,7 +520,7 @@ func (data System) toBody(ctx context.Context) string {
 		}
 	}
 	if !data.DiagnosticBootupLevel.IsNull() && !data.DiagnosticBootupLevel.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-diagnostics:diagnostic.bootup.level", data.DiagnosticBootupLevel.ValueString())
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-diagnostics:diagnostic.bootup.level", data.DiagnosticBootupLevel.ValueString())
 	}
 	if !data.MemoryFreeLowWatermarkProcessor.IsNull() && !data.MemoryFreeLowWatermarkProcessor.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"memory.free.low-watermark.processor", strconv.FormatInt(data.MemoryFreeLowWatermarkProcessor.ValueInt64(), 10))
@@ -1259,7 +1259,7 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AccessSessionMacMoveDeny = types.BoolNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-diagnostics:diagnostic.bootup.level"); value.Exists() && !data.DiagnosticBootupLevel.IsNull() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.bootup.level"); value.Exists() && !data.DiagnosticBootupLevel.IsNull() {
 		data.DiagnosticBootupLevel = types.StringValue(value.String())
 	} else {
 		data.DiagnosticBootupLevel = types.StringNull()
@@ -2096,7 +2096,7 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AccessSessionMacMoveDeny = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "Cisco-IOS-diagnostics:diagnostic.bootup.level"); value.Exists() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.bootup.level"); value.Exists() {
 		data.DiagnosticBootupLevel = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "memory.free.low-watermark.processor"); value.Exists() {
@@ -2657,7 +2657,7 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AccessSessionMacMoveDeny = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "Cisco-IOS-diagnostics:diagnostic.bootup.level"); value.Exists() {
+	if value := res.Get(prefix + "Cisco-IOS-XE-diagnostics:diagnostic.bootup.level"); value.Exists() {
 		data.DiagnosticBootupLevel = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "memory.free.low-watermark.processor"); value.Exists() {
@@ -3455,7 +3455,7 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/memory/free/low-watermark/processor", state.getPath()))
 	}
 	if !state.DiagnosticBootupLevel.IsNull() && data.DiagnosticBootupLevel.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-diagnostics:diagnostic/bootup/level", state.getPath()))
 	}
 	if !state.AccessSessionMacMoveDeny.IsNull() && data.AccessSessionMacMoveDeny.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:access-session/mac-move/deny", state.getPath()))
@@ -4041,7 +4041,7 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/memory/free/low-watermark/processor", data.getPath()))
 	}
 	if !data.DiagnosticBootupLevel.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-diagnostics:diagnostic/bootup/level", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-diagnostics:diagnostic/bootup/level", data.getPath()))
 	}
 	if !data.AccessSessionMacMoveDeny.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:access-session/mac-move/deny", data.getPath()))

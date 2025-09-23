@@ -188,7 +188,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-sanet:access-session/mac-move/deny
     example: true
     exclude_test: true
-  - yang_name: Cisco-IOS-diagnostics:diagnostic/bootup/level
+  - yang_name: Cisco-IOS-XE-diagnostics:diagnostic/bootup/level
     example: minimal
     exclude_test: true
   - yang_name: memory/free/low-watermark/processor
