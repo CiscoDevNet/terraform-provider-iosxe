@@ -37,6 +37,7 @@ resource "iosxe_system" "example" {
       servers = ["2.3.4.5"]
     }
   ]
+  diagnostic_bootup_level                            = "minimal"
   memory_free_low_watermark_processor                = 203038
   ip_ssh_time_out                                    = 120
   ip_ssh_authentication_retries                      = 3
