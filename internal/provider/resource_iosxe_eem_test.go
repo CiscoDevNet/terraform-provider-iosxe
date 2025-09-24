@@ -37,7 +37,7 @@ func TestAccIosxeEEM(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "environment_variables.0.name", "IOSXE_TEST_VAR"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "environment_variables.0.value", "test_pass"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "session_cli_username", "test_user"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "session_cli_username_privelege", "15"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "session_cli_username_privilege", "15"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "history_size_events", "25"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "history_size_traps", "25"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_eem.test", "directory_user_policy", "test/test_path"))
@@ -112,7 +112,7 @@ func testAccIosxeEEMConfig_all() string {
 	config += `		value = "test_pass"` + "\n"
 	config += `	}]` + "\n"
 	config += `	session_cli_username = "test_user"` + "\n"
-	config += `	session_cli_username_privelege = 15` + "\n"
+	config += `	session_cli_username_privilege = 15` + "\n"
 	config += `	history_size_events = 25` + "\n"
 	config += `	history_size_traps = 25` + "\n"
 	config += `	directory_user_policy = "test/test_path"` + "\n"

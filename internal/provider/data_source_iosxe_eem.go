@@ -87,7 +87,7 @@ func (d *EEMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "username",
 				Computed:            true,
 			},
-			"session_cli_username_privelege": schema.Int64Attribute{
+			"session_cli_username_privilege": schema.Int64Attribute{
 				MarkdownDescription: "Set user privilege level",
 				Computed:            true,
 			},

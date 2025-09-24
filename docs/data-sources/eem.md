@@ -37,7 +37,7 @@ data "iosxe_eem" "example" {
 - `scheduler_applet_thread_class_default` (Boolean) default scheduler thread class
 - `scheduler_applet_thread_class_number` (Number) Number of concurrent execution threads
 - `session_cli_username` (String) username
-- `session_cli_username_privelege` (Number) Set user privilege level
+- `session_cli_username_privilege` (Number) Set user privilege level
 
 <a id="nestedatt--applets"></a>
 ### Nested Schema for `applets`

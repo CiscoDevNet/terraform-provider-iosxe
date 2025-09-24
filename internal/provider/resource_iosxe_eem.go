@@ -103,7 +103,7 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringvalidator.LengthBetween(1, 64),
 				},
 			},
-			"session_cli_username_privelege": schema.Int64Attribute{
+			"session_cli_username_privilege": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Set user privilege level").AddIntegerRangeDescription(0, 15).String,
 				Optional:            true,
 				Validators: []validator.Int64{

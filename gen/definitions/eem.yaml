@@ -17,7 +17,7 @@ attributes:
     tf_name: session_cli_username
     example: test_user
   - yang_name: session/cli/username/privilege_set
-    tf_name: session_cli_username_privelege
+    tf_name: session_cli_username_privilege
     example: 15
   - yang_name: history/size/events
     example: 25
@@ -81,7 +81,7 @@ attributes:
         - yang_name: list-option/regexp-option/regexp-option/string-submatch1
           xpath: regexp-option/string-submatch1
           tf_name: regexp_string_match1
-          example: test_matc1
+          example: test_match1
           exclude_test: true
         - yang_name: list-option/regexp-option/regexp-option/string-submatch2
           xpath: regexp-option/string-submatch2

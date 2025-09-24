@@ -21,7 +21,7 @@ resource "iosxe_eem" "example" {
     }
   ]
   session_cli_username                  = "test_user"
-  session_cli_username_privelege        = 15
+  session_cli_username_privilege        = 15
   history_size_events                   = 25
   history_size_traps                    = 25
   directory_user_policy                 = "test/test_path"
@@ -69,7 +69,7 @@ resource "iosxe_eem" "example" {
 - `scheduler_applet_thread_class_number` (Number) Number of concurrent execution threads
   - Range: `1`-`65535`
 - `session_cli_username` (String) username
-- `session_cli_username_privelege` (Number) Set user privilege level
+- `session_cli_username_privilege` (Number) Set user privilege level
   - Range: `0`-`15`
 
 ### Read-Only

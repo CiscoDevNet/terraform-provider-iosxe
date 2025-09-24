@@ -6,7 +6,7 @@ resource "iosxe_eem" "example" {
     }
   ]
   session_cli_username                  = "test_user"
-  session_cli_username_privelege        = 15
+  session_cli_username_privilege        = 15
   history_size_events                   = 25
   history_size_traps                    = 25
   directory_user_policy                 = "test/test_path"

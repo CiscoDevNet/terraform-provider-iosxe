@@ -42,7 +42,7 @@ type EEM struct {
 	Id                                types.String              `tfsdk:"id"`
 	EnvironmentVariables              []EEMEnvironmentVariables `tfsdk:"environment_variables"`
 	SessionCliUsername                types.String              `tfsdk:"session_cli_username"`
-	SessionCliUsernamePrivelege       types.Int64               `tfsdk:"session_cli_username_privelege"`
+	SessionCliUsernamePrivilege       types.Int64               `tfsdk:"session_cli_username_privilege"`
 	HistorySizeEvents                 types.Int64               `tfsdk:"history_size_events"`
 	HistorySizeTraps                  types.Int64               `tfsdk:"history_size_traps"`
 	DirectoryUserPolicy               types.String              `tfsdk:"directory_user_policy"`
@@ -58,7 +58,7 @@ type EEMData struct {
 	Id                                types.String              `tfsdk:"id"`
 	EnvironmentVariables              []EEMEnvironmentVariables `tfsdk:"environment_variables"`
 	SessionCliUsername                types.String              `tfsdk:"session_cli_username"`
-	SessionCliUsernamePrivelege       types.Int64               `tfsdk:"session_cli_username_privelege"`
+	SessionCliUsernamePrivilege       types.Int64               `tfsdk:"session_cli_username_privilege"`
 	HistorySizeEvents                 types.Int64               `tfsdk:"history_size_events"`
 	HistorySizeTraps                  types.Int64               `tfsdk:"history_size_traps"`
 	DirectoryUserPolicy               types.String              `tfsdk:"directory_user_policy"`
@@ -165,8 +165,8 @@ func (data EEM) toBody(ctx context.Context) string {
 	if !data.SessionCliUsername.IsNull() && !data.SessionCliUsername.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"session.cli.username.username_in_word_set", data.SessionCliUsername.ValueString())
 	}
-	if !data.SessionCliUsernamePrivelege.IsNull() && !data.SessionCliUsernamePrivelege.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"session.cli.username.privilege_set", strconv.FormatInt(data.SessionCliUsernamePrivelege.ValueInt64(), 10))
+	if !data.SessionCliUsernamePrivilege.IsNull() && !data.SessionCliUsernamePrivilege.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"session.cli.username.privilege_set", strconv.FormatInt(data.SessionCliUsernamePrivilege.ValueInt64(), 10))
 	}
 	if !data.HistorySizeEvents.IsNull() && !data.HistorySizeEvents.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"history.size.events", strconv.FormatInt(data.HistorySizeEvents.ValueInt64(), 10))
@@ -440,10 +440,10 @@ func (data *EEM) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SessionCliUsername = types.StringNull()
 	}
-	if value := res.Get(prefix + "session.cli.username.privilege_set"); value.Exists() && !data.SessionCliUsernamePrivelege.IsNull() {
-		data.SessionCliUsernamePrivelege = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "session.cli.username.privilege_set"); value.Exists() && !data.SessionCliUsernamePrivilege.IsNull() {
+		data.SessionCliUsernamePrivilege = types.Int64Value(value.Int())
 	} else {
-		data.SessionCliUsernamePrivelege = types.Int64Null()
+		data.SessionCliUsernamePrivilege = types.Int64Null()
 	}
 	if value := res.Get(prefix + "history.size.events"); value.Exists() && !data.HistorySizeEvents.IsNull() {
 		data.HistorySizeEvents = types.Int64Value(value.Int())
@@ -860,7 +860,7 @@ func (data *EEM) fromBody(ctx context.Context, res gjson.Result) {
 		data.SessionCliUsername = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "session.cli.username.privilege_set"); value.Exists() {
-		data.SessionCliUsernamePrivelege = types.Int64Value(value.Int())
+		data.SessionCliUsernamePrivilege = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "history.size.events"); value.Exists() {
 		data.HistorySizeEvents = types.Int64Value(value.Int())
@@ -1107,7 +1107,7 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SessionCliUsername = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "session.cli.username.privilege_set"); value.Exists() {
-		data.SessionCliUsernamePrivelege = types.Int64Value(value.Int())
+		data.SessionCliUsernamePrivilege = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "history.size.events"); value.Exists() {
 		data.HistorySizeEvents = types.Int64Value(value.Int())
@@ -1563,7 +1563,7 @@ func (data *EEM) getDeletedItems(ctx context.Context, state EEM) []string {
 	if !state.HistorySizeEvents.IsNull() && data.HistorySizeEvents.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/history/size/events", state.getPath()))
 	}
-	if !state.SessionCliUsernamePrivelege.IsNull() && data.SessionCliUsernamePrivelege.IsNull() {
+	if !state.SessionCliUsernamePrivilege.IsNull() && data.SessionCliUsernamePrivilege.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/session/cli/username/privilege_set", state.getPath()))
 	}
 	if !state.SessionCliUsername.IsNull() && data.SessionCliUsername.IsNull() {
@@ -1672,7 +1672,7 @@ func (data *EEM) getDeletePaths(ctx context.Context) []string {
 	if !data.HistorySizeEvents.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/history/size/events", data.getPath()))
 	}
-	if !data.SessionCliUsernamePrivelege.IsNull() {
+	if !data.SessionCliUsernamePrivilege.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/session/cli/username/privilege_set", data.getPath()))
 	}
 	if !data.SessionCliUsername.IsNull() {
