@@ -57,6 +57,7 @@ type IosxeProviderModel struct {
 	Insecure types.Bool            `tfsdk:"insecure"`
 	Retries  types.Int64           `tfsdk:"retries"`
 	LockReleaseTimeout types.Int64 `tfsdk:"lock_release_timeout"`
+	SelectedDevices types.List     `tfsdk:"selected_devices"`
 	Devices  []IosxeProviderModelDevice `tfsdk:"devices"`
 }
 
@@ -114,6 +115,11 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 				Validators: []validator.Int64{
 					int64validator.Between(0, 600),
 				},
+			},
+			"selected_devices": schema.ListAttribute{
+				MarkdownDescription: "This can be used to select a list of devices to manage from the `devices` list. Selected devices will be managed while other devices will be skipped and their state will be frozen. This can be used to deploy changes to a subset of devices. Defaults to all devices.",
+				Optional:            true,
+				ElementType:         types.StringType,
 			},
 			"devices": schema.ListNestedAttribute{
 				MarkdownDescription: "This can be used to manage a list of devices from a single provider. All devices must use the same credentials. Each resource and data source has an optional attribute named `device`, which can then select a device by its name from this list.",
@@ -292,6 +298,26 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		lockReleaseTimeout = config.LockReleaseTimeout.ValueInt64()
 	}
 
+	var selectedDevices []string
+	if config.SelectedDevices.IsUnknown() {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as selectedDevices",
+		)
+		return
+	}
+
+	if config.SelectedDevices.IsNull() {
+		selectedDevicesStr := os.Getenv("IOSXE_SELECTED_DEVICES")
+		if selectedDevicesStr != "" {
+			selectedDevices = strings.Split(selectedDevicesStr, ",")
+		}
+	} else {
+		diags = config.SelectedDevices.ElementsAs(ctx, &selectedDevices, false)
+		resp.Diagnostics.Append(diags...)
+	}
+
 	data := IosxeProviderData{}
 	data.Devices = make(map[string]*IosxeProviderDataDevice)
 
@@ -307,10 +333,18 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 
 	for _, device := range config.Devices {
 		var managed bool
-		if device.Managed.IsUnknown() || device.Managed.IsNull() {
-			managed = true
+		if len(selectedDevices) > 0 {
+			if slices.Contains(selectedDevices, device.Name.ValueString()) {
+				managed = true
+			} else {
+				managed = false
+			}
 		} else {
-			managed = device.Managed.ValueBool()
+			if device.Managed.IsUnknown() || device.Managed.IsNull() {
+				managed = true
+			} else {
+				managed = device.Managed.ValueBool()
+			}
 		}
 		c, err := restconf.NewClient(device.URL.ValueString(), username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true), restconf.LockReleaseTimeout(int(lockReleaseTimeout)))
 		if err != nil {

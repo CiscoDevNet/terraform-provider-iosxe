@@ -12,32 +12,22 @@ When it comes to managing multiple IOS-XE devices, one can create multiple provi
 ```terraform
 provider "iosxe" {
   alias    = "ROUTER-1"
-  username = "admin"
-  password = "Cisco123"
   url      = "https://10.1.1.1"
 }
 
 provider "iosxe" {
   alias    = "ROUTER-2"
-  username = "admin"
-  password = "Cisco123"
   url      = "https://10.1.1.2"
 }
 
-resource "iosxe_restconf" "ROUTER-1" {
-  provider   = iosxe.ROUTER-1
-  path       = "openconfig-system:system/config"
-  attributes = {
-    hostname = "ROUTER-1"
-  }
+resource "iosxe_system" "ROUTER-1" {
+  provider = iosxe.ROUTER-1
+  hostname = "ROUTER-1"
 }
 
-resource "iosxe_restconf" "ROUTER-2" {
-  provider   = iosxe.ROUTER-2
-  path       = "openconfig-system:system/config"
-  attributes = {
-    hostname = "ROUTER-2"
-  }
+resource "iosxe_system" "ROUTER-2" {
+  provider = iosxe.ROUTER-2
+  hostname = "ROUTER-2"
 }
 ```
 
@@ -60,17 +50,83 @@ locals {
 }
 
 provider "iosxe" {
-  username = "admin"
-  password = "Cisco123"
   devices  = local.routers
 }
 
-resource "iosxe_restconf" "hostname" {
-  for_each   = toset([for router in local.routers : router.name])
-  device     = each.key
-  path       = "openconfig-system:system/config"
-  attributes = {
-    hostname = each.key
-  }
+resource "iosxe_system" "hostname" {
+  for_each = toset([for router in local.routers : router.name])
+  device   = each.key
+  hostname = each.key
 }
 ```
+
+## Device-Level Management Control
+
+### The "managed" Flag
+
+Each device in the `devices` list supports an optional `managed` attribute that controls whether the device is actively managed by Terraform:
+
+- **`managed = true`** (default): Device is actively managed - configurations are applied
+- **`managed = false`**: Device is "frozen" - state preserved but no changes applied
+- **Not specified**: Defaults to `true`
+
+### Basic Managed Flag Usage
+
+```hcl
+locals {
+  devices = [
+    {
+      name    = "production-sw01"
+      url     = "https://10.1.1.10"
+      managed = true   # Actively managed
+    },
+    {
+      name    = "maintenance-sw02"
+      url     = "https://10.1.1.20"
+      managed = false  # Temporarily frozen for maintenance
+    },
+    {
+      name    = "active-sw03"
+      url     = "https://10.1.1.30"
+      # managed defaults to true when not specified
+    }
+  ]
+}
+
+provider "iosxe" {
+  devices  = local.devices
+}
+
+resource "iosxe_banner" "login_banner" {
+  for_each = toset([for device in local.devices : device.name])
+  device   = each.key
+  login    = "Authorized Access Only - ${each.key}"
+}
+```
+
+**Result**:
+- `production-sw01` and `active-sw03`: Banner configuration applied
+- `maintenance-sw02`: Configuration skipped, existing state preserved
+
+### Relationship with `selected_devices`
+
+**Important**: The [`selected_devices` provider attribute](selective_deploy.md) takes precedence over individual `managed` flags:
+
+- **When `selected_devices` is specified**: Individual `managed` flags are ignored
+- **When `selected_devices` is not specified**: Individual `managed` flags are respected
+
+#### Example: selected_devices Override
+```hcl
+provider "iosxe" {
+  username         = var.iosxe_username
+  password         = var.iosxe_password
+  selected_devices = ["switch-01", "switch-03"]  # Only these devices managed
+  devices = [
+    { name = "switch-01", url = "https://10.1.1.10", managed = false },  # Overridden to managed=true
+    { name = "switch-02", url = "https://10.1.1.20", managed = true },   # Overridden to managed=false
+    { name = "switch-03", url = "https://10.1.1.30", managed = true }    # Remains managed=true
+  ]
+}
+```
+
+**Result**: Only `switch-01` and `switch-03` are managed, regardless of their individual `managed` flags.

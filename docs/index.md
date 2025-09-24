@@ -10,10 +10,6 @@ description: |-
 
 The IOSXE provider provides resources to interact with one or more Cisco IOS-XE devices. There are a few [Terraform Modules](https://registry.terraform.io/browse/modules?provider=iosxe) for specific use cases available (e.g., managing a Catalyst 9000 EVPN fabric).
 
-The following example repositories exist to demonstrate the use of the provider:
-
-- [Catalyst 9000 EVPN Fabric](https://github.com/netascode/terraform-iosxe-evpn-example)
-
 It communicates with IOS-XE devices via the RESTCONF API, which requires the following device configuration.
 
 ```
@@ -28,6 +24,16 @@ All resources and data sources have been tested with the following releases.
 | Catalyst 8000v | 17.12.4 |
 | Catalyst 8000v | 17.15.3 |
 | Catalyst 9000v | 17.15.1 |
+
+## Guides
+
+The following guides are available to help you get started with the IOSXE provider:
+
+- **[Manage Multiple Devices](guides/manage_multiple_devices)** - Learn how to manage multiple IOS-XE devices using provider aliases or the single-provider approach with device-level management control
+- **[Selective Deploy](guides/selective_deploy)** - Deploy configurations to a subset of devices while keeping others in a "frozen" state for staged rollouts and maintenance scenarios
+- **[Importing Resources](guides/importing_resources)** - Import existing device configurations into Terraform state management
+- **[Destroying Resources](guides/destroying_resources)** - Control resource destruction behavior using delete modes
+- **[Changelog](guides/changelog)** - Review version history and breaking changes
 
 ## Example Usage
 
@@ -49,6 +55,7 @@ provider "iosxe" {
 - `lock_release_timeout` (Number) Number of seconds to wait for the device database lock to be released. This can also be set as the IOSXE_LOCK_RELEASE_TIMEOUT environment variable. Defaults to `120`.
 - `password` (String, Sensitive) Password for the IOS-XE device. This can also be set as the IOSXE_PASSWORD environment variable.
 - `retries` (Number) Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10`.
+- `selected_devices` (List of String) This can be used to select a list of devices to manage from the `devices` list. Selected devices will be managed while other devices will be skipped and their state will be frozen. This can be used to deploy changes to a subset of devices. Defaults to all devices.
 - `url` (String) URL of the Cisco IOS-XE device. Optionally a port can be added with `:12345`. The default port is `443`. This can also be set as the IOSXE_URL environment variable.
 - `username` (String) Username for the IOS-XE device. This can also be set as the IOSXE_USERNAME environment variable.
 

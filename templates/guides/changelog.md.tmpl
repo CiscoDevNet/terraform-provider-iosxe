@@ -16,6 +16,7 @@ description: |-
 - Add `lock_release_timeout` provider configuration attribute
 - Extend request timeout for `iosxe_spanning_tree` resource
 - Add `iosxe_eem` resource and data source
+- Add `selected_devices` provider configuration attribute
 
 ## 0.8.1
 
