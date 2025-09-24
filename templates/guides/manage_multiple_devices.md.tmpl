@@ -118,8 +118,6 @@ resource "iosxe_banner" "login_banner" {
 #### Example: selected_devices Override
 ```hcl
 provider "iosxe" {
-  username         = var.iosxe_username
-  password         = var.iosxe_password
   selected_devices = ["switch-01", "switch-03"]  # Only these devices managed
   devices = [
     { name = "switch-01", url = "https://10.1.1.10", managed = false },  # Overridden to managed=true
