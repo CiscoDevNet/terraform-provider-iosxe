@@ -1,0 +1,375 @@
+---
+name: EEM
+path: Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager
+doc_category: System
+no_delete: true
+attributes:
+  - yang_name: environment
+    tf_name: environment_variables
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: IOSXE_TEST_VAR
+      - yang_name: value
+        example: test_pass
+  - yang_name: session/cli/username/username_in_word_set
+    tf_name: session_cli_username
+    example: test_user
+  - yang_name: session/cli/username/privilege_set
+    tf_name: session_cli_username_privelege
+    example: 15
+  - yang_name: history/size/events
+    example: 25
+  - yang_name: history/size/traps
+    example: 25
+  - yang_name: directory/user/policy
+    example: test/test_path
+  - yang_name: scheduler/applet/thread/class/default
+    example: true
+  - yang_name: scheduler/applet/thread/class/number
+    example: 1
+  - yang_name: detector/rpc/max-sessions
+    example: 8
+  - yang_name: detector/routing/bootup-delay
+    example: 1.5
+  - yang_name: applet
+    tf_name: applets
+    type: List
+    attributes:
+      - yang_name: name
+        id: true
+        example: test_applet_10
+      - yang_name: authorization
+        example: bypass
+      - yang_name: class
+        example: A
+      - yang_name: description
+        example: test describing applet
+      - yang_name: event/cli/pattern
+        example: "shutdown"
+      - yang_name: event/cli/sync
+        example: no
+      - yang_name: event/cli/skip
+        example: no
+      - yang_name: action-config/action
+        tf_name: actions
+        type: List
+        attributes:
+        - yang_name: name
+          id: true
+          example: 10
+        - yang_name: list-option/cli-choice/cli-choice/command
+          xpath: cli-choice/command
+          tf_name: cli_command
+          example: "enable"
+        - yang_name: list-option/regexp-option/regexp-option/string-pattern
+          xpath: regexp-option/string-pattern
+          tf_name: regexp_string_pattern
+          example: test_pattern
+          exclude_test: true
+        - yang_name: list-option/regexp-option/regexp-option/string-input
+          xpath: regexp-option/string-input
+          tf_name: regexp_string_input
+          example: test_str
+          exclude_test: true
+        - yang_name: list-option/regexp-option/regexp-option/string-match
+          xpath: regexp-option/string-match
+          tf_name: regexp_string_match
+          example: test_match
+          exclude_test: true
+        - yang_name: list-option/regexp-option/regexp-option/string-submatch1
+          xpath: regexp-option/string-submatch1
+          tf_name: regexp_string_match1
+          example: test_matc1
+          exclude_test: true
+        - yang_name: list-option/regexp-option/regexp-option/string-submatch2
+          xpath: regexp-option/string-submatch2
+          tf_name: regexp_string_match2
+          example: test_match2
+          exclude_test: true
+        - yang_name: list-option/regexp-option/regexp-option/string-submatch3
+          xpath: regexp-option/string-submatch3
+          tf_name: regexp_string_match3
+          example: test_match3
+          exclude_test: true
+        - yang_name: list-option/syslog-option/syslog-option/facility
+          xpath: syslog-option/facility
+          tf_name: syslog_facility
+          example: test_string
+          exclude_test: true
+        - yang_name: list-option/syslog-option/syslog-option/msg
+          xpath: syslog-option/msg
+          tf_name: syslog_msg
+          example: test_string2
+          exclude_test: true
+        - yang_name: list-option/syslog-option/syslog-option/priority
+          xpath: syslog-option/priority
+          tf_name: syslog_priority
+          example: 1
+          exclude_test: true
+        - yang_name: list-option/set/set/varname
+          xpath: set/varname
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/set/set/value
+          xpath: set/value
+          example: 1
+          exclude_test: true
+        - yang_name: list-option/if/if/string-op-1
+          xpath: if/string-op-1
+          example: $_string_result
+          exclude_test: true
+        - yang_name: list-option/if/if/keyword
+          xpath: if/keyword
+          example: eq
+          exclude_test: true
+        - yang_name: list-option/if/if/string-op-2
+          xpath: if/string-op-2
+          example: "1"
+          exclude_test: true
+        - yang_name: list-option/if/if/goto
+          xpath: if/goto
+          example: test_label
+          exclude_test: true
+        - yang_name: list-option/elseif/elseif/operand1
+          xpath: elseif/operand1
+          example: $_string_result
+          exclude_test: true
+        - yang_name: list-option/elseif/elseif/operation
+          xpath: elseif/operation
+          example: eq
+          exclude_test: true
+        - yang_name: list-option/elseif/elseif/operand2
+          xpath: elseif/operand2
+          example: "2"
+          exclude_test: true
+        - yang_name: list-option/else/else
+          xpath: else
+          example: true
+          exclude_test: true
+        - yang_name: list-option/while/while/operand1
+          xpath: while/operand1
+          example: $_string_result
+          exclude_test: true
+        - yang_name: list-option/while/while/operation
+          xpath: while/operation
+          example: eq
+          exclude_test: true
+        - yang_name: list-option/while/while/operand2
+          xpath: while/operand2
+          example: true
+          exclude_test: true
+        - yang_name: list-option/break/break
+          xpath: break
+          example: true
+          exclude_test: true
+        - yang_name: list-option/continue/continue
+          xpath: continue
+          example: true
+          exclude_test: true
+        - yang_name: list-option/increment/increment/varname
+          xpath: increment/varname
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/increment/increment/value
+          xpath: increment/value
+          example: 1
+          exclude_test: true
+        - yang_name: list-option/decrement/decrement/varname
+          xpath: decrement/varname
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/decrement/decrement/value
+          xpath: decrement/value
+          example: 1
+          exclude_test: true
+        - yang_name: list-option/append/append/varname
+          xpath: append/varname
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/append/append/value
+          xpath: append/value
+          example: 1
+          exclude_test: true
+        - yang_name: list-option/divide/divide/operand1
+          xpath: divide/operand1
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/divide/divide/operand2
+          xpath: divide/operand2
+          example: test_var2
+          exclude_test: true
+        - yang_name: list-option/foreach/foreach/loopvar
+          xpath: foreach/loopvar
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/foreach/foreach/iterator
+          xpath: foreach/iterator
+          example: test_var2
+          exclude_test: true
+        - yang_name: list-option/foreach/foreach/delimiter
+          xpath: foreach/delimiter
+          example: test_var3
+          exclude_test: true
+        - yang_name: list-option/gets/gets
+          xpath: gets
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/puts/puts
+          xpath: puts
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/wait/wait
+          xpath: wait
+          example: true
+          exclude_test: true
+        - yang_name: list-option/end/end
+          xpath: end
+          example: true
+          exclude_test: true
+        - yang_name: list-option/exit/exit
+          xpath: exit
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/reload/reload
+          xpath: reload
+          example: true
+          exclude_test: true
+        - yang_name: list-option/context/context/retrieve/key
+          xpath: context/retrieve/key
+          example: test_key
+          exclude_test: true
+        - yang_name: list-option/context/context/retrieve/variable
+          xpath: context/retrieve/variable
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/context/context/save/key
+          xpath: context/save/key
+          example: test_key
+          exclude_test: true
+        - yang_name: list-option/context/context/save/variable
+          xpath: context/save/variable
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/string/string/trim
+          xpath: string/trim
+          example: test_str
+          exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/trap/enterprise-oid
+        #   xpath: info/type/trap/enterprise-oid
+        #   example: test_oid
+        #   exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/trap/generic-trapnum
+        #   xpath: info/type/trap/generic-trapnum
+        #   example: 1
+        #   exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/trap/specific-trapnum
+        #   xpath: info/type/trap/specific-trapnum
+        #   example: 2
+        #   exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/trap/trap-oid
+        #   xpath: info/type/trap/trap-oid
+        #   example: test_oid2
+        #   exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/trap/trap-var
+        #   xpath: info/type/trap/trap-var
+        #   example: test_var
+        #   exclude_test: true
+        # - yang_name: list-option/handle-error/handle-error
+        #   xpath: handle-error
+        #   example: exit
+        #   exclude_test: true
+        # - yang_name: list-option/counter/counter/name
+        #   xpath: counter/name
+        #   example: test_var
+        #   exclude_test: true
+        # - yang_name: list-option/counter/counter/value
+        #   xpath: counter/value
+        #   example: 2
+        #   exclude_test: true
+        # - yang_name: list-option/counter/counter/op/op-choice/dec/dec
+        #   xpath: counter/op/dec
+        #   example: true
+        #   exclude_test: true
+        # - yang_name: list-option/counter/counter/op/op-choice/inc/inc
+        #   xpath: counter/op/inc
+        #   example: true
+        #   exclude_test: true
+        # - yang_name: list-option/counter/counter/op/op-choice/set/set
+        #   xpath: counter/op/set
+        #   example: true
+        #   exclude_test: true
+        # - yang_name: list-option/counter/counter/op/op-choice/nop/nop
+        #   xpath: counter/op/nop
+        #   example: true
+        #   exclude_test: true
+        # - yang_name: list-option/snmp-trap/snmp-trap/intdata1
+        #   xpath: snmp-trap/intdata1
+        #   example: 1
+        #   exclude_test: true
+        # - yang_name: list-option/snmp-trap/snmp-trap/intdata2
+        #   xpath: snmp-trap/intdata2
+        #   example: 2
+        #   exclude_test: true
+        # - yang_name: list-option/snmp-trap/snmp-trap/strdata
+        #   xpath: snmp-trap/strdata
+        #   example: test_str
+        #   exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/var/variable-name
+        #   xpath: info/type/snmp/var/variable-name
+        #   tf_name: info_type_snmp_var
+        #   example: test_str
+        #   exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/var/oid
+        #   xpath: info/type/snmp/var/oid
+        #   example: test_oid
+        #   exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/var/oid-type
+        #   xpath: info/type/snmp/var/oid-type
+        #   example: ipv4
+        #   exclude_test: true
+        # - yang_name: list-option/info/info/type/snmp/var/oid-type-val
+        #   xpath: info/type/snmp/var/oid-type-val
+        #   example: 192.168.0.1
+        #   exclude_test: true
+        # - yang_name: list-option/string/string/first/string-op-1
+        #   xpath: string/trim/first/string-op-1
+        #   example: test_str1
+        #  exclude_test: true
+        # - yang_name: list-option/string/string/first/string-op-2
+        #   xpath: string/trim/first/string-op-2
+        #   example: test_str2
+        #  exclude_test: true
+
+      # - yang_name: event/event-option/timer-choice/timer-choice/watchdog/time-set
+      #   tf_name: event_timer_watchdog_maxrun
+      #   example: 1800
+      # - yang_name: event/event-option/timer-choice/timer-choice/watchdog/name
+      #   xpath: event/timer-choice/watchdog/name
+      #   tf_name: event_timer_watchdog_name
+      #   example: test_time
+      # - yang_name: event/event-option/timer-choice/timer-choice/watchdog/maxrun-set
+      #   xpath: event/timer-choice/watchdog/maxrun-set
+      #   tf_name: event_timer_watchdog_maxrun
+      #   example: 10
+      # - yang_name: event/event-option/timer-choice/timer-choice/watchdog/ratelimit-set
+      #   xpath: event/timer-choice/watchdog/ratelimit-set
+      #   tf_name: event_timer_watchdog_ratelimit
+      #   example: 10      
+      # - yang_name: event/event-option/timer-choice/timer-choice/cron/cron-entry
+      #   xpath: event/timer-choice/cron/time-set
+      #   tf_name: event_timer_cron_maxrun
+      #   example: "0 12 * * 1-5"
+      # - yang_name: event/event-option/timer-choice/timer-choice/cron/name
+      #   xpath: event/timer-choice/cron/name
+      #   tf_name: event_timer_cron_name
+      #   example: test_time
+      # - yang_name: event/event-option/timer-choice/timer-choice/cron/maxrun-set
+      #   xpath: event/timer-choice/cron/maxrun-set
+      #   tf_name: event_timer_cron_maxrun
+      #   example: 10
+      # - yang_name: event/event-option/timer-choice/timer-choice/cron/ratelimit-set
+      #   xpath: event/timer-choice/cron/ratelimit-set
+      #   tf_name: event_timer_cron_ratelimit
+      #   example: 10
