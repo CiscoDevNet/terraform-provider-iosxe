@@ -32,7 +32,7 @@ attributes:
   - yang_name: detector/rpc/max-sessions
     example: 8
   - yang_name: detector/routing/bootup-delay
-    example: 1.5
+    example: 2
   - yang_name: applet
     tf_name: applets
     type: List
