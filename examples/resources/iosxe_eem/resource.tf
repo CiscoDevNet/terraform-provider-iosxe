@@ -29,6 +29,14 @@ resource "iosxe_eem" "example" {
           cli_command = "enable"
         }
       ]
+      event_timer_watchdog_time      = 1800
+      event_timer_watchdog_name      = "test_time"
+      event_timer_watchdog_maxrun    = 10
+      event_timer_watchdog_ratelimit = 10
+      event_timer_cron_entry         = "0 12 * * 1-5"
+      event_timer_cron_name          = "test_time"
+      event_timer_cron_maxrun        = 10
+      event_timer_cron_ratelimit     = 10
     }
   ]
 }

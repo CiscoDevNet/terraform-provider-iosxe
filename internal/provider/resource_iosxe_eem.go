@@ -407,8 +407,145 @@ func (r *EEMResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 										MarkdownDescription: helpers.NewAttributeDescription("trim characters from both ends of string").String,
 										Optional:            true,
 									},
+									"info_type_snmp_trap_enterprise_oid": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Enterprise oid").String,
+										Optional:            true,
+									},
+									"info_type_snmp_trap_generic_trapnum": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Generic trap number").AddIntegerRangeDescription(0, 4294967295).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
+									},
+									"info_type_snmp_trap_specific_trapnum": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Specific trap number").AddIntegerRangeDescription(0, 4294967295).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(0, 4294967295),
+										},
+									},
+									"info_type_snmp_trap_trap_oid": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Trap oid").String,
+										Optional:            true,
+									},
+									"info_type_snmp_trap_trap_var": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Trap variable").String,
+										Optional:            true,
+									},
+									"handle_error_type": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Error handle type of handle-error conditional").AddStringEnumDescription("exit", "ignore", "warn").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("exit", "ignore", "warn"),
+										},
+									},
+									"counter_name": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Name of the counter").String,
+										Optional:            true,
+									},
+									"counter_value": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Value used to modify the counter").AddIntegerRangeDescription(-2147483648, 2147483647).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
+									},
+									"counter_op_dec": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Decrement the value of the counter by the given value").String,
+										Optional:            true,
+									},
+									"counter_op_inc": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Increment the value of the counter by the given value").String,
+										Optional:            true,
+									},
+									"counter_op_set": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Set the value of the counter by the given value").String,
+										Optional:            true,
+									},
+									"counter_op_nop": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Read the value of the counter").String,
+										Optional:            true,
+									},
+									"snmp_trap_intdata1": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("SNMP integer data1").AddIntegerRangeDescription(-2147483648, 2147483647).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
+									},
+									"snmp_trap_intdata2": schema.Int64Attribute{
+										MarkdownDescription: helpers.NewAttributeDescription("SNMP integer data2").AddIntegerRangeDescription(-2147483648, 2147483647).String,
+										Optional:            true,
+										Validators: []validator.Int64{
+											int64validator.Between(-2147483648, 2147483647),
+										},
+									},
+									"snmp_trap_strdata": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("SNMP trap string").String,
+										Optional:            true,
+									},
+									"info_type_snmp_var": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
+									"info_type_snmp_var_oid": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("SNMP object id").String,
+										Optional:            true,
+									},
+									"info_type_snmp_var_oid_type": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("counter", "gauge", "int", "ipv4", "octet", "string", "uint").String,
+										Optional:            true,
+										Validators: []validator.String{
+											stringvalidator.OneOf("counter", "gauge", "int", "ipv4", "octet", "string", "uint"),
+										},
+									},
+									"info_type_snmp_var_oid_type_value": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
+									"string_trim_first_string_op_1": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
+									"string_trim_first_string_op_2": schema.StringAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("").String,
+										Optional:            true,
+									},
 								},
 							},
+						},
+						"event_timer_watchdog_time": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Time period for watchdog / countdown / absolute timer").AddFloatRangeDescription(1000, 2.085978494999e+12).String,
+							Optional:            true,
+						},
+						"event_timer_watchdog_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Timer name string").String,
+							Optional:            true,
+						},
+						"event_timer_watchdog_maxrun": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Maximum runtime of applet").AddFloatRangeDescription(0, 3.1536000999e+10).String,
+							Optional:            true,
+						},
+						"event_timer_watchdog_ratelimit": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("seconds[.milliseconds] value").AddFloatRangeDescription(0, 3.1536000999e+10).String,
+							Optional:            true,
+						},
+						"event_timer_cron_entry": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Cron entry for cron timer").String,
+							Optional:            true,
+						},
+						"event_timer_cron_name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Timer name string").String,
+							Optional:            true,
+						},
+						"event_timer_cron_maxrun": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Maximum runtime of applet").AddFloatRangeDescription(0, 3.1536000999e+10).String,
+							Optional:            true,
+						},
+						"event_timer_cron_ratelimit": schema.Float64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("seconds[.milliseconds] value").AddFloatRangeDescription(0, 3.1536000999e+10).String,
+							Optional:            true,
 						},
 					},
 				},

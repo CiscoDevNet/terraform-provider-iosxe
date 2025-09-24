@@ -458,6 +458,9 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 			if leaf.Type.Range != nil {
 				if attr.MinInt == 0 {
 					attr.MinInt = int64(leaf.Type.Range[0].Min.Value)
+					if leaf.Type.Range[0].Min.Negative {
+						attr.MinInt = -attr.MinInt
+					}
 				}
 				max := leaf.Type.Range[0].Max.Value
 				// hack to not introduce unsigned types
@@ -475,6 +478,9 @@ func parseAttribute(e *yang.Entry, attr *YamlConfigAttribute) {
 			if leaf.Type.Range != nil {
 				if attr.MinFloat == 0 {
 					attr.MinFloat = float64(leaf.Type.Range[0].Min.Value)
+					if leaf.Type.Range[0].Min.Negative {
+						attr.MinFloat = -attr.MinFloat
+					}
 				}
 				if attr.MaxFloat == 0 {
 					attr.MaxFloat = float64(leaf.Type.Range[0].Max.Value)

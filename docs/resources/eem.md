@@ -44,6 +44,14 @@ resource "iosxe_eem" "example" {
           cli_command = "enable"
         }
       ]
+      event_timer_watchdog_time      = 1800
+      event_timer_watchdog_name      = "test_time"
+      event_timer_watchdog_maxrun    = 10
+      event_timer_watchdog_ratelimit = 10
+      event_timer_cron_entry         = "0 12 * * 1-5"
+      event_timer_cron_name          = "test_time"
+      event_timer_cron_maxrun        = 10
+      event_timer_cron_ratelimit     = 10
     }
   ]
 }
@@ -95,6 +103,19 @@ Optional:
   - Choices: `no`, `yes`
 - `event_cli_sync` (String) CLI and EEM policy execution sync or async
   - Choices: `no`, `yes`
+- `event_timer_cron_entry` (String) Cron entry for cron timer
+- `event_timer_cron_maxrun` (Number) Maximum runtime of applet
+  - Range: `0`-`3.1536000999e+10`
+- `event_timer_cron_name` (String) Timer name string
+- `event_timer_cron_ratelimit` (Number) seconds[.milliseconds] value
+  - Range: `0`-`3.1536000999e+10`
+- `event_timer_watchdog_maxrun` (Number) Maximum runtime of applet
+  - Range: `0`-`3.1536000999e+10`
+- `event_timer_watchdog_name` (String) Timer name string
+- `event_timer_watchdog_ratelimit` (Number) seconds[.milliseconds] value
+  - Range: `0`-`3.1536000999e+10`
+- `event_timer_watchdog_time` (Number) Time period for watchdog / countdown / absolute timer
+  - Range: `1000`-`2.085978494999e+12`
 
 <a id="nestedatt--applets--actions"></a>
 ### Nested Schema for `applets.actions`
@@ -114,6 +135,13 @@ Optional:
 - `context_save_key` (String) key name
 - `context_save_variable` (String) variable name pattern
 - `continue` (Boolean) continue conditional
+- `counter_name` (String) Name of the counter
+- `counter_op_dec` (Boolean) Decrement the value of the counter by the given value
+- `counter_op_inc` (Boolean) Increment the value of the counter by the given value
+- `counter_op_nop` (Boolean) Read the value of the counter
+- `counter_op_set` (Boolean) Set the value of the counter by the given value
+- `counter_value` (Number) Value used to modify the counter
+  - Range: `-2147483648`-`2147483647`
 - `decrement_value` (String) Value of the variable of decrement conditional
 - `decrement_varname` (String) Name of the variable of decrement conditional
 - `divide_operand1` (String) First operand of divide conditional
@@ -129,12 +157,25 @@ Optional:
 - `foreach_iterator` (String) String to iterate over
 - `foreach_loopvar` (String) Loop variable name of for each conditional
 - `gets` (String) gets conditional
+- `handle_error_type` (String) Error handle type of handle-error conditional
+  - Choices: `exit`, `ignore`, `warn`
 - `if_goto` (String) goto label
 - `if_keyword` (String) - Choices: `eq`, `ge`, `gt`, `le`, `lt`, `ne`
 - `if_string_op_1` (String)
 - `if_string_op_2` (String)
 - `increment_value` (String) value of the variable of increment conditional
 - `increment_varname` (String) Name of the variable of increment conditional
+- `info_type_snmp_trap_enterprise_oid` (String) Enterprise oid
+- `info_type_snmp_trap_generic_trapnum` (Number) Generic trap number
+  - Range: `0`-`4294967295`
+- `info_type_snmp_trap_specific_trapnum` (Number) Specific trap number
+  - Range: `0`-`4294967295`
+- `info_type_snmp_trap_trap_oid` (String) Trap oid
+- `info_type_snmp_trap_trap_var` (String) Trap variable
+- `info_type_snmp_var` (String)
+- `info_type_snmp_var_oid` (String) SNMP object id
+- `info_type_snmp_var_oid_type` (String) - Choices: `counter`, `gauge`, `int`, `ipv4`, `octet`, `string`, `uint`
+- `info_type_snmp_var_oid_type_value` (String)
 - `puts` (String) displays data to active tty
 - `regexp_string_input` (String) input string
 - `regexp_string_match` (String) match variable
@@ -145,7 +186,14 @@ Optional:
 - `reload` (Boolean) Reload system
 - `set_value` (String) Value of the variable of set conditional
 - `set_varname` (String) Name of the variable of set conditional
+- `snmp_trap_intdata1` (Number) SNMP integer data1
+  - Range: `-2147483648`-`2147483647`
+- `snmp_trap_intdata2` (Number) SNMP integer data2
+  - Range: `-2147483648`-`2147483647`
+- `snmp_trap_strdata` (String) SNMP trap string
 - `string_trim` (String) trim characters from both ends of string
+- `string_trim_first_string_op_1` (String)
+- `string_trim_first_string_op_2` (String)
 - `syslog_facility` (String) Facility string
 - `syslog_msg` (String) Syslog message
 - `syslog_priority` (String) Priority of syslog message

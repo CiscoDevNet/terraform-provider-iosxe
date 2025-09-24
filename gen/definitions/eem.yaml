@@ -3,6 +3,7 @@ name: EEM
 path: Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager
 doc_category: System
 no_delete: true
+test_tags: ["IOSXE1715"]
 attributes:
   - yang_name: environment
     tf_name: environment_variables
@@ -256,120 +257,120 @@ attributes:
           xpath: string/trim
           example: test_str
           exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/trap/enterprise-oid
-        #   xpath: info/type/trap/enterprise-oid
-        #   example: test_oid
-        #   exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/trap/generic-trapnum
-        #   xpath: info/type/trap/generic-trapnum
-        #   example: 1
-        #   exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/trap/specific-trapnum
-        #   xpath: info/type/trap/specific-trapnum
-        #   example: 2
-        #   exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/trap/trap-oid
-        #   xpath: info/type/trap/trap-oid
-        #   example: test_oid2
-        #   exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/trap/trap-var
-        #   xpath: info/type/trap/trap-var
-        #   example: test_var
-        #   exclude_test: true
-        # - yang_name: list-option/handle-error/handle-error
-        #   xpath: handle-error
-        #   example: exit
-        #   exclude_test: true
-        # - yang_name: list-option/counter/counter/name
-        #   xpath: counter/name
-        #   example: test_var
-        #   exclude_test: true
-        # - yang_name: list-option/counter/counter/value
-        #   xpath: counter/value
-        #   example: 2
-        #   exclude_test: true
-        # - yang_name: list-option/counter/counter/op/op-choice/dec/dec
-        #   xpath: counter/op/dec
-        #   example: true
-        #   exclude_test: true
-        # - yang_name: list-option/counter/counter/op/op-choice/inc/inc
-        #   xpath: counter/op/inc
-        #   example: true
-        #   exclude_test: true
-        # - yang_name: list-option/counter/counter/op/op-choice/set/set
-        #   xpath: counter/op/set
-        #   example: true
-        #   exclude_test: true
-        # - yang_name: list-option/counter/counter/op/op-choice/nop/nop
-        #   xpath: counter/op/nop
-        #   example: true
-        #   exclude_test: true
-        # - yang_name: list-option/snmp-trap/snmp-trap/intdata1
-        #   xpath: snmp-trap/intdata1
-        #   example: 1
-        #   exclude_test: true
-        # - yang_name: list-option/snmp-trap/snmp-trap/intdata2
-        #   xpath: snmp-trap/intdata2
-        #   example: 2
-        #   exclude_test: true
-        # - yang_name: list-option/snmp-trap/snmp-trap/strdata
-        #   xpath: snmp-trap/strdata
-        #   example: test_str
-        #   exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/var/variable-name
-        #   xpath: info/type/snmp/var/variable-name
-        #   tf_name: info_type_snmp_var
-        #   example: test_str
-        #   exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/var/oid
-        #   xpath: info/type/snmp/var/oid
-        #   example: test_oid
-        #   exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/var/oid-type
-        #   xpath: info/type/snmp/var/oid-type
-        #   example: ipv4
-        #   exclude_test: true
-        # - yang_name: list-option/info/info/type/snmp/var/oid-type-val
-        #   xpath: info/type/snmp/var/oid-type-val
-        #   example: 192.168.0.1
-        #   exclude_test: true
-        # - yang_name: list-option/string/string/first/string-op-1
-        #   xpath: string/trim/first/string-op-1
-        #   example: test_str1
-        #  exclude_test: true
-        # - yang_name: list-option/string/string/first/string-op-2
-        #   xpath: string/trim/first/string-op-2
-        #   example: test_str2
-        #  exclude_test: true
-
-      # - yang_name: event/event-option/timer-choice/timer-choice/watchdog/time-set
-      #   tf_name: event_timer_watchdog_maxrun
-      #   example: 1800
-      # - yang_name: event/event-option/timer-choice/timer-choice/watchdog/name
-      #   xpath: event/timer-choice/watchdog/name
-      #   tf_name: event_timer_watchdog_name
-      #   example: test_time
-      # - yang_name: event/event-option/timer-choice/timer-choice/watchdog/maxrun-set
-      #   xpath: event/timer-choice/watchdog/maxrun-set
-      #   tf_name: event_timer_watchdog_maxrun
-      #   example: 10
-      # - yang_name: event/event-option/timer-choice/timer-choice/watchdog/ratelimit-set
-      #   xpath: event/timer-choice/watchdog/ratelimit-set
-      #   tf_name: event_timer_watchdog_ratelimit
-      #   example: 10      
-      # - yang_name: event/event-option/timer-choice/timer-choice/cron/cron-entry
-      #   xpath: event/timer-choice/cron/time-set
-      #   tf_name: event_timer_cron_maxrun
-      #   example: "0 12 * * 1-5"
-      # - yang_name: event/event-option/timer-choice/timer-choice/cron/name
-      #   xpath: event/timer-choice/cron/name
-      #   tf_name: event_timer_cron_name
-      #   example: test_time
-      # - yang_name: event/event-option/timer-choice/timer-choice/cron/maxrun-set
-      #   xpath: event/timer-choice/cron/maxrun-set
-      #   tf_name: event_timer_cron_maxrun
-      #   example: 10
-      # - yang_name: event/event-option/timer-choice/timer-choice/cron/ratelimit-set
-      #   xpath: event/timer-choice/cron/ratelimit-set
-      #   tf_name: event_timer_cron_ratelimit
-      #   example: 10
+        - yang_name: list-option/info/info/type/snmp/trap/enterprise-oid
+          xpath: info/type/snmp/trap/enterprise-oid
+          example: test_oid
+          exclude_test: true
+        - yang_name: list-option/info/info/type/snmp/trap/generic-trapnum
+          xpath: info/type/snmp/trap/generic-trapnum
+          example: 1
+          exclude_test: true
+        - yang_name: list-option/info/info/type/snmp/trap/specific-trapnum
+          xpath: info/type/snmp/trap/specific-trapnum
+          example: 2
+          exclude_test: true
+        - yang_name: list-option/info/info/type/snmp/trap/trap-oid
+          xpath: info/type/snmp/trap/trap-oid
+          example: test_oid2
+          exclude_test: true
+        - yang_name: list-option/info/info/type/snmp/trap/trap-var
+          xpath: info/type/snmp/trap/trap-var
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/handle-error/handle-error/type
+          xpath: handle-error/type
+          example: exit
+          exclude_test: true
+        - yang_name: list-option/counter/counter/name
+          xpath: counter/name
+          example: test_var
+          exclude_test: true
+        - yang_name: list-option/counter/counter/value
+          xpath: counter/value
+          example: 2
+          exclude_test: true
+        - yang_name: list-option/counter/counter/op/op-choice/dec/dec
+          xpath: counter/op/dec
+          example: true
+          exclude_test: true
+        - yang_name: list-option/counter/counter/op/op-choice/inc/inc
+          xpath: counter/op/inc
+          example: true
+          exclude_test: true
+        - yang_name: list-option/counter/counter/op/op-choice/set/set
+          xpath: counter/op/set
+          example: true
+          exclude_test: true
+        - yang_name: list-option/counter/counter/op/op-choice/nop/nop
+          xpath: counter/op/nop
+          example: true
+          exclude_test: true
+        - yang_name: list-option/snmp-trap/snmp-trap/intdata1
+          xpath: snmp-trap/intdata1
+          example: 1
+          exclude_test: true
+        - yang_name: list-option/snmp-trap/snmp-trap/intdata2
+          xpath: snmp-trap/intdata2
+          example: 2
+          exclude_test: true
+        - yang_name: list-option/snmp-trap/snmp-trap/strdata
+          xpath: snmp-trap/strdata
+          example: test_str
+          exclude_test: true
+        - yang_name: list-option/info/info/type/snmp/var/variable-name
+          xpath: info/type/snmp/var/variable-name
+          tf_name: info_type_snmp_var
+          example: test_str
+          exclude_test: true
+        - yang_name: list-option/info/info/type/snmp/var/oid
+          xpath: info/type/snmp/var/oid
+          example: test_oid
+          exclude_test: true
+        - yang_name: list-option/info/info/type/snmp/var/oid-type
+          xpath: info/type/snmp/var/oid-type
+          example: ipv4
+          exclude_test: true
+        - yang_name: list-option/info/info/type/snmp/var/oid-type-value
+          xpath: info/type/snmp/var/oid-type-value
+          example: 192.168.0.1
+          exclude_test: true
+        - yang_name: list-option/string/string/first/string-op-1
+          xpath: string/trim/first/string-op-1
+          example: test_str1
+          exclude_test: true
+        - yang_name: list-option/string/string/first/string-op-2
+          xpath: string/trim/first/string-op-2
+          example: test_str2
+          exclude_test: true
+      - yang_name: event/event-option/timer-choice/timer-choice/watchdog/time-set
+        xpath: event/timer-choice/watchdog/time-set
+        tf_name: event_timer_watchdog_time
+        example: 1800
+      - yang_name: event/event-option/timer-choice/timer-choice/watchdog/name
+        xpath: event/timer-choice/watchdog/name
+        tf_name: event_timer_watchdog_name
+        example: test_time
+      - yang_name: event/event-option/timer-choice/timer-choice/watchdog/maxrun-set
+        xpath: event/timer-choice/watchdog/maxrun-set
+        tf_name: event_timer_watchdog_maxrun
+        example: 10
+      - yang_name: event/event-option/timer-choice/timer-choice/watchdog/ratelimit-set
+        xpath: event/timer-choice/watchdog/ratelimit-set
+        tf_name: event_timer_watchdog_ratelimit
+        example: 10      
+      - yang_name: event/event-option/timer-choice/timer-choice/cron/cron-entry
+        xpath: event/timer-choice/cron/cron-entry
+        tf_name: event_timer_cron_entry
+        example: "0 12 * * 1-5"
+      - yang_name: event/event-option/timer-choice/timer-choice/cron/name
+        xpath: event/timer-choice/cron/name
+        tf_name: event_timer_cron_name
+        example: test_time
+      - yang_name: event/event-option/timer-choice/timer-choice/cron/maxrun-set
+        xpath: event/timer-choice/cron/maxrun-set
+        tf_name: event_timer_cron_maxrun
+        example: 10
+      - yang_name: event/event-option/timer-choice/timer-choice/cron/ratelimit-set
+        xpath: event/timer-choice/cron/ratelimit-set
+        tf_name: event_timer_cron_ratelimit
+        example: 10

@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,6 +32,9 @@ import (
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
 func TestAccDataSourceIosxeEEM(t *testing.T) {
+	if os.Getenv("IOSXE1715") == "" {
+		t.Skip("skipping test, set environment variable IOSXE1715")
+	}
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "environment_variables.0.name", "IOSXE_TEST_VAR"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "environment_variables.0.value", "test_pass"))
@@ -52,6 +56,14 @@ func TestAccDataSourceIosxeEEM(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_cli_skip", "no"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.actions.0.name", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.actions.0.cli_command", "enable"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_watchdog_time", "1800"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_watchdog_name", "test_time"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_watchdog_maxrun", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_watchdog_ratelimit", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_cron_entry", "0 12 * * 1-5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_cron_name", "test_time"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_cron_maxrun", "10"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.event_timer_cron_ratelimit", "10"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -98,6 +110,14 @@ func testAccDataSourceIosxeEEMConfig() string {
 	config += `			name = "10"` + "\n"
 	config += `			cli_command = "enable"` + "\n"
 	config += `		}]` + "\n"
+	config += `		event_timer_watchdog_time = 1800` + "\n"
+	config += `		event_timer_watchdog_name = "test_time"` + "\n"
+	config += `		event_timer_watchdog_maxrun = 10` + "\n"
+	config += `		event_timer_watchdog_ratelimit = 10` + "\n"
+	config += `		event_timer_cron_entry = "0 12 * * 1-5"` + "\n"
+	config += `		event_timer_cron_name = "test_time"` + "\n"
+	config += `		event_timer_cron_maxrun = 10` + "\n"
+	config += `		event_timer_cron_ratelimit = 10` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 

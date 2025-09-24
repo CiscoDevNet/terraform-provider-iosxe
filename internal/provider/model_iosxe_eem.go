@@ -73,64 +73,93 @@ type EEMEnvironmentVariables struct {
 	Value types.String `tfsdk:"value"`
 }
 type EEMApplets struct {
-	Name            types.String        `tfsdk:"name"`
-	Authorization   types.String        `tfsdk:"authorization"`
-	Class           types.String        `tfsdk:"class"`
-	Description     types.String        `tfsdk:"description"`
-	EventCliPattern types.String        `tfsdk:"event_cli_pattern"`
-	EventCliSync    types.String        `tfsdk:"event_cli_sync"`
-	EventCliSkip    types.String        `tfsdk:"event_cli_skip"`
-	Actions         []EEMAppletsActions `tfsdk:"actions"`
+	Name                        types.String        `tfsdk:"name"`
+	Authorization               types.String        `tfsdk:"authorization"`
+	Class                       types.String        `tfsdk:"class"`
+	Description                 types.String        `tfsdk:"description"`
+	EventCliPattern             types.String        `tfsdk:"event_cli_pattern"`
+	EventCliSync                types.String        `tfsdk:"event_cli_sync"`
+	EventCliSkip                types.String        `tfsdk:"event_cli_skip"`
+	Actions                     []EEMAppletsActions `tfsdk:"actions"`
+	EventTimerWatchdogTime      types.Float64       `tfsdk:"event_timer_watchdog_time"`
+	EventTimerWatchdogName      types.String        `tfsdk:"event_timer_watchdog_name"`
+	EventTimerWatchdogMaxrun    types.Float64       `tfsdk:"event_timer_watchdog_maxrun"`
+	EventTimerWatchdogRatelimit types.Float64       `tfsdk:"event_timer_watchdog_ratelimit"`
+	EventTimerCronEntry         types.String        `tfsdk:"event_timer_cron_entry"`
+	EventTimerCronName          types.String        `tfsdk:"event_timer_cron_name"`
+	EventTimerCronMaxrun        types.Float64       `tfsdk:"event_timer_cron_maxrun"`
+	EventTimerCronRatelimit     types.Float64       `tfsdk:"event_timer_cron_ratelimit"`
 }
 type EEMAppletsActions struct {
-	Name                    types.String `tfsdk:"name"`
-	CliCommand              types.String `tfsdk:"cli_command"`
-	RegexpStringPattern     types.String `tfsdk:"regexp_string_pattern"`
-	RegexpStringInput       types.String `tfsdk:"regexp_string_input"`
-	RegexpStringMatch       types.String `tfsdk:"regexp_string_match"`
-	RegexpStringMatch1      types.String `tfsdk:"regexp_string_match1"`
-	RegexpStringMatch2      types.String `tfsdk:"regexp_string_match2"`
-	RegexpStringMatch3      types.String `tfsdk:"regexp_string_match3"`
-	SyslogFacility          types.String `tfsdk:"syslog_facility"`
-	SyslogMsg               types.String `tfsdk:"syslog_msg"`
-	SyslogPriority          types.String `tfsdk:"syslog_priority"`
-	SetVarname              types.String `tfsdk:"set_varname"`
-	SetValue                types.String `tfsdk:"set_value"`
-	IfStringOp1             types.String `tfsdk:"if_string_op_1"`
-	IfKeyword               types.String `tfsdk:"if_keyword"`
-	IfStringOp2             types.String `tfsdk:"if_string_op_2"`
-	IfGoto                  types.String `tfsdk:"if_goto"`
-	ElseifOperand1          types.String `tfsdk:"elseif_operand1"`
-	ElseifOperation         types.String `tfsdk:"elseif_operation"`
-	ElseifOperand2          types.String `tfsdk:"elseif_operand2"`
-	Else                    types.Bool   `tfsdk:"else"`
-	WhileOperand1           types.String `tfsdk:"while_operand1"`
-	WhileOperation          types.String `tfsdk:"while_operation"`
-	WhileOperand2           types.String `tfsdk:"while_operand2"`
-	Break                   types.Bool   `tfsdk:"break"`
-	Continue                types.Bool   `tfsdk:"continue"`
-	IncrementVarname        types.String `tfsdk:"increment_varname"`
-	IncrementValue          types.String `tfsdk:"increment_value"`
-	DecrementVarname        types.String `tfsdk:"decrement_varname"`
-	DecrementValue          types.String `tfsdk:"decrement_value"`
-	AppendVarname           types.String `tfsdk:"append_varname"`
-	AppendValue             types.String `tfsdk:"append_value"`
-	DivideOperand1          types.String `tfsdk:"divide_operand1"`
-	DivideOperand2          types.String `tfsdk:"divide_operand2"`
-	ForeachLoopvar          types.String `tfsdk:"foreach_loopvar"`
-	ForeachIterator         types.String `tfsdk:"foreach_iterator"`
-	ForeachDelimiter        types.String `tfsdk:"foreach_delimiter"`
-	Gets                    types.String `tfsdk:"gets"`
-	Puts                    types.String `tfsdk:"puts"`
-	Wait                    types.Int64  `tfsdk:"wait"`
-	End                     types.Bool   `tfsdk:"end"`
-	Exit                    types.Bool   `tfsdk:"exit"`
-	Reload                  types.Bool   `tfsdk:"reload"`
-	ContextRetrieveKey      types.String `tfsdk:"context_retrieve_key"`
-	ContextRetrieveVariable types.String `tfsdk:"context_retrieve_variable"`
-	ContextSaveKey          types.String `tfsdk:"context_save_key"`
-	ContextSaveVariable     types.String `tfsdk:"context_save_variable"`
-	StringTrim              types.String `tfsdk:"string_trim"`
+	Name                            types.String `tfsdk:"name"`
+	CliCommand                      types.String `tfsdk:"cli_command"`
+	RegexpStringPattern             types.String `tfsdk:"regexp_string_pattern"`
+	RegexpStringInput               types.String `tfsdk:"regexp_string_input"`
+	RegexpStringMatch               types.String `tfsdk:"regexp_string_match"`
+	RegexpStringMatch1              types.String `tfsdk:"regexp_string_match1"`
+	RegexpStringMatch2              types.String `tfsdk:"regexp_string_match2"`
+	RegexpStringMatch3              types.String `tfsdk:"regexp_string_match3"`
+	SyslogFacility                  types.String `tfsdk:"syslog_facility"`
+	SyslogMsg                       types.String `tfsdk:"syslog_msg"`
+	SyslogPriority                  types.String `tfsdk:"syslog_priority"`
+	SetVarname                      types.String `tfsdk:"set_varname"`
+	SetValue                        types.String `tfsdk:"set_value"`
+	IfStringOp1                     types.String `tfsdk:"if_string_op_1"`
+	IfKeyword                       types.String `tfsdk:"if_keyword"`
+	IfStringOp2                     types.String `tfsdk:"if_string_op_2"`
+	IfGoto                          types.String `tfsdk:"if_goto"`
+	ElseifOperand1                  types.String `tfsdk:"elseif_operand1"`
+	ElseifOperation                 types.String `tfsdk:"elseif_operation"`
+	ElseifOperand2                  types.String `tfsdk:"elseif_operand2"`
+	Else                            types.Bool   `tfsdk:"else"`
+	WhileOperand1                   types.String `tfsdk:"while_operand1"`
+	WhileOperation                  types.String `tfsdk:"while_operation"`
+	WhileOperand2                   types.String `tfsdk:"while_operand2"`
+	Break                           types.Bool   `tfsdk:"break"`
+	Continue                        types.Bool   `tfsdk:"continue"`
+	IncrementVarname                types.String `tfsdk:"increment_varname"`
+	IncrementValue                  types.String `tfsdk:"increment_value"`
+	DecrementVarname                types.String `tfsdk:"decrement_varname"`
+	DecrementValue                  types.String `tfsdk:"decrement_value"`
+	AppendVarname                   types.String `tfsdk:"append_varname"`
+	AppendValue                     types.String `tfsdk:"append_value"`
+	DivideOperand1                  types.String `tfsdk:"divide_operand1"`
+	DivideOperand2                  types.String `tfsdk:"divide_operand2"`
+	ForeachLoopvar                  types.String `tfsdk:"foreach_loopvar"`
+	ForeachIterator                 types.String `tfsdk:"foreach_iterator"`
+	ForeachDelimiter                types.String `tfsdk:"foreach_delimiter"`
+	Gets                            types.String `tfsdk:"gets"`
+	Puts                            types.String `tfsdk:"puts"`
+	Wait                            types.Int64  `tfsdk:"wait"`
+	End                             types.Bool   `tfsdk:"end"`
+	Exit                            types.Bool   `tfsdk:"exit"`
+	Reload                          types.Bool   `tfsdk:"reload"`
+	ContextRetrieveKey              types.String `tfsdk:"context_retrieve_key"`
+	ContextRetrieveVariable         types.String `tfsdk:"context_retrieve_variable"`
+	ContextSaveKey                  types.String `tfsdk:"context_save_key"`
+	ContextSaveVariable             types.String `tfsdk:"context_save_variable"`
+	StringTrim                      types.String `tfsdk:"string_trim"`
+	InfoTypeSnmpTrapEnterpriseOid   types.String `tfsdk:"info_type_snmp_trap_enterprise_oid"`
+	InfoTypeSnmpTrapGenericTrapnum  types.Int64  `tfsdk:"info_type_snmp_trap_generic_trapnum"`
+	InfoTypeSnmpTrapSpecificTrapnum types.Int64  `tfsdk:"info_type_snmp_trap_specific_trapnum"`
+	InfoTypeSnmpTrapTrapOid         types.String `tfsdk:"info_type_snmp_trap_trap_oid"`
+	InfoTypeSnmpTrapTrapVar         types.String `tfsdk:"info_type_snmp_trap_trap_var"`
+	HandleErrorType                 types.String `tfsdk:"handle_error_type"`
+	CounterName                     types.String `tfsdk:"counter_name"`
+	CounterValue                    types.Int64  `tfsdk:"counter_value"`
+	CounterOpDec                    types.Bool   `tfsdk:"counter_op_dec"`
+	CounterOpInc                    types.Bool   `tfsdk:"counter_op_inc"`
+	CounterOpSet                    types.Bool   `tfsdk:"counter_op_set"`
+	CounterOpNop                    types.Bool   `tfsdk:"counter_op_nop"`
+	SnmpTrapIntdata1                types.Int64  `tfsdk:"snmp_trap_intdata1"`
+	SnmpTrapIntdata2                types.Int64  `tfsdk:"snmp_trap_intdata2"`
+	SnmpTrapStrdata                 types.String `tfsdk:"snmp_trap_strdata"`
+	InfoTypeSnmpVar                 types.String `tfsdk:"info_type_snmp_var"`
+	InfoTypeSnmpVarOid              types.String `tfsdk:"info_type_snmp_var_oid"`
+	InfoTypeSnmpVarOidType          types.String `tfsdk:"info_type_snmp_var_oid_type"`
+	InfoTypeSnmpVarOidTypeValue     types.String `tfsdk:"info_type_snmp_var_oid_type_value"`
+	StringTrimFirstStringOp1        types.String `tfsdk:"string_trim_first_string_op_1"`
+	StringTrimFirstStringOp2        types.String `tfsdk:"string_trim_first_string_op_2"`
 }
 
 // End of section. //template:end types
@@ -225,6 +254,30 @@ func (data EEM) toBody(ctx context.Context) string {
 			}
 			if !item.EventCliSkip.IsNull() && !item.EventCliSkip.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.cli.skip", item.EventCliSkip.ValueString())
+			}
+			if !item.EventTimerWatchdogTime.IsNull() && !item.EventTimerWatchdogTime.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.watchdog.time-set", strconv.FormatFloat(item.EventTimerWatchdogTime.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventTimerWatchdogName.IsNull() && !item.EventTimerWatchdogName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.watchdog.name", item.EventTimerWatchdogName.ValueString())
+			}
+			if !item.EventTimerWatchdogMaxrun.IsNull() && !item.EventTimerWatchdogMaxrun.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.watchdog.maxrun-set", strconv.FormatFloat(item.EventTimerWatchdogMaxrun.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventTimerWatchdogRatelimit.IsNull() && !item.EventTimerWatchdogRatelimit.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.watchdog.ratelimit-set", strconv.FormatFloat(item.EventTimerWatchdogRatelimit.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventTimerCronEntry.IsNull() && !item.EventTimerCronEntry.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.cron.cron-entry", item.EventTimerCronEntry.ValueString())
+			}
+			if !item.EventTimerCronName.IsNull() && !item.EventTimerCronName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.cron.name", item.EventTimerCronName.ValueString())
+			}
+			if !item.EventTimerCronMaxrun.IsNull() && !item.EventTimerCronMaxrun.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.cron.maxrun-set", strconv.FormatFloat(item.EventTimerCronMaxrun.ValueFloat64(), 'f', 1, 64))
+			}
+			if !item.EventTimerCronRatelimit.IsNull() && !item.EventTimerCronRatelimit.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"event.timer-choice.cron.ratelimit-set", strconv.FormatFloat(item.EventTimerCronRatelimit.ValueFloat64(), 'f', 1, 64))
 			}
 			if len(item.Actions) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action", []interface{}{})
@@ -384,6 +437,77 @@ func (data EEM) toBody(ctx context.Context) string {
 					}
 					if !citem.StringTrim.IsNull() && !citem.StringTrim.IsUnknown() {
 						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.trim", citem.StringTrim.ValueString())
+					}
+					if !citem.InfoTypeSnmpTrapEnterpriseOid.IsNull() && !citem.InfoTypeSnmpTrapEnterpriseOid.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.trap.enterprise-oid", citem.InfoTypeSnmpTrapEnterpriseOid.ValueString())
+					}
+					if !citem.InfoTypeSnmpTrapGenericTrapnum.IsNull() && !citem.InfoTypeSnmpTrapGenericTrapnum.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.trap.generic-trapnum", strconv.FormatInt(citem.InfoTypeSnmpTrapGenericTrapnum.ValueInt64(), 10))
+					}
+					if !citem.InfoTypeSnmpTrapSpecificTrapnum.IsNull() && !citem.InfoTypeSnmpTrapSpecificTrapnum.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.trap.specific-trapnum", strconv.FormatInt(citem.InfoTypeSnmpTrapSpecificTrapnum.ValueInt64(), 10))
+					}
+					if !citem.InfoTypeSnmpTrapTrapOid.IsNull() && !citem.InfoTypeSnmpTrapTrapOid.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.trap.trap-oid", citem.InfoTypeSnmpTrapTrapOid.ValueString())
+					}
+					if !citem.InfoTypeSnmpTrapTrapVar.IsNull() && !citem.InfoTypeSnmpTrapTrapVar.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.trap.trap-var", citem.InfoTypeSnmpTrapTrapVar.ValueString())
+					}
+					if !citem.HandleErrorType.IsNull() && !citem.HandleErrorType.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"handle-error.type", citem.HandleErrorType.ValueString())
+					}
+					if !citem.CounterName.IsNull() && !citem.CounterName.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"counter.name", citem.CounterName.ValueString())
+					}
+					if !citem.CounterValue.IsNull() && !citem.CounterValue.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"counter.value", strconv.FormatInt(citem.CounterValue.ValueInt64(), 10))
+					}
+					if !citem.CounterOpDec.IsNull() && !citem.CounterOpDec.IsUnknown() {
+						if citem.CounterOpDec.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"counter.op.dec", map[string]string{})
+						}
+					}
+					if !citem.CounterOpInc.IsNull() && !citem.CounterOpInc.IsUnknown() {
+						if citem.CounterOpInc.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"counter.op.inc", map[string]string{})
+						}
+					}
+					if !citem.CounterOpSet.IsNull() && !citem.CounterOpSet.IsUnknown() {
+						if citem.CounterOpSet.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"counter.op.set", map[string]string{})
+						}
+					}
+					if !citem.CounterOpNop.IsNull() && !citem.CounterOpNop.IsUnknown() {
+						if citem.CounterOpNop.ValueBool() {
+							body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"counter.op.nop", map[string]string{})
+						}
+					}
+					if !citem.SnmpTrapIntdata1.IsNull() && !citem.SnmpTrapIntdata1.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"snmp-trap.intdata1", strconv.FormatInt(citem.SnmpTrapIntdata1.ValueInt64(), 10))
+					}
+					if !citem.SnmpTrapIntdata2.IsNull() && !citem.SnmpTrapIntdata2.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"snmp-trap.intdata2", strconv.FormatInt(citem.SnmpTrapIntdata2.ValueInt64(), 10))
+					}
+					if !citem.SnmpTrapStrdata.IsNull() && !citem.SnmpTrapStrdata.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"snmp-trap.strdata", citem.SnmpTrapStrdata.ValueString())
+					}
+					if !citem.InfoTypeSnmpVar.IsNull() && !citem.InfoTypeSnmpVar.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.var.variable-name", citem.InfoTypeSnmpVar.ValueString())
+					}
+					if !citem.InfoTypeSnmpVarOid.IsNull() && !citem.InfoTypeSnmpVarOid.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.var.oid", citem.InfoTypeSnmpVarOid.ValueString())
+					}
+					if !citem.InfoTypeSnmpVarOidType.IsNull() && !citem.InfoTypeSnmpVarOidType.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.var.oid-type", citem.InfoTypeSnmpVarOidType.ValueString())
+					}
+					if !citem.InfoTypeSnmpVarOidTypeValue.IsNull() && !citem.InfoTypeSnmpVarOidTypeValue.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"info.type.snmp.var.oid-type-value", citem.InfoTypeSnmpVarOidTypeValue.ValueString())
+					}
+					if !citem.StringTrimFirstStringOp1.IsNull() && !citem.StringTrimFirstStringOp1.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.trim.first.string-op-1", citem.StringTrimFirstStringOp1.ValueString())
+					}
+					if !citem.StringTrimFirstStringOp2.IsNull() && !citem.StringTrimFirstStringOp2.IsUnknown() {
+						body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"applet"+"."+strconv.Itoa(index)+"."+"action-config.action"+"."+strconv.Itoa(cindex)+"."+"string.trim.first.string-op-2", citem.StringTrimFirstStringOp2.ValueString())
 					}
 				}
 			}
@@ -829,6 +953,167 @@ func (data *EEM) updateFromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				data.Applets[i].Actions[ci].StringTrim = types.StringNull()
 			}
+			if value := cr.Get("info.type.snmp.trap.enterprise-oid"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpTrapEnterpriseOid.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapEnterpriseOid = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapEnterpriseOid = types.StringNull()
+			}
+			if value := cr.Get("info.type.snmp.trap.generic-trapnum"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpTrapGenericTrapnum.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapGenericTrapnum = types.Int64Value(value.Int())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapGenericTrapnum = types.Int64Null()
+			}
+			if value := cr.Get("info.type.snmp.trap.specific-trapnum"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpTrapSpecificTrapnum.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapSpecificTrapnum = types.Int64Value(value.Int())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapSpecificTrapnum = types.Int64Null()
+			}
+			if value := cr.Get("info.type.snmp.trap.trap-oid"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapOid.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapOid = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapOid = types.StringNull()
+			}
+			if value := cr.Get("info.type.snmp.trap.trap-var"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapVar.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapVar = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapVar = types.StringNull()
+			}
+			if value := cr.Get("handle-error.type"); value.Exists() && !data.Applets[i].Actions[ci].HandleErrorType.IsNull() {
+				data.Applets[i].Actions[ci].HandleErrorType = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].HandleErrorType = types.StringNull()
+			}
+			if value := cr.Get("counter.name"); value.Exists() && !data.Applets[i].Actions[ci].CounterName.IsNull() {
+				data.Applets[i].Actions[ci].CounterName = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].CounterName = types.StringNull()
+			}
+			if value := cr.Get("counter.value"); value.Exists() && !data.Applets[i].Actions[ci].CounterValue.IsNull() {
+				data.Applets[i].Actions[ci].CounterValue = types.Int64Value(value.Int())
+			} else {
+				data.Applets[i].Actions[ci].CounterValue = types.Int64Null()
+			}
+			if value := cr.Get("counter.op.dec"); !data.Applets[i].Actions[ci].CounterOpDec.IsNull() {
+				if value.Exists() {
+					data.Applets[i].Actions[ci].CounterOpDec = types.BoolValue(true)
+				} else {
+					data.Applets[i].Actions[ci].CounterOpDec = types.BoolValue(false)
+				}
+			} else {
+				data.Applets[i].Actions[ci].CounterOpDec = types.BoolNull()
+			}
+			if value := cr.Get("counter.op.inc"); !data.Applets[i].Actions[ci].CounterOpInc.IsNull() {
+				if value.Exists() {
+					data.Applets[i].Actions[ci].CounterOpInc = types.BoolValue(true)
+				} else {
+					data.Applets[i].Actions[ci].CounterOpInc = types.BoolValue(false)
+				}
+			} else {
+				data.Applets[i].Actions[ci].CounterOpInc = types.BoolNull()
+			}
+			if value := cr.Get("counter.op.set"); !data.Applets[i].Actions[ci].CounterOpSet.IsNull() {
+				if value.Exists() {
+					data.Applets[i].Actions[ci].CounterOpSet = types.BoolValue(true)
+				} else {
+					data.Applets[i].Actions[ci].CounterOpSet = types.BoolValue(false)
+				}
+			} else {
+				data.Applets[i].Actions[ci].CounterOpSet = types.BoolNull()
+			}
+			if value := cr.Get("counter.op.nop"); !data.Applets[i].Actions[ci].CounterOpNop.IsNull() {
+				if value.Exists() {
+					data.Applets[i].Actions[ci].CounterOpNop = types.BoolValue(true)
+				} else {
+					data.Applets[i].Actions[ci].CounterOpNop = types.BoolValue(false)
+				}
+			} else {
+				data.Applets[i].Actions[ci].CounterOpNop = types.BoolNull()
+			}
+			if value := cr.Get("snmp-trap.intdata1"); value.Exists() && !data.Applets[i].Actions[ci].SnmpTrapIntdata1.IsNull() {
+				data.Applets[i].Actions[ci].SnmpTrapIntdata1 = types.Int64Value(value.Int())
+			} else {
+				data.Applets[i].Actions[ci].SnmpTrapIntdata1 = types.Int64Null()
+			}
+			if value := cr.Get("snmp-trap.intdata2"); value.Exists() && !data.Applets[i].Actions[ci].SnmpTrapIntdata2.IsNull() {
+				data.Applets[i].Actions[ci].SnmpTrapIntdata2 = types.Int64Value(value.Int())
+			} else {
+				data.Applets[i].Actions[ci].SnmpTrapIntdata2 = types.Int64Null()
+			}
+			if value := cr.Get("snmp-trap.strdata"); value.Exists() && !data.Applets[i].Actions[ci].SnmpTrapStrdata.IsNull() {
+				data.Applets[i].Actions[ci].SnmpTrapStrdata = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].SnmpTrapStrdata = types.StringNull()
+			}
+			if value := cr.Get("info.type.snmp.var.variable-name"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpVar.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpVar = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpVar = types.StringNull()
+			}
+			if value := cr.Get("info.type.snmp.var.oid"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpVarOid.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpVarOid = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpVarOid = types.StringNull()
+			}
+			if value := cr.Get("info.type.snmp.var.oid-type"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpVarOidType.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpVarOidType = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpVarOidType = types.StringNull()
+			}
+			if value := cr.Get("info.type.snmp.var.oid-type-value"); value.Exists() && !data.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue.IsNull() {
+				data.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue = types.StringNull()
+			}
+			if value := cr.Get("string.trim.first.string-op-1"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() {
+				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].StringTrimFirstStringOp1 = types.StringNull()
+			}
+			if value := cr.Get("string.trim.first.string-op-2"); value.Exists() && !data.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() {
+				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringValue(value.String())
+			} else {
+				data.Applets[i].Actions[ci].StringTrimFirstStringOp2 = types.StringNull()
+			}
+		}
+		if value := r.Get("event.timer-choice.watchdog.time-set"); value.Exists() && !data.Applets[i].EventTimerWatchdogTime.IsNull() {
+			data.Applets[i].EventTimerWatchdogTime = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventTimerWatchdogTime = types.Float64Null()
+		}
+		if value := r.Get("event.timer-choice.watchdog.name"); value.Exists() && !data.Applets[i].EventTimerWatchdogName.IsNull() {
+			data.Applets[i].EventTimerWatchdogName = types.StringValue(value.String())
+		} else {
+			data.Applets[i].EventTimerWatchdogName = types.StringNull()
+		}
+		if value := r.Get("event.timer-choice.watchdog.maxrun-set"); value.Exists() && !data.Applets[i].EventTimerWatchdogMaxrun.IsNull() {
+			data.Applets[i].EventTimerWatchdogMaxrun = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventTimerWatchdogMaxrun = types.Float64Null()
+		}
+		if value := r.Get("event.timer-choice.watchdog.ratelimit-set"); value.Exists() && !data.Applets[i].EventTimerWatchdogRatelimit.IsNull() {
+			data.Applets[i].EventTimerWatchdogRatelimit = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventTimerWatchdogRatelimit = types.Float64Null()
+		}
+		if value := r.Get("event.timer-choice.cron.cron-entry"); value.Exists() && !data.Applets[i].EventTimerCronEntry.IsNull() {
+			data.Applets[i].EventTimerCronEntry = types.StringValue(value.String())
+		} else {
+			data.Applets[i].EventTimerCronEntry = types.StringNull()
+		}
+		if value := r.Get("event.timer-choice.cron.name"); value.Exists() && !data.Applets[i].EventTimerCronName.IsNull() {
+			data.Applets[i].EventTimerCronName = types.StringValue(value.String())
+		} else {
+			data.Applets[i].EventTimerCronName = types.StringNull()
+		}
+		if value := r.Get("event.timer-choice.cron.maxrun-set"); value.Exists() && !data.Applets[i].EventTimerCronMaxrun.IsNull() {
+			data.Applets[i].EventTimerCronMaxrun = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventTimerCronMaxrun = types.Float64Null()
+		}
+		if value := r.Get("event.timer-choice.cron.ratelimit-set"); value.Exists() && !data.Applets[i].EventTimerCronRatelimit.IsNull() {
+			data.Applets[i].EventTimerCronRatelimit = types.Float64Value(value.Float())
+		} else {
+			data.Applets[i].EventTimerCronRatelimit = types.Float64Null()
 		}
 	}
 }
@@ -1070,9 +1355,104 @@ func (data *EEM) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("string.trim"); ccValue.Exists() {
 						cItem.StringTrim = types.StringValue(ccValue.String())
 					}
+					if ccValue := cv.Get("info.type.snmp.trap.enterprise-oid"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapEnterpriseOid = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.trap.generic-trapnum"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapGenericTrapnum = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("info.type.snmp.trap.specific-trapnum"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapSpecificTrapnum = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("info.type.snmp.trap.trap-oid"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapTrapOid = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.trap.trap-var"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapTrapVar = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("handle-error.type"); ccValue.Exists() {
+						cItem.HandleErrorType = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("counter.name"); ccValue.Exists() {
+						cItem.CounterName = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("counter.value"); ccValue.Exists() {
+						cItem.CounterValue = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("counter.op.dec"); ccValue.Exists() {
+						cItem.CounterOpDec = types.BoolValue(true)
+					} else {
+						cItem.CounterOpDec = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("counter.op.inc"); ccValue.Exists() {
+						cItem.CounterOpInc = types.BoolValue(true)
+					} else {
+						cItem.CounterOpInc = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("counter.op.set"); ccValue.Exists() {
+						cItem.CounterOpSet = types.BoolValue(true)
+					} else {
+						cItem.CounterOpSet = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("counter.op.nop"); ccValue.Exists() {
+						cItem.CounterOpNop = types.BoolValue(true)
+					} else {
+						cItem.CounterOpNop = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("snmp-trap.intdata1"); ccValue.Exists() {
+						cItem.SnmpTrapIntdata1 = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("snmp-trap.intdata2"); ccValue.Exists() {
+						cItem.SnmpTrapIntdata2 = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("snmp-trap.strdata"); ccValue.Exists() {
+						cItem.SnmpTrapStrdata = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.var.variable-name"); ccValue.Exists() {
+						cItem.InfoTypeSnmpVar = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.var.oid"); ccValue.Exists() {
+						cItem.InfoTypeSnmpVarOid = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.var.oid-type"); ccValue.Exists() {
+						cItem.InfoTypeSnmpVarOidType = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.var.oid-type-value"); ccValue.Exists() {
+						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("string.trim.first.string-op-1"); ccValue.Exists() {
+						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("string.trim.first.string-op-2"); ccValue.Exists() {
+						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					}
 					item.Actions = append(item.Actions, cItem)
 					return true
 				})
+			}
+			if cValue := v.Get("event.timer-choice.watchdog.time-set"); cValue.Exists() {
+				item.EventTimerWatchdogTime = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.timer-choice.watchdog.name"); cValue.Exists() {
+				item.EventTimerWatchdogName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.timer-choice.watchdog.maxrun-set"); cValue.Exists() {
+				item.EventTimerWatchdogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.timer-choice.watchdog.ratelimit-set"); cValue.Exists() {
+				item.EventTimerWatchdogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.timer-choice.cron.cron-entry"); cValue.Exists() {
+				item.EventTimerCronEntry = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.timer-choice.cron.name"); cValue.Exists() {
+				item.EventTimerCronName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.timer-choice.cron.maxrun-set"); cValue.Exists() {
+				item.EventTimerCronMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.timer-choice.cron.ratelimit-set"); cValue.Exists() {
+				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
 			}
 			data.Applets = append(data.Applets, item)
 			return true
@@ -1317,9 +1697,104 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 					if ccValue := cv.Get("string.trim"); ccValue.Exists() {
 						cItem.StringTrim = types.StringValue(ccValue.String())
 					}
+					if ccValue := cv.Get("info.type.snmp.trap.enterprise-oid"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapEnterpriseOid = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.trap.generic-trapnum"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapGenericTrapnum = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("info.type.snmp.trap.specific-trapnum"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapSpecificTrapnum = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("info.type.snmp.trap.trap-oid"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapTrapOid = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.trap.trap-var"); ccValue.Exists() {
+						cItem.InfoTypeSnmpTrapTrapVar = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("handle-error.type"); ccValue.Exists() {
+						cItem.HandleErrorType = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("counter.name"); ccValue.Exists() {
+						cItem.CounterName = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("counter.value"); ccValue.Exists() {
+						cItem.CounterValue = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("counter.op.dec"); ccValue.Exists() {
+						cItem.CounterOpDec = types.BoolValue(true)
+					} else {
+						cItem.CounterOpDec = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("counter.op.inc"); ccValue.Exists() {
+						cItem.CounterOpInc = types.BoolValue(true)
+					} else {
+						cItem.CounterOpInc = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("counter.op.set"); ccValue.Exists() {
+						cItem.CounterOpSet = types.BoolValue(true)
+					} else {
+						cItem.CounterOpSet = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("counter.op.nop"); ccValue.Exists() {
+						cItem.CounterOpNop = types.BoolValue(true)
+					} else {
+						cItem.CounterOpNop = types.BoolValue(false)
+					}
+					if ccValue := cv.Get("snmp-trap.intdata1"); ccValue.Exists() {
+						cItem.SnmpTrapIntdata1 = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("snmp-trap.intdata2"); ccValue.Exists() {
+						cItem.SnmpTrapIntdata2 = types.Int64Value(ccValue.Int())
+					}
+					if ccValue := cv.Get("snmp-trap.strdata"); ccValue.Exists() {
+						cItem.SnmpTrapStrdata = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.var.variable-name"); ccValue.Exists() {
+						cItem.InfoTypeSnmpVar = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.var.oid"); ccValue.Exists() {
+						cItem.InfoTypeSnmpVarOid = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.var.oid-type"); ccValue.Exists() {
+						cItem.InfoTypeSnmpVarOidType = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("info.type.snmp.var.oid-type-value"); ccValue.Exists() {
+						cItem.InfoTypeSnmpVarOidTypeValue = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("string.trim.first.string-op-1"); ccValue.Exists() {
+						cItem.StringTrimFirstStringOp1 = types.StringValue(ccValue.String())
+					}
+					if ccValue := cv.Get("string.trim.first.string-op-2"); ccValue.Exists() {
+						cItem.StringTrimFirstStringOp2 = types.StringValue(ccValue.String())
+					}
 					item.Actions = append(item.Actions, cItem)
 					return true
 				})
+			}
+			if cValue := v.Get("event.timer-choice.watchdog.time-set"); cValue.Exists() {
+				item.EventTimerWatchdogTime = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.timer-choice.watchdog.name"); cValue.Exists() {
+				item.EventTimerWatchdogName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.timer-choice.watchdog.maxrun-set"); cValue.Exists() {
+				item.EventTimerWatchdogMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.timer-choice.watchdog.ratelimit-set"); cValue.Exists() {
+				item.EventTimerWatchdogRatelimit = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.timer-choice.cron.cron-entry"); cValue.Exists() {
+				item.EventTimerCronEntry = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.timer-choice.cron.name"); cValue.Exists() {
+				item.EventTimerCronName = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("event.timer-choice.cron.maxrun-set"); cValue.Exists() {
+				item.EventTimerCronMaxrun = types.Float64Value(cValue.Float())
+			}
+			if cValue := v.Get("event.timer-choice.cron.ratelimit-set"); cValue.Exists() {
+				item.EventTimerCronRatelimit = types.Float64Value(cValue.Float())
 			}
 			data.Applets = append(data.Applets, item)
 			return true
@@ -1351,6 +1826,30 @@ func (data *EEM) getDeletedItems(ctx context.Context, state EEM) []string {
 				found = false
 			}
 			if found {
+				if !state.Applets[i].EventTimerCronRatelimit.IsNull() && data.Applets[j].EventTimerCronRatelimit.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/cron/ratelimit-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventTimerCronMaxrun.IsNull() && data.Applets[j].EventTimerCronMaxrun.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/cron/maxrun-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventTimerCronName.IsNull() && data.Applets[j].EventTimerCronName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/cron/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventTimerCronEntry.IsNull() && data.Applets[j].EventTimerCronEntry.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/cron/cron-entry", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventTimerWatchdogRatelimit.IsNull() && data.Applets[j].EventTimerWatchdogRatelimit.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/watchdog/ratelimit-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventTimerWatchdogMaxrun.IsNull() && data.Applets[j].EventTimerWatchdogMaxrun.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/watchdog/maxrun-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventTimerWatchdogName.IsNull() && data.Applets[j].EventTimerWatchdogName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/watchdog/name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Applets[i].EventTimerWatchdogTime.IsNull() && data.Applets[j].EventTimerWatchdogTime.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/event/timer-choice/watchdog/time-set", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				for ci := range state.Applets[i].Actions {
 					cstateKeyValues := [...]string{state.Applets[i].Actions[ci].Name.ValueString()}
 
@@ -1369,6 +1868,69 @@ func (data *EEM) getDeletedItems(ctx context.Context, state EEM) []string {
 							found = false
 						}
 						if found {
+							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp2.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/trim/first/string-op-2", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp1.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/trim/first/string-op-1", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidTypeValue.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/var/oid-type-value", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidType.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidType.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/var/oid-type", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOid.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/var/oid", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpVar.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVar.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/var/variable-name", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].SnmpTrapStrdata.IsNull() && data.Applets[j].Actions[cj].SnmpTrapStrdata.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/snmp-trap/strdata", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].SnmpTrapIntdata2.IsNull() && data.Applets[j].Actions[cj].SnmpTrapIntdata2.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/snmp-trap/intdata2", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].SnmpTrapIntdata1.IsNull() && data.Applets[j].Actions[cj].SnmpTrapIntdata1.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/snmp-trap/intdata1", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].CounterOpNop.IsNull() && data.Applets[j].Actions[cj].CounterOpNop.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/op/nop", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].CounterOpSet.IsNull() && data.Applets[j].Actions[cj].CounterOpSet.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/op/set", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].CounterOpInc.IsNull() && data.Applets[j].Actions[cj].CounterOpInc.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/op/inc", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].CounterOpDec.IsNull() && data.Applets[j].Actions[cj].CounterOpDec.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/op/dec", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].CounterValue.IsNull() && data.Applets[j].Actions[cj].CounterValue.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/value", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].CounterName.IsNull() && data.Applets[j].Actions[cj].CounterName.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/name", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].HandleErrorType.IsNull() && data.Applets[j].Actions[cj].HandleErrorType.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/handle-error/type", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapVar.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapTrapVar.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/trap/trap-var", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapTrapOid.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/trap/trap-oid", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapSpecificTrapnum.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapSpecificTrapnum.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/trap/specific-trapnum", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapGenericTrapnum.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapGenericTrapnum.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/trap/generic-trapnum", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapEnterpriseOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapEnterpriseOid.IsNull() {
+								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/info/type/snmp/trap/enterprise-oid", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
+							}
 							if !state.Applets[i].Actions[ci].StringTrim.IsNull() && data.Applets[j].Actions[cj].StringTrim.IsNull() {
 								deletedItems = append(deletedItems, fmt.Sprintf("%v/applet=%v/action-config/action=%v/string/trim", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 							}
@@ -1613,6 +2175,18 @@ func (data *EEM) getEmptyLeafsDelete(ctx context.Context) []string {
 
 		for ci := range data.Applets[i].Actions {
 			ckeyValues := [...]string{data.Applets[i].Actions[ci].Name.ValueString()}
+			if !data.Applets[i].Actions[ci].CounterOpNop.IsNull() && !data.Applets[i].Actions[ci].CounterOpNop.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/op/nop", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.Applets[i].Actions[ci].CounterOpSet.IsNull() && !data.Applets[i].Actions[ci].CounterOpSet.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/op/set", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.Applets[i].Actions[ci].CounterOpInc.IsNull() && !data.Applets[i].Actions[ci].CounterOpInc.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/op/inc", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
+			if !data.Applets[i].Actions[ci].CounterOpDec.IsNull() && !data.Applets[i].Actions[ci].CounterOpDec.ValueBool() {
+				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/applet=%v/action-config/action=%v/counter/op/dec", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
+			}
 			if !data.Applets[i].Actions[ci].Reload.IsNull() && !data.Applets[i].Actions[ci].Reload.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/applet=%v/action-config/action=%v/reload", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}

@@ -349,8 +349,124 @@ func (d *EEMDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 										MarkdownDescription: "trim characters from both ends of string",
 										Computed:            true,
 									},
+									"info_type_snmp_trap_enterprise_oid": schema.StringAttribute{
+										MarkdownDescription: "Enterprise oid",
+										Computed:            true,
+									},
+									"info_type_snmp_trap_generic_trapnum": schema.Int64Attribute{
+										MarkdownDescription: "Generic trap number",
+										Computed:            true,
+									},
+									"info_type_snmp_trap_specific_trapnum": schema.Int64Attribute{
+										MarkdownDescription: "Specific trap number",
+										Computed:            true,
+									},
+									"info_type_snmp_trap_trap_oid": schema.StringAttribute{
+										MarkdownDescription: "Trap oid",
+										Computed:            true,
+									},
+									"info_type_snmp_trap_trap_var": schema.StringAttribute{
+										MarkdownDescription: "Trap variable",
+										Computed:            true,
+									},
+									"handle_error_type": schema.StringAttribute{
+										MarkdownDescription: "Error handle type of handle-error conditional",
+										Computed:            true,
+									},
+									"counter_name": schema.StringAttribute{
+										MarkdownDescription: "Name of the counter",
+										Computed:            true,
+									},
+									"counter_value": schema.Int64Attribute{
+										MarkdownDescription: "Value used to modify the counter",
+										Computed:            true,
+									},
+									"counter_op_dec": schema.BoolAttribute{
+										MarkdownDescription: "Decrement the value of the counter by the given value",
+										Computed:            true,
+									},
+									"counter_op_inc": schema.BoolAttribute{
+										MarkdownDescription: "Increment the value of the counter by the given value",
+										Computed:            true,
+									},
+									"counter_op_set": schema.BoolAttribute{
+										MarkdownDescription: "Set the value of the counter by the given value",
+										Computed:            true,
+									},
+									"counter_op_nop": schema.BoolAttribute{
+										MarkdownDescription: "Read the value of the counter",
+										Computed:            true,
+									},
+									"snmp_trap_intdata1": schema.Int64Attribute{
+										MarkdownDescription: "SNMP integer data1",
+										Computed:            true,
+									},
+									"snmp_trap_intdata2": schema.Int64Attribute{
+										MarkdownDescription: "SNMP integer data2",
+										Computed:            true,
+									},
+									"snmp_trap_strdata": schema.StringAttribute{
+										MarkdownDescription: "SNMP trap string",
+										Computed:            true,
+									},
+									"info_type_snmp_var": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"info_type_snmp_var_oid": schema.StringAttribute{
+										MarkdownDescription: "SNMP object id",
+										Computed:            true,
+									},
+									"info_type_snmp_var_oid_type": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"info_type_snmp_var_oid_type_value": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"string_trim_first_string_op_1": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
+									"string_trim_first_string_op_2": schema.StringAttribute{
+										MarkdownDescription: "",
+										Computed:            true,
+									},
 								},
 							},
+						},
+						"event_timer_watchdog_time": schema.Float64Attribute{
+							MarkdownDescription: "Time period for watchdog / countdown / absolute timer",
+							Computed:            true,
+						},
+						"event_timer_watchdog_name": schema.StringAttribute{
+							MarkdownDescription: "Timer name string",
+							Computed:            true,
+						},
+						"event_timer_watchdog_maxrun": schema.Float64Attribute{
+							MarkdownDescription: "Maximum runtime of applet",
+							Computed:            true,
+						},
+						"event_timer_watchdog_ratelimit": schema.Float64Attribute{
+							MarkdownDescription: "seconds[.milliseconds] value",
+							Computed:            true,
+						},
+						"event_timer_cron_entry": schema.StringAttribute{
+							MarkdownDescription: "Cron entry for cron timer",
+							Computed:            true,
+						},
+						"event_timer_cron_name": schema.StringAttribute{
+							MarkdownDescription: "Timer name string",
+							Computed:            true,
+						},
+						"event_timer_cron_maxrun": schema.Float64Attribute{
+							MarkdownDescription: "Maximum runtime of applet",
+							Computed:            true,
+						},
+						"event_timer_cron_ratelimit": schema.Float64Attribute{
+							MarkdownDescription: "seconds[.milliseconds] value",
+							Computed:            true,
 						},
 					},
 				},
