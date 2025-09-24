@@ -51,11 +51,12 @@ type IosxeProvider struct {
 
 // IosxeProviderModel describes the provider data model.
 type IosxeProviderModel struct {
-	Username types.String         `tfsdk:"username"`
-	Password types.String         `tfsdk:"password"`
-	URL      types.String         `tfsdk:"url"`
-	Insecure types.Bool           `tfsdk:"insecure"`
-	Retries  types.Int64          `tfsdk:"retries"`
+	Username types.String          `tfsdk:"username"`
+	Password types.String          `tfsdk:"password"`
+	URL      types.String          `tfsdk:"url"`
+	Insecure types.Bool            `tfsdk:"insecure"`
+	Retries  types.Int64           `tfsdk:"retries"`
+	LockReleaseTimeout types.Int64 `tfsdk:"lock_release_timeout"`
 	Devices  []IosxeProviderModelDevice `tfsdk:"devices"`
 }
 
@@ -105,6 +106,13 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 99),
+				},
+			},
+			"lock_release_timeout": schema.Int64Attribute{
+				MarkdownDescription: "Number of seconds to wait for the device database lock to be released. This can also be set as the IOSXE_LOCK_RELEASE_TIMEOUT environment variable. Defaults to `120`.",
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 600),
 				},
 			},
 			"devices": schema.ListNestedAttribute{
@@ -263,10 +271,31 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		retries = config.Retries.ValueInt64()
 	}
 
+	var lockReleaseTimeout int64
+	if config.LockReleaseTimeout.IsUnknown() {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as lockReleaseTimeout",
+		)
+		return
+	}
+
+	if config.LockReleaseTimeout.IsNull() {
+		lockReleaseTimeoutStr := os.Getenv("IOSXE_LOCK_RELEASE_TIMEOUT")
+		if lockReleaseTimeoutStr == "" {
+			lockReleaseTimeout = 120
+		} else {
+			lockReleaseTimeout, _ = strconv.ParseInt(lockReleaseTimeoutStr, 0, 64)
+		}
+	} else {
+		lockReleaseTimeout = config.LockReleaseTimeout.ValueInt64()
+	}
+
 	data := IosxeProviderData{}
 	data.Devices = make(map[string]*IosxeProviderDataDevice)
 
-	c, err := restconf.NewClient(url, username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true))
+	c, err := restconf.NewClient(url, username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true), restconf.LockReleaseTimeout(int(lockReleaseTimeout)))
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to create client",
@@ -283,7 +312,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		} else {
 			managed = device.Managed.ValueBool()
 		}
-		c, err := restconf.NewClient(device.URL.ValueString(), username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true))
+		c, err := restconf.NewClient(device.URL.ValueString(), username, password, insecure, restconf.MaxRetries(int(retries)), restconf.SkipDiscovery("/restconf", true), restconf.LockReleaseTimeout(int(lockReleaseTimeout)))
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Unable to create client",

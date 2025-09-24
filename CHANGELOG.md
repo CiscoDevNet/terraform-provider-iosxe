@@ -1,9 +1,11 @@
-## 0.8.2 (unreleased)
+## 0.9.0 (unreleased)
 
 - Fix issue with configuration of track objects using `iosxe_system` resource
 - Add `iosxe_platform` resource and data source
 - Fix issue with `access_session_mac_move_deny` attribute of `iosxe_system` resource
 - Fix issue with `diagnostic_bootup_level` attribute of `iosxe_system` resource
+- Add `lock_release_timeout` provider configuration attribute
+- Extend request timeout for `iosxe_spanning_tree` resource
 - Add `iosxe_eem` resource and data source
 
 ## 0.8.1

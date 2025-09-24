@@ -46,6 +46,7 @@ provider "iosxe" {
 
 - `devices` (Attributes List) This can be used to manage a list of devices from a single provider. All devices must use the same credentials. Each resource and data source has an optional attribute named `device`, which can then select a device by its name from this list. (see [below for nested schema](#nestedatt--devices))
 - `insecure` (Boolean) Allow insecure HTTPS client. This can also be set as the IOSXE_INSECURE environment variable. Defaults to `true`.
+- `lock_release_timeout` (Number) Number of seconds to wait for the device database lock to be released. This can also be set as the IOSXE_LOCK_RELEASE_TIMEOUT environment variable. Defaults to `120`.
 - `password` (String, Sensitive) Password for the IOS-XE device. This can also be set as the IOSXE_PASSWORD environment variable.
 - `retries` (Number) Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10`.
 - `url` (String) URL of the Cisco IOS-XE device. Optionally a port can be added with `:12345`. The default port is `443`. This can also be set as the IOSXE_URL environment variable.
