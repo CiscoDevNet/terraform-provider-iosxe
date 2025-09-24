@@ -42,7 +42,7 @@ func TestAccDataSourceIosxeEEM(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "scheduler_applet_thread_class_default", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "scheduler_applet_thread_class_number", "1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "detector_rpc_max_sessions", "8"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "detector_routing_bootup_delay", "1.5"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "detector_routing_bootup_delay", "2"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.name", "test_applet_10"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.authorization", "bypass"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_eem.test", "applets.0.class", "A"))
@@ -85,7 +85,7 @@ func testAccDataSourceIosxeEEMConfig() string {
 	config += `	scheduler_applet_thread_class_default = true` + "\n"
 	config += `	scheduler_applet_thread_class_number = 1` + "\n"
 	config += `	detector_rpc_max_sessions = 8` + "\n"
-	config += `	detector_routing_bootup_delay = 1.5` + "\n"
+	config += `	detector_routing_bootup_delay = 2` + "\n"
 	config += `	applets = [{` + "\n"
 	config += `		name = "test_applet_10"` + "\n"
 	config += `		authorization = "bypass"` + "\n"

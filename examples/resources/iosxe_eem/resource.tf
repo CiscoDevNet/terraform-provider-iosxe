@@ -13,7 +13,7 @@ resource "iosxe_eem" "example" {
   scheduler_applet_thread_class_default = true
   scheduler_applet_thread_class_number  = 1
   detector_rpc_max_sessions             = 8
-  detector_routing_bootup_delay         = 1.5
+  detector_routing_bootup_delay         = 2
   applets = [
     {
       name              = "test_applet_10"
