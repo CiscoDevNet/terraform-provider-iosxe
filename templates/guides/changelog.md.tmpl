@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.9.0 (unreleased)
+## 0.9.0
 
 - Fix issue with configuration of track objects using `iosxe_system` resource
 - Add `iosxe_platform` resource and data source
