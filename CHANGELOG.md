@@ -6,6 +6,7 @@
 - Fix issue with `diagnostic_bootup_level` attribute of `iosxe_system` resource
 - Add `lock_release_timeout` provider configuration attribute
 - Extend request timeout for `iosxe_spanning_tree` resource
+- Add `iosxe_eem` resource and data source
 
 ## 0.8.1
 
