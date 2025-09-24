@@ -6,6 +6,7 @@ no_delete: bool(required=False)  # Set to true if the resource path cannot be de
 no_delete_attributes: bool(required=False)  # Set to true if the resource should not provide an attribute to delete the top level attributes individually
 default_delete_attributes: bool(required=False)  # Set to true if the resource should use the "attributes" delete mode by default
 wait: bool(required=False)  # Wait for the DB lock to be released, this is required for operations that require a full-sync, eg. applying a source template to an interface
+request_timeout: int(required=False)  # Timeout for write request in seconds, default is 60
 test_tags: list(str(), required=False)  # List of test tags, tests are only executed if an environment variable for each of these tags is configured
 skip_minimum_test: bool(required=False)  # Set to true if the resource should skip the minimum test
 no_augment_config: bool(required=False)  # Set to true if the definition should not be augmented by the YANG models
