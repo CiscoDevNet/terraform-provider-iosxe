@@ -228,7 +228,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
-			"passive_interface_disable_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -240,7 +240,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_two_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_two_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -252,7 +252,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_five_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_five_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -264,7 +264,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_ten_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_ten_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -276,7 +276,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_twenty_five_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_twenty_five_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -288,7 +288,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_forty_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_forty_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -300,7 +300,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_hundred_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_hundred_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -312,7 +312,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_two_hundred_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_two_hundred_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -324,7 +324,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_four_hundred_gigabit_ethernets": schema.ListNestedAttribute{
+			"passive_interface_disable_four_hundred_gigabit_ethernets": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -336,7 +336,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_loopbacks": schema.ListNestedAttribute{
+			"passive_interface_disable_loopbacks": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -348,7 +348,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_vlans": schema.ListNestedAttribute{
+			"passive_interface_disable_vlans": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -360,7 +360,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_tunnels": schema.ListNestedAttribute{
+			"passive_interface_disable_tunnels": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -372,7 +372,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_port_channels": schema.ListNestedAttribute{
+			"passive_interface_disable_port_channels": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -384,7 +384,7 @@ func (d *OSPFVRFDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
-			"passive_interface_disable_port_channel_subinterfaces": schema.ListNestedAttribute{
+			"passive_interface_disable_port_channel_subinterfaces": schema.SetNestedAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

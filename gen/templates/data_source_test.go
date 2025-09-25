@@ -41,14 +41,14 @@ func TestAccDataSourceIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- $name := .Name }}
 	{{- range .Attributes}}
 	{{- if and (not .Id) (not .Reference) (not .WriteOnly) (not .ExcludeTest) (ne .Type "StringSet") (ne .Type "Int64Set") }}
-	{{- if eq .Type "List"}}
+	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $list := .TfName }}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	{{- range .Attributes}}
 	{{- if and (not .WriteOnly) (not .ExcludeTest) (ne .Type "StringSet") (ne .Type "Int64Set")}}
-	{{- if eq .Type "List"}}
+	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $clist := .TfName }}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
@@ -157,14 +157,14 @@ func testAccDataSourceIosxe{{camelCase .Name}}Config() string {
 	{{- end}}
 	{{- range  .Attributes}}
 	{{- if not .ExcludeTest}}
-	{{- if eq .Type "List"}}
+	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	config += `	{{.TfName}} = [{` + "\n"
 		{{- range  .Attributes}}
 		{{- if not .ExcludeTest}}
-		{{- if eq .Type "List"}}
+		{{- if or (eq .Type "List") (eq .Type "Set")}}
 		{{- if len .TestTags}}
 		if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		{{- end}}

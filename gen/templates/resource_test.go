@@ -42,14 +42,14 @@ func TestAccIosxe{{camelCase .Name}}(t *testing.T) {
 	{{- $name := .Name }}
 	{{- range .Attributes}}
 	{{- if and (not .Reference) (not .WriteOnly) (not .ExcludeTest) (ne .Type "StringSet") (ne .Type "Int64Set") }}
-	{{- if eq .Type "List"}}
+	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $list := .TfName }}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	{{- range .Attributes}}
 	{{- if and (not .WriteOnly) (not .ExcludeTest) (ne .Type "StringSet") (ne .Type "Int64Set") }}
-	{{- if eq .Type "List"}}
+	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
@@ -186,14 +186,14 @@ func testAccIosxe{{camelCase .Name}}Config_minimum() string {
 	config := `resource "iosxe_{{snakeCase $name}}" "test" {` + "\n"
 	{{- range  .Attributes}}
 	{{- if or .Reference .Id .Mandatory}}
-	{{- if eq .Type "List"}}
+	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	config += `	{{.TfName}} = [{` + "\n"
 		{{- range  .Attributes}}
 		{{- if or .Id .Mandatory}}
-		{{- if eq .Type "List"}}
+		{{- if or (eq .Type "List") (eq .Type "Set")}}
 		{{- if len .TestTags}}
 		if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		{{- end}}
@@ -257,14 +257,14 @@ func testAccIosxe{{camelCase .Name}}Config_all() string {
 	{{- end}}
 	{{- range  .Attributes}}
 	{{- if not .ExcludeTest}}
-	{{- if eq .Type "List"}}
+	{{- if or (eq .Type "List") (eq .Type "Set")}}
 	{{- if len .TestTags}}
 	if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 	{{- end}}
 	config += `	{{.TfName}} = [{` + "\n"
 		{{- range  .Attributes}}
 		{{- if not .ExcludeTest}}
-		{{- if eq .Type "List"}}
+		{{- if or (eq .Type "List") (eq .Type "Set")}}
 		{{- if len .TestTags}}
 		if {{range $i, $e := .TestTags}}{{if $i}} || {{end}}os.Getenv("{{$e}}") != ""{{end}} {
 		{{- end}}

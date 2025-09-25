@@ -100,7 +100,7 @@ attributes:
     exclude_test: true
   - yang_name: passive-interface-config/disable-interface/GigabitEthernet
     tf_name: passive_interface_disable_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -112,7 +112,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwoGigabitEthernet
     tf_name: passive_interface_disable_two_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -124,7 +124,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/FiveGigabitEthernet
     tf_name: passive_interface_disable_five_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -136,7 +136,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/TenGigabitEthernet
     tf_name: passive_interface_disable_ten_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -148,7 +148,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwentyFiveGigabitE
     tf_name: passive_interface_disable_twenty_five_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -160,7 +160,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/FortyGigabitEthernet
     tf_name: passive_interface_disable_forty_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -172,7 +172,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/HundredGigabitE
     tf_name: passive_interface_disable_hundred_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -184,7 +184,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwoHundredGigabitE
     tf_name: passive_interface_disable_two_hundred_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -196,7 +196,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/FourHundredGigabitE
     tf_name: passive_interface_disable_four_hundred_gigabit_ethernets
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -208,7 +208,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/Loopback
     tf_name: passive_interface_disable_loopbacks
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -220,7 +220,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/Vlan
     tf_name: passive_interface_disable_vlans
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -232,7 +232,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/Tunnel
     tf_name: passive_interface_disable_tunnels
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -244,7 +244,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/Port-channel
     tf_name: passive_interface_disable_port_channels
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
@@ -256,7 +256,7 @@ attributes:
         example: 1
   - yang_name: passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel
     tf_name: passive_interface_disable_port_channel_subinterfaces
-    type: List
+    type: Set
     no_augment_config: true
     exclude_test: true
     attributes:

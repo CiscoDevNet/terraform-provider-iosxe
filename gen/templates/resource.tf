@@ -1,12 +1,12 @@
 resource "iosxe_{{snakeCase .Name}}" "example" {
 {{- range  .Attributes}}
 {{- if and (not .ExcludeTest) (not .ExcludeExample) (not ( len .TestTags))}}
-{{- if eq .Type "List"}}
+{{- if or (eq .Type "List") (eq .Type "Set")}}
   {{.TfName}} = [
     {
       {{- range  .Attributes}}
       {{- if and (not .ExcludeTest) (not .ExcludeExample) (not ( len .TestTags))}}
-      {{- if eq .Type "List"}}
+      {{- if or (eq .Type "List") (eq .Type "Set")}}
         {{.TfName}} = [
           {
             {{- range  .Attributes}}
