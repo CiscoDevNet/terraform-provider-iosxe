@@ -39,52 +39,80 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type OSPF struct {
-	Device                            types.String           `tfsdk:"device"`
-	Id                                types.String           `tfsdk:"id"`
-	DeleteMode                        types.String           `tfsdk:"delete_mode"`
-	ProcessId                         types.Int64            `tfsdk:"process_id"`
-	BfdAllInterfaces                  types.Bool             `tfsdk:"bfd_all_interfaces"`
-	DefaultInformationOriginate       types.Bool             `tfsdk:"default_information_originate"`
-	DefaultInformationOriginateAlways types.Bool             `tfsdk:"default_information_originate_always"`
-	DefaultMetric                     types.Int64            `tfsdk:"default_metric"`
-	Distance                          types.Int64            `tfsdk:"distance"`
-	DomainTag                         types.Int64            `tfsdk:"domain_tag"`
-	MplsLdpAutoconfig                 types.Bool             `tfsdk:"mpls_ldp_autoconfig"`
-	MplsLdpSync                       types.Bool             `tfsdk:"mpls_ldp_sync"`
-	Neighbors                         []OSPFNeighbors        `tfsdk:"neighbors"`
-	Networks                          []OSPFNetworks         `tfsdk:"networks"`
-	Priority                          types.Int64            `tfsdk:"priority"`
-	RouterId                          types.String           `tfsdk:"router_id"`
-	Shutdown                          types.Bool             `tfsdk:"shutdown"`
-	SummaryAddresses                  []OSPFSummaryAddresses `tfsdk:"summary_addresses"`
-	Areas                             []OSPFAreas            `tfsdk:"areas"`
-	PassiveInterfaceDefault           types.Bool             `tfsdk:"passive_interface_default"`
-	PassiveInterface                  types.List             `tfsdk:"passive_interface"`
-	AutoCostReferenceBandwidth        types.Int64            `tfsdk:"auto_cost_reference_bandwidth"`
+	Device                                             types.String                                             `tfsdk:"device"`
+	Id                                                 types.String                                             `tfsdk:"id"`
+	DeleteMode                                         types.String                                             `tfsdk:"delete_mode"`
+	ProcessId                                          types.Int64                                              `tfsdk:"process_id"`
+	BfdAllInterfaces                                   types.Bool                                               `tfsdk:"bfd_all_interfaces"`
+	DefaultInformationOriginate                        types.Bool                                               `tfsdk:"default_information_originate"`
+	DefaultInformationOriginateAlways                  types.Bool                                               `tfsdk:"default_information_originate_always"`
+	DefaultMetric                                      types.Int64                                              `tfsdk:"default_metric"`
+	Distance                                           types.Int64                                              `tfsdk:"distance"`
+	DomainTag                                          types.Int64                                              `tfsdk:"domain_tag"`
+	MplsLdpAutoconfig                                  types.Bool                                               `tfsdk:"mpls_ldp_autoconfig"`
+	MplsLdpSync                                        types.Bool                                               `tfsdk:"mpls_ldp_sync"`
+	Neighbors                                          []OSPFNeighbors                                          `tfsdk:"neighbors"`
+	Networks                                           []OSPFNetworks                                           `tfsdk:"networks"`
+	Priority                                           types.Int64                                              `tfsdk:"priority"`
+	RouterId                                           types.String                                             `tfsdk:"router_id"`
+	Shutdown                                           types.Bool                                               `tfsdk:"shutdown"`
+	SummaryAddresses                                   []OSPFSummaryAddresses                                   `tfsdk:"summary_addresses"`
+	Areas                                              []OSPFAreas                                              `tfsdk:"areas"`
+	AutoCostReferenceBandwidth                         types.Int64                                              `tfsdk:"auto_cost_reference_bandwidth"`
+	PassiveInterfaceDefault                            types.Bool                                               `tfsdk:"passive_interface_default"`
+	PassiveInterface                                   types.List                                               `tfsdk:"passive_interface"`
+	PassiveInterfaceDisableGigabitEthernets            []OSPFPassiveInterfaceDisableGigabitEthernets            `tfsdk:"passive_interface_disable_gigabit_ethernets"`
+	PassiveInterfaceDisableTwoGigabitEthernets         []OSPFPassiveInterfaceDisableTwoGigabitEthernets         `tfsdk:"passive_interface_disable_two_gigabit_ethernets"`
+	PassiveInterfaceDisableFiveGigabitEthernets        []OSPFPassiveInterfaceDisableFiveGigabitEthernets        `tfsdk:"passive_interface_disable_five_gigabit_ethernets"`
+	PassiveInterfaceDisableTenGigabitEthernets         []OSPFPassiveInterfaceDisableTenGigabitEthernets         `tfsdk:"passive_interface_disable_ten_gigabit_ethernets"`
+	PassiveInterfaceDisableTwentyFiveGigabitEthernets  []OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets  `tfsdk:"passive_interface_disable_twenty_five_gigabit_ethernets"`
+	PassiveInterfaceDisableFortyGigabitEthernets       []OSPFPassiveInterfaceDisableFortyGigabitEthernets       `tfsdk:"passive_interface_disable_forty_gigabit_ethernets"`
+	PassiveInterfaceDisableHundredGigabitEthernets     []OSPFPassiveInterfaceDisableHundredGigabitEthernets     `tfsdk:"passive_interface_disable_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableTwoHundredGigabitEthernets  []OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets  `tfsdk:"passive_interface_disable_two_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableFourHundredGigabitEthernets []OSPFPassiveInterfaceDisableFourHundredGigabitEthernets `tfsdk:"passive_interface_disable_four_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableLoopbacks                   []OSPFPassiveInterfaceDisableLoopbacks                   `tfsdk:"passive_interface_disable_loopbacks"`
+	PassiveInterfaceDisableVlans                       []OSPFPassiveInterfaceDisableVlans                       `tfsdk:"passive_interface_disable_vlans"`
+	PassiveInterfaceDisableTunnels                     []OSPFPassiveInterfaceDisableTunnels                     `tfsdk:"passive_interface_disable_tunnels"`
+	PassiveInterfaceDisablePortChannels                []OSPFPassiveInterfaceDisablePortChannels                `tfsdk:"passive_interface_disable_port_channels"`
+	PassiveInterfaceDisablePortChannelSubinterfaces    []OSPFPassiveInterfaceDisablePortChannelSubinterfaces    `tfsdk:"passive_interface_disable_port_channel_subinterfaces"`
 }
 
 type OSPFData struct {
-	Device                            types.String           `tfsdk:"device"`
-	Id                                types.String           `tfsdk:"id"`
-	ProcessId                         types.Int64            `tfsdk:"process_id"`
-	BfdAllInterfaces                  types.Bool             `tfsdk:"bfd_all_interfaces"`
-	DefaultInformationOriginate       types.Bool             `tfsdk:"default_information_originate"`
-	DefaultInformationOriginateAlways types.Bool             `tfsdk:"default_information_originate_always"`
-	DefaultMetric                     types.Int64            `tfsdk:"default_metric"`
-	Distance                          types.Int64            `tfsdk:"distance"`
-	DomainTag                         types.Int64            `tfsdk:"domain_tag"`
-	MplsLdpAutoconfig                 types.Bool             `tfsdk:"mpls_ldp_autoconfig"`
-	MplsLdpSync                       types.Bool             `tfsdk:"mpls_ldp_sync"`
-	Neighbors                         []OSPFNeighbors        `tfsdk:"neighbors"`
-	Networks                          []OSPFNetworks         `tfsdk:"networks"`
-	Priority                          types.Int64            `tfsdk:"priority"`
-	RouterId                          types.String           `tfsdk:"router_id"`
-	Shutdown                          types.Bool             `tfsdk:"shutdown"`
-	SummaryAddresses                  []OSPFSummaryAddresses `tfsdk:"summary_addresses"`
-	Areas                             []OSPFAreas            `tfsdk:"areas"`
-	PassiveInterfaceDefault           types.Bool             `tfsdk:"passive_interface_default"`
-	PassiveInterface                  types.List             `tfsdk:"passive_interface"`
-	AutoCostReferenceBandwidth        types.Int64            `tfsdk:"auto_cost_reference_bandwidth"`
+	Device                                             types.String                                             `tfsdk:"device"`
+	Id                                                 types.String                                             `tfsdk:"id"`
+	ProcessId                                          types.Int64                                              `tfsdk:"process_id"`
+	BfdAllInterfaces                                   types.Bool                                               `tfsdk:"bfd_all_interfaces"`
+	DefaultInformationOriginate                        types.Bool                                               `tfsdk:"default_information_originate"`
+	DefaultInformationOriginateAlways                  types.Bool                                               `tfsdk:"default_information_originate_always"`
+	DefaultMetric                                      types.Int64                                              `tfsdk:"default_metric"`
+	Distance                                           types.Int64                                              `tfsdk:"distance"`
+	DomainTag                                          types.Int64                                              `tfsdk:"domain_tag"`
+	MplsLdpAutoconfig                                  types.Bool                                               `tfsdk:"mpls_ldp_autoconfig"`
+	MplsLdpSync                                        types.Bool                                               `tfsdk:"mpls_ldp_sync"`
+	Neighbors                                          []OSPFNeighbors                                          `tfsdk:"neighbors"`
+	Networks                                           []OSPFNetworks                                           `tfsdk:"networks"`
+	Priority                                           types.Int64                                              `tfsdk:"priority"`
+	RouterId                                           types.String                                             `tfsdk:"router_id"`
+	Shutdown                                           types.Bool                                               `tfsdk:"shutdown"`
+	SummaryAddresses                                   []OSPFSummaryAddresses                                   `tfsdk:"summary_addresses"`
+	Areas                                              []OSPFAreas                                              `tfsdk:"areas"`
+	AutoCostReferenceBandwidth                         types.Int64                                              `tfsdk:"auto_cost_reference_bandwidth"`
+	PassiveInterfaceDefault                            types.Bool                                               `tfsdk:"passive_interface_default"`
+	PassiveInterface                                   types.List                                               `tfsdk:"passive_interface"`
+	PassiveInterfaceDisableGigabitEthernets            []OSPFPassiveInterfaceDisableGigabitEthernets            `tfsdk:"passive_interface_disable_gigabit_ethernets"`
+	PassiveInterfaceDisableTwoGigabitEthernets         []OSPFPassiveInterfaceDisableTwoGigabitEthernets         `tfsdk:"passive_interface_disable_two_gigabit_ethernets"`
+	PassiveInterfaceDisableFiveGigabitEthernets        []OSPFPassiveInterfaceDisableFiveGigabitEthernets        `tfsdk:"passive_interface_disable_five_gigabit_ethernets"`
+	PassiveInterfaceDisableTenGigabitEthernets         []OSPFPassiveInterfaceDisableTenGigabitEthernets         `tfsdk:"passive_interface_disable_ten_gigabit_ethernets"`
+	PassiveInterfaceDisableTwentyFiveGigabitEthernets  []OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets  `tfsdk:"passive_interface_disable_twenty_five_gigabit_ethernets"`
+	PassiveInterfaceDisableFortyGigabitEthernets       []OSPFPassiveInterfaceDisableFortyGigabitEthernets       `tfsdk:"passive_interface_disable_forty_gigabit_ethernets"`
+	PassiveInterfaceDisableHundredGigabitEthernets     []OSPFPassiveInterfaceDisableHundredGigabitEthernets     `tfsdk:"passive_interface_disable_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableTwoHundredGigabitEthernets  []OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets  `tfsdk:"passive_interface_disable_two_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableFourHundredGigabitEthernets []OSPFPassiveInterfaceDisableFourHundredGigabitEthernets `tfsdk:"passive_interface_disable_four_hundred_gigabit_ethernets"`
+	PassiveInterfaceDisableLoopbacks                   []OSPFPassiveInterfaceDisableLoopbacks                   `tfsdk:"passive_interface_disable_loopbacks"`
+	PassiveInterfaceDisableVlans                       []OSPFPassiveInterfaceDisableVlans                       `tfsdk:"passive_interface_disable_vlans"`
+	PassiveInterfaceDisableTunnels                     []OSPFPassiveInterfaceDisableTunnels                     `tfsdk:"passive_interface_disable_tunnels"`
+	PassiveInterfaceDisablePortChannels                []OSPFPassiveInterfaceDisablePortChannels                `tfsdk:"passive_interface_disable_port_channels"`
+	PassiveInterfaceDisablePortChannelSubinterfaces    []OSPFPassiveInterfaceDisablePortChannelSubinterfaces    `tfsdk:"passive_interface_disable_port_channel_subinterfaces"`
 }
 type OSPFNeighbors struct {
 	Ip       types.String `tfsdk:"ip"`
@@ -109,6 +137,48 @@ type OSPFAreas struct {
 	NssaDefaultInformationOriginateMetricType types.Int64  `tfsdk:"nssa_default_information_originate_metric_type"`
 	NssaNoSummary                             types.Bool   `tfsdk:"nssa_no_summary"`
 	NssaNoRedistribution                      types.Bool   `tfsdk:"nssa_no_redistribution"`
+}
+type OSPFPassiveInterfaceDisableGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableTwoGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableFiveGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableTenGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableFortyGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableHundredGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableFourHundredGigabitEthernets struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableLoopbacks struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableVlans struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisableTunnels struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisablePortChannels struct {
+	Name types.String `tfsdk:"name"`
+}
+type OSPFPassiveInterfaceDisablePortChannelSubinterfaces struct {
+	Name types.String `tfsdk:"name"`
 }
 
 // End of section. //template:end types
@@ -186,6 +256,9 @@ func (data OSPF) toBody(ctx context.Context) string {
 	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"shutdown", data.Shutdown.ValueBool())
 	}
+	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"auto-cost.reference-bandwidth", strconv.FormatInt(data.AutoCostReferenceBandwidth.ValueInt64(), 10))
+	}
 	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.default", data.PassiveInterfaceDefault.ValueBool())
 	}
@@ -193,9 +266,6 @@ func (data OSPF) toBody(ctx context.Context) string {
 		var values []string
 		data.PassiveInterface.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.interface", values)
-	}
-	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"auto-cost.reference-bandwidth", strconv.FormatInt(data.AutoCostReferenceBandwidth.ValueInt64(), 10))
 	}
 	if len(data.Neighbors) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor", []interface{}{})
@@ -272,6 +342,118 @@ func (data OSPF) toBody(ctx context.Context) string {
 				if item.NssaNoRedistribution.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"area"+"."+strconv.Itoa(index)+"."+"nssa.nssa-options.no-redistribution", map[string]string{})
 				}
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.GigabitEthernet", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.GigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwoGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwoGigabitEthernet", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwoGigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableFiveGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FiveGigabitEthernet", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FiveGigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableTenGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TenGigabitEthernet", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableTenGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TenGigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwentyFiveGigabitE", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwentyFiveGigabitE"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableFortyGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FortyGigabitEthernet", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FortyGigabitEthernet"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableHundredGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.HundredGigabitE", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.HundredGigabitE"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwoHundredGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwoHundredGigabitE", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.TwoHundredGigabitE"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableFourHundredGigabitEthernets) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FourHundredGigabitE", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.FourHundredGigabitE"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableLoopbacks) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Loopback", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableLoopbacks {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Loopback"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableVlans) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Vlan", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableVlans {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Vlan"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisableTunnels) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Tunnel", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisableTunnels {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Tunnel"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisablePortChannels) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisablePortChannels {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.PassiveInterfaceDisablePortChannelSubinterfaces) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel", []interface{}{})
+		for index, item := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel"+"."+strconv.Itoa(index)+"."+"name", item.Name.ValueString())
 			}
 		}
 	}
@@ -565,6 +747,11 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 			data.Areas[i].NssaNoRedistribution = types.BoolNull()
 		}
 	}
+	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() && !data.AutoCostReferenceBandwidth.IsNull() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	} else {
+		data.AutoCostReferenceBandwidth = types.Int64Null()
+	}
 	if value := res.Get(prefix + "passive-interface.default"); !data.PassiveInterfaceDefault.IsNull() {
 		if value.Exists() {
 			data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
@@ -577,10 +764,411 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() && !data.AutoCostReferenceBandwidth.IsNull() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
-	} else {
-		data.AutoCostReferenceBandwidth = types.Int64Null()
+	for i := range data.PassiveInterfaceDisableGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.TwoGigabitEthernet").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.FiveGigabitEthernet").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.TenGigabitEthernet").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTenGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTenGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.TwentyFiveGigabitE").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.FortyGigabitEthernet").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.HundredGigabitE").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.TwoHundredGigabitE").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.FourHundredGigabitE").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableLoopbacks {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.Loopback").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableLoopbacks[i].Name.IsNull() {
+			data.PassiveInterfaceDisableLoopbacks[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableLoopbacks[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableVlans {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.Vlan").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableVlans[i].Name.IsNull() {
+			data.PassiveInterfaceDisableVlans[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableVlans[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTunnels {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.Tunnel").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisableTunnels[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTunnels[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTunnels[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisablePortChannels {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.Port-channel").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
+			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("name"); value.Exists() && !data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.IsNull() {
+			data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name = types.StringNull()
+		}
 	}
 }
 
@@ -728,6 +1316,9 @@ func (data *OSPF) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
 		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
 	} else {
@@ -738,8 +1329,159 @@ func (data *OSPF) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFPassiveInterfaceDisableGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableGigabitEthernets = append(data.PassiveInterfaceDisableGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwoGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwoGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoGigabitEthernets = append(data.PassiveInterfaceDisableTwoGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.FiveGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFPassiveInterfaceDisableFiveGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableFiveGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFiveGigabitEthernets = append(data.PassiveInterfaceDisableFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.TenGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFPassiveInterfaceDisableTenGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTenGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTenGigabitEthernets = append(data.PassiveInterfaceDisableTenGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwentyFiveGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = append(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.FortyGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFPassiveInterfaceDisableFortyGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableFortyGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFortyGigabitEthernets = append(data.PassiveInterfaceDisableFortyGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.HundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableHundredGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableHundredGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableHundredGigabitEthernets = append(data.PassiveInterfaceDisableHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoHundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets = append(data.PassiveInterfaceDisableTwoHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.FourHundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableFourHundredGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets = append(data.PassiveInterfaceDisableFourHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Loopback"); value.Exists() {
+		data.PassiveInterfaceDisableLoopbacks = make([]OSPFPassiveInterfaceDisableLoopbacks, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableLoopbacks{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableLoopbacks = append(data.PassiveInterfaceDisableLoopbacks, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Vlan"); value.Exists() {
+		data.PassiveInterfaceDisableVlans = make([]OSPFPassiveInterfaceDisableVlans, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableVlans{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableVlans = append(data.PassiveInterfaceDisableVlans, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Tunnel"); value.Exists() {
+		data.PassiveInterfaceDisableTunnels = make([]OSPFPassiveInterfaceDisableTunnels, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTunnels{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTunnels = append(data.PassiveInterfaceDisableTunnels, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannels = make([]OSPFPassiveInterfaceDisablePortChannels, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisablePortChannels{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisablePortChannelSubinterfaces{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannelSubinterfaces = append(data.PassiveInterfaceDisablePortChannelSubinterfaces, item)
+			return true
+		})
 	}
 }
 
@@ -887,6 +1629,9 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	}
 	if value := res.Get(prefix + "passive-interface.default"); value.Exists() {
 		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
 	} else {
@@ -897,8 +1642,159 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
-	if value := res.Get(prefix + "auto-cost.reference-bandwidth"); value.Exists() {
-		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFPassiveInterfaceDisableGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableGigabitEthernets = append(data.PassiveInterfaceDisableGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwoGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwoGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoGigabitEthernets = append(data.PassiveInterfaceDisableTwoGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.FiveGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFPassiveInterfaceDisableFiveGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableFiveGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFiveGigabitEthernets = append(data.PassiveInterfaceDisableFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.TenGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFPassiveInterfaceDisableTenGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTenGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTenGigabitEthernets = append(data.PassiveInterfaceDisableTenGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwentyFiveGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = append(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.FortyGigabitEthernet"); value.Exists() {
+		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFPassiveInterfaceDisableFortyGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableFortyGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFortyGigabitEthernets = append(data.PassiveInterfaceDisableFortyGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.HundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableHundredGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableHundredGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableHundredGigabitEthernets = append(data.PassiveInterfaceDisableHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.TwoHundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets = append(data.PassiveInterfaceDisableTwoHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.FourHundredGigabitE"); value.Exists() {
+		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableFourHundredGigabitEthernets{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets = append(data.PassiveInterfaceDisableFourHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Loopback"); value.Exists() {
+		data.PassiveInterfaceDisableLoopbacks = make([]OSPFPassiveInterfaceDisableLoopbacks, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableLoopbacks{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableLoopbacks = append(data.PassiveInterfaceDisableLoopbacks, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Vlan"); value.Exists() {
+		data.PassiveInterfaceDisableVlans = make([]OSPFPassiveInterfaceDisableVlans, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableVlans{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableVlans = append(data.PassiveInterfaceDisableVlans, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Tunnel"); value.Exists() {
+		data.PassiveInterfaceDisableTunnels = make([]OSPFPassiveInterfaceDisableTunnels, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisableTunnels{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTunnels = append(data.PassiveInterfaceDisableTunnels, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannels = make([]OSPFPassiveInterfaceDisablePortChannels, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisablePortChannels{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "passive-interface-config.disable-interface.Port-channel-subinterface.Port-channel"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := OSPFPassiveInterfaceDisablePortChannelSubinterfaces{}
+			if cValue := v.Get("name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannelSubinterfaces = append(data.PassiveInterfaceDisablePortChannelSubinterfaces, item)
+			return true
+		})
 	}
 }
 
@@ -908,8 +1804,355 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 	deletedItems := make([]string, 0)
-	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/auto-cost/reference-bandwidth", state.getPath()))
+	for i := range state.PassiveInterfaceDisablePortChannelSubinterfaces {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+			found = true
+			if state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString() != data.PassiveInterfaceDisablePortChannelSubinterfaces[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisablePortChannels {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisablePortChannels {
+			found = true
+			if state.PassiveInterfaceDisablePortChannels[i].Name.ValueString() != data.PassiveInterfaceDisablePortChannels[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTunnels {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTunnels[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTunnels {
+			found = true
+			if state.PassiveInterfaceDisableTunnels[i].Name.ValueString() != data.PassiveInterfaceDisableTunnels[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Tunnel=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableVlans {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableVlans[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableVlans {
+			found = true
+			if state.PassiveInterfaceDisableVlans[i].Name.ValueString() != data.PassiveInterfaceDisableVlans[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Vlan=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableLoopbacks {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableLoopbacks {
+			found = true
+			if state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString() != data.PassiveInterfaceDisableLoopbacks[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/Loopback=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFourHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/FourHundredGigabitE=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwoHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoHundredGigabitE=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableHundredGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/HundredGigabitE=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFortyGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFortyGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/FortyGigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwentyFiveGigabitE=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTenGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTenGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTenGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/TenGigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFiveGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFiveGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/FiveGigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwoGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwoGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoGigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableGigabitEthernets {
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/GigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
 	}
 	if !state.PassiveInterface.IsNull() {
 		if data.PassiveInterface.IsNull() {
@@ -934,6 +2177,9 @@ func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 	}
 	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface/default", state.getPath()))
+	}
+	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/auto-cost/reference-bandwidth", state.getPath()))
 	}
 	for i := range state.Areas {
 		stateKeyValues := [...]string{state.Areas[i].AreaId.ValueString()}
@@ -1159,14 +2405,84 @@ func (data *OSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *OSPF) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
-	if !data.AutoCostReferenceBandwidth.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/auto-cost/reference-bandwidth", data.getPath()))
+	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisablePortChannels {
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableTunnels {
+		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Tunnel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableVlans {
+		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Vlan=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableLoopbacks {
+		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Loopback=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FourHundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoHundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/HundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FortyGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwentyFiveGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TenGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FiveGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	for i := range data.PassiveInterfaceDisableGigabitEthernets {
+		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/GigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.PassiveInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/interface", data.getPath()))
 	}
 	if !data.PassiveInterfaceDefault.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/default", data.getPath()))
+	}
+	if !data.AutoCostReferenceBandwidth.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/auto-cost/reference-bandwidth", data.getPath()))
 	}
 	for i := range data.Areas {
 		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}

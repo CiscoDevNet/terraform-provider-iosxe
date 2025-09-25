@@ -42,6 +42,6 @@ resource "iosxe_ospf_vrf" "example" {
       nssa_no_redistribution                         = true
     }
   ]
-  passive_interface_default     = true
   auto_cost_reference_bandwidth = 40000
+  passive_interface_default     = true
 }

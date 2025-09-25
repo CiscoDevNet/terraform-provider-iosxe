@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 0.10.0 (unreleased)
+
+- Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
+
 ## 0.9.0
 
 - Fix issue with configuration of track objects using `iosxe_system` resource

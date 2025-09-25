@@ -46,6 +46,20 @@ data "iosxe_ospf" "example" {
 - `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
 - `passive_interface` (List of String)
 - `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
+- `passive_interface_disable_five_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_five_gigabit_ethernets))
+- `passive_interface_disable_forty_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_forty_gigabit_ethernets))
+- `passive_interface_disable_four_hundred_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_four_hundred_gigabit_ethernets))
+- `passive_interface_disable_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_gigabit_ethernets))
+- `passive_interface_disable_hundred_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_hundred_gigabit_ethernets))
+- `passive_interface_disable_loopbacks` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_loopbacks))
+- `passive_interface_disable_port_channel_subinterfaces` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_port_channel_subinterfaces))
+- `passive_interface_disable_port_channels` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_port_channels))
+- `passive_interface_disable_ten_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_ten_gigabit_ethernets))
+- `passive_interface_disable_tunnels` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_tunnels))
+- `passive_interface_disable_twenty_five_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_twenty_five_gigabit_ethernets))
+- `passive_interface_disable_two_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_two_gigabit_ethernets))
+- `passive_interface_disable_two_hundred_gigabit_ethernets` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_two_hundred_gigabit_ethernets))
+- `passive_interface_disable_vlans` (Attributes List) (see [below for nested schema](#nestedatt--passive_interface_disable_vlans))
 - `priority` (Number) OSPF topology priority
 - `router_id` (String) Configure router identifier. New router-id will take effect immediately (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
@@ -84,6 +98,118 @@ Read-Only:
 - `area` (String) Set the OSPF area ID
 - `ip` (String) Network number
 - `wildcard` (String) OSPF wild card bits
+
+
+<a id="nestedatt--passive_interface_disable_five_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_five_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_forty_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_forty_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_four_hundred_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_four_hundred_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_hundred_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_hundred_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_loopbacks"></a>
+### Nested Schema for `passive_interface_disable_loopbacks`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_port_channel_subinterfaces"></a>
+### Nested Schema for `passive_interface_disable_port_channel_subinterfaces`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_port_channels"></a>
+### Nested Schema for `passive_interface_disable_port_channels`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_ten_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_ten_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_tunnels"></a>
+### Nested Schema for `passive_interface_disable_tunnels`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_twenty_five_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_twenty_five_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_two_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_two_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_two_hundred_gigabit_ethernets"></a>
+### Nested Schema for `passive_interface_disable_two_hundred_gigabit_ethernets`
+
+Read-Only:
+
+- `name` (String)
+
+
+<a id="nestedatt--passive_interface_disable_vlans"></a>
+### Nested Schema for `passive_interface_disable_vlans`
+
+Read-Only:
+
+- `name` (String)
 
 
 <a id="nestedatt--summary_addresses"></a>

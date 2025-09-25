@@ -287,6 +287,13 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 					},
 				},
 			},
+			"auto_cost_reference_bandwidth": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Use reference bandwidth method to assign OSPF cost").AddIntegerRangeDescription(1, 4294967).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4294967),
+				},
+			},
 			"passive_interface_default": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Suppress routing updates on all interfaces").String,
 				Optional:            true,
@@ -296,11 +303,172 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 				ElementType:         types.StringType,
 				Optional:            true,
 			},
-			"auto_cost_reference_bandwidth": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use reference bandwidth method to assign OSPF cost").AddIntegerRangeDescription(1, 4294967).String,
+			"passive_interface_disable_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 4294967),
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_two_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_five_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_ten_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_twenty_five_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_forty_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_hundred_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_two_hundred_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_four_hundred_gigabit_ethernets": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_loopbacks": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_vlans": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_tunnels": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_port_channels": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
+				},
+			},
+			"passive_interface_disable_port_channel_subinterfaces": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+					},
 				},
 			},
 		},
