@@ -3684,10 +3684,10 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", state.getPath()))
 	}
 	if !state.ChannelGroupMode.IsNull() && data.ChannelGroupMode.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/mode", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group", state.getPath()))
 	}
 	if !state.ChannelGroupNumber.IsNull() && data.ChannelGroupNumber.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/number", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group", state.getPath()))
 	}
 	if !state.EncapsulationDot1qVlanId.IsNull() && data.EncapsulationDot1qVlanId.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", state.getPath()))
@@ -4282,10 +4282,10 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface", data.getPath()))
 	}
 	if !data.ChannelGroupMode.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/mode", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group", data.getPath()))
 	}
 	if !data.ChannelGroupNumber.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group/number", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-ethernet:channel-group", data.getPath()))
 	}
 	if !data.EncapsulationDot1qVlanId.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/encapsulation/dot1Q/vlan-id", data.getPath()))

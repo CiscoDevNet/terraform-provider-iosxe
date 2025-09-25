@@ -74,9 +74,11 @@ attributes:
     example: 666
   - yang_name: Cisco-IOS-XE-ethernet:channel-group/number
     exclude_test: true
+    delete_parent: true
     example: 10
   - yang_name: Cisco-IOS-XE-ethernet:channel-group/mode
     exclude_test: true
+    delete_parent: true
     example: active
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/source-interface
     tf_name: ip_dhcp_relay_source_interface
