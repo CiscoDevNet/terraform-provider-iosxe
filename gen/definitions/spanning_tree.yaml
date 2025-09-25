@@ -2,7 +2,7 @@
 name: Spanning Tree
 path: Cisco-IOS-XE-native:native/spanning-tree
 no_delete: true
-request_timeout: 600
+request_timeout: 1800
 test_tags: [C9000V]
 doc_category: Switching
 attributes:
