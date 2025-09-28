@@ -91,7 +91,7 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Configure VPN ID in rfc2685 format",
 				Computed:            true,
 			},
-			"route_target_import": schema.ListNestedAttribute{
+			"route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: "Import Target-VPN community",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -107,7 +107,7 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
-			"route_target_export": schema.ListNestedAttribute{
+			"route_target_export": schema.SetNestedAttribute{
 				MarkdownDescription: "Export Target-VPN community",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -123,7 +123,7 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
-			"ipv4_route_target_import": schema.ListNestedAttribute{
+			"ipv4_route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: "Import Target-VPN community",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -135,63 +135,7 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
-			"ipv4_route_target_import_stitching": schema.ListNestedAttribute{
-				MarkdownDescription: "Import Target-VPN community",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"value": schema.StringAttribute{
-							MarkdownDescription: "Value",
-							Computed:            true,
-						},
-						"stitching": schema.BoolAttribute{
-							MarkdownDescription: "VXLAN route target set",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"ipv4_route_target_export": schema.ListNestedAttribute{
-				MarkdownDescription: "Export Target-VPN community",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"value": schema.StringAttribute{
-							MarkdownDescription: "Value",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"ipv4_route_target_export_stitching": schema.ListNestedAttribute{
-				MarkdownDescription: "Export Target-VPN community",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"value": schema.StringAttribute{
-							MarkdownDescription: "Value",
-							Computed:            true,
-						},
-						"stitching": schema.BoolAttribute{
-							MarkdownDescription: "VXLAN route target set",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"ipv6_route_target_import": schema.ListNestedAttribute{
-				MarkdownDescription: "Import Target-VPN community",
-				Computed:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"value": schema.StringAttribute{
-							MarkdownDescription: "Value",
-							Computed:            true,
-						},
-					},
-				},
-			},
-			"ipv6_route_target_import_stitching": schema.ListNestedAttribute{
+			"ipv4_route_target_import_stitching": schema.SetNestedAttribute{
 				MarkdownDescription: "Import Target-VPN community",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -207,7 +151,7 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
-			"ipv6_route_target_export": schema.ListNestedAttribute{
+			"ipv4_route_target_export": schema.SetNestedAttribute{
 				MarkdownDescription: "Export Target-VPN community",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -219,7 +163,63 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
-			"ipv6_route_target_export_stitching": schema.ListNestedAttribute{
+			"ipv4_route_target_export_stitching": schema.SetNestedAttribute{
+				MarkdownDescription: "Export Target-VPN community",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"value": schema.StringAttribute{
+							MarkdownDescription: "Value",
+							Computed:            true,
+						},
+						"stitching": schema.BoolAttribute{
+							MarkdownDescription: "VXLAN route target set",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_route_target_import": schema.SetNestedAttribute{
+				MarkdownDescription: "Import Target-VPN community",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"value": schema.StringAttribute{
+							MarkdownDescription: "Value",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_route_target_import_stitching": schema.SetNestedAttribute{
+				MarkdownDescription: "Import Target-VPN community",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"value": schema.StringAttribute{
+							MarkdownDescription: "Value",
+							Computed:            true,
+						},
+						"stitching": schema.BoolAttribute{
+							MarkdownDescription: "VXLAN route target set",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_route_target_export": schema.SetNestedAttribute{
+				MarkdownDescription: "Export Target-VPN community",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"value": schema.StringAttribute{
+							MarkdownDescription: "Value",
+							Computed:            true,
+						},
+					},
+				},
+			},
+			"ipv6_route_target_export_stitching": schema.SetNestedAttribute{
 				MarkdownDescription: "Export Target-VPN community",
 				Computed:            true,
 				NestedObject: schema.NestedAttributeObject{

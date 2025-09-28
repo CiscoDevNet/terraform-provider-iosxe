@@ -125,7 +125,7 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F][0-9a-fA-F]?[0-9a-fA-F]?:[0-9a-fA-F][0-9a-fA-F]?[0-9a-fA-F]?[0-9a-fA-F]?`), ""),
 				},
 			},
-			"route_target_import": schema.ListNestedAttribute{
+			"route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -144,7 +144,7 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
-			"route_target_export": schema.ListNestedAttribute{
+			"route_target_export": schema.SetNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Export Target-VPN community").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -163,7 +163,7 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
-			"ipv4_route_target_import": schema.ListNestedAttribute{
+			"ipv4_route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -178,79 +178,7 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
-			"ipv4_route_target_import_stitching": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"value": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Value").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
-							},
-						},
-						"stitching": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VXLAN route target set").AddDefaultValueDescription("true").String,
-							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
-						},
-					},
-				},
-			},
-			"ipv4_route_target_export": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Export Target-VPN community").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"value": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Value").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
-							},
-						},
-					},
-				},
-			},
-			"ipv4_route_target_export_stitching": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Export Target-VPN community").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"value": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Value").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
-							},
-						},
-						"stitching": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("VXLAN route target set").AddDefaultValueDescription("true").String,
-							Optional:            true,
-							Computed:            true,
-							Default:             booldefault.StaticBool(true),
-						},
-					},
-				},
-			},
-			"ipv6_route_target_import": schema.ListNestedAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
-				Optional:            true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"value": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Value").String,
-							Required:            true,
-							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
-							},
-						},
-					},
-				},
-			},
-			"ipv6_route_target_import_stitching": schema.ListNestedAttribute{
+			"ipv4_route_target_import_stitching": schema.SetNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -271,7 +199,7 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
-			"ipv6_route_target_export": schema.ListNestedAttribute{
+			"ipv4_route_target_export": schema.SetNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Export Target-VPN community").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
@@ -286,7 +214,79 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
-			"ipv6_route_target_export_stitching": schema.ListNestedAttribute{
+			"ipv4_route_target_export_stitching": schema.SetNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Export Target-VPN community").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"value": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Value").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
+							},
+						},
+						"stitching": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VXLAN route target set").AddDefaultValueDescription("true").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(true),
+						},
+					},
+				},
+			},
+			"ipv6_route_target_import": schema.SetNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"value": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Value").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
+							},
+						},
+					},
+				},
+			},
+			"ipv6_route_target_import_stitching": schema.SetNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"value": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Value").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
+							},
+						},
+						"stitching": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("VXLAN route target set").AddDefaultValueDescription("true").String,
+							Optional:            true,
+							Computed:            true,
+							Default:             booldefault.StaticBool(true),
+						},
+					},
+				},
+			},
+			"ipv6_route_target_export": schema.SetNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Export Target-VPN community").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"value": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Value").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]+\.[0-9]+)|([0-9]+)|((([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5]))):[0-9]+`), ""),
+							},
+						},
+					},
+				},
+			},
+			"ipv6_route_target_export_stitching": schema.SetNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Export Target-VPN community").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{

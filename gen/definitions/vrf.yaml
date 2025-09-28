@@ -17,7 +17,7 @@ attributes:
   - yang_name: vpn/id
     example: 22:22
   - yang_name: route-target/import
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -27,7 +27,7 @@ attributes:
       - yang_name: stitching
         example: false
   - yang_name: route-target/export
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -38,7 +38,7 @@ attributes:
         example: false
   - yang_name: address-family/ipv4/route-target/import-route-target/without-stitching
     tf_name: ipv4_route_target_import
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -47,7 +47,7 @@ attributes:
         id: true
   - yang_name: address-family/ipv4/route-target/import-route-target/with-stitching
     tf_name: ipv4_route_target_import_stitching
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -60,7 +60,7 @@ attributes:
         example: true
   - yang_name: address-family/ipv4/route-target/export-route-target/without-stitching
     tf_name: ipv4_route_target_export
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -69,7 +69,7 @@ attributes:
         id: true
   - yang_name: address-family/ipv4/route-target/export-route-target/with-stitching
     tf_name: ipv4_route_target_export_stitching
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -82,7 +82,7 @@ attributes:
         example: true
   - yang_name: address-family/ipv6/route-target/import-route-target/without-stitching
     tf_name: ipv6_route_target_import
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -91,7 +91,7 @@ attributes:
         id: true
   - yang_name: address-family/ipv6/route-target/import-route-target/with-stitching
     tf_name: ipv6_route_target_import_stitching
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -104,7 +104,7 @@ attributes:
         example: true
   - yang_name: address-family/ipv6/route-target/export-route-target/without-stitching
     tf_name: ipv6_route_target_export
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -113,7 +113,7 @@ attributes:
         id: true
   - yang_name: address-family/ipv6/route-target/export-route-target/with-stitching
     tf_name: ipv6_route_target_export_stitching
-    type: List
+    type: Set
     attributes:
       - yang_name: asn-ip
         tf_name: value

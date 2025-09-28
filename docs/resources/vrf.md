@@ -90,17 +90,17 @@ resource "iosxe_vrf" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) VRF specific description
 - `device` (String) A device name from the provider configuration.
-- `ipv4_route_target_export` (Attributes List) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export))
-- `ipv4_route_target_export_stitching` (Attributes List) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
-- `ipv4_route_target_import` (Attributes List) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import))
-- `ipv4_route_target_import_stitching` (Attributes List) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import_stitching))
-- `ipv6_route_target_export` (Attributes List) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_export))
-- `ipv6_route_target_export_stitching` (Attributes List) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_export_stitching))
-- `ipv6_route_target_import` (Attributes List) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import))
-- `ipv6_route_target_import_stitching` (Attributes List) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import_stitching))
+- `ipv4_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export))
+- `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
+- `ipv4_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import))
+- `ipv4_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import_stitching))
+- `ipv6_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_export))
+- `ipv6_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_export_stitching))
+- `ipv6_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import))
+- `ipv6_route_target_import_stitching` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv6_route_target_import_stitching))
 - `rd` (String) Specify Route Distinguisher
-- `route_target_export` (Attributes List) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
-- `route_target_import` (Attributes List) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
+- `route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--route_target_export))
+- `route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--route_target_import))
 - `vpn_id` (String) Configure VPN ID in rfc2685 format
 
 ### Read-Only

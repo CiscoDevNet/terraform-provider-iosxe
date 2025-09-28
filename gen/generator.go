@@ -570,14 +570,14 @@ func augmentConfig(config *YamlConfig, yangModules *yang.Modules) {
 			continue
 		}
 		parseAttribute(e, &config.Attributes[ia])
-		if config.Attributes[ia].Type == "List" {
+		if config.Attributes[ia].Type == "List" || config.Attributes[ia].Type == "Set" {
 			el := resolvePath(e, config.Attributes[ia].YangName)
 			for iaa := range config.Attributes[ia].Attributes {
 				if config.Attributes[ia].Attributes[iaa].NoAugmentConfig {
 					continue
 				}
 				parseAttribute(el, &config.Attributes[ia].Attributes[iaa])
-				if config.Attributes[ia].Attributes[iaa].Type == "List" {
+				if config.Attributes[ia].Attributes[iaa].Type == "List" || config.Attributes[ia].Attributes[iaa].Type == "Set" {
 					ell := resolvePath(el, config.Attributes[ia].Attributes[iaa].YangName)
 					for iaaa := range config.Attributes[ia].Attributes[iaa].Attributes {
 						if config.Attributes[ia].Attributes[iaa].Attributes[iaaa].NoAugmentConfig {
