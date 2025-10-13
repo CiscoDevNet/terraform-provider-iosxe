@@ -113,6 +113,10 @@ func (d *CryptoPKIDataSource) Schema(ctx context.Context, req datasource.SchemaR
 							MarkdownDescription: "Interface used as source address",
 							Computed:            true,
 						},
+						"hash": schema.StringAttribute{
+							MarkdownDescription: "Hash algorithm",
+							Computed:            true,
+						},
 					},
 				},
 			},
