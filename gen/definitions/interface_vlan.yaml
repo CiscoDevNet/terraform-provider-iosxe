@@ -140,3 +140,5 @@ test_prerequisites:
         value: VRF1
       - name: address-family/ipv4
         value: ""
+      - name: address-family/ipv6
+        value: ""

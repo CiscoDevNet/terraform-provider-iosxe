@@ -114,6 +114,7 @@ resource "iosxe_restconf" "PreReq0" {
 	attributes = {
 		"name" = "VRF1"
 		"address-family/ipv4" = ""
+		"address-family/ipv6" = ""
 	}
 }
 
