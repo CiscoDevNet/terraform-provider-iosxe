@@ -12,6 +12,7 @@ description: |-
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix issue with destroying `iosxe_interface_ethernet` resources
 - Change route target attributes of `iosxe_vrf` from type "List" to "Set"
+- Add `mac_address` attribute to `iosxe_interface_vlan` resource and data source
 
 ## 0.9.0
 
