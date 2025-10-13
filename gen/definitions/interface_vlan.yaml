@@ -131,6 +131,8 @@ attributes:
         example: true
   - yang_name: load-interval
     example: 30
+  - yang_name: mac-address
+    example: 0000.dead.beef
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

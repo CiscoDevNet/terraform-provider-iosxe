@@ -74,6 +74,7 @@ type InterfaceVLAN struct {
 	Ipv6LinkLocalAddresses       []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
 	LoadInterval                 types.Int64                           `tfsdk:"load_interval"`
+	MacAddress                   types.String                          `tfsdk:"mac_address"`
 }
 
 type InterfaceVLANData struct {
@@ -111,6 +112,7 @@ type InterfaceVLANData struct {
 	Ipv6LinkLocalAddresses       []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
 	Ipv6Addresses                []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
 	LoadInterval                 types.Int64                           `tfsdk:"load_interval"`
+	MacAddress                   types.String                          `tfsdk:"mac_address"`
 }
 type InterfaceVLANHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -255,6 +257,9 @@ func (data InterfaceVLAN) toBody(ctx context.Context) string {
 	}
 	if !data.LoadInterval.IsNull() && !data.LoadInterval.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"load-interval", strconv.FormatInt(data.LoadInterval.ValueInt64(), 10))
+	}
+	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mac-address", data.MacAddress.ValueString())
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -614,6 +619,11 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.LoadInterval = types.Int64Null()
 	}
+	if value := res.Get(prefix + "mac-address"); value.Exists() && !data.MacAddress.IsNull() {
+		data.MacAddress = types.StringValue(value.String())
+	} else {
+		data.MacAddress = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -785,6 +795,9 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "load-interval"); value.Exists() {
 		data.LoadInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "mac-address"); value.Exists() {
+		data.MacAddress = types.StringValue(value.String())
 	}
 }
 
@@ -958,6 +971,9 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "load-interval"); value.Exists() {
 		data.LoadInterval = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "mac-address"); value.Exists() {
+		data.MacAddress = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -966,6 +982,9 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceVLAN) []string {
 	deletedItems := make([]string, 0)
+	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac-address", state.getPath()))
+	}
 	if !state.LoadInterval.IsNull() && data.LoadInterval.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/load-interval", state.getPath()))
 	}
@@ -1199,6 +1218,9 @@ func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.MacAddress.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac-address", data.getPath()))
+	}
 	if !data.LoadInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/load-interval", data.getPath()))
 	}
