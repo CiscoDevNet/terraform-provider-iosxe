@@ -204,9 +204,17 @@ resource "iosxe_system" "example" {
 - `standby_redirects` (Boolean)
 - `standby_redirects_enable_disable` (String) - Choices: `disable`, `enable`
 - `subscriber_templating` (Boolean) Configure subscriber templating
+- `tftp_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `tftp_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `tftp_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `tftp_source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
 - `tftp_source_interface_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
+- `tftp_source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `tftp_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `tftp_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `tftp_source_interface_vlan` (Number) Iosxr Vlans
+  - Range: `0`-`65535`
 - `track_objects` (Attributes List) (see [below for nested schema](#nestedatt--track_objects))
 - `transceiver_type_all_monitoring` (Boolean) Enable/disable monitoring
 - `version` (String) Version
