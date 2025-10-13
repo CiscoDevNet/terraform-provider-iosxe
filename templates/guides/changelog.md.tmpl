@@ -12,6 +12,7 @@ description: |-
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix issue with destroying `iosxe_interface_ethernet` resources
 - Change route target attributes of `iosxe_vrf` from type "List" to "Set"
+- Add `snooping_information_option`, `snooping_information_option_allow_untrusted`, and `snooping_information_option_format_remote_id_string` attributes to `iosxe_dhcp` and `iosxe_dhcp` resources and data sources
 
 ## 0.9.0
 
