@@ -149,6 +149,13 @@ type System struct {
 	IpFtpPassive                                           types.Bool                                          `tfsdk:"ip_ftp_passive"`
 	TftpSourceInterfaceGigabitEthernet                     types.String                                        `tfsdk:"tftp_source_interface_gigabit_ethernet"`
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
+	TftpSourceInterfaceVlan                                types.Int64                                         `tfsdk:"tftp_source_interface_vlan"`
+	TftpSourceInterfaceTwoGigabitEthernet                  types.String                                        `tfsdk:"tftp_source_interface_two_gigabit_ethernet"`
+	TftpSourceInterfaceFiveGigabitEthernet                 types.String                                        `tfsdk:"tftp_source_interface_five_gigabit_ethernet"`
+	TftpSourceInterfaceTenGigabitEthernet                  types.String                                        `tfsdk:"tftp_source_interface_ten_gigabit_ethernet"`
+	TftpSourceInterfaceTwentyFiveGigabitEthernet           types.String                                        `tfsdk:"tftp_source_interface_twenty_five_gigabit_ethernet"`
+	TftpSourceInterfaceFortyGigabitEthernet                types.String                                        `tfsdk:"tftp_source_interface_forty_gigabit_ethernet"`
+	TftpSourceInterfaceHundredGigabitEthernet              types.String                                        `tfsdk:"tftp_source_interface_hundred_gigabit_ethernet"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
 	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
@@ -276,6 +283,13 @@ type SystemData struct {
 	IpFtpPassive                                           types.Bool                                          `tfsdk:"ip_ftp_passive"`
 	TftpSourceInterfaceGigabitEthernet                     types.String                                        `tfsdk:"tftp_source_interface_gigabit_ethernet"`
 	TftpSourceInterfaceLoopback                            types.Int64                                         `tfsdk:"tftp_source_interface_loopback"`
+	TftpSourceInterfaceVlan                                types.Int64                                         `tfsdk:"tftp_source_interface_vlan"`
+	TftpSourceInterfaceTwoGigabitEthernet                  types.String                                        `tfsdk:"tftp_source_interface_two_gigabit_ethernet"`
+	TftpSourceInterfaceFiveGigabitEthernet                 types.String                                        `tfsdk:"tftp_source_interface_five_gigabit_ethernet"`
+	TftpSourceInterfaceTenGigabitEthernet                  types.String                                        `tfsdk:"tftp_source_interface_ten_gigabit_ethernet"`
+	TftpSourceInterfaceTwentyFiveGigabitEthernet           types.String                                        `tfsdk:"tftp_source_interface_twenty_five_gigabit_ethernet"`
+	TftpSourceInterfaceFortyGigabitEthernet                types.String                                        `tfsdk:"tftp_source_interface_forty_gigabit_ethernet"`
+	TftpSourceInterfaceHundredGigabitEthernet              types.String                                        `tfsdk:"tftp_source_interface_hundred_gigabit_ethernet"`
 	MultilinkPppBundleName                                 types.String                                        `tfsdk:"multilink_ppp_bundle_name"`
 	Version                                                types.String                                        `tfsdk:"version"`
 	TrackObjects                                           []SystemTrackObjects                                `tfsdk:"track_objects"`
@@ -704,6 +718,27 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.TftpSourceInterfaceLoopback.IsNull() && !data.TftpSourceInterfaceLoopback.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.Loopback", strconv.FormatInt(data.TftpSourceInterfaceLoopback.ValueInt64(), 10))
+	}
+	if !data.TftpSourceInterfaceVlan.IsNull() && !data.TftpSourceInterfaceVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.Vlan", strconv.FormatInt(data.TftpSourceInterfaceVlan.ValueInt64(), 10))
+	}
+	if !data.TftpSourceInterfaceTwoGigabitEthernet.IsNull() && !data.TftpSourceInterfaceTwoGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.TwoGigabitEthernet", data.TftpSourceInterfaceTwoGigabitEthernet.ValueString())
+	}
+	if !data.TftpSourceInterfaceFiveGigabitEthernet.IsNull() && !data.TftpSourceInterfaceFiveGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.FiveGigabitEthernet", data.TftpSourceInterfaceFiveGigabitEthernet.ValueString())
+	}
+	if !data.TftpSourceInterfaceTenGigabitEthernet.IsNull() && !data.TftpSourceInterfaceTenGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.TenGigabitEthernet", data.TftpSourceInterfaceTenGigabitEthernet.ValueString())
+	}
+	if !data.TftpSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && !data.TftpSourceInterfaceTwentyFiveGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.TwentyFiveGigabitEthernet", data.TftpSourceInterfaceTwentyFiveGigabitEthernet.ValueString())
+	}
+	if !data.TftpSourceInterfaceFortyGigabitEthernet.IsNull() && !data.TftpSourceInterfaceFortyGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.FortyGigabitEthernet", data.TftpSourceInterfaceFortyGigabitEthernet.ValueString())
+	}
+	if !data.TftpSourceInterfaceHundredGigabitEthernet.IsNull() && !data.TftpSourceInterfaceHundredGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.tftp.source-interface.HundredGigE", data.TftpSourceInterfaceHundredGigabitEthernet.ValueString())
 	}
 	if !data.MultilinkPppBundleName.IsNull() && !data.MultilinkPppBundleName.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"multilink.Cisco-IOS-XE-ppp:bundle-name", data.MultilinkPppBundleName.ValueString())
@@ -1763,6 +1798,41 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.TftpSourceInterfaceLoopback = types.Int64Null()
 	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.Vlan"); value.Exists() && !data.TftpSourceInterfaceVlan.IsNull() {
+		data.TftpSourceInterfaceVlan = types.Int64Value(value.Int())
+	} else {
+		data.TftpSourceInterfaceVlan = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TwoGigabitEthernet"); value.Exists() && !data.TftpSourceInterfaceTwoGigabitEthernet.IsNull() {
+		data.TftpSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.TftpSourceInterfaceTwoGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.FiveGigabitEthernet"); value.Exists() && !data.TftpSourceInterfaceFiveGigabitEthernet.IsNull() {
+		data.TftpSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.TftpSourceInterfaceFiveGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TenGigabitEthernet"); value.Exists() && !data.TftpSourceInterfaceTenGigabitEthernet.IsNull() {
+		data.TftpSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.TftpSourceInterfaceTenGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TwentyFiveGigabitEthernet"); value.Exists() && !data.TftpSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		data.TftpSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.TftpSourceInterfaceTwentyFiveGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.FortyGigabitEthernet"); value.Exists() && !data.TftpSourceInterfaceFortyGigabitEthernet.IsNull() {
+		data.TftpSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.TftpSourceInterfaceFortyGigabitEthernet = types.StringNull()
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.HundredGigE"); value.Exists() && !data.TftpSourceInterfaceHundredGigabitEthernet.IsNull() {
+		data.TftpSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	} else {
+		data.TftpSourceInterfaceHundredGigabitEthernet = types.StringNull()
+	}
 	if value := res.Get(prefix + "multilink.Cisco-IOS-XE-ppp:bundle-name"); value.Exists() && !data.MultilinkPppBundleName.IsNull() {
 		data.MultilinkPppBundleName = types.StringValue(value.String())
 	} else {
@@ -2370,6 +2440,27 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.tftp.source-interface.Loopback"); value.Exists() {
 		data.TftpSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.Vlan"); value.Exists() {
+		data.TftpSourceInterfaceVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TwoGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.FiveGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TenGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TwentyFiveGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.FortyGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.HundredGigE"); value.Exists() {
+		data.TftpSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "multilink.Cisco-IOS-XE-ppp:bundle-name"); value.Exists() {
 		data.MultilinkPppBundleName = types.StringValue(value.String())
 	}
@@ -2931,6 +3022,27 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.tftp.source-interface.Loopback"); value.Exists() {
 		data.TftpSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.Vlan"); value.Exists() {
+		data.TftpSourceInterfaceVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TwoGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceTwoGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.FiveGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TenGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceTenGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.TwentyFiveGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceTwentyFiveGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.FortyGigabitEthernet"); value.Exists() {
+		data.TftpSourceInterfaceFortyGigabitEthernet = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.tftp.source-interface.HundredGigE"); value.Exists() {
+		data.TftpSourceInterfaceHundredGigabitEthernet = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "multilink.Cisco-IOS-XE-ppp:bundle-name"); value.Exists() {
 		data.MultilinkPppBundleName = types.StringValue(value.String())
 	}
@@ -3084,6 +3196,27 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 	}
 	if !state.MultilinkPppBundleName.IsNull() && data.MultilinkPppBundleName.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/multilink/Cisco-IOS-XE-ppp:bundle-name", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceHundredGigabitEthernet.IsNull() && data.TftpSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/HundredGigE", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceFortyGigabitEthernet.IsNull() && data.TftpSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/FortyGigabitEthernet", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceTwentyFiveGigabitEthernet.IsNull() && data.TftpSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/TwentyFiveGigabitEthernet", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceTenGigabitEthernet.IsNull() && data.TftpSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/TenGigabitEthernet", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceFiveGigabitEthernet.IsNull() && data.TftpSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/FiveGigabitEthernet", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceTwoGigabitEthernet.IsNull() && data.TftpSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/TwoGigabitEthernet", state.getPath()))
+	}
+	if !state.TftpSourceInterfaceVlan.IsNull() && data.TftpSourceInterfaceVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/Vlan", state.getPath()))
 	}
 	if !state.TftpSourceInterfaceLoopback.IsNull() && data.TftpSourceInterfaceLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/tftp/source-interface/Loopback", state.getPath()))
@@ -3843,6 +3976,27 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.MultilinkPppBundleName.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/multilink/Cisco-IOS-XE-ppp:bundle-name", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceHundredGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/HundredGigE", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceFortyGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/FortyGigabitEthernet", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceTwentyFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/TwentyFiveGigabitEthernet", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceTenGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/TenGigabitEthernet", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceFiveGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/FiveGigabitEthernet", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceTwoGigabitEthernet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/TwoGigabitEthernet", data.getPath()))
+	}
+	if !data.TftpSourceInterfaceVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/Vlan", data.getPath()))
 	}
 	if !data.TftpSourceInterfaceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/tftp/source-interface/Loopback", data.getPath()))

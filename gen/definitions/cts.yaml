@@ -80,6 +80,9 @@ attributes:
   - yang_name: Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time
     tf_name: sxp_listener_hold_max_time
     example: 300
+  - yang_name: Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement
+    tf_name: role_based_enforcement
+    example: true
   - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/logging-interval
     example: 300
   - yang_name: Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists
