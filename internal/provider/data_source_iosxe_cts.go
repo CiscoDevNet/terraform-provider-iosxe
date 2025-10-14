@@ -182,6 +182,10 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Enter maximum allowed Hold Time in seconds",
 				Computed:            true,
 			},
+			"role_based_enforcement": schema.BoolAttribute{
+				MarkdownDescription: "Enable Role-based Access Control enforcement",
+				Computed:            true,
+			},
 			"role_based_enforcement_logging_interval": schema.Int64Attribute{
 				MarkdownDescription: "Configure sgacl logging interval",
 				Computed:            true,

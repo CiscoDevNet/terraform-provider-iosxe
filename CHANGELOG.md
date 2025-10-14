@@ -3,7 +3,9 @@
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix issue with destroying `iosxe_interface_ethernet` resources
 - Change route target attributes of `iosxe_vrf` from type "List" to "Set"
-- Add `hash` attribute to `iosxe_crypto_pki` and `iosxe_crypto_pki` resources and data sources
+- Add `role_based_enforcement` attributes to `iosxe_cts` 
+- Add `tftp_source_interface_*` attributes to `iosxe_system` resources and data sources
+- Add `hash` attribute to `iosxe_crypto_pki` resources and data sources
 
 ## 0.9.0
 
