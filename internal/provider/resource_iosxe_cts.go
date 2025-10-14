@@ -267,6 +267,10 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					int64validator.Between(1, 65534),
 				},
 			},
+			"role_based_enforcement": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Role-based Access Control enforcement").String,
+				Optional:            true,
+			},
 			"role_based_enforcement_logging_interval": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure sgacl logging interval").AddIntegerRangeDescription(5, 86400).String,
 				Optional:            true,

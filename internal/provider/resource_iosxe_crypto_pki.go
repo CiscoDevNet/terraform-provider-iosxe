@@ -133,6 +133,13 @@ func (r *CryptoPKIResource) Schema(ctx context.Context, req resource.SchemaReque
 							MarkdownDescription: helpers.NewAttributeDescription("Interface used as source address").String,
 							Optional:            true,
 						},
+						"hash": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Hash algorithm").AddStringEnumDescription("md5", "sha1", "sha256", "sha384", "sha512").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.OneOf("md5", "sha1", "sha256", "sha384", "sha512"),
+							},
+						},
 					},
 				},
 			},
