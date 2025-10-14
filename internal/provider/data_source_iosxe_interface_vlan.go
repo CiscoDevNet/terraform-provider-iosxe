@@ -235,6 +235,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Specify interval for load calculation for an interface",
 				Computed:            true,
 			},
+			"mac_address": schema.StringAttribute{
+				MarkdownDescription: "Manually set interface MAC address",
+				Computed:            true,
+			},
 		},
 	}
 }

@@ -16,6 +16,7 @@ description: |-
 - Add `tftp_source_interface_*` attributes to `iosxe_system` resources and data sources
 - Add `hash` attribute to `iosxe_crypto_pki` resources and data sources
 - Add `snooping_information_option`, `snooping_information_option_allow_untrusted` and `snooping_information_option_format_remote_id_string` attributes to `iosxe_dhcp` resource and data source
+- Add `mac_address` attribute to `iosxe_interface_vlan` resource and data source
 
 ## 0.9.0
 

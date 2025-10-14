@@ -298,6 +298,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 					int64validator.Between(30, 600),
 				},
 			},
+			"mac_address": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Manually set interface MAC address").String,
+				Optional:            true,
+			},
 		},
 	}
 }

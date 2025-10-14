@@ -56,6 +56,7 @@ resource "iosxe_interface_vlan" "example" {
     }
   ]
   load_interval = 30
+  mac_address   = "0000.dead.beef"
 }
 ```
 
@@ -103,6 +104,7 @@ resource "iosxe_interface_vlan" "example" {
 - `ipv6_nd_ra_suppress_all` (Boolean) Suppress all IPv6 RA
 - `load_interval` (Number) Specify interval for load calculation for an interface
   - Range: `30`-`600`
+- `mac_address` (String) Manually set interface MAC address
 - `shutdown` (Boolean) Shutdown the selected interface
 - `unnumbered` (String) Enable IP processing without an explicit address
 - `vrf_forwarding` (String) Configure forwarding table

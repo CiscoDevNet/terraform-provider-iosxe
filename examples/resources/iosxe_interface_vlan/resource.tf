@@ -41,4 +41,5 @@ resource "iosxe_interface_vlan" "example" {
     }
   ]
   load_interval = 30
+  mac_address   = "0000.dead.beef"
 }
