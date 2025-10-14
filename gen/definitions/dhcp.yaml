@@ -20,6 +20,18 @@ attributes:
     example: true
   - yang_name: Cisco-IOS-XE-dhcp:snooping
     example: true
+  - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/option
+    tf_name: snooping_information_option
+    example: true
+  - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted
+    xpath: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/allow-untrusted
+    tf_name: snooping_information_option_allow_untrusted
+    example: true
+  - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/remote-id-choice/string/string
+    xpath: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/string
+    tf_name: snooping_information_option_format_remote_id_string
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/remote-id-choice/hostname/hostname
     xpath: Cisco-IOS-XE-dhcp:snooping-conf/snooping/information/options/option/format/remote-id/hostname
     tf_name: snooping_information_option_format_remote_id_hostname

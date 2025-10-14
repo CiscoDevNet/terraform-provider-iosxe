@@ -39,6 +39,8 @@ func TestAccIosxeDHCP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_information_option_default", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "relay_information_option_vpn", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping_information_option", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping_information_option_allow_untrusted", "true"))
 	if os.Getenv("IOSXE1712") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_dhcp.test", "snooping_vlans_legacy.0.vlan_id", "3-4"))
 	}
@@ -102,6 +104,8 @@ func testAccIosxeDHCPConfig_all() string {
 	config += `	relay_information_option_default = false` + "\n"
 	config += `	relay_information_option_vpn = true` + "\n"
 	config += `	snooping = true` + "\n"
+	config += `	snooping_information_option = true` + "\n"
+	config += `	snooping_information_option_allow_untrusted = true` + "\n"
 	if os.Getenv("IOSXE1712") != "" {
 		config += `	snooping_vlans_legacy = [{` + "\n"
 		config += `		vlan_id = "3-4"` + "\n"
