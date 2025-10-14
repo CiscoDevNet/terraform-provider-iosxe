@@ -19,6 +19,7 @@ resource "iosxe_crypto_pki" "example" {
       id                = "trustpoint1"
       enrollment_pkcs12 = true
       revocation_check  = ["none"]
+      hash              = "sha256"
     }
   ]
 }
@@ -51,6 +52,8 @@ Optional:
 - `enrollment_pkcs12` (Boolean) Enroll via pkcs12
 - `enrollment_selfsigned` (Boolean) Generate a Self Signed Certificate
 - `enrollment_terminal` (Boolean) Enroll via the terminal (cut-and-paste)
+- `hash` (String) Hash algorithm
+  - Choices: `md5`, `sha1`, `sha256`, `sha384`, `sha512`
 - `revocation_check` (List of String) Revocation checking options
 - `rsakeypair` (String) RSA keypair label
 - `source_interface` (String) Interface used as source address

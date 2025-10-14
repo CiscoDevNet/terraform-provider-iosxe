@@ -43,3 +43,5 @@ attributes:
       - yang_name: source/interface
         example: Loopback0
         exclude_test: true
+      - yang_name: hash
+        example: sha256

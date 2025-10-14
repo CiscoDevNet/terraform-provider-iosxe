@@ -38,6 +38,7 @@ Read-Only:
 - `enrollment_pkcs12` (Boolean) Enroll via pkcs12
 - `enrollment_selfsigned` (Boolean) Generate a Self Signed Certificate
 - `enrollment_terminal` (Boolean) Enroll via the terminal (cut-and-paste)
+- `hash` (String) Hash algorithm
 - `id` (String)
 - `revocation_check` (List of String) Revocation checking options
 - `rsakeypair` (String) RSA keypair label

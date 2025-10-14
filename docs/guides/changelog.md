@@ -14,6 +14,7 @@ description: |-
 - Change route target attributes of `iosxe_vrf` from type "List" to "Set"
 - Add `role_based_enforcement` attributes to `iosxe_cts` 
 - Add `tftp_source_interface_*` attributes to `iosxe_system` resources and data sources
+- Add `hash` attribute to `iosxe_crypto_pki` resources and data sources
 
 ## 0.9.0
 
