@@ -46,6 +46,7 @@ resource "iosxe_cts" "example" {
   sxp_speaker_hold_time                   = 300
   sxp_listener_hold_min_time              = 60
   sxp_listener_hold_max_time              = 300
+  role_based_enforcement                  = true
   role_based_enforcement_logging_interval = 300
 }
 ```
@@ -59,6 +60,7 @@ resource "iosxe_cts" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `role_based_enforcement` (Boolean) Enable Role-based Access Control enforcement
 - `role_based_enforcement_logging_interval` (Number) Configure sgacl logging interval
   - Range: `5`-`86400`
 - `role_based_enforcement_vlan_lists` (List of Number) VLANs on which Role-based ACLs are enforced

@@ -52,6 +52,7 @@ type CTS struct {
 	SxpSpeakerHoldTime                  types.Int64                    `tfsdk:"sxp_speaker_hold_time"`
 	SxpListenerHoldMinTime              types.Int64                    `tfsdk:"sxp_listener_hold_min_time"`
 	SxpListenerHoldMaxTime              types.Int64                    `tfsdk:"sxp_listener_hold_max_time"`
+	RoleBasedEnforcement                types.Bool                     `tfsdk:"role_based_enforcement"`
 	RoleBasedEnforcementLoggingInterval types.Int64                    `tfsdk:"role_based_enforcement_logging_interval"`
 	RoleBasedEnforcementVlanLists       types.List                     `tfsdk:"role_based_enforcement_vlan_lists"`
 	RoleBasedPermissionsDefaultAclName  types.List                     `tfsdk:"role_based_permissions_default_acl_name"`
@@ -71,6 +72,7 @@ type CTSData struct {
 	SxpSpeakerHoldTime                  types.Int64                    `tfsdk:"sxp_speaker_hold_time"`
 	SxpListenerHoldMinTime              types.Int64                    `tfsdk:"sxp_listener_hold_min_time"`
 	SxpListenerHoldMaxTime              types.Int64                    `tfsdk:"sxp_listener_hold_max_time"`
+	RoleBasedEnforcement                types.Bool                     `tfsdk:"role_based_enforcement"`
 	RoleBasedEnforcementLoggingInterval types.Int64                    `tfsdk:"role_based_enforcement_logging_interval"`
 	RoleBasedEnforcementVlanLists       types.List                     `tfsdk:"role_based_enforcement_vlan_lists"`
 	RoleBasedPermissionsDefaultAclName  types.List                     `tfsdk:"role_based_permissions_default_acl_name"`
@@ -150,6 +152,11 @@ func (data CTS) toBody(ctx context.Context) string {
 	}
 	if !data.SxpListenerHoldMaxTime.IsNull() && !data.SxpListenerHoldMaxTime.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.listener.hold-time.max-time", strconv.FormatInt(data.SxpListenerHoldMaxTime.ValueInt64(), 10))
+	}
+	if !data.RoleBasedEnforcement.IsNull() && !data.RoleBasedEnforcement.IsUnknown() {
+		if data.RoleBasedEnforcement.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:role-based.enforcement-only.enforcement", map[string]string{})
+		}
 	}
 	if !data.RoleBasedEnforcementLoggingInterval.IsNull() && !data.RoleBasedEnforcementLoggingInterval.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:role-based.enforcement.logging-interval", strconv.FormatInt(data.RoleBasedEnforcementLoggingInterval.ValueInt64(), 10))
@@ -381,6 +388,15 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.SxpListenerHoldMaxTime = types.Int64Null()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement-only.enforcement"); !data.RoleBasedEnforcement.IsNull() {
+		if value.Exists() {
+			data.RoleBasedEnforcement = types.BoolValue(true)
+		} else {
+			data.RoleBasedEnforcement = types.BoolValue(false)
+		}
+	} else {
+		data.RoleBasedEnforcement = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.logging-interval"); value.Exists() && !data.RoleBasedEnforcementLoggingInterval.IsNull() {
 		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
 	} else {
@@ -497,6 +513,11 @@ func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.listener.hold-time.max-time"); value.Exists() {
 		data.SxpListenerHoldMaxTime = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement-only.enforcement"); value.Exists() {
+		data.RoleBasedEnforcement = types.BoolValue(true)
+	} else {
+		data.RoleBasedEnforcement = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.logging-interval"); value.Exists() {
 		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
 	}
@@ -611,6 +632,11 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:sxp.listener.hold-time.max-time"); value.Exists() {
 		data.SxpListenerHoldMaxTime = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement-only.enforcement"); value.Exists() {
+		data.RoleBasedEnforcement = types.BoolValue(true)
+	} else {
+		data.RoleBasedEnforcement = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-cts:role-based.enforcement.logging-interval"); value.Exists() {
 		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
 	}
@@ -676,6 +702,9 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 	}
 	if !state.RoleBasedEnforcementLoggingInterval.IsNull() && data.RoleBasedEnforcementLoggingInterval.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval", state.getPath()))
+	}
+	if !state.RoleBasedEnforcement.IsNull() && data.RoleBasedEnforcement.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement", state.getPath()))
 	}
 	if !state.SxpListenerHoldMaxTime.IsNull() && data.SxpListenerHoldMaxTime.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time", state.getPath()))
@@ -806,6 +835,9 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 
 func (data *CTS) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.RoleBasedEnforcement.IsNull() && !data.RoleBasedEnforcement.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement", data.getPath()))
+	}
 
 	return emptyLeafsDelete
 }
@@ -824,6 +856,9 @@ func (data *CTS) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.RoleBasedEnforcementLoggingInterval.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval", data.getPath()))
+	}
+	if !data.RoleBasedEnforcement.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement", data.getPath()))
 	}
 	if !data.SxpListenerHoldMaxTime.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time", data.getPath()))

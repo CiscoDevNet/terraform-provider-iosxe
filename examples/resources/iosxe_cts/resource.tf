@@ -31,5 +31,6 @@ resource "iosxe_cts" "example" {
   sxp_speaker_hold_time                   = 300
   sxp_listener_hold_min_time              = 60
   sxp_listener_hold_max_time              = 300
+  role_based_enforcement                  = true
   role_based_enforcement_logging_interval = 300
 }

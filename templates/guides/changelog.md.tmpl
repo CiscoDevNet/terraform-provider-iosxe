@@ -12,7 +12,8 @@ description: |-
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix issue with destroying `iosxe_interface_ethernet` resources
 - Change route target attributes of `iosxe_vrf` from type "List" to "Set"
-- Add `tftp_source_interface_vlan`, `tftp_source_interface_two_gigabit_ethernet`, `tftp_source_interface_five_gigabit_ethernet`, tftp_source_interface_ten_gigabit_ethernet`, tftp_source_interface_twenty_five_gigabit_ethernet`, tftp_source_interface_forty_gigabit_ethernet`, tftp_source_interface_hundred_gigabit_ethernet`,  attributes to `iosxe_system`resources and data sources
+- Add `role_based_enforcement` attributes to `iosxe_cts` 
+- Add `tftp_source_interface_*` attributes to `iosxe_system` resources and data sources
 
 ## 0.9.0
 
