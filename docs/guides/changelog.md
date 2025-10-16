@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.9.3 (unreleased)
+## 0.9.3
 
 - Extend list of transient error patterns
 
