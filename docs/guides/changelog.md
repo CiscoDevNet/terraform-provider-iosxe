@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 0.9.2
+
+- Enhance database synchronization detection
+
 ## 0.9.1
 
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
