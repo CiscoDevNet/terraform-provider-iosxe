@@ -1,7 +1,6 @@
 ---
 name: NTP
 path: Cisco-IOS-XE-native:native/ntp
-wait: true
 doc_category: System
 attributes:
   - yang_name: Cisco-IOS-XE-ntp:authenticate
