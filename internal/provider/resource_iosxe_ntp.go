@@ -471,22 +471,22 @@ func (r *NTPResource) Create(ctx context.Context, req resource.CreateRequest, re
 			for _, i := range emptyLeafsDelete {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
-			_, err := device.Client.YangPatchData("", "1", "", edits, restconf.Wait)
+			_, err := device.Client.YangPatchData("", "1", "", edits)
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object, got error: %s", err))
 				return
 			}
 		} else {
-			res, err := device.Client.PatchData(plan.getPathShort(), body, restconf.Wait)
+			res, err := device.Client.PatchData(plan.getPathShort(), body)
 			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-				_, err = device.Client.PutData(plan.getPath(), body, restconf.Wait)
+				_, err = device.Client.PutData(plan.getPath(), body)
 			}
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
-				res, err := device.Client.DeleteData(i, restconf.Wait)
+				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
@@ -606,29 +606,29 @@ func (r *NTPResource) Update(ctx context.Context, req resource.UpdateRequest, re
 			for _, i := range emptyLeafsDelete {
 				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 			}
-			_, err := device.Client.YangPatchData("", "1", "", edits, restconf.Wait)
+			_, err := device.Client.YangPatchData("", "1", "", edits)
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update object, got error: %s", err))
 				return
 			}
 		} else {
 			for _, i := range deletedItems {
-				res, err := device.Client.DeleteData(i, restconf.Wait)
+				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
 				}
 			}
-			res, err := device.Client.PatchData(plan.getPathShort(), body, restconf.Wait)
+			res, err := device.Client.PatchData(plan.getPathShort(), body)
 			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-				_, err = device.Client.PutData(plan.getPath(), body, restconf.Wait)
+				_, err = device.Client.PutData(plan.getPath(), body)
 			}
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
 				return
 			}
 			for _, i := range emptyLeafsDelete {
-				res, err := device.Client.DeleteData(i, restconf.Wait)
+				res, err := device.Client.DeleteData(i)
 				if err != nil && res.StatusCode != 404 {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					return
@@ -674,7 +674,7 @@ func (r *NTPResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		}
 
 		if deleteMode == "all" {
-			res, err := device.Client.DeleteData(state.Id.ValueString(), restconf.Wait)
+			res, err := device.Client.DeleteData(state.Id.ValueString())
 			if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
 				return
@@ -688,14 +688,14 @@ func (r *NTPResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 				for _, i := range deletePaths {
 					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 				}
-				_, err := device.Client.YangPatchData("", "1", "", edits, restconf.Wait)
+				_, err := device.Client.YangPatchData("", "1", "", edits)
 				if err != nil {
 					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
 					return
 				}
 			} else {
 				for _, i := range deletePaths {
-					res, err := device.Client.DeleteData(i, restconf.Wait)
+					res, err := device.Client.DeleteData(i)
 					if err != nil && res.StatusCode != 404 {
 						resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
 					}
