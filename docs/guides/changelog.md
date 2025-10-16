@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 0.9.3 (unreleased)
+
+- Extend list of transient error patterns
+
 ## 0.9.2
 
 - Enhance database synchronization detection
