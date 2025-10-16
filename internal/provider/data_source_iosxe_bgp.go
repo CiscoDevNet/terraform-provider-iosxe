@@ -83,6 +83,10 @@ func (d *BGPDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},
+			"router_id_ip": schema.StringAttribute{
+				MarkdownDescription: "Manually configured router identifier",
+				Computed:            true,
+			},
 		},
 	}
 }

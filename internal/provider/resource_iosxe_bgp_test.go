@@ -38,6 +38,7 @@ func TestAccIosxeBGP(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "default_ipv4_unicast", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "log_neighbor_changes", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "router_id_loopback", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp.test", "router_id_ip", "172.16.255.1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -111,6 +112,7 @@ func testAccIosxeBGPConfig_all() string {
 	config += `	default_ipv4_unicast = false` + "\n"
 	config += `	log_neighbor_changes = true` + "\n"
 	config += `	router_id_loopback = 100` + "\n"
+	config += `	router_id_ip = "172.16.255.1"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

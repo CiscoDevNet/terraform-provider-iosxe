@@ -18,6 +18,7 @@ resource "iosxe_bgp" "example" {
   default_ipv4_unicast = false
   log_neighbor_changes = true
   router_id_loopback   = 100
+  router_id_ip         = "172.16.255.1"
 }
 ```
 
@@ -35,6 +36,7 @@ resource "iosxe_bgp" "example" {
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
 - `log_neighbor_changes` (Boolean) Log neighbor up/down and reset reason
+- `router_id_ip` (String) Manually configured router identifier
 - `router_id_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 

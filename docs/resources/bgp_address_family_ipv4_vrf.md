@@ -22,6 +22,7 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
       ipv4_unicast_advertise_l2vpn_evpn   = true
       ipv4_unicast_redistribute_connected = true
       ipv4_unicast_router_id_loopback     = 101
+      ipv4_unicast_router_id_ip           = "10.1.1.1"
       ipv4_unicast_aggregate_addresses = [
         {
           ipv4_address = "50.0.0.0"
@@ -97,6 +98,7 @@ Optional:
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
 - `ipv4_unicast_redistribute_static` (Boolean) Static routes
+- `ipv4_unicast_router_id_ip` (String) Manually configured router identifier
 - `ipv4_unicast_router_id_loopback` (Number) Loopback interface
   - Range: `0`-`2147483647`
 
