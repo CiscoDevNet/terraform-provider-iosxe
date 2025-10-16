@@ -7,7 +7,7 @@ description: |-
 
 # Changelog
 
-## 0.10.0 (unreleased)
+## 0.9.1
 
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix issue with destroying `iosxe_interface_ethernet` resources
