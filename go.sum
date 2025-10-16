@@ -168,8 +168,8 @@ github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RR
 github.com/mitchellh/reflectwalk v1.0.0/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
 github.com/mitchellh/reflectwalk v1.0.2 h1:G2LzWKi524PWgd3mLHV8Y5k7s6XUvT0Gef6zxSIeXaQ=
 github.com/mitchellh/reflectwalk v1.0.2/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
-github.com/netascode/go-restconf v0.1.16 h1:f0H2zH1ye2oaogVrfvlAO98zcRVbEAAmO0UWgee+kSs=
-github.com/netascode/go-restconf v0.1.16/go.mod h1:BbFhcp/T59u2AWNN6sxUH0iq4pbkMSK/C//yemPT91c=
+github.com/netascode/go-restconf v0.1.17 h1:ZCCAmR+2NzVnQKBnHv5A7gISBaht70wW2rl96/T1p+0=
+github.com/netascode/go-restconf v0.1.17/go.mod h1:BbFhcp/T59u2AWNN6sxUH0iq4pbkMSK/C//yemPT91c=
 github.com/oklog/run v1.2.0 h1:O8x3yXwah4A73hJdlrwo/2X6J62gE5qTMusH0dvz60E=
 github.com/oklog/run v1.2.0/go.mod h1:mgDbKRSwPhJfesJ4PntqFUbKQRZ50NgmZTSPlFA0YFk=
 github.com/openconfig/gnmi v0.14.1 h1:qKMuFvhIRR2/xxCOsStPQ25aKpbMDdWr3kI+nP9bhMs=
