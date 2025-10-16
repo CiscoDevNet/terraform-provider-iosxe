@@ -85,6 +85,10 @@ func (r *SpanningTreeResource) Schema(ctx context.Context, req resource.SchemaRe
 					stringvalidator.OneOf("mst", "pvst", "rapid-pvst"),
 				},
 			},
+			"logging": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable Spanning tree logging").String,
+				Optional:            true,
+			},
 			"loopguard_default": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Enable loopguard by default on all ports").String,
 				Optional:            true,
@@ -117,6 +121,25 @@ func (r *SpanningTreeResource) Schema(ctx context.Context, req resource.SchemaRe
 							MarkdownDescription: helpers.NewAttributeDescription("Range of vlans to add to the instance mapping").String,
 							ElementType:         types.Int64Type,
 							Optional:            true,
+						},
+					},
+				},
+			},
+			"vlans": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("VLAN Switch Spanning Tree").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"id": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").String,
+							Required:            true,
+						},
+						"priority": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Set the bridge priority for the spanning tree").AddIntegerRangeDescription(0, 61440).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(0, 61440),
+							},
 						},
 					},
 				},
