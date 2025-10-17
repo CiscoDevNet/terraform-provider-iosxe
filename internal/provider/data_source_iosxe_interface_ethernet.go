@@ -507,6 +507,42 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Obtain re-authentication timeout value from the server",
 				Computed:            true,
 			},
+			"authentication_event_server_alive_action_reinitialize": schema.BoolAttribute{
+				MarkdownDescription: "Reinitialize all authorized clients",
+				Computed:            true,
+			},
+			"authentication_event_server_dead_action_authorize": schema.BoolAttribute{
+				MarkdownDescription: "Authorize the port",
+				Computed:            true,
+			},
+			"authentication_event_server_dead_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Configure Critical Authorization VLAN",
+				Computed:            true,
+			},
+			"authentication_event_server_dead_action_authorize_voice": schema.BoolAttribute{
+				MarkdownDescription: "Authorize the port for VOICE traffic",
+				Computed:            true,
+			},
+			"authentication_event_server_dead_action_reinitialize_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Configure Critical Authorization VLAN",
+				Computed:            true,
+			},
+			"authentication_event_fail_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Configure Authentication Fail vlan",
+				Computed:            true,
+			},
+			"authentication_event_fail_action_next_method": schema.BoolAttribute{
+				MarkdownDescription: "Move to next authentication method",
+				Computed:            true,
+			},
+			"authentication_event_no_response_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Configure Guest vlan",
+				Computed:            true,
+			},
+			"authentication_event_linksec_fail_action_next_method": schema.BoolAttribute{
+				MarkdownDescription: "Move to next authentication method",
+				Computed:            true,
+			},
 			"mab": schema.BoolAttribute{
 				MarkdownDescription: "MAC Authentication Bypass Interface Config Commands",
 				Computed:            true,
