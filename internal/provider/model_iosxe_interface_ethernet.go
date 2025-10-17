@@ -717,6 +717,43 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.timer.reauthenticate.server-config", map[string]string{})
 		}
 	}
+	if !data.AuthenticationEventServerAliveActionReinitialize.IsNull() && !data.AuthenticationEventServerAliveActionReinitialize.IsUnknown() {
+		if data.AuthenticationEventServerAliveActionReinitialize.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.server.alive.action.reinitialize", map[string]string{})
+		}
+	}
+	if !data.AuthenticationEventServerDeadActionAuthorize.IsNull() && !data.AuthenticationEventServerDeadActionAuthorize.IsUnknown() {
+		if data.AuthenticationEventServerDeadActionAuthorize.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize", map[string]string{})
+		}
+	}
+	if !data.AuthenticationEventServerDeadActionAuthorizeVlan.IsNull() && !data.AuthenticationEventServerDeadActionAuthorizeVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize.vlan", strconv.FormatInt(data.AuthenticationEventServerDeadActionAuthorizeVlan.ValueInt64(), 10))
+	}
+	if !data.AuthenticationEventServerDeadActionAuthorizeVoice.IsNull() && !data.AuthenticationEventServerDeadActionAuthorizeVoice.IsUnknown() {
+		if data.AuthenticationEventServerDeadActionAuthorizeVoice.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize.voice", map[string]string{})
+		}
+	}
+	if !data.AuthenticationEventServerDeadActionReinitializeVlan.IsNull() && !data.AuthenticationEventServerDeadActionReinitializeVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.server.dead.action.reinitialize.vlan", strconv.FormatInt(data.AuthenticationEventServerDeadActionReinitializeVlan.ValueInt64(), 10))
+	}
+	if !data.AuthenticationEventFailActionAuthorizeVlan.IsNull() && !data.AuthenticationEventFailActionAuthorizeVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.fail-config.action.authorize.vlan", strconv.FormatInt(data.AuthenticationEventFailActionAuthorizeVlan.ValueInt64(), 10))
+	}
+	if !data.AuthenticationEventFailActionNextMethod.IsNull() && !data.AuthenticationEventFailActionNextMethod.IsUnknown() {
+		if data.AuthenticationEventFailActionNextMethod.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.fail-config.action.next-method", map[string]string{})
+		}
+	}
+	if !data.AuthenticationEventNoResponseActionAuthorizeVlan.IsNull() && !data.AuthenticationEventNoResponseActionAuthorizeVlan.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.no-response.action.authorize.vlan", strconv.FormatInt(data.AuthenticationEventNoResponseActionAuthorizeVlan.ValueInt64(), 10))
+	}
+	if !data.AuthenticationEventLinksecFailActionNextMethod.IsNull() && !data.AuthenticationEventLinksecFailActionNextMethod.IsUnknown() {
+		if data.AuthenticationEventLinksecFailActionNextMethod.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.event.linksec.fail.action.next-method", map[string]string{})
+		}
+	}
 	if !data.Mab.IsNull() && !data.Mab.IsUnknown() {
 		if data.Mab.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:mab", map[string]string{})
@@ -1757,6 +1794,71 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.AuthenticationTimerReauthenticateServer = types.BoolNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.alive.action.reinitialize"); !data.AuthenticationEventServerAliveActionReinitialize.IsNull() {
+		if value.Exists() {
+			data.AuthenticationEventServerAliveActionReinitialize = types.BoolValue(true)
+		} else {
+			data.AuthenticationEventServerAliveActionReinitialize = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationEventServerAliveActionReinitialize = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize"); !data.AuthenticationEventServerDeadActionAuthorize.IsNull() {
+		if value.Exists() {
+			data.AuthenticationEventServerDeadActionAuthorize = types.BoolValue(true)
+		} else {
+			data.AuthenticationEventServerDeadActionAuthorize = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationEventServerDeadActionAuthorize = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize.vlan"); value.Exists() && !data.AuthenticationEventServerDeadActionAuthorizeVlan.IsNull() {
+		data.AuthenticationEventServerDeadActionAuthorizeVlan = types.Int64Value(value.Int())
+	} else {
+		data.AuthenticationEventServerDeadActionAuthorizeVlan = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize.voice"); !data.AuthenticationEventServerDeadActionAuthorizeVoice.IsNull() {
+		if value.Exists() {
+			data.AuthenticationEventServerDeadActionAuthorizeVoice = types.BoolValue(true)
+		} else {
+			data.AuthenticationEventServerDeadActionAuthorizeVoice = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationEventServerDeadActionAuthorizeVoice = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.reinitialize.vlan"); value.Exists() && !data.AuthenticationEventServerDeadActionReinitializeVlan.IsNull() {
+		data.AuthenticationEventServerDeadActionReinitializeVlan = types.Int64Value(value.Int())
+	} else {
+		data.AuthenticationEventServerDeadActionReinitializeVlan = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.fail-config.action.authorize.vlan"); value.Exists() && !data.AuthenticationEventFailActionAuthorizeVlan.IsNull() {
+		data.AuthenticationEventFailActionAuthorizeVlan = types.Int64Value(value.Int())
+	} else {
+		data.AuthenticationEventFailActionAuthorizeVlan = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.fail-config.action.next-method"); !data.AuthenticationEventFailActionNextMethod.IsNull() {
+		if value.Exists() {
+			data.AuthenticationEventFailActionNextMethod = types.BoolValue(true)
+		} else {
+			data.AuthenticationEventFailActionNextMethod = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationEventFailActionNextMethod = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.no-response.action.authorize.vlan"); value.Exists() && !data.AuthenticationEventNoResponseActionAuthorizeVlan.IsNull() {
+		data.AuthenticationEventNoResponseActionAuthorizeVlan = types.Int64Value(value.Int())
+	} else {
+		data.AuthenticationEventNoResponseActionAuthorizeVlan = types.Int64Null()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.linksec.fail.action.next-method"); !data.AuthenticationEventLinksecFailActionNextMethod.IsNull() {
+		if value.Exists() {
+			data.AuthenticationEventLinksecFailActionNextMethod = types.BoolValue(true)
+		} else {
+			data.AuthenticationEventLinksecFailActionNextMethod = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationEventLinksecFailActionNextMethod = types.BoolNull()
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:mab"); !data.Mab.IsNull() {
 		if value.Exists() {
 			data.Mab = types.BoolValue(true)
@@ -2457,6 +2559,43 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AuthenticationTimerReauthenticateServer = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.alive.action.reinitialize"); value.Exists() {
+		data.AuthenticationEventServerAliveActionReinitialize = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventServerAliveActionReinitialize = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize"); value.Exists() {
+		data.AuthenticationEventServerDeadActionAuthorize = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventServerDeadActionAuthorize = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize.vlan"); value.Exists() {
+		data.AuthenticationEventServerDeadActionAuthorizeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize.voice"); value.Exists() {
+		data.AuthenticationEventServerDeadActionAuthorizeVoice = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventServerDeadActionAuthorizeVoice = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.reinitialize.vlan"); value.Exists() {
+		data.AuthenticationEventServerDeadActionReinitializeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.fail-config.action.authorize.vlan"); value.Exists() {
+		data.AuthenticationEventFailActionAuthorizeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.fail-config.action.next-method"); value.Exists() {
+		data.AuthenticationEventFailActionNextMethod = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventFailActionNextMethod = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.no-response.action.authorize.vlan"); value.Exists() {
+		data.AuthenticationEventNoResponseActionAuthorizeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.linksec.fail.action.next-method"); value.Exists() {
+		data.AuthenticationEventLinksecFailActionNextMethod = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventLinksecFailActionNextMethod = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:mab"); value.Exists() {
 		data.Mab = types.BoolValue(true)
 	} else {
@@ -3055,6 +3194,43 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.AuthenticationTimerReauthenticateServer = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.alive.action.reinitialize"); value.Exists() {
+		data.AuthenticationEventServerAliveActionReinitialize = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventServerAliveActionReinitialize = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize"); value.Exists() {
+		data.AuthenticationEventServerDeadActionAuthorize = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventServerDeadActionAuthorize = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize.vlan"); value.Exists() {
+		data.AuthenticationEventServerDeadActionAuthorizeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.authorize.voice"); value.Exists() {
+		data.AuthenticationEventServerDeadActionAuthorizeVoice = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventServerDeadActionAuthorizeVoice = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.server.dead.action.reinitialize.vlan"); value.Exists() {
+		data.AuthenticationEventServerDeadActionReinitializeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.fail-config.action.authorize.vlan"); value.Exists() {
+		data.AuthenticationEventFailActionAuthorizeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.fail-config.action.next-method"); value.Exists() {
+		data.AuthenticationEventFailActionNextMethod = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventFailActionNextMethod = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.no-response.action.authorize.vlan"); value.Exists() {
+		data.AuthenticationEventNoResponseActionAuthorizeVlan = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.event.linksec.fail.action.next-method"); value.Exists() {
+		data.AuthenticationEventLinksecFailActionNextMethod = types.BoolValue(true)
+	} else {
+		data.AuthenticationEventLinksecFailActionNextMethod = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:mab"); value.Exists() {
 		data.Mab = types.BoolValue(true)
 	} else {
@@ -3323,6 +3499,33 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	}
 	if !state.Mab.IsNull() && data.Mab.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", state.getPath()))
+	}
+	if !state.AuthenticationEventLinksecFailActionNextMethod.IsNull() && data.AuthenticationEventLinksecFailActionNextMethod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/linksec/fail/action/next-method", state.getPath()))
+	}
+	if !state.AuthenticationEventNoResponseActionAuthorizeVlan.IsNull() && data.AuthenticationEventNoResponseActionAuthorizeVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/no-response/action/authorize/vlan", state.getPath()))
+	}
+	if !state.AuthenticationEventFailActionNextMethod.IsNull() && data.AuthenticationEventFailActionNextMethod.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/fail-config/action/next-method", state.getPath()))
+	}
+	if !state.AuthenticationEventFailActionAuthorizeVlan.IsNull() && data.AuthenticationEventFailActionAuthorizeVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/fail-config/action/authorize/vlan", state.getPath()))
+	}
+	if !state.AuthenticationEventServerDeadActionReinitializeVlan.IsNull() && data.AuthenticationEventServerDeadActionReinitializeVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/reinitialize/vlan", state.getPath()))
+	}
+	if !state.AuthenticationEventServerDeadActionAuthorizeVoice.IsNull() && data.AuthenticationEventServerDeadActionAuthorizeVoice.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize/voice", state.getPath()))
+	}
+	if !state.AuthenticationEventServerDeadActionAuthorizeVlan.IsNull() && data.AuthenticationEventServerDeadActionAuthorizeVlan.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize/vlan", state.getPath()))
+	}
+	if !state.AuthenticationEventServerDeadActionAuthorize.IsNull() && data.AuthenticationEventServerDeadActionAuthorize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize", state.getPath()))
+	}
+	if !state.AuthenticationEventServerAliveActionReinitialize.IsNull() && data.AuthenticationEventServerAliveActionReinitialize.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/alive/action/reinitialize", state.getPath()))
 	}
 	if !state.AuthenticationTimerReauthenticateServer.IsNull() && data.AuthenticationTimerReauthenticateServer.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", state.getPath()))
@@ -3761,6 +3964,21 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 	if !data.Mab.IsNull() && !data.Mab.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", data.getPath()))
 	}
+	if !data.AuthenticationEventLinksecFailActionNextMethod.IsNull() && !data.AuthenticationEventLinksecFailActionNextMethod.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/linksec/fail/action/next-method", data.getPath()))
+	}
+	if !data.AuthenticationEventFailActionNextMethod.IsNull() && !data.AuthenticationEventFailActionNextMethod.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/fail-config/action/next-method", data.getPath()))
+	}
+	if !data.AuthenticationEventServerDeadActionAuthorizeVoice.IsNull() && !data.AuthenticationEventServerDeadActionAuthorizeVoice.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize/voice", data.getPath()))
+	}
+	if !data.AuthenticationEventServerDeadActionAuthorize.IsNull() && !data.AuthenticationEventServerDeadActionAuthorize.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize", data.getPath()))
+	}
+	if !data.AuthenticationEventServerAliveActionReinitialize.IsNull() && !data.AuthenticationEventServerAliveActionReinitialize.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/alive/action/reinitialize", data.getPath()))
+	}
 	if !data.AuthenticationTimerReauthenticateServer.IsNull() && !data.AuthenticationTimerReauthenticateServer.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", data.getPath()))
 	}
@@ -4042,6 +4260,33 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.Mab.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:mab", data.getPath()))
+	}
+	if !data.AuthenticationEventLinksecFailActionNextMethod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/linksec/fail/action/next-method", data.getPath()))
+	}
+	if !data.AuthenticationEventNoResponseActionAuthorizeVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/no-response/action/authorize/vlan", data.getPath()))
+	}
+	if !data.AuthenticationEventFailActionNextMethod.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/fail-config/action/next-method", data.getPath()))
+	}
+	if !data.AuthenticationEventFailActionAuthorizeVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/fail-config/action/authorize/vlan", data.getPath()))
+	}
+	if !data.AuthenticationEventServerDeadActionReinitializeVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/reinitialize/vlan", data.getPath()))
+	}
+	if !data.AuthenticationEventServerDeadActionAuthorizeVoice.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize/voice", data.getPath()))
+	}
+	if !data.AuthenticationEventServerDeadActionAuthorizeVlan.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize/vlan", data.getPath()))
+	}
+	if !data.AuthenticationEventServerDeadActionAuthorize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize", data.getPath()))
+	}
+	if !data.AuthenticationEventServerAliveActionReinitialize.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/event/server/alive/action/reinitialize", data.getPath()))
 	}
 	if !data.AuthenticationTimerReauthenticateServer.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/timer/reauthenticate/server-config", data.getPath()))
