@@ -34,6 +34,15 @@ data "iosxe_interface_ethernet" "example" {
 ### Read-Only
 
 - `arp_timeout` (Number) Set ARP cache timeout
+- `authentication_event_fail_action_authorize_vlan` (Number) Configure Authentication Fail vlan
+- `authentication_event_fail_action_next_method` (Boolean) Move to next authentication method
+- `authentication_event_linksec_fail_action_next_method` (Boolean) Move to next authentication method
+- `authentication_event_no_response_action_authorize_vlan` (Number) Configure Guest vlan
+- `authentication_event_server_alive_action_reinitialize` (Boolean) Reinitialize all authorized clients
+- `authentication_event_server_dead_action_authorize` (Boolean) Authorize the port
+- `authentication_event_server_dead_action_authorize_vlan` (Number) Configure Critical Authorization VLAN
+- `authentication_event_server_dead_action_authorize_voice` (Boolean) Authorize the port for VOICE traffic
+- `authentication_event_server_dead_action_reinitialize_vlan` (Number) Configure Critical Authorization VLAN
 - `authentication_host_mode` (String) Set the Host mode for authentication on this interface
 - `authentication_order_dot1x` (Boolean) Authentication method dot1x allowed
 - `authentication_order_dot1x_mab` (Boolean) Authentication method mab allowed
@@ -53,15 +62,6 @@ data "iosxe_interface_ethernet" "example" {
 - `authentication_priority_webauth` (Boolean) Authentication method webauth allowed
 - `authentication_timer_reauthenticate` (Number) Enter a value between 1 and 1073741823
 - `authentication_timer_reauthenticate_server` (Boolean) Obtain re-authentication timeout value from the server
-- `authentication_event_server_alive_action_reinitialize` (Boolean) Reinitialize all authorized clients when AAA server is alive
-- `authentication_event_server_dead_action_authorize` (Boolean) Authorize the port when AAA server is dead
-- `authentication_event_server_dead_action_authorize_vlan` (Number) VLAN ID to authorize when AAA server is dead (1–4094)
-- `authentication_event_server_dead_action_authorize_voice` (Boolean) Authorize the port for voice traffic when AAA server is dead
-- `authentication_event_server_dead_action_reinitialize_vlan` (Number) VLAN ID to reinitialize clients on when AAA server is dead (1–4094)
-- `authentication_event_fail_action_authorize_vlan` (Number) VLAN ID to authorize on authentication failure (1–4094)
-- `authentication_event_fail_action_next_method` (Boolean) Move to next authentication method on failure
-- `authentication_event_no_response_action_authorize_vlan` (Number) VLAN ID to authorize on non-responsive host (1–4094)
-- `authentication_event_linksec_fail_action_next_method` (Boolean) Move to next authentication method on link security failure
 - `auto_qos_classify` (Boolean) Configure classification for untrusted devices
 - `auto_qos_classify_police` (Boolean) Configure QoS policing for untrusted devices
 - `auto_qos_trust` (Boolean) Trust the DSCP/CoS marking
