@@ -58,6 +58,7 @@ func TestAccIosxeCTS(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_speaker_hold_time", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_listener_hold_min_time", "60"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "sxp_listener_hold_max_time", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "role_based_enforcement", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_cts.test", "role_based_enforcement_logging_interval", "300"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
@@ -154,6 +155,7 @@ func testAccIosxeCTSConfig_all() string {
 	config += `	sxp_speaker_hold_time = 300` + "\n"
 	config += `	sxp_listener_hold_min_time = 60` + "\n"
 	config += `	sxp_listener_hold_max_time = 300` + "\n"
+	config += `	role_based_enforcement = true` + "\n"
 	config += `	role_based_enforcement_logging_interval = 300` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"

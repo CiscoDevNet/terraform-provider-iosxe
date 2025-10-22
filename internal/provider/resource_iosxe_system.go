@@ -730,6 +730,37 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					int64validator.Between(0, 2147483647),
 				},
 			},
+			"tftp_source_interface_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Iosxr Vlans").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"tftp_source_interface_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Two GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"tftp_source_interface_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"tftp_source_interface_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ten Gigabit Ethernet").String,
+				Optional:            true,
+			},
+			"tftp_source_interface_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Twenty Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"tftp_source_interface_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"tftp_source_interface_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
+				Optional:            true,
+			},
 			"multilink_ppp_bundle_name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Select method for naming multilink bundles").AddStringEnumDescription("authenticated", "both", "endpoint", "rfc").String,
 				Optional:            true,

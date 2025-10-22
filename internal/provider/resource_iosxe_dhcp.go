@@ -116,6 +116,18 @@ func (r *DHCPResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping").String,
 				Optional:            true,
 			},
+			"snooping_information_option": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"snooping_information_option_allow_untrusted": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping information option allow-untrusted").String,
+				Optional:            true,
+			},
+			"snooping_information_option_format_remote_id_string": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("User defined string for remote id").String,
+				Optional:            true,
+			},
 			"snooping_information_option_format_remote_id_hostname": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Use configured hostname for remote id").String,
 				Optional:            true,

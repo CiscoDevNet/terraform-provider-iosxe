@@ -60,6 +60,7 @@ type CryptoPKITrustpoints struct {
 	Rsakeypair           types.String `tfsdk:"rsakeypair"`
 	Usage                types.String `tfsdk:"usage"`
 	SourceInterface      types.String `tfsdk:"source_interface"`
+	Hash                 types.String `tfsdk:"hash"`
 }
 
 // End of section. //template:end types
@@ -133,6 +134,9 @@ func (data CryptoPKI) toBody(ctx context.Context) string {
 			}
 			if !item.SourceInterface.IsNull() && !item.SourceInterface.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"source.interface", item.SourceInterface.ValueString())
+			}
+			if !item.Hash.IsNull() && !item.Hash.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"trustpoint"+"."+strconv.Itoa(index)+"."+"hash", item.Hash.ValueString())
 			}
 		}
 	}
@@ -237,6 +241,11 @@ func (data *CryptoPKI) updateFromBody(ctx context.Context, res gjson.Result) {
 		} else {
 			data.Trustpoints[i].SourceInterface = types.StringNull()
 		}
+		if value := r.Get("hash"); value.Exists() && !data.Trustpoints[i].Hash.IsNull() {
+			data.Trustpoints[i].Hash = types.StringValue(value.String())
+		} else {
+			data.Trustpoints[i].Hash = types.StringNull()
+		}
 	}
 }
 
@@ -292,6 +301,9 @@ func (data *CryptoPKI) fromBody(ctx context.Context, res gjson.Result) {
 			}
 			if cValue := v.Get("source.interface"); cValue.Exists() {
 				item.SourceInterface = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("hash"); cValue.Exists() {
+				item.Hash = types.StringValue(cValue.String())
 			}
 			data.Trustpoints = append(data.Trustpoints, item)
 			return true
@@ -352,6 +364,9 @@ func (data *CryptoPKIData) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("source.interface"); cValue.Exists() {
 				item.SourceInterface = types.StringValue(cValue.String())
 			}
+			if cValue := v.Get("hash"); cValue.Exists() {
+				item.Hash = types.StringValue(cValue.String())
+			}
 			data.Trustpoints = append(data.Trustpoints, item)
 			return true
 		})
@@ -382,6 +397,9 @@ func (data *CryptoPKI) getDeletedItems(ctx context.Context, state CryptoPKI) []s
 				found = false
 			}
 			if found {
+				if !state.Trustpoints[i].Hash.IsNull() && data.Trustpoints[j].Hash.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/hash", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Trustpoints[i].SourceInterface.IsNull() && data.Trustpoints[j].SourceInterface.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/trustpoint=%v/source/interface", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
