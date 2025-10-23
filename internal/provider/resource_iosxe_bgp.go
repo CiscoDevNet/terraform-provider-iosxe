@@ -23,6 +23,7 @@ package provider
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -105,6 +106,13 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 2147483647),
+				},
+			},
+			"router_id_ip": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Manually configured router identifier").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
 		},
