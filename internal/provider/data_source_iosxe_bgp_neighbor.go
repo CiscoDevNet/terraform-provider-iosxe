@@ -192,6 +192,10 @@ func (d *BGPNeighborDataSource) Schema(ctx context.Context, req datasource.Schem
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"inherit_peer_session": schema.StringAttribute{
+				MarkdownDescription: "Inherit a peer-session template",
+				Computed:            true,
+			},
 		},
 	}
 }

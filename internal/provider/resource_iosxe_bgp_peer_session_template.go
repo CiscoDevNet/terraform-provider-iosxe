@@ -23,7 +23,6 @@ package provider
 import (
 	"context"
 	"fmt"
-	"regexp"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -46,26 +45,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &BGPNeighborResource{}
-	_ resource.ResourceWithImportState = &BGPNeighborResource{}
+	_ resource.Resource                = &BGPPeerSessionTemplateResource{}
+	_ resource.ResourceWithImportState = &BGPPeerSessionTemplateResource{}
 )
 
-func NewBGPNeighborResource() resource.Resource {
-	return &BGPNeighborResource{}
+func NewBGPPeerSessionTemplateResource() resource.Resource {
+	return &BGPPeerSessionTemplateResource{}
 }
 
-type BGPNeighborResource struct {
+type BGPPeerSessionTemplateResource struct {
 	data *IosxeProviderData
 }
 
-func (r *BGPNeighborResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_bgp_neighbor"
+func (r *BGPPeerSessionTemplateResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_bgp_peer_session_template"
 }
 
-func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *BGPPeerSessionTemplateResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the BGP Neighbor configuration.",
+		MarkdownDescription: "This resource can manage the BGP Peer Session Template configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -93,7 +92,7 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
-			"ip": schema.StringAttribute{
+			"template_name": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
@@ -101,134 +100,15 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"remote_as": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP peer-group remote-as").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP neighbor remote-as").String,
 				Optional:            true,
 			},
 			"description": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Neighbor specific description").String,
 				Optional:            true,
 			},
-			"shutdown": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Administratively shut down this neighbor").String,
-				Optional:            true,
-			},
-			"cluster_id": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"version": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Set the BGP version to match a neighbor").AddIntegerRangeDescription(4, 4).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(4, 4),
-				},
-			},
 			"disable_connected_check": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("one-hop away EBGP peer using loopback address").String,
-				Optional:            true,
-			},
-			"fall_over_default_enable": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"fall_over_default_route_map": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"fall_over_bfd": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Use BFD to detect failure").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_multi_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD multi-hop to detect failure").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_single_hop": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Force BFD single-hop to detect failure").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_check_control_plane_failure": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Retrieve control plane dependent failure info from BFD for BGP GR/NSR operation").String,
-				Optional:            true,
-			},
-			"fall_over_bfd_strict_mode": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Enable BFD strict-mode").String,
-				Optional:            true,
-			},
-			"fall_over_maximum_metric_route_map": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"local_as": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-			},
-			"local_as_no_prepend": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Do not prepend local-as to updates from ebgp peers").String,
-				Optional:            true,
-			},
-			"local_as_replace_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Replace real AS with local AS in the EBGP updates").String,
-				Optional:            true,
-			},
-			"local_as_dual_as": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Accept either real AS or local AS from the ebgp peer").String,
-				Optional:            true,
-			},
-			"log_neighbor_changes": schema.BoolAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Log neighbor up/down and reset reason").String,
-				Optional:            true,
-			},
-			"password_type": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Encryption type (0 to disable encryption, 7 for proprietary)").AddIntegerRangeDescription(0, 7).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 7),
-				},
-			},
-			"password": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
-				Optional:            true,
-				Sensitive:           true,
-				Validators: []validator.String{
-					stringvalidator.LengthBetween(1, 52),
-					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
-				},
-			},
-			"peer_group": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("peer-group name").String,
-				Optional:            true,
-			},
-			"timers_keepalive_interval": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
-				},
-			},
-			"timers_holdtime": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
-				},
-			},
-			"timers_minimum_neighbor_hold": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(0, 65535).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(0, 65535),
-				},
-			},
-			"ttl_security_hops": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("IP hops").AddIntegerRangeDescription(1, 254).String,
-				Optional:            true,
-				Validators: []validator.Int64{
-					int64validator.Between(1, 254),
-				},
-			},
-			"update_source_loopback": schema.Int64Attribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
 				Optional:            true,
 			},
 			"ebgp_multihop": schema.BoolAttribute{
@@ -242,6 +122,10 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 					int64validator.Between(2, 255),
 				},
 			},
+			"update_source_loopback": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
+				Optional:            true,
+			},
 			"inherit_peer_session": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Inherit a peer-session template").String,
 				Optional:            true,
@@ -250,7 +134,7 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 	}
 }
 
-func (r *BGPNeighborResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *BGPPeerSessionTemplateResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -262,8 +146,8 @@ func (r *BGPNeighborResource) Configure(_ context.Context, req resource.Configur
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *BGPNeighborResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan BGPNeighbor
+func (r *BGPPeerSessionTemplateResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan BGPPeerSessionTemplate
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -330,8 +214,8 @@ func (r *BGPNeighborResource) Create(ctx context.Context, req resource.CreateReq
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *BGPNeighborResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state BGPNeighbor
+func (r *BGPPeerSessionTemplateResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state BGPPeerSessionTemplate
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -351,7 +235,7 @@ func (r *BGPNeighborResource) Read(ctx context.Context, req resource.ReadRequest
 	if device.Managed {
 		res, err := device.Client.GetData(state.Id.ValueString())
 		if res.StatusCode == 404 {
-			state = BGPNeighbor{Device: state.Device, Id: state.Id}
+			state = BGPPeerSessionTemplate{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -384,8 +268,8 @@ func (r *BGPNeighborResource) Read(ctx context.Context, req resource.ReadRequest
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *BGPNeighborResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state BGPNeighbor
+func (r *BGPPeerSessionTemplateResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state BGPPeerSessionTemplate
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -468,8 +352,8 @@ func (r *BGPNeighborResource) Update(ctx context.Context, req resource.UpdateReq
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *BGPNeighborResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state BGPNeighbor
+func (r *BGPPeerSessionTemplateResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state BGPPeerSessionTemplate
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -534,13 +418,13 @@ func (r *BGPNeighborResource) Delete(ctx context.Context, req resource.DeleteReq
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *BGPNeighborResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *BGPPeerSessionTemplateResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
 	if len(idParts) != 2 && len(idParts) != 3 {
-		expectedIdentifier := "Expected import identifier with format: '<asn>,<ip>'"
-		expectedIdentifier += " or '<asn>,<ip>,<device>'"
+		expectedIdentifier := "Expected import identifier with format: '<asn>,<template_name>'"
+		expectedIdentifier += " or '<asn>,<template_name>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
@@ -548,13 +432,13 @@ func (r *BGPNeighborResource) ImportState(ctx context.Context, req resource.Impo
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("asn"), idParts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("ip"), idParts[1])...)
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("template_name"), idParts[1])...)
 	if len(idParts) == 3 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state BGPNeighbor
+	var state BGPPeerSessionTemplate
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {
