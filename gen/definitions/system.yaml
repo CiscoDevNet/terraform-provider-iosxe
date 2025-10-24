@@ -586,6 +586,12 @@ attributes:
     tf_name: standby_redirects_enable_disable
     example: disable
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/mac-move/permit
+    example: true
+    test_tags: [C8000V]
+  - yang_name: Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled
+    example: true
+    test_tags: [C8000V]
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

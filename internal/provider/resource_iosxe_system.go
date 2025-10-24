@@ -851,6 +851,14 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.OneOf("disable", "enable"),
 				},
 			},
+			"authentication_mac_move_permit": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("PERMIT MAC moves (clears existing session)").String,
+				Optional:            true,
+			},
+			"authentication_mac_move_deny_uncontrolled": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Deny MAC move to uncontrolled port").String,
+				Optional:            true,
+			},
 		},
 	}
 }

@@ -1,6 +1,9 @@
 ## 0.10.0 (unreleased)
 
 - Add `flooding_suppression_address_resolution_disable` attribute to `iosxe_evpn` resource and data source
+- Add `deadtime` attribute to aaa group server radius in `iosxe_aaa` resource and data source
+- Add `key_encryption`, `automate_tester_ignore_auth_port`, and `automate_tester_idle_time` attributes to `iosxe_radius` resource and data source
+- Add `authentication_mac_move_permit` and `authentication_mac_move_deny_uncontrolled` attributes to `iosxe_system` resource and data source
 
 ## 0.9.3
 

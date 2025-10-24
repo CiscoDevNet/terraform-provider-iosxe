@@ -34,6 +34,8 @@ attributes:
       - yang_name: name
         example: T-Group
         id: true
+      - yang_name: deadtime
+        example: 5
       - yang_name: server/name
         tf_name: server_names
         type: List

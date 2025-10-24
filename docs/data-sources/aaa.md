@@ -42,6 +42,7 @@ data "iosxe_aaa" "example" {
 
 Read-Only:
 
+- `deadtime` (Number) Specify time in minutes to ignore an unresponsive server
 - `ip_radius_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_radius_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_radius_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
