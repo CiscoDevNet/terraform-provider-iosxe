@@ -10,6 +10,7 @@ description: |-
 ## 0.10.0 (unreleased)
 
 - Add `flooding_suppression_address_resolution_disable` attribute to `iosxe_evpn` resource and data source
+- Add `ip_domain_lookup_nsap`, `ip_domain_lookup_recursive`, and `ip_domain_lookup_vrfs*` attributes to `iosxe_system` resource and data source
 
 ## 0.9.3
 
