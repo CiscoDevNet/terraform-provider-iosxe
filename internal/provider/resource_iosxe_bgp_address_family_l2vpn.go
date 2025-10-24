@@ -26,10 +26,12 @@ import (
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
+	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -99,6 +101,23 @@ func (r *BGPAddressFamilyL2VPNResource) Schema(ctx context.Context, req resource
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"rewrite_evpn_rt_asn": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable rewrite RT in the BGP EVPN address-family").String,
+				Optional:            true,
+			},
+			"nexthop_trigger_enable": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable nexthop tracking").AddDefaultValueDescription("true").String,
+				Optional:            true,
+				Computed:            true,
+				Default:             booldefault.StaticBool(true),
+			},
+			"nexthop_trigger_delay": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the delay to trigger nexthop tracking").AddIntegerRangeDescription(0, 100).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 100),
 				},
 			},
 		},

@@ -14,8 +14,11 @@ This resource can manage the BGP Address Family L2VPN configuration.
 
 ```terraform
 resource "iosxe_bgp_address_family_l2vpn" "example" {
-  asn     = "65000"
-  af_name = "evpn"
+  asn                    = "65000"
+  af_name                = "evpn"
+  rewrite_evpn_rt_asn    = true
+  nexthop_trigger_enable = true
+  nexthop_trigger_delay  = 10
 }
 ```
 
@@ -32,6 +35,11 @@ resource "iosxe_bgp_address_family_l2vpn" "example" {
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.
+- `nexthop_trigger_delay` (Number) Set the delay to trigger nexthop tracking
+  - Range: `0`-`100`
+- `nexthop_trigger_enable` (Boolean) Enable nexthop tracking
+  - Default value: `true`
+- `rewrite_evpn_rt_asn` (Boolean) Enable rewrite RT in the BGP EVPN address-family
 
 ### Read-Only
 
