@@ -78,6 +78,12 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_multicast_route_limit", "200000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_list_vrf_domain", "example.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_list_vrf", "VRF1"))
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "authentication_mac_move_permit", "true"))
+	}
+	if os.Getenv("C8000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "authentication_mac_move_deny_uncontrolled", "true"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -162,6 +168,12 @@ func testAccDataSourceIosxeSystemConfig() string {
 	config += `	ip_multicast_route_limit = 200000` + "\n"
 	config += `	ip_domain_list_vrf_domain = "example.com"` + "\n"
 	config += `	ip_domain_list_vrf = "VRF1"` + "\n"
+	if os.Getenv("C8000V") != "" {
+		config += `	authentication_mac_move_permit = true` + "\n"
+	}
+	if os.Getenv("C8000V") != "" {
+		config += `	authentication_mac_move_deny_uncontrolled = true` + "\n"
+	}
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

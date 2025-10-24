@@ -96,6 +96,11 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				Computed:            true,
 				Sensitive:           true,
 			},
+			"key_encryption": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				Sensitive:           true,
+			},
 			"automate_tester_username": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
@@ -104,8 +109,16 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Do not test accounting ports of the servers.",
 				Computed:            true,
 			},
+			"automate_tester_ignore_auth_port": schema.BoolAttribute{
+				MarkdownDescription: "Do not test authentication port of the servers.",
+				Computed:            true,
+			},
 			"automate_tester_probe_on_config": schema.BoolAttribute{
 				MarkdownDescription: "Send a packet to verify the server status",
+				Computed:            true,
+			},
+			"automate_tester_idle_time": schema.Int64Attribute{
+				MarkdownDescription: "Minutes of idle-time after which server state should be verified.",
 				Computed:            true,
 			},
 			"pac_key": schema.StringAttribute{

@@ -26,7 +26,8 @@ resource "iosxe_aaa" "example" {
   ]
   group_server_radius = [
     {
-      name = "T-Group"
+      name     = "T-Group"
+      deadtime = 5
       server_names = [
         {
           name = "TESTRADIUS"
@@ -81,6 +82,8 @@ Required:
 
 Optional:
 
+- `deadtime` (Number) Specify time in minutes to ignore an unresponsive server
+  - Range: `0`-`1440`
 - `ip_radius_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_radius_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_radius_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z

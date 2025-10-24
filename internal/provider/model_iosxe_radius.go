@@ -46,9 +46,12 @@ type Radius struct {
 	Timeout                      types.Int64  `tfsdk:"timeout"`
 	Retransmit                   types.Int64  `tfsdk:"retransmit"`
 	Key                          types.String `tfsdk:"key"`
+	KeyEncryption                types.String `tfsdk:"key_encryption"`
 	AutomateTesterUsername       types.String `tfsdk:"automate_tester_username"`
 	AutomateTesterIgnoreAcctPort types.Bool   `tfsdk:"automate_tester_ignore_acct_port"`
+	AutomateTesterIgnoreAuthPort types.Bool   `tfsdk:"automate_tester_ignore_auth_port"`
 	AutomateTesterProbeOnConfig  types.Bool   `tfsdk:"automate_tester_probe_on_config"`
+	AutomateTesterIdleTime       types.Int64  `tfsdk:"automate_tester_idle_time"`
 	PacKey                       types.String `tfsdk:"pac_key"`
 	PacKeyEncryption             types.String `tfsdk:"pac_key_encryption"`
 }
@@ -63,9 +66,12 @@ type RadiusData struct {
 	Timeout                      types.Int64  `tfsdk:"timeout"`
 	Retransmit                   types.Int64  `tfsdk:"retransmit"`
 	Key                          types.String `tfsdk:"key"`
+	KeyEncryption                types.String `tfsdk:"key_encryption"`
 	AutomateTesterUsername       types.String `tfsdk:"automate_tester_username"`
 	AutomateTesterIgnoreAcctPort types.Bool   `tfsdk:"automate_tester_ignore_acct_port"`
+	AutomateTesterIgnoreAuthPort types.Bool   `tfsdk:"automate_tester_ignore_auth_port"`
 	AutomateTesterProbeOnConfig  types.Bool   `tfsdk:"automate_tester_probe_on_config"`
+	AutomateTesterIdleTime       types.Int64  `tfsdk:"automate_tester_idle_time"`
 	PacKey                       types.String `tfsdk:"pac_key"`
 	PacKeyEncryption             types.String `tfsdk:"pac_key_encryption"`
 }
@@ -120,6 +126,9 @@ func (data Radius) toBody(ctx context.Context) string {
 	if !data.Key.IsNull() && !data.Key.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.key", data.Key.ValueString())
 	}
+	if !data.KeyEncryption.IsNull() && !data.KeyEncryption.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"key.encryption", data.KeyEncryption.ValueString())
+	}
 	if !data.AutomateTesterUsername.IsNull() && !data.AutomateTesterUsername.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.username", data.AutomateTesterUsername.ValueString())
 	}
@@ -128,10 +137,18 @@ func (data Radius) toBody(ctx context.Context) string {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.ignore-acct-port", map[string]string{})
 		}
 	}
+	if !data.AutomateTesterIgnoreAuthPort.IsNull() && !data.AutomateTesterIgnoreAuthPort.IsUnknown() {
+		if data.AutomateTesterIgnoreAuthPort.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.ignore-auth-port", map[string]string{})
+		}
+	}
 	if !data.AutomateTesterProbeOnConfig.IsNull() && !data.AutomateTesterProbeOnConfig.IsUnknown() {
 		if data.AutomateTesterProbeOnConfig.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.probe-on-config", map[string]string{})
 		}
+	}
+	if !data.AutomateTesterIdleTime.IsNull() && !data.AutomateTesterIdleTime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"automate-tester.idle-time-config", strconv.FormatInt(data.AutomateTesterIdleTime.ValueInt64(), 10))
 	}
 	if !data.PacKey.IsNull() && !data.PacKey.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"pac.key.key", data.PacKey.ValueString())
@@ -195,6 +212,15 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AutomateTesterIgnoreAcctPort = types.BoolNull()
 	}
+	if value := res.Get(prefix + "automate-tester.ignore-auth-port"); !data.AutomateTesterIgnoreAuthPort.IsNull() {
+		if value.Exists() {
+			data.AutomateTesterIgnoreAuthPort = types.BoolValue(true)
+		} else {
+			data.AutomateTesterIgnoreAuthPort = types.BoolValue(false)
+		}
+	} else {
+		data.AutomateTesterIgnoreAuthPort = types.BoolNull()
+	}
 	if value := res.Get(prefix + "automate-tester.probe-on-config"); !data.AutomateTesterProbeOnConfig.IsNull() {
 		if value.Exists() {
 			data.AutomateTesterProbeOnConfig = types.BoolValue(true)
@@ -203,6 +229,11 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	} else {
 		data.AutomateTesterProbeOnConfig = types.BoolNull()
+	}
+	if value := res.Get(prefix + "automate-tester.idle-time-config"); value.Exists() && !data.AutomateTesterIdleTime.IsNull() {
+		data.AutomateTesterIdleTime = types.Int64Value(value.Int())
+	} else {
+		data.AutomateTesterIdleTime = types.Int64Null()
 	}
 	if value := res.Get(prefix + "pac.key.encryption"); value.Exists() && !data.PacKeyEncryption.IsNull() {
 		data.PacKeyEncryption = types.StringValue(value.String())
@@ -238,6 +269,9 @@ func (data *Radius) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "key.key"); value.Exists() {
 		data.Key = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "key.encryption"); value.Exists() {
+		data.KeyEncryption = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "automate-tester.username"); value.Exists() {
 		data.AutomateTesterUsername = types.StringValue(value.String())
 	}
@@ -246,10 +280,18 @@ func (data *Radius) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AutomateTesterIgnoreAcctPort = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "automate-tester.ignore-auth-port"); value.Exists() {
+		data.AutomateTesterIgnoreAuthPort = types.BoolValue(true)
+	} else {
+		data.AutomateTesterIgnoreAuthPort = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "automate-tester.probe-on-config"); value.Exists() {
 		data.AutomateTesterProbeOnConfig = types.BoolValue(true)
 	} else {
 		data.AutomateTesterProbeOnConfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "automate-tester.idle-time-config"); value.Exists() {
+		data.AutomateTesterIdleTime = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "pac.key.key"); value.Exists() {
 		data.PacKey = types.StringValue(value.String())
@@ -286,6 +328,9 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "key.key"); value.Exists() {
 		data.Key = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "key.encryption"); value.Exists() {
+		data.KeyEncryption = types.StringValue(value.String())
+	}
 	if value := res.Get(prefix + "automate-tester.username"); value.Exists() {
 		data.AutomateTesterUsername = types.StringValue(value.String())
 	}
@@ -294,10 +339,18 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AutomateTesterIgnoreAcctPort = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "automate-tester.ignore-auth-port"); value.Exists() {
+		data.AutomateTesterIgnoreAuthPort = types.BoolValue(true)
+	} else {
+		data.AutomateTesterIgnoreAuthPort = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "automate-tester.probe-on-config"); value.Exists() {
 		data.AutomateTesterProbeOnConfig = types.BoolValue(true)
 	} else {
 		data.AutomateTesterProbeOnConfig = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "automate-tester.idle-time-config"); value.Exists() {
+		data.AutomateTesterIdleTime = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "pac.key.key"); value.Exists() {
 		data.PacKey = types.StringValue(value.String())
@@ -319,14 +372,23 @@ func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string 
 	if !state.PacKey.IsNull() && data.PacKey.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/pac/key", state.getPath()))
 	}
+	if !state.AutomateTesterIdleTime.IsNull() && data.AutomateTesterIdleTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/idle-time-config", state.getPath()))
+	}
 	if !state.AutomateTesterProbeOnConfig.IsNull() && data.AutomateTesterProbeOnConfig.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/probe-on-config", state.getPath()))
+	}
+	if !state.AutomateTesterIgnoreAuthPort.IsNull() && data.AutomateTesterIgnoreAuthPort.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/ignore-auth-port", state.getPath()))
 	}
 	if !state.AutomateTesterIgnoreAcctPort.IsNull() && data.AutomateTesterIgnoreAcctPort.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/ignore-acct-port", state.getPath()))
 	}
 	if !state.AutomateTesterUsername.IsNull() && data.AutomateTesterUsername.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/automate-tester/username", state.getPath()))
+	}
+	if !state.KeyEncryption.IsNull() && data.KeyEncryption.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/key/encryption", state.getPath()))
 	}
 	if !state.Key.IsNull() && data.Key.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/key", state.getPath()))
@@ -359,6 +421,9 @@ func (data *Radius) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.AutomateTesterProbeOnConfig.IsNull() && !data.AutomateTesterProbeOnConfig.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/automate-tester/probe-on-config", data.getPath()))
 	}
+	if !data.AutomateTesterIgnoreAuthPort.IsNull() && !data.AutomateTesterIgnoreAuthPort.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/automate-tester/ignore-auth-port", data.getPath()))
+	}
 	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/automate-tester/ignore-acct-port", data.getPath()))
 	}
@@ -378,14 +443,23 @@ func (data *Radius) getDeletePaths(ctx context.Context) []string {
 	if !data.PacKey.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/pac/key", data.getPath()))
 	}
+	if !data.AutomateTesterIdleTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/idle-time-config", data.getPath()))
+	}
 	if !data.AutomateTesterProbeOnConfig.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/probe-on-config", data.getPath()))
+	}
+	if !data.AutomateTesterIgnoreAuthPort.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/ignore-auth-port", data.getPath()))
 	}
 	if !data.AutomateTesterIgnoreAcctPort.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/ignore-acct-port", data.getPath()))
 	}
 	if !data.AutomateTesterUsername.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/automate-tester/username", data.getPath()))
+	}
+	if !data.KeyEncryption.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/key/encryption", data.getPath()))
 	}
 	if !data.Key.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/key", data.getPath()))
