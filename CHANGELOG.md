@@ -1,6 +1,6 @@
 ## 0.9.4 (unreleased)
 
-- Added initla support for BGP Peeer-Policy Templates
+- Added inital support for BGP Peeer-Policy Templates
 
 ## 0.9.3
 
