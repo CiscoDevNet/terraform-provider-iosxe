@@ -399,6 +399,37 @@ attributes:
     tf_name: authentication_timer_reauthenticate_server
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/server/alive/action/reinitialize
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize
+    example: 100
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize/vlan
+    example: 100
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/server/dead/action/authorize/voice
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/server/dead/action/reinitialize/vlan
+    example: 200
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/fail-config/fail-type/action/action/action-type/authorize/authorize/vlan
+    xpath: Cisco-IOS-XE-sanet:authentication/event/fail-config/action/authorize/vlan
+    tf_name: authentication_event_fail_action_authorize_vlan
+    example: 300
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/fail-config/fail-type/action/action/action-type/next-method/next-method
+    xpath: Cisco-IOS-XE-sanet:authentication/event/fail-config/action/next-method
+    tf_name: authentication_event_fail_action_next_method
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/no-response/action/authorize/vlan
+    example: 400
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-sanet:authentication/event/linksec/fail/action/next-method
+    example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-sanet:mab
     example: true
     exclude_test: true
