@@ -55,6 +55,8 @@ data "iosxe_system" "example" {
 - `ip_domain_list_vrf` (String)
 - `ip_domain_list_vrf_domain` (String)
 - `ip_domain_lookup` (Boolean) Enable IP Domain Name System hostname translation
+- `ip_domain_lookup_nsap` (Boolean) Enable IP DNS queries for CLNS NSAP addresses
+- `ip_domain_lookup_recursive` (Boolean) Enable IP DNS recursive lookup
 - `ip_domain_lookup_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_domain_lookup_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_domain_lookup_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
@@ -64,6 +66,7 @@ data "iosxe_system" "example" {
 - `ip_domain_lookup_source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
 - `ip_domain_lookup_source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
 - `ip_domain_lookup_source_interface_vlan` (Number) Iosxr Vlans
+- `ip_domain_lookup_vrfs` (Attributes List) Specify VRF (see [below for nested schema](#nestedatt--ip_domain_lookup_vrfs))
 - `ip_domain_name` (String) Define the default domain name
 - `ip_forward_protocol_nd` (Boolean) Sun's Network Disk protocol
 - `ip_ftp_passive` (Boolean) Connect using passive mode
@@ -171,6 +174,23 @@ Read-Only:
 Read-Only:
 
 - `path` (String)
+
+
+<a id="nestedatt--ip_domain_lookup_vrfs"></a>
+### Nested Schema for `ip_domain_lookup_vrfs`
+
+Read-Only:
+
+- `source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
+- `source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
+- `source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
+- `source_interface_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
+- `source_interface_loopback` (Number) Loopback interface
+- `source_interface_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
+- `source_interface_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
+- `source_interface_two_gigabit_ethernet` (String) Two GigabitEthernet
+- `source_interface_vlan` (Number) Iosxr Vlans
+- `vrf` (String) VRF name
 
 
 <a id="nestedatt--ip_hosts"></a>

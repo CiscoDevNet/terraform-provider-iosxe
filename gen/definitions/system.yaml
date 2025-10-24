@@ -134,6 +134,64 @@ attributes:
       - yang_name: server-ip-list-ordered
         tf_name: servers
         example: 2.3.4.5
+  - yang_name: ip/domain/lookup-settings/lookup/nsap
+    tf_name: ip_domain_lookup_nsap
+    example: true
+  - yang_name: ip/domain/lookup-settings/lookup/recursive
+    tf_name: ip_domain_lookup_recursive
+    example: true
+  - yang_name: ip/domain/lookup-settings/lookup/vrf
+    tf_name: ip_domain_lookup_vrfs
+    type: List
+    attributes:
+      - yang_name: vrf-name
+        tf_name: vrf
+        example: VRF1
+        id: true
+      - yang_name: source-interface/interface-choice/Loopback/Loopback
+        xpath: source-interface/Loopback
+        tf_name: source_interface_loopback
+        example: 0
+        exclude_test: true
+      - yang_name: source-interface/interface-choice/Vlan/Vlan
+        xpath: source-interface/Vlan
+        tf_name: source_interface_vlan
+        example: 10
+        exclude_test: true
+      - yang_name: source-interface/interface-choice/GigabitEthernet/GigabitEthernet
+        xpath: source-interface/GigabitEthernet
+        tf_name: source_interface_gigabit_ethernet
+        example: 1/0/1
+      - yang_name: source-interface/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+        xpath: source-interface/TwoGigabitEthernet
+        tf_name: source_interface_two_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: source-interface/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+        xpath: source-interface/FiveGigabitEthernet
+        tf_name: source_interface_five_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: source-interface/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+        xpath: source-interface/TenGigabitEthernet
+        tf_name: source_interface_ten_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: source-interface/interface-choice/TwentyFiveGigE/TwentyFiveGigE
+        xpath: source-interface/TwentyFiveGigE
+        tf_name: source_interface_twenty_five_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: source-interface/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+        xpath: source-interface/FortyGigabitEthernet
+        tf_name: source_interface_forty_gigabit_ethernet
+        example: 1
+        exclude_test: true
+      - yang_name: source-interface/interface-choice/HundredGigE/HundredGigE
+        xpath: source-interface/HundredGigE
+        tf_name: source_interface_hundred_gigabit_ethernet
+        example: 1
+        exclude_test: true
   - yang_name: ip/domain/lookup-settings/lookup/source-interface/interface-choice/Loopback/Loopback
     xpath: ip/domain/lookup-settings/lookup/source-interface/Loopback
     tf_name: ip_domain_lookup_source_interface_loopback
