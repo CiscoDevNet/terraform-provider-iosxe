@@ -609,6 +609,54 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 				MarkdownDescription: helpers.NewAttributeDescription("Obtain re-authentication timeout value from the server").String,
 				Optional:            true,
 			},
+			"authentication_event_server_alive_action_reinitialize": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Reinitialize all authorized clients").String,
+				Optional:            true,
+			},
+			"authentication_event_server_dead_action_authorize": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authorize the port").String,
+				Optional:            true,
+			},
+			"authentication_event_server_dead_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Critical Authorization VLAN").AddIntegerRangeDescription(1, 4094).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4094),
+				},
+			},
+			"authentication_event_server_dead_action_authorize_voice": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Authorize the port for VOICE traffic").String,
+				Optional:            true,
+			},
+			"authentication_event_server_dead_action_reinitialize_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Critical Authorization VLAN").AddIntegerRangeDescription(1, 4094).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4094),
+				},
+			},
+			"authentication_event_fail_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Authentication Fail vlan").AddIntegerRangeDescription(1, 4094).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4094),
+				},
+			},
+			"authentication_event_fail_action_next_method": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Move to next authentication method").String,
+				Optional:            true,
+			},
+			"authentication_event_no_response_action_authorize_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Configure Guest vlan").AddIntegerRangeDescription(1, 4094).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 4094),
+				},
+			},
+			"authentication_event_linksec_fail_action_next_method": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Move to next authentication method").String,
+				Optional:            true,
+			},
 			"mab": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("MAC Authentication Bypass Interface Config Commands").String,
 				Optional:            true,

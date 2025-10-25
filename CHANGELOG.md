@@ -1,3 +1,7 @@
+## 0.10.0 (unreleased)
+
+- Add `flooding_suppression_address_resolution_disable` attribute to `iosxe_evpn` resource and data source
+
 ## 0.9.3
 
 - Extend list of transient error patterns
