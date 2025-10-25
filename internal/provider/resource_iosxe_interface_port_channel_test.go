@@ -81,6 +81,7 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "snmp_trap_link_status", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "logging_event_link_status_enable", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "evpn_ethernet_segments.0.es_value", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -130,6 +131,13 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
+resource "iosxe_restconf" "PreReq1" {
+	path = "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1"
+	attributes = {
+		"es-value" = "1"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -139,7 +147,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeInterfacePortChannelConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel" "test" {` + "\n"
 	config += `	name = 10` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -202,7 +210,10 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	load_interval = 30` + "\n"
 	config += `	snmp_trap_link_status = true` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	evpn_ethernet_segments = [{` + "\n"
+	config += `		es_value = 1` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
