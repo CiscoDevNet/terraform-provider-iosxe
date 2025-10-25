@@ -172,6 +172,7 @@ type InterfaceEthernet struct {
 	CdpTlvServerLocation                                types.Bool                                        `tfsdk:"cdp_tlv_server_location"`
 	IpNatInside                                         types.Bool                                        `tfsdk:"ip_nat_inside"`
 	IpNatOutside                                        types.Bool                                        `tfsdk:"ip_nat_outside"`
+	EvpnEthernetSegments                                []InterfaceEthernetEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
 }
 
 type InterfaceEthernetData struct {
@@ -308,6 +309,7 @@ type InterfaceEthernetData struct {
 	CdpTlvServerLocation                                types.Bool                                        `tfsdk:"cdp_tlv_server_location"`
 	IpNatInside                                         types.Bool                                        `tfsdk:"ip_nat_inside"`
 	IpNatOutside                                        types.Bool                                        `tfsdk:"ip_nat_outside"`
+	EvpnEthernetSegments                                []InterfaceEthernetEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
