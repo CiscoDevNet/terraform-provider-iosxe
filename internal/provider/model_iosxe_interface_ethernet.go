@@ -172,6 +172,7 @@ type InterfaceEthernet struct {
 	CdpTlvServerLocation                                types.Bool                                        `tfsdk:"cdp_tlv_server_location"`
 	IpNatInside                                         types.Bool                                        `tfsdk:"ip_nat_inside"`
 	IpNatOutside                                        types.Bool                                        `tfsdk:"ip_nat_outside"`
+	EvpnEthernetSegments                                []InterfaceEthernetEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
 }
 
 type InterfaceEthernetData struct {
@@ -308,6 +309,7 @@ type InterfaceEthernetData struct {
 	CdpTlvServerLocation                                types.Bool                                        `tfsdk:"cdp_tlv_server_location"`
 	IpNatInside                                         types.Bool                                        `tfsdk:"ip_nat_inside"`
 	IpNatOutside                                        types.Bool                                        `tfsdk:"ip_nat_outside"`
+	EvpnEthernetSegments                                []InterfaceEthernetEvpnEthernetSegments           `tfsdk:"evpn_ethernet_segments"`
 }
 type InterfaceEthernetHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -336,6 +338,9 @@ type InterfaceEthernetIpFlowMonitors struct {
 }
 type InterfaceEthernetDeviceTrackingAttachedPolicies struct {
 	Name types.String `tfsdk:"name"`
+}
+type InterfaceEthernetEvpnEthernetSegments struct {
+	EsValue types.Int64 `tfsdk:"es_value"`
 }
 
 // End of section. //template:end types
@@ -944,6 +949,14 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 		for index, item := range data.DeviceTrackingAttachedPolicies {
 			if !item.Name.IsNull() && !item.Name.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-switch:device-tracking.attached-policies"+"."+strconv.Itoa(index)+"."+"attach-policy", item.Name.ValueString())
+			}
+		}
+	}
+	if len(data.EvpnEthernetSegments) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-l2vpn:evpn.ethernet-segment", []interface{}{})
+		for index, item := range data.EvpnEthernetSegments {
+			if !item.EsValue.IsNull() && !item.EsValue.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-l2vpn:evpn.ethernet-segment"+"."+strconv.Itoa(index)+"."+"es-value", strconv.FormatInt(item.EsValue.ValueInt64(), 10))
 			}
 		}
 	}
@@ -2106,6 +2119,35 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 	} else {
 		data.IpNatOutside = types.BoolNull()
 	}
+	for i := range data.EvpnEthernetSegments {
+		keys := [...]string{"es-value"}
+		keyValues := [...]string{strconv.FormatInt(data.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-l2vpn:evpn.ethernet-segment").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("es-value"); value.Exists() && !data.EvpnEthernetSegments[i].EsValue.IsNull() {
+			data.EvpnEthernetSegments[i].EsValue = types.Int64Value(value.Int())
+		} else {
+			data.EvpnEthernetSegments[i].EsValue = types.Int64Null()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2740,6 +2782,17 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 		data.IpNatOutside = types.BoolValue(true)
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-l2vpn:evpn.ethernet-segment"); value.Exists() {
+		data.EvpnEthernetSegments = make([]InterfaceEthernetEvpnEthernetSegments, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceEthernetEvpnEthernetSegments{}
+			if cValue := v.Get("es-value"); cValue.Exists() {
+				item.EsValue = types.Int64Value(cValue.Int())
+			}
+			data.EvpnEthernetSegments = append(data.EvpnEthernetSegments, item)
+			return true
+		})
 	}
 }
 
@@ -3376,6 +3429,17 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	} else {
 		data.IpNatOutside = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-l2vpn:evpn.ethernet-segment"); value.Exists() {
+		data.EvpnEthernetSegments = make([]InterfaceEthernetEvpnEthernetSegments, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceEthernetEvpnEthernetSegments{}
+			if cValue := v.Get("es-value"); cValue.Exists() {
+				item.EsValue = types.Int64Value(cValue.Int())
+			}
+			data.EvpnEthernetSegments = append(data.EvpnEthernetSegments, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -3384,6 +3448,31 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 
 func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state InterfaceEthernet) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.EvpnEthernetSegments {
+		stateKeyValues := [...]string{strconv.FormatInt(state.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.EvpnEthernetSegments[i].EsValue.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.EvpnEthernetSegments {
+			found = true
+			if state.EvpnEthernetSegments[i].EsValue.ValueInt64() != data.EvpnEthernetSegments[j].EsValue.ValueInt64() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.IpNatOutside.IsNull() && data.IpNatOutside.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", state.getPath()))
 	}
@@ -3962,6 +4051,7 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 
 func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	if !data.IpNatOutside.IsNull() && !data.IpNatOutside.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
 	}
@@ -4191,6 +4281,11 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 
 func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.EvpnEthernetSegments {
+		keyValues := [...]string{strconv.FormatInt(data.EvpnEthernetSegments[i].EsValue.ValueInt64(), 10)}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-l2vpn:evpn/ethernet-segment=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	if !data.IpNatOutside.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/Cisco-IOS-XE-nat:nat/outside", data.getPath()))
 	}

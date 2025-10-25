@@ -105,6 +105,7 @@ data "iosxe_interface_ethernet" "example" {
 - `dot1x_timeout_supp_timeout` (Number) Timeout for supplicant reply
 - `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
 - `encapsulation_dot1q_vlan_id` (Number)
+- `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `id` (String) The path of the retrieved object.
 - `ip_access_group_in` (String)
@@ -170,6 +171,14 @@ data "iosxe_interface_ethernet" "example" {
 Read-Only:
 
 - `name` (String) Apply a policy for feature device-tracking
+
+
+<a id="nestedatt--evpn_ethernet_segments"></a>
+### Nested Schema for `evpn_ethernet_segments`
+
+Read-Only:
+
+- `es_value` (Number) Ethernet segment local discriminator value
 
 
 <a id="nestedatt--helper_addresses"></a>
