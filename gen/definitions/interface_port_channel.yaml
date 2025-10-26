@@ -206,6 +206,14 @@ attributes:
   - yang_name: Cisco-IOS-XE-ethernet:negotiation/auto
     example: true
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment-choice/evpn-num-case/ethernet-segment-num/ethernet-segment
+    xpath: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment-num/ethernet-segment
+    tf_name: evpn_ethernet_segments
+    type: List
+    attributes:
+      - yang_name: es-value
+        id: true
+        example: 1
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
@@ -215,3 +223,7 @@ test_prerequisites:
         value: VRF1
       - name: address-family/ipv4
         value: ""
+  - path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1
+    attributes:
+      - name: es-value
+        value: 1

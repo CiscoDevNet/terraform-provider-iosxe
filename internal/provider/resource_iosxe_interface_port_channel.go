@@ -413,6 +413,21 @@ func (r *InterfacePortChannelResource) Schema(ctx context.Context, req resource.
 				MarkdownDescription: helpers.NewAttributeDescription("Enable link autonegotiation").String,
 				Optional:            true,
 			},
+			"evpn_ethernet_segments": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ethernet segment local discriminator value").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"es_value": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Ethernet segment local discriminator value").AddIntegerRangeDescription(1, 65535).String,
+							Required:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 65535),
+							},
+						},
+					},
+				},
+			},
 		},
 	}
 }
