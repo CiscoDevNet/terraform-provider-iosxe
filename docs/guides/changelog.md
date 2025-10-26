@@ -12,6 +12,7 @@ description: |-
 - Add `flooding_suppression_address_resolution_disable` attribute to `iosxe_evpn` resource and data source
 - Add `iosxe_evpn_ethernet_segment` resource and data source for managing L2VPN EVPN Ethernet Segment configuration
 - Add `evpn_ethernet_segments` attribute to `iosxe_interface_ethernet` and `iosxe_interface_port_channel` resources and data sources
+- Add `iosxe_interface_igmp` resource and data source for managing IGMP configuration on interfaces
 
 ## 0.9.3
 

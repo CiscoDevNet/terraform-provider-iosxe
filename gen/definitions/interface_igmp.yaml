@@ -1,0 +1,46 @@
+---
+name: Interface IGMP
+path: Cisco-IOS-XE-native:native/interface/%s=%v/ip/Cisco-IOS-XE-igmp:igmp
+augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/ip/Cisco-IOS-XE-igmp:igmp
+no_delete: true
+doc_category: Multicast
+attributes:
+  - yang_name: type
+    tf_name: type
+    description: Interface type
+    type: String
+    reference: true
+    enum_values:
+      - FastEthernet
+      - GigabitEthernet
+      - TwoGigabitEthernet
+      - FiveGigabitEthernet
+      - TenGigabitEthernet
+      - TwentyFiveGigE
+      - FortyGigabitEthernet
+      - HundredGigE
+      - AppGigabitEthernet
+      - Loopback
+      - Vlan
+      - Port-channel
+      - Port-channel-subinterface/Port-channel
+      - Tunnel
+      - Virtual-Template
+      - VirtualPortGroup
+      - Vif
+      - Multilink
+      - Cellular
+      - BDI
+    example: Loopback
+  - yang_name: name
+    example: 100
+  - yang_name: version
+    description: IGMP version
+    default_value: 2
+    example: 3
+
+test_prerequisites:
+  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+    attributes:
+      - name: name
+        value: 100
