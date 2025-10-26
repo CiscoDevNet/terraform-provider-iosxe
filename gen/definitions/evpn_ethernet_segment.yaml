@@ -13,12 +13,10 @@ attributes:
   # redundancy all-active
   - yang_name: redundancy/redundancy-choice/all-active/all-active
     xpath: redundancy/all-active
-    tf_name: redundancy_all_active
     example: false
   # redundancy single-active
   - yang_name: redundancy/redundancy-choice/single-active/single-active
     xpath: redundancy/single-active
-    tf_name: redundancy_single_active
     example: true
   # identifier type 0 0001.0000.0000.0000.000A
   # identifier type 3
@@ -36,5 +34,4 @@ attributes:
         example: 0001.0000.0000.0000.000A
       - yang_name: esi-type-choice/system-mac/system-mac
         xpath: system-mac
-        tf_name: system_mac
         example: 00:11:22:33:44:55
