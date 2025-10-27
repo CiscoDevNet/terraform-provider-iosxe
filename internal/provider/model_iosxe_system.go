@@ -169,6 +169,8 @@ type System struct {
 	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
+	AuthenticationMacMovePermit                            types.Bool                                          `tfsdk:"authentication_mac_move_permit"`
+	AuthenticationMacMoveDenyUncontrolled                  types.Bool                                          `tfsdk:"authentication_mac_move_deny_uncontrolled"`
 }
 
 type SystemData struct {
@@ -303,6 +305,8 @@ type SystemData struct {
 	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
+	AuthenticationMacMovePermit                            types.Bool                                          `tfsdk:"authentication_mac_move_permit"`
+	AuthenticationMacMoveDenyUncontrolled                  types.Bool                                          `tfsdk:"authentication_mac_move_deny_uncontrolled"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -777,6 +781,16 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() && !data.StandbyRedirectsEnableDisable.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"standby.redirects-config.redirect-enable-disable.redirects", data.StandbyRedirectsEnableDisable.ValueString())
+	}
+	if !data.AuthenticationMacMovePermit.IsNull() && !data.AuthenticationMacMovePermit.IsUnknown() {
+		if data.AuthenticationMacMovePermit.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.mac-move.permit", map[string]string{})
+		}
+	}
+	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() && !data.AuthenticationMacMoveDenyUncontrolled.IsUnknown() {
+		if data.AuthenticationMacMoveDenyUncontrolled.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-sanet:authentication.mac-move.deny-uncontrolled", map[string]string{})
+		}
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1940,6 +1954,24 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.StandbyRedirectsEnableDisable = types.StringNull()
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.permit"); !data.AuthenticationMacMovePermit.IsNull() {
+		if value.Exists() {
+			data.AuthenticationMacMovePermit = types.BoolValue(true)
+		} else {
+			data.AuthenticationMacMovePermit = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.deny-uncontrolled"); !data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		if value.Exists() {
+			data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+		} else {
+			data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
+		}
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2521,6 +2553,16 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.permit"); value.Exists() {
+		data.AuthenticationMacMovePermit = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.deny-uncontrolled"); value.Exists() {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
 	}
 }
 
@@ -3104,6 +3146,16 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.permit"); value.Exists() {
+		data.AuthenticationMacMovePermit = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMovePermit = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-sanet:authentication.mac-move.deny-uncontrolled"); value.Exists() {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(true)
+	} else {
+		data.AuthenticationMacMoveDenyUncontrolled = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -3112,6 +3164,12 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.AuthenticationMacMoveDenyUncontrolled.IsNull() && data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled", state.getPath()))
+	}
+	if !state.AuthenticationMacMovePermit.IsNull() && data.AuthenticationMacMovePermit.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/permit", state.getPath()))
+	}
 	if !state.StandbyRedirectsEnableDisable.IsNull() && data.StandbyRedirectsEnableDisable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", state.getPath()))
 	}
@@ -3849,6 +3907,12 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 
 func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() && !data.AuthenticationMacMoveDenyUncontrolled.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled", data.getPath()))
+	}
+	if !data.AuthenticationMacMovePermit.IsNull() && !data.AuthenticationMacMovePermit.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/permit", data.getPath()))
+	}
 
 	for i := range data.TrackObjects {
 		keyValues := [...]string{data.TrackObjects[i].Number.ValueString()}
@@ -3936,6 +4000,12 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.AuthenticationMacMoveDenyUncontrolled.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/deny-uncontrolled", data.getPath()))
+	}
+	if !data.AuthenticationMacMovePermit.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-sanet:authentication/mac-move/permit", data.getPath()))
+	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", data.getPath()))
 	}
