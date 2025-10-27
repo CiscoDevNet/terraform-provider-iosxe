@@ -152,7 +152,6 @@ attributes:
         exclude_test: true
         example: true
       - yang_name: set/ip/next-hop/unchanged
-        tf_name: set_ip_next_hop_unchanged
         exclude_test: true
         example: true
       - yang_name: set/ip/qos-group/qos-id
