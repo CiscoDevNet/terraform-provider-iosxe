@@ -129,7 +129,6 @@ func (r *RadiusResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"key_encryption": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("0", "5", "6", "7").String,
 				Optional:            true,
-				Sensitive:           true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("0", "5", "6", "7"),
 				},

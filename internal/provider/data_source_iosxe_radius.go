@@ -99,7 +99,6 @@ func (d *RadiusDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 			"key_encryption": schema.StringAttribute{
 				MarkdownDescription: "",
 				Computed:            true,
-				Sensitive:           true,
 			},
 			"automate_tester_username": schema.StringAttribute{
 				MarkdownDescription: "",

@@ -51,7 +51,7 @@ resource "iosxe_radius" "example" {
 - `device` (String) A device name from the provider configuration.
 - `ipv4_address` (String) IPv4 address or Hostname for radius server
 - `key` (String, Sensitive)
-- `key_encryption` (String, Sensitive) - Choices: `0`, `5`, `6`, `7`
+- `key_encryption` (String) - Choices: `0`, `5`, `6`, `7`
 - `pac_key` (String, Sensitive) The UNENCRYPTED (cleartext) server key
 - `pac_key_encryption` (String) 0 - Specifies an UNENCRYPTED key will follow 6 - Specifies an ENCRYPTED key will follow 7 - Specifies HIDDEN key will follow
   - Choices: `0`, `6`, `7`

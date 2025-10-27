@@ -32,7 +32,6 @@ attributes:
   - yang_name: key/encryption
     tf_name: key_encryption
     write_only: true
-    sensitive: true
     example: 0
   - yang_name: automate-tester/username
     example: dummy
