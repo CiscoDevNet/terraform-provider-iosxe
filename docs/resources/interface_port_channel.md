@@ -54,6 +54,11 @@ resource "iosxe_interface_port_channel" "example" {
   load_interval                    = 30
   snmp_trap_link_status            = true
   logging_event_link_status_enable = false
+  evpn_ethernet_segments = [
+    {
+      es_value = 1
+    }
+  ]
 }
 ```
 
@@ -95,6 +100,7 @@ resource "iosxe_interface_port_channel" "example" {
 - `device` (String) A device name from the provider configuration.
 - `device_tracking` (Boolean) Configure device-tracking on the interface
 - `device_tracking_attached_policies` (Attributes List) (see [below for nested schema](#nestedatt--device_tracking_attached_policies))
+- `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -143,6 +149,15 @@ resource "iosxe_interface_port_channel" "example" {
 Required:
 
 - `name` (String) Apply a policy for feature device-tracking
+
+
+<a id="nestedatt--evpn_ethernet_segments"></a>
+### Nested Schema for `evpn_ethernet_segments`
+
+Required:
+
+- `es_value` (Number) Ethernet segment local discriminator value
+  - Range: `1`-`65535`
 
 
 <a id="nestedatt--helper_addresses"></a>

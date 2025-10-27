@@ -87,6 +87,11 @@ resource "iosxe_interface_ethernet" "example" {
   cdp_tlv_location                 = false
   cdp_tlv_server_location          = false
   ip_nat_inside                    = true
+  evpn_ethernet_segments = [
+    {
+      es_value = 1
+    }
+  ]
 }
 ```
 
@@ -196,6 +201,7 @@ resource "iosxe_interface_ethernet" "example" {
 - `dot1x_timeout_tx_period` (Number) Timeout for supplicant retries
   - Range: `1`-`65535`
 - `encapsulation_dot1q_vlan_id` (Number) - Range: `1`-`4094`
+- `evpn_ethernet_segments` (Attributes List) Ethernet segment local discriminator value (see [below for nested schema](#nestedatt--evpn_ethernet_segments))
 - `helper_addresses` (Attributes List) Specify a destination address for UDP broadcasts (see [below for nested schema](#nestedatt--helper_addresses))
 - `ip_access_group_in` (String)
 - `ip_access_group_in_enable` (Boolean) inbound packets
@@ -272,6 +278,15 @@ resource "iosxe_interface_ethernet" "example" {
 Required:
 
 - `name` (String) Apply a policy for feature device-tracking
+
+
+<a id="nestedatt--evpn_ethernet_segments"></a>
+### Nested Schema for `evpn_ethernet_segments`
+
+Required:
+
+- `es_value` (Number) Ethernet segment local discriminator value
+  - Range: `1`-`65535`
 
 
 <a id="nestedatt--helper_addresses"></a>
