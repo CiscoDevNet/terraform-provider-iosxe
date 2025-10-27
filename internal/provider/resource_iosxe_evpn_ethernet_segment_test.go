@@ -33,37 +33,34 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAcc
 
-func TestAccIosxeSpanningTree(t *testing.T) {
+func TestAccIosxeEVPNEthernetSegment(t *testing.T) {
 	if os.Getenv("C9000V") == "" {
 		t.Skip("skipping test, set environment variable C9000V")
 	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "mode", "mst"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "logging", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "loopguard_default", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "portfast_default", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "portfast_bpduguard_default", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "extend_system_id", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "mst_instances.0.id", "1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "mst_instances.0.vlan_ids.0", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "vlans.0.id", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_spanning_tree.test", "vlans.0.priority", "32768"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "es_value", "1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "df_election_wait_time", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "redundancy_all_active", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "redundancy_single_active", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "identifier_types.0.type", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "identifier_types.0.hex_string", "0001.0000.0000.0000.000A"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn_ethernet_segment.test", "identifier_types.0.system_mac", "00:11:22:33:44:55"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccIosxeSpanningTreeConfig_minimum(),
+				Config: testAccIosxeEVPNEthernetSegmentConfig_minimum(),
 			},
 			{
-				Config: testAccIosxeSpanningTreeConfig_all(),
+				Config: testAccIosxeEVPNEthernetSegmentConfig_all(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 			{
-				ResourceName:            "iosxe_spanning_tree.test",
+				ResourceName:            "iosxe_evpn_ethernet_segment.test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateIdFunc:       iosxeSpanningTreeImportStateIdFunc("iosxe_spanning_tree.test"),
+				ImportStateIdFunc:       iosxeEVPNEthernetSegmentImportStateIdFunc("iosxe_evpn_ethernet_segment.test"),
 				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
@@ -75,10 +72,12 @@ func TestAccIosxeSpanningTree(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin importStateIdFunc
 
-func iosxeSpanningTreeImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
+func iosxeEVPNEthernetSegmentImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 	return func(s *terraform.State) (string, error) {
+		primary := s.RootModule().Resources[resourceName].Primary
+		EsValue := primary.Attributes["es_value"]
 
-		return fmt.Sprintf(""), nil
+		return fmt.Sprintf("%s", EsValue), nil
 	}
 }
 
@@ -89,8 +88,9 @@ func iosxeSpanningTreeImportStateIdFunc(resourceName string) resource.ImportStat
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigMinimal
 
-func testAccIosxeSpanningTreeConfig_minimum() string {
-	config := `resource "iosxe_spanning_tree" "test" {` + "\n"
+func testAccIosxeEVPNEthernetSegmentConfig_minimum() string {
+	config := `resource "iosxe_evpn_ethernet_segment" "test" {` + "\n"
+	config += `	es_value = 1` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -99,21 +99,16 @@ func testAccIosxeSpanningTreeConfig_minimum() string {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccConfigAll
 
-func testAccIosxeSpanningTreeConfig_all() string {
-	config := `resource "iosxe_spanning_tree" "test" {` + "\n"
-	config += `	mode = "mst"` + "\n"
-	config += `	logging = true` + "\n"
-	config += `	loopguard_default = true` + "\n"
-	config += `	portfast_default = true` + "\n"
-	config += `	portfast_bpduguard_default = true` + "\n"
-	config += `	extend_system_id = true` + "\n"
-	config += `	mst_instances = [{` + "\n"
-	config += `		id = 1` + "\n"
-	config += `		vlan_ids = [10]` + "\n"
-	config += `	}]` + "\n"
-	config += `	vlans = [{` + "\n"
-	config += `		id = "10"` + "\n"
-	config += `		priority = 32768` + "\n"
+func testAccIosxeEVPNEthernetSegmentConfig_all() string {
+	config := `resource "iosxe_evpn_ethernet_segment" "test" {` + "\n"
+	config += `	es_value = 1` + "\n"
+	config += `	df_election_wait_time = 3` + "\n"
+	config += `	redundancy_all_active = false` + "\n"
+	config += `	redundancy_single_active = true` + "\n"
+	config += `	identifier_types = [{` + "\n"
+	config += `		type = 0` + "\n"
+	config += `		hex_string = "0001.0000.0000.0000.000A"` + "\n"
+	config += `		system_mac = "00:11:22:33:44:55"` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config

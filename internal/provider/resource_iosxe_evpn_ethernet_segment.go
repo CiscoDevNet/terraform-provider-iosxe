@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -32,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -46,26 +48,26 @@ import (
 
 // Ensure provider defined types fully satisfy framework interfaces
 var (
-	_ resource.Resource                = &BGPAddressFamilyIPv4VRFResource{}
-	_ resource.ResourceWithImportState = &BGPAddressFamilyIPv4VRFResource{}
+	_ resource.Resource                = &EVPNEthernetSegmentResource{}
+	_ resource.ResourceWithImportState = &EVPNEthernetSegmentResource{}
 )
 
-func NewBGPAddressFamilyIPv4VRFResource() resource.Resource {
-	return &BGPAddressFamilyIPv4VRFResource{}
+func NewEVPNEthernetSegmentResource() resource.Resource {
+	return &EVPNEthernetSegmentResource{}
 }
 
-type BGPAddressFamilyIPv4VRFResource struct {
+type EVPNEthernetSegmentResource struct {
 	data *IosxeProviderData
 }
 
-func (r *BGPAddressFamilyIPv4VRFResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_bgp_address_family_ipv4_vrf"
+func (r *EVPNEthernetSegmentResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_evpn_ethernet_segment"
 }
 
-func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *EVPNEthernetSegmentResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This resource can manage the BGP Address Family IPv4 VRF configuration.",
+		MarkdownDescription: "This resource can manage the EVPN Ethernet Segment configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -86,193 +88,52 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 					stringvalidator.OneOf("all", "attributes"),
 				},
 			},
-			"asn": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").String,
+			"es_value": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ethernet segment local discriminator value").AddIntegerRangeDescription(1, 65535).String,
 				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+				Validators: []validator.Int64{
+					int64validator.Between(1, 65535),
+				},
+				PlanModifiers: []planmodifier.Int64{
+					int64planmodifier.RequiresReplace(),
 				},
 			},
-			"af_name": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("").AddStringEnumDescription("flowspec", "labeled-unicast", "mdt", "multicast", "mvpn", "sr-policy", "tunnel", "unicast").String,
-				Required:            true,
-				Validators: []validator.String{
-					stringvalidator.OneOf("flowspec", "labeled-unicast", "mdt", "multicast", "mvpn", "sr-policy", "tunnel", "unicast"),
-				},
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
+			"df_election_wait_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 10).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 10),
 				},
 			},
-			"vrfs": schema.ListNestedAttribute{
+			"redundancy_all_active": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"redundancy_single_active": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+			},
+			"identifier_types": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ethernet Segment Identifier type").String,
 				Optional:            true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"name": schema.StringAttribute{
+						"type": schema.Int64Attribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"ipv4_unicast_advertise_l2vpn_evpn": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Advertise/export prefixes to l2vpn evpn table").String,
-							Optional:            true,
-						},
-						"ipv4_unicast_redistribute_connected": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Connected").String,
-							Optional:            true,
-						},
-						"ipv4_unicast_router_id_loopback": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").AddIntegerRangeDescription(0, 2147483647).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(0, 2147483647),
-							},
-						},
-						"ipv4_unicast_router_id_ip": schema.StringAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Manually configured router identifier").String,
+						"hex_string": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("H.H.H.H.H.H.H.H.H 	9-octet ESI value in hex").String,
 							Optional:            true,
 							Validators: []validator.String{
-								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+								stringvalidator.RegexMatches(regexp.MustCompile(`([0-9a-fA-F]{1,2}(.[0-9a-fA-F]{1,2}){8})`), ""),
 							},
 						},
-						"ipv4_unicast_aggregate_addresses": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Configure BGP aggregate entries").String,
+						"system_mac": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("System MAC address for generating the ESI value").String,
 							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"ipv4_address": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Required:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-										},
-									},
-									"ipv4_mask": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Required:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-										},
-									},
-								},
-							},
-						},
-						"ipv4_unicast_redistribute_static": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Static routes").String,
-							Optional:            true,
-						},
-						"ipv4_unicast_networks_mask": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,
-							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"network": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Required:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-										},
-									},
-									"mask": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Network mask").String,
-										Required:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-										},
-									},
-									"route_map": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Route-map to modify the attributes").String,
-										Optional:            true,
-									},
-									"backdoor": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").String,
-										Optional:            true,
-									},
-									"evpn": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Advertise or export to EVPN address-family").String,
-										Optional:            true,
-									},
-								},
-							},
-						},
-						"ipv4_unicast_networks": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Specify a network to announce via BGP").String,
-							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"network": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Required:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-										},
-									},
-									"route_map": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Route-map to modify the attributes").String,
-										Optional:            true,
-									},
-									"backdoor": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Specify a BGP backdoor route").String,
-										Optional:            true,
-									},
-									"evpn": schema.BoolAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("Advertise or export to EVPN address-family").String,
-										Optional:            true,
-									},
-								},
-							},
-						},
-						"ipv4_unicast_admin_distances": schema.ListNestedAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").String,
-							Optional:            true,
-							NestedObject: schema.NestedAttributeObject{
-								Attributes: map[string]schema.Attribute{
-									"distance": schema.Int64Attribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
-										Required:            true,
-										Validators: []validator.Int64{
-											int64validator.Between(1, 255),
-										},
-									},
-									"source_ip": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Required:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-										},
-									},
-									"wildcard": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Required:            true,
-										Validators: []validator.String{
-											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
-										},
-									},
-									"acl": schema.StringAttribute{
-										MarkdownDescription: helpers.NewAttributeDescription("").String,
-										Optional:            true,
-									},
-								},
-							},
-						},
-						"ipv4_unicast_distance_bgp_external": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 255),
-							},
-						},
-						"ipv4_unicast_distance_bgp_internal": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 255),
-							},
-						},
-						"ipv4_unicast_distance_bgp_local": schema.Int64Attribute{
-							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 255).String,
-							Optional:            true,
-							Validators: []validator.Int64{
-								int64validator.Between(1, 255),
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`[0-9a-fA-F]+\.[0-9a-fA-F]+\.[0-9a-fA-F]+`), ""),
 							},
 						},
 					},
@@ -282,7 +143,7 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 	}
 }
 
-func (r *BGPAddressFamilyIPv4VRFResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+func (r *EVPNEthernetSegmentResource) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -294,8 +155,8 @@ func (r *BGPAddressFamilyIPv4VRFResource) Configure(_ context.Context, req resou
 
 // Section below is generated&owned by "gen/generator.go". //template:begin create
 
-func (r *BGPAddressFamilyIPv4VRFResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan BGPAddressFamilyIPv4VRF
+func (r *EVPNEthernetSegmentResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var plan EVPNEthernetSegment
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -362,8 +223,8 @@ func (r *BGPAddressFamilyIPv4VRFResource) Create(ctx context.Context, req resour
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (r *BGPAddressFamilyIPv4VRFResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var state BGPAddressFamilyIPv4VRF
+func (r *EVPNEthernetSegmentResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var state EVPNEthernetSegment
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -383,7 +244,7 @@ func (r *BGPAddressFamilyIPv4VRFResource) Read(ctx context.Context, req resource
 	if device.Managed {
 		res, err := device.Client.GetData(state.Id.ValueString())
 		if res.StatusCode == 404 {
-			state = BGPAddressFamilyIPv4VRF{Device: state.Device, Id: state.Id}
+			state = EVPNEthernetSegment{Device: state.Device, Id: state.Id}
 		} else {
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
@@ -416,8 +277,8 @@ func (r *BGPAddressFamilyIPv4VRFResource) Read(ctx context.Context, req resource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin update
 
-func (r *BGPAddressFamilyIPv4VRFResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan, state BGPAddressFamilyIPv4VRF
+func (r *EVPNEthernetSegmentResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var plan, state EVPNEthernetSegment
 
 	// Read plan
 	diags := req.Plan.Get(ctx, &plan)
@@ -500,8 +361,8 @@ func (r *BGPAddressFamilyIPv4VRFResource) Update(ctx context.Context, req resour
 
 // Section below is generated&owned by "gen/generator.go". //template:begin delete
 
-func (r *BGPAddressFamilyIPv4VRFResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var state BGPAddressFamilyIPv4VRF
+func (r *EVPNEthernetSegmentResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var state EVPNEthernetSegment
 
 	// Read state
 	diags := req.State.Get(ctx, &state)
@@ -566,27 +427,26 @@ func (r *BGPAddressFamilyIPv4VRFResource) Delete(ctx context.Context, req resour
 
 // Section below is generated&owned by "gen/generator.go". //template:begin import
 
-func (r *BGPAddressFamilyIPv4VRFResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *EVPNEthernetSegmentResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	idParts := strings.Split(req.ID, ",")
 	idParts = helpers.RemoveEmptyStrings(idParts)
 
-	if len(idParts) != 2 && len(idParts) != 3 {
-		expectedIdentifier := "Expected import identifier with format: '<asn>,<af_name>'"
-		expectedIdentifier += " or '<asn>,<af_name>,<device>'"
+	if len(idParts) != 1 && len(idParts) != 2 {
+		expectedIdentifier := "Expected import identifier with format: '<es_value>'"
+		expectedIdentifier += " or '<es_value>,<device>'"
 		resp.Diagnostics.AddError(
 			"Unexpected Import Identifier",
 			fmt.Sprintf("%s. Got: %q", expectedIdentifier, req.ID),
 		)
 		return
 	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("asn"), idParts[0])...)
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("af_name"), idParts[1])...)
-	if len(idParts) == 3 {
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("es_value"), helpers.Must(strconv.ParseInt(idParts[0], 10, 64)))...)
+	if len(idParts) == 2 {
 		resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("device"), idParts[len(idParts)-1])...)
 	}
 
 	// construct path for 'id' attribute
-	var state BGPAddressFamilyIPv4VRF
+	var state EVPNEthernetSegment
 	diags := resp.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
 	if resp.Diagnostics.HasError() {

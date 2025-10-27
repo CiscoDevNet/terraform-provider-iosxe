@@ -37,26 +37,26 @@ import (
 
 // Ensure the implementation satisfies the expected interfaces.
 var (
-	_ datasource.DataSource              = &EVPNDataSource{}
-	_ datasource.DataSourceWithConfigure = &EVPNDataSource{}
+	_ datasource.DataSource              = &EVPNEthernetSegmentDataSource{}
+	_ datasource.DataSourceWithConfigure = &EVPNEthernetSegmentDataSource{}
 )
 
-func NewEVPNDataSource() datasource.DataSource {
-	return &EVPNDataSource{}
+func NewEVPNEthernetSegmentDataSource() datasource.DataSource {
+	return &EVPNEthernetSegmentDataSource{}
 }
 
-type EVPNDataSource struct {
+type EVPNEthernetSegmentDataSource struct {
 	data *IosxeProviderData
 }
 
-func (d *EVPNDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_evpn"
+func (d *EVPNEthernetSegmentDataSource) Metadata(_ context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_evpn_ethernet_segment"
 }
 
-func (d *EVPNDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *EVPNEthernetSegmentDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "This data source can read the EVPN configuration.",
+		MarkdownDescription: "This data source can read the EVPN Ethernet Segment configuration.",
 
 		Attributes: map[string]schema.Attribute{
 			"device": schema.StringAttribute{
@@ -67,67 +67,47 @@ func (d *EVPNDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				MarkdownDescription: "The path of the retrieved object.",
 				Computed:            true,
 			},
-			"replication_type_ingress": schema.BoolAttribute{
-				MarkdownDescription: "Ingress replication",
+			"es_value": schema.Int64Attribute{
+				MarkdownDescription: "Ethernet segment local discriminator value",
+				Required:            true,
+			},
+			"df_election_wait_time": schema.Int64Attribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"replication_type_static": schema.BoolAttribute{
-				MarkdownDescription: "Static replication",
+			"redundancy_all_active": schema.BoolAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"replication_type_p2mp": schema.BoolAttribute{
-				MarkdownDescription: "p2mp replication",
+			"redundancy_single_active": schema.BoolAttribute{
+				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"replication_type_mp2mp": schema.BoolAttribute{
-				MarkdownDescription: "mp2mp replication",
+			"identifier_types": schema.ListNestedAttribute{
+				MarkdownDescription: "Ethernet Segment Identifier type",
 				Computed:            true,
-			},
-			"mac_duplication_limit": schema.Int64Attribute{
-				MarkdownDescription: "Number of MAC moves within specified time interval",
-				Computed:            true,
-			},
-			"mac_duplication_time": schema.Int64Attribute{
-				MarkdownDescription: "MAC duplication timer",
-				Computed:            true,
-			},
-			"ip_duplication_limit": schema.Int64Attribute{
-				MarkdownDescription: "Number of IP moves within specified time interval",
-				Computed:            true,
-			},
-			"ip_duplication_time": schema.Int64Attribute{
-				MarkdownDescription: "IP duplication timer",
-				Computed:            true,
-			},
-			"router_id_loopback": schema.Int64Attribute{
-				MarkdownDescription: "Loopback interface",
-				Computed:            true,
-			},
-			"default_gateway_advertise": schema.BoolAttribute{
-				MarkdownDescription: "Advertise Default Gateway MAC/IP routes",
-				Computed:            true,
-			},
-			"logging_peer_state": schema.BoolAttribute{
-				MarkdownDescription: "Peer state transition logging",
-				Computed:            true,
-			},
-			"route_target_auto_vni": schema.BoolAttribute{
-				MarkdownDescription: "Set vni-based route-target",
-				Computed:            true,
-			},
-			"anycast_gateway_mac_auto": schema.BoolAttribute{
-				MarkdownDescription: "Enable Auto Anycast Gateway MAC",
-				Computed:            true,
-			},
-			"flooding_suppression_address_resolution_disable": schema.BoolAttribute{
-				MarkdownDescription: "Disable flooding suppression",
-				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"type": schema.Int64Attribute{
+							MarkdownDescription: "",
+							Computed:            true,
+						},
+						"hex_string": schema.StringAttribute{
+							MarkdownDescription: "H.H.H.H.H.H.H.H.H 	9-octet ESI value in hex",
+							Computed:            true,
+						},
+						"system_mac": schema.StringAttribute{
+							MarkdownDescription: "System MAC address for generating the ESI value",
+							Computed:            true,
+						},
+					},
+				},
 			},
 		},
 	}
 }
 
-func (d *EVPNDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
+func (d *EVPNEthernetSegmentDataSource) Configure(_ context.Context, req datasource.ConfigureRequest, _ *datasource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -139,8 +119,8 @@ func (d *EVPNDataSource) Configure(_ context.Context, req datasource.ConfigureRe
 
 // Section below is generated&owned by "gen/generator.go". //template:begin read
 
-func (d *EVPNDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var config EVPNData
+func (d *EVPNEthernetSegmentDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var config EVPNEthernetSegmentData
 
 	// Read config
 	diags := req.Config.Get(ctx, &config)
@@ -159,7 +139,7 @@ func (d *EVPNDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 
 	res, err := device.Client.GetData(config.getPath())
 	if res.StatusCode == 404 {
-		config = EVPNData{Device: config.Device}
+		config = EVPNEthernetSegmentData{Device: config.Device}
 	} else {
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))

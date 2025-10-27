@@ -41,26 +41,34 @@ type SpanningTree struct {
 	Device                   types.String               `tfsdk:"device"`
 	Id                       types.String               `tfsdk:"id"`
 	Mode                     types.String               `tfsdk:"mode"`
+	Logging                  types.Bool                 `tfsdk:"logging"`
 	LoopguardDefault         types.Bool                 `tfsdk:"loopguard_default"`
 	PortfastDefault          types.Bool                 `tfsdk:"portfast_default"`
 	PortfastBpduguardDefault types.Bool                 `tfsdk:"portfast_bpduguard_default"`
 	ExtendSystemId           types.Bool                 `tfsdk:"extend_system_id"`
 	MstInstances             []SpanningTreeMstInstances `tfsdk:"mst_instances"`
+	Vlans                    []SpanningTreeVlans        `tfsdk:"vlans"`
 }
 
 type SpanningTreeData struct {
 	Device                   types.String               `tfsdk:"device"`
 	Id                       types.String               `tfsdk:"id"`
 	Mode                     types.String               `tfsdk:"mode"`
+	Logging                  types.Bool                 `tfsdk:"logging"`
 	LoopguardDefault         types.Bool                 `tfsdk:"loopguard_default"`
 	PortfastDefault          types.Bool                 `tfsdk:"portfast_default"`
 	PortfastBpduguardDefault types.Bool                 `tfsdk:"portfast_bpduguard_default"`
 	ExtendSystemId           types.Bool                 `tfsdk:"extend_system_id"`
 	MstInstances             []SpanningTreeMstInstances `tfsdk:"mst_instances"`
+	Vlans                    []SpanningTreeVlans        `tfsdk:"vlans"`
 }
 type SpanningTreeMstInstances struct {
 	Id      types.Int64 `tfsdk:"id"`
 	VlanIds types.List  `tfsdk:"vlan_ids"`
+}
+type SpanningTreeVlans struct {
+	Id       types.String `tfsdk:"id"`
+	Priority types.Int64  `tfsdk:"priority"`
 }
 
 // End of section. //template:end types
@@ -95,6 +103,11 @@ func (data SpanningTree) toBody(ctx context.Context) string {
 	if !data.Mode.IsNull() && !data.Mode.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:mode", data.Mode.ValueString())
 	}
+	if !data.Logging.IsNull() && !data.Logging.IsUnknown() {
+		if data.Logging.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:logging", map[string]string{})
+		}
+	}
 	if !data.LoopguardDefault.IsNull() && !data.LoopguardDefault.IsUnknown() {
 		if data.LoopguardDefault.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:loopguard.default", map[string]string{})
@@ -128,6 +141,17 @@ func (data SpanningTree) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.Vlans) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan", []interface{}{})
+		for index, item := range data.Vlans {
+			if !item.Id.IsNull() && !item.Id.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"id", item.Id.ValueString())
+			}
+			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-spanning-tree:vlan"+"."+strconv.Itoa(index)+"."+"priority", strconv.FormatInt(item.Priority.ValueInt64(), 10))
+			}
+		}
+	}
 	return body
 }
 
@@ -144,6 +168,15 @@ func (data *SpanningTree) updateFromBody(ctx context.Context, res gjson.Result) 
 		data.Mode = types.StringValue(value.String())
 	} else {
 		data.Mode = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:logging"); !data.Logging.IsNull() {
+		if value.Exists() {
+			data.Logging = types.BoolValue(true)
+		} else {
+			data.Logging = types.BoolValue(false)
+		}
+	} else {
+		data.Logging = types.BoolNull()
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:loopguard.default"); !data.LoopguardDefault.IsNull() {
 		if value.Exists() {
@@ -215,6 +248,40 @@ func (data *SpanningTree) updateFromBody(ctx context.Context, res gjson.Result) 
 			data.MstInstances[i].VlanIds = types.ListNull(types.Int64Type)
 		}
 	}
+	for i := range data.Vlans {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "Cisco-IOS-XE-spanning-tree:vlan").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("id"); value.Exists() && !data.Vlans[i].Id.IsNull() {
+			data.Vlans[i].Id = types.StringValue(value.String())
+		} else {
+			data.Vlans[i].Id = types.StringNull()
+		}
+		if value := r.Get("priority"); value.Exists() && !data.Vlans[i].Priority.IsNull() {
+			data.Vlans[i].Priority = types.Int64Value(value.Int())
+		} else {
+			data.Vlans[i].Priority = types.Int64Null()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -228,6 +295,11 @@ func (data *SpanningTree) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mode"); value.Exists() {
 		data.Mode = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:logging"); value.Exists() {
+		data.Logging = types.BoolValue(true)
+	} else {
+		data.Logging = types.BoolValue(false)
 	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:loopguard.default"); value.Exists() {
 		data.LoopguardDefault = types.BoolValue(true)
@@ -262,6 +334,20 @@ func (data *SpanningTree) fromBody(ctx context.Context, res gjson.Result) {
 				item.VlanIds = types.ListNull(types.Int64Type)
 			}
 			data.MstInstances = append(data.MstInstances, item)
+			return true
+		})
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
+		data.Vlans = make([]SpanningTreeVlans, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SpanningTreeVlans{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			data.Vlans = append(data.Vlans, item)
 			return true
 		})
 	}
@@ -279,6 +365,11 @@ func (data *SpanningTreeData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:mode"); value.Exists() {
 		data.Mode = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:logging"); value.Exists() {
+		data.Logging = types.BoolValue(true)
+	} else {
+		data.Logging = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:loopguard.default"); value.Exists() {
 		data.LoopguardDefault = types.BoolValue(true)
 	} else {
@@ -315,6 +406,20 @@ func (data *SpanningTreeData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
+		data.Vlans = make([]SpanningTreeVlans, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := SpanningTreeVlans{}
+			if cValue := v.Get("id"); cValue.Exists() {
+				item.Id = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			data.Vlans = append(data.Vlans, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -323,6 +428,34 @@ func (data *SpanningTreeData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTree) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.Vlans {
+		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vlans[i].Id.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vlans {
+			found = true
+			if state.Vlans[i].Id.ValueString() != data.Vlans[j].Id.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Vlans[i].Priority.IsNull() && data.Vlans[j].Priority.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v/priority", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	for i := range state.MstInstances {
 		stateKeyValues := [...]string{strconv.FormatInt(state.MstInstances[i].Id.ValueInt64(), 10)}
 
@@ -378,6 +511,9 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 	if !state.LoopguardDefault.IsNull() && data.LoopguardDefault.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", state.getPath()))
 	}
+	if !state.Logging.IsNull() && data.Logging.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:logging", state.getPath()))
+	}
 	if !state.Mode.IsNull() && data.Mode.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mode", state.getPath()))
 	}
@@ -404,6 +540,9 @@ func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
 	if !data.LoopguardDefault.IsNull() && !data.LoopguardDefault.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", data.getPath()))
 	}
+	if !data.Logging.IsNull() && !data.Logging.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:logging", data.getPath()))
+	}
 
 	return emptyLeafsDelete
 }
@@ -414,6 +553,11 @@ func (data *SpanningTree) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.Vlans {
+		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:vlan=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.MstInstances {
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
 
@@ -427,6 +571,9 @@ func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.LoopguardDefault.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:loopguard/default", data.getPath()))
+	}
+	if !data.Logging.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:logging", data.getPath()))
 	}
 	if !data.Mode.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-spanning-tree:mode", data.getPath()))

@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -30,18 +31,23 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSource
 
-func TestAccDataSourceIosxeBGP(t *testing.T) {
+func TestAccDataSourceIosxeEVPNEthernetSegment(t *testing.T) {
+	if os.Getenv("C9000V") == "" {
+		t.Skip("skipping test, set environment variable C9000V")
+	}
 	var checks []resource.TestCheckFunc
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "default_ipv4_unicast", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "log_neighbor_changes", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "router_id_loopback", "100"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "router_id_ip", "172.16.255.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_ethernet_segment.test", "df_election_wait_time", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_ethernet_segment.test", "redundancy_all_active", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_ethernet_segment.test", "redundancy_single_active", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_ethernet_segment.test", "identifier_types.0.type", "0"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_ethernet_segment.test", "identifier_types.0.hex_string", "0001.0000.0000.0000.000A"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_evpn_ethernet_segment.test", "identifier_types.0.system_mac", "00:11:22:33:44:55"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccDataSourceIosxeBGPPrerequisitesConfig + testAccDataSourceIosxeBGPConfig(),
+				Config: testAccDataSourceIosxeEVPNEthernetSegmentConfig(),
 				Check:  resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -51,37 +57,28 @@ func TestAccDataSourceIosxeBGP(t *testing.T) {
 // End of section. //template:end testAccDataSource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
-const testAccDataSourceIosxeBGPPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
-	attributes = {
-		"name" = "100"
-		"ip/address/primary/address" = "200.200.200.200"
-		"ip/address/primary/mask" = "255.255.255.255"
-	}
-}
-
-`
-
 // End of section. //template:end testPrerequisites
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testAccDataSourceConfig
 
-func testAccDataSourceIosxeBGPConfig() string {
-	config := `resource "iosxe_bgp" "test" {` + "\n"
+func testAccDataSourceIosxeEVPNEthernetSegmentConfig() string {
+	config := `resource "iosxe_evpn_ethernet_segment" "test" {` + "\n"
 	config += `	delete_mode = "attributes"` + "\n"
-	config += `	asn = "65000"` + "\n"
-	config += `	default_ipv4_unicast = false` + "\n"
-	config += `	log_neighbor_changes = true` + "\n"
-	config += `	router_id_loopback = 100` + "\n"
-	config += `	router_id_ip = "172.16.255.1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	es_value = 1` + "\n"
+	config += `	df_election_wait_time = 3` + "\n"
+	config += `	redundancy_all_active = false` + "\n"
+	config += `	redundancy_single_active = true` + "\n"
+	config += `	identifier_types = [{` + "\n"
+	config += `		type = 0` + "\n"
+	config += `		hex_string = "0001.0000.0000.0000.000A"` + "\n"
+	config += `		system_mac = "00:11:22:33:44:55"` + "\n"
+	config += `	}]` + "\n"
 	config += `}` + "\n"
 
 	config += `
-		data "iosxe_bgp" "test" {
-			asn = "65000"
-			depends_on = [iosxe_bgp.test]
+		data "iosxe_evpn_ethernet_segment" "test" {
+			es_value = 1
+			depends_on = [iosxe_evpn_ethernet_segment.test]
 		}
 	`
 	return config

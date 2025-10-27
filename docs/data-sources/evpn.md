@@ -28,6 +28,7 @@ data "iosxe_evpn" "example" {
 
 - `anycast_gateway_mac_auto` (Boolean) Enable Auto Anycast Gateway MAC
 - `default_gateway_advertise` (Boolean) Advertise Default Gateway MAC/IP routes
+- `flooding_suppression_address_resolution_disable` (Boolean) Disable flooding suppression
 - `id` (String) The path of the retrieved object.
 - `ip_duplication_limit` (Number) Number of IP moves within specified time interval
 - `ip_duplication_time` (Number) IP duplication timer
