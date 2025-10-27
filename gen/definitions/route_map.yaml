@@ -151,6 +151,10 @@ attributes:
       - yang_name: set/ip/next-hop/self
         exclude_test: true
         example: true
+      - yang_name: set/ip/next-hop/unchanged
+        tf_name: set_ip_next_hop_unchanged
+        exclude_test: true
+        example: true
       - yang_name: set/ip/qos-group/qos-id
         tf_name: set_ip_qos_group
         example: 1
@@ -308,8 +312,8 @@ attributes:
       - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/community-list
         xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list
         tf_name: set_communities
-        example: "1:2"
-        test_tags: [IOSXE1712]
+        example: "no-export"
+        description: "BGP community value - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)"
       - yang_name: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known-choice/community-well-known/community-well-known/additive
         xpath: set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/additive
         tf_name: set_communities_additive

@@ -7,6 +7,11 @@ description: |-
 
 # Changelog
 
+## 0.9.4 (unreleased)
+
+- Add `set_ip_next_hop_unchanged` attribute to `iosxe_route_map` resource and data source
+- Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+
 ## 0.9.3
 
 - Extend list of transient error patterns
