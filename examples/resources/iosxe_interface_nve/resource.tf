@@ -8,6 +8,8 @@ resource "iosxe_interface_nve" "example" {
     {
       vni_range            = "10000"
       ipv4_multicast_group = "225.1.1.1"
+      ingress_replication  = true
+      local_routing        = true
     }
   ]
 }

@@ -23,6 +23,8 @@ resource "iosxe_interface_nve" "example" {
     {
       vni_range            = "10000"
       ipv4_multicast_group = "225.1.1.1"
+      ingress_replication  = true
+      local_routing        = true
     }
   ]
 }
@@ -75,6 +77,7 @@ Optional:
 
 - `ingress_replication` (Boolean) Ingress Replication control-plane (BGP) signaling
 - `ipv4_multicast_group` (String) Starting Multicast Group IPv4 Address
+- `local_routing` (Boolean) Enable vxlan centralized gateway forwarding for routed traffic
 
 ## Import
 
