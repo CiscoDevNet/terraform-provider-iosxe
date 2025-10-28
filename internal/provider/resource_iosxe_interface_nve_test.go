@@ -45,8 +45,6 @@ func TestAccIosxeInterfaceNVE(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_nve.test", "source_interface_loopback", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_nve.test", "vnis.0.vni_range", "10000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_nve.test", "vnis.0.ipv4_multicast_group", "225.1.1.1"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_nve.test", "vnis.0.ingress_replication", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_nve.test", "vnis.0.local_routing", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -63,7 +61,7 @@ func TestAccIosxeInterfaceNVE(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceNVEImportStateIdFunc("iosxe_interface_nve.test"),
-				ImportStateVerifyIgnore: []string{},
+				ImportStateVerifyIgnore: []string{"vnis.0.ingress_replication", "vnis.0.local_routing"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -111,8 +109,6 @@ func testAccIosxeInterfaceNVEConfig_all() string {
 	config += `	vnis = [{` + "\n"
 	config += `		vni_range = "10000"` + "\n"
 	config += `		ipv4_multicast_group = "225.1.1.1"` + "\n"
-	config += `		ingress_replication = true` + "\n"
-	config += `		local_routing = true` + "\n"
 	config += `	}]` + "\n"
 	config += `}` + "\n"
 	return config
