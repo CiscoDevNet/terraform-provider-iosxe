@@ -20,7 +20,6 @@ attributes:
     example: true
   - yang_name: ebgp-multihop
     example: true
-    exclude_test: true
   - yang_name: ebgp-multihop/max-hop
     example: 10
   - yang_name: update-source/interface/interface-choice/Loopback/Loopback

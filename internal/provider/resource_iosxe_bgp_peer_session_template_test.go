@@ -38,6 +38,7 @@ func TestAccIosxeBGPPeerSessionTemplate(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "remote_as", "65001"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "description", "Peer Session Template Description"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "disable_connected_check", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "ebgp_multihop", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "ebgp_multihop_max_hop", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "update_source_loopback", "100"))
 	resource.Test(t, resource.TestCase{
@@ -53,7 +54,7 @@ func TestAccIosxeBGPPeerSessionTemplate(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeBGPPeerSessionTemplateImportStateIdFunc("iosxe_bgp_peer_session_template.test"),
-				ImportStateVerifyIgnore: []string{"ebgp_multihop"},
+				ImportStateVerifyIgnore: []string{},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -118,6 +119,7 @@ func testAccIosxeBGPPeerSessionTemplateConfig_all() string {
 	config += `	remote_as = "65001"` + "\n"
 	config += `	description = "Peer Session Template Description"` + "\n"
 	config += `	disable_connected_check = true` + "\n"
+	config += `	ebgp_multihop = true` + "\n"
 	config += `	ebgp_multihop_max_hop = 10` + "\n"
 	config += `	update_source_loopback = 100` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
