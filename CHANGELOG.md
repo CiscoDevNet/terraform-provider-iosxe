@@ -24,6 +24,30 @@
 
 ## 0.9.1
 
+- Add `flooding_suppression_address_resolution_disable` attribute to `iosxe_evpn` resource and data source
+- Add `ip_domain_lookup_nsap`, `ip_domain_lookup_recursive`, and `ip_domain_lookup_vrfs*` attributes to `iosxe_system` resource and data source
+- Add `iosxe_evpn_ethernet_segment` resource and data source for managing L2VPN EVPN Ethernet Segment configuration
+- Add `evpn_ethernet_segments` attribute to `iosxe_interface_ethernet` and `iosxe_interface_port_channel` resources and data sources
+- Add `ip_ssh_bulk_mode` and `ip_ssh_bulk_mode_window_size` attributes to `iosxe_system` resource and data source
+- Add `set_ip_next_hop_unchanged` attribute to `iosxe_route_map` resource and data source
+- Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+- Add `iosxe_bgp_template_peer_policy` resource
+- Add `ip_dhcp_relay_information_option_vpn_id` attribute to `iosxe_interface_ethernet` resource and `iosxe_interface_vlan` resource
+- Add `local_routing` attribute to `iosxe_interface_nve` resource and data source
+- Add `ipv4_unicast_maximum_paths_ebgp` and `ipv4_unicast_maximum_paths_ibgp` attributes to the `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources
+- Add `ip_cef_load_sharing_algorithm_include_ports_source`, `ip_cef_load_sharing_algorithm_include_ports_destination`, `ipv6_cef_load_sharing_algorithm_include_ports_source`, `ipv6_cef_load_sharing_algorithm_include_ports_destination`, and `port_channel_load_balance` attributes to `iosxe_system` resource and data source
+- Add `router_id_ip`, `bgp_graceful_restart`, and `bgp_update_delay` to `iosxe_bgp` resource and data source
+
+## 0.9.3
+
+- Extend list of transient error patterns
+
+## 0.9.2
+
+- Enhance database synchronization detection
+
+## 0.9.1
+
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix issue with destroying `iosxe_interface_ethernet` resources
 - Change route target attributes of `iosxe_vrf` from type "List" to "Set"
