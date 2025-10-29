@@ -551,6 +551,9 @@ attributes:
     tf_name: standby_redirects_enable_disable
     example: disable
     exclude_test: true
+  - yang_name: ip/routing-new/routing/protocol/purge/interface
+    tf_name: ip_routing_protocol_purge_interface
+    example: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

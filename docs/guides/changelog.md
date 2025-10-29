@@ -7,6 +7,10 @@ description: |-
 
 # Changelog
 
+## 0.10.0
+
+- Add `ip_routing_protocol_purge_interface` attrribute to `system` resource and data sources
+
 ## 0.10.0 (unreleased)
 
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
