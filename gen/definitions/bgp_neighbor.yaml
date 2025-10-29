@@ -100,7 +100,6 @@ attributes:
     example: 10
     exclude_test: true
   - yang_name: inherit/peer-session
-    tf_name: inherit_peer_session
     example: PEER_SESSION_TEMPLATE_1
     exclude_test: true
 test_prerequisites:
