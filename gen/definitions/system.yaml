@@ -491,6 +491,41 @@ attributes:
     tf_name: tftp_source_interface_loopback
     example: 100
     exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/Vlan/Vlan
+    xpath: ip/tftp/source-interface/Vlan
+    tf_name: tftp_source_interface_vlan
+    example: 500
+    exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+    xpath: ip/tftp/source-interface/TwoGigabitEthernet
+    tf_name: tftp_source_interface_two_gigabit_ethernet
+    example: 1/0/1
+    exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+    xpath: ip/tftp/source-interface/FiveGigabitEthernet
+    tf_name: tftp_source_interface_five_gigabit_ethernet
+    example: 1/0/1
+    exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: ip/tftp/source-interface/TenGigabitEthernet
+    tf_name: tftp_source_interface_ten_gigabit_ethernet
+    example: 1/0/1
+    exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/TwentyFiveGigabitEthernet/TwentyFiveGigabitEthernet
+    xpath: ip/tftp/source-interface/TwentyFiveGigabitEthernet
+    tf_name: tftp_source_interface_twenty_five_gigabit_ethernet
+    example: 1/0/1
+    exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: ip/tftp/source-interface/FortyGigabitEthernet
+    tf_name: tftp_source_interface_forty_gigabit_ethernet
+    example: 1/0/1
+    exclude_test: true
+  - yang_name: ip/tftp/source-interface/interface-choice/HundredGigE/HundredGigE
+    xpath: ip/tftp/source-interface/HundredGigE
+    tf_name: tftp_source_interface_hundred_gigabit_ethernet
+    example: 1/0/1
+    exclude_test: true
   - yang_name: multilink/Cisco-IOS-XE-ppp:bundle-name
     tf_name: multilink_ppp_bundle_name
     example: BUNDLE1

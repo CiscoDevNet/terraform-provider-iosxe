@@ -127,6 +127,13 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 								int64validator.Between(0, 2147483647),
 							},
 						},
+						"ipv4_unicast_router_id_ip": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Manually configured router identifier").String,
+							Optional:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
+							},
+						},
 						"ipv4_unicast_aggregate_addresses": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("Configure BGP aggregate entries").String,
 							Optional:            true,

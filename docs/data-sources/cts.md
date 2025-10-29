@@ -28,6 +28,7 @@ data "iosxe_cts" "example" {
 
 - `authorization_list` (String) Local authorization list to use for CTS
 - `id` (String) The path of the retrieved object.
+- `role_based_enforcement` (Boolean) Enable Role-based Access Control enforcement
 - `role_based_enforcement_logging_interval` (Number) Configure sgacl logging interval
 - `role_based_enforcement_vlan_lists` (List of Number) VLANs on which Role-based ACLs are enforced
 - `role_based_permissions_default_acl_name` (List of String) Role-based Access-list name
