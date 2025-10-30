@@ -75,6 +75,14 @@ func (d *BGPAddressFamilyL2VPNDataSource) Schema(ctx context.Context, req dataso
 				MarkdownDescription: "",
 				Required:            true,
 			},
+			"rewrite_evpn_rt_asn": schema.BoolAttribute{
+				MarkdownDescription: "Enable rewrite RT in the BGP EVPN address-family",
+				Computed:            true,
+			},
+			"bgp_nexthop_trigger_delay": schema.Int64Attribute{
+				MarkdownDescription: "Set the delay to trigger nexthop tracking",
+				Computed:            true,
+			},
 		},
 	}
 }
