@@ -99,6 +99,9 @@ attributes:
   - yang_name: ebgp-multihop/max-hop
     example: 10
     exclude_test: true
+  - yang_name: inherit/peer-session
+    example: PEER_SESSION_TEMPLATE_1
+    exclude_test: true
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
     attributes:
