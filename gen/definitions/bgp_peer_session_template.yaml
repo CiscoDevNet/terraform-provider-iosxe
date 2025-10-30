@@ -27,7 +27,6 @@ attributes:
     type: Int64
     example: 100
   - yang_name: inherit/peer-session
-    tf_name: inherit_peer_session
     example: PEER_SESSION_PARENT
     exclude_test: true
 test_prerequisites:
