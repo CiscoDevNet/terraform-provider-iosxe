@@ -40,4 +40,4 @@ data "iosxe_bgp_peer_session_template" "example" {
 - `id` (String) The path of the retrieved object.
 - `inherit_peer_session` (String) Inherit a peer-session template
 - `remote_as` (String) Specify a BGP neighbor remote-as
-- `update_source_loopback` (Number) Loopback interface
+- `update_source_interface_loopback` (Number) Loopback interface

@@ -5,7 +5,6 @@ doc_category: BGP
 skip_minimum_test: true
 attributes:
   - yang_name: id
-    yang_scope: bgp
     tf_name: asn
     example: 65000
   - yang_name: name
@@ -24,7 +23,7 @@ attributes:
     example: 10
   - yang_name: update-source/interface/interface-choice/Loopback/Loopback
     xpath: update-source/interface/Loopback
-    tf_name: update_source_loopback
+    tf_name: update_source_interface_loopback
     type: Int64
     example: 100
   - yang_name: inherit/peer-session

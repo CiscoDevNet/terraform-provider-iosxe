@@ -37,32 +37,32 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type BGPPeerSessionTemplate struct {
-	Device                types.String `tfsdk:"device"`
-	Id                    types.String `tfsdk:"id"`
-	DeleteMode            types.String `tfsdk:"delete_mode"`
-	Asn                   types.String `tfsdk:"asn"`
-	TemplateName          types.String `tfsdk:"template_name"`
-	RemoteAs              types.String `tfsdk:"remote_as"`
-	Description           types.String `tfsdk:"description"`
-	DisableConnectedCheck types.Bool   `tfsdk:"disable_connected_check"`
-	EbgpMultihop          types.Bool   `tfsdk:"ebgp_multihop"`
-	EbgpMultihopMaxHop    types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
-	UpdateSourceLoopback  types.Int64  `tfsdk:"update_source_loopback"`
-	InheritPeerSession    types.String `tfsdk:"inherit_peer_session"`
+	Device                        types.String `tfsdk:"device"`
+	Id                            types.String `tfsdk:"id"`
+	DeleteMode                    types.String `tfsdk:"delete_mode"`
+	Asn                           types.String `tfsdk:"asn"`
+	TemplateName                  types.String `tfsdk:"template_name"`
+	RemoteAs                      types.String `tfsdk:"remote_as"`
+	Description                   types.String `tfsdk:"description"`
+	DisableConnectedCheck         types.Bool   `tfsdk:"disable_connected_check"`
+	EbgpMultihop                  types.Bool   `tfsdk:"ebgp_multihop"`
+	EbgpMultihopMaxHop            types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
+	UpdateSourceInterfaceLoopback types.Int64  `tfsdk:"update_source_interface_loopback"`
+	InheritPeerSession            types.String `tfsdk:"inherit_peer_session"`
 }
 
 type BGPPeerSessionTemplateData struct {
-	Device                types.String `tfsdk:"device"`
-	Id                    types.String `tfsdk:"id"`
-	Asn                   types.String `tfsdk:"asn"`
-	TemplateName          types.String `tfsdk:"template_name"`
-	RemoteAs              types.String `tfsdk:"remote_as"`
-	Description           types.String `tfsdk:"description"`
-	DisableConnectedCheck types.Bool   `tfsdk:"disable_connected_check"`
-	EbgpMultihop          types.Bool   `tfsdk:"ebgp_multihop"`
-	EbgpMultihopMaxHop    types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
-	UpdateSourceLoopback  types.Int64  `tfsdk:"update_source_loopback"`
-	InheritPeerSession    types.String `tfsdk:"inherit_peer_session"`
+	Device                        types.String `tfsdk:"device"`
+	Id                            types.String `tfsdk:"id"`
+	Asn                           types.String `tfsdk:"asn"`
+	TemplateName                  types.String `tfsdk:"template_name"`
+	RemoteAs                      types.String `tfsdk:"remote_as"`
+	Description                   types.String `tfsdk:"description"`
+	DisableConnectedCheck         types.Bool   `tfsdk:"disable_connected_check"`
+	EbgpMultihop                  types.Bool   `tfsdk:"ebgp_multihop"`
+	EbgpMultihopMaxHop            types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
+	UpdateSourceInterfaceLoopback types.Int64  `tfsdk:"update_source_interface_loopback"`
+	InheritPeerSession            types.String `tfsdk:"inherit_peer_session"`
 }
 
 // End of section. //template:end types
@@ -116,8 +116,8 @@ func (data BGPPeerSessionTemplate) toBody(ctx context.Context) string {
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ebgp-multihop.max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
 	}
-	if !data.UpdateSourceLoopback.IsNull() && !data.UpdateSourceLoopback.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", strconv.FormatInt(data.UpdateSourceLoopback.ValueInt64(), 10))
+	if !data.UpdateSourceInterfaceLoopback.IsNull() && !data.UpdateSourceInterfaceLoopback.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"update-source.interface.Loopback", strconv.FormatInt(data.UpdateSourceInterfaceLoopback.ValueInt64(), 10))
 	}
 	if !data.InheritPeerSession.IsNull() && !data.InheritPeerSession.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inherit.peer-session", data.InheritPeerSession.ValueString())
@@ -172,10 +172,10 @@ func (data *BGPPeerSessionTemplate) updateFromBody(ctx context.Context, res gjso
 	} else {
 		data.EbgpMultihopMaxHop = types.Int64Null()
 	}
-	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceLoopback.IsNull() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() && !data.UpdateSourceInterfaceLoopback.IsNull() {
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	} else {
-		data.UpdateSourceLoopback = types.Int64Null()
+		data.UpdateSourceInterfaceLoopback = types.Int64Null()
 	}
 	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() && !data.InheritPeerSession.IsNull() {
 		data.InheritPeerSession = types.StringValue(value.String())
@@ -213,7 +213,7 @@ func (data *BGPPeerSessionTemplate) fromBody(ctx context.Context, res gjson.Resu
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() {
 		data.InheritPeerSession = types.StringValue(value.String())
@@ -249,7 +249,7 @@ func (data *BGPPeerSessionTemplateData) fromBody(ctx context.Context, res gjson.
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "update-source.interface.Loopback"); value.Exists() {
-		data.UpdateSourceLoopback = types.Int64Value(value.Int())
+		data.UpdateSourceInterfaceLoopback = types.Int64Value(value.Int())
 	}
 	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() {
 		data.InheritPeerSession = types.StringValue(value.String())
@@ -265,7 +265,7 @@ func (data *BGPPeerSessionTemplate) getDeletedItems(ctx context.Context, state B
 	if !state.InheritPeerSession.IsNull() && data.InheritPeerSession.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/inherit/peer-session", state.getPath()))
 	}
-	if !state.UpdateSourceLoopback.IsNull() && data.UpdateSourceLoopback.IsNull() {
+	if !state.UpdateSourceInterfaceLoopback.IsNull() && data.UpdateSourceInterfaceLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/update-source/interface/Loopback", state.getPath()))
 	}
 	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
@@ -312,7 +312,7 @@ func (data *BGPPeerSessionTemplate) getDeletePaths(ctx context.Context) []string
 	if !data.InheritPeerSession.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/inherit/peer-session", data.getPath()))
 	}
-	if !data.UpdateSourceLoopback.IsNull() {
+	if !data.UpdateSourceInterfaceLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/update-source/interface/Loopback", data.getPath()))
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() {

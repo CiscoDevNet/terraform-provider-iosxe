@@ -122,7 +122,7 @@ func (r *BGPPeerSessionTemplateResource) Schema(ctx context.Context, req resourc
 					int64validator.Between(2, 255),
 				},
 			},
-			"update_source_loopback": schema.Int64Attribute{
+			"update_source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
 				Optional:            true,
 			},

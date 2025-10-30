@@ -95,7 +95,7 @@ func (d *BGPPeerSessionTemplateDataSource) Schema(ctx context.Context, req datas
 				MarkdownDescription: "",
 				Computed:            true,
 			},
-			"update_source_loopback": schema.Int64Attribute{
+			"update_source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},

@@ -14,14 +14,14 @@ This resource can manage the BGP Peer Session Template configuration.
 
 ```terraform
 resource "iosxe_bgp_peer_session_template" "example" {
-  asn                     = "65000"
-  template_name           = "PEER_SESSION_TEMPLATE_1"
-  remote_as               = "65001"
-  description             = "Peer Session Template Description"
-  disable_connected_check = true
-  ebgp_multihop           = true
-  ebgp_multihop_max_hop   = 10
-  update_source_loopback  = 100
+  asn                              = "65000"
+  template_name                    = "PEER_SESSION_TEMPLATE_1"
+  remote_as                        = "65001"
+  description                      = "Peer Session Template Description"
+  disable_connected_check          = true
+  ebgp_multihop                    = true
+  ebgp_multihop_max_hop            = 10
+  update_source_interface_loopback = 100
 }
 ```
 
@@ -44,7 +44,7 @@ resource "iosxe_bgp_peer_session_template" "example" {
 - `ebgp_multihop_max_hop` (Number) - Range: `2`-`255`
 - `inherit_peer_session` (String) Inherit a peer-session template
 - `remote_as` (String) Specify a BGP neighbor remote-as
-- `update_source_loopback` (Number) Loopback interface
+- `update_source_interface_loopback` (Number) Loopback interface
 
 ### Read-Only
 

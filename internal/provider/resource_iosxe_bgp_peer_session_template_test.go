@@ -40,7 +40,7 @@ func TestAccIosxeBGPPeerSessionTemplate(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "disable_connected_check", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "ebgp_multihop", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "ebgp_multihop_max_hop", "10"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "update_source_loopback", "100"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_bgp_peer_session_template.test", "update_source_interface_loopback", "100"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -121,7 +121,7 @@ func testAccIosxeBGPPeerSessionTemplateConfig_all() string {
 	config += `	disable_connected_check = true` + "\n"
 	config += `	ebgp_multihop = true` + "\n"
 	config += `	ebgp_multihop_max_hop = 10` + "\n"
-	config += `	update_source_loopback = 100` + "\n"
+	config += `	update_source_interface_loopback = 100` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
