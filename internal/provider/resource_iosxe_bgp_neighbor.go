@@ -227,7 +227,7 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 					int64validator.Between(1, 254),
 				},
 			},
-			"update_source_loopback": schema.Int64Attribute{
+			"update_source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Loopback interface").String,
 				Optional:            true,
 			},
