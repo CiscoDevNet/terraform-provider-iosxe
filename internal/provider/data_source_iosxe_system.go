@@ -709,6 +709,10 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "",
 				Computed:            true,
 			},
+			"ip_routing_protocol_purge_interface": schema.BoolAttribute{
+				MarkdownDescription: "Perform IP routing protocol routes purge on link failures",
+				Computed:            true,
+			},
 		},
 	}
 }

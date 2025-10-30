@@ -48,6 +48,7 @@ resource "iosxe_system" "example" {
   ip_multicast_route_limit                           = 200000
   ip_domain_list_vrf_domain                          = "example.com"
   ip_domain_list_vrf                                 = "VRF1"
+  ip_routing_protocol_purge_interface                = true
 }
 ```
 
@@ -148,6 +149,7 @@ resource "iosxe_system" "example" {
   - Range: `0`-`65535`
 - `ip_radius_source_interface_vrf` (String) VPN Routing/Forwarding parameters
 - `ip_routing` (Boolean) Enable or disable IP routing
+- `ip_routing_protocol_purge_interface` (Boolean) Perform IP routing protocol routes purge on link failures
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
 - `ip_source_route` (Boolean) Process packets with source routing header options
 - `ip_ssh_authentication_retries` (Number) Specify number of authentication retries

@@ -169,6 +169,7 @@ type System struct {
 	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
+	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
 }
 
 type SystemData struct {
@@ -303,6 +304,7 @@ type SystemData struct {
 	EthernetCfmAlarmConfigReset                            types.Int64                                         `tfsdk:"ethernet_cfm_alarm_config_reset"`
 	StandbyRedirects                                       types.Bool                                          `tfsdk:"standby_redirects"`
 	StandbyRedirectsEnableDisable                          types.String                                        `tfsdk:"standby_redirects_enable_disable"`
+	IpRoutingProtocolPurgeInterface                        types.Bool                                          `tfsdk:"ip_routing_protocol_purge_interface"`
 }
 type SystemMulticastRoutingVrfs struct {
 	Vrf         types.String `tfsdk:"vrf"`
@@ -777,6 +779,9 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() && !data.StandbyRedirectsEnableDisable.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"standby.redirects-config.redirect-enable-disable.redirects", data.StandbyRedirectsEnableDisable.ValueString())
+	}
+	if !data.IpRoutingProtocolPurgeInterface.IsNull() && !data.IpRoutingProtocolPurgeInterface.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.routing-new.routing.protocol.purge.interface", data.IpRoutingProtocolPurgeInterface.ValueBool())
 	}
 	if len(data.MulticastRoutingVrfs) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.Cisco-IOS-XE-multicast:multicast-routing.vrf", []interface{}{})
@@ -1940,6 +1945,13 @@ func (data *System) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.StandbyRedirectsEnableDisable = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); !data.IpRoutingProtocolPurgeInterface.IsNull() {
+		if value.Exists() {
+			data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -2521,6 +2533,11 @@ func (data *System) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); value.Exists() {
+		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
 	}
 }
 
@@ -3104,6 +3121,11 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "standby.redirects-config.redirect-enable-disable.redirects"); value.Exists() {
 		data.StandbyRedirectsEnableDisable = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.routing-new.routing.protocol.purge.interface"); value.Exists() {
+		data.IpRoutingProtocolPurgeInterface = types.BoolValue(value.Bool())
+	} else {
+		data.IpRoutingProtocolPurgeInterface = types.BoolNull()
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -3112,6 +3134,9 @@ func (data *SystemData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *System) getDeletedItems(ctx context.Context, state System) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpRoutingProtocolPurgeInterface.IsNull() && data.IpRoutingProtocolPurgeInterface.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/routing-new/routing/protocol/purge/interface", state.getPath()))
+	}
 	if !state.StandbyRedirectsEnableDisable.IsNull() && data.StandbyRedirectsEnableDisable.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", state.getPath()))
 	}
@@ -3936,6 +3961,9 @@ func (data *System) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *System) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpRoutingProtocolPurgeInterface.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/routing-new/routing/protocol/purge/interface", data.getPath()))
+	}
 	if !data.StandbyRedirectsEnableDisable.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/standby/redirects-config/redirect-enable-disable/redirects", data.getPath()))
 	}

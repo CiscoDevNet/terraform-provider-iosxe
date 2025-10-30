@@ -851,6 +851,10 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.OneOf("disable", "enable"),
 				},
 			},
+			"ip_routing_protocol_purge_interface": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Perform IP routing protocol routes purge on link failures").String,
+				Optional:            true,
+			},
 		},
 	}
 }

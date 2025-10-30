@@ -7,10 +7,6 @@ description: |-
 
 # Changelog
 
-## 0.10.0
-
-- Add `ip_routing_protocol_purge_interface` attrribute to `system` resource and data sources
-
 ## 0.10.0 (unreleased)
 
 - Add `flooding_suppression_address_resolution_disable` attribute to `iosxe_evpn` resource and data source
