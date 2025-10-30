@@ -46,6 +46,7 @@ data "iosxe_interface_vlan" "example" {
 - `ip_access_group_in_enable` (Boolean) inbound packets
 - `ip_access_group_out` (String)
 - `ip_access_group_out_enable` (Boolean) outbound packets
+- `ip_dhcp_relay_information_option_vpn_id` (Boolean) Enable vpn-id support on this interface
 - `ip_dhcp_relay_source_interface` (String) Set source interface for relayed messages
 - `ip_proxy_arp` (Boolean) Enable proxy ARP
 - `ip_redirects` (Boolean) Enable sending ICMP Redirect messages
