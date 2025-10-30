@@ -33,7 +33,6 @@ data "iosxe_bgp_address_family_l2vpn" "example" {
 
 ### Read-Only
 
+- `bgp_nexthop_trigger_delay` (Number) Set the delay to trigger nexthop tracking
 - `id` (String) The path of the retrieved object.
-- `nexthop_trigger_delay` (Number) Set the delay to trigger nexthop tracking
-- `nexthop_trigger_enable` (Boolean) Enable nexthop tracking
 - `rewrite_evpn_rt_asn` (Boolean) Enable rewrite RT in the BGP EVPN address-family

@@ -12,12 +12,8 @@ attributes:
   - yang_name: l2vpn-evpn/rewrite-evpn-rt-asn
     tf_name: rewrite_evpn_rt_asn
     example: true
-  - yang_name: l2vpn-evpn/bgp/nexthop/trigger/enable
-    tf_name: nexthop_trigger_enable
-    example: true
-    default_value: true
   - yang_name: l2vpn-evpn/bgp/nexthop/trigger/delay
-    tf_name: nexthop_trigger_delay
+    tf_name: bgp_nexthop_trigger_delay
     example: 10
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
