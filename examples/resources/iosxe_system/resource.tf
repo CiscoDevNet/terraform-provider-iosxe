@@ -41,4 +41,5 @@ resource "iosxe_system" "example" {
   ip_multicast_route_limit                           = 200000
   ip_domain_list_vrf_domain                          = "example.com"
   ip_domain_list_vrf                                 = "VRF1"
+  ip_routing_protocol_purge_interface                = true
 }
