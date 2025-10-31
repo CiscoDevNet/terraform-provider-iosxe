@@ -655,15 +655,10 @@ func (data System) toBody(ctx context.Context) string {
 	}
 	if !data.IpSshBulkMode.IsNull() && !data.IpSshBulkMode.IsUnknown() {
 		if data.IpSshBulkMode.ValueBool() {
-			// For presence container, include window-size in the same operation if set
-			if !data.IpSshBulkModeWindowSize.IsNull() && !data.IpSshBulkModeWindowSize.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.bulk-mode.window-size", strconv.FormatInt(data.IpSshBulkModeWindowSize.ValueInt64(), 10))
-			} else {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.bulk-mode", map[string]string{})
-			}
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.bulk-mode", map[string]string{})
 		}
-	} else if !data.IpSshBulkModeWindowSize.IsNull() && !data.IpSshBulkModeWindowSize.IsUnknown() {
-		// If only window-size is set, setting it will implicitly enable bulk-mode
+	}
+	if !data.IpSshBulkModeWindowSize.IsNull() && !data.IpSshBulkModeWindowSize.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.ssh.bulk-mode.window-size", strconv.FormatInt(data.IpSshBulkModeWindowSize.ValueInt64(), 10))
 	}
 	if !data.ControlPlaneServicePolicyInput.IsNull() && !data.ControlPlaneServicePolicyInput.IsUnknown() {
