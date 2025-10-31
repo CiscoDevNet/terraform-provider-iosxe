@@ -19,18 +19,11 @@ attributes:
       - TwentyFiveGigE
       - FortyGigabitEthernet
       - HundredGigE
-      - AppGigabitEthernet
       - Loopback
       - Vlan
       - Port-channel
       - Port-channel-subinterface/Port-channel
       - Tunnel
-      - Virtual-Template
-      - VirtualPortGroup
-      - Vif
-      - Multilink
-      - Cellular
-      - BDI
     example: Loopback
   - yang_name: name
     example: 100
