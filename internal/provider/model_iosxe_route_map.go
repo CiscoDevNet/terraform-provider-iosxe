@@ -103,6 +103,7 @@ type RouteMapEntries struct {
 	SetIpGlobalNextHopAddress              types.List                          `tfsdk:"set_ip_global_next_hop_address"`
 	SetIpNextHopAddress                    types.List                          `tfsdk:"set_ip_next_hop_address"`
 	SetIpNextHopSelf                       types.Bool                          `tfsdk:"set_ip_next_hop_self"`
+	SetIpNextHopUnchanged                  types.Bool                          `tfsdk:"set_ip_next_hop_unchanged"`
 	SetIpQosGroup                          types.Int64                         `tfsdk:"set_ip_qos_group"`
 	SetIpv6Address                         types.List                          `tfsdk:"set_ipv6_address"`
 	SetIpv6DefaultGlobalNextHop            types.String                        `tfsdk:"set_ipv6_default_global_next_hop"`
@@ -426,6 +427,11 @@ func (data RouteMap) toBody(ctx context.Context) string {
 			if !item.SetIpNextHopSelf.IsNull() && !item.SetIpNextHopSelf.IsUnknown() {
 				if item.SetIpNextHopSelf.ValueBool() {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"set.ip.next-hop.self", map[string]string{})
+				}
+			}
+			if !item.SetIpNextHopUnchanged.IsNull() && !item.SetIpNextHopUnchanged.IsUnknown() {
+				if item.SetIpNextHopUnchanged.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-route-map:route-map-without-order-seq"+"."+strconv.Itoa(index)+"."+"set.ip.next-hop.unchanged", map[string]string{})
 				}
 			}
 			if !item.SetIpQosGroup.IsNull() && !item.SetIpQosGroup.IsUnknown() {
@@ -987,6 +993,15 @@ func (data *RouteMap) updateFromBody(ctx context.Context, res gjson.Result) {
 			}
 		} else {
 			data.Entries[i].SetIpNextHopSelf = types.BoolNull()
+		}
+		if value := r.Get("set.ip.next-hop.unchanged"); !data.Entries[i].SetIpNextHopUnchanged.IsNull() {
+			if value.Exists() {
+				data.Entries[i].SetIpNextHopUnchanged = types.BoolValue(true)
+			} else {
+				data.Entries[i].SetIpNextHopUnchanged = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].SetIpNextHopUnchanged = types.BoolNull()
 		}
 		if value := r.Get("set.ip.qos-group.qos-id"); value.Exists() && !data.Entries[i].SetIpQosGroup.IsNull() {
 			data.Entries[i].SetIpQosGroup = types.Int64Value(value.Int())
@@ -1565,6 +1580,11 @@ func (data *RouteMap) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.SetIpNextHopSelf = types.BoolValue(false)
 			}
+			if cValue := v.Get("set.ip.next-hop.unchanged"); cValue.Exists() {
+				item.SetIpNextHopUnchanged = types.BoolValue(true)
+			} else {
+				item.SetIpNextHopUnchanged = types.BoolValue(false)
+			}
 			if cValue := v.Get("set.ip.qos-group.qos-id"); cValue.Exists() {
 				item.SetIpQosGroup = types.Int64Value(cValue.Int())
 			}
@@ -2016,6 +2036,11 @@ func (data *RouteMapData) fromBody(ctx context.Context, res gjson.Result) {
 				item.SetIpNextHopSelf = types.BoolValue(true)
 			} else {
 				item.SetIpNextHopSelf = types.BoolValue(false)
+			}
+			if cValue := v.Get("set.ip.next-hop.unchanged"); cValue.Exists() {
+				item.SetIpNextHopUnchanged = types.BoolValue(true)
+			} else {
+				item.SetIpNextHopUnchanged = types.BoolValue(false)
 			}
 			if cValue := v.Get("set.ip.qos-group.qos-id"); cValue.Exists() {
 				item.SetIpQosGroup = types.Int64Value(cValue.Int())
@@ -2542,6 +2567,9 @@ func (data *RouteMap) getDeletedItems(ctx context.Context, state RouteMap) []str
 				}
 				if !state.Entries[i].SetIpQosGroup.IsNull() && data.Entries[j].SetIpQosGroup.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/qos-group/qos-id", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Entries[i].SetIpNextHopUnchanged.IsNull() && data.Entries[j].SetIpNextHopUnchanged.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/next-hop/unchanged", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				if !state.Entries[i].SetIpNextHopSelf.IsNull() && data.Entries[j].SetIpNextHopSelf.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/next-hop/self", state.getPath(), strings.Join(stateKeyValues[:], ",")))
@@ -3184,6 +3212,9 @@ func (data *RouteMap) getEmptyLeafsDelete(ctx context.Context) []string {
 		}
 		if !data.Entries[i].SetLevel1.IsNull() && !data.Entries[i].SetLevel1.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/level/level-1", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
+		if !data.Entries[i].SetIpNextHopUnchanged.IsNull() && !data.Entries[i].SetIpNextHopUnchanged.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/next-hop/unchanged", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 		if !data.Entries[i].SetIpNextHopSelf.IsNull() && !data.Entries[i].SetIpNextHopSelf.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-route-map:route-map-without-order-seq=%v/set/ip/next-hop/self", data.getPath(), strings.Join(keyValues[:], ",")))

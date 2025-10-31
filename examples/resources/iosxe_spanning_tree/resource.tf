@@ -1,5 +1,6 @@
 resource "iosxe_spanning_tree" "example" {
   mode                       = "mst"
+  logging                    = true
   loopguard_default          = true
   portfast_default           = true
   portfast_bpduguard_default = true
@@ -8,6 +9,12 @@ resource "iosxe_spanning_tree" "example" {
     {
       id       = 1
       vlan_ids = [10]
+    }
+  ]
+  vlans = [
+    {
+      id       = "10"
+      priority = 32768
     }
   ]
 }

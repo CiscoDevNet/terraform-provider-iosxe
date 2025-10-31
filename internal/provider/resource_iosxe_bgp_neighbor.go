@@ -242,6 +242,10 @@ func (r *BGPNeighborResource) Schema(ctx context.Context, req resource.SchemaReq
 					int64validator.Between(2, 255),
 				},
 			},
+			"inherit_peer_session": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Inherit a peer-session template").String,
+				Optional:            true,
+			},
 		},
 	}
 }

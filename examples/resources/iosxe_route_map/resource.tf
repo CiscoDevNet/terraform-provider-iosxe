@@ -55,6 +55,7 @@ resource "iosxe_route_map" "example" {
       set_tag                                = 100
       set_as_path_prepend_as                 = "65001 65001"
       set_as_path_prepend_last_as            = 5
+      set_communities                        = ["no-export"]
       set_extcomunity_rt                     = ["10:10"]
       set_extcomunity_soo                    = "10:10"
       set_extcomunity_vpn_distinguisher      = "10:10"

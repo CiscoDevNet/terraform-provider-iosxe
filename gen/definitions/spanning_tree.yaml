@@ -8,6 +8,8 @@ doc_category: Switching
 attributes:
   - yang_name: Cisco-IOS-XE-spanning-tree:mode
     example: mst
+  - yang_name: Cisco-IOS-XE-spanning-tree:logging
+    example: true
   - yang_name: Cisco-IOS-XE-spanning-tree:loopguard/default
     example: true
   - yang_name: Cisco-IOS-XE-spanning-tree:portfast/default
@@ -26,4 +28,13 @@ attributes:
         example: 1
       - yang_name: vlan-ids
         example: 10
+  - yang_name: Cisco-IOS-XE-spanning-tree:vlan
+    tf_name: vlans
+    type: List
+    attributes:
+      - yang_name: id
+        id: true
+        example: "10"
+      - yang_name: priority
+        example: 32768
     

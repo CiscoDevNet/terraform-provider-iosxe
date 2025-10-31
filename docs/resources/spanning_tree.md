@@ -15,6 +15,7 @@ This resource can manage the Spanning Tree configuration.
 ```terraform
 resource "iosxe_spanning_tree" "example" {
   mode                       = "mst"
+  logging                    = true
   loopguard_default          = true
   portfast_default           = true
   portfast_bpduguard_default = true
@@ -23,6 +24,12 @@ resource "iosxe_spanning_tree" "example" {
     {
       id       = 1
       vlan_ids = [10]
+    }
+  ]
+  vlans = [
+    {
+      id       = "10"
+      priority = 32768
     }
   ]
 }
@@ -35,12 +42,14 @@ resource "iosxe_spanning_tree" "example" {
 
 - `device` (String) A device name from the provider configuration.
 - `extend_system_id` (Boolean) Extend system-id into priority portion of the bridge id (PVST & Rapid PVST only)
+- `logging` (Boolean) Enable Spanning tree logging
 - `loopguard_default` (Boolean) Enable loopguard by default on all ports
 - `mode` (String) Spanning tree operating mode
   - Choices: `mst`, `pvst`, `rapid-pvst`
 - `mst_instances` (Attributes List) Map vlans to an MST instance (see [below for nested schema](#nestedatt--mst_instances))
 - `portfast_bpduguard_default` (Boolean) Enable bpdu guard by default on all portfast edge ports
 - `portfast_default` (Boolean) Enable portfast by default on all access ports
+- `vlans` (Attributes List) VLAN Switch Spanning Tree (see [below for nested schema](#nestedatt--vlans))
 
 ### Read-Only
 
@@ -56,6 +65,19 @@ Required:
 Optional:
 
 - `vlan_ids` (List of Number) Range of vlans to add to the instance mapping
+
+
+<a id="nestedatt--vlans"></a>
+### Nested Schema for `vlans`
+
+Required:
+
+- `id` (String)
+
+Optional:
+
+- `priority` (Number) Set the bridge priority for the spanning tree
+  - Range: `0`-`61440`
 
 ## Import
 

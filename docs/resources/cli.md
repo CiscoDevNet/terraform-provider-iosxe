@@ -31,3 +31,4 @@ resource "iosxe_cli" "example" {
 ### Optional
 
 - `device` (String) A device name from the provider configuration.
+- `raw` (Boolean) If true, the CLI commands will be sent as raw CLI.

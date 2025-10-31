@@ -51,6 +51,7 @@ func TestAccIosxeEVPN(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "logging_peer_state", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "route_target_auto_vni", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "anycast_gateway_mac_auto", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_evpn.test", "flooding_suppression_address_resolution_disable", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -117,6 +118,7 @@ func testAccIosxeEVPNConfig_all() string {
 	config += `	logging_peer_state = true` + "\n"
 	config += `	route_target_auto_vni = true` + "\n"
 	config += `	anycast_gateway_mac_auto = true` + "\n"
+	config += `	flooding_suppression_address_resolution_disable = true` + "\n"
 	config += `}` + "\n"
 	return config
 }

@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/terraform-plugin-go v0.29.0
 	github.com/hashicorp/terraform-plugin-log v0.9.0
 	github.com/hashicorp/terraform-plugin-testing v1.13.3
-	github.com/netascode/go-restconf v0.1.16
+	github.com/netascode/go-restconf v0.1.18
 	github.com/openconfig/goyang v1.6.3
 	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/sjson v1.2.5
@@ -88,7 +88,7 @@ require (
 	golang.org/x/telemetry v0.0.0-20251008203120-078029d740a8 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20251007200510-49b9836ed3ff // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20251014184007-4626949a642f // indirect
 	google.golang.org/grpc v1.76.0 // indirect
 	google.golang.org/protobuf v1.36.10 // indirect
 	gopkg.in/yaml.v2 v2.3.0 // indirect

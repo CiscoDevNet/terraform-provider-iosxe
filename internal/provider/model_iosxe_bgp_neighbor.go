@@ -71,6 +71,7 @@ type BGPNeighbor struct {
 	UpdateSourceLoopback                types.Int64  `tfsdk:"update_source_loopback"`
 	EbgpMultihop                        types.Bool   `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
+	InheritPeerSession                  types.String `tfsdk:"inherit_peer_session"`
 }
 
 type BGPNeighborData struct {
@@ -107,6 +108,7 @@ type BGPNeighborData struct {
 	UpdateSourceLoopback                types.Int64  `tfsdk:"update_source_loopback"`
 	EbgpMultihop                        types.Bool   `tfsdk:"ebgp_multihop"`
 	EbgpMultihopMaxHop                  types.Int64  `tfsdk:"ebgp_multihop_max_hop"`
+	InheritPeerSession                  types.String `tfsdk:"inherit_peer_session"`
 }
 
 // End of section. //template:end types
@@ -253,6 +255,9 @@ func (data BGPNeighbor) toBody(ctx context.Context) string {
 	}
 	if !data.EbgpMultihopMaxHop.IsNull() && !data.EbgpMultihopMaxHop.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ebgp-multihop.max-hop", strconv.FormatInt(data.EbgpMultihopMaxHop.ValueInt64(), 10))
+	}
+	if !data.InheritPeerSession.IsNull() && !data.InheritPeerSession.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"inherit.peer-session", data.InheritPeerSession.ValueString())
 	}
 	return body
 }
@@ -458,6 +463,11 @@ func (data *BGPNeighbor) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EbgpMultihopMaxHop = types.Int64Null()
 	}
+	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() && !data.InheritPeerSession.IsNull() {
+		data.InheritPeerSession = types.StringValue(value.String())
+	} else {
+		data.InheritPeerSession = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -581,6 +591,9 @@ func (data *BGPNeighbor) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() {
+		data.InheritPeerSession = types.StringValue(value.String())
 	}
 }
 
@@ -706,6 +719,9 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ebgp-multihop.max-hop"); value.Exists() {
 		data.EbgpMultihopMaxHop = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "inherit.peer-session"); value.Exists() {
+		data.InheritPeerSession = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -714,6 +730,9 @@ func (data *BGPNeighborData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *BGPNeighbor) getDeletedItems(ctx context.Context, state BGPNeighbor) []string {
 	deletedItems := make([]string, 0)
+	if !state.InheritPeerSession.IsNull() && data.InheritPeerSession.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/inherit/peer-session", state.getPath()))
+	}
 	if !state.EbgpMultihopMaxHop.IsNull() && data.EbgpMultihopMaxHop.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ebgp-multihop/max-hop", state.getPath()))
 	}
@@ -857,6 +876,9 @@ func (data *BGPNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *BGPNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.InheritPeerSession.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/inherit/peer-session", data.getPath()))
+	}
 	if !data.EbgpMultihopMaxHop.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ebgp-multihop/max-hop", data.getPath()))
 	}

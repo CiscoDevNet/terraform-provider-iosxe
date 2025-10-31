@@ -36,40 +36,42 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type EVPN struct {
-	Device                  types.String `tfsdk:"device"`
-	Id                      types.String `tfsdk:"id"`
-	DeleteMode              types.String `tfsdk:"delete_mode"`
-	ReplicationTypeIngress  types.Bool   `tfsdk:"replication_type_ingress"`
-	ReplicationTypeStatic   types.Bool   `tfsdk:"replication_type_static"`
-	ReplicationTypeP2mp     types.Bool   `tfsdk:"replication_type_p2mp"`
-	ReplicationTypeMp2mp    types.Bool   `tfsdk:"replication_type_mp2mp"`
-	MacDuplicationLimit     types.Int64  `tfsdk:"mac_duplication_limit"`
-	MacDuplicationTime      types.Int64  `tfsdk:"mac_duplication_time"`
-	IpDuplicationLimit      types.Int64  `tfsdk:"ip_duplication_limit"`
-	IpDuplicationTime       types.Int64  `tfsdk:"ip_duplication_time"`
-	RouterIdLoopback        types.Int64  `tfsdk:"router_id_loopback"`
-	DefaultGatewayAdvertise types.Bool   `tfsdk:"default_gateway_advertise"`
-	LoggingPeerState        types.Bool   `tfsdk:"logging_peer_state"`
-	RouteTargetAutoVni      types.Bool   `tfsdk:"route_target_auto_vni"`
-	AnycastGatewayMacAuto   types.Bool   `tfsdk:"anycast_gateway_mac_auto"`
+	Device                                      types.String `tfsdk:"device"`
+	Id                                          types.String `tfsdk:"id"`
+	DeleteMode                                  types.String `tfsdk:"delete_mode"`
+	ReplicationTypeIngress                      types.Bool   `tfsdk:"replication_type_ingress"`
+	ReplicationTypeStatic                       types.Bool   `tfsdk:"replication_type_static"`
+	ReplicationTypeP2mp                         types.Bool   `tfsdk:"replication_type_p2mp"`
+	ReplicationTypeMp2mp                        types.Bool   `tfsdk:"replication_type_mp2mp"`
+	MacDuplicationLimit                         types.Int64  `tfsdk:"mac_duplication_limit"`
+	MacDuplicationTime                          types.Int64  `tfsdk:"mac_duplication_time"`
+	IpDuplicationLimit                          types.Int64  `tfsdk:"ip_duplication_limit"`
+	IpDuplicationTime                           types.Int64  `tfsdk:"ip_duplication_time"`
+	RouterIdLoopback                            types.Int64  `tfsdk:"router_id_loopback"`
+	DefaultGatewayAdvertise                     types.Bool   `tfsdk:"default_gateway_advertise"`
+	LoggingPeerState                            types.Bool   `tfsdk:"logging_peer_state"`
+	RouteTargetAutoVni                          types.Bool   `tfsdk:"route_target_auto_vni"`
+	AnycastGatewayMacAuto                       types.Bool   `tfsdk:"anycast_gateway_mac_auto"`
+	FloodingSuppressionAddressResolutionDisable types.Bool   `tfsdk:"flooding_suppression_address_resolution_disable"`
 }
 
 type EVPNData struct {
-	Device                  types.String `tfsdk:"device"`
-	Id                      types.String `tfsdk:"id"`
-	ReplicationTypeIngress  types.Bool   `tfsdk:"replication_type_ingress"`
-	ReplicationTypeStatic   types.Bool   `tfsdk:"replication_type_static"`
-	ReplicationTypeP2mp     types.Bool   `tfsdk:"replication_type_p2mp"`
-	ReplicationTypeMp2mp    types.Bool   `tfsdk:"replication_type_mp2mp"`
-	MacDuplicationLimit     types.Int64  `tfsdk:"mac_duplication_limit"`
-	MacDuplicationTime      types.Int64  `tfsdk:"mac_duplication_time"`
-	IpDuplicationLimit      types.Int64  `tfsdk:"ip_duplication_limit"`
-	IpDuplicationTime       types.Int64  `tfsdk:"ip_duplication_time"`
-	RouterIdLoopback        types.Int64  `tfsdk:"router_id_loopback"`
-	DefaultGatewayAdvertise types.Bool   `tfsdk:"default_gateway_advertise"`
-	LoggingPeerState        types.Bool   `tfsdk:"logging_peer_state"`
-	RouteTargetAutoVni      types.Bool   `tfsdk:"route_target_auto_vni"`
-	AnycastGatewayMacAuto   types.Bool   `tfsdk:"anycast_gateway_mac_auto"`
+	Device                                      types.String `tfsdk:"device"`
+	Id                                          types.String `tfsdk:"id"`
+	ReplicationTypeIngress                      types.Bool   `tfsdk:"replication_type_ingress"`
+	ReplicationTypeStatic                       types.Bool   `tfsdk:"replication_type_static"`
+	ReplicationTypeP2mp                         types.Bool   `tfsdk:"replication_type_p2mp"`
+	ReplicationTypeMp2mp                        types.Bool   `tfsdk:"replication_type_mp2mp"`
+	MacDuplicationLimit                         types.Int64  `tfsdk:"mac_duplication_limit"`
+	MacDuplicationTime                          types.Int64  `tfsdk:"mac_duplication_time"`
+	IpDuplicationLimit                          types.Int64  `tfsdk:"ip_duplication_limit"`
+	IpDuplicationTime                           types.Int64  `tfsdk:"ip_duplication_time"`
+	RouterIdLoopback                            types.Int64  `tfsdk:"router_id_loopback"`
+	DefaultGatewayAdvertise                     types.Bool   `tfsdk:"default_gateway_advertise"`
+	LoggingPeerState                            types.Bool   `tfsdk:"logging_peer_state"`
+	RouteTargetAutoVni                          types.Bool   `tfsdk:"route_target_auto_vni"`
+	AnycastGatewayMacAuto                       types.Bool   `tfsdk:"anycast_gateway_mac_auto"`
+	FloodingSuppressionAddressResolutionDisable types.Bool   `tfsdk:"flooding_suppression_address_resolution_disable"`
 }
 
 // End of section. //template:end types
@@ -154,6 +156,11 @@ func (data EVPN) toBody(ctx context.Context) string {
 	if !data.AnycastGatewayMacAuto.IsNull() && !data.AnycastGatewayMacAuto.IsUnknown() {
 		if data.AnycastGatewayMacAuto.ValueBool() {
 			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"anycast-gateway.mac.auto", map[string]string{})
+		}
+	}
+	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() && !data.FloodingSuppressionAddressResolutionDisable.IsUnknown() {
+		if data.FloodingSuppressionAddressResolutionDisable.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"flooding-suppression.address-resolution.disable", map[string]string{})
 		}
 	}
 	return body
@@ -265,6 +272,15 @@ func (data *EVPN) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AnycastGatewayMacAuto = types.BoolNull()
 	}
+	if value := res.Get(prefix + "flooding-suppression.address-resolution.disable"); !data.FloodingSuppressionAddressResolutionDisable.IsNull() {
+		if value.Exists() {
+			data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(true)
+		} else {
+			data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
+		}
+	} else {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -330,6 +346,11 @@ func (data *EVPN) fromBody(ctx context.Context, res gjson.Result) {
 		data.AnycastGatewayMacAuto = types.BoolValue(true)
 	} else {
 		data.AnycastGatewayMacAuto = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "flooding-suppression.address-resolution.disable"); value.Exists() {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(true)
+	} else {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
 	}
 }
 
@@ -397,6 +418,11 @@ func (data *EVPNData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.AnycastGatewayMacAuto = types.BoolValue(false)
 	}
+	if value := res.Get(prefix + "flooding-suppression.address-resolution.disable"); value.Exists() {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(true)
+	} else {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -405,6 +431,9 @@ func (data *EVPNData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 	deletedItems := make([]string, 0)
+	if !state.FloodingSuppressionAddressResolutionDisable.IsNull() && data.FloodingSuppressionAddressResolutionDisable.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/flooding-suppression/address-resolution/disable", state.getPath()))
+	}
 	if !state.AnycastGatewayMacAuto.IsNull() && data.AnycastGatewayMacAuto.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/anycast-gateway/mac/auto", state.getPath()))
 	}
@@ -454,6 +483,9 @@ func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 
 func (data *EVPN) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() && !data.FloodingSuppressionAddressResolutionDisable.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/flooding-suppression/address-resolution/disable", data.getPath()))
+	}
 	if !data.AnycastGatewayMacAuto.IsNull() && !data.AnycastGatewayMacAuto.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/anycast-gateway/mac/auto", data.getPath()))
 	}
@@ -488,6 +520,9 @@ func (data *EVPN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *EVPN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/flooding-suppression/address-resolution/disable", data.getPath()))
+	}
 	if !data.AnycastGatewayMacAuto.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/anycast-gateway/mac/auto", data.getPath()))
 	}

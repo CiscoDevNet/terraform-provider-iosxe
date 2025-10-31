@@ -241,6 +241,62 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 					},
 				},
 			},
+			"ip_domain_lookup_nsap": schema.BoolAttribute{
+				MarkdownDescription: "Enable IP DNS queries for CLNS NSAP addresses",
+				Computed:            true,
+			},
+			"ip_domain_lookup_recursive": schema.BoolAttribute{
+				MarkdownDescription: "Enable IP DNS recursive lookup",
+				Computed:            true,
+			},
+			"ip_domain_lookup_vrfs": schema.ListNestedAttribute{
+				MarkdownDescription: "Specify VRF",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"vrf": schema.StringAttribute{
+							MarkdownDescription: "VRF name",
+							Computed:            true,
+						},
+						"source_interface_loopback": schema.Int64Attribute{
+							MarkdownDescription: "Loopback interface",
+							Computed:            true,
+						},
+						"source_interface_vlan": schema.Int64Attribute{
+							MarkdownDescription: "Iosxr Vlans",
+							Computed:            true,
+						},
+						"source_interface_gigabit_ethernet": schema.StringAttribute{
+							MarkdownDescription: "GigabitEthernet IEEE 802.3z",
+							Computed:            true,
+						},
+						"source_interface_two_gigabit_ethernet": schema.StringAttribute{
+							MarkdownDescription: "Two GigabitEthernet ",
+							Computed:            true,
+						},
+						"source_interface_five_gigabit_ethernet": schema.StringAttribute{
+							MarkdownDescription: "Five GigabitEthernet ",
+							Computed:            true,
+						},
+						"source_interface_ten_gigabit_ethernet": schema.StringAttribute{
+							MarkdownDescription: "Ten Gigabit Ethernet",
+							Computed:            true,
+						},
+						"source_interface_twenty_five_gigabit_ethernet": schema.StringAttribute{
+							MarkdownDescription: "Twenty Five GigabitEthernet ",
+							Computed:            true,
+						},
+						"source_interface_forty_gigabit_ethernet": schema.StringAttribute{
+							MarkdownDescription: "Forty GigabitEthernet ",
+							Computed:            true,
+						},
+						"source_interface_hundred_gigabit_ethernet": schema.StringAttribute{
+							MarkdownDescription: "Hundred GigabitEthernet",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"ip_domain_lookup_source_interface_loopback": schema.Int64Attribute{
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,

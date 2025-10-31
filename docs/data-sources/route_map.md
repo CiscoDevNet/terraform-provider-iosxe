@@ -89,7 +89,7 @@ Read-Only:
 - `set_as_path_replace_as` (Attributes List) (see [below for nested schema](#nestedatt--entries--set_as_path_replace_as))
 - `set_as_path_tag` (Boolean) Set the tag as an AS-path attribute
 - `set_as_path_tag_legacy` (Boolean) Set the tag as an AS-path attribute (OBSOLETE - please use route-map configuration in Cisco-IOS-XE-bgp.yang)
-- `set_communities` (List of String)
+- `set_communities` (List of String) BGP community value - can be a number (AA:NN format) or well-known value (internet, local-AS, no-advertise, no-export, gshut)
 - `set_communities_additive` (Boolean)
 - `set_communities_additive_legacy` (Boolean)
 - `set_communities_legacy` (List of String)
@@ -119,6 +119,7 @@ Read-Only:
 - `set_ip_global_next_hop_address` (List of String)
 - `set_ip_next_hop_address` (List of String) IP address of next hop
 - `set_ip_next_hop_self` (Boolean) Use self address (for BGP only)
+- `set_ip_next_hop_unchanged` (Boolean) Propagate next hop unchanged
 - `set_ip_qos_group` (Number)
 - `set_ipv6_address` (List of String) IPv6 prefix-list
 - `set_ipv6_default_global_next_hop` (String) Next hop along path

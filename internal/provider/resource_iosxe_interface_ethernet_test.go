@@ -99,6 +99,7 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "cdp_tlv_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "cdp_tlv_server_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "ip_nat_inside", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_ethernet.test", "evpn_ethernet_segments.0.es_value", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -115,7 +116,7 @@ func TestAccIosxeInterfaceEthernet(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceEthernetImportStateIdFunc("iosxe_interface_ethernet.test"),
-				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust", "ip_dhcp_snooping_trust", "speed_100", "speed_1000", "speed_2500", "speed_5000", "speed_10000", "speed_25000", "speed_40000", "speed_100000", "speed_nonegotiate", "authentication_order_dot1x", "authentication_order_dot1x_mab", "authentication_order_dot1x_webauth", "authentication_order_mab", "authentication_order_mab_dot1x", "authentication_order_mab_webauth", "authentication_order_webauth", "authentication_priority_dot1x", "authentication_priority_dot1x_mab", "authentication_priority_dot1x_webauth", "authentication_priority_mab", "authentication_priority_mab_dot1x", "authentication_priority_mab_webauth", "authentication_priority_webauth", "authentication_periodic", "authentication_timer_reauthenticate_server", "mab", "mab_eap", "ip_nbar_protocol_discovery", "device_tracking", "ip_nat_outside"},
+				ImportStateVerifyIgnore: []string{"auto_qos_classify", "auto_qos_classify_police", "auto_qos_trust", "auto_qos_trust_cos", "auto_qos_trust_dscp", "auto_qos_video_cts", "auto_qos_video_ip_camera", "auto_qos_video_media_player", "auto_qos_voip", "auto_qos_voip_cisco_phone", "auto_qos_voip_cisco_softphone", "auto_qos_voip_trust", "ipv6_address_autoconfig_default", "ip_arp_inspection_trust", "ip_dhcp_snooping_trust", "speed_100", "speed_1000", "speed_2500", "speed_5000", "speed_10000", "speed_25000", "speed_40000", "speed_100000", "speed_nonegotiate", "authentication_order_dot1x", "authentication_order_dot1x_mab", "authentication_order_dot1x_webauth", "authentication_order_mab", "authentication_order_mab_dot1x", "authentication_order_mab_webauth", "authentication_order_webauth", "authentication_priority_dot1x", "authentication_priority_dot1x_mab", "authentication_priority_dot1x_webauth", "authentication_priority_mab", "authentication_priority_mab_dot1x", "authentication_priority_mab_webauth", "authentication_priority_webauth", "authentication_periodic", "authentication_timer_reauthenticate_server", "authentication_event_server_alive_action_reinitialize", "authentication_event_server_dead_action_authorize", "authentication_event_server_dead_action_authorize_voice", "authentication_event_fail_action_next_method", "authentication_event_linksec_fail_action_next_method", "mab", "mab_eap", "ip_nbar_protocol_discovery", "device_tracking", "ip_nat_outside"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},
@@ -181,6 +182,13 @@ resource "iosxe_restconf" "PreReq4" {
 	}
 }
 
+resource "iosxe_restconf" "PreReq5" {
+	path = "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1"
+	attributes = {
+		"es-value" = "1"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -191,7 +199,7 @@ func testAccIosxeInterfaceEthernetConfig_minimum() string {
 	config := `resource "iosxe_interface_ethernet" "test" {` + "\n"
 	config += `	type = "GigabitEthernet"` + "\n"
 	config += `	name = "3"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, iosxe_restconf.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -274,7 +282,10 @@ func testAccIosxeInterfaceEthernetConfig_all() string {
 	config += `	cdp_tlv_location = false` + "\n"
 	config += `	cdp_tlv_server_location = false` + "\n"
 	config += `	ip_nat_inside = true` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
+	config += `	evpn_ethernet_segments = [{` + "\n"
+	config += `		es_value = 1` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, iosxe_restconf.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

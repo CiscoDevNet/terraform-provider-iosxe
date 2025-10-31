@@ -44,6 +44,7 @@ type BGP struct {
 	DefaultIpv4Unicast types.Bool   `tfsdk:"default_ipv4_unicast"`
 	LogNeighborChanges types.Bool   `tfsdk:"log_neighbor_changes"`
 	RouterIdLoopback   types.Int64  `tfsdk:"router_id_loopback"`
+	RouterIdIp         types.String `tfsdk:"router_id_ip"`
 }
 
 type BGPData struct {
@@ -53,6 +54,7 @@ type BGPData struct {
 	DefaultIpv4Unicast types.Bool   `tfsdk:"default_ipv4_unicast"`
 	LogNeighborChanges types.Bool   `tfsdk:"log_neighbor_changes"`
 	RouterIdLoopback   types.Int64  `tfsdk:"router_id_loopback"`
+	RouterIdIp         types.String `tfsdk:"router_id_ip"`
 }
 
 // End of section. //template:end types
@@ -96,6 +98,9 @@ func (data BGP) toBody(ctx context.Context) string {
 	if !data.RouterIdLoopback.IsNull() && !data.RouterIdLoopback.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bgp.router-id.interface.Loopback", strconv.FormatInt(data.RouterIdLoopback.ValueInt64(), 10))
 	}
+	if !data.RouterIdIp.IsNull() && !data.RouterIdIp.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"bgp.router-id.ip-id", data.RouterIdIp.ValueString())
+	}
 	return body
 }
 
@@ -132,6 +137,11 @@ func (data *BGP) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.RouterIdLoopback = types.Int64Null()
 	}
+	if value := res.Get(prefix + "bgp.router-id.ip-id"); value.Exists() && !data.RouterIdIp.IsNull() {
+		data.RouterIdIp = types.StringValue(value.String())
+	} else {
+		data.RouterIdIp = types.StringNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -155,6 +165,9 @@ func (data *BGP) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "bgp.router-id.interface.Loopback"); value.Exists() {
 		data.RouterIdLoopback = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "bgp.router-id.ip-id"); value.Exists() {
+		data.RouterIdIp = types.StringValue(value.String())
 	}
 }
 
@@ -180,6 +193,9 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "bgp.router-id.interface.Loopback"); value.Exists() {
 		data.RouterIdLoopback = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "bgp.router-id.ip-id"); value.Exists() {
+		data.RouterIdIp = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -188,6 +204,9 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *BGP) getDeletedItems(ctx context.Context, state BGP) []string {
 	deletedItems := make([]string, 0)
+	if !state.RouterIdIp.IsNull() && data.RouterIdIp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/router-id/ip-id", state.getPath()))
+	}
 	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/bgp/router-id/interface/Loopback", state.getPath()))
 	}
@@ -217,6 +236,9 @@ func (data *BGP) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *BGP) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.RouterIdIp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/router-id/ip-id", data.getPath()))
+	}
 	if !data.RouterIdLoopback.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/bgp/router-id/interface/Loopback", data.getPath()))
 	}

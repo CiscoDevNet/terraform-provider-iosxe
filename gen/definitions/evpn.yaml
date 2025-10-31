@@ -44,3 +44,5 @@ attributes:
     example: true
   - yang_name: anycast-gateway/mac/auto
     example: true
+  - yang_name: flooding-suppression/address-resolution/disable
+    example: true
