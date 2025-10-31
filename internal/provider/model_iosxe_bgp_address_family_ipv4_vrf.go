@@ -68,6 +68,8 @@ type BGPAddressFamilyIPv4VRFVrfs struct {
 	Ipv4UnicastDistanceBgpExternal   types.Int64                                                `tfsdk:"ipv4_unicast_distance_bgp_external"`
 	Ipv4UnicastDistanceBgpInternal   types.Int64                                                `tfsdk:"ipv4_unicast_distance_bgp_internal"`
 	Ipv4UnicastDistanceBgpLocal      types.Int64                                                `tfsdk:"ipv4_unicast_distance_bgp_local"`
+	Ipv4UnicastMaximumPathsEbgp      types.Int64                                                `tfsdk:"ipv4_unicast_maximum_paths_ebgp"`
+	Ipv4UnicastMaximumPathsIbgp      types.Int64                                                `tfsdk:"ipv4_unicast_maximum_paths_ibgp"`
 }
 type BGPAddressFamilyIPv4VRFVrfsIpv4UnicastAggregateAddresses struct {
 	Ipv4Address types.String `tfsdk:"ipv4_address"`
@@ -160,6 +162,12 @@ func (data BGPAddressFamilyIPv4VRF) toBody(ctx context.Context) string {
 			}
 			if !item.Ipv4UnicastDistanceBgpLocal.IsNull() && !item.Ipv4UnicastDistanceBgpLocal.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.distance.bgp.local", strconv.FormatInt(item.Ipv4UnicastDistanceBgpLocal.ValueInt64(), 10))
+			}
+			if !item.Ipv4UnicastMaximumPathsEbgp.IsNull() && !item.Ipv4UnicastMaximumPathsEbgp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.maximum-paths.ebgp", strconv.FormatInt(item.Ipv4UnicastMaximumPathsEbgp.ValueInt64(), 10))
+			}
+			if !item.Ipv4UnicastMaximumPathsIbgp.IsNull() && !item.Ipv4UnicastMaximumPathsIbgp.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.maximum-paths.ibgp.max", strconv.FormatInt(item.Ipv4UnicastMaximumPathsIbgp.ValueInt64(), 10))
 			}
 			if len(item.Ipv4UnicastAggregateAddresses) > 0 {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"vrf"+"."+strconv.Itoa(index)+"."+"ipv4-unicast.aggregate-address", []interface{}{})
@@ -520,6 +528,16 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBody(ctx context.Context, res gjs
 		} else {
 			data.Vrfs[i].Ipv4UnicastDistanceBgpLocal = types.Int64Null()
 		}
+		if value := r.Get("ipv4-unicast.maximum-paths.ebgp"); value.Exists() && !data.Vrfs[i].Ipv4UnicastMaximumPathsEbgp.IsNull() {
+			data.Vrfs[i].Ipv4UnicastMaximumPathsEbgp = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv4UnicastMaximumPathsEbgp = types.Int64Null()
+		}
+		if value := r.Get("ipv4-unicast.maximum-paths.ibgp.max"); value.Exists() && !data.Vrfs[i].Ipv4UnicastMaximumPathsIbgp.IsNull() {
+			data.Vrfs[i].Ipv4UnicastMaximumPathsIbgp = types.Int64Value(value.Int())
+		} else {
+			data.Vrfs[i].Ipv4UnicastMaximumPathsIbgp = types.Int64Null()
+		}
 	}
 }
 
@@ -653,6 +671,12 @@ func (data *BGPAddressFamilyIPv4VRF) fromBody(ctx context.Context, res gjson.Res
 			}
 			if cValue := v.Get("ipv4-unicast.distance.bgp.local"); cValue.Exists() {
 				item.Ipv4UnicastDistanceBgpLocal = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv4-unicast.maximum-paths.ebgp"); cValue.Exists() {
+				item.Ipv4UnicastMaximumPathsEbgp = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv4-unicast.maximum-paths.ibgp.max"); cValue.Exists() {
+				item.Ipv4UnicastMaximumPathsIbgp = types.Int64Value(cValue.Int())
 			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
@@ -791,6 +815,12 @@ func (data *BGPAddressFamilyIPv4VRFData) fromBody(ctx context.Context, res gjson
 			if cValue := v.Get("ipv4-unicast.distance.bgp.local"); cValue.Exists() {
 				item.Ipv4UnicastDistanceBgpLocal = types.Int64Value(cValue.Int())
 			}
+			if cValue := v.Get("ipv4-unicast.maximum-paths.ebgp"); cValue.Exists() {
+				item.Ipv4UnicastMaximumPathsEbgp = types.Int64Value(cValue.Int())
+			}
+			if cValue := v.Get("ipv4-unicast.maximum-paths.ibgp.max"); cValue.Exists() {
+				item.Ipv4UnicastMaximumPathsIbgp = types.Int64Value(cValue.Int())
+			}
 			data.Vrfs = append(data.Vrfs, item)
 			return true
 		})
@@ -821,6 +851,12 @@ func (data *BGPAddressFamilyIPv4VRF) getDeletedItems(ctx context.Context, state 
 				found = false
 			}
 			if found {
+				if !state.Vrfs[i].Ipv4UnicastMaximumPathsIbgp.IsNull() && data.Vrfs[j].Ipv4UnicastMaximumPathsIbgp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/maximum-paths/ibgp/max", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				if !state.Vrfs[i].Ipv4UnicastMaximumPathsEbgp.IsNull() && data.Vrfs[j].Ipv4UnicastMaximumPathsEbgp.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/maximum-paths/ebgp", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Vrfs[i].Ipv4UnicastDistanceBgpLocal.IsNull() && data.Vrfs[j].Ipv4UnicastDistanceBgpLocal.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/vrf=%v/ipv4-unicast/distance/bgp/local", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}

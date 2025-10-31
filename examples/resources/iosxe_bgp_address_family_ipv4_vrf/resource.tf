@@ -7,7 +7,6 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
       ipv4_unicast_advertise_l2vpn_evpn   = true
       ipv4_unicast_redistribute_connected = true
       ipv4_unicast_router_id_loopback     = 101
-      ipv4_unicast_router_id_ip           = "10.1.1.1"
       ipv4_unicast_aggregate_addresses = [
         {
           ipv4_address = "50.0.0.0"
@@ -40,6 +39,8 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
       ipv4_unicast_distance_bgp_external = 20
       ipv4_unicast_distance_bgp_internal = 200
       ipv4_unicast_distance_bgp_local    = 200
+      ipv4_unicast_maximum_paths_ebgp    = 2
+      ipv4_unicast_maximum_paths_ibgp    = 2
     }
   ]
 }
