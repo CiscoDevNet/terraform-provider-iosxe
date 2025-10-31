@@ -13,6 +13,9 @@
 - Add `ipv4_unicast_maximum_paths_ebgp` and `ipv4_unicast_maximum_paths_ibgp` attributes to the `iosxe_bgp_address_family_ipv4` and `iosxe_bgp_address_family_ipv4_vrf` resources
 - Add `ip_cef_load_sharing_algorithm_include_ports_source`, `ip_cef_load_sharing_algorithm_include_ports_destination`, `ipv6_cef_load_sharing_algorithm_include_ports_source`, `ipv6_cef_load_sharing_algorithm_include_ports_destination`, and `port_channel_load_balance` attributes to `iosxe_system` resource and data source
 - Add `router_id_ip`, `bgp_graceful_restart`, and `bgp_update_delay` to `iosxe_bgp` resource and data source
+- Add `ip_default_gateway` attribute to `iosxe_system` resource and data source for default gateway configuration on non-routing devices
+- Add `device_classifier` attribute to `iosxe_system` resource and data source for endpoint device classification
+- Add `table_maps` attribute to `iosxe_system` resource and data source for QoS table map configuration with DSCP/CoS value translation
 
 ## 0.9.3
 
