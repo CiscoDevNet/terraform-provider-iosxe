@@ -81,10 +81,10 @@ func (r *InterfaceIGMPResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: helpers.NewAttributeDescription("Interface type").AddStringEnumDescription("FastEthernet", "GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "AppGigabitEthernet", "Loopback", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "Tunnel", "Virtual-Template", "VirtualPortGroup", "Vif", "Multilink", "Cellular", "BDI").String,
+				MarkdownDescription: helpers.NewAttributeDescription("Interface type").AddStringEnumDescription("FastEthernet", "GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "Loopback", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "Tunnel").String,
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("FastEthernet", "GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "AppGigabitEthernet", "Loopback", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "Tunnel", "Virtual-Template", "VirtualPortGroup", "Vif", "Multilink", "Cellular", "BDI"),
+					stringvalidator.OneOf("FastEthernet", "GigabitEthernet", "TwoGigabitEthernet", "FiveGigabitEthernet", "TenGigabitEthernet", "TwentyFiveGigE", "FortyGigabitEthernet", "HundredGigE", "Loopback", "Vlan", "Port-channel", "Port-channel-subinterface/Port-channel", "Tunnel"),
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

@@ -27,7 +27,7 @@ resource "iosxe_interface_igmp" "example" {
 
 - `name` (String)
 - `type` (String) Interface type
-  - Choices: `FastEthernet`, `GigabitEthernet`, `TwoGigabitEthernet`, `FiveGigabitEthernet`, `TenGigabitEthernet`, `TwentyFiveGigE`, `FortyGigabitEthernet`, `HundredGigE`, `AppGigabitEthernet`, `Loopback`, `Vlan`, `Port-channel`, `Port-channel-subinterface/Port-channel`, `Tunnel`, `Virtual-Template`, `VirtualPortGroup`, `Vif`, `Multilink`, `Cellular`, `BDI`
+  - Choices: `FastEthernet`, `GigabitEthernet`, `TwoGigabitEthernet`, `FiveGigabitEthernet`, `TenGigabitEthernet`, `TwentyFiveGigE`, `FortyGigabitEthernet`, `HundredGigE`, `Loopback`, `Vlan`, `Port-channel`, `Port-channel-subinterface/Port-channel`, `Tunnel`
 
 ### Optional
 
