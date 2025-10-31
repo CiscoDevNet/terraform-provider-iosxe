@@ -7,6 +7,9 @@
 - Add `evpn_ethernet_segments` attribute to `iosxe_interface_ethernet` and `iosxe_interface_port_channel` resources and data sources
 - Add `set_ip_next_hop_unchanged` attribute to `iosxe_route_map` resource and data source
 - Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+- Add `ip_default_gateway` attribute to `iosxe_system` resource and data source for default gateway configuration on non-routing devices
+- Add `device_classifier` attribute to `iosxe_system` resource and data source for endpoint device classification
+- Add `table_maps` attribute to `iosxe_system` resource and data source for QoS table map configuration with DSCP/CoS value translation
 
 ## 0.9.3
 
