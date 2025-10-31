@@ -23,9 +23,7 @@ package provider
 import (
 	"context"
 	"os"
-	"slices"
 	"strconv"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -35,6 +33,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/netascode/go-restconf"
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 )
 
 const (
@@ -51,14 +50,14 @@ type IosxeProvider struct {
 
 // IosxeProviderModel describes the provider data model.
 type IosxeProviderModel struct {
-	Username           types.String               `tfsdk:"username"`
-	Password           types.String               `tfsdk:"password"`
-	URL                types.String               `tfsdk:"url"`
-	Insecure           types.Bool                 `tfsdk:"insecure"`
-	Retries            types.Int64                `tfsdk:"retries"`
-	LockReleaseTimeout types.Int64                `tfsdk:"lock_release_timeout"`
-	SelectedDevices    types.List                 `tfsdk:"selected_devices"`
-	Devices            []IosxeProviderModelDevice `tfsdk:"devices"`
+	Username types.String          `tfsdk:"username"`
+	Password types.String          `tfsdk:"password"`
+	URL      types.String          `tfsdk:"url"`
+	Insecure types.Bool            `tfsdk:"insecure"`
+	Retries  types.Int64           `tfsdk:"retries"`
+	LockReleaseTimeout types.Int64 `tfsdk:"lock_release_timeout"`
+	SelectedDevices types.List     `tfsdk:"selected_devices"`
+	Devices  []IosxeProviderModelDevice `tfsdk:"devices"`
 }
 
 type IosxeProviderModelDevice struct {
@@ -73,7 +72,7 @@ type IosxeProviderData struct {
 }
 
 type IosxeProviderDataDevice struct {
-	Client  *restconf.Client
+	Client *restconf.Client
 	Managed bool
 }
 
