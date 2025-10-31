@@ -47,6 +47,7 @@ data "iosxe_bgp_neighbor" "example" {
 - `fall_over_default_route_map` (String)
 - `fall_over_maximum_metric_route_map` (String)
 - `id` (String) The path of the retrieved object.
+- `inherit_peer_session` (String) Inherit a peer-session template
 - `local_as` (String)
 - `local_as_dual_as` (Boolean) Accept either real AS or local AS from the ebgp peer
 - `local_as_no_prepend` (Boolean) Do not prepend local-as to updates from ebgp peers
