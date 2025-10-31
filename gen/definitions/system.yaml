@@ -691,17 +691,25 @@ attributes:
         example: TABLE-MAP-1
       - yang_name: Cisco-IOS-XE-qos:default
         tf_name: default
+        type: String
         example: copy
-      - yang_name: Cisco-IOS-XE-qos:map
+        no_augment_config: true
+      - yang_name: Cisco-IOS-XE-qos:map-list
         tf_name: mappings
         type: List
+        no_augment_config: true
         attributes:
           - yang_name: from
+            tf_name: from
             id: true
+            type: Int64
             example: 18
+            no_augment_config: true
           - yang_name: to
-            id: true
+            tf_name: to
+            type: Int64
             example: 18
+            no_augment_config: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
