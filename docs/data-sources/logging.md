@@ -46,9 +46,24 @@ data "iosxe_logging" "example" {
 - `ipv6_hosts_transport` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_hosts_transport))
 - `ipv6_vrf_hosts` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_vrf_hosts))
 - `ipv6_vrf_hosts_transport` (Attributes List) (see [below for nested schema](#nestedatt--ipv6_vrf_hosts_transport))
+- `logging_count` (Boolean) Count every log message and timestamp last occurrence
 - `monitor_severity` (String)
 - `origin_id_name` (String) Define a unique text string as ID
 - `origin_id_type` (String) Use origin hostname/ip/ipv6 as ID
+- `persistent_batch` (Number) Batch size for writing to persistent storage
+- `persistent_filesize` (Number) Set size of individual log files
+- `persistent_immediate` (Boolean) Write log entry to storage immediately (no buffering).
+- `persistent_notify` (Boolean) Notify when show logging [persistent] is activated.
+- `persistent_protected` (Boolean) Eliminates manipulation on logging-persistent files
+- `persistent_size` (Number) Set disk space for writing log messages
+- `persistent_threshold` (Number) Setting threshold capacity. When setting circular logging is disabled
+- `persistent_url` (String) URL to store logging messages
+- `rate_limit_all` (Number) Messages per second
+- `rate_limit_all_except_severity` (String) Logging severity level
+- `rate_limit_console` (Number) Messages per second
+- `rate_limit_console_all` (Number) Messages per second
+- `rate_limit_console_all_except_severity` (String) Logging severity level
+- `rate_limit_console_except_severity` (String) Logging severity level
 - `source_interface` (String)
 - `source_interfaces_vrf` (Attributes List) Specify interface and vrf for source address in logging transactions (see [below for nested schema](#nestedatt--source_interfaces_vrf))
 - `trap` (Boolean) Set trap server logging level
