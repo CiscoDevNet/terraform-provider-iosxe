@@ -674,6 +674,34 @@ attributes:
     tf_name: port_channel_load_balance
     example: src-dst-mixed-ip-port
     test_tags: [C9000V]
+  - yang_name: ip/default-gateway
+    example: 192.168.1.1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:device/classifier-enable/classifier
+    tf_name: device_classifier
+    example: true
+    exclude_test: true
+  - yang_name: table-map
+    tf_name: table_maps
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: TABLE-MAP-1
+      - yang_name: Cisco-IOS-XE-qos:default
+        tf_name: default
+        example: copy
+      - yang_name: Cisco-IOS-XE-qos:map
+        tf_name: mappings
+        type: List
+        attributes:
+          - yang_name: from
+            id: true
+            example: 18
+          - yang_name: to
+            id: true
+            example: 18
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
