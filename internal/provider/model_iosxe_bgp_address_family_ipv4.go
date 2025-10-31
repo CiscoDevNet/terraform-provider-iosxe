@@ -53,6 +53,8 @@ type BGPAddressFamilyIPv4 struct {
 	Ipv4UnicastDistanceBgpExternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_external"`
 	Ipv4UnicastDistanceBgpInternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_internal"`
 	Ipv4UnicastDistanceBgpLocal      types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_local"`
+	Ipv4UnicastMaximumPathsEbgp      types.Int64                                         `tfsdk:"ipv4_unicast_maximum_paths_ebgp"`
+	Ipv4UnicastMaximumPathsIbgp      types.Int64                                         `tfsdk:"ipv4_unicast_maximum_paths_ibgp"`
 }
 
 type BGPAddressFamilyIPv4Data struct {
@@ -69,6 +71,8 @@ type BGPAddressFamilyIPv4Data struct {
 	Ipv4UnicastDistanceBgpExternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_external"`
 	Ipv4UnicastDistanceBgpInternal   types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_internal"`
 	Ipv4UnicastDistanceBgpLocal      types.Int64                                         `tfsdk:"ipv4_unicast_distance_bgp_local"`
+	Ipv4UnicastMaximumPathsEbgp      types.Int64                                         `tfsdk:"ipv4_unicast_maximum_paths_ebgp"`
+	Ipv4UnicastMaximumPathsIbgp      types.Int64                                         `tfsdk:"ipv4_unicast_maximum_paths_ibgp"`
 }
 type BGPAddressFamilyIPv4Ipv4UnicastAggregateAddresses struct {
 	Ipv4Address types.String `tfsdk:"ipv4_address"`
@@ -142,6 +146,12 @@ func (data BGPAddressFamilyIPv4) toBody(ctx context.Context) string {
 	}
 	if !data.Ipv4UnicastDistanceBgpLocal.IsNull() && !data.Ipv4UnicastDistanceBgpLocal.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.distance.bgp.local", strconv.FormatInt(data.Ipv4UnicastDistanceBgpLocal.ValueInt64(), 10))
+	}
+	if !data.Ipv4UnicastMaximumPathsEbgp.IsNull() && !data.Ipv4UnicastMaximumPathsEbgp.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.maximum-paths.ebgp", strconv.FormatInt(data.Ipv4UnicastMaximumPathsEbgp.ValueInt64(), 10))
+	}
+	if !data.Ipv4UnicastMaximumPathsIbgp.IsNull() && !data.Ipv4UnicastMaximumPathsIbgp.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.maximum-paths.ibgp-leaf", strconv.FormatInt(data.Ipv4UnicastMaximumPathsIbgp.ValueInt64(), 10))
 	}
 	if len(data.Ipv4UnicastAggregateAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ipv4-unicast.aggregate-address", []interface{}{})
@@ -425,6 +435,16 @@ func (data *BGPAddressFamilyIPv4) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.Ipv4UnicastDistanceBgpLocal = types.Int64Null()
 	}
+	if value := res.Get(prefix + "ipv4-unicast.maximum-paths.ebgp"); value.Exists() && !data.Ipv4UnicastMaximumPathsEbgp.IsNull() {
+		data.Ipv4UnicastMaximumPathsEbgp = types.Int64Value(value.Int())
+	} else {
+		data.Ipv4UnicastMaximumPathsEbgp = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ipv4-unicast.maximum-paths.ibgp-leaf"); value.Exists() && !data.Ipv4UnicastMaximumPathsIbgp.IsNull() {
+		data.Ipv4UnicastMaximumPathsIbgp = types.Int64Value(value.Int())
+	} else {
+		data.Ipv4UnicastMaximumPathsIbgp = types.Int64Null()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -529,6 +549,12 @@ func (data *BGPAddressFamilyIPv4) fromBody(ctx context.Context, res gjson.Result
 	}
 	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.local"); value.Exists() {
 		data.Ipv4UnicastDistanceBgpLocal = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ipv4-unicast.maximum-paths.ebgp"); value.Exists() {
+		data.Ipv4UnicastMaximumPathsEbgp = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ipv4-unicast.maximum-paths.ibgp-leaf"); value.Exists() {
+		data.Ipv4UnicastMaximumPathsIbgp = types.Int64Value(value.Int())
 	}
 }
 
@@ -635,6 +661,12 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 	if value := res.Get(prefix + "ipv4-unicast.distance.bgp.local"); value.Exists() {
 		data.Ipv4UnicastDistanceBgpLocal = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ipv4-unicast.maximum-paths.ebgp"); value.Exists() {
+		data.Ipv4UnicastMaximumPathsEbgp = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "ipv4-unicast.maximum-paths.ibgp-leaf"); value.Exists() {
+		data.Ipv4UnicastMaximumPathsIbgp = types.Int64Value(value.Int())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -643,6 +675,12 @@ func (data *BGPAddressFamilyIPv4Data) fromBody(ctx context.Context, res gjson.Re
 
 func (data *BGPAddressFamilyIPv4) getDeletedItems(ctx context.Context, state BGPAddressFamilyIPv4) []string {
 	deletedItems := make([]string, 0)
+	if !state.Ipv4UnicastMaximumPathsIbgp.IsNull() && data.Ipv4UnicastMaximumPathsIbgp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/maximum-paths/ibgp-leaf", state.getPath()))
+	}
+	if !state.Ipv4UnicastMaximumPathsEbgp.IsNull() && data.Ipv4UnicastMaximumPathsEbgp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/maximum-paths/ebgp", state.getPath()))
+	}
 	if !state.Ipv4UnicastDistanceBgpLocal.IsNull() && data.Ipv4UnicastDistanceBgpLocal.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ipv4-unicast/distance/bgp/local", state.getPath()))
 	}
@@ -838,6 +876,12 @@ func (data *BGPAddressFamilyIPv4) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *BGPAddressFamilyIPv4) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.Ipv4UnicastMaximumPathsIbgp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/maximum-paths/ibgp-leaf", data.getPath()))
+	}
+	if !data.Ipv4UnicastMaximumPathsEbgp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/maximum-paths/ebgp", data.getPath()))
+	}
 	if !data.Ipv4UnicastDistanceBgpLocal.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ipv4-unicast/distance/bgp/local", data.getPath()))
 	}
