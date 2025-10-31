@@ -644,6 +644,42 @@ attributes:
     tf_name: standby_redirects_enable_disable
     example: disable
     exclude_test: true
+  - yang_name: ip/default-gateway
+    example: 192.168.1.1
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-switch:device/classifier-enable/classifier
+    tf_name: device_classifier
+    example: true
+    exclude_test: true
+  - yang_name: table-map
+    tf_name: table_maps
+    type: List
+    exclude_test: true
+    attributes:
+      - yang_name: name
+        id: true
+        example: TABLE-MAP-1
+      - yang_name: Cisco-IOS-XE-qos:default
+        tf_name: default
+        type: String
+        example: copy
+        no_augment_config: true
+      - yang_name: Cisco-IOS-XE-qos:map-list
+        tf_name: mappings
+        type: List
+        no_augment_config: true
+        attributes:
+          - yang_name: from
+            tf_name: from
+            id: true
+            type: Int64
+            example: 18
+            no_augment_config: true
+          - yang_name: to
+            tf_name: to
+            type: Int64
+            example: 18
+            no_augment_config: true
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

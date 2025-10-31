@@ -41,3 +41,8 @@ attributes:
         tf_name: ingress_replication
         exclude_test: true
         example: true
+      - yang_name: ir-cp-config/local-routing
+        tf_name: local_routing
+        exclude_test: true
+        example: true
+

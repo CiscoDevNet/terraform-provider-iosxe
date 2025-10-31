@@ -61,7 +61,7 @@ func TestAccIosxeInterfaceNVE(t *testing.T) {
 				ImportState:             true,
 				ImportStateVerify:       true,
 				ImportStateIdFunc:       iosxeInterfaceNVEImportStateIdFunc("iosxe_interface_nve.test"),
-				ImportStateVerifyIgnore: []string{"vnis.0.ingress_replication"},
+				ImportStateVerifyIgnore: []string{"vnis.0.ingress_replication", "vnis.0.local_routing"},
 				Check:                   resource.ComposeTestCheckFunc(checks...),
 			},
 		},

@@ -120,6 +120,10 @@ func (d *InterfaceNVEDataSource) Schema(ctx context.Context, req datasource.Sche
 							MarkdownDescription: "Ingress Replication control-plane (BGP) signaling",
 							Computed:            true,
 						},
+						"local_routing": schema.BoolAttribute{
+							MarkdownDescription: "Enable vxlan centralized gateway forwarding for routed traffic",
+							Computed:            true,
+						},
 					},
 				},
 			},

@@ -9,6 +9,7 @@ description: |-
 
 ## 0.10.0 (unreleased)
 
+- Add `local-routing` support for NVE interface VNI members with ingress-replication
 - Add `flooding_suppression_address_resolution_disable` attribute to `iosxe_evpn` resource and data source
 - Add `ip_domain_lookup_nsap`, `ip_domain_lookup_recursive`, and `ip_domain_lookup_vrfs*` attributes to `iosxe_system` resource and data source
 - Add `iosxe_evpn_ethernet_segment` resource and data source for managing L2VPN EVPN Ethernet Segment configuration
@@ -25,6 +26,24 @@ description: |-
 - Enhance database synchronization detection
 
 ## 0.9.1
+
+- Add `flooding_suppression_address_resolution_disable` attribute to `iosxe_evpn` resource and data source
+- Add `ip_domain_lookup_nsap`, `ip_domain_lookup_recursive`, and `ip_domain_lookup_vrfs*` attributes to `iosxe_system` resource and data source
+- Add `iosxe_evpn_ethernet_segment` resource and data source for managing L2VPN EVPN Ethernet Segment configuration
+- Add `evpn_ethernet_segments` attribute to `iosxe_interface_ethernet` and `iosxe_interface_port_channel` resources and data sources
+- Add `set_ip_next_hop_unchanged` attribute to `iosxe_route_map` resource and data source
+- Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+
+## 0.9.3
+
+- Extend list of transient error patterns
+
+## 0.9.2
+
+- Enhance database synchronization detection
+
+## 0.9.1
+
 
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix issue with destroying `iosxe_interface_ethernet` resources
