@@ -423,6 +423,66 @@ func (d *LoggingDataSource) Schema(ctx context.Context, req datasource.SchemaReq
 					},
 				},
 			},
+			"logging_count": schema.BoolAttribute{
+				MarkdownDescription: "Count every log message and timestamp last occurrence",
+				Computed:            true,
+			},
+			"persistent_url": schema.StringAttribute{
+				MarkdownDescription: "URL to store logging messages",
+				Computed:            true,
+			},
+			"persistent_size": schema.Int64Attribute{
+				MarkdownDescription: "Set disk space for writing log messages",
+				Computed:            true,
+			},
+			"persistent_filesize": schema.Int64Attribute{
+				MarkdownDescription: "Set size of individual log files",
+				Computed:            true,
+			},
+			"persistent_batch": schema.Int64Attribute{
+				MarkdownDescription: "Batch size for writing to persistent storage",
+				Computed:            true,
+			},
+			"persistent_threshold": schema.Int64Attribute{
+				MarkdownDescription: "Setting threshold capacity. When setting circular logging is disabled",
+				Computed:            true,
+			},
+			"persistent_immediate": schema.BoolAttribute{
+				MarkdownDescription: "Write log entry to storage immediately (no buffering).",
+				Computed:            true,
+			},
+			"persistent_notify": schema.BoolAttribute{
+				MarkdownDescription: "Notify when show logging [persistent] is activated.",
+				Computed:            true,
+			},
+			"persistent_protected": schema.BoolAttribute{
+				MarkdownDescription: "Eliminates manipulation on logging-persistent files",
+				Computed:            true,
+			},
+			"rate_limit_all": schema.Int64Attribute{
+				MarkdownDescription: "Messages per second",
+				Computed:            true,
+			},
+			"rate_limit_all_except_severity": schema.StringAttribute{
+				MarkdownDescription: "Logging severity level",
+				Computed:            true,
+			},
+			"rate_limit_console": schema.Int64Attribute{
+				MarkdownDescription: "Messages per second",
+				Computed:            true,
+			},
+			"rate_limit_console_except_severity": schema.StringAttribute{
+				MarkdownDescription: "Logging severity level",
+				Computed:            true,
+			},
+			"rate_limit_console_all": schema.Int64Attribute{
+				MarkdownDescription: "Messages per second",
+				Computed:            true,
+			},
+			"rate_limit_console_all_except_severity": schema.StringAttribute{
+				MarkdownDescription: "Logging severity level",
+				Computed:            true,
+			},
 		},
 	}
 }
