@@ -49,6 +49,8 @@ resource "iosxe_system" "example" {
   memory_free_low_watermark_processor                = 203038
   ip_ssh_time_out                                    = 120
   ip_ssh_authentication_retries                      = 3
+  ip_ssh_bulk_mode                                   = true
+  ip_ssh_bulk_mode_window_size                       = 262144
   call_home_contact_email                            = "email@test.com"
   call_home_cisco_tac_1_profile_active               = true
   call_home_cisco_tac_1_destination_transport_method = "email"
@@ -163,6 +165,9 @@ resource "iosxe_system" "example" {
 - `ip_source_route` (Boolean) Process packets with source routing header options
 - `ip_ssh_authentication_retries` (Number) Specify number of authentication retries
   - Range: `0`-`5`
+- `ip_ssh_bulk_mode` (Boolean) Enable optimizations for bulk data transfer procedures
+- `ip_ssh_bulk_mode_window_size` (Number) Window-size value
+  - Range: `131072`-`1073741824`
 - `ip_ssh_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_ssh_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_ssh_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z

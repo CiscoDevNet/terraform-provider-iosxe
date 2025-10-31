@@ -449,6 +449,14 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Hundred GigabitEthernet",
 				Computed:            true,
 			},
+			"ip_ssh_bulk_mode": schema.BoolAttribute{
+				MarkdownDescription: "Enable optimizations for bulk data transfer procedures",
+				Computed:            true,
+			},
+			"ip_ssh_bulk_mode_window_size": schema.Int64Attribute{
+				MarkdownDescription: "Window-size value",
+				Computed:            true,
+			},
 			"control_plane_service_policy_input": schema.StringAttribute{
 				MarkdownDescription: "Assign policy-map to the input of an interface",
 				Computed:            true,

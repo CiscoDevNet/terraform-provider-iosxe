@@ -73,6 +73,8 @@ func TestAccIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_authentication_retries", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_bulk_mode", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_bulk_mode_window_size", "262144"))
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
@@ -194,6 +196,8 @@ func testAccIosxeSystemConfig_all() string {
 	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
+	config += `	ip_ssh_bulk_mode = true` + "\n"
+	config += `	ip_ssh_bulk_mode_window_size = 262144` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_hosts = [{` + "\n"
 		config += `		name = "test.router.com"` + "\n"
