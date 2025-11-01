@@ -288,18 +288,18 @@ func buildXPathStructure(body netconf.Body, xPath string) (netconf.Body, []strin
 	pathSegments := make([]string, 0, len(segments))
 
 	for i, segment := range segments {
-		// Parse segment: element[key='value'][key2='value2'] -> element, map[key:value, key2:value2]
+		// Parse segment: element[key='value'][key2='value2'] -> element, []KeyValue
 		elementName, keys := parseXPathSegment(segment)
 
 		// Add element name to path (without predicates)
 		pathSegments = append(pathSegments, elementName)
 		fullPath := strings.Join(pathSegments[:i+1], ".")
 
-		// If this segment has keys, set all key values
+		// If this segment has keys, set all key values in order
 		if len(keys) > 0 {
-			for keyName, keyValue := range keys {
-				keyPath := fullPath + "." + keyName
-				body = setWithNamespaces(body, keyPath, keyValue)
+			for _, kv := range keys {
+				keyPath := fullPath + "." + kv.Key
+				body = setWithNamespaces(body, keyPath, kv.Value)
 			}
 		}
 	}
@@ -318,18 +318,24 @@ func buildXPathStructure(body netconf.Body, xPath string) (netconf.Body, []strin
 	return body, pathSegments
 }
 
+// KeyValue represents a key-value pair with preserved order
+type KeyValue struct {
+	Key   string
+	Value string
+}
+
 // parseXPathSegment parses an XPath segment with single or multiple keys
 // Supports formats:
 //   - element[key='value']
 //   - element[key1='value1'][key2='value2']
 //   - element[key1='value1' and key2='value2']
 //
-// Returns: (elementName, map[keyName]keyValue)
-func parseXPathSegment(segment string) (string, map[string]string) {
+// Returns: (elementName, []KeyValue) - order is preserved from the XPath
+func parseXPathSegment(segment string) (string, []KeyValue) {
 	// Check for predicate: element[...]
 	if idx := strings.Index(segment, "["); idx != -1 {
 		elementName := segment[:idx]
-		keys := make(map[string]string)
+		keys := make([]KeyValue, 0)
 
 		// Extract all predicates - handle both [key1='val1'][key2='val2'] and [key1='val1' and key2='val2']
 		remainingPredicates := segment[idx:]
@@ -346,11 +352,11 @@ func parseXPathSegment(segment string) (string, map[string]string) {
 				for _, condition := range conditions {
 					// Parse each condition: key='value' or key="value"
 					if eqIdx := strings.Index(condition, "="); eqIdx != -1 {
-						keyName := condition[:eqIdx]
+						keyName := strings.TrimSpace(condition[:eqIdx])
 						value := condition[eqIdx+1:]
 						// Remove quotes
 						keyValue := strings.Trim(value, `'"`)
-						keys[keyName] = keyValue
+						keys = append(keys, KeyValue{Key: keyName, Value: keyValue})
 					}
 				}
 			}
@@ -508,8 +514,8 @@ func SetRawFromXPath(body netconf.Body, xPath string, value string) netconf.Body
 		// Build any keys if present
 		if len(keys) > 0 {
 			tempBody := netconf.Body{}
-			for keyName, keyValue := range keys {
-				tempBody = setWithNamespaces(tempBody, keyName, keyValue)
+			for _, kv := range keys {
+				tempBody = setWithNamespaces(tempBody, kv.Key, kv.Value)
 			}
 			wrappedContent = "<" + finalElementClean + ">" + tempBody.Res() + value + "</" + finalElementClean + ">"
 		}
@@ -584,10 +590,9 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 			if len(keys) == 1 {
 				// Single predicate - use xmldot's native filter syntax
 				// Also remove namespace prefix from key name
-				for keyName, keyValue := range keys {
-					keyName = removeNamespacePrefix(keyName)
-					pathParts = append(pathParts, elementName+".#("+keyName+"=="+keyValue+")")
-				}
+				kv := keys[0]
+				keyName := removeNamespacePrefix(kv.Key)
+				pathParts = append(pathParts, elementName+".#("+keyName+"=="+kv.Value+")")
 			} else {
 				// No predicates
 				pathParts = append(pathParts, elementName)
@@ -627,11 +632,11 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 					item := xmldot.Get(xml, indexedPath)
 
 					allMatch := true
-					for keyName, keyValue := range keys {
+					for _, kv := range keys {
 						// Remove namespace prefix from key name
-						keyName = removeNamespacePrefix(keyName)
+						keyName := removeNamespacePrefix(kv.Key)
 						keyResult := item.Get(keyName)
-						if !keyResult.Exists() || keyResult.String() != keyValue {
+						if !keyResult.Exists() || keyResult.String() != kv.Value {
 							allMatch = false
 							break
 						}
@@ -648,11 +653,11 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 				// Single element - check directly
 				currentResult := xmldot.Get(xml, currentPath)
 				allMatch := true
-				for keyName, keyValue := range keys {
+				for _, kv := range keys {
 					// Remove namespace prefix from key name
-					keyName = removeNamespacePrefix(keyName)
+					keyName := removeNamespacePrefix(kv.Key)
 					keyResult := currentResult.Get(keyName)
-					if !keyResult.Exists() || keyResult.String() != keyValue {
+					if !keyResult.Exists() || keyResult.String() != kv.Value {
 						allMatch = false
 						break
 					}
@@ -710,12 +715,12 @@ func GetXpathFilter(xPath string) netconf.Filter {
 
 		// Reconstruct segment with predicates
 		if len(keys) > 0 {
-			// Build predicates
+			// Build predicates in order
 			predicates := make([]string, 0, len(keys))
-			for keyName, keyValue := range keys {
+			for _, kv := range keys {
 				// Remove namespace prefix from key name
-				keyName = removeNamespacePrefix(keyName)
-				predicates = append(predicates, fmt.Sprintf("%s='%s'", keyName, keyValue))
+				keyName := removeNamespacePrefix(kv.Key)
+				predicates = append(predicates, fmt.Sprintf("%s='%s'", keyName, kv.Value))
 			}
 			// Reconstruct segment with all predicates
 			reconstructed := elementName
