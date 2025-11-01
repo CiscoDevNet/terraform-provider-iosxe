@@ -309,6 +309,21 @@ func (r *AccessListRoleBasedResource) Create(ctx context.Context, req resource.C
 		return
 	}
 
+	// Ensure NETCONF connection is closed after operation completes
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		if device.NetconfClient.IsClosed() {
+			if err := device.NetconfClient.Reopen(); err != nil {
+				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
+				return
+			}
+		}
+		defer func() {
+			if err := device.NetconfClient.Close(); err != nil {
+				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+			}
+		}()
+	}
+
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
@@ -387,6 +402,21 @@ func (r *AccessListRoleBasedResource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
+	// Ensure NETCONF connection is closed after operation completes
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		if device.NetconfClient.IsClosed() {
+			if err := device.NetconfClient.Reopen(); err != nil {
+				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
+				return
+			}
+		}
+		defer func() {
+			if err := device.NetconfClient.Close(); err != nil {
+				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+			}
+		}()
+	}
+
 	if device.Managed {
 		imp, diags := helpers.IsFlagImporting(ctx, req)
 		if resp.Diagnostics.Append(diags...); resp.Diagnostics.HasError() {
@@ -463,6 +493,21 @@ func (r *AccessListRoleBasedResource) Update(ctx context.Context, req resource.U
 	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", plan.Device.ValueString()))
 		return
+	}
+
+	// Ensure NETCONF connection is closed after operation completes
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		if device.NetconfClient.IsClosed() {
+			if err := device.NetconfClient.Reopen(); err != nil {
+				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
+				return
+			}
+		}
+		defer func() {
+			if err := device.NetconfClient.Close(); err != nil {
+				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+			}
+		}()
 	}
 
 	if device.Managed {
@@ -551,6 +596,21 @@ func (r *AccessListRoleBasedResource) Delete(ctx context.Context, req resource.D
 	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", state.Device.ValueString()))
 		return
+	}
+
+	// Ensure NETCONF connection is closed after operation completes
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		if device.NetconfClient.IsClosed() {
+			if err := device.NetconfClient.Reopen(); err != nil {
+				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
+				return
+			}
+		}
+		defer func() {
+			if err := device.NetconfClient.Close(); err != nil {
+				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+			}
+		}()
 	}
 
 	if device.Managed {

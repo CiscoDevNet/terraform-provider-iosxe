@@ -321,6 +321,16 @@ func (r *{{camelCase .Name}}Resource) Create(ctx context.Context, req resource.C
 		return
 	}
 
+	// Manage NETCONF connection lifecycle
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		if err != nil {
+			resp.Diagnostics.AddError("Connection Error", err.Error())
+			return
+		}
+		defer cleanup()
+	}
+
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
@@ -399,6 +409,16 @@ func (r *{{camelCase .Name}}Resource) Read(ctx context.Context, req resource.Rea
 		return
 	}
 
+	// Manage NETCONF connection lifecycle
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		if err != nil {
+			resp.Diagnostics.AddError("Connection Error", err.Error())
+			return
+		}
+		defer cleanup()
+	}
+
 	if device.Managed {
 		imp, diags := helpers.IsFlagImporting(ctx, req)
 		if resp.Diagnostics.Append(diags...); resp.Diagnostics.HasError() {
@@ -475,6 +495,16 @@ func (r *{{camelCase .Name}}Resource) Update(ctx context.Context, req resource.U
 	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", plan.Device.ValueString()))
 		return
+	}
+
+	// Manage NETCONF connection lifecycle
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		if err != nil {
+			resp.Diagnostics.AddError("Connection Error", err.Error())
+			return
+		}
+		defer cleanup()
 	}
 
 	if device.Managed {
@@ -563,6 +593,16 @@ func (r *{{camelCase .Name}}Resource) Delete(ctx context.Context, req resource.D
 	if !ok {
 		resp.Diagnostics.AddAttributeError(path.Root("device"), "Invalid device", fmt.Sprintf("Device '%s' does not exist in provider configuration.", state.Device.ValueString()))
 		return
+	}
+
+	// Manage NETCONF connection lifecycle
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		if err != nil {
+			resp.Diagnostics.AddError("Connection Error", err.Error())
+			return
+		}
+		defer cleanup()
 	}
 
 	if device.Managed {

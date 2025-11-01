@@ -38,6 +38,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/go-restconf"
 )
@@ -64,6 +65,7 @@ type IosxeProviderModel struct {
 	Protocol           types.String               `tfsdk:"protocol"`
 	Retries            types.Int64                `tfsdk:"retries"`
 	LockReleaseTimeout types.Int64                `tfsdk:"lock_release_timeout"`
+	ReuseConnection    types.Bool                 `tfsdk:"reuse_connection"`
 	SelectedDevices    types.List                 `tfsdk:"selected_devices"`
 	Devices            []IosxeProviderModelDevice `tfsdk:"devices"`
 }
@@ -81,10 +83,11 @@ type IosxeProviderData struct {
 }
 
 type IosxeProviderDataDevice struct {
-	RestconfClient *restconf.Client
-	NetconfClient  *netconf.Client
-	Protocol       string
-	Managed        bool
+	RestconfClient  *restconf.Client
+	NetconfClient   *netconf.Client
+	Protocol        string
+	ReuseConnection bool
+	Managed         bool
 }
 
 func (p *IosxeProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -137,6 +140,10 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 				Validators: []validator.Int64{
 					int64validator.Between(0, 600),
 				},
+			},
+			"reuse_connection": schema.BoolAttribute{
+				MarkdownDescription: "Keep NETCONF connections open between operations for better performance. When disabled, connections are closed and reopened for each operation. Only applies to NETCONF protocol. This can also be set as the IOSXE_REUSE_CONNECTION environment variable. Defaults to `true`.",
+				Optional:            true,
 			},
 			"selected_devices": schema.ListAttribute{
 				MarkdownDescription: "This can be used to select a list of devices to manage from the `devices` list. Selected devices will be managed while other devices will be skipped and their state will be frozen. This can be used to deploy changes to a subset of devices. Defaults to all devices.",
@@ -374,6 +381,26 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		lockReleaseTimeout = config.LockReleaseTimeout.ValueInt64()
 	}
 
+	var reuseConnection bool
+	if config.ReuseConnection.IsUnknown() {
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as reuseConnection",
+		)
+		return
+	}
+
+	if config.ReuseConnection.IsNull() {
+		reuseConnectionStr := os.Getenv("IOSXE_REUSE_CONNECTION")
+		if reuseConnectionStr == "" {
+			reuseConnection = true
+		} else {
+			reuseConnection, _ = strconv.ParseBool(reuseConnectionStr)
+		}
+	} else {
+		reuseConnection = config.ReuseConnection.ValueBool()
+	}
+
 	var selectedDevices []string
 	if config.SelectedDevices.IsUnknown() {
 		// Cannot connect to client with an unknown value
@@ -412,7 +439,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", Managed: true}
+		data.Devices[""] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, Managed: true}
 	} else {
 		// NETCONF
 		logger := helpers.NewTflogAdapter()
@@ -434,7 +461,12 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", Managed: true}
+		defer func() {
+			if err := c.Close(); err != nil {
+				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+			}
+		}()
+		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, Managed: true}
 	}
 
 	for _, device := range config.Devices {
@@ -481,7 +513,7 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", Managed: managed}
+			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{RestconfClient: c, Protocol: "restconf", ReuseConnection: reuseConnection, Managed: managed}
 		} else {
 			// NETCONF
 			logger := helpers.NewTflogAdapter()
@@ -503,7 +535,12 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", Managed: managed}
+			defer func() {
+				if err := c.Close(); err != nil {
+					tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+				}
+			}()
+			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, Managed: managed}
 		}
 	}
 

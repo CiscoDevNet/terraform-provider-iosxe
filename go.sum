@@ -170,8 +170,8 @@ github.com/mitchellh/mapstructure v1.5.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RR
 github.com/mitchellh/reflectwalk v1.0.0/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
 github.com/mitchellh/reflectwalk v1.0.2 h1:G2LzWKi524PWgd3mLHV8Y5k7s6XUvT0Gef6zxSIeXaQ=
 github.com/mitchellh/reflectwalk v1.0.2/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
-github.com/netascode/go-netconf v0.0.0-20251101121259-d1fa38b4407e h1:rpy5fBzL91yRI1Thm6y/1aH7/TrIKqoAIdbTuFzcFog=
-github.com/netascode/go-netconf v0.0.0-20251101121259-d1fa38b4407e/go.mod h1:Kyoh+O9JwZz5taPQyG7glHWAejLFPU250PEFxmZdw5U=
+github.com/netascode/go-netconf v0.0.0-20251101145739-5fcf41f8141c h1:jRT0aAG1a3RNrCHNmEjMdajzqTDQrvOCgmoEqGAyU80=
+github.com/netascode/go-netconf v0.0.0-20251101145739-5fcf41f8141c/go.mod h1:Kyoh+O9JwZz5taPQyG7glHWAejLFPU250PEFxmZdw5U=
 github.com/netascode/go-restconf v0.1.18 h1:N1V/+VfFGaGokhjy0G60G6w4Lyf4OXw84IbM6zkaW2I=
 github.com/netascode/go-restconf v0.1.18/go.mod h1:BbFhcp/T59u2AWNN6sxUH0iq4pbkMSK/C//yemPT91c=
 github.com/netascode/xmldot v0.4.1 h1:Uw5qJRHOxUFOOzzcQt3F4+PYgHZC/YneRVU5UGknoqc=

@@ -57,6 +57,7 @@ provider "iosxe" {
 - `password` (String, Sensitive) Password for the IOS-XE device. This can also be set as the IOSXE_PASSWORD environment variable.
 - `protocol` (String) Protocol to use for device communication. Either `restconf` (HTTPS) or `netconf` (SSH). This can also be set as the IOSXE_PROTOCOL environment variable. Defaults to `restconf`.
 - `retries` (Number) Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10`.
+- `reuse_connection` (Boolean) Keep NETCONF connections open between operations for better performance. When disabled, connections are closed and reopened for each operation. Only applies to NETCONF protocol. This can also be set as the IOSXE_REUSE_CONNECTION environment variable. Defaults to `true`.
 - `selected_devices` (List of String) This can be used to select a list of devices to manage from the `devices` list. Selected devices will be managed while other devices will be skipped and their state will be frozen. This can be used to deploy changes to a subset of devices. Defaults to all devices.
 - `url` (String, Deprecated) URL of the Cisco IOS-XE device for RESTCONF protocol. Optionally a port can be added with `:12345`. The default port is `443`. This can also be set as the IOSXE_URL environment variable. **Deprecated: Use `host` instead for protocol-agnostic configuration.**
 - `username` (String) Username for the IOS-XE device. This can also be set as the IOSXE_USERNAME environment variable.

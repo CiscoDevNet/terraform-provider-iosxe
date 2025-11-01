@@ -166,6 +166,16 @@ func (d *{{camelCase .Name}}DataSource) Read(ctx context.Context, req datasource
 		return
 	}
 
+	// Manage NETCONF connection lifecycle
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+		if err != nil {
+			resp.Diagnostics.AddError("Connection Error", err.Error())
+			return
+		}
+		defer cleanup()
+	}
+
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {

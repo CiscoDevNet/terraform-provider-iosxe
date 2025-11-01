@@ -189,8 +189,20 @@ func TestParseXPathSegment(t *testing.T) {
 				t.Errorf("parseXPathSegment() element = %v, want %v", gotElement, tt.wantElement)
 			}
 
-			if !reflect.DeepEqual(gotKeys, tt.wantKeys) {
-				t.Errorf("parseXPathSegment() keys = %v, want %v", gotKeys, tt.wantKeys)
+			// Convert []KeyValue to map for comparison
+			gotKeysMap := make(map[string]string)
+			for _, kv := range gotKeys {
+				gotKeysMap[kv.Key] = kv.Value
+			}
+
+			// Normalize for comparison: nil and empty map should be treated as equal
+			wantKeys := tt.wantKeys
+			if wantKeys == nil {
+				wantKeys = make(map[string]string)
+			}
+
+			if !reflect.DeepEqual(gotKeysMap, wantKeys) {
+				t.Errorf("parseXPathSegment() keys = %v, want %v", gotKeysMap, wantKeys)
 			}
 		})
 	}

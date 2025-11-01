@@ -142,6 +142,21 @@ func (d *InterfacePIMDataSource) Read(ctx context.Context, req datasource.ReadRe
 		return
 	}
 
+	// Ensure NETCONF connection is closed after operation completes
+	if device.Protocol == "netconf" && device.NetconfClient != nil {
+		if device.NetconfClient.IsClosed() {
+			if err := device.NetconfClient.Reopen(); err != nil {
+				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
+				return
+			}
+		}
+		defer func() {
+			if err := device.NetconfClient.Close(); err != nil {
+				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+			}
+		}()
+	}
+
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
