@@ -81,14 +81,14 @@ func iosxeBGPAddressFamilyIPv6VRFImportStateIdFunc(resourceName string) resource
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPAddressFamilyIPv6VRFPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/ipv6"
 	attributes = {
 		"unicast-routing" = ""
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -96,15 +96,15 @@ resource "iosxe_restconf" "PreReq1" {
 		"rd" = "1:1"
 		"address-family/ipv6" = ""
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
-resource "iosxe_restconf" "PreReq2" {
+resource "iosxe_yang" "PreReq2" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
 	attributes = {
 		"id" = "65000"
 	}
-	depends_on = [iosxe_restconf.PreReq1, ]
+	depends_on = [iosxe_yang.PreReq1, ]
 }
 
 `
@@ -117,7 +117,7 @@ func testAccIosxeBGPAddressFamilyIPv6VRFConfig_minimum() string {
 	config := `resource "iosxe_bgp_address_family_ipv6_vrf" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -142,7 +142,7 @@ func testAccIosxeBGPAddressFamilyIPv6VRFConfig_all() string {
 	config += `			evpn = false` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

@@ -51,12 +51,14 @@ provider "iosxe" {
 ### Optional
 
 - `devices` (Attributes List) This can be used to manage a list of devices from a single provider. All devices must use the same credentials. Each resource and data source has an optional attribute named `device`, which can then select a device by its name from this list. (see [below for nested schema](#nestedatt--devices))
+- `host` (String) Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`. Default port is `443` for RESTCONF and `830` for NETCONF. This can also be set as the IOSXE_HOST environment variable.
 - `insecure` (Boolean) Allow insecure HTTPS client. This can also be set as the IOSXE_INSECURE environment variable. Defaults to `true`.
 - `lock_release_timeout` (Number) Number of seconds to wait for the device database lock to be released. This can also be set as the IOSXE_LOCK_RELEASE_TIMEOUT environment variable. Defaults to `120`.
 - `password` (String, Sensitive) Password for the IOS-XE device. This can also be set as the IOSXE_PASSWORD environment variable.
+- `protocol` (String) Protocol to use for device communication. Either `restconf` (HTTPS) or `netconf` (SSH). This can also be set as the IOSXE_PROTOCOL environment variable. Defaults to `restconf`.
 - `retries` (Number) Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10`.
 - `selected_devices` (List of String) This can be used to select a list of devices to manage from the `devices` list. Selected devices will be managed while other devices will be skipped and their state will be frozen. This can be used to deploy changes to a subset of devices. Defaults to all devices.
-- `url` (String) URL of the Cisco IOS-XE device. Optionally a port can be added with `:12345`. The default port is `443`. This can also be set as the IOSXE_URL environment variable.
+- `url` (String, Deprecated) URL of the Cisco IOS-XE device for RESTCONF protocol. Optionally a port can be added with `:12345`. The default port is `443`. This can also be set as the IOSXE_URL environment variable. **Deprecated: Use `host` instead for protocol-agnostic configuration.**
 - `username` (String) Username for the IOS-XE device. This can also be set as the IOSXE_USERNAME environment variable.
 
 <a id="nestedatt--devices"></a>
@@ -65,8 +67,9 @@ provider "iosxe" {
 Required:
 
 - `name` (String) Device name.
-- `url` (String) URL of the Cisco IOS-XE device.
 
 Optional:
 
+- `host` (String) Hostname or IP address of the Cisco IOS-XE device. Optionally a port can be added with `:port`.
 - `managed` (Boolean) Enable or disable device management. This can be used to temporarily skip a device due to maintainance for example. Defaults to `true`.
+- `url` (String, Deprecated) URL of the Cisco IOS-XE device for RESTCONF protocol. **Deprecated: Use `host` instead.**

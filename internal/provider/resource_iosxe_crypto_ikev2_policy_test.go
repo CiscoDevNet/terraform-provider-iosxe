@@ -78,7 +78,7 @@ func iosxeCryptoIKEv2PolicyImportStateIdFunc(resourceName string) resource.Impor
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeCryptoIKEv2PolicyPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=proposal123"
 	attributes = {
 		"name" = "proposal123"
@@ -100,7 +100,7 @@ func testAccIosxeCryptoIKEv2PolicyConfig_minimum() string {
 	config += `	proposals = [{` + "\n"
 	config += `		proposals = "proposal123"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -117,7 +117,7 @@ func testAccIosxeCryptoIKEv2PolicyConfig_all() string {
 	config += `	proposals = [{` + "\n"
 	config += `		proposals = "proposal123"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

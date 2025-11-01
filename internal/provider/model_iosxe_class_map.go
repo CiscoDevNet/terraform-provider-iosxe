@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -112,6 +115,19 @@ func (data ClassMap) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data ClassMap) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
+func (data ClassMapData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -219,6 +235,135 @@ func (data ClassMap) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data ClassMap) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.Type.IsNull() && !data.Type.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/type", data.Type.ValueString())
+	}
+	if !data.Subscriber.IsNull() && !data.Subscriber.IsUnknown() {
+		if data.Subscriber.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/subscriber", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/subscriber")
+		}
+	}
+	if !data.Prematch.IsNull() && !data.Prematch.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/prematch", data.Prematch.ValueString())
+	}
+	if !data.MatchAuthorizationStatusAuthorized.IsNull() && !data.MatchAuthorizationStatusAuthorized.IsUnknown() {
+		if data.MatchAuthorizationStatusAuthorized.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/authorization-status/authorized", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/authorization-status/authorized")
+		}
+	}
+	if !data.MatchResultTypeAaaTimeout.IsNull() && !data.MatchResultTypeAaaTimeout.IsUnknown() {
+		if data.MatchResultTypeAaaTimeout.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/aaa-timeout", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/aaa-timeout")
+		}
+	}
+	if !data.MatchAuthorizationStatusUnauthorized.IsNull() && !data.MatchAuthorizationStatusUnauthorized.IsUnknown() {
+		if data.MatchAuthorizationStatusUnauthorized.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/authorization-status/unauthorized", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/authorization-status/unauthorized")
+		}
+	}
+	if len(data.MatchActivatedServiceTemplates) > 0 {
+		for _, item := range data.MatchActivatedServiceTemplates {
+			cBody := netconf.Body{}
+			if !item.ServiceName.IsNull() && !item.ServiceName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "service-name", item.ServiceName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/match/activated-service-template", cBody.Res())
+		}
+	}
+	if !data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() && !data.MatchAuthorizingMethodPriorityGreaterThan.IsUnknown() {
+		var values []int
+		data.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/authorizing-method-priority/greater-than", values)
+	}
+	if !data.MatchMethodDot1x.IsNull() && !data.MatchMethodDot1x.IsUnknown() {
+		if data.MatchMethodDot1x.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/method/dot1x", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/method/dot1x")
+		}
+	}
+	if !data.MatchResultTypeMethodDot1xAuthoritative.IsNull() && !data.MatchResultTypeMethodDot1xAuthoritative.IsUnknown() {
+		if data.MatchResultTypeMethodDot1xAuthoritative.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/authoritative", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/authoritative")
+		}
+	}
+	if !data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && !data.MatchResultTypeMethodDot1xAgentNotFound.IsUnknown() {
+		if data.MatchResultTypeMethodDot1xAgentNotFound.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/agent-not-found", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/agent-not-found")
+		}
+	}
+	if !data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && !data.MatchResultTypeMethodDot1xMethodTimeout.IsUnknown() {
+		if data.MatchResultTypeMethodDot1xMethodTimeout.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/method-timeout", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/method/dot1x/method-timeout")
+		}
+	}
+	if !data.MatchMethodMab.IsNull() && !data.MatchMethodMab.IsUnknown() {
+		if data.MatchMethodMab.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/method/mab", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/method/mab")
+		}
+	}
+	if !data.MatchResultTypeMethodMabAuthoritative.IsNull() && !data.MatchResultTypeMethodMabAuthoritative.IsUnknown() {
+		if data.MatchResultTypeMethodMabAuthoritative.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/result-type/method/mab/authoritative", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/result-type/method/mab/authoritative")
+		}
+	}
+	if !data.MatchDscp.IsNull() && !data.MatchDscp.IsUnknown() {
+		var values []string
+		data.MatchDscp.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/dscp", values)
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.MatchAccessGroupName.IsNull() && !data.MatchAccessGroupName.IsUnknown() {
+		var values []string
+		data.MatchAccessGroupName.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/access-group/name", values)
+	}
+	if !data.MatchIpDscp.IsNull() && !data.MatchIpDscp.IsUnknown() {
+		var values []string
+		data.MatchIpDscp.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/ip/dscp", values)
+	}
+	if !data.MatchIpPrecedence.IsNull() && !data.MatchIpPrecedence.IsUnknown() {
+		var values []string
+		data.MatchIpPrecedence.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/ip/precedence", values)
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -394,6 +539,177 @@ func (data *ClassMap) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *ClassMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/type"); value.Exists() && !data.Type.IsNull() {
+		data.Type = types.StringValue(value.String())
+	} else {
+		data.Type = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/subscriber"); !data.Subscriber.IsNull() {
+		if value.Exists() {
+			data.Subscriber = types.BoolValue(true)
+		} else {
+			data.Subscriber = types.BoolValue(false)
+		}
+	} else {
+		data.Subscriber = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prematch"); value.Exists() && !data.Prematch.IsNull() {
+		data.Prematch = types.StringValue(value.String())
+	} else {
+		data.Prematch = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorization-status/authorized"); !data.MatchAuthorizationStatusAuthorized.IsNull() {
+		if value.Exists() {
+			data.MatchAuthorizationStatusAuthorized = types.BoolValue(true)
+		} else {
+			data.MatchAuthorizationStatusAuthorized = types.BoolValue(false)
+		}
+	} else {
+		data.MatchAuthorizationStatusAuthorized = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/aaa-timeout"); !data.MatchResultTypeAaaTimeout.IsNull() {
+		if value.Exists() {
+			data.MatchResultTypeAaaTimeout = types.BoolValue(true)
+		} else {
+			data.MatchResultTypeAaaTimeout = types.BoolValue(false)
+		}
+	} else {
+		data.MatchResultTypeAaaTimeout = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorization-status/unauthorized"); !data.MatchAuthorizationStatusUnauthorized.IsNull() {
+		if value.Exists() {
+			data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
+		} else {
+			data.MatchAuthorizationStatusUnauthorized = types.BoolValue(false)
+		}
+	} else {
+		data.MatchAuthorizationStatusUnauthorized = types.BoolNull()
+	}
+	for i := range data.MatchActivatedServiceTemplates {
+		keys := [...]string{"service-name"}
+		keyValues := [...]string{data.MatchActivatedServiceTemplates[i].ServiceName.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/activated-service-template").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "service-name"); value.Exists() && !data.MatchActivatedServiceTemplates[i].ServiceName.IsNull() {
+			data.MatchActivatedServiceTemplates[i].ServiceName = types.StringValue(value.String())
+		} else {
+			data.MatchActivatedServiceTemplates[i].ServiceName = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorizing-method-priority/greater-than"); value.Exists() && !data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+		data.MatchAuthorizingMethodPriorityGreaterThan = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.MatchAuthorizingMethodPriorityGreaterThan = types.ListNull(types.Int64Type)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/method/dot1x"); !data.MatchMethodDot1x.IsNull() {
+		if value.Exists() {
+			data.MatchMethodDot1x = types.BoolValue(true)
+		} else {
+			data.MatchMethodDot1x = types.BoolValue(false)
+		}
+	} else {
+		data.MatchMethodDot1x = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/authoritative"); !data.MatchResultTypeMethodDot1xAuthoritative.IsNull() {
+		if value.Exists() {
+			data.MatchResultTypeMethodDot1xAuthoritative = types.BoolValue(true)
+		} else {
+			data.MatchResultTypeMethodDot1xAuthoritative = types.BoolValue(false)
+		}
+	} else {
+		data.MatchResultTypeMethodDot1xAuthoritative = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/agent-not-found"); !data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() {
+		if value.Exists() {
+			data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolValue(true)
+		} else {
+			data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolValue(false)
+		}
+	} else {
+		data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/method-timeout"); !data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() {
+		if value.Exists() {
+			data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolValue(true)
+		} else {
+			data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolValue(false)
+		}
+	} else {
+		data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/method/mab"); !data.MatchMethodMab.IsNull() {
+		if value.Exists() {
+			data.MatchMethodMab = types.BoolValue(true)
+		} else {
+			data.MatchMethodMab = types.BoolValue(false)
+		}
+	} else {
+		data.MatchMethodMab = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/mab/authoritative"); !data.MatchResultTypeMethodMabAuthoritative.IsNull() {
+		if value.Exists() {
+			data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(true)
+		} else {
+			data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(false)
+		}
+	} else {
+		data.MatchResultTypeMethodMabAuthoritative = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/dscp"); value.Exists() && !data.MatchDscp.IsNull() {
+		data.MatchDscp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchDscp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/access-group/name"); value.Exists() && !data.MatchAccessGroupName.IsNull() {
+		data.MatchAccessGroupName = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchAccessGroupName = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/dscp"); value.Exists() && !data.MatchIpDscp.IsNull() {
+		data.MatchIpDscp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchIpDscp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/precedence"); value.Exists() && !data.MatchIpPrecedence.IsNull() {
+		data.MatchIpPrecedence = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchIpPrecedence = types.ListNull(types.StringType)
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -607,6 +923,210 @@ func (data *ClassMapData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *ClassMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/type"); value.Exists() {
+		data.Type = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/subscriber"); value.Exists() {
+		data.Subscriber = types.BoolValue(true)
+	} else {
+		data.Subscriber = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prematch"); value.Exists() {
+		data.Prematch = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorization-status/authorized"); value.Exists() {
+		data.MatchAuthorizationStatusAuthorized = types.BoolValue(true)
+	} else {
+		data.MatchAuthorizationStatusAuthorized = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/aaa-timeout"); value.Exists() {
+		data.MatchResultTypeAaaTimeout = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeAaaTimeout = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorization-status/unauthorized"); value.Exists() {
+		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
+	} else {
+		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/activated-service-template"); value.Exists() {
+		data.MatchActivatedServiceTemplates = make([]ClassMapMatchActivatedServiceTemplates, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ClassMapMatchActivatedServiceTemplates{}
+			if cValue := helpers.GetFromXPath(v, "service-name"); cValue.Exists() {
+				item.ServiceName = types.StringValue(cValue.String())
+			}
+			data.MatchActivatedServiceTemplates = append(data.MatchActivatedServiceTemplates, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorizing-method-priority/greater-than"); value.Exists() {
+		data.MatchAuthorizingMethodPriorityGreaterThan = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.MatchAuthorizingMethodPriorityGreaterThan = types.ListNull(types.Int64Type)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/method/dot1x"); value.Exists() {
+		data.MatchMethodDot1x = types.BoolValue(true)
+	} else {
+		data.MatchMethodDot1x = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/authoritative"); value.Exists() {
+		data.MatchResultTypeMethodDot1xAuthoritative = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xAuthoritative = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/agent-not-found"); value.Exists() {
+		data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/method-timeout"); value.Exists() {
+		data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/method/mab"); value.Exists() {
+		data.MatchMethodMab = types.BoolValue(true)
+	} else {
+		data.MatchMethodMab = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/mab/authoritative"); value.Exists() {
+		data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/dscp"); value.Exists() {
+		data.MatchDscp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchDscp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/access-group/name"); value.Exists() {
+		data.MatchAccessGroupName = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchAccessGroupName = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/dscp"); value.Exists() {
+		data.MatchIpDscp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchIpDscp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/precedence"); value.Exists() {
+		data.MatchIpPrecedence = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchIpPrecedence = types.ListNull(types.StringType)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *ClassMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/type"); value.Exists() {
+		data.Type = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/subscriber"); value.Exists() {
+		data.Subscriber = types.BoolValue(true)
+	} else {
+		data.Subscriber = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prematch"); value.Exists() {
+		data.Prematch = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorization-status/authorized"); value.Exists() {
+		data.MatchAuthorizationStatusAuthorized = types.BoolValue(true)
+	} else {
+		data.MatchAuthorizationStatusAuthorized = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/aaa-timeout"); value.Exists() {
+		data.MatchResultTypeAaaTimeout = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeAaaTimeout = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorization-status/unauthorized"); value.Exists() {
+		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(true)
+	} else {
+		data.MatchAuthorizationStatusUnauthorized = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/activated-service-template"); value.Exists() {
+		data.MatchActivatedServiceTemplates = make([]ClassMapMatchActivatedServiceTemplates, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := ClassMapMatchActivatedServiceTemplates{}
+			if cValue := helpers.GetFromXPath(v, "service-name"); cValue.Exists() {
+				item.ServiceName = types.StringValue(cValue.String())
+			}
+			data.MatchActivatedServiceTemplates = append(data.MatchActivatedServiceTemplates, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/authorizing-method-priority/greater-than"); value.Exists() {
+		data.MatchAuthorizingMethodPriorityGreaterThan = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.MatchAuthorizingMethodPriorityGreaterThan = types.ListNull(types.Int64Type)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/method/dot1x"); value.Exists() {
+		data.MatchMethodDot1x = types.BoolValue(true)
+	} else {
+		data.MatchMethodDot1x = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/authoritative"); value.Exists() {
+		data.MatchResultTypeMethodDot1xAuthoritative = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xAuthoritative = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/agent-not-found"); value.Exists() {
+		data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xAgentNotFound = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/dot1x/method-timeout"); value.Exists() {
+		data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodDot1xMethodTimeout = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/method/mab"); value.Exists() {
+		data.MatchMethodMab = types.BoolValue(true)
+	} else {
+		data.MatchMethodMab = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/result-type/method/mab/authoritative"); value.Exists() {
+		data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(true)
+	} else {
+		data.MatchResultTypeMethodMabAuthoritative = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/dscp"); value.Exists() {
+		data.MatchDscp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchDscp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/access-group/name"); value.Exists() {
+		data.MatchAccessGroupName = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchAccessGroupName = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/dscp"); value.Exists() {
+		data.MatchIpDscp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchIpDscp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/precedence"); value.Exists() {
+		data.MatchIpPrecedence = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchIpPrecedence = types.ListNull(types.StringType)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []string {
@@ -786,6 +1306,190 @@ func (data *ClassMap) getDeletedItems(ctx context.Context, state ClassMap) []str
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, body string) string {
+	b := netconf.NewBody(body)
+	if !state.Type.IsNull() && data.Type.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/type")
+	}
+	if !state.Subscriber.IsNull() && data.Subscriber.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/subscriber")
+	}
+	if !state.Prematch.IsNull() && data.Prematch.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prematch")
+	}
+	if !state.MatchAuthorizationStatusAuthorized.IsNull() && data.MatchAuthorizationStatusAuthorized.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/authorization-status/authorized")
+	}
+	if !state.MatchResultTypeAaaTimeout.IsNull() && data.MatchResultTypeAaaTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/aaa-timeout")
+	}
+	if !state.MatchAuthorizationStatusUnauthorized.IsNull() && data.MatchAuthorizationStatusUnauthorized.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/authorization-status/unauthorized")
+	}
+	for i := range state.MatchActivatedServiceTemplates {
+		stateKeys := [...]string{"service-name"}
+		stateKeyValues := [...]string{state.MatchActivatedServiceTemplates[i].ServiceName.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.MatchActivatedServiceTemplates[i].ServiceName.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.MatchActivatedServiceTemplates {
+			found = true
+			if state.MatchActivatedServiceTemplates[i].ServiceName.ValueString() != data.MatchActivatedServiceTemplates[j].ServiceName.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/activated-service-template%v", predicates))
+		}
+	}
+	if !state.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+		if data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/authorizing-method-priority/greater-than")
+		} else {
+			var dataValues, stateValues []int
+			data.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &dataValues, false)
+			state.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/authorizing-method-priority/greater-than[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.MatchMethodDot1x.IsNull() && data.MatchMethodDot1x.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/method/dot1x")
+	}
+	if !state.MatchResultTypeMethodDot1xAuthoritative.IsNull() && data.MatchResultTypeMethodDot1xAuthoritative.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/method/dot1x/authoritative")
+	}
+	if !state.MatchResultTypeMethodDot1xAgentNotFound.IsNull() && data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/method/dot1x/agent-not-found")
+	}
+	if !state.MatchResultTypeMethodDot1xMethodTimeout.IsNull() && data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/method/dot1x/method-timeout")
+	}
+	if !state.MatchMethodMab.IsNull() && data.MatchMethodMab.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/method/mab")
+	}
+	if !state.MatchResultTypeMethodMabAuthoritative.IsNull() && data.MatchResultTypeMethodMabAuthoritative.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/result-type/method/mab/authoritative")
+	}
+	if !state.MatchDscp.IsNull() {
+		if data.MatchDscp.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/dscp")
+		} else {
+			var dataValues, stateValues []string
+			data.MatchDscp.ElementsAs(ctx, &dataValues, false)
+			state.MatchDscp.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/dscp[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+	if !state.MatchAccessGroupName.IsNull() {
+		if data.MatchAccessGroupName.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/access-group/name")
+		} else {
+			var dataValues, stateValues []string
+			data.MatchAccessGroupName.ElementsAs(ctx, &dataValues, false)
+			state.MatchAccessGroupName.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/access-group/name[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.MatchIpDscp.IsNull() {
+		if data.MatchIpDscp.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ip/dscp")
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIpDscp.ElementsAs(ctx, &dataValues, false)
+			state.MatchIpDscp.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/ip/dscp[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.MatchIpPrecedence.IsNull() {
+		if data.MatchIpPrecedence.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ip/precedence")
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIpPrecedence.ElementsAs(ctx, &dataValues, false)
+			state.MatchIpPrecedence.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/ip/precedence[.=%v]", v))
+				}
+			}
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *ClassMap) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -895,3 +1599,77 @@ func (data *ClassMap) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *ClassMap) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.Type.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/type")
+	}
+	if !data.Subscriber.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/subscriber")
+	}
+	if !data.Prematch.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prematch")
+	}
+	if !data.MatchAuthorizationStatusAuthorized.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/authorization-status/authorized")
+	}
+	if !data.MatchResultTypeAaaTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/result-type/aaa-timeout")
+	}
+	if !data.MatchAuthorizationStatusUnauthorized.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/authorization-status/unauthorized")
+	}
+	for i := range data.MatchActivatedServiceTemplates {
+		keys := [...]string{"service-name"}
+		keyValues := [...]string{data.MatchActivatedServiceTemplates[i].ServiceName.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/match/activated-service-template%v", predicates))
+	}
+	if !data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/authorizing-method-priority/greater-than")
+	}
+	if !data.MatchMethodDot1x.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/method/dot1x")
+	}
+	if !data.MatchResultTypeMethodDot1xAuthoritative.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/result-type/method/dot1x/authoritative")
+	}
+	if !data.MatchResultTypeMethodDot1xAgentNotFound.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/result-type/method/dot1x/agent-not-found")
+	}
+	if !data.MatchResultTypeMethodDot1xMethodTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/result-type/method/dot1x/method-timeout")
+	}
+	if !data.MatchMethodMab.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/method/mab")
+	}
+	if !data.MatchResultTypeMethodMabAuthoritative.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/result-type/method/mab/authoritative")
+	}
+	if !data.MatchDscp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/dscp")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+	if !data.MatchAccessGroupName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/access-group/name")
+	}
+	if !data.MatchIpDscp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ip/dscp")
+	}
+	if !data.MatchIpPrecedence.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ip/precedence")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

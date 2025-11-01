@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -202,6 +205,19 @@ func (data OSPF) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data OSPF) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=%v")
+	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.ProcessId.ValueInt64())))
+	return path
+}
+
+func (data OSPFData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=%v")
+	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.ProcessId.ValueInt64())))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -461,6 +477,304 @@ func (data OSPF) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data OSPF) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.ProcessId.IsNull() && !data.ProcessId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/id", strconv.FormatInt(data.ProcessId.ValueInt64(), 10))
+	}
+	if !data.BfdAllInterfaces.IsNull() && !data.BfdAllInterfaces.IsUnknown() {
+		if data.BfdAllInterfaces.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/bfd/all-interfaces", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/bfd/all-interfaces")
+		}
+	}
+	if !data.DefaultInformationOriginate.IsNull() && !data.DefaultInformationOriginate.IsUnknown() {
+		if data.DefaultInformationOriginate.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate")
+		}
+	}
+	if !data.DefaultInformationOriginateAlways.IsNull() && !data.DefaultInformationOriginateAlways.IsUnknown() {
+		if data.DefaultInformationOriginateAlways.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/default-information/originate/always", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-information/originate/always")
+		}
+	}
+	if !data.DefaultMetric.IsNull() && !data.DefaultMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/default-metric", strconv.FormatInt(data.DefaultMetric.ValueInt64(), 10))
+	}
+	if !data.Distance.IsNull() && !data.Distance.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/distance/distance", strconv.FormatInt(data.Distance.ValueInt64(), 10))
+	}
+	if !data.DomainTag.IsNull() && !data.DomainTag.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/domain-tag", strconv.FormatInt(data.DomainTag.ValueInt64(), 10))
+	}
+	if !data.MplsLdpAutoconfig.IsNull() && !data.MplsLdpAutoconfig.IsUnknown() {
+		if data.MplsLdpAutoconfig.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/mpls/ldp/autoconfig", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mpls/ldp/autoconfig")
+		}
+	}
+	if !data.MplsLdpSync.IsNull() && !data.MplsLdpSync.IsUnknown() {
+		if data.MplsLdpSync.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/mpls/ldp/sync", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/mpls/ldp/sync")
+		}
+	}
+	if len(data.Neighbors) > 0 {
+		for _, item := range data.Neighbors {
+			cBody := netconf.Body{}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ip", item.Ip.ValueString())
+			}
+			if !item.Priority.IsNull() && !item.Priority.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "priority", strconv.FormatInt(item.Priority.ValueInt64(), 10))
+			}
+			if !item.Cost.IsNull() && !item.Cost.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "cost", strconv.FormatInt(item.Cost.ValueInt64(), 10))
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/neighbor", cBody.Res())
+		}
+	}
+	if len(data.Networks) > 0 {
+		for _, item := range data.Networks {
+			cBody := netconf.Body{}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ip", item.Ip.ValueString())
+			}
+			if !item.Wildcard.IsNull() && !item.Wildcard.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "wildcard", item.Wildcard.ValueString())
+			}
+			if !item.Area.IsNull() && !item.Area.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "area", item.Area.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/network", cBody.Res())
+		}
+	}
+	if !data.Priority.IsNull() && !data.Priority.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/priority", strconv.FormatInt(data.Priority.ValueInt64(), 10))
+	}
+	if !data.RouterId.IsNull() && !data.RouterId.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/router-id", data.RouterId.ValueString())
+	}
+	if !data.Shutdown.IsNull() && !data.Shutdown.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/shutdown", data.Shutdown.ValueBool())
+	}
+	if len(data.SummaryAddresses) > 0 {
+		for _, item := range data.SummaryAddresses {
+			cBody := netconf.Body{}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ip", item.Ip.ValueString())
+			}
+			if !item.Mask.IsNull() && !item.Mask.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "mask", item.Mask.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/summary-address", cBody.Res())
+		}
+	}
+	if len(data.Areas) > 0 {
+		for _, item := range data.Areas {
+			cBody := netconf.Body{}
+			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "area-id", item.AreaId.ValueString())
+			}
+			if !item.AuthenticationMessageDigest.IsNull() && !item.AuthenticationMessageDigest.IsUnknown() {
+				if item.AuthenticationMessageDigest.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "authentication/message-digest", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "authentication/message-digest")
+				}
+			}
+			if !item.Nssa.IsNull() && !item.Nssa.IsUnknown() {
+				if item.Nssa.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa")
+				}
+			}
+			if !item.NssaDefaultInformationOriginate.IsNull() && !item.NssaDefaultInformationOriginate.IsUnknown() {
+				if item.NssaDefaultInformationOriginate.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/default-information-originate", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/default-information-originate")
+				}
+			}
+			if !item.NssaDefaultInformationOriginateMetric.IsNull() && !item.NssaDefaultInformationOriginateMetric.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/default-information-originate/metric", strconv.FormatInt(item.NssaDefaultInformationOriginateMetric.ValueInt64(), 10))
+			}
+			if !item.NssaDefaultInformationOriginateMetricType.IsNull() && !item.NssaDefaultInformationOriginateMetricType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/default-information-originate/metric-type", strconv.FormatInt(item.NssaDefaultInformationOriginateMetricType.ValueInt64(), 10))
+			}
+			if !item.NssaNoSummary.IsNull() && !item.NssaNoSummary.IsUnknown() {
+				if item.NssaNoSummary.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/no-summary", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/no-summary")
+				}
+			}
+			if !item.NssaNoRedistribution.IsNull() && !item.NssaNoRedistribution.IsUnknown() {
+				if item.NssaNoRedistribution.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "nssa/nssa-options/no-redistribution", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "nssa/nssa-options/no-redistribution")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/area", cBody.Res())
+		}
+	}
+	if !data.AutoCostReferenceBandwidth.IsNull() && !data.AutoCostReferenceBandwidth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/auto-cost/reference-bandwidth", strconv.FormatInt(data.AutoCostReferenceBandwidth.ValueInt64(), 10))
+	}
+	if !data.PassiveInterfaceDefault.IsNull() && !data.PassiveInterfaceDefault.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/passive-interface/default", data.PassiveInterfaceDefault.ValueBool())
+	}
+	if !data.PassiveInterface.IsNull() && !data.PassiveInterface.IsUnknown() {
+		var values []string
+		data.PassiveInterface.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/passive-interface/interface", values)
+	}
+	if len(data.PassiveInterfaceDisableGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwoGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableFiveGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTenGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTenGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableFortyGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableHundredGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTwoHundredGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableFourHundredGigabitEthernets) > 0 {
+		for _, item := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableLoopbacks) > 0 {
+		for _, item := range data.PassiveInterfaceDisableLoopbacks {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableVlans) > 0 {
+		for _, item := range data.PassiveInterfaceDisableVlans {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisableTunnels) > 0 {
+		for _, item := range data.PassiveInterfaceDisableTunnels {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisablePortChannels) > 0 {
+		for _, item := range data.PassiveInterfaceDisablePortChannels {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	if len(data.PassiveInterfaceDisablePortChannelSubinterfaces) > 0 {
+		for _, item := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -765,7 +1079,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
 	for i := range data.PassiveInterfaceDisableGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -794,7 +1108,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -823,7 +1137,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -852,7 +1166,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -881,7 +1195,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -910,7 +1224,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -939,7 +1253,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -968,7 +1282,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -997,7 +1311,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -1026,7 +1340,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableLoopbacks {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -1055,7 +1369,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableVlans {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -1084,7 +1398,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisableTunnels {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -1113,7 +1427,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisablePortChannels {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -1142,7 +1456,7 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
-		keys := [...]string{"name"}
+		keys := [...]string{""}
 		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
 
 		var r gjson.Result
@@ -1173,6 +1487,714 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *OSPF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/id"); value.Exists() && !data.ProcessId.IsNull() {
+		data.ProcessId = types.Int64Value(value.Int())
+	} else {
+		data.ProcessId = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bfd/all-interfaces"); !data.BfdAllInterfaces.IsNull() {
+		if value.Exists() {
+			data.BfdAllInterfaces = types.BoolValue(true)
+		} else {
+			data.BfdAllInterfaces = types.BoolValue(false)
+		}
+	} else {
+		data.BfdAllInterfaces = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-information/originate"); !data.DefaultInformationOriginate.IsNull() {
+		if value.Exists() {
+			data.DefaultInformationOriginate = types.BoolValue(true)
+		} else {
+			data.DefaultInformationOriginate = types.BoolValue(false)
+		}
+	} else {
+		data.DefaultInformationOriginate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-information/originate/always"); !data.DefaultInformationOriginateAlways.IsNull() {
+		if value.Exists() {
+			data.DefaultInformationOriginateAlways = types.BoolValue(true)
+		} else {
+			data.DefaultInformationOriginateAlways = types.BoolValue(false)
+		}
+	} else {
+		data.DefaultInformationOriginateAlways = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-metric"); value.Exists() && !data.DefaultMetric.IsNull() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	} else {
+		data.DefaultMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/distance/distance"); value.Exists() && !data.Distance.IsNull() {
+		data.Distance = types.Int64Value(value.Int())
+	} else {
+		data.Distance = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/domain-tag"); value.Exists() && !data.DomainTag.IsNull() {
+		data.DomainTag = types.Int64Value(value.Int())
+	} else {
+		data.DomainTag = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mpls/ldp/autoconfig"); !data.MplsLdpAutoconfig.IsNull() {
+		if value.Exists() {
+			data.MplsLdpAutoconfig = types.BoolValue(true)
+		} else {
+			data.MplsLdpAutoconfig = types.BoolValue(false)
+		}
+	} else {
+		data.MplsLdpAutoconfig = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mpls/ldp/sync"); !data.MplsLdpSync.IsNull() {
+		if value.Exists() {
+			data.MplsLdpSync = types.BoolValue(true)
+		} else {
+			data.MplsLdpSync = types.BoolValue(false)
+		}
+	} else {
+		data.MplsLdpSync = types.BoolNull()
+	}
+	for i := range data.Neighbors {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.Neighbors[i].Ip.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/neighbor").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.Neighbors[i].Ip.IsNull() {
+			data.Neighbors[i].Ip = types.StringValue(value.String())
+		} else {
+			data.Neighbors[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "priority"); value.Exists() && !data.Neighbors[i].Priority.IsNull() {
+			data.Neighbors[i].Priority = types.Int64Value(value.Int())
+		} else {
+			data.Neighbors[i].Priority = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "cost"); value.Exists() && !data.Neighbors[i].Cost.IsNull() {
+			data.Neighbors[i].Cost = types.Int64Value(value.Int())
+		} else {
+			data.Neighbors[i].Cost = types.Int64Null()
+		}
+	}
+	for i := range data.Networks {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.Networks[i].Ip.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.Networks[i].Ip.IsNull() {
+			data.Networks[i].Ip = types.StringValue(value.String())
+		} else {
+			data.Networks[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "wildcard"); value.Exists() && !data.Networks[i].Wildcard.IsNull() {
+			data.Networks[i].Wildcard = types.StringValue(value.String())
+		} else {
+			data.Networks[i].Wildcard = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "area"); value.Exists() && !data.Networks[i].Area.IsNull() {
+			data.Networks[i].Area = types.StringValue(value.String())
+		} else {
+			data.Networks[i].Area = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
+		data.Priority = types.Int64Value(value.Int())
+	} else {
+		data.Priority = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/router-id"); value.Exists() && !data.RouterId.IsNull() {
+		data.RouterId = types.StringValue(value.String())
+	} else {
+		data.RouterId = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/shutdown"); !data.Shutdown.IsNull() {
+		if value.Exists() {
+			data.Shutdown = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+	for i := range data.SummaryAddresses {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.SummaryAddresses[i].Ip.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summary-address").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.SummaryAddresses[i].Ip.IsNull() {
+			data.SummaryAddresses[i].Ip = types.StringValue(value.String())
+		} else {
+			data.SummaryAddresses[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "mask"); value.Exists() && !data.SummaryAddresses[i].Mask.IsNull() {
+			data.SummaryAddresses[i].Mask = types.StringValue(value.String())
+		} else {
+			data.SummaryAddresses[i].Mask = types.StringNull()
+		}
+	}
+	for i := range data.Areas {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/area").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "area-id"); value.Exists() && !data.Areas[i].AreaId.IsNull() {
+			data.Areas[i].AreaId = types.StringValue(value.String())
+		} else {
+			data.Areas[i].AreaId = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "authentication/message-digest"); !data.Areas[i].AuthenticationMessageDigest.IsNull() {
+			if value.Exists() {
+				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				data.Areas[i].AuthenticationMessageDigest = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].AuthenticationMessageDigest = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nssa"); !data.Areas[i].Nssa.IsNull() {
+			if value.Exists() {
+				data.Areas[i].Nssa = types.BoolValue(true)
+			} else {
+				data.Areas[i].Nssa = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].Nssa = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/default-information-originate"); !data.Areas[i].NssaDefaultInformationOriginate.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginate = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/default-information-originate/metric"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() {
+			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Value(value.Int())
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginateMetric = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/default-information-originate/metric-type"); value.Exists() && !data.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() {
+			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Value(value.Int())
+		} else {
+			data.Areas[i].NssaDefaultInformationOriginateMetricType = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/no-summary"); !data.Areas[i].NssaNoSummary.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaNoSummary = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaNoSummary = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaNoSummary = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "nssa/nssa-options/no-redistribution"); !data.Areas[i].NssaNoRedistribution.IsNull() {
+			if value.Exists() {
+				data.Areas[i].NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				data.Areas[i].NssaNoRedistribution = types.BoolValue(false)
+			}
+		} else {
+			data.Areas[i].NssaNoRedistribution = types.BoolNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/auto-cost/reference-bandwidth"); value.Exists() && !data.AutoCostReferenceBandwidth.IsNull() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	} else {
+		data.AutoCostReferenceBandwidth = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/passive-interface/default"); !data.PassiveInterfaceDefault.IsNull() {
+		if value.Exists() {
+			data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.PassiveInterfaceDefault = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/passive-interface/interface"); value.Exists() && !data.PassiveInterface.IsNull() {
+		data.PassiveInterface = helpers.GetStringListXML(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	for i := range data.PassiveInterfaceDisableGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTenGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTenGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.IsNull() {
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableLoopbacks {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableLoopbacks[i].Name.IsNull() {
+			data.PassiveInterfaceDisableLoopbacks[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableLoopbacks[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableVlans {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableVlans[i].Name.IsNull() {
+			data.PassiveInterfaceDisableVlans[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableVlans[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisableTunnels {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisableTunnels[i].Name.IsNull() {
+			data.PassiveInterfaceDisableTunnels[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisableTunnels[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisablePortChannels {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisablePortChannels[i].Name.IsNull() {
+			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisablePortChannels[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.IsNull() {
+			data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name = types.StringValue(value.String())
+		} else {
+			data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -1800,6 +2822,624 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *OSPF) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bfd/all-interfaces"); value.Exists() {
+		data.BfdAllInterfaces = types.BoolValue(true)
+	} else {
+		data.BfdAllInterfaces = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-information/originate"); value.Exists() {
+		data.DefaultInformationOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-information/originate/always"); value.Exists() {
+		data.DefaultInformationOriginateAlways = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginateAlways = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/distance/distance"); value.Exists() {
+		data.Distance = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/domain-tag"); value.Exists() {
+		data.DomainTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mpls/ldp/autoconfig"); value.Exists() {
+		data.MplsLdpAutoconfig = types.BoolValue(true)
+	} else {
+		data.MplsLdpAutoconfig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mpls/ldp/sync"); value.Exists() {
+		data.MplsLdpSync = types.BoolValue(true)
+	} else {
+		data.MplsLdpSync = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/neighbor"); value.Exists() {
+		data.Neighbors = make([]OSPFNeighbors, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFNeighbors{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "cost"); cValue.Exists() {
+				item.Cost = types.Int64Value(cValue.Int())
+			}
+			data.Neighbors = append(data.Neighbors, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network"); value.Exists() {
+		data.Networks = make([]OSPFNetworks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFNetworks{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "area"); cValue.Exists() {
+				item.Area = types.StringValue(cValue.String())
+			}
+			data.Networks = append(data.Networks, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/priority"); value.Exists() {
+		data.Priority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/router-id"); value.Exists() {
+		data.RouterId = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(value.Bool())
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summary-address"); value.Exists() {
+		data.SummaryAddresses = make([]OSPFSummaryAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFSummaryAddresses{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			data.SummaryAddresses = append(data.SummaryAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/area"); value.Exists() {
+		data.Areas = make([]OSPFAreas, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFAreas{}
+			if cValue := helpers.GetFromXPath(v, "area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "authentication/message-digest"); cValue.Exists() {
+				item.AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				item.AuthenticationMessageDigest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa"); cValue.Exists() {
+				item.Nssa = types.BoolValue(true)
+			} else {
+				item.Nssa = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate"); cValue.Exists() {
+				item.NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				item.NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate/metric"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate/metric-type"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/no-summary"); cValue.Exists() {
+				item.NssaNoSummary = types.BoolValue(true)
+			} else {
+				item.NssaNoSummary = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/no-redistribution"); cValue.Exists() {
+				item.NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				item.NssaNoRedistribution = types.BoolValue(false)
+			}
+			data.Areas = append(data.Areas, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/auto-cost/reference-bandwidth"); value.Exists() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/passive-interface/default"); value.Exists() {
+		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+	} else {
+		data.PassiveInterfaceDefault = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/passive-interface/interface"); value.Exists() {
+		data.PassiveInterface = helpers.GetStringListXML(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFPassiveInterfaceDisableGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableGigabitEthernets = append(data.PassiveInterfaceDisableGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwoGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwoGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoGigabitEthernets = append(data.PassiveInterfaceDisableTwoGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFPassiveInterfaceDisableFiveGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableFiveGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFiveGigabitEthernets = append(data.PassiveInterfaceDisableFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFPassiveInterfaceDisableTenGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTenGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTenGigabitEthernets = append(data.PassiveInterfaceDisableTenGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = append(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFPassiveInterfaceDisableFortyGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableFortyGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFortyGigabitEthernets = append(data.PassiveInterfaceDisableFortyGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableHundredGigabitEthernets = append(data.PassiveInterfaceDisableHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets = append(data.PassiveInterfaceDisableTwoHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableFourHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets = append(data.PassiveInterfaceDisableFourHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableLoopbacks = make([]OSPFPassiveInterfaceDisableLoopbacks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableLoopbacks{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableLoopbacks = append(data.PassiveInterfaceDisableLoopbacks, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableVlans = make([]OSPFPassiveInterfaceDisableVlans, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableVlans{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableVlans = append(data.PassiveInterfaceDisableVlans, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTunnels = make([]OSPFPassiveInterfaceDisableTunnels, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTunnels{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTunnels = append(data.PassiveInterfaceDisableTunnels, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannels = make([]OSPFPassiveInterfaceDisablePortChannels, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisablePortChannels{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisablePortChannelSubinterfaces{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannelSubinterfaces = append(data.PassiveInterfaceDisablePortChannelSubinterfaces, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *OSPFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bfd/all-interfaces"); value.Exists() {
+		data.BfdAllInterfaces = types.BoolValue(true)
+	} else {
+		data.BfdAllInterfaces = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-information/originate"); value.Exists() {
+		data.DefaultInformationOriginate = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-information/originate/always"); value.Exists() {
+		data.DefaultInformationOriginateAlways = types.BoolValue(true)
+	} else {
+		data.DefaultInformationOriginateAlways = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-metric"); value.Exists() {
+		data.DefaultMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/distance/distance"); value.Exists() {
+		data.Distance = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/domain-tag"); value.Exists() {
+		data.DomainTag = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mpls/ldp/autoconfig"); value.Exists() {
+		data.MplsLdpAutoconfig = types.BoolValue(true)
+	} else {
+		data.MplsLdpAutoconfig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mpls/ldp/sync"); value.Exists() {
+		data.MplsLdpSync = types.BoolValue(true)
+	} else {
+		data.MplsLdpSync = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/neighbor"); value.Exists() {
+		data.Neighbors = make([]OSPFNeighbors, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFNeighbors{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "priority"); cValue.Exists() {
+				item.Priority = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "cost"); cValue.Exists() {
+				item.Cost = types.Int64Value(cValue.Int())
+			}
+			data.Neighbors = append(data.Neighbors, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network"); value.Exists() {
+		data.Networks = make([]OSPFNetworks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFNetworks{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "wildcard"); cValue.Exists() {
+				item.Wildcard = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "area"); cValue.Exists() {
+				item.Area = types.StringValue(cValue.String())
+			}
+			data.Networks = append(data.Networks, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/priority"); value.Exists() {
+		data.Priority = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/router-id"); value.Exists() {
+		data.RouterId = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/shutdown"); value.Exists() {
+		data.Shutdown = types.BoolValue(value.Bool())
+	} else {
+		data.Shutdown = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summary-address"); value.Exists() {
+		data.SummaryAddresses = make([]OSPFSummaryAddresses, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFSummaryAddresses{}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mask"); cValue.Exists() {
+				item.Mask = types.StringValue(cValue.String())
+			}
+			data.SummaryAddresses = append(data.SummaryAddresses, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/area"); value.Exists() {
+		data.Areas = make([]OSPFAreas, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFAreas{}
+			if cValue := helpers.GetFromXPath(v, "area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "authentication/message-digest"); cValue.Exists() {
+				item.AuthenticationMessageDigest = types.BoolValue(true)
+			} else {
+				item.AuthenticationMessageDigest = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa"); cValue.Exists() {
+				item.Nssa = types.BoolValue(true)
+			} else {
+				item.Nssa = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate"); cValue.Exists() {
+				item.NssaDefaultInformationOriginate = types.BoolValue(true)
+			} else {
+				item.NssaDefaultInformationOriginate = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate/metric"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetric = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/default-information-originate/metric-type"); cValue.Exists() {
+				item.NssaDefaultInformationOriginateMetricType = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/no-summary"); cValue.Exists() {
+				item.NssaNoSummary = types.BoolValue(true)
+			} else {
+				item.NssaNoSummary = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "nssa/nssa-options/no-redistribution"); cValue.Exists() {
+				item.NssaNoRedistribution = types.BoolValue(true)
+			} else {
+				item.NssaNoRedistribution = types.BoolValue(false)
+			}
+			data.Areas = append(data.Areas, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/auto-cost/reference-bandwidth"); value.Exists() {
+		data.AutoCostReferenceBandwidth = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/passive-interface/default"); value.Exists() {
+		data.PassiveInterfaceDefault = types.BoolValue(value.Bool())
+	} else {
+		data.PassiveInterfaceDefault = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/passive-interface/interface"); value.Exists() {
+		data.PassiveInterface = helpers.GetStringListXML(value.Array())
+	} else {
+		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFPassiveInterfaceDisableGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableGigabitEthernets = append(data.PassiveInterfaceDisableGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTwoGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwoGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwoGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoGigabitEthernets = append(data.PassiveInterfaceDisableTwoGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableFiveGigabitEthernets = make([]OSPFPassiveInterfaceDisableFiveGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableFiveGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFiveGigabitEthernets = append(data.PassiveInterfaceDisableFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTenGigabitEthernets = make([]OSPFPassiveInterfaceDisableTenGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTenGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTenGigabitEthernets = append(data.PassiveInterfaceDisableTenGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwentyFiveGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwentyFiveGigabitEthernets = append(data.PassiveInterfaceDisableTwentyFiveGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableFortyGigabitEthernets = make([]OSPFPassiveInterfaceDisableFortyGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableFortyGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFortyGigabitEthernets = append(data.PassiveInterfaceDisableFortyGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableHundredGigabitEthernets = append(data.PassiveInterfaceDisableHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTwoHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTwoHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTwoHundredGigabitEthernets = append(data.PassiveInterfaceDisableTwoHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableFourHundredGigabitEthernets = make([]OSPFPassiveInterfaceDisableFourHundredGigabitEthernets, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableFourHundredGigabitEthernets{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableFourHundredGigabitEthernets = append(data.PassiveInterfaceDisableFourHundredGigabitEthernets, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableLoopbacks = make([]OSPFPassiveInterfaceDisableLoopbacks, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableLoopbacks{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableLoopbacks = append(data.PassiveInterfaceDisableLoopbacks, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableVlans = make([]OSPFPassiveInterfaceDisableVlans, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableVlans{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableVlans = append(data.PassiveInterfaceDisableVlans, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisableTunnels = make([]OSPFPassiveInterfaceDisableTunnels, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisableTunnels{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisableTunnels = append(data.PassiveInterfaceDisableTunnels, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannels = make([]OSPFPassiveInterfaceDisablePortChannels, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisablePortChannels{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannels = append(data.PassiveInterfaceDisablePortChannels, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+		data.PassiveInterfaceDisablePortChannelSubinterfaces = make([]OSPFPassiveInterfaceDisablePortChannelSubinterfaces, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := OSPFPassiveInterfaceDisablePortChannelSubinterfaces{}
+			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.PassiveInterfaceDisablePortChannelSubinterfaces = append(data.PassiveInterfaceDisablePortChannelSubinterfaces, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
@@ -2356,6 +3996,652 @@ func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body string) string {
+	b := netconf.NewBody(body)
+	if !state.BfdAllInterfaces.IsNull() && data.BfdAllInterfaces.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/all-interfaces")
+	}
+	if !state.DefaultInformationOriginate.IsNull() && data.DefaultInformationOriginate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate")
+	}
+	if !state.DefaultInformationOriginateAlways.IsNull() && data.DefaultInformationOriginateAlways.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-information/originate/always")
+	}
+	if !state.DefaultMetric.IsNull() && data.DefaultMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-metric")
+	}
+	if !state.Distance.IsNull() && data.Distance.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/distance/distance")
+	}
+	if !state.DomainTag.IsNull() && data.DomainTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/domain-tag")
+	}
+	if !state.MplsLdpAutoconfig.IsNull() && data.MplsLdpAutoconfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mpls/ldp/autoconfig")
+	}
+	if !state.MplsLdpSync.IsNull() && data.MplsLdpSync.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mpls/ldp/sync")
+	}
+	for i := range state.Neighbors {
+		stateKeys := [...]string{"ip"}
+		stateKeyValues := [...]string{state.Neighbors[i].Ip.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Neighbors[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Neighbors {
+			found = true
+			if state.Neighbors[i].Ip.ValueString() != data.Neighbors[j].Ip.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Neighbors[i].Priority.IsNull() && data.Neighbors[j].Priority.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v/priority", predicates))
+				}
+				if !state.Neighbors[i].Cost.IsNull() && data.Neighbors[j].Cost.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v/cost", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/neighbor%v", predicates))
+		}
+	}
+	for i := range state.Networks {
+		stateKeys := [...]string{"ip"}
+		stateKeyValues := [...]string{state.Networks[i].Ip.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Networks[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Networks {
+			found = true
+			if state.Networks[i].Ip.ValueString() != data.Networks[j].Ip.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Networks[i].Wildcard.IsNull() && data.Networks[j].Wildcard.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/wildcard", predicates))
+				}
+				if !state.Networks[i].Area.IsNull() && data.Networks[j].Area.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v/area", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/network%v", predicates))
+		}
+	}
+	if !state.Priority.IsNull() && data.Priority.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
+	}
+	if !state.RouterId.IsNull() && data.RouterId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/router-id")
+	}
+	if !state.Shutdown.IsNull() && data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/shutdown")
+	}
+	for i := range state.SummaryAddresses {
+		stateKeys := [...]string{"ip"}
+		stateKeyValues := [...]string{state.SummaryAddresses[i].Ip.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.SummaryAddresses[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.SummaryAddresses {
+			found = true
+			if state.SummaryAddresses[i].Ip.ValueString() != data.SummaryAddresses[j].Ip.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.SummaryAddresses[i].Mask.IsNull() && data.SummaryAddresses[j].Mask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/summary-address%v/mask", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/summary-address%v", predicates))
+		}
+	}
+	for i := range state.Areas {
+		stateKeys := [...]string{"area-id"}
+		stateKeyValues := [...]string{state.Areas[i].AreaId.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Areas[i].AreaId.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Areas {
+			found = true
+			if state.Areas[i].AreaId.ValueString() != data.Areas[j].AreaId.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Areas[i].AuthenticationMessageDigest.IsNull() && data.Areas[j].AuthenticationMessageDigest.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/authentication/message-digest", predicates))
+				}
+				if !state.Areas[i].Nssa.IsNull() && data.Areas[j].Nssa.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa", predicates))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginate.IsNull() && data.Areas[j].NssaDefaultInformationOriginate.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate", predicates))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginateMetric.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetric.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate/metric", predicates))
+				}
+				if !state.Areas[i].NssaDefaultInformationOriginateMetricType.IsNull() && data.Areas[j].NssaDefaultInformationOriginateMetricType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/default-information-originate/metric-type", predicates))
+				}
+				if !state.Areas[i].NssaNoSummary.IsNull() && data.Areas[j].NssaNoSummary.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/no-summary", predicates))
+				}
+				if !state.Areas[i].NssaNoRedistribution.IsNull() && data.Areas[j].NssaNoRedistribution.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v/nssa/nssa-options/no-redistribution", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/area%v", predicates))
+		}
+	}
+	if !state.AutoCostReferenceBandwidth.IsNull() && data.AutoCostReferenceBandwidth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/auto-cost/reference-bandwidth")
+	}
+	if !state.PassiveInterfaceDefault.IsNull() && data.PassiveInterfaceDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/passive-interface/default")
+	}
+	if !state.PassiveInterface.IsNull() {
+		if data.PassiveInterface.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/passive-interface/interface")
+		} else {
+			var dataValues, stateValues []string
+			data.PassiveInterface.ElementsAs(ctx, &dataValues, false)
+			state.PassiveInterface.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface/interface[.=%v]", v))
+				}
+			}
+		}
+	}
+	for i := range state.PassiveInterfaceDisableGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwoGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwoGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFiveGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFiveGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTenGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTenGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTenGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFortyGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFortyGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableHundredGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableTwoHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+			found = true
+			if state.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString() != data.PassiveInterfaceDisableFourHundredGigabitEthernets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableLoopbacks {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableLoopbacks {
+			found = true
+			if state.PassiveInterfaceDisableLoopbacks[i].Name.ValueString() != data.PassiveInterfaceDisableLoopbacks[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Loopback%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableVlans {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableVlans[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableVlans {
+			found = true
+			if state.PassiveInterfaceDisableVlans[i].Name.ValueString() != data.PassiveInterfaceDisableVlans[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Vlan%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisableTunnels {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisableTunnels[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisableTunnels {
+			found = true
+			if state.PassiveInterfaceDisableTunnels[i].Name.ValueString() != data.PassiveInterfaceDisableTunnels[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Tunnel%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisablePortChannels {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisablePortChannels[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisablePortChannels {
+			found = true
+			if state.PassiveInterfaceDisablePortChannels[i].Name.ValueString() != data.PassiveInterfaceDisablePortChannels[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Port-channel%v", predicates))
+		}
+	}
+	for i := range state.PassiveInterfaceDisablePortChannelSubinterfaces {
+		stateKeys := [...]string{""}
+		stateKeyValues := [...]string{state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+			found = true
+			if state.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString() != data.PassiveInterfaceDisablePortChannelSubinterfaces[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel%v", predicates))
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *OSPF) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -2408,72 +4694,72 @@ func (data *OSPF) getDeletePaths(ctx context.Context) []string {
 	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
 		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisablePortChannels {
 		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Port-channel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableTunnels {
 		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Tunnel=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableVlans {
 		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Vlan=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableLoopbacks {
 		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/Loopback=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FourHundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoHundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/HundredGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FortyGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwentyFiveGigabitE=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TenGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/FiveGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/TwoGigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.PassiveInterfaceDisableGigabitEthernets {
 		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/GigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	if !data.PassiveInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/interface", data.getPath()))
@@ -2542,3 +4828,235 @@ func (data *OSPF) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *OSPF) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.BfdAllInterfaces.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/all-interfaces")
+	}
+	if !data.DefaultInformationOriginate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate")
+	}
+	if !data.DefaultInformationOriginateAlways.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-information/originate/always")
+	}
+	if !data.DefaultMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-metric")
+	}
+	if !data.Distance.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/distance/distance")
+	}
+	if !data.DomainTag.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/domain-tag")
+	}
+	if !data.MplsLdpAutoconfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mpls/ldp/autoconfig")
+	}
+	if !data.MplsLdpSync.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mpls/ldp/sync")
+	}
+	for i := range data.Neighbors {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.Neighbors[i].Ip.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/neighbor%v", predicates))
+	}
+	for i := range data.Networks {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.Networks[i].Ip.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/network%v", predicates))
+	}
+	if !data.Priority.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/priority")
+	}
+	if !data.RouterId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/router-id")
+	}
+	if !data.Shutdown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/shutdown")
+	}
+	for i := range data.SummaryAddresses {
+		keys := [...]string{"ip"}
+		keyValues := [...]string{data.SummaryAddresses[i].Ip.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/summary-address%v", predicates))
+	}
+	for i := range data.Areas {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/area%v", predicates))
+	}
+	if !data.AutoCostReferenceBandwidth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/auto-cost/reference-bandwidth")
+	}
+	if !data.PassiveInterfaceDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/passive-interface/default")
+	}
+	if !data.PassiveInterface.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/passive-interface/interface")
+	}
+	for i := range data.PassiveInterfaceDisableGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTwoGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableFiveGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableFiveGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTenGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTenGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwentyFiveGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableFortyGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableFortyGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableHundredGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTwoHundredGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTwoHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableFourHundredGigabitEthernets {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableFourHundredGigabitEthernets[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableLoopbacks {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableLoopbacks[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableVlans {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableVlans[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisableTunnels {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisableTunnels[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisablePortChannels {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannels[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+	for i := range data.PassiveInterfaceDisablePortChannelSubinterfaces {
+		keys := [...]string{""}
+		keyValues := [...]string{data.PassiveInterfaceDisablePortChannelSubinterfaces[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

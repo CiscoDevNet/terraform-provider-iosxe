@@ -112,7 +112,7 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeInterfaceEthernetPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -121,14 +121,14 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=POLICY1"
 	attributes = {
 		"name" = "POLICY1"
 	}
 }
 
-resource "iosxe_restconf" "PreReq2" {
+resource "iosxe_yang" "PreReq2" {
 	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=REC1"
 	attributes = {
 		"name" = "REC1"
@@ -137,16 +137,16 @@ resource "iosxe_restconf" "PreReq2" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq3" {
+resource "iosxe_yang" "PreReq3" {
 	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=MON1"
 	attributes = {
 		"name" = "MON1"
 		"record/type" = "REC1"
 	}
-	depends_on = [iosxe_restconf.PreReq2, ]
+	depends_on = [iosxe_yang.PreReq2, ]
 }
 
-resource "iosxe_restconf" "PreReq4" {
+resource "iosxe_yang" "PreReq4" {
 	path = "Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=TEMP1"
 	attributes = {
 		"template_name" = "TEMP1"
@@ -233,7 +233,7 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	cdp_tlv_location = false` + "\n"
 	config += `	cdp_tlv_server_location = false` + "\n"
 	config += `	ip_nat_inside = true` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

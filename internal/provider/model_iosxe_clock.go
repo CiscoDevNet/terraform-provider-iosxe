@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -117,6 +120,17 @@ func (data Clock) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data Clock) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/clock")
+	return path
+}
+
+func (data ClockData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/clock")
+	return path
 }
 
 // End of section. //template:end getPath
@@ -210,6 +224,106 @@ func (data Clock) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data Clock) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.CalendarValid.IsNull() && !data.CalendarValid.IsUnknown() {
+		if data.CalendarValid.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/calendar-valid", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/calendar-valid")
+		}
+	}
+	if !data.SummerTimeZone.IsNull() && !data.SummerTimeZone.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/zone", data.SummerTimeZone.ValueString())
+	}
+	if !data.SummerTimeDate.IsNull() && !data.SummerTimeDate.IsUnknown() {
+		if data.SummerTimeDate.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/date", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/summer-time/date")
+		}
+	}
+	if !data.SummerTimeDateStartDay.IsNull() && !data.SummerTimeDateStartDay.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/start-day", strconv.FormatInt(data.SummerTimeDateStartDay.ValueInt64(), 10))
+	}
+	if !data.SummerTimeDateStartMonth.IsNull() && !data.SummerTimeDateStartMonth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/start-month", data.SummerTimeDateStartMonth.ValueString())
+	}
+	if !data.SummerTimeDateStartYear.IsNull() && !data.SummerTimeDateStartYear.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/start-year", strconv.FormatInt(data.SummerTimeDateStartYear.ValueInt64(), 10))
+	}
+	if !data.SummerTimeDateStartTime.IsNull() && !data.SummerTimeDateStartTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/start-time", data.SummerTimeDateStartTime.ValueString())
+	}
+	if !data.SummerTimeDateEndDay.IsNull() && !data.SummerTimeDateEndDay.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/date-end-day", strconv.FormatInt(data.SummerTimeDateEndDay.ValueInt64(), 10))
+	}
+	if !data.SummerTimeDateEndMonth.IsNull() && !data.SummerTimeDateEndMonth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/date-end-month", data.SummerTimeDateEndMonth.ValueString())
+	}
+	if !data.SummerTimeDateEndYear.IsNull() && !data.SummerTimeDateEndYear.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/date-end-year", strconv.FormatInt(data.SummerTimeDateEndYear.ValueInt64(), 10))
+	}
+	if !data.SummerTimeDateEndTime.IsNull() && !data.SummerTimeDateEndTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/date-end-time", data.SummerTimeDateEndTime.ValueString())
+	}
+	if !data.SummerTimeDateOffset.IsNull() && !data.SummerTimeDateOffset.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/offset", strconv.FormatInt(data.SummerTimeDateOffset.ValueInt64(), 10))
+	}
+	if !data.SummerTimeRecurring.IsNull() && !data.SummerTimeRecurring.IsUnknown() {
+		if data.SummerTimeRecurring.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/summer-time/recurring")
+		}
+	}
+	if !data.SummerTimeRecurringStartWeek.IsNull() && !data.SummerTimeRecurringStartWeek.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-start", data.SummerTimeRecurringStartWeek.ValueString())
+	}
+	if !data.SummerTimeRecurringStartWeekday.IsNull() && !data.SummerTimeRecurringStartWeekday.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-start-day", data.SummerTimeRecurringStartWeekday.ValueString())
+	}
+	if !data.SummerTimeRecurringStartMonth.IsNull() && !data.SummerTimeRecurringStartMonth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-start-month", data.SummerTimeRecurringStartMonth.ValueString())
+	}
+	if !data.SummerTimeRecurringStartTime.IsNull() && !data.SummerTimeRecurringStartTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-start-time", data.SummerTimeRecurringStartTime.ValueString())
+	}
+	if !data.SummerTimeRecurringEndWeek.IsNull() && !data.SummerTimeRecurringEndWeek.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-end", data.SummerTimeRecurringEndWeek.ValueString())
+	}
+	if !data.SummerTimeRecurringEndWeekday.IsNull() && !data.SummerTimeRecurringEndWeekday.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-end-day", data.SummerTimeRecurringEndWeekday.ValueString())
+	}
+	if !data.SummerTimeRecurringEndMonth.IsNull() && !data.SummerTimeRecurringEndMonth.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-end-month", data.SummerTimeRecurringEndMonth.ValueString())
+	}
+	if !data.SummerTimeRecurringEndTime.IsNull() && !data.SummerTimeRecurringEndTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-end-time", data.SummerTimeRecurringEndTime.ValueString())
+	}
+	if !data.SummerTimeRecurringOffset.IsNull() && !data.SummerTimeRecurringOffset.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/summer-time/recurring-offset", strconv.FormatInt(data.SummerTimeRecurringOffset.ValueInt64(), 10))
+	}
+	if !data.Timezone.IsNull() && !data.Timezone.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/timezone/zone", data.Timezone.ValueString())
+	}
+	if !data.TimezoneOffsetHours.IsNull() && !data.TimezoneOffsetHours.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/timezone/hours", strconv.FormatInt(data.TimezoneOffsetHours.ValueInt64(), 10))
+	}
+	if !data.TimezoneOffsetMinutes.IsNull() && !data.TimezoneOffsetMinutes.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/timezone/minutes", strconv.FormatInt(data.TimezoneOffsetMinutes.ValueInt64(), 10))
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -358,6 +472,150 @@ func (data *Clock) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *Clock) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/calendar-valid"); !data.CalendarValid.IsNull() {
+		if value.Exists() {
+			data.CalendarValid = types.BoolValue(true)
+		} else {
+			data.CalendarValid = types.BoolValue(false)
+		}
+	} else {
+		data.CalendarValid = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/zone"); value.Exists() && !data.SummerTimeZone.IsNull() {
+		data.SummerTimeZone = types.StringValue(value.String())
+	} else {
+		data.SummerTimeZone = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date"); !data.SummerTimeDate.IsNull() {
+		if value.Exists() {
+			data.SummerTimeDate = types.BoolValue(true)
+		} else {
+			data.SummerTimeDate = types.BoolValue(false)
+		}
+	} else {
+		data.SummerTimeDate = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-day"); value.Exists() && !data.SummerTimeDateStartDay.IsNull() {
+		data.SummerTimeDateStartDay = types.Int64Value(value.Int())
+	} else {
+		data.SummerTimeDateStartDay = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-month"); value.Exists() && !data.SummerTimeDateStartMonth.IsNull() {
+		data.SummerTimeDateStartMonth = types.StringValue(value.String())
+	} else {
+		data.SummerTimeDateStartMonth = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-year"); value.Exists() && !data.SummerTimeDateStartYear.IsNull() {
+		data.SummerTimeDateStartYear = types.Int64Value(value.Int())
+	} else {
+		data.SummerTimeDateStartYear = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-time"); value.Exists() && !data.SummerTimeDateStartTime.IsNull() {
+		data.SummerTimeDateStartTime = types.StringValue(value.String())
+	} else {
+		data.SummerTimeDateStartTime = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-day"); value.Exists() && !data.SummerTimeDateEndDay.IsNull() {
+		data.SummerTimeDateEndDay = types.Int64Value(value.Int())
+	} else {
+		data.SummerTimeDateEndDay = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-month"); value.Exists() && !data.SummerTimeDateEndMonth.IsNull() {
+		data.SummerTimeDateEndMonth = types.StringValue(value.String())
+	} else {
+		data.SummerTimeDateEndMonth = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-year"); value.Exists() && !data.SummerTimeDateEndYear.IsNull() {
+		data.SummerTimeDateEndYear = types.Int64Value(value.Int())
+	} else {
+		data.SummerTimeDateEndYear = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-time"); value.Exists() && !data.SummerTimeDateEndTime.IsNull() {
+		data.SummerTimeDateEndTime = types.StringValue(value.String())
+	} else {
+		data.SummerTimeDateEndTime = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/offset"); value.Exists() && !data.SummerTimeDateOffset.IsNull() {
+		data.SummerTimeDateOffset = types.Int64Value(value.Int())
+	} else {
+		data.SummerTimeDateOffset = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring"); !data.SummerTimeRecurring.IsNull() {
+		if value.Exists() {
+			data.SummerTimeRecurring = types.BoolValue(true)
+		} else {
+			data.SummerTimeRecurring = types.BoolValue(false)
+		}
+	} else {
+		data.SummerTimeRecurring = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start"); value.Exists() && !data.SummerTimeRecurringStartWeek.IsNull() {
+		data.SummerTimeRecurringStartWeek = types.StringValue(value.String())
+	} else {
+		data.SummerTimeRecurringStartWeek = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-day"); value.Exists() && !data.SummerTimeRecurringStartWeekday.IsNull() {
+		data.SummerTimeRecurringStartWeekday = types.StringValue(value.String())
+	} else {
+		data.SummerTimeRecurringStartWeekday = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-month"); value.Exists() && !data.SummerTimeRecurringStartMonth.IsNull() {
+		data.SummerTimeRecurringStartMonth = types.StringValue(value.String())
+	} else {
+		data.SummerTimeRecurringStartMonth = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-time"); value.Exists() && !data.SummerTimeRecurringStartTime.IsNull() {
+		data.SummerTimeRecurringStartTime = types.StringValue(value.String())
+	} else {
+		data.SummerTimeRecurringStartTime = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end"); value.Exists() && !data.SummerTimeRecurringEndWeek.IsNull() {
+		data.SummerTimeRecurringEndWeek = types.StringValue(value.String())
+	} else {
+		data.SummerTimeRecurringEndWeek = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-day"); value.Exists() && !data.SummerTimeRecurringEndWeekday.IsNull() {
+		data.SummerTimeRecurringEndWeekday = types.StringValue(value.String())
+	} else {
+		data.SummerTimeRecurringEndWeekday = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-month"); value.Exists() && !data.SummerTimeRecurringEndMonth.IsNull() {
+		data.SummerTimeRecurringEndMonth = types.StringValue(value.String())
+	} else {
+		data.SummerTimeRecurringEndMonth = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-time"); value.Exists() && !data.SummerTimeRecurringEndTime.IsNull() {
+		data.SummerTimeRecurringEndTime = types.StringValue(value.String())
+	} else {
+		data.SummerTimeRecurringEndTime = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-offset"); value.Exists() && !data.SummerTimeRecurringOffset.IsNull() {
+		data.SummerTimeRecurringOffset = types.Int64Value(value.Int())
+	} else {
+		data.SummerTimeRecurringOffset = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/zone"); value.Exists() && !data.Timezone.IsNull() {
+		data.Timezone = types.StringValue(value.String())
+	} else {
+		data.Timezone = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/hours"); value.Exists() && !data.TimezoneOffsetHours.IsNull() {
+		data.TimezoneOffsetHours = types.Int64Value(value.Int())
+	} else {
+		data.TimezoneOffsetHours = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/minutes"); value.Exists() && !data.TimezoneOffsetMinutes.IsNull() {
+		data.TimezoneOffsetMinutes = types.Int64Value(value.Int())
+	} else {
+		data.TimezoneOffsetMinutes = types.Int64Null()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -543,6 +801,182 @@ func (data *ClockData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *Clock) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/calendar-valid"); value.Exists() {
+		data.CalendarValid = types.BoolValue(true)
+	} else {
+		data.CalendarValid = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/zone"); value.Exists() {
+		data.SummerTimeZone = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date"); value.Exists() {
+		data.SummerTimeDate = types.BoolValue(true)
+	} else {
+		data.SummerTimeDate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-day"); value.Exists() {
+		data.SummerTimeDateStartDay = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-month"); value.Exists() {
+		data.SummerTimeDateStartMonth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-year"); value.Exists() {
+		data.SummerTimeDateStartYear = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-time"); value.Exists() {
+		data.SummerTimeDateStartTime = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-day"); value.Exists() {
+		data.SummerTimeDateEndDay = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-month"); value.Exists() {
+		data.SummerTimeDateEndMonth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-year"); value.Exists() {
+		data.SummerTimeDateEndYear = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-time"); value.Exists() {
+		data.SummerTimeDateEndTime = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/offset"); value.Exists() {
+		data.SummerTimeDateOffset = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring"); value.Exists() {
+		data.SummerTimeRecurring = types.BoolValue(true)
+	} else {
+		data.SummerTimeRecurring = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start"); value.Exists() {
+		data.SummerTimeRecurringStartWeek = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-day"); value.Exists() {
+		data.SummerTimeRecurringStartWeekday = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-month"); value.Exists() {
+		data.SummerTimeRecurringStartMonth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-time"); value.Exists() {
+		data.SummerTimeRecurringStartTime = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end"); value.Exists() {
+		data.SummerTimeRecurringEndWeek = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-day"); value.Exists() {
+		data.SummerTimeRecurringEndWeekday = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-month"); value.Exists() {
+		data.SummerTimeRecurringEndMonth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-time"); value.Exists() {
+		data.SummerTimeRecurringEndTime = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-offset"); value.Exists() {
+		data.SummerTimeRecurringOffset = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/zone"); value.Exists() {
+		data.Timezone = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/hours"); value.Exists() {
+		data.TimezoneOffsetHours = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/minutes"); value.Exists() {
+		data.TimezoneOffsetMinutes = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *ClockData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/calendar-valid"); value.Exists() {
+		data.CalendarValid = types.BoolValue(true)
+	} else {
+		data.CalendarValid = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/zone"); value.Exists() {
+		data.SummerTimeZone = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date"); value.Exists() {
+		data.SummerTimeDate = types.BoolValue(true)
+	} else {
+		data.SummerTimeDate = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-day"); value.Exists() {
+		data.SummerTimeDateStartDay = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-month"); value.Exists() {
+		data.SummerTimeDateStartMonth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-year"); value.Exists() {
+		data.SummerTimeDateStartYear = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/start-time"); value.Exists() {
+		data.SummerTimeDateStartTime = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-day"); value.Exists() {
+		data.SummerTimeDateEndDay = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-month"); value.Exists() {
+		data.SummerTimeDateEndMonth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-year"); value.Exists() {
+		data.SummerTimeDateEndYear = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/date-end-time"); value.Exists() {
+		data.SummerTimeDateEndTime = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/offset"); value.Exists() {
+		data.SummerTimeDateOffset = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring"); value.Exists() {
+		data.SummerTimeRecurring = types.BoolValue(true)
+	} else {
+		data.SummerTimeRecurring = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start"); value.Exists() {
+		data.SummerTimeRecurringStartWeek = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-day"); value.Exists() {
+		data.SummerTimeRecurringStartWeekday = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-month"); value.Exists() {
+		data.SummerTimeRecurringStartMonth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-start-time"); value.Exists() {
+		data.SummerTimeRecurringStartTime = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end"); value.Exists() {
+		data.SummerTimeRecurringEndWeek = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-day"); value.Exists() {
+		data.SummerTimeRecurringEndWeekday = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-month"); value.Exists() {
+		data.SummerTimeRecurringEndMonth = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-end-time"); value.Exists() {
+		data.SummerTimeRecurringEndTime = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/summer-time/recurring-offset"); value.Exists() {
+		data.SummerTimeRecurringOffset = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/zone"); value.Exists() {
+		data.Timezone = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/hours"); value.Exists() {
+		data.TimezoneOffsetHours = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timezone/minutes"); value.Exists() {
+		data.TimezoneOffsetMinutes = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *Clock) getDeletedItems(ctx context.Context, state Clock) []string {
@@ -627,6 +1061,91 @@ func (data *Clock) getDeletedItems(ctx context.Context, state Clock) []string {
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *Clock) addDeletedItemsXML(ctx context.Context, state Clock, body string) string {
+	b := netconf.NewBody(body)
+	if !state.CalendarValid.IsNull() && data.CalendarValid.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/calendar-valid")
+	}
+	if !state.SummerTimeZone.IsNull() && data.SummerTimeZone.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDate.IsNull() && data.SummerTimeDate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time/date")
+	}
+	if !state.SummerTimeDateStartDay.IsNull() && data.SummerTimeDateStartDay.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDateStartMonth.IsNull() && data.SummerTimeDateStartMonth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDateStartYear.IsNull() && data.SummerTimeDateStartYear.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDateStartTime.IsNull() && data.SummerTimeDateStartTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDateEndDay.IsNull() && data.SummerTimeDateEndDay.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDateEndMonth.IsNull() && data.SummerTimeDateEndMonth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDateEndYear.IsNull() && data.SummerTimeDateEndYear.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDateEndTime.IsNull() && data.SummerTimeDateEndTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeDateOffset.IsNull() && data.SummerTimeDateOffset.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time/offset")
+	}
+	if !state.SummerTimeRecurring.IsNull() && data.SummerTimeRecurring.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time/recurring")
+	}
+	if !state.SummerTimeRecurringStartWeek.IsNull() && data.SummerTimeRecurringStartWeek.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeRecurringStartWeekday.IsNull() && data.SummerTimeRecurringStartWeekday.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeRecurringStartMonth.IsNull() && data.SummerTimeRecurringStartMonth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeRecurringStartTime.IsNull() && data.SummerTimeRecurringStartTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeRecurringEndWeek.IsNull() && data.SummerTimeRecurringEndWeek.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeRecurringEndWeekday.IsNull() && data.SummerTimeRecurringEndWeekday.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeRecurringEndMonth.IsNull() && data.SummerTimeRecurringEndMonth.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeRecurringEndTime.IsNull() && data.SummerTimeRecurringEndTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time")
+	}
+	if !state.SummerTimeRecurringOffset.IsNull() && data.SummerTimeRecurringOffset.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/summer-time/recurring-offset")
+	}
+	if !state.Timezone.IsNull() && data.Timezone.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timezone/zone")
+	}
+	if !state.TimezoneOffsetHours.IsNull() && data.TimezoneOffsetHours.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timezone")
+	}
+	if !state.TimezoneOffsetMinutes.IsNull() && data.TimezoneOffsetMinutes.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timezone")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -731,3 +1250,88 @@ func (data *Clock) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *Clock) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.CalendarValid.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/calendar-valid")
+	}
+	if !data.SummerTimeZone.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time/date")
+	}
+	if !data.SummerTimeDateStartDay.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDateStartMonth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDateStartYear.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDateStartTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDateEndDay.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDateEndMonth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDateEndYear.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDateEndTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeDateOffset.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time/offset")
+	}
+	if !data.SummerTimeRecurring.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time/recurring")
+	}
+	if !data.SummerTimeRecurringStartWeek.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeRecurringStartWeekday.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeRecurringStartMonth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeRecurringStartTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeRecurringEndWeek.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeRecurringEndWeekday.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeRecurringEndMonth.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeRecurringEndTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time")
+	}
+	if !data.SummerTimeRecurringOffset.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/summer-time/recurring-offset")
+	}
+	if !data.Timezone.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timezone/zone")
+	}
+	if !data.TimezoneOffsetHours.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timezone")
+	}
+	if !data.TimezoneOffsetMinutes.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timezone")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

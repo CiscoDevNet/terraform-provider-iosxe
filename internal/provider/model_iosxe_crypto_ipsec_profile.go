@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -76,6 +79,19 @@ func (data CryptoIPSecProfile) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data CryptoIPSecProfile) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
+func (data CryptoIPSecProfileData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ipsec/profile=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -100,6 +116,33 @@ func (data CryptoIPSecProfile) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data CryptoIPSecProfile) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.SetTransformSet.IsNull() && !data.SetTransformSet.IsUnknown() {
+		var values []string
+		data.SetTransformSet.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/set/transform-set", values)
+	}
+	if !data.SetIkev2Profile.IsNull() && !data.SetIkev2Profile.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/set/ikev2-profile", data.SetIkev2Profile.ValueString())
+	}
+	if !data.SetIsakmpProfile.IsNull() && !data.SetIsakmpProfile.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/set/isakmp-profile", data.SetIsakmpProfile.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -131,6 +174,33 @@ func (data *CryptoIPSecProfile) updateFromBody(ctx context.Context, res gjson.Re
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *CryptoIPSecProfile) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/transform-set"); value.Exists() && !data.SetTransformSet.IsNull() {
+		data.SetTransformSet = helpers.GetStringListXML(value.Array())
+	} else {
+		data.SetTransformSet = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/ikev2-profile"); value.Exists() && !data.SetIkev2Profile.IsNull() {
+		data.SetIkev2Profile = types.StringValue(value.String())
+	} else {
+		data.SetIkev2Profile = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/isakmp-profile"); value.Exists() && !data.SetIsakmpProfile.IsNull() {
+		data.SetIsakmpProfile = types.StringValue(value.String())
+	} else {
+		data.SetIsakmpProfile = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -176,6 +246,42 @@ func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Resu
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *CryptoIPSecProfile) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/transform-set"); value.Exists() {
+		data.SetTransformSet = helpers.GetStringListXML(value.Array())
+	} else {
+		data.SetTransformSet = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/ikev2-profile"); value.Exists() {
+		data.SetIkev2Profile = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/isakmp-profile"); value.Exists() {
+		data.SetIsakmpProfile = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *CryptoIPSecProfileData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/transform-set"); value.Exists() {
+		data.SetTransformSet = helpers.GetStringListXML(value.Array())
+	} else {
+		data.SetTransformSet = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/ikev2-profile"); value.Exists() {
+		data.SetIkev2Profile = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/isakmp-profile"); value.Exists() {
+		data.SetIsakmpProfile = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state CryptoIPSecProfile) []string {
@@ -213,6 +319,43 @@ func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state Crypt
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state CryptoIPSecProfile, body string) string {
+	b := netconf.NewBody(body)
+	if !state.SetTransformSet.IsNull() {
+		if data.SetTransformSet.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/transform-set")
+		} else {
+			var dataValues, stateValues []string
+			data.SetTransformSet.ElementsAs(ctx, &dataValues, false)
+			state.SetTransformSet.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/set/transform-set[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.SetIkev2Profile.IsNull() && data.SetIkev2Profile.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/ikev2-profile")
+	}
+	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/isakmp-profile")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *CryptoIPSecProfile) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -241,3 +384,22 @@ func (data *CryptoIPSecProfile) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *CryptoIPSecProfile) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.SetTransformSet.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/transform-set")
+	}
+	if !data.SetIkev2Profile.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/ikev2-profile")
+	}
+	if !data.SetIsakmpProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/isakmp-profile")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

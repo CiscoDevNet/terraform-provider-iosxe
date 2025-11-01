@@ -85,7 +85,7 @@ func TestAccDataSourceIosxeNTP(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeNTPPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -94,14 +94,14 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=SACL1"
 	attributes = {
 		"name" = "SACL1"
 	}
 }
 
-resource "iosxe_restconf" "PreReq2" {
+resource "iosxe_yang" "PreReq2" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
 	attributes = {
 		"name" = "1"
@@ -172,7 +172,7 @@ func testAccDataSourceIosxeNTPConfig() string {
 	config += `	trusted_keys = [{` + "\n"
 	config += `		number = 1` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

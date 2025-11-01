@@ -112,7 +112,7 @@ func iosxeInterfacePortChannelSubinterfaceImportStateIdFunc(resourceName string)
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePortChannelSubinterfacePrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -121,19 +121,19 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/interface/Port-channel=10"
 	attributes = {
 		"name" = "10"
 	}
 }
 
-resource "iosxe_restconf" "PreReq2" {
+resource "iosxe_yang" "PreReq2" {
 	path = "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=10.666"
 	attributes = {
 		"name" = "10.666"
 	}
-	depends_on = [iosxe_restconf.PreReq1, ]
+	depends_on = [iosxe_yang.PreReq1, ]
 }
 
 `
@@ -145,7 +145,7 @@ resource "iosxe_restconf" "PreReq2" {
 func testAccIosxeInterfacePortChannelSubinterfaceConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel_subinterface" "test" {` + "\n"
 	config += `	name = "10.666"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -196,7 +196,7 @@ func testAccIosxeInterfacePortChannelSubinterfaceConfig_all() string {
 	if os.Getenv("C9000V") != "" {
 		config += `	ip_arp_inspection_limit_rate = 1000` + "\n"
 	}
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

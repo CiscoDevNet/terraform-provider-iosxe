@@ -360,14 +360,14 @@ func iosxeSNMPServerImportStateIdFunc(resourceName string) resource.ImportStateI
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeSNMPServerPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
 	attributes = {
 		"name" = "1"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -384,7 +384,7 @@ resource "iosxe_restconf" "PreReq1" {
 
 func testAccIosxeSNMPServerConfig_minimum() string {
 	config := `resource "iosxe_snmp_server" "test" {` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -703,7 +703,7 @@ func testAccIosxeSNMPServerConfig_all() string {
 	config += `		v3_auth_priv_aes_access_ipv6_acl = "V6ACL1"` + "\n"
 	config += `		v3_auth_priv_aes_access_acl_name = "ACL123"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

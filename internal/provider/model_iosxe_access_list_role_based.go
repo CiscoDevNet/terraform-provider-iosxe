@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -118,6 +121,19 @@ func (data AccessListRoleBased) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data AccessListRoleBased) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:role-based=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
+func (data AccessListRoleBasedData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:role-based=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
 }
 
 // End of section. //template:end getPath
@@ -335,6 +351,293 @@ func (data AccessListRoleBased) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data AccessListRoleBased) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if len(data.Entries) > 0 {
+		for _, item := range data.Entries {
+			cBody := netconf.Body{}
+			if !item.Sequence.IsNull() && !item.Sequence.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "sequence", strconv.FormatInt(item.Sequence.ValueInt64(), 10))
+			}
+			if !item.Remark.IsNull() && !item.Remark.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "remark", item.Remark.ValueString())
+			}
+			if !item.AceRuleAction.IsNull() && !item.AceRuleAction.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/action", item.AceRuleAction.ValueString())
+			}
+			if !item.AceRuleProtocol.IsNull() && !item.AceRuleProtocol.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/protocol", item.AceRuleProtocol.ValueString())
+			}
+			if !item.Ack.IsNull() && !item.Ack.IsUnknown() {
+				if item.Ack.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/ack", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/ack")
+				}
+			}
+			if !item.Fin.IsNull() && !item.Fin.IsUnknown() {
+				if item.Fin.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/fin", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/fin")
+				}
+			}
+			if !item.Psh.IsNull() && !item.Psh.IsUnknown() {
+				if item.Psh.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/psh", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/psh")
+				}
+			}
+			if !item.Rst.IsNull() && !item.Rst.IsUnknown() {
+				if item.Rst.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/rst", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/rst")
+				}
+			}
+			if !item.Syn.IsNull() && !item.Syn.IsUnknown() {
+				if item.Syn.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/syn", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/syn")
+				}
+			}
+			if !item.Urg.IsNull() && !item.Urg.IsUnknown() {
+				if item.Urg.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/urg", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/urg")
+				}
+			}
+			if !item.Established.IsNull() && !item.Established.IsUnknown() {
+				if item.Established.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/established", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/established")
+				}
+			}
+			if !item.Dscp.IsNull() && !item.Dscp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/dscp", item.Dscp.ValueString())
+			}
+			if !item.Fragments.IsNull() && !item.Fragments.IsUnknown() {
+				if item.Fragments.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/fragments", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/fragments")
+				}
+			}
+			if !item.Option.IsNull() && !item.Option.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/option", item.Option.ValueString())
+			}
+			if !item.Precedence.IsNull() && !item.Precedence.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/precedence", item.Precedence.ValueString())
+			}
+			if !item.TimeRange.IsNull() && !item.TimeRange.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/time-range", item.TimeRange.ValueString())
+			}
+			if !item.Tos.IsNull() && !item.Tos.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ace-rule/tos", item.Tos.ValueString())
+			}
+			if !item.Log.IsNull() && !item.Log.IsUnknown() {
+				if item.Log.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/log", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/log")
+				}
+			}
+			if !item.LogInput.IsNull() && !item.LogInput.IsUnknown() {
+				if item.LogInput.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/log-input", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/log-input")
+				}
+			}
+			if !item.MatchAllPlusack.IsNull() && !item.MatchAllPlusack.IsUnknown() {
+				if item.MatchAllPlusack.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusack", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusack")
+				}
+			}
+			if !item.MatchAllPlusfin.IsNull() && !item.MatchAllPlusfin.IsUnknown() {
+				if item.MatchAllPlusfin.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusfin", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusfin")
+				}
+			}
+			if !item.MatchAllPluspsh.IsNull() && !item.MatchAllPluspsh.IsUnknown() {
+				if item.MatchAllPluspsh.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/pluspsh", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/pluspsh")
+				}
+			}
+			if !item.MatchAllPlusrst.IsNull() && !item.MatchAllPlusrst.IsUnknown() {
+				if item.MatchAllPlusrst.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusrst", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusrst")
+				}
+			}
+			if !item.MatchAllPlussyn.IsNull() && !item.MatchAllPlussyn.IsUnknown() {
+				if item.MatchAllPlussyn.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plussyn", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plussyn")
+				}
+			}
+			if !item.MatchAllPlusurg.IsNull() && !item.MatchAllPlusurg.IsUnknown() {
+				if item.MatchAllPlusurg.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/plusurg", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/plusurg")
+				}
+			}
+			if !item.MatchAllMinusack.IsNull() && !item.MatchAllMinusack.IsUnknown() {
+				if item.MatchAllMinusack.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusack", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusack")
+				}
+			}
+			if !item.MatchAllMinusfin.IsNull() && !item.MatchAllMinusfin.IsUnknown() {
+				if item.MatchAllMinusfin.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusfin", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusfin")
+				}
+			}
+			if !item.MatchAllMinuspsh.IsNull() && !item.MatchAllMinuspsh.IsUnknown() {
+				if item.MatchAllMinuspsh.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minuspsh", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minuspsh")
+				}
+			}
+			if !item.MatchAllMinusrst.IsNull() && !item.MatchAllMinusrst.IsUnknown() {
+				if item.MatchAllMinusrst.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusrst", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusrst")
+				}
+			}
+			if !item.MatchAllMinussyn.IsNull() && !item.MatchAllMinussyn.IsUnknown() {
+				if item.MatchAllMinussyn.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minussyn", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minussyn")
+				}
+			}
+			if !item.MatchAllMinusurg.IsNull() && !item.MatchAllMinusurg.IsUnknown() {
+				if item.MatchAllMinusurg.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-all/minusurg", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-all/minusurg")
+				}
+			}
+			if !item.MatchAnyPlusack.IsNull() && !item.MatchAnyPlusack.IsUnknown() {
+				if item.MatchAnyPlusack.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusack", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusack")
+				}
+			}
+			if !item.MatchAnyPlusfin.IsNull() && !item.MatchAnyPlusfin.IsUnknown() {
+				if item.MatchAnyPlusfin.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusfin", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusfin")
+				}
+			}
+			if !item.MatchAnyPluspsh.IsNull() && !item.MatchAnyPluspsh.IsUnknown() {
+				if item.MatchAnyPluspsh.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/pluspsh", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/pluspsh")
+				}
+			}
+			if !item.MatchAnyPlusrst.IsNull() && !item.MatchAnyPlusrst.IsUnknown() {
+				if item.MatchAnyPlusrst.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusrst", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusrst")
+				}
+			}
+			if !item.MatchAnyPlussyn.IsNull() && !item.MatchAnyPlussyn.IsUnknown() {
+				if item.MatchAnyPlussyn.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plussyn", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plussyn")
+				}
+			}
+			if !item.MatchAnyPlusurg.IsNull() && !item.MatchAnyPlusurg.IsUnknown() {
+				if item.MatchAnyPlusurg.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/plusurg", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/plusurg")
+				}
+			}
+			if !item.MatchAnyMinusack.IsNull() && !item.MatchAnyMinusack.IsUnknown() {
+				if item.MatchAnyMinusack.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusack", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusack")
+				}
+			}
+			if !item.MatchAnyMinusfin.IsNull() && !item.MatchAnyMinusfin.IsUnknown() {
+				if item.MatchAnyMinusfin.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusfin", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusfin")
+				}
+			}
+			if !item.MatchAnyMinuspsh.IsNull() && !item.MatchAnyMinuspsh.IsUnknown() {
+				if item.MatchAnyMinuspsh.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minuspsh", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minuspsh")
+				}
+			}
+			if !item.MatchAnyMinusrst.IsNull() && !item.MatchAnyMinusrst.IsUnknown() {
+				if item.MatchAnyMinusrst.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusrst", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusrst")
+				}
+			}
+			if !item.MatchAnyMinussyn.IsNull() && !item.MatchAnyMinussyn.IsUnknown() {
+				if item.MatchAnyMinussyn.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minussyn", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minussyn")
+				}
+			}
+			if !item.MatchAnyMinusurg.IsNull() && !item.MatchAnyMinusurg.IsUnknown() {
+				if item.MatchAnyMinusurg.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ace-rule/match-any/minusurg", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ace-rule/match-any/minusurg")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/access-list-seq-rule", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -726,6 +1029,393 @@ func (data *AccessListRoleBased) updateFromBody(ctx context.Context, res gjson.R
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *AccessListRoleBased) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	for i := range data.Entries {
+		keys := [...]string{"sequence"}
+		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "sequence"); value.Exists() && !data.Entries[i].Sequence.IsNull() {
+			data.Entries[i].Sequence = types.Int64Value(value.Int())
+		} else {
+			data.Entries[i].Sequence = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "remark"); value.Exists() && !data.Entries[i].Remark.IsNull() {
+			data.Entries[i].Remark = types.StringValue(value.String())
+		} else {
+			data.Entries[i].Remark = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/action"); value.Exists() && !data.Entries[i].AceRuleAction.IsNull() {
+			data.Entries[i].AceRuleAction = types.StringValue(value.String())
+		} else {
+			data.Entries[i].AceRuleAction = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/protocol"); value.Exists() && !data.Entries[i].AceRuleProtocol.IsNull() {
+			data.Entries[i].AceRuleProtocol = types.StringValue(value.String())
+		} else {
+			data.Entries[i].AceRuleProtocol = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/ack"); !data.Entries[i].Ack.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Ack = types.BoolValue(true)
+			} else {
+				data.Entries[i].Ack = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Ack = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/fin"); !data.Entries[i].Fin.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Fin = types.BoolValue(true)
+			} else {
+				data.Entries[i].Fin = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Fin = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/psh"); !data.Entries[i].Psh.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Psh = types.BoolValue(true)
+			} else {
+				data.Entries[i].Psh = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Psh = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/rst"); !data.Entries[i].Rst.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Rst = types.BoolValue(true)
+			} else {
+				data.Entries[i].Rst = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Rst = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/syn"); !data.Entries[i].Syn.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Syn = types.BoolValue(true)
+			} else {
+				data.Entries[i].Syn = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Syn = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/urg"); !data.Entries[i].Urg.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Urg = types.BoolValue(true)
+			} else {
+				data.Entries[i].Urg = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Urg = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/established"); !data.Entries[i].Established.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Established = types.BoolValue(true)
+			} else {
+				data.Entries[i].Established = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Established = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/dscp"); value.Exists() && !data.Entries[i].Dscp.IsNull() {
+			data.Entries[i].Dscp = types.StringValue(value.String())
+		} else {
+			data.Entries[i].Dscp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/fragments"); !data.Entries[i].Fragments.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Fragments = types.BoolValue(true)
+			} else {
+				data.Entries[i].Fragments = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Fragments = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/option"); value.Exists() && !data.Entries[i].Option.IsNull() {
+			data.Entries[i].Option = types.StringValue(value.String())
+		} else {
+			data.Entries[i].Option = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/precedence"); value.Exists() && !data.Entries[i].Precedence.IsNull() {
+			data.Entries[i].Precedence = types.StringValue(value.String())
+		} else {
+			data.Entries[i].Precedence = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/time-range"); value.Exists() && !data.Entries[i].TimeRange.IsNull() {
+			data.Entries[i].TimeRange = types.StringValue(value.String())
+		} else {
+			data.Entries[i].TimeRange = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/tos"); value.Exists() && !data.Entries[i].Tos.IsNull() {
+			data.Entries[i].Tos = types.StringValue(value.String())
+		} else {
+			data.Entries[i].Tos = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/log"); !data.Entries[i].Log.IsNull() {
+			if value.Exists() {
+				data.Entries[i].Log = types.BoolValue(true)
+			} else {
+				data.Entries[i].Log = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].Log = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/log-input"); !data.Entries[i].LogInput.IsNull() {
+			if value.Exists() {
+				data.Entries[i].LogInput = types.BoolValue(true)
+			} else {
+				data.Entries[i].LogInput = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].LogInput = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/plusack"); !data.Entries[i].MatchAllPlusack.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllPlusack = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllPlusack = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllPlusack = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/plusfin"); !data.Entries[i].MatchAllPlusfin.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllPlusfin = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllPlusfin = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllPlusfin = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/pluspsh"); !data.Entries[i].MatchAllPluspsh.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllPluspsh = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllPluspsh = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllPluspsh = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/plusrst"); !data.Entries[i].MatchAllPlusrst.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllPlusrst = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllPlusrst = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllPlusrst = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/plussyn"); !data.Entries[i].MatchAllPlussyn.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllPlussyn = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllPlussyn = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllPlussyn = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/plusurg"); !data.Entries[i].MatchAllPlusurg.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllPlusurg = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllPlusurg = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllPlusurg = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/minusack"); !data.Entries[i].MatchAllMinusack.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllMinusack = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllMinusack = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllMinusack = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/minusfin"); !data.Entries[i].MatchAllMinusfin.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllMinusfin = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllMinusfin = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllMinusfin = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/minuspsh"); !data.Entries[i].MatchAllMinuspsh.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllMinuspsh = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllMinuspsh = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllMinuspsh = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/minusrst"); !data.Entries[i].MatchAllMinusrst.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllMinusrst = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllMinusrst = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllMinusrst = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/minussyn"); !data.Entries[i].MatchAllMinussyn.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllMinussyn = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllMinussyn = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllMinussyn = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-all/minusurg"); !data.Entries[i].MatchAllMinusurg.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAllMinusurg = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAllMinusurg = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAllMinusurg = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/plusack"); !data.Entries[i].MatchAnyPlusack.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyPlusack = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyPlusack = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyPlusack = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/plusfin"); !data.Entries[i].MatchAnyPlusfin.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyPlusfin = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyPlusfin = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyPlusfin = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/pluspsh"); !data.Entries[i].MatchAnyPluspsh.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyPluspsh = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyPluspsh = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyPluspsh = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/plusrst"); !data.Entries[i].MatchAnyPlusrst.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyPlusrst = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyPlusrst = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyPlusrst = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/plussyn"); !data.Entries[i].MatchAnyPlussyn.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyPlussyn = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyPlussyn = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyPlussyn = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/plusurg"); !data.Entries[i].MatchAnyPlusurg.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyPlusurg = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyPlusurg = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyPlusurg = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/minusack"); !data.Entries[i].MatchAnyMinusack.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyMinusack = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyMinusack = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyMinusack = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/minusfin"); !data.Entries[i].MatchAnyMinusfin.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyMinusfin = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyMinusfin = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyMinusfin = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/minuspsh"); !data.Entries[i].MatchAnyMinuspsh.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyMinuspsh = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyMinuspsh = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyMinuspsh = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/minusrst"); !data.Entries[i].MatchAnyMinusrst.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyMinusrst = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyMinusrst = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyMinusrst = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/minussyn"); !data.Entries[i].MatchAnyMinussyn.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyMinussyn = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyMinussyn = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyMinussyn = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "ace-rule/match-any/minusurg"); !data.Entries[i].MatchAnyMinusurg.IsNull() {
+			if value.Exists() {
+				data.Entries[i].MatchAnyMinusurg = types.BoolValue(true)
+			} else {
+				data.Entries[i].MatchAnyMinusurg = types.BoolValue(false)
+			}
+		} else {
+			data.Entries[i].MatchAnyMinusurg = types.BoolNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -1159,6 +1849,430 @@ func (data *AccessListRoleBasedData) fromBody(ctx context.Context, res gjson.Res
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *AccessListRoleBased) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
+		data.Entries = make([]AccessListRoleBasedEntries, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AccessListRoleBasedEntries{}
+			if cValue := helpers.GetFromXPath(v, "sequence"); cValue.Exists() {
+				item.Sequence = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "remark"); cValue.Exists() {
+				item.Remark = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/action"); cValue.Exists() {
+				item.AceRuleAction = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/protocol"); cValue.Exists() {
+				item.AceRuleProtocol = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/ack"); cValue.Exists() {
+				item.Ack = types.BoolValue(true)
+			} else {
+				item.Ack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/fin"); cValue.Exists() {
+				item.Fin = types.BoolValue(true)
+			} else {
+				item.Fin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/psh"); cValue.Exists() {
+				item.Psh = types.BoolValue(true)
+			} else {
+				item.Psh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/rst"); cValue.Exists() {
+				item.Rst = types.BoolValue(true)
+			} else {
+				item.Rst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/syn"); cValue.Exists() {
+				item.Syn = types.BoolValue(true)
+			} else {
+				item.Syn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/urg"); cValue.Exists() {
+				item.Urg = types.BoolValue(true)
+			} else {
+				item.Urg = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/established"); cValue.Exists() {
+				item.Established = types.BoolValue(true)
+			} else {
+				item.Established = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/dscp"); cValue.Exists() {
+				item.Dscp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/fragments"); cValue.Exists() {
+				item.Fragments = types.BoolValue(true)
+			} else {
+				item.Fragments = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/option"); cValue.Exists() {
+				item.Option = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/precedence"); cValue.Exists() {
+				item.Precedence = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/time-range"); cValue.Exists() {
+				item.TimeRange = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/tos"); cValue.Exists() {
+				item.Tos = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/log"); cValue.Exists() {
+				item.Log = types.BoolValue(true)
+			} else {
+				item.Log = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/log-input"); cValue.Exists() {
+				item.LogInput = types.BoolValue(true)
+			} else {
+				item.LogInput = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plusack"); cValue.Exists() {
+				item.MatchAllPlusack = types.BoolValue(true)
+			} else {
+				item.MatchAllPlusack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plusfin"); cValue.Exists() {
+				item.MatchAllPlusfin = types.BoolValue(true)
+			} else {
+				item.MatchAllPlusfin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/pluspsh"); cValue.Exists() {
+				item.MatchAllPluspsh = types.BoolValue(true)
+			} else {
+				item.MatchAllPluspsh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plusrst"); cValue.Exists() {
+				item.MatchAllPlusrst = types.BoolValue(true)
+			} else {
+				item.MatchAllPlusrst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plussyn"); cValue.Exists() {
+				item.MatchAllPlussyn = types.BoolValue(true)
+			} else {
+				item.MatchAllPlussyn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plusurg"); cValue.Exists() {
+				item.MatchAllPlusurg = types.BoolValue(true)
+			} else {
+				item.MatchAllPlusurg = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minusack"); cValue.Exists() {
+				item.MatchAllMinusack = types.BoolValue(true)
+			} else {
+				item.MatchAllMinusack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minusfin"); cValue.Exists() {
+				item.MatchAllMinusfin = types.BoolValue(true)
+			} else {
+				item.MatchAllMinusfin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minuspsh"); cValue.Exists() {
+				item.MatchAllMinuspsh = types.BoolValue(true)
+			} else {
+				item.MatchAllMinuspsh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minusrst"); cValue.Exists() {
+				item.MatchAllMinusrst = types.BoolValue(true)
+			} else {
+				item.MatchAllMinusrst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minussyn"); cValue.Exists() {
+				item.MatchAllMinussyn = types.BoolValue(true)
+			} else {
+				item.MatchAllMinussyn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minusurg"); cValue.Exists() {
+				item.MatchAllMinusurg = types.BoolValue(true)
+			} else {
+				item.MatchAllMinusurg = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plusack"); cValue.Exists() {
+				item.MatchAnyPlusack = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlusack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plusfin"); cValue.Exists() {
+				item.MatchAnyPlusfin = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlusfin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/pluspsh"); cValue.Exists() {
+				item.MatchAnyPluspsh = types.BoolValue(true)
+			} else {
+				item.MatchAnyPluspsh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plusrst"); cValue.Exists() {
+				item.MatchAnyPlusrst = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlusrst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plussyn"); cValue.Exists() {
+				item.MatchAnyPlussyn = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlussyn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plusurg"); cValue.Exists() {
+				item.MatchAnyPlusurg = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlusurg = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minusack"); cValue.Exists() {
+				item.MatchAnyMinusack = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinusack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minusfin"); cValue.Exists() {
+				item.MatchAnyMinusfin = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinusfin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minuspsh"); cValue.Exists() {
+				item.MatchAnyMinuspsh = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinuspsh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minusrst"); cValue.Exists() {
+				item.MatchAnyMinusrst = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinusrst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minussyn"); cValue.Exists() {
+				item.MatchAnyMinussyn = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinussyn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minusurg"); cValue.Exists() {
+				item.MatchAnyMinusurg = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinusurg = types.BoolValue(false)
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *AccessListRoleBasedData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
+		data.Entries = make([]AccessListRoleBasedEntries, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := AccessListRoleBasedEntries{}
+			if cValue := helpers.GetFromXPath(v, "sequence"); cValue.Exists() {
+				item.Sequence = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "remark"); cValue.Exists() {
+				item.Remark = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/action"); cValue.Exists() {
+				item.AceRuleAction = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/protocol"); cValue.Exists() {
+				item.AceRuleProtocol = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/ack"); cValue.Exists() {
+				item.Ack = types.BoolValue(true)
+			} else {
+				item.Ack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/fin"); cValue.Exists() {
+				item.Fin = types.BoolValue(true)
+			} else {
+				item.Fin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/psh"); cValue.Exists() {
+				item.Psh = types.BoolValue(true)
+			} else {
+				item.Psh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/rst"); cValue.Exists() {
+				item.Rst = types.BoolValue(true)
+			} else {
+				item.Rst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/syn"); cValue.Exists() {
+				item.Syn = types.BoolValue(true)
+			} else {
+				item.Syn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/urg"); cValue.Exists() {
+				item.Urg = types.BoolValue(true)
+			} else {
+				item.Urg = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/established"); cValue.Exists() {
+				item.Established = types.BoolValue(true)
+			} else {
+				item.Established = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/dscp"); cValue.Exists() {
+				item.Dscp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/fragments"); cValue.Exists() {
+				item.Fragments = types.BoolValue(true)
+			} else {
+				item.Fragments = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/option"); cValue.Exists() {
+				item.Option = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/precedence"); cValue.Exists() {
+				item.Precedence = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/time-range"); cValue.Exists() {
+				item.TimeRange = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/tos"); cValue.Exists() {
+				item.Tos = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/log"); cValue.Exists() {
+				item.Log = types.BoolValue(true)
+			} else {
+				item.Log = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/log-input"); cValue.Exists() {
+				item.LogInput = types.BoolValue(true)
+			} else {
+				item.LogInput = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plusack"); cValue.Exists() {
+				item.MatchAllPlusack = types.BoolValue(true)
+			} else {
+				item.MatchAllPlusack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plusfin"); cValue.Exists() {
+				item.MatchAllPlusfin = types.BoolValue(true)
+			} else {
+				item.MatchAllPlusfin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/pluspsh"); cValue.Exists() {
+				item.MatchAllPluspsh = types.BoolValue(true)
+			} else {
+				item.MatchAllPluspsh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plusrst"); cValue.Exists() {
+				item.MatchAllPlusrst = types.BoolValue(true)
+			} else {
+				item.MatchAllPlusrst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plussyn"); cValue.Exists() {
+				item.MatchAllPlussyn = types.BoolValue(true)
+			} else {
+				item.MatchAllPlussyn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/plusurg"); cValue.Exists() {
+				item.MatchAllPlusurg = types.BoolValue(true)
+			} else {
+				item.MatchAllPlusurg = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minusack"); cValue.Exists() {
+				item.MatchAllMinusack = types.BoolValue(true)
+			} else {
+				item.MatchAllMinusack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minusfin"); cValue.Exists() {
+				item.MatchAllMinusfin = types.BoolValue(true)
+			} else {
+				item.MatchAllMinusfin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minuspsh"); cValue.Exists() {
+				item.MatchAllMinuspsh = types.BoolValue(true)
+			} else {
+				item.MatchAllMinuspsh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minusrst"); cValue.Exists() {
+				item.MatchAllMinusrst = types.BoolValue(true)
+			} else {
+				item.MatchAllMinusrst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minussyn"); cValue.Exists() {
+				item.MatchAllMinussyn = types.BoolValue(true)
+			} else {
+				item.MatchAllMinussyn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-all/minusurg"); cValue.Exists() {
+				item.MatchAllMinusurg = types.BoolValue(true)
+			} else {
+				item.MatchAllMinusurg = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plusack"); cValue.Exists() {
+				item.MatchAnyPlusack = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlusack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plusfin"); cValue.Exists() {
+				item.MatchAnyPlusfin = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlusfin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/pluspsh"); cValue.Exists() {
+				item.MatchAnyPluspsh = types.BoolValue(true)
+			} else {
+				item.MatchAnyPluspsh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plusrst"); cValue.Exists() {
+				item.MatchAnyPlusrst = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlusrst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plussyn"); cValue.Exists() {
+				item.MatchAnyPlussyn = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlussyn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/plusurg"); cValue.Exists() {
+				item.MatchAnyPlusurg = types.BoolValue(true)
+			} else {
+				item.MatchAnyPlusurg = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minusack"); cValue.Exists() {
+				item.MatchAnyMinusack = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinusack = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minusfin"); cValue.Exists() {
+				item.MatchAnyMinusfin = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinusfin = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minuspsh"); cValue.Exists() {
+				item.MatchAnyMinuspsh = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinuspsh = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minusrst"); cValue.Exists() {
+				item.MatchAnyMinusrst = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinusrst = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minussyn"); cValue.Exists() {
+				item.MatchAnyMinussyn = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinussyn = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ace-rule/match-any/minusurg"); cValue.Exists() {
+				item.MatchAnyMinusurg = types.BoolValue(true)
+			} else {
+				item.MatchAnyMinusurg = types.BoolValue(false)
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *AccessListRoleBased) getDeletedItems(ctx context.Context, state AccessListRoleBased) []string {
@@ -1320,6 +2434,172 @@ func (data *AccessListRoleBased) getDeletedItems(ctx context.Context, state Acce
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *AccessListRoleBased) addDeletedItemsXML(ctx context.Context, state AccessListRoleBased, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Entries {
+		stateKeys := [...]string{"sequence"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.Entries[i].Sequence.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Entries[i].Sequence.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Entries {
+			found = true
+			if state.Entries[i].Sequence.ValueInt64() != data.Entries[j].Sequence.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/remark", predicates))
+				}
+				if !state.Entries[i].AceRuleAction.IsNull() && data.Entries[j].AceRuleAction.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/action", predicates))
+				}
+				if !state.Entries[i].AceRuleProtocol.IsNull() && data.Entries[j].AceRuleProtocol.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/protocol", predicates))
+				}
+				if !state.Entries[i].Ack.IsNull() && data.Entries[j].Ack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/ack", predicates))
+				}
+				if !state.Entries[i].Fin.IsNull() && data.Entries[j].Fin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fin", predicates))
+				}
+				if !state.Entries[i].Psh.IsNull() && data.Entries[j].Psh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/psh", predicates))
+				}
+				if !state.Entries[i].Rst.IsNull() && data.Entries[j].Rst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/rst", predicates))
+				}
+				if !state.Entries[i].Syn.IsNull() && data.Entries[j].Syn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/syn", predicates))
+				}
+				if !state.Entries[i].Urg.IsNull() && data.Entries[j].Urg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/urg", predicates))
+				}
+				if !state.Entries[i].Established.IsNull() && data.Entries[j].Established.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/established", predicates))
+				}
+				if !state.Entries[i].Dscp.IsNull() && data.Entries[j].Dscp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dscp", predicates))
+				}
+				if !state.Entries[i].Fragments.IsNull() && data.Entries[j].Fragments.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fragments", predicates))
+				}
+				if !state.Entries[i].Option.IsNull() && data.Entries[j].Option.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/option", predicates))
+				}
+				if !state.Entries[i].Precedence.IsNull() && data.Entries[j].Precedence.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/precedence", predicates))
+				}
+				if !state.Entries[i].TimeRange.IsNull() && data.Entries[j].TimeRange.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/time-range", predicates))
+				}
+				if !state.Entries[i].Tos.IsNull() && data.Entries[j].Tos.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/tos", predicates))
+				}
+				if !state.Entries[i].Log.IsNull() && data.Entries[j].Log.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log", predicates))
+				}
+				if !state.Entries[i].LogInput.IsNull() && data.Entries[j].LogInput.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log-input", predicates))
+				}
+				if !state.Entries[i].MatchAllPlusack.IsNull() && data.Entries[j].MatchAllPlusack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusack", predicates))
+				}
+				if !state.Entries[i].MatchAllPlusfin.IsNull() && data.Entries[j].MatchAllPlusfin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusfin", predicates))
+				}
+				if !state.Entries[i].MatchAllPluspsh.IsNull() && data.Entries[j].MatchAllPluspsh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/pluspsh", predicates))
+				}
+				if !state.Entries[i].MatchAllPlusrst.IsNull() && data.Entries[j].MatchAllPlusrst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusrst", predicates))
+				}
+				if !state.Entries[i].MatchAllPlussyn.IsNull() && data.Entries[j].MatchAllPlussyn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plussyn", predicates))
+				}
+				if !state.Entries[i].MatchAllPlusurg.IsNull() && data.Entries[j].MatchAllPlusurg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusurg", predicates))
+				}
+				if !state.Entries[i].MatchAllMinusack.IsNull() && data.Entries[j].MatchAllMinusack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusack", predicates))
+				}
+				if !state.Entries[i].MatchAllMinusfin.IsNull() && data.Entries[j].MatchAllMinusfin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusfin", predicates))
+				}
+				if !state.Entries[i].MatchAllMinuspsh.IsNull() && data.Entries[j].MatchAllMinuspsh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minuspsh", predicates))
+				}
+				if !state.Entries[i].MatchAllMinusrst.IsNull() && data.Entries[j].MatchAllMinusrst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusrst", predicates))
+				}
+				if !state.Entries[i].MatchAllMinussyn.IsNull() && data.Entries[j].MatchAllMinussyn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minussyn", predicates))
+				}
+				if !state.Entries[i].MatchAllMinusurg.IsNull() && data.Entries[j].MatchAllMinusurg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusurg", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlusack.IsNull() && data.Entries[j].MatchAnyPlusack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusack", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlusfin.IsNull() && data.Entries[j].MatchAnyPlusfin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusfin", predicates))
+				}
+				if !state.Entries[i].MatchAnyPluspsh.IsNull() && data.Entries[j].MatchAnyPluspsh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/pluspsh", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlusrst.IsNull() && data.Entries[j].MatchAnyPlusrst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusrst", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlussyn.IsNull() && data.Entries[j].MatchAnyPlussyn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plussyn", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlusurg.IsNull() && data.Entries[j].MatchAnyPlusurg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusurg", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinusack.IsNull() && data.Entries[j].MatchAnyMinusack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusack", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinusfin.IsNull() && data.Entries[j].MatchAnyMinusfin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusfin", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinuspsh.IsNull() && data.Entries[j].MatchAnyMinuspsh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minuspsh", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinusrst.IsNull() && data.Entries[j].MatchAnyMinusrst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusrst", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinussyn.IsNull() && data.Entries[j].MatchAnyMinussyn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minussyn", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinusurg.IsNull() && data.Entries[j].MatchAnyMinusurg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusurg", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v", predicates))
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *AccessListRoleBased) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1450,3 +2730,23 @@ func (data *AccessListRoleBased) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *AccessListRoleBased) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Entries {
+		keys := [...]string{"sequence"}
+		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/access-list-seq-rule%v", predicates))
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -135,6 +138,17 @@ func (data BFD) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data BFD) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/bfd")
+	return path
+}
+
+func (data BFDData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/bfd")
+	return path
 }
 
 // End of section. //template:end getPath
@@ -286,6 +300,166 @@ func (data BFD) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data BFD) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if len(data.Ipv4BothVrfs) > 0 {
+		for _, item := range data.Ipv4BothVrfs {
+			cBody := netconf.Body{}
+			if !item.DstVrf.IsNull() && !item.DstVrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dst-vrf", item.DstVrf.ValueString())
+			}
+			if !item.DestIp.IsNull() && !item.DestIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ip", item.DestIp.ValueString())
+			}
+			if !item.SrcVrf.IsNull() && !item.SrcVrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-vrf", item.SrcVrf.ValueString())
+			}
+			if !item.SrcIp.IsNull() && !item.SrcIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-ip", item.SrcIp.ValueString())
+			}
+			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "template-name", item.TemplateName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4", cBody.Res())
+		}
+	}
+	if len(data.Ipv4WithoutVrfs) > 0 {
+		for _, item := range data.Ipv4WithoutVrfs {
+			cBody := netconf.Body{}
+			if !item.DestIp.IsNull() && !item.DestIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ip", item.DestIp.ValueString())
+			}
+			if !item.SrcIp.IsNull() && !item.SrcIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-ip", item.SrcIp.ValueString())
+			}
+			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "template-name", item.TemplateName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4", cBody.Res())
+		}
+	}
+	if len(data.Ipv4WithSrcVrfs) > 0 {
+		for _, item := range data.Ipv4WithSrcVrfs {
+			cBody := netconf.Body{}
+			if !item.DestIp.IsNull() && !item.DestIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ip", item.DestIp.ValueString())
+			}
+			if !item.SrcVrf.IsNull() && !item.SrcVrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-vrf", item.SrcVrf.ValueString())
+			}
+			if !item.SrcIp.IsNull() && !item.SrcIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-ip", item.SrcIp.ValueString())
+			}
+			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "template-name", item.TemplateName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4", cBody.Res())
+		}
+	}
+	if len(data.Ipv4WithDstVrfs) > 0 {
+		for _, item := range data.Ipv4WithDstVrfs {
+			cBody := netconf.Body{}
+			if !item.DstVrf.IsNull() && !item.DstVrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dst-vrf", item.DstVrf.ValueString())
+			}
+			if !item.DestIp.IsNull() && !item.DestIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ip", item.DestIp.ValueString())
+			}
+			if !item.SrcIp.IsNull() && !item.SrcIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-ip", item.SrcIp.ValueString())
+			}
+			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "template-name", item.TemplateName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4", cBody.Res())
+		}
+	}
+	if len(data.Ipv6WithBothVrfs) > 0 {
+		for _, item := range data.Ipv6WithBothVrfs {
+			cBody := netconf.Body{}
+			if !item.DstVrf.IsNull() && !item.DstVrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dst-vrf", item.DstVrf.ValueString())
+			}
+			if !item.DestIpv6.IsNull() && !item.DestIpv6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ipv6", item.DestIpv6.ValueString())
+			}
+			if !item.SrcVrf.IsNull() && !item.SrcVrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-vrf", item.SrcVrf.ValueString())
+			}
+			if !item.SrcIpv6.IsNull() && !item.SrcIpv6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-ipv6", item.SrcIpv6.ValueString())
+			}
+			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "template-name", item.TemplateName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6", cBody.Res())
+		}
+	}
+	if len(data.Ipv6WithoutVrfs) > 0 {
+		for _, item := range data.Ipv6WithoutVrfs {
+			cBody := netconf.Body{}
+			if !item.DestIpv6.IsNull() && !item.DestIpv6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ipv6", item.DestIpv6.ValueString())
+			}
+			if !item.SrcIpv6.IsNull() && !item.SrcIpv6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-ipv6", item.SrcIpv6.ValueString())
+			}
+			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "template-name", item.TemplateName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6", cBody.Res())
+		}
+	}
+	if len(data.Ipv6WithSrcVrfs) > 0 {
+		for _, item := range data.Ipv6WithSrcVrfs {
+			cBody := netconf.Body{}
+			if !item.DestIpv6.IsNull() && !item.DestIpv6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ipv6", item.DestIpv6.ValueString())
+			}
+			if !item.SrcVrf.IsNull() && !item.SrcVrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-vrf", item.SrcVrf.ValueString())
+			}
+			if !item.SrcIpv6.IsNull() && !item.SrcIpv6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-ipv6", item.SrcIpv6.ValueString())
+			}
+			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "template-name", item.TemplateName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6", cBody.Res())
+		}
+	}
+	if len(data.Ipv6WithDstVrfs) > 0 {
+		for _, item := range data.Ipv6WithDstVrfs {
+			cBody := netconf.Body{}
+			if !item.DstVrf.IsNull() && !item.DstVrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dst-vrf", item.DstVrf.ValueString())
+			}
+			if !item.DestIpv6.IsNull() && !item.DestIpv6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "dest-ipv6", item.DestIpv6.ValueString())
+			}
+			if !item.SrcIpv6.IsNull() && !item.SrcIpv6.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "src-ipv6", item.SrcIpv6.ValueString())
+			}
+			if !item.TemplateName.IsNull() && !item.TemplateName.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "template-name", item.TemplateName.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6", cBody.Res())
+		}
+	}
+	if !data.SlowTimers.IsNull() && !data.SlowTimers.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-bfd:slow-timers", strconv.FormatInt(data.SlowTimers.ValueInt64(), 10))
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -655,6 +829,370 @@ func (data *BFD) updateFromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *BFD) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	for i := range data.Ipv4BothVrfs {
+		keys := [...]string{"dst-vrf", "dest-ip", "src-vrf", "src-ip"}
+		keyValues := [...]string{data.Ipv4BothVrfs[i].DstVrf.ValueString(), data.Ipv4BothVrfs[i].DestIp.ValueString(), data.Ipv4BothVrfs[i].SrcVrf.ValueString(), data.Ipv4BothVrfs[i].SrcIp.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dst-vrf"); value.Exists() && !data.Ipv4BothVrfs[i].DstVrf.IsNull() {
+			data.Ipv4BothVrfs[i].DstVrf = types.StringValue(value.String())
+		} else {
+			data.Ipv4BothVrfs[i].DstVrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "dest-ip"); value.Exists() && !data.Ipv4BothVrfs[i].DestIp.IsNull() {
+			data.Ipv4BothVrfs[i].DestIp = types.StringValue(value.String())
+		} else {
+			data.Ipv4BothVrfs[i].DestIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-vrf"); value.Exists() && !data.Ipv4BothVrfs[i].SrcVrf.IsNull() {
+			data.Ipv4BothVrfs[i].SrcVrf = types.StringValue(value.String())
+		} else {
+			data.Ipv4BothVrfs[i].SrcVrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-ip"); value.Exists() && !data.Ipv4BothVrfs[i].SrcIp.IsNull() {
+			data.Ipv4BothVrfs[i].SrcIp = types.StringValue(value.String())
+		} else {
+			data.Ipv4BothVrfs[i].SrcIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.Ipv4BothVrfs[i].TemplateName.IsNull() {
+			data.Ipv4BothVrfs[i].TemplateName = types.StringValue(value.String())
+		} else {
+			data.Ipv4BothVrfs[i].TemplateName = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4WithoutVrfs {
+		keys := [...]string{"dest-ip", "src-ip"}
+		keyValues := [...]string{data.Ipv4WithoutVrfs[i].DestIp.ValueString(), data.Ipv4WithoutVrfs[i].SrcIp.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dest-ip"); value.Exists() && !data.Ipv4WithoutVrfs[i].DestIp.IsNull() {
+			data.Ipv4WithoutVrfs[i].DestIp = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithoutVrfs[i].DestIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-ip"); value.Exists() && !data.Ipv4WithoutVrfs[i].SrcIp.IsNull() {
+			data.Ipv4WithoutVrfs[i].SrcIp = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithoutVrfs[i].SrcIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.Ipv4WithoutVrfs[i].TemplateName.IsNull() {
+			data.Ipv4WithoutVrfs[i].TemplateName = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithoutVrfs[i].TemplateName = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4WithSrcVrfs {
+		keys := [...]string{"dest-ip", "src-vrf", "src-ip"}
+		keyValues := [...]string{data.Ipv4WithSrcVrfs[i].DestIp.ValueString(), data.Ipv4WithSrcVrfs[i].SrcVrf.ValueString(), data.Ipv4WithSrcVrfs[i].SrcIp.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dest-ip"); value.Exists() && !data.Ipv4WithSrcVrfs[i].DestIp.IsNull() {
+			data.Ipv4WithSrcVrfs[i].DestIp = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithSrcVrfs[i].DestIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-vrf"); value.Exists() && !data.Ipv4WithSrcVrfs[i].SrcVrf.IsNull() {
+			data.Ipv4WithSrcVrfs[i].SrcVrf = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithSrcVrfs[i].SrcVrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-ip"); value.Exists() && !data.Ipv4WithSrcVrfs[i].SrcIp.IsNull() {
+			data.Ipv4WithSrcVrfs[i].SrcIp = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithSrcVrfs[i].SrcIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.Ipv4WithSrcVrfs[i].TemplateName.IsNull() {
+			data.Ipv4WithSrcVrfs[i].TemplateName = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithSrcVrfs[i].TemplateName = types.StringNull()
+		}
+	}
+	for i := range data.Ipv4WithDstVrfs {
+		keys := [...]string{"dst-vrf", "dest-ip", "src-ip"}
+		keyValues := [...]string{data.Ipv4WithDstVrfs[i].DstVrf.ValueString(), data.Ipv4WithDstVrfs[i].DestIp.ValueString(), data.Ipv4WithDstVrfs[i].SrcIp.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dst-vrf"); value.Exists() && !data.Ipv4WithDstVrfs[i].DstVrf.IsNull() {
+			data.Ipv4WithDstVrfs[i].DstVrf = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithDstVrfs[i].DstVrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "dest-ip"); value.Exists() && !data.Ipv4WithDstVrfs[i].DestIp.IsNull() {
+			data.Ipv4WithDstVrfs[i].DestIp = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithDstVrfs[i].DestIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-ip"); value.Exists() && !data.Ipv4WithDstVrfs[i].SrcIp.IsNull() {
+			data.Ipv4WithDstVrfs[i].SrcIp = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithDstVrfs[i].SrcIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.Ipv4WithDstVrfs[i].TemplateName.IsNull() {
+			data.Ipv4WithDstVrfs[i].TemplateName = types.StringValue(value.String())
+		} else {
+			data.Ipv4WithDstVrfs[i].TemplateName = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6WithBothVrfs {
+		keys := [...]string{"dst-vrf", "dest-ipv6", "src-vrf", "src-ipv6"}
+		keyValues := [...]string{data.Ipv6WithBothVrfs[i].DstVrf.ValueString(), data.Ipv6WithBothVrfs[i].DestIpv6.ValueString(), data.Ipv6WithBothVrfs[i].SrcVrf.ValueString(), data.Ipv6WithBothVrfs[i].SrcIpv6.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dst-vrf"); value.Exists() && !data.Ipv6WithBothVrfs[i].DstVrf.IsNull() {
+			data.Ipv6WithBothVrfs[i].DstVrf = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithBothVrfs[i].DstVrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "dest-ipv6"); value.Exists() && !data.Ipv6WithBothVrfs[i].DestIpv6.IsNull() {
+			data.Ipv6WithBothVrfs[i].DestIpv6 = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithBothVrfs[i].DestIpv6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-vrf"); value.Exists() && !data.Ipv6WithBothVrfs[i].SrcVrf.IsNull() {
+			data.Ipv6WithBothVrfs[i].SrcVrf = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithBothVrfs[i].SrcVrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-ipv6"); value.Exists() && !data.Ipv6WithBothVrfs[i].SrcIpv6.IsNull() {
+			data.Ipv6WithBothVrfs[i].SrcIpv6 = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithBothVrfs[i].SrcIpv6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.Ipv6WithBothVrfs[i].TemplateName.IsNull() {
+			data.Ipv6WithBothVrfs[i].TemplateName = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithBothVrfs[i].TemplateName = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6WithoutVrfs {
+		keys := [...]string{"dest-ipv6", "src-ipv6"}
+		keyValues := [...]string{data.Ipv6WithoutVrfs[i].DestIpv6.ValueString(), data.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dest-ipv6"); value.Exists() && !data.Ipv6WithoutVrfs[i].DestIpv6.IsNull() {
+			data.Ipv6WithoutVrfs[i].DestIpv6 = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithoutVrfs[i].DestIpv6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-ipv6"); value.Exists() && !data.Ipv6WithoutVrfs[i].SrcIpv6.IsNull() {
+			data.Ipv6WithoutVrfs[i].SrcIpv6 = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithoutVrfs[i].SrcIpv6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.Ipv6WithoutVrfs[i].TemplateName.IsNull() {
+			data.Ipv6WithoutVrfs[i].TemplateName = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithoutVrfs[i].TemplateName = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6WithSrcVrfs {
+		keys := [...]string{"dest-ipv6", "src-vrf", "src-ipv6"}
+		keyValues := [...]string{data.Ipv6WithSrcVrfs[i].DestIpv6.ValueString(), data.Ipv6WithSrcVrfs[i].SrcVrf.ValueString(), data.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dest-ipv6"); value.Exists() && !data.Ipv6WithSrcVrfs[i].DestIpv6.IsNull() {
+			data.Ipv6WithSrcVrfs[i].DestIpv6 = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithSrcVrfs[i].DestIpv6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-vrf"); value.Exists() && !data.Ipv6WithSrcVrfs[i].SrcVrf.IsNull() {
+			data.Ipv6WithSrcVrfs[i].SrcVrf = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithSrcVrfs[i].SrcVrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-ipv6"); value.Exists() && !data.Ipv6WithSrcVrfs[i].SrcIpv6.IsNull() {
+			data.Ipv6WithSrcVrfs[i].SrcIpv6 = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithSrcVrfs[i].SrcIpv6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.Ipv6WithSrcVrfs[i].TemplateName.IsNull() {
+			data.Ipv6WithSrcVrfs[i].TemplateName = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithSrcVrfs[i].TemplateName = types.StringNull()
+		}
+	}
+	for i := range data.Ipv6WithDstVrfs {
+		keys := [...]string{"dst-vrf", "dest-ipv6", "src-ipv6"}
+		keyValues := [...]string{data.Ipv6WithDstVrfs[i].DstVrf.ValueString(), data.Ipv6WithDstVrfs[i].DestIpv6.ValueString(), data.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "dst-vrf"); value.Exists() && !data.Ipv6WithDstVrfs[i].DstVrf.IsNull() {
+			data.Ipv6WithDstVrfs[i].DstVrf = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithDstVrfs[i].DstVrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "dest-ipv6"); value.Exists() && !data.Ipv6WithDstVrfs[i].DestIpv6.IsNull() {
+			data.Ipv6WithDstVrfs[i].DestIpv6 = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithDstVrfs[i].DestIpv6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "src-ipv6"); value.Exists() && !data.Ipv6WithDstVrfs[i].SrcIpv6.IsNull() {
+			data.Ipv6WithDstVrfs[i].SrcIpv6 = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithDstVrfs[i].SrcIpv6 = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "template-name"); value.Exists() && !data.Ipv6WithDstVrfs[i].TemplateName.IsNull() {
+			data.Ipv6WithDstVrfs[i].TemplateName = types.StringValue(value.String())
+		} else {
+			data.Ipv6WithDstVrfs[i].TemplateName = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:slow-timers"); value.Exists() && !data.SlowTimers.IsNull() {
+		data.SlowTimers = types.Int64Value(value.Int())
+	} else {
+		data.SlowTimers = types.Int64Null()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *BFD) fromBody(ctx context.Context, res gjson.Result) {
@@ -1003,6 +1541,346 @@ func (data *BFDData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *BFD) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4"); value.Exists() {
+		data.Ipv4BothVrfs = make([]BFDIpv4BothVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv4BothVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dst-vrf"); cValue.Exists() {
+				item.DstVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "dest-ip"); cValue.Exists() {
+				item.DestIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-vrf"); cValue.Exists() {
+				item.SrcVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ip"); cValue.Exists() {
+				item.SrcIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv4BothVrfs = append(data.Ipv4BothVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4"); value.Exists() {
+		data.Ipv4WithoutVrfs = make([]BFDIpv4WithoutVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv4WithoutVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dest-ip"); cValue.Exists() {
+				item.DestIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ip"); cValue.Exists() {
+				item.SrcIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv4WithoutVrfs = append(data.Ipv4WithoutVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4"); value.Exists() {
+		data.Ipv4WithSrcVrfs = make([]BFDIpv4WithSrcVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv4WithSrcVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dest-ip"); cValue.Exists() {
+				item.DestIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-vrf"); cValue.Exists() {
+				item.SrcVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ip"); cValue.Exists() {
+				item.SrcIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv4WithSrcVrfs = append(data.Ipv4WithSrcVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4"); value.Exists() {
+		data.Ipv4WithDstVrfs = make([]BFDIpv4WithDstVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv4WithDstVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dst-vrf"); cValue.Exists() {
+				item.DstVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "dest-ip"); cValue.Exists() {
+				item.DestIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ip"); cValue.Exists() {
+				item.SrcIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv4WithDstVrfs = append(data.Ipv4WithDstVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6"); value.Exists() {
+		data.Ipv6WithBothVrfs = make([]BFDIpv6WithBothVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv6WithBothVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dst-vrf"); cValue.Exists() {
+				item.DstVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv6"); cValue.Exists() {
+				item.DestIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-vrf"); cValue.Exists() {
+				item.SrcVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ipv6"); cValue.Exists() {
+				item.SrcIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv6WithBothVrfs = append(data.Ipv6WithBothVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6"); value.Exists() {
+		data.Ipv6WithoutVrfs = make([]BFDIpv6WithoutVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv6WithoutVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv6"); cValue.Exists() {
+				item.DestIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ipv6"); cValue.Exists() {
+				item.SrcIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv6WithoutVrfs = append(data.Ipv6WithoutVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6"); value.Exists() {
+		data.Ipv6WithSrcVrfs = make([]BFDIpv6WithSrcVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv6WithSrcVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv6"); cValue.Exists() {
+				item.DestIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-vrf"); cValue.Exists() {
+				item.SrcVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ipv6"); cValue.Exists() {
+				item.SrcIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv6WithSrcVrfs = append(data.Ipv6WithSrcVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6"); value.Exists() {
+		data.Ipv6WithDstVrfs = make([]BFDIpv6WithDstVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv6WithDstVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dst-vrf"); cValue.Exists() {
+				item.DstVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv6"); cValue.Exists() {
+				item.DestIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ipv6"); cValue.Exists() {
+				item.SrcIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv6WithDstVrfs = append(data.Ipv6WithDstVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:slow-timers"); value.Exists() {
+		data.SlowTimers = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *BFDData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4"); value.Exists() {
+		data.Ipv4BothVrfs = make([]BFDIpv4BothVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv4BothVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dst-vrf"); cValue.Exists() {
+				item.DstVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "dest-ip"); cValue.Exists() {
+				item.DestIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-vrf"); cValue.Exists() {
+				item.SrcVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ip"); cValue.Exists() {
+				item.SrcIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv4BothVrfs = append(data.Ipv4BothVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4"); value.Exists() {
+		data.Ipv4WithoutVrfs = make([]BFDIpv4WithoutVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv4WithoutVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dest-ip"); cValue.Exists() {
+				item.DestIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ip"); cValue.Exists() {
+				item.SrcIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv4WithoutVrfs = append(data.Ipv4WithoutVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4"); value.Exists() {
+		data.Ipv4WithSrcVrfs = make([]BFDIpv4WithSrcVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv4WithSrcVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dest-ip"); cValue.Exists() {
+				item.DestIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-vrf"); cValue.Exists() {
+				item.SrcVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ip"); cValue.Exists() {
+				item.SrcIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv4WithSrcVrfs = append(data.Ipv4WithSrcVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4"); value.Exists() {
+		data.Ipv4WithDstVrfs = make([]BFDIpv4WithDstVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv4WithDstVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dst-vrf"); cValue.Exists() {
+				item.DstVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "dest-ip"); cValue.Exists() {
+				item.DestIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ip"); cValue.Exists() {
+				item.SrcIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv4WithDstVrfs = append(data.Ipv4WithDstVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6"); value.Exists() {
+		data.Ipv6WithBothVrfs = make([]BFDIpv6WithBothVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv6WithBothVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dst-vrf"); cValue.Exists() {
+				item.DstVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv6"); cValue.Exists() {
+				item.DestIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-vrf"); cValue.Exists() {
+				item.SrcVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ipv6"); cValue.Exists() {
+				item.SrcIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv6WithBothVrfs = append(data.Ipv6WithBothVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6"); value.Exists() {
+		data.Ipv6WithoutVrfs = make([]BFDIpv6WithoutVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv6WithoutVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv6"); cValue.Exists() {
+				item.DestIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ipv6"); cValue.Exists() {
+				item.SrcIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv6WithoutVrfs = append(data.Ipv6WithoutVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6"); value.Exists() {
+		data.Ipv6WithSrcVrfs = make([]BFDIpv6WithSrcVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv6WithSrcVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv6"); cValue.Exists() {
+				item.DestIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-vrf"); cValue.Exists() {
+				item.SrcVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ipv6"); cValue.Exists() {
+				item.SrcIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv6WithSrcVrfs = append(data.Ipv6WithSrcVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6"); value.Exists() {
+		data.Ipv6WithDstVrfs = make([]BFDIpv6WithDstVrfs, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := BFDIpv6WithDstVrfs{}
+			if cValue := helpers.GetFromXPath(v, "dst-vrf"); cValue.Exists() {
+				item.DstVrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "dest-ipv6"); cValue.Exists() {
+				item.DestIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "src-ipv6"); cValue.Exists() {
+				item.SrcIpv6 = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "template-name"); cValue.Exists() {
+				item.TemplateName = types.StringValue(cValue.String())
+			}
+			data.Ipv6WithDstVrfs = append(data.Ipv6WithDstVrfs, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-bfd:slow-timers"); value.Exists() {
+		data.SlowTimers = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
@@ -1336,6 +2214,379 @@ func (data *BFD) getDeletedItems(ctx context.Context, state BFD) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *BFD) addDeletedItemsXML(ctx context.Context, state BFD, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Ipv4BothVrfs {
+		stateKeys := [...]string{"dst-vrf", "dest-ip", "src-vrf", "src-ip"}
+		stateKeyValues := [...]string{state.Ipv4BothVrfs[i].DstVrf.ValueString(), state.Ipv4BothVrfs[i].DestIp.ValueString(), state.Ipv4BothVrfs[i].SrcVrf.ValueString(), state.Ipv4BothVrfs[i].SrcIp.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4BothVrfs[i].DstVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4BothVrfs[i].DestIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4BothVrfs[i].SrcVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4BothVrfs[i].SrcIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4BothVrfs {
+			found = true
+			if state.Ipv4BothVrfs[i].DstVrf.ValueString() != data.Ipv4BothVrfs[j].DstVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv4BothVrfs[i].DestIp.ValueString() != data.Ipv4BothVrfs[j].DestIp.ValueString() {
+				found = false
+			}
+			if state.Ipv4BothVrfs[i].SrcVrf.ValueString() != data.Ipv4BothVrfs[j].SrcVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv4BothVrfs[i].SrcIp.ValueString() != data.Ipv4BothVrfs[j].SrcIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4BothVrfs[i].TemplateName.IsNull() && data.Ipv4BothVrfs[j].TemplateName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4%v/template-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4%v", predicates))
+		}
+	}
+	for i := range state.Ipv4WithoutVrfs {
+		stateKeys := [...]string{"dest-ip", "src-ip"}
+		stateKeyValues := [...]string{state.Ipv4WithoutVrfs[i].DestIp.ValueString(), state.Ipv4WithoutVrfs[i].SrcIp.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4WithoutVrfs[i].DestIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4WithoutVrfs[i].SrcIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4WithoutVrfs {
+			found = true
+			if state.Ipv4WithoutVrfs[i].DestIp.ValueString() != data.Ipv4WithoutVrfs[j].DestIp.ValueString() {
+				found = false
+			}
+			if state.Ipv4WithoutVrfs[i].SrcIp.ValueString() != data.Ipv4WithoutVrfs[j].SrcIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4WithoutVrfs[i].TemplateName.IsNull() && data.Ipv4WithoutVrfs[j].TemplateName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4%v/template-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4%v", predicates))
+		}
+	}
+	for i := range state.Ipv4WithSrcVrfs {
+		stateKeys := [...]string{"dest-ip", "src-vrf", "src-ip"}
+		stateKeyValues := [...]string{state.Ipv4WithSrcVrfs[i].DestIp.ValueString(), state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString(), state.Ipv4WithSrcVrfs[i].SrcIp.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].DestIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4WithSrcVrfs[i].SrcIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4WithSrcVrfs {
+			found = true
+			if state.Ipv4WithSrcVrfs[i].DestIp.ValueString() != data.Ipv4WithSrcVrfs[j].DestIp.ValueString() {
+				found = false
+			}
+			if state.Ipv4WithSrcVrfs[i].SrcVrf.ValueString() != data.Ipv4WithSrcVrfs[j].SrcVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv4WithSrcVrfs[i].SrcIp.ValueString() != data.Ipv4WithSrcVrfs[j].SrcIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv4WithSrcVrfs[j].TemplateName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4%v/template-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4%v", predicates))
+		}
+	}
+	for i := range state.Ipv4WithDstVrfs {
+		stateKeys := [...]string{"dst-vrf", "dest-ip", "src-ip"}
+		stateKeyValues := [...]string{state.Ipv4WithDstVrfs[i].DstVrf.ValueString(), state.Ipv4WithDstVrfs[i].DestIp.ValueString(), state.Ipv4WithDstVrfs[i].SrcIp.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].DstVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].DestIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv4WithDstVrfs[i].SrcIp.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv4WithDstVrfs {
+			found = true
+			if state.Ipv4WithDstVrfs[i].DstVrf.ValueString() != data.Ipv4WithDstVrfs[j].DstVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv4WithDstVrfs[i].DestIp.ValueString() != data.Ipv4WithDstVrfs[j].DestIp.ValueString() {
+				found = false
+			}
+			if state.Ipv4WithDstVrfs[i].SrcIp.ValueString() != data.Ipv4WithDstVrfs[j].SrcIp.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv4WithDstVrfs[i].TemplateName.IsNull() && data.Ipv4WithDstVrfs[j].TemplateName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4%v/template-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4%v", predicates))
+		}
+	}
+	for i := range state.Ipv6WithBothVrfs {
+		stateKeys := [...]string{"dst-vrf", "dest-ipv6", "src-vrf", "src-ipv6"}
+		stateKeyValues := [...]string{state.Ipv6WithBothVrfs[i].DstVrf.ValueString(), state.Ipv6WithBothVrfs[i].DestIpv6.ValueString(), state.Ipv6WithBothVrfs[i].SrcVrf.ValueString(), state.Ipv6WithBothVrfs[i].SrcIpv6.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6WithBothVrfs[i].DstVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithBothVrfs[i].DestIpv6.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithBothVrfs[i].SrcVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithBothVrfs[i].SrcIpv6.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6WithBothVrfs {
+			found = true
+			if state.Ipv6WithBothVrfs[i].DstVrf.ValueString() != data.Ipv6WithBothVrfs[j].DstVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithBothVrfs[i].DestIpv6.ValueString() != data.Ipv6WithBothVrfs[j].DestIpv6.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithBothVrfs[i].SrcVrf.ValueString() != data.Ipv6WithBothVrfs[j].SrcVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithBothVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithBothVrfs[j].SrcIpv6.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6WithBothVrfs[i].TemplateName.IsNull() && data.Ipv6WithBothVrfs[j].TemplateName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6%v/template-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6%v", predicates))
+		}
+	}
+	for i := range state.Ipv6WithoutVrfs {
+		stateKeys := [...]string{"dest-ipv6", "src-ipv6"}
+		stateKeyValues := [...]string{state.Ipv6WithoutVrfs[i].DestIpv6.ValueString(), state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6WithoutVrfs[i].DestIpv6.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6WithoutVrfs {
+			found = true
+			if state.Ipv6WithoutVrfs[i].DestIpv6.ValueString() != data.Ipv6WithoutVrfs[j].DestIpv6.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithoutVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithoutVrfs[j].SrcIpv6.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6WithoutVrfs[i].TemplateName.IsNull() && data.Ipv6WithoutVrfs[j].TemplateName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6%v/template-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6%v", predicates))
+		}
+	}
+	for i := range state.Ipv6WithSrcVrfs {
+		stateKeys := [...]string{"dest-ipv6", "src-vrf", "src-ipv6"}
+		stateKeyValues := [...]string{state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString(), state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString(), state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6WithSrcVrfs {
+			found = true
+			if state.Ipv6WithSrcVrfs[i].DestIpv6.ValueString() != data.Ipv6WithSrcVrfs[j].DestIpv6.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithSrcVrfs[i].SrcVrf.ValueString() != data.Ipv6WithSrcVrfs[j].SrcVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithSrcVrfs[j].SrcIpv6.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6WithSrcVrfs[i].TemplateName.IsNull() && data.Ipv6WithSrcVrfs[j].TemplateName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6%v/template-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6%v", predicates))
+		}
+	}
+	for i := range state.Ipv6WithDstVrfs {
+		stateKeys := [...]string{"dst-vrf", "dest-ipv6", "src-ipv6"}
+		stateKeyValues := [...]string{state.Ipv6WithDstVrfs[i].DstVrf.ValueString(), state.Ipv6WithDstVrfs[i].DestIpv6.ValueString(), state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].DstVrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].DestIpv6.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Ipv6WithDstVrfs {
+			found = true
+			if state.Ipv6WithDstVrfs[i].DstVrf.ValueString() != data.Ipv6WithDstVrfs[j].DstVrf.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithDstVrfs[i].DestIpv6.ValueString() != data.Ipv6WithDstVrfs[j].DestIpv6.ValueString() {
+				found = false
+			}
+			if state.Ipv6WithDstVrfs[i].SrcIpv6.ValueString() != data.Ipv6WithDstVrfs[j].SrcIpv6.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Ipv6WithDstVrfs[i].TemplateName.IsNull() && data.Ipv6WithDstVrfs[j].TemplateName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6%v/template-name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6%v", predicates))
+		}
+	}
+	if !state.SlowTimers.IsNull() && data.SlowTimers.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-bfd:slow-timers")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *BFD) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1398,3 +2649,96 @@ func (data *BFD) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *BFD) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Ipv4BothVrfs {
+		keys := [...]string{"dst-vrf", "dest-ip", "src-vrf", "src-ip"}
+		keyValues := [...]string{data.Ipv4BothVrfs[i].DstVrf.ValueString(), data.Ipv4BothVrfs[i].DestIp.ValueString(), data.Ipv4BothVrfs[i].SrcVrf.ValueString(), data.Ipv4BothVrfs[i].SrcIp.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-both-vrf/ipv4%v", predicates))
+	}
+	for i := range data.Ipv4WithoutVrfs {
+		keys := [...]string{"dest-ip", "src-ip"}
+		keyValues := [...]string{data.Ipv4WithoutVrfs[i].DestIp.ValueString(), data.Ipv4WithoutVrfs[i].SrcIp.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-without-vrf/ipv4%v", predicates))
+	}
+	for i := range data.Ipv4WithSrcVrfs {
+		keys := [...]string{"dest-ip", "src-vrf", "src-ip"}
+		keyValues := [...]string{data.Ipv4WithSrcVrfs[i].DestIp.ValueString(), data.Ipv4WithSrcVrfs[i].SrcVrf.ValueString(), data.Ipv4WithSrcVrfs[i].SrcIp.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-src-vrf/ipv4%v", predicates))
+	}
+	for i := range data.Ipv4WithDstVrfs {
+		keys := [...]string{"dst-vrf", "dest-ip", "src-ip"}
+		keyValues := [...]string{data.Ipv4WithDstVrfs[i].DstVrf.ValueString(), data.Ipv4WithDstVrfs[i].DestIp.ValueString(), data.Ipv4WithDstVrfs[i].SrcIp.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv4-list-with-dst-vrf/ipv4%v", predicates))
+	}
+	for i := range data.Ipv6WithBothVrfs {
+		keys := [...]string{"dst-vrf", "dest-ipv6", "src-vrf", "src-ipv6"}
+		keyValues := [...]string{data.Ipv6WithBothVrfs[i].DstVrf.ValueString(), data.Ipv6WithBothVrfs[i].DestIpv6.ValueString(), data.Ipv6WithBothVrfs[i].SrcVrf.ValueString(), data.Ipv6WithBothVrfs[i].SrcIpv6.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-both-vrf/ipv6%v", predicates))
+	}
+	for i := range data.Ipv6WithoutVrfs {
+		keys := [...]string{"dest-ipv6", "src-ipv6"}
+		keyValues := [...]string{data.Ipv6WithoutVrfs[i].DestIpv6.ValueString(), data.Ipv6WithoutVrfs[i].SrcIpv6.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-without-vrf/ipv6%v", predicates))
+	}
+	for i := range data.Ipv6WithSrcVrfs {
+		keys := [...]string{"dest-ipv6", "src-vrf", "src-ipv6"}
+		keyValues := [...]string{data.Ipv6WithSrcVrfs[i].DestIpv6.ValueString(), data.Ipv6WithSrcVrfs[i].SrcVrf.ValueString(), data.Ipv6WithSrcVrfs[i].SrcIpv6.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-src-vrf/ipv6%v", predicates))
+	}
+	for i := range data.Ipv6WithDstVrfs {
+		keys := [...]string{"dst-vrf", "dest-ipv6", "src-ipv6"}
+		keyValues := [...]string{data.Ipv6WithDstVrfs[i].DstVrf.ValueString(), data.Ipv6WithDstVrfs[i].DestIpv6.ValueString(), data.Ipv6WithDstVrfs[i].SrcIpv6.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-bfd:map/ipv6-list-with-dst-vrf/ipv6%v", predicates))
+	}
+	if !data.SlowTimers.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-bfd:slow-timers")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

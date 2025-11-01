@@ -106,7 +106,7 @@ func iosxePolicyMapEventImportStateIdFunc(resourceName string) resource.ImportSt
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxePolicyMapEventPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy"
 	attributes = {
 		"name" = "dot1x_policy"
@@ -115,7 +115,7 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=MY_CLASS"
 	attributes = {
 		"name" = "MY_CLASS"
@@ -135,7 +135,7 @@ func testAccIosxePolicyMapEventConfig_minimum() string {
 	config := `resource "iosxe_policy_map_event" "test" {` + "\n"
 	config += `	name = "dot1x_policy"` + "\n"
 	config += `	event_type = "authentication-success"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -182,7 +182,7 @@ func testAccIosxePolicyMapEventConfig_all() string {
 	config += `			set_timer_value = 3600` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

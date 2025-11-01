@@ -194,7 +194,7 @@ func iosxeRouteMapImportStateIdFunc(resourceName string) resource.ImportStateIdF
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeRouteMapPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
 	attributes = {
 		"name" = "1"
@@ -210,7 +210,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeRouteMapConfig_minimum() string {
 	config := `resource "iosxe_route_map" "test" {` + "\n"
 	config += `	name = "RM1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -342,7 +342,7 @@ func testAccIosxeRouteMapConfig_all() string {
 	config += `		set_local_preference = 110` + "\n"
 	config += `		set_weight = 10000` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

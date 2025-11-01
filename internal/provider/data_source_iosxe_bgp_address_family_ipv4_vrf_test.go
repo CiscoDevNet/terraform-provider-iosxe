@@ -69,7 +69,7 @@ func TestAccDataSourceIosxeBGPAddressFamilyIPv4VRF(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPAddressFamilyIPv4VRFPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -79,15 +79,15 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
 	attributes = {
 		"id" = "65000"
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
-resource "iosxe_restconf" "PreReq2" {
+resource "iosxe_yang" "PreReq2" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=101"
 	attributes = {
 		"name" = "101"
@@ -95,7 +95,7 @@ resource "iosxe_restconf" "PreReq2" {
 		"ip/address/primary/mask" = "255.255.255.255"
 		"vrf/forwarding" = "VRF1"
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
 `
@@ -140,7 +140,7 @@ func testAccDataSourceIosxeBGPAddressFamilyIPv4VRFConfig() string {
 	config += `		ipv4_unicast_distance_bgp_internal = 200` + "\n"
 	config += `		ipv4_unicast_distance_bgp_local = 200` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

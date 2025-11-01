@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -89,6 +92,17 @@ func (data LLDP) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data LLDP) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp")
+	return path
+}
+
+func (data LLDPData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp")
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -134,6 +148,57 @@ func (data LLDP) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data LLDP) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Run.IsNull() && !data.Run.IsUnknown() {
+		if data.Run.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/run", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/run")
+		}
+	}
+	if !data.Holdtime.IsNull() && !data.Holdtime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/holdtime", strconv.FormatInt(data.Holdtime.ValueInt64(), 10))
+	}
+	if !data.ManagementVlan.IsNull() && !data.ManagementVlan.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/management-vlan", strconv.FormatInt(data.ManagementVlan.ValueInt64(), 10))
+	}
+	if !data.Timer.IsNull() && !data.Timer.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/timer", strconv.FormatInt(data.Timer.ValueInt64(), 10))
+	}
+	if !data.Ipv4ManagementAddresses.IsNull() && !data.Ipv4ManagementAddresses.IsUnknown() {
+		var values []string
+		data.Ipv4ManagementAddresses.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/management-address/ipv4", values)
+	}
+	if !data.Ipv6ManagementAddresses.IsNull() && !data.Ipv6ManagementAddresses.IsUnknown() {
+		var values []string
+		data.Ipv6ManagementAddresses.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/management-address/ipv6", values)
+	}
+	if len(data.SystemNames) > 0 {
+		for _, item := range data.SystemNames {
+			cBody := netconf.Body{}
+			if !item.SwitchId.IsNull() && !item.SwitchId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "switch-id", strconv.FormatInt(item.SwitchId.ValueInt64(), 10))
+			}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/system-name", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -213,6 +278,81 @@ func (data *LLDP) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *LLDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/run"); !data.Run.IsNull() {
+		if value.Exists() {
+			data.Run = types.BoolValue(true)
+		} else {
+			data.Run = types.BoolValue(false)
+		}
+	} else {
+		data.Run = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/holdtime"); value.Exists() && !data.Holdtime.IsNull() {
+		data.Holdtime = types.Int64Value(value.Int())
+	} else {
+		data.Holdtime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-vlan"); value.Exists() && !data.ManagementVlan.IsNull() {
+		data.ManagementVlan = types.Int64Value(value.Int())
+	} else {
+		data.ManagementVlan = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timer"); value.Exists() && !data.Timer.IsNull() {
+		data.Timer = types.Int64Value(value.Int())
+	} else {
+		data.Timer = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv4"); value.Exists() && !data.Ipv4ManagementAddresses.IsNull() {
+		data.Ipv4ManagementAddresses = helpers.GetStringListXML(value.Array())
+	} else {
+		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv6"); value.Exists() && !data.Ipv6ManagementAddresses.IsNull() {
+		data.Ipv6ManagementAddresses = helpers.GetStringListXML(value.Array())
+	} else {
+		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
+	}
+	for i := range data.SystemNames {
+		keys := [...]string{"switch-id"}
+		keyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/system-name").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "switch-id"); value.Exists() && !data.SystemNames[i].SwitchId.IsNull() {
+			data.SystemNames[i].SwitchId = types.Int64Value(value.Int())
+		} else {
+			data.SystemNames[i].SwitchId = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.SystemNames[i].Name.IsNull() {
+			data.SystemNames[i].Name = types.StringValue(value.String())
+		} else {
+			data.SystemNames[i].Name = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -312,6 +452,96 @@ func (data *LLDPData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *LLDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/run"); value.Exists() {
+		data.Run = types.BoolValue(true)
+	} else {
+		data.Run = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/holdtime"); value.Exists() {
+		data.Holdtime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-vlan"); value.Exists() {
+		data.ManagementVlan = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timer"); value.Exists() {
+		data.Timer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv4"); value.Exists() {
+		data.Ipv4ManagementAddresses = helpers.GetStringListXML(value.Array())
+	} else {
+		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv6"); value.Exists() {
+		data.Ipv6ManagementAddresses = helpers.GetStringListXML(value.Array())
+	} else {
+		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/system-name"); value.Exists() {
+		data.SystemNames = make([]LLDPSystemNames, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LLDPSystemNames{}
+			if cValue := helpers.GetFromXPath(v, "switch-id"); cValue.Exists() {
+				item.SwitchId = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.SystemNames = append(data.SystemNames, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *LLDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/run"); value.Exists() {
+		data.Run = types.BoolValue(true)
+	} else {
+		data.Run = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/holdtime"); value.Exists() {
+		data.Holdtime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-vlan"); value.Exists() {
+		data.ManagementVlan = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timer"); value.Exists() {
+		data.Timer = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv4"); value.Exists() {
+		data.Ipv4ManagementAddresses = helpers.GetStringListXML(value.Array())
+	} else {
+		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv6"); value.Exists() {
+		data.Ipv6ManagementAddresses = helpers.GetStringListXML(value.Array())
+	} else {
+		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/system-name"); value.Exists() {
+		data.SystemNames = make([]LLDPSystemNames, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LLDPSystemNames{}
+			if cValue := helpers.GetFromXPath(v, "switch-id"); cValue.Exists() {
+				item.SwitchId = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.SystemNames = append(data.SystemNames, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
@@ -404,6 +634,103 @@ func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *LLDP) addDeletedItemsXML(ctx context.Context, state LLDP, body string) string {
+	b := netconf.NewBody(body)
+	if !state.Run.IsNull() && data.Run.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/run")
+	}
+	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/holdtime")
+	}
+	if !state.ManagementVlan.IsNull() && data.ManagementVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-vlan")
+	}
+	if !state.Timer.IsNull() && data.Timer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timer")
+	}
+	if !state.Ipv4ManagementAddresses.IsNull() {
+		if data.Ipv4ManagementAddresses.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-address/ipv4")
+		} else {
+			var dataValues, stateValues []string
+			data.Ipv4ManagementAddresses.ElementsAs(ctx, &dataValues, false)
+			state.Ipv4ManagementAddresses.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/management-address/ipv4[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.Ipv6ManagementAddresses.IsNull() {
+		if data.Ipv6ManagementAddresses.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-address/ipv6")
+		} else {
+			var dataValues, stateValues []string
+			data.Ipv6ManagementAddresses.ElementsAs(ctx, &dataValues, false)
+			state.Ipv6ManagementAddresses.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/management-address/ipv6[.=%v]", v))
+				}
+			}
+		}
+	}
+	for i := range state.SystemNames {
+		stateKeys := [...]string{"switch-id"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.SystemNames[i].SwitchId.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.SystemNames[i].SwitchId.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.SystemNames {
+			found = true
+			if state.SystemNames[i].SwitchId.ValueInt64() != data.SystemNames[j].SwitchId.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.SystemNames[i].Name.IsNull() && data.SystemNames[j].Name.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/system-name%v/name", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/system-name%v", predicates))
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *LLDP) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -450,3 +777,41 @@ func (data *LLDP) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *LLDP) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.Run.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/run")
+	}
+	if !data.Holdtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/holdtime")
+	}
+	if !data.ManagementVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/management-vlan")
+	}
+	if !data.Timer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timer")
+	}
+	if !data.Ipv4ManagementAddresses.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/management-address/ipv4")
+	}
+	if !data.Ipv6ManagementAddresses.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/management-address/ipv6")
+	}
+	for i := range data.SystemNames {
+		keys := [...]string{"switch-id"}
+		keyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/system-name%v", predicates))
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

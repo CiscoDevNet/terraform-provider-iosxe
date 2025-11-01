@@ -74,7 +74,7 @@ func TestAccDataSourceIosxeCTS(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeCTSPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -123,7 +123,7 @@ func testAccDataSourceIosxeCTSConfig() string {
 	config += `	sxp_listener_hold_max_time = 300` + "\n"
 	config += `	role_based_enforcement = true` + "\n"
 	config += `	role_based_enforcement_logging_interval = 300` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -95,6 +98,17 @@ func (data EVPN) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data EVPN) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn")
+	return path
+}
+
+func (data EVPNData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn")
+	return path
 }
 
 // End of section. //template:end getPath
@@ -167,6 +181,97 @@ func (data EVPN) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data EVPN) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.ReplicationTypeIngress.IsNull() && !data.ReplicationTypeIngress.IsUnknown() {
+		if data.ReplicationTypeIngress.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/replication-type/ingress", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/replication-type/ingress")
+		}
+	}
+	if !data.ReplicationTypeStatic.IsNull() && !data.ReplicationTypeStatic.IsUnknown() {
+		if data.ReplicationTypeStatic.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/replication-type/static", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/replication-type/static")
+		}
+	}
+	if !data.ReplicationTypeP2mp.IsNull() && !data.ReplicationTypeP2mp.IsUnknown() {
+		if data.ReplicationTypeP2mp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/replication-type/p2mp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/replication-type/p2mp")
+		}
+	}
+	if !data.ReplicationTypeMp2mp.IsNull() && !data.ReplicationTypeMp2mp.IsUnknown() {
+		if data.ReplicationTypeMp2mp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/replication-type/mp2mp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/replication-type/mp2mp")
+		}
+	}
+	if !data.MacDuplicationLimit.IsNull() && !data.MacDuplicationLimit.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mac/duplication/limit", strconv.FormatInt(data.MacDuplicationLimit.ValueInt64(), 10))
+	}
+	if !data.MacDuplicationTime.IsNull() && !data.MacDuplicationTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/mac/duplication/time", strconv.FormatInt(data.MacDuplicationTime.ValueInt64(), 10))
+	}
+	if !data.IpDuplicationLimit.IsNull() && !data.IpDuplicationLimit.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/duplication/limit", strconv.FormatInt(data.IpDuplicationLimit.ValueInt64(), 10))
+	}
+	if !data.IpDuplicationTime.IsNull() && !data.IpDuplicationTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/duplication/time", strconv.FormatInt(data.IpDuplicationTime.ValueInt64(), 10))
+	}
+	if !data.RouterIdLoopback.IsNull() && !data.RouterIdLoopback.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/router-id/interface/Loopback", strconv.FormatInt(data.RouterIdLoopback.ValueInt64(), 10))
+	}
+	if !data.DefaultGatewayAdvertise.IsNull() && !data.DefaultGatewayAdvertise.IsUnknown() {
+		if data.DefaultGatewayAdvertise.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/default-gateway/advertise", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/default-gateway/advertise")
+		}
+	}
+	if !data.LoggingPeerState.IsNull() && !data.LoggingPeerState.IsUnknown() {
+		if data.LoggingPeerState.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/logging/peer/state", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/logging/peer/state")
+		}
+	}
+	if !data.RouteTargetAutoVni.IsNull() && !data.RouteTargetAutoVni.IsUnknown() {
+		if data.RouteTargetAutoVni.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/route-target/auto/vni", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/route-target/auto/vni")
+		}
+	}
+	if !data.AnycastGatewayMacAuto.IsNull() && !data.AnycastGatewayMacAuto.IsUnknown() {
+		if data.AnycastGatewayMacAuto.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/anycast-gateway/mac/auto", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/anycast-gateway/mac/auto")
+		}
+	}
+	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() && !data.FloodingSuppressionAddressResolutionDisable.IsUnknown() {
+		if data.FloodingSuppressionAddressResolutionDisable.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/flooding-suppression/address-resolution/disable", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/flooding-suppression/address-resolution/disable")
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -284,6 +389,119 @@ func (data *EVPN) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *EVPN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/ingress"); !data.ReplicationTypeIngress.IsNull() {
+		if value.Exists() {
+			data.ReplicationTypeIngress = types.BoolValue(true)
+		} else {
+			data.ReplicationTypeIngress = types.BoolValue(false)
+		}
+	} else {
+		data.ReplicationTypeIngress = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/static"); !data.ReplicationTypeStatic.IsNull() {
+		if value.Exists() {
+			data.ReplicationTypeStatic = types.BoolValue(true)
+		} else {
+			data.ReplicationTypeStatic = types.BoolValue(false)
+		}
+	} else {
+		data.ReplicationTypeStatic = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/p2mp"); !data.ReplicationTypeP2mp.IsNull() {
+		if value.Exists() {
+			data.ReplicationTypeP2mp = types.BoolValue(true)
+		} else {
+			data.ReplicationTypeP2mp = types.BoolValue(false)
+		}
+	} else {
+		data.ReplicationTypeP2mp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/mp2mp"); !data.ReplicationTypeMp2mp.IsNull() {
+		if value.Exists() {
+			data.ReplicationTypeMp2mp = types.BoolValue(true)
+		} else {
+			data.ReplicationTypeMp2mp = types.BoolValue(false)
+		}
+	} else {
+		data.ReplicationTypeMp2mp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mac/duplication/limit"); value.Exists() && !data.MacDuplicationLimit.IsNull() {
+		data.MacDuplicationLimit = types.Int64Value(value.Int())
+	} else {
+		data.MacDuplicationLimit = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mac/duplication/time"); value.Exists() && !data.MacDuplicationTime.IsNull() {
+		data.MacDuplicationTime = types.Int64Value(value.Int())
+	} else {
+		data.MacDuplicationTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ip/duplication/limit"); value.Exists() && !data.IpDuplicationLimit.IsNull() {
+		data.IpDuplicationLimit = types.Int64Value(value.Int())
+	} else {
+		data.IpDuplicationLimit = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ip/duplication/time"); value.Exists() && !data.IpDuplicationTime.IsNull() {
+		data.IpDuplicationTime = types.Int64Value(value.Int())
+	} else {
+		data.IpDuplicationTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/router-id/interface/Loopback"); value.Exists() && !data.RouterIdLoopback.IsNull() {
+		data.RouterIdLoopback = types.Int64Value(value.Int())
+	} else {
+		data.RouterIdLoopback = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-gateway/advertise"); !data.DefaultGatewayAdvertise.IsNull() {
+		if value.Exists() {
+			data.DefaultGatewayAdvertise = types.BoolValue(true)
+		} else {
+			data.DefaultGatewayAdvertise = types.BoolValue(false)
+		}
+	} else {
+		data.DefaultGatewayAdvertise = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/logging/peer/state"); !data.LoggingPeerState.IsNull() {
+		if value.Exists() {
+			data.LoggingPeerState = types.BoolValue(true)
+		} else {
+			data.LoggingPeerState = types.BoolValue(false)
+		}
+	} else {
+		data.LoggingPeerState = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-target/auto/vni"); !data.RouteTargetAutoVni.IsNull() {
+		if value.Exists() {
+			data.RouteTargetAutoVni = types.BoolValue(true)
+		} else {
+			data.RouteTargetAutoVni = types.BoolValue(false)
+		}
+	} else {
+		data.RouteTargetAutoVni = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/anycast-gateway/mac/auto"); !data.AnycastGatewayMacAuto.IsNull() {
+		if value.Exists() {
+			data.AnycastGatewayMacAuto = types.BoolValue(true)
+		} else {
+			data.AnycastGatewayMacAuto = types.BoolValue(false)
+		}
+	} else {
+		data.AnycastGatewayMacAuto = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/flooding-suppression/address-resolution/disable"); !data.FloodingSuppressionAddressResolutionDisable.IsNull() {
+		if value.Exists() {
+			data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(true)
+		} else {
+			data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
+		}
+	} else {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -427,6 +645,140 @@ func (data *EVPNData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *EVPN) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/ingress"); value.Exists() {
+		data.ReplicationTypeIngress = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeIngress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/static"); value.Exists() {
+		data.ReplicationTypeStatic = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeStatic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/p2mp"); value.Exists() {
+		data.ReplicationTypeP2mp = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeP2mp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/mp2mp"); value.Exists() {
+		data.ReplicationTypeMp2mp = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeMp2mp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mac/duplication/limit"); value.Exists() {
+		data.MacDuplicationLimit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mac/duplication/time"); value.Exists() {
+		data.MacDuplicationTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ip/duplication/limit"); value.Exists() {
+		data.IpDuplicationLimit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ip/duplication/time"); value.Exists() {
+		data.IpDuplicationTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/router-id/interface/Loopback"); value.Exists() {
+		data.RouterIdLoopback = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-gateway/advertise"); value.Exists() {
+		data.DefaultGatewayAdvertise = types.BoolValue(true)
+	} else {
+		data.DefaultGatewayAdvertise = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/logging/peer/state"); value.Exists() {
+		data.LoggingPeerState = types.BoolValue(true)
+	} else {
+		data.LoggingPeerState = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-target/auto/vni"); value.Exists() {
+		data.RouteTargetAutoVni = types.BoolValue(true)
+	} else {
+		data.RouteTargetAutoVni = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/anycast-gateway/mac/auto"); value.Exists() {
+		data.AnycastGatewayMacAuto = types.BoolValue(true)
+	} else {
+		data.AnycastGatewayMacAuto = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/flooding-suppression/address-resolution/disable"); value.Exists() {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(true)
+	} else {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *EVPNData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/ingress"); value.Exists() {
+		data.ReplicationTypeIngress = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeIngress = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/static"); value.Exists() {
+		data.ReplicationTypeStatic = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeStatic = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/p2mp"); value.Exists() {
+		data.ReplicationTypeP2mp = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeP2mp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/replication-type/mp2mp"); value.Exists() {
+		data.ReplicationTypeMp2mp = types.BoolValue(true)
+	} else {
+		data.ReplicationTypeMp2mp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mac/duplication/limit"); value.Exists() {
+		data.MacDuplicationLimit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mac/duplication/time"); value.Exists() {
+		data.MacDuplicationTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ip/duplication/limit"); value.Exists() {
+		data.IpDuplicationLimit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ip/duplication/time"); value.Exists() {
+		data.IpDuplicationTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/router-id/interface/Loopback"); value.Exists() {
+		data.RouterIdLoopback = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-gateway/advertise"); value.Exists() {
+		data.DefaultGatewayAdvertise = types.BoolValue(true)
+	} else {
+		data.DefaultGatewayAdvertise = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/logging/peer/state"); value.Exists() {
+		data.LoggingPeerState = types.BoolValue(true)
+	} else {
+		data.LoggingPeerState = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-target/auto/vni"); value.Exists() {
+		data.RouteTargetAutoVni = types.BoolValue(true)
+	} else {
+		data.RouteTargetAutoVni = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/anycast-gateway/mac/auto"); value.Exists() {
+		data.AnycastGatewayMacAuto = types.BoolValue(true)
+	} else {
+		data.AnycastGatewayMacAuto = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/flooding-suppression/address-resolution/disable"); value.Exists() {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(true)
+	} else {
+		data.FloodingSuppressionAddressResolutionDisable = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
@@ -478,6 +830,58 @@ func (data *EVPN) getDeletedItems(ctx context.Context, state EVPN) []string {
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *EVPN) addDeletedItemsXML(ctx context.Context, state EVPN, body string) string {
+	b := netconf.NewBody(body)
+	if !state.ReplicationTypeIngress.IsNull() && data.ReplicationTypeIngress.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/replication-type/ingress")
+	}
+	if !state.ReplicationTypeStatic.IsNull() && data.ReplicationTypeStatic.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/replication-type/static")
+	}
+	if !state.ReplicationTypeP2mp.IsNull() && data.ReplicationTypeP2mp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/replication-type/p2mp")
+	}
+	if !state.ReplicationTypeMp2mp.IsNull() && data.ReplicationTypeMp2mp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/replication-type/mp2mp")
+	}
+	if !state.MacDuplicationLimit.IsNull() && data.MacDuplicationLimit.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication")
+	}
+	if !state.MacDuplicationTime.IsNull() && data.MacDuplicationTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication")
+	}
+	if !state.IpDuplicationLimit.IsNull() && data.IpDuplicationLimit.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication")
+	}
+	if !state.IpDuplicationTime.IsNull() && data.IpDuplicationTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication")
+	}
+	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/router-id/interface/Loopback")
+	}
+	if !state.DefaultGatewayAdvertise.IsNull() && data.DefaultGatewayAdvertise.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-gateway/advertise")
+	}
+	if !state.LoggingPeerState.IsNull() && data.LoggingPeerState.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/logging/peer/state")
+	}
+	if !state.RouteTargetAutoVni.IsNull() && data.RouteTargetAutoVni.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/route-target/auto/vni")
+	}
+	if !state.AnycastGatewayMacAuto.IsNull() && data.AnycastGatewayMacAuto.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/anycast-gateway/mac/auto")
+	}
+	if !state.FloodingSuppressionAddressResolutionDisable.IsNull() && data.FloodingSuppressionAddressResolutionDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flooding-suppression/address-resolution/disable")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -567,3 +971,55 @@ func (data *EVPN) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *EVPN) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.ReplicationTypeIngress.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/replication-type/ingress")
+	}
+	if !data.ReplicationTypeStatic.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/replication-type/static")
+	}
+	if !data.ReplicationTypeP2mp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/replication-type/p2mp")
+	}
+	if !data.ReplicationTypeMp2mp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/replication-type/mp2mp")
+	}
+	if !data.MacDuplicationLimit.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication")
+	}
+	if !data.MacDuplicationTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication")
+	}
+	if !data.IpDuplicationLimit.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication")
+	}
+	if !data.IpDuplicationTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication")
+	}
+	if !data.RouterIdLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/router-id/interface/Loopback")
+	}
+	if !data.DefaultGatewayAdvertise.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-gateway/advertise")
+	}
+	if !data.LoggingPeerState.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/logging/peer/state")
+	}
+	if !data.RouteTargetAutoVni.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/route-target/auto/vni")
+	}
+	if !data.AnycastGatewayMacAuto.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/anycast-gateway/mac/auto")
+	}
+	if !data.FloodingSuppressionAddressResolutionDisable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flooding-suppression/address-resolution/disable")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

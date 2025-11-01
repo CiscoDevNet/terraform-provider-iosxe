@@ -52,7 +52,7 @@ func TestAccDataSourceIosxeBGP(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
 	attributes = {
 		"name" = "100"
@@ -75,7 +75,7 @@ func testAccDataSourceIosxeBGPConfig() string {
 	config += `	log_neighbor_changes = true` + "\n"
 	config += `	router_id_loopback = 100` + "\n"
 	config += `	router_id_ip = "172.16.255.1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

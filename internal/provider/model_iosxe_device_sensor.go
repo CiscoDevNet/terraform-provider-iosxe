@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -133,6 +136,17 @@ func (data DeviceSensor) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data DeviceSensor) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor")
+	return path
+}
+
+func (data DeviceSensorData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor")
+	return path
 }
 
 // End of section. //template:end getPath
@@ -307,6 +321,226 @@ func (data DeviceSensor) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data DeviceSensor) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if len(data.FilterListsLldp) > 0 {
+		for _, item := range data.FilterListsLldp {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.TlvNamePortId.IsNull() && !item.TlvNamePortId.IsUnknown() {
+				if item.TlvNamePortId.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/port-id", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/port-id")
+				}
+			}
+			if !item.TlvNamePortDescription.IsNull() && !item.TlvNamePortDescription.IsUnknown() {
+				if item.TlvNamePortDescription.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/port-description", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/port-description")
+				}
+			}
+			if !item.TlvNameSystemName.IsNull() && !item.TlvNameSystemName.IsUnknown() {
+				if item.TlvNameSystemName.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/system-name", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/system-name")
+				}
+			}
+			if !item.TlvNameSystemDescription.IsNull() && !item.TlvNameSystemDescription.IsUnknown() {
+				if item.TlvNameSystemDescription.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/system-description", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/system-description")
+				}
+			}
+			if !item.TlvNameSystemCapabilities.IsNull() && !item.TlvNameSystemCapabilities.IsUnknown() {
+				if item.TlvNameSystemCapabilities.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/system-capabilities", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/system-capabilities")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/lldp/list", cBody.Res())
+		}
+	}
+	if len(data.FilterListsDhcp) > 0 {
+		for _, item := range data.FilterListsDhcp {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.OptionNameHostName.IsNull() && !item.OptionNameHostName.IsUnknown() {
+				if item.OptionNameHostName.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "option/name/host-name", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "option/name/host-name")
+				}
+			}
+			if !item.OptionNameDefaultIpTtl.IsNull() && !item.OptionNameDefaultIpTtl.IsUnknown() {
+				if item.OptionNameDefaultIpTtl.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "option/name/default-ip-ttl", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "option/name/default-ip-ttl")
+				}
+			}
+			if !item.OptionNameRequestedAddress.IsNull() && !item.OptionNameRequestedAddress.IsUnknown() {
+				if item.OptionNameRequestedAddress.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "option/name/requested-address", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "option/name/requested-address")
+				}
+			}
+			if !item.OptionNameParameterRequestList.IsNull() && !item.OptionNameParameterRequestList.IsUnknown() {
+				if item.OptionNameParameterRequestList.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "option/name/parameter-request-list", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "option/name/parameter-request-list")
+				}
+			}
+			if !item.OptionNameClassIdentifier.IsNull() && !item.OptionNameClassIdentifier.IsUnknown() {
+				if item.OptionNameClassIdentifier.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "option/name/class-identifier", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "option/name/class-identifier")
+				}
+			}
+			if !item.OptionNameClientIdentifier.IsNull() && !item.OptionNameClientIdentifier.IsUnknown() {
+				if item.OptionNameClientIdentifier.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "option/name/client-identifier", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "option/name/client-identifier")
+				}
+			}
+			if !item.OptionNameClientFqdn.IsNull() && !item.OptionNameClientFqdn.IsUnknown() {
+				if item.OptionNameClientFqdn.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "option/name/client-fqdn", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "option/name/client-fqdn")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/dhcp/list", cBody.Res())
+		}
+	}
+	if len(data.FilterListsCdp) > 0 {
+		for _, item := range data.FilterListsCdp {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.TlvNameDeviceName.IsNull() && !item.TlvNameDeviceName.IsUnknown() {
+				if item.TlvNameDeviceName.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/device-name", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/device-name")
+				}
+			}
+			if !item.TlvNameAddressType.IsNull() && !item.TlvNameAddressType.IsUnknown() {
+				if item.TlvNameAddressType.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/address-type", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/address-type")
+				}
+			}
+			if !item.TlvNamePortIdType.IsNull() && !item.TlvNamePortIdType.IsUnknown() {
+				if item.TlvNamePortIdType.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/port-id-type", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/port-id-type")
+				}
+			}
+			if !item.TlvNameCapabilitiesType.IsNull() && !item.TlvNameCapabilitiesType.IsUnknown() {
+				if item.TlvNameCapabilitiesType.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/capabilities-type", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/capabilities-type")
+				}
+			}
+			if !item.TlvNamePlatformType.IsNull() && !item.TlvNamePlatformType.IsUnknown() {
+				if item.TlvNamePlatformType.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "tlv/name/platform-type", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "tlv/name/platform-type")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-list/cdp/list", cBody.Res())
+		}
+	}
+	if len(data.FilterSpecDhcpIncludes) > 0 {
+		for _, item := range data.FilterSpecDhcpIncludes {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/dhcp/include/list", cBody.Res())
+		}
+	}
+	if len(data.FilterSpecDhcpExcludes) > 0 {
+		for _, item := range data.FilterSpecDhcpExcludes {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/dhcp/exclude/list", cBody.Res())
+		}
+	}
+	if len(data.FilterSpecLldpIncludes) > 0 {
+		for _, item := range data.FilterSpecLldpIncludes {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/lldp/include/list", cBody.Res())
+		}
+	}
+	if len(data.FilterSpecLldpExcludes) > 0 {
+		for _, item := range data.FilterSpecLldpExcludes {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/lldp/exclude/list", cBody.Res())
+		}
+	}
+	if len(data.FilterSpecCdpIncludes) > 0 {
+		for _, item := range data.FilterSpecCdpIncludes {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/cdp/include/list", cBody.Res())
+		}
+	}
+	if len(data.FilterSpecCdpExcludes) > 0 {
+		for _, item := range data.FilterSpecCdpExcludes {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/filter-spec/cdp/exclude/list", cBody.Res())
+		}
+	}
+	if !data.NotifyAllChanges.IsNull() && !data.NotifyAllChanges.IsUnknown() {
+		if data.NotifyAllChanges.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/notify/all-changes", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/notify/all-changes")
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -742,6 +976,436 @@ func (data *DeviceSensor) updateFromBody(ctx context.Context, res gjson.Result) 
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *DeviceSensor) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	for i := range data.FilterListsLldp {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterListsLldp[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/lldp/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterListsLldp[i].Name.IsNull() {
+			data.FilterListsLldp[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterListsLldp[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/port-id"); !data.FilterListsLldp[i].TlvNamePortId.IsNull() {
+			if value.Exists() {
+				data.FilterListsLldp[i].TlvNamePortId = types.BoolValue(true)
+			} else {
+				data.FilterListsLldp[i].TlvNamePortId = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsLldp[i].TlvNamePortId = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/port-description"); !data.FilterListsLldp[i].TlvNamePortDescription.IsNull() {
+			if value.Exists() {
+				data.FilterListsLldp[i].TlvNamePortDescription = types.BoolValue(true)
+			} else {
+				data.FilterListsLldp[i].TlvNamePortDescription = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsLldp[i].TlvNamePortDescription = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/system-name"); !data.FilterListsLldp[i].TlvNameSystemName.IsNull() {
+			if value.Exists() {
+				data.FilterListsLldp[i].TlvNameSystemName = types.BoolValue(true)
+			} else {
+				data.FilterListsLldp[i].TlvNameSystemName = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsLldp[i].TlvNameSystemName = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/system-description"); !data.FilterListsLldp[i].TlvNameSystemDescription.IsNull() {
+			if value.Exists() {
+				data.FilterListsLldp[i].TlvNameSystemDescription = types.BoolValue(true)
+			} else {
+				data.FilterListsLldp[i].TlvNameSystemDescription = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsLldp[i].TlvNameSystemDescription = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/system-capabilities"); !data.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() {
+			if value.Exists() {
+				data.FilterListsLldp[i].TlvNameSystemCapabilities = types.BoolValue(true)
+			} else {
+				data.FilterListsLldp[i].TlvNameSystemCapabilities = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsLldp[i].TlvNameSystemCapabilities = types.BoolNull()
+		}
+	}
+	for i := range data.FilterListsDhcp {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterListsDhcp[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/dhcp/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterListsDhcp[i].Name.IsNull() {
+			data.FilterListsDhcp[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterListsDhcp[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "option/name/host-name"); !data.FilterListsDhcp[i].OptionNameHostName.IsNull() {
+			if value.Exists() {
+				data.FilterListsDhcp[i].OptionNameHostName = types.BoolValue(true)
+			} else {
+				data.FilterListsDhcp[i].OptionNameHostName = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsDhcp[i].OptionNameHostName = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "option/name/default-ip-ttl"); !data.FilterListsDhcp[i].OptionNameDefaultIpTtl.IsNull() {
+			if value.Exists() {
+				data.FilterListsDhcp[i].OptionNameDefaultIpTtl = types.BoolValue(true)
+			} else {
+				data.FilterListsDhcp[i].OptionNameDefaultIpTtl = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsDhcp[i].OptionNameDefaultIpTtl = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "option/name/requested-address"); !data.FilterListsDhcp[i].OptionNameRequestedAddress.IsNull() {
+			if value.Exists() {
+				data.FilterListsDhcp[i].OptionNameRequestedAddress = types.BoolValue(true)
+			} else {
+				data.FilterListsDhcp[i].OptionNameRequestedAddress = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsDhcp[i].OptionNameRequestedAddress = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "option/name/parameter-request-list"); !data.FilterListsDhcp[i].OptionNameParameterRequestList.IsNull() {
+			if value.Exists() {
+				data.FilterListsDhcp[i].OptionNameParameterRequestList = types.BoolValue(true)
+			} else {
+				data.FilterListsDhcp[i].OptionNameParameterRequestList = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsDhcp[i].OptionNameParameterRequestList = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "option/name/class-identifier"); !data.FilterListsDhcp[i].OptionNameClassIdentifier.IsNull() {
+			if value.Exists() {
+				data.FilterListsDhcp[i].OptionNameClassIdentifier = types.BoolValue(true)
+			} else {
+				data.FilterListsDhcp[i].OptionNameClassIdentifier = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsDhcp[i].OptionNameClassIdentifier = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "option/name/client-identifier"); !data.FilterListsDhcp[i].OptionNameClientIdentifier.IsNull() {
+			if value.Exists() {
+				data.FilterListsDhcp[i].OptionNameClientIdentifier = types.BoolValue(true)
+			} else {
+				data.FilterListsDhcp[i].OptionNameClientIdentifier = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsDhcp[i].OptionNameClientIdentifier = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "option/name/client-fqdn"); !data.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() {
+			if value.Exists() {
+				data.FilterListsDhcp[i].OptionNameClientFqdn = types.BoolValue(true)
+			} else {
+				data.FilterListsDhcp[i].OptionNameClientFqdn = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsDhcp[i].OptionNameClientFqdn = types.BoolNull()
+		}
+	}
+	for i := range data.FilterListsCdp {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterListsCdp[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/cdp/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterListsCdp[i].Name.IsNull() {
+			data.FilterListsCdp[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterListsCdp[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/device-name"); !data.FilterListsCdp[i].TlvNameDeviceName.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNameDeviceName = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNameDeviceName = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNameDeviceName = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/address-type"); !data.FilterListsCdp[i].TlvNameAddressType.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNameAddressType = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNameAddressType = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNameAddressType = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/port-id-type"); !data.FilterListsCdp[i].TlvNamePortIdType.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNamePortIdType = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNamePortIdType = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNamePortIdType = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/capabilities-type"); !data.FilterListsCdp[i].TlvNameCapabilitiesType.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNameCapabilitiesType = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNameCapabilitiesType = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNameCapabilitiesType = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "tlv/name/platform-type"); !data.FilterListsCdp[i].TlvNamePlatformType.IsNull() {
+			if value.Exists() {
+				data.FilterListsCdp[i].TlvNamePlatformType = types.BoolValue(true)
+			} else {
+				data.FilterListsCdp[i].TlvNamePlatformType = types.BoolValue(false)
+			}
+		} else {
+			data.FilterListsCdp[i].TlvNamePlatformType = types.BoolNull()
+		}
+	}
+	for i := range data.FilterSpecDhcpIncludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecDhcpIncludes[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/dhcp/include/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecDhcpIncludes[i].Name.IsNull() {
+			data.FilterSpecDhcpIncludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecDhcpIncludes[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.FilterSpecDhcpExcludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecDhcpExcludes[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/dhcp/exclude/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecDhcpExcludes[i].Name.IsNull() {
+			data.FilterSpecDhcpExcludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecDhcpExcludes[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.FilterSpecLldpIncludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecLldpIncludes[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/lldp/include/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecLldpIncludes[i].Name.IsNull() {
+			data.FilterSpecLldpIncludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecLldpIncludes[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.FilterSpecLldpExcludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecLldpExcludes[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/lldp/exclude/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecLldpExcludes[i].Name.IsNull() {
+			data.FilterSpecLldpExcludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecLldpExcludes[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.FilterSpecCdpIncludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecCdpIncludes[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/cdp/include/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecCdpIncludes[i].Name.IsNull() {
+			data.FilterSpecCdpIncludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecCdpIncludes[i].Name = types.StringNull()
+		}
+	}
+	for i := range data.FilterSpecCdpExcludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecCdpExcludes[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/cdp/exclude/list").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.FilterSpecCdpExcludes[i].Name.IsNull() {
+			data.FilterSpecCdpExcludes[i].Name = types.StringValue(value.String())
+		} else {
+			data.FilterSpecCdpExcludes[i].Name = types.StringNull()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/notify/all-changes"); !data.NotifyAllChanges.IsNull() {
+		if value.Exists() {
+			data.NotifyAllChanges = types.BoolValue(true)
+		} else {
+			data.NotifyAllChanges = types.BoolValue(false)
+		}
+	} else {
+		data.NotifyAllChanges = types.BoolNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *DeviceSensor) fromBody(ctx context.Context, res gjson.Result) {
@@ -1142,6 +1806,398 @@ func (data *DeviceSensorData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *DeviceSensor) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/lldp/list"); value.Exists() {
+		data.FilterListsLldp = make([]DeviceSensorFilterListsLldp, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterListsLldp{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/port-id"); cValue.Exists() {
+				item.TlvNamePortId = types.BoolValue(true)
+			} else {
+				item.TlvNamePortId = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/port-description"); cValue.Exists() {
+				item.TlvNamePortDescription = types.BoolValue(true)
+			} else {
+				item.TlvNamePortDescription = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/system-name"); cValue.Exists() {
+				item.TlvNameSystemName = types.BoolValue(true)
+			} else {
+				item.TlvNameSystemName = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/system-description"); cValue.Exists() {
+				item.TlvNameSystemDescription = types.BoolValue(true)
+			} else {
+				item.TlvNameSystemDescription = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/system-capabilities"); cValue.Exists() {
+				item.TlvNameSystemCapabilities = types.BoolValue(true)
+			} else {
+				item.TlvNameSystemCapabilities = types.BoolValue(false)
+			}
+			data.FilterListsLldp = append(data.FilterListsLldp, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/dhcp/list"); value.Exists() {
+		data.FilterListsDhcp = make([]DeviceSensorFilterListsDhcp, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterListsDhcp{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/host-name"); cValue.Exists() {
+				item.OptionNameHostName = types.BoolValue(true)
+			} else {
+				item.OptionNameHostName = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/default-ip-ttl"); cValue.Exists() {
+				item.OptionNameDefaultIpTtl = types.BoolValue(true)
+			} else {
+				item.OptionNameDefaultIpTtl = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/requested-address"); cValue.Exists() {
+				item.OptionNameRequestedAddress = types.BoolValue(true)
+			} else {
+				item.OptionNameRequestedAddress = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/parameter-request-list"); cValue.Exists() {
+				item.OptionNameParameterRequestList = types.BoolValue(true)
+			} else {
+				item.OptionNameParameterRequestList = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/class-identifier"); cValue.Exists() {
+				item.OptionNameClassIdentifier = types.BoolValue(true)
+			} else {
+				item.OptionNameClassIdentifier = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/client-identifier"); cValue.Exists() {
+				item.OptionNameClientIdentifier = types.BoolValue(true)
+			} else {
+				item.OptionNameClientIdentifier = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/client-fqdn"); cValue.Exists() {
+				item.OptionNameClientFqdn = types.BoolValue(true)
+			} else {
+				item.OptionNameClientFqdn = types.BoolValue(false)
+			}
+			data.FilterListsDhcp = append(data.FilterListsDhcp, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/cdp/list"); value.Exists() {
+		data.FilterListsCdp = make([]DeviceSensorFilterListsCdp, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterListsCdp{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/device-name"); cValue.Exists() {
+				item.TlvNameDeviceName = types.BoolValue(true)
+			} else {
+				item.TlvNameDeviceName = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/address-type"); cValue.Exists() {
+				item.TlvNameAddressType = types.BoolValue(true)
+			} else {
+				item.TlvNameAddressType = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/port-id-type"); cValue.Exists() {
+				item.TlvNamePortIdType = types.BoolValue(true)
+			} else {
+				item.TlvNamePortIdType = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/capabilities-type"); cValue.Exists() {
+				item.TlvNameCapabilitiesType = types.BoolValue(true)
+			} else {
+				item.TlvNameCapabilitiesType = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/platform-type"); cValue.Exists() {
+				item.TlvNamePlatformType = types.BoolValue(true)
+			} else {
+				item.TlvNamePlatformType = types.BoolValue(false)
+			}
+			data.FilterListsCdp = append(data.FilterListsCdp, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/dhcp/include/list"); value.Exists() {
+		data.FilterSpecDhcpIncludes = make([]DeviceSensorFilterSpecDhcpIncludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecDhcpIncludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecDhcpIncludes = append(data.FilterSpecDhcpIncludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/dhcp/exclude/list"); value.Exists() {
+		data.FilterSpecDhcpExcludes = make([]DeviceSensorFilterSpecDhcpExcludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecDhcpExcludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecDhcpExcludes = append(data.FilterSpecDhcpExcludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/lldp/include/list"); value.Exists() {
+		data.FilterSpecLldpIncludes = make([]DeviceSensorFilterSpecLldpIncludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecLldpIncludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecLldpIncludes = append(data.FilterSpecLldpIncludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/lldp/exclude/list"); value.Exists() {
+		data.FilterSpecLldpExcludes = make([]DeviceSensorFilterSpecLldpExcludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecLldpExcludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecLldpExcludes = append(data.FilterSpecLldpExcludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/cdp/include/list"); value.Exists() {
+		data.FilterSpecCdpIncludes = make([]DeviceSensorFilterSpecCdpIncludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecCdpIncludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecCdpIncludes = append(data.FilterSpecCdpIncludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/cdp/exclude/list"); value.Exists() {
+		data.FilterSpecCdpExcludes = make([]DeviceSensorFilterSpecCdpExcludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecCdpExcludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecCdpExcludes = append(data.FilterSpecCdpExcludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/notify/all-changes"); value.Exists() {
+		data.NotifyAllChanges = types.BoolValue(true)
+	} else {
+		data.NotifyAllChanges = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *DeviceSensorData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/lldp/list"); value.Exists() {
+		data.FilterListsLldp = make([]DeviceSensorFilterListsLldp, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterListsLldp{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/port-id"); cValue.Exists() {
+				item.TlvNamePortId = types.BoolValue(true)
+			} else {
+				item.TlvNamePortId = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/port-description"); cValue.Exists() {
+				item.TlvNamePortDescription = types.BoolValue(true)
+			} else {
+				item.TlvNamePortDescription = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/system-name"); cValue.Exists() {
+				item.TlvNameSystemName = types.BoolValue(true)
+			} else {
+				item.TlvNameSystemName = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/system-description"); cValue.Exists() {
+				item.TlvNameSystemDescription = types.BoolValue(true)
+			} else {
+				item.TlvNameSystemDescription = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/system-capabilities"); cValue.Exists() {
+				item.TlvNameSystemCapabilities = types.BoolValue(true)
+			} else {
+				item.TlvNameSystemCapabilities = types.BoolValue(false)
+			}
+			data.FilterListsLldp = append(data.FilterListsLldp, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/dhcp/list"); value.Exists() {
+		data.FilterListsDhcp = make([]DeviceSensorFilterListsDhcp, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterListsDhcp{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/host-name"); cValue.Exists() {
+				item.OptionNameHostName = types.BoolValue(true)
+			} else {
+				item.OptionNameHostName = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/default-ip-ttl"); cValue.Exists() {
+				item.OptionNameDefaultIpTtl = types.BoolValue(true)
+			} else {
+				item.OptionNameDefaultIpTtl = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/requested-address"); cValue.Exists() {
+				item.OptionNameRequestedAddress = types.BoolValue(true)
+			} else {
+				item.OptionNameRequestedAddress = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/parameter-request-list"); cValue.Exists() {
+				item.OptionNameParameterRequestList = types.BoolValue(true)
+			} else {
+				item.OptionNameParameterRequestList = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/class-identifier"); cValue.Exists() {
+				item.OptionNameClassIdentifier = types.BoolValue(true)
+			} else {
+				item.OptionNameClassIdentifier = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/client-identifier"); cValue.Exists() {
+				item.OptionNameClientIdentifier = types.BoolValue(true)
+			} else {
+				item.OptionNameClientIdentifier = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "option/name/client-fqdn"); cValue.Exists() {
+				item.OptionNameClientFqdn = types.BoolValue(true)
+			} else {
+				item.OptionNameClientFqdn = types.BoolValue(false)
+			}
+			data.FilterListsDhcp = append(data.FilterListsDhcp, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-list/cdp/list"); value.Exists() {
+		data.FilterListsCdp = make([]DeviceSensorFilterListsCdp, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterListsCdp{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/device-name"); cValue.Exists() {
+				item.TlvNameDeviceName = types.BoolValue(true)
+			} else {
+				item.TlvNameDeviceName = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/address-type"); cValue.Exists() {
+				item.TlvNameAddressType = types.BoolValue(true)
+			} else {
+				item.TlvNameAddressType = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/port-id-type"); cValue.Exists() {
+				item.TlvNamePortIdType = types.BoolValue(true)
+			} else {
+				item.TlvNamePortIdType = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/capabilities-type"); cValue.Exists() {
+				item.TlvNameCapabilitiesType = types.BoolValue(true)
+			} else {
+				item.TlvNameCapabilitiesType = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "tlv/name/platform-type"); cValue.Exists() {
+				item.TlvNamePlatformType = types.BoolValue(true)
+			} else {
+				item.TlvNamePlatformType = types.BoolValue(false)
+			}
+			data.FilterListsCdp = append(data.FilterListsCdp, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/dhcp/include/list"); value.Exists() {
+		data.FilterSpecDhcpIncludes = make([]DeviceSensorFilterSpecDhcpIncludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecDhcpIncludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecDhcpIncludes = append(data.FilterSpecDhcpIncludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/dhcp/exclude/list"); value.Exists() {
+		data.FilterSpecDhcpExcludes = make([]DeviceSensorFilterSpecDhcpExcludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecDhcpExcludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecDhcpExcludes = append(data.FilterSpecDhcpExcludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/lldp/include/list"); value.Exists() {
+		data.FilterSpecLldpIncludes = make([]DeviceSensorFilterSpecLldpIncludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecLldpIncludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecLldpIncludes = append(data.FilterSpecLldpIncludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/lldp/exclude/list"); value.Exists() {
+		data.FilterSpecLldpExcludes = make([]DeviceSensorFilterSpecLldpExcludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecLldpExcludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecLldpExcludes = append(data.FilterSpecLldpExcludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/cdp/include/list"); value.Exists() {
+		data.FilterSpecCdpIncludes = make([]DeviceSensorFilterSpecCdpIncludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecCdpIncludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecCdpIncludes = append(data.FilterSpecCdpIncludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/filter-spec/cdp/exclude/list"); value.Exists() {
+		data.FilterSpecCdpExcludes = make([]DeviceSensorFilterSpecCdpExcludes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := DeviceSensorFilterSpecCdpExcludes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			data.FilterSpecCdpExcludes = append(data.FilterSpecCdpExcludes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/notify/all-changes"); value.Exists() {
+		data.NotifyAllChanges = types.BoolValue(true)
+	} else {
+		data.NotifyAllChanges = types.BoolValue(false)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSensor) []string {
@@ -1431,6 +2487,340 @@ func (data *DeviceSensor) getDeletedItems(ctx context.Context, state DeviceSenso
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *DeviceSensor) addDeletedItemsXML(ctx context.Context, state DeviceSensor, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.FilterListsLldp {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterListsLldp[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterListsLldp[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterListsLldp {
+			found = true
+			if state.FilterListsLldp[i].Name.ValueString() != data.FilterListsLldp[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.FilterListsLldp[i].TlvNamePortId.IsNull() && data.FilterListsLldp[j].TlvNamePortId.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/port-id", predicates))
+				}
+				if !state.FilterListsLldp[i].TlvNamePortDescription.IsNull() && data.FilterListsLldp[j].TlvNamePortDescription.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/port-description", predicates))
+				}
+				if !state.FilterListsLldp[i].TlvNameSystemName.IsNull() && data.FilterListsLldp[j].TlvNameSystemName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/system-name", predicates))
+				}
+				if !state.FilterListsLldp[i].TlvNameSystemDescription.IsNull() && data.FilterListsLldp[j].TlvNameSystemDescription.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/system-description", predicates))
+				}
+				if !state.FilterListsLldp[i].TlvNameSystemCapabilities.IsNull() && data.FilterListsLldp[j].TlvNameSystemCapabilities.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v/tlv/name/system-capabilities", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/lldp/list%v", predicates))
+		}
+	}
+	for i := range state.FilterListsDhcp {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterListsDhcp[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterListsDhcp[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterListsDhcp {
+			found = true
+			if state.FilterListsDhcp[i].Name.ValueString() != data.FilterListsDhcp[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.FilterListsDhcp[i].OptionNameHostName.IsNull() && data.FilterListsDhcp[j].OptionNameHostName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/host-name", predicates))
+				}
+				if !state.FilterListsDhcp[i].OptionNameDefaultIpTtl.IsNull() && data.FilterListsDhcp[j].OptionNameDefaultIpTtl.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/default-ip-ttl", predicates))
+				}
+				if !state.FilterListsDhcp[i].OptionNameRequestedAddress.IsNull() && data.FilterListsDhcp[j].OptionNameRequestedAddress.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/requested-address", predicates))
+				}
+				if !state.FilterListsDhcp[i].OptionNameParameterRequestList.IsNull() && data.FilterListsDhcp[j].OptionNameParameterRequestList.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/parameter-request-list", predicates))
+				}
+				if !state.FilterListsDhcp[i].OptionNameClassIdentifier.IsNull() && data.FilterListsDhcp[j].OptionNameClassIdentifier.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/class-identifier", predicates))
+				}
+				if !state.FilterListsDhcp[i].OptionNameClientIdentifier.IsNull() && data.FilterListsDhcp[j].OptionNameClientIdentifier.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/client-identifier", predicates))
+				}
+				if !state.FilterListsDhcp[i].OptionNameClientFqdn.IsNull() && data.FilterListsDhcp[j].OptionNameClientFqdn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v/option/name/client-fqdn", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/dhcp/list%v", predicates))
+		}
+	}
+	for i := range state.FilterListsCdp {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterListsCdp[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterListsCdp[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterListsCdp {
+			found = true
+			if state.FilterListsCdp[i].Name.ValueString() != data.FilterListsCdp[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.FilterListsCdp[i].TlvNameDeviceName.IsNull() && data.FilterListsCdp[j].TlvNameDeviceName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/device-name", predicates))
+				}
+				if !state.FilterListsCdp[i].TlvNameAddressType.IsNull() && data.FilterListsCdp[j].TlvNameAddressType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/address-type", predicates))
+				}
+				if !state.FilterListsCdp[i].TlvNamePortIdType.IsNull() && data.FilterListsCdp[j].TlvNamePortIdType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/port-id-type", predicates))
+				}
+				if !state.FilterListsCdp[i].TlvNameCapabilitiesType.IsNull() && data.FilterListsCdp[j].TlvNameCapabilitiesType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/capabilities-type", predicates))
+				}
+				if !state.FilterListsCdp[i].TlvNamePlatformType.IsNull() && data.FilterListsCdp[j].TlvNamePlatformType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v/tlv/name/platform-type", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-list/cdp/list%v", predicates))
+		}
+	}
+	for i := range state.FilterSpecDhcpIncludes {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterSpecDhcpIncludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecDhcpIncludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecDhcpIncludes {
+			found = true
+			if state.FilterSpecDhcpIncludes[i].Name.ValueString() != data.FilterSpecDhcpIncludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-spec/dhcp/include/list%v", predicates))
+		}
+	}
+	for i := range state.FilterSpecDhcpExcludes {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterSpecDhcpExcludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecDhcpExcludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecDhcpExcludes {
+			found = true
+			if state.FilterSpecDhcpExcludes[i].Name.ValueString() != data.FilterSpecDhcpExcludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-spec/dhcp/exclude/list%v", predicates))
+		}
+	}
+	for i := range state.FilterSpecLldpIncludes {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterSpecLldpIncludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecLldpIncludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecLldpIncludes {
+			found = true
+			if state.FilterSpecLldpIncludes[i].Name.ValueString() != data.FilterSpecLldpIncludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-spec/lldp/include/list%v", predicates))
+		}
+	}
+	for i := range state.FilterSpecLldpExcludes {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterSpecLldpExcludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecLldpExcludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecLldpExcludes {
+			found = true
+			if state.FilterSpecLldpExcludes[i].Name.ValueString() != data.FilterSpecLldpExcludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-spec/lldp/exclude/list%v", predicates))
+		}
+	}
+	for i := range state.FilterSpecCdpIncludes {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterSpecCdpIncludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecCdpIncludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecCdpIncludes {
+			found = true
+			if state.FilterSpecCdpIncludes[i].Name.ValueString() != data.FilterSpecCdpIncludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-spec/cdp/include/list%v", predicates))
+		}
+	}
+	for i := range state.FilterSpecCdpExcludes {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.FilterSpecCdpExcludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.FilterSpecCdpExcludes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.FilterSpecCdpExcludes {
+			found = true
+			if state.FilterSpecCdpExcludes[i].Name.ValueString() != data.FilterSpecCdpExcludes[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/filter-spec/cdp/exclude/list%v", predicates))
+		}
+	}
+	if !state.NotifyAllChanges.IsNull() && data.NotifyAllChanges.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/notify/all-changes")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *DeviceSensor) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1564,3 +2954,106 @@ func (data *DeviceSensor) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *DeviceSensor) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.FilterListsLldp {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterListsLldp[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-list/lldp/list%v", predicates))
+	}
+	for i := range data.FilterListsDhcp {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterListsDhcp[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-list/dhcp/list%v", predicates))
+	}
+	for i := range data.FilterListsCdp {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterListsCdp[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-list/cdp/list%v", predicates))
+	}
+	for i := range data.FilterSpecDhcpIncludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecDhcpIncludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-spec/dhcp/include/list%v", predicates))
+	}
+	for i := range data.FilterSpecDhcpExcludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecDhcpExcludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-spec/dhcp/exclude/list%v", predicates))
+	}
+	for i := range data.FilterSpecLldpIncludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecLldpIncludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-spec/lldp/include/list%v", predicates))
+	}
+	for i := range data.FilterSpecLldpExcludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecLldpExcludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-spec/lldp/exclude/list%v", predicates))
+	}
+	for i := range data.FilterSpecCdpIncludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecCdpIncludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-spec/cdp/include/list%v", predicates))
+	}
+	for i := range data.FilterSpecCdpExcludes {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.FilterSpecCdpExcludes[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/filter-spec/cdp/exclude/list%v", predicates))
+	}
+	if !data.NotifyAllChanges.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/notify/all-changes")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

@@ -80,7 +80,7 @@ func iosxeVLANFilterImportStateIdFunc(resourceName string) resource.ImportStateI
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeVLANFilterPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10"
 	attributes = {
 		"name" = "VAM1"
@@ -98,7 +98,7 @@ func testAccIosxeVLANFilterConfig_minimum() string {
 	config := `resource "iosxe_vlan_filter" "test" {` + "\n"
 	config += `	word = "VAM1"` + "\n"
 	config += `	vlan_lists = [1]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -111,7 +111,7 @@ func testAccIosxeVLANFilterConfig_all() string {
 	config := `resource "iosxe_vlan_filter" "test" {` + "\n"
 	config += `	word = "VAM1"` + "\n"
 	config += `	vlan_lists = [1]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

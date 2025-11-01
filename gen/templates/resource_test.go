@@ -142,7 +142,7 @@ func iosxe{{camelCase .Name}}ImportStateIdFunc(resourceName string) resource.Imp
 {{- if .TestPrerequisites}}
 const testAccIosxe{{camelCase .Name}}PrerequisitesConfig = `
 {{- range $index, $item := .TestPrerequisites}}
-resource "iosxe_restconf" "PreReq{{$index}}" {
+resource "iosxe_yang" "PreReq{{$index}}" {
 	path = "{{.Path}}"
 	{{- if .NoDelete}}
 	delete = false
@@ -172,7 +172,7 @@ resource "iosxe_restconf" "PreReq{{$index}}" {
 	]
 	{{- end}}
 	{{- if .Dependencies}}
-	depends_on = [{{range .Dependencies}}iosxe_restconf.PreReq{{.}}, {{end}}]
+	depends_on = [{{range .Dependencies}}iosxe_yang.PreReq{{.}}, {{end}}]
 	{{- end}}
 }
 {{ end}}
@@ -240,7 +240,7 @@ func testAccIosxe{{camelCase .Name}}Config_minimum() string {
 	{{- end}}
 	{{- end}}
 	{{- if .TestPrerequisites}}
-	config += `	depends_on = [{{range $index, $item := .TestPrerequisites}}iosxe_restconf.PreReq{{$index}}, {{end}}]` + "\n"
+	config += `	depends_on = [{{range $index, $item := .TestPrerequisites}}iosxe_yang.PreReq{{$index}}, {{end}}]` + "\n"
 	{{- end}}
 	config += `}` + "\n"
 	return config
@@ -311,7 +311,7 @@ func testAccIosxe{{camelCase .Name}}Config_all() string {
 	{{- end}}
 	{{- end}}
 	{{- if .TestPrerequisites}}
-	config += `	depends_on = [{{range $index, $item := .TestPrerequisites}}iosxe_restconf.PreReq{{$index}}, {{end}}]` + "\n"
+	config += `	depends_on = [{{range $index, $item := .TestPrerequisites}}iosxe_yang.PreReq{{$index}}, {{end}}]` + "\n"
 	{{- end}}
 	config += `}` + "\n"
 	return config

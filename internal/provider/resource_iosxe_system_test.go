@@ -118,7 +118,7 @@ func iosxeSystemImportStateIdFunc(resourceName string) resource.ImportStateIdFun
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeSystemPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -135,7 +135,7 @@ resource "iosxe_restconf" "PreReq0" {
 
 func testAccIosxeSystemConfig_minimum() string {
 	config := `resource "iosxe_system" "test" {` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -197,7 +197,7 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	ip_multicast_route_limit = 200000` + "\n"
 	config += `	ip_domain_list_vrf_domain = "example.com"` + "\n"
 	config += `	ip_domain_list_vrf = "VRF1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

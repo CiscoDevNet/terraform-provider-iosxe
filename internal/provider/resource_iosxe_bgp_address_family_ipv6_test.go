@@ -81,14 +81,14 @@ func iosxeBGPAddressFamilyIPv6ImportStateIdFunc(resourceName string) resource.Im
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPAddressFamilyIPv6PrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/ipv6"
 	attributes = {
 		"unicast-routing" = ""
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
 	attributes = {
 		"id" = "65000"
@@ -105,7 +105,7 @@ func testAccIosxeBGPAddressFamilyIPv6Config_minimum() string {
 	config := `resource "iosxe_bgp_address_family_ipv6" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "unicast"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -125,7 +125,7 @@ func testAccIosxeBGPAddressFamilyIPv6Config_all() string {
 	config += `		route_map = "RM1"` + "\n"
 	config += `		backdoor = true` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

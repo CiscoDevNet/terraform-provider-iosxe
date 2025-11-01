@@ -22,12 +22,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
 	"github.com/netascode/go-restconf"
 	"github.com/tidwall/sjson"
 )
@@ -109,22 +111,36 @@ func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, re
 	}
 
 	if d.Managed {
-		body := ""
-		if raw.ValueBool() {
-			body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
+		if d.Protocol == "restconf" {
+			body := ""
+			if raw.ValueBool() {
+				body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
+			} else {
+				body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.clis", cli.ValueString())
+			}
+			var request restconf.Req
+			if raw.ValueBool() {
+				request = d.RestconfClient.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
+			} else {
+				request = d.RestconfClient.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-trans", strings.NewReader(body))
+			}
+			_, err := d.RestconfClient.Do(request)
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
+				return
+			}
 		} else {
-			body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.clis", cli.ValueString())
-		}
-		var request restconf.Req
-		if raw.ValueBool() {
-			request = d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
-		} else {
-			request = d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-trans", strings.NewReader(body))
-		}
-		_, err := d.Client.Do(request)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
-			return
+			body := netconf.Body{}
+			if raw.ValueBool() {
+				body = helpers.SetFromXPath(body, "/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc/config-clis", cli.ValueString())
+			} else {
+				body = helpers.SetFromXPath(body, "/Cisco-IOS-XE-cli-rpc:config-ios-cli-trans/clis", cli.ValueString())
+			}
+
+			if _, err := d.NetconfClient.RPC(ctx, body.Res()); err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
+				return
+			}
 		}
 	}
 
@@ -171,22 +187,36 @@ func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, re
 	}
 
 	if d.Managed {
-		body := ""
-		if raw.ValueBool() {
-			body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
+		if d.Protocol == "restconf" {
+			body := ""
+			if raw.ValueBool() {
+				body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.config-clis", cli.ValueString())
+			} else {
+				body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.clis", cli.ValueString())
+			}
+			var request restconf.Req
+			if raw.ValueBool() {
+				request = d.RestconfClient.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
+			} else {
+				request = d.RestconfClient.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-trans", strings.NewReader(body))
+			}
+			_, err := d.RestconfClient.Do(request)
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
+				return
+			}
 		} else {
-			body, _ = sjson.Set(body, "Cisco-IOS-XE-cli-rpc:input.clis", cli.ValueString())
-		}
-		var request restconf.Req
-		if raw.ValueBool() {
-			request = d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc", strings.NewReader(body))
-		} else {
-			request = d.Client.NewReq("POST", "/operations/Cisco-IOS-XE-cli-rpc:config-ios-cli-trans", strings.NewReader(body))
-		}
-		_, err := d.Client.Do(request)
-		if err != nil {
-			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
-			return
+			body := netconf.Body{}
+			if raw.ValueBool() {
+				body = helpers.SetFromXPath(body, "/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc/config-clis", cli.ValueString())
+			} else {
+				body = helpers.SetFromXPath(body, "/Cisco-IOS-XE-cli-rpc:config-ios-cli-trans/clis", cli.ValueString())
+			}
+
+			if _, err := d.NetconfClient.RPC(ctx, body.Res()); err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to send CLI commands, got error: %s", err))
+				return
+			}
 		}
 	}
 

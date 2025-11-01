@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -131,6 +134,17 @@ func (data Line) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data Line) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/line")
+	return path
+}
+
+func (data LineData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/line")
+	return path
 }
 
 // End of section. //template:end getPath
@@ -340,6 +354,250 @@ func (data Line) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data Line) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if len(data.Console) > 0 {
+		for _, item := range data.Console {
+			cBody := netconf.Body{}
+			if !item.First.IsNull() && !item.First.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "first", item.First.ValueString())
+			}
+			if !item.ExecTimeoutMinutes.IsNull() && !item.ExecTimeoutMinutes.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "exec-timeout/minutes", strconv.FormatInt(item.ExecTimeoutMinutes.ValueInt64(), 10))
+			}
+			if !item.ExecTimeoutSeconds.IsNull() && !item.ExecTimeoutSeconds.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "exec-timeout/seconds", strconv.FormatInt(item.ExecTimeoutSeconds.ValueInt64(), 10))
+			}
+			if !item.LoginLocal.IsNull() && !item.LoginLocal.IsUnknown() {
+				if item.LoginLocal.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "login/local", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "login/local")
+				}
+			}
+			if !item.LoginAuthentication.IsNull() && !item.LoginAuthentication.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "login/authentication", item.LoginAuthentication.ValueString())
+			}
+			if !item.PrivilegeLevel.IsNull() && !item.PrivilegeLevel.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "privilege/level/number", strconv.FormatInt(item.PrivilegeLevel.ValueInt64(), 10))
+			}
+			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stopbits", item.Stopbits.ValueString())
+			}
+			if !item.PasswordLevel.IsNull() && !item.PasswordLevel.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password/level", strconv.FormatInt(item.PasswordLevel.ValueInt64(), 10))
+			}
+			if !item.PasswordType.IsNull() && !item.PasswordType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password/type", item.PasswordType.ValueString())
+			}
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+			}
+			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "escape-character/char", item.EscapeCharacter.ValueString())
+			}
+			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
+				if item.LoggingSynchronous.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "logging/synchronous", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "logging/synchronous")
+				}
+			}
+			if !item.TransportOutputAll.IsNull() && !item.TransportOutputAll.IsUnknown() {
+				if item.TransportOutputAll.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "transport/output/all", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "transport/output/all")
+				}
+			}
+			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
+				if item.TransportOutputNone.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "transport/output/none", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "transport/output/none")
+				}
+			}
+			if !item.TransportOutput.IsNull() && !item.TransportOutput.IsUnknown() {
+				var values []string
+				item.TransportOutput.ElementsAs(ctx, &values, false)
+				cBody = helpers.SetFromXPath(cBody, "transport/output/output", values)
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/console", cBody.Res())
+		}
+	}
+	if len(data.Vty) > 0 {
+		for _, item := range data.Vty {
+			cBody := netconf.Body{}
+			if !item.First.IsNull() && !item.First.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "first", strconv.FormatInt(item.First.ValueInt64(), 10))
+			}
+			if !item.Last.IsNull() && !item.Last.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "last", strconv.FormatInt(item.Last.ValueInt64(), 10))
+			}
+			if len(item.AccessClasses) > 0 {
+				for _, citem := range item.AccessClasses {
+					ccBody := netconf.Body{}
+					if !citem.Direction.IsNull() && !citem.Direction.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "direction", citem.Direction.ValueString())
+					}
+					if !citem.AccessList.IsNull() && !citem.AccessList.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "access-list", citem.AccessList.ValueString())
+					}
+					if !citem.VrfAlso.IsNull() && !citem.VrfAlso.IsUnknown() {
+						if citem.VrfAlso.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "vrf-also", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "vrf-also")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "access-class/acccess-list", ccBody.Res())
+				}
+			}
+			if !item.ExecTimeoutMinutes.IsNull() && !item.ExecTimeoutMinutes.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "exec-timeout/minutes", strconv.FormatInt(item.ExecTimeoutMinutes.ValueInt64(), 10))
+			}
+			if !item.ExecTimeoutSeconds.IsNull() && !item.ExecTimeoutSeconds.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "exec-timeout/seconds", strconv.FormatInt(item.ExecTimeoutSeconds.ValueInt64(), 10))
+			}
+			if !item.PasswordLevel.IsNull() && !item.PasswordLevel.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password/level", strconv.FormatInt(item.PasswordLevel.ValueInt64(), 10))
+			}
+			if !item.PasswordType.IsNull() && !item.PasswordType.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password/type", item.PasswordType.ValueString())
+			}
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password/secret", item.Password.ValueString())
+			}
+			if !item.LoginAuthentication.IsNull() && !item.LoginAuthentication.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "login/authentication", item.LoginAuthentication.ValueString())
+			}
+			if !item.TransportPreferredProtocol.IsNull() && !item.TransportPreferredProtocol.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "transport/preferred/protocol", item.TransportPreferredProtocol.ValueString())
+			}
+			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "escape-character/char", item.EscapeCharacter.ValueString())
+			}
+			if !item.AuthorizationExec.IsNull() && !item.AuthorizationExec.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "authorization/exec/authorization-name", item.AuthorizationExec.ValueString())
+			}
+			if !item.AuthorizationExecDefault.IsNull() && !item.AuthorizationExecDefault.IsUnknown() {
+				if item.AuthorizationExecDefault.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "authorization/exec/default", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "authorization/exec/default")
+				}
+			}
+			if !item.TransportInputAll.IsNull() && !item.TransportInputAll.IsUnknown() {
+				if item.TransportInputAll.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "transport/input/all", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "transport/input/all")
+				}
+			}
+			if !item.TransportInputNone.IsNull() && !item.TransportInputNone.IsUnknown() {
+				if item.TransportInputNone.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "transport/input/none", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "transport/input/none")
+				}
+			}
+			if !item.TransportInput.IsNull() && !item.TransportInput.IsUnknown() {
+				var values []string
+				item.TransportInput.ElementsAs(ctx, &values, false)
+				cBody = helpers.SetFromXPath(cBody, "transport/input/input", values)
+			}
+			if !item.Monitor.IsNull() && !item.Monitor.IsUnknown() {
+				if item.Monitor.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "monitor", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "monitor")
+				}
+			}
+			if !item.SessionTimeout.IsNull() && !item.SessionTimeout.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "session-timeout/session-timeout-value", strconv.FormatInt(item.SessionTimeout.ValueInt64(), 10))
+			}
+			if !item.Stopbits.IsNull() && !item.Stopbits.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "stopbits", item.Stopbits.ValueString())
+			}
+			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
+				if item.LoggingSynchronous.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "logging/synchronous", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "logging/synchronous")
+				}
+			}
+			if !item.TransportOutputAll.IsNull() && !item.TransportOutputAll.IsUnknown() {
+				if item.TransportOutputAll.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "transport/output/all", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "transport/output/all")
+				}
+			}
+			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
+				if item.TransportOutputNone.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "transport/output/none", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "transport/output/none")
+				}
+			}
+			if !item.TransportOutput.IsNull() && !item.TransportOutput.IsUnknown() {
+				var values []string
+				item.TransportOutput.ElementsAs(ctx, &values, false)
+				cBody = helpers.SetFromXPath(cBody, "transport/output/output", values)
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vty", cBody.Res())
+		}
+	}
+	if len(data.Aux) > 0 {
+		for _, item := range data.Aux {
+			cBody := netconf.Body{}
+			if !item.First.IsNull() && !item.First.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "first", item.First.ValueString())
+			}
+			if !item.EscapeCharacter.IsNull() && !item.EscapeCharacter.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "escape-character/char", item.EscapeCharacter.ValueString())
+			}
+			if !item.LoggingSynchronous.IsNull() && !item.LoggingSynchronous.IsUnknown() {
+				if item.LoggingSynchronous.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "logging/synchronous", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "logging/synchronous")
+				}
+			}
+			if !item.ExecTimeoutMinutes.IsNull() && !item.ExecTimeoutMinutes.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "exec-timeout/minutes", strconv.FormatInt(item.ExecTimeoutMinutes.ValueInt64(), 10))
+			}
+			if !item.ExecTimeoutSeconds.IsNull() && !item.ExecTimeoutSeconds.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "exec-timeout/seconds", strconv.FormatInt(item.ExecTimeoutSeconds.ValueInt64(), 10))
+			}
+			if !item.Monitor.IsNull() && !item.Monitor.IsUnknown() {
+				if item.Monitor.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "monitor", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "monitor")
+				}
+			}
+			if !item.TransportOutputNone.IsNull() && !item.TransportOutputNone.IsUnknown() {
+				if item.TransportOutputNone.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "transport/output/none", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "transport/output/none")
+				}
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/aux", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -722,6 +980,384 @@ func (data *Line) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	for i := range data.Console {
+		keys := [...]string{"first"}
+		keyValues := [...]string{data.Console[i].First.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/console").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "first"); value.Exists() && !data.Console[i].First.IsNull() {
+			data.Console[i].First = types.StringValue(value.String())
+		} else {
+			data.Console[i].First = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "exec-timeout/minutes"); value.Exists() && !data.Console[i].ExecTimeoutMinutes.IsNull() {
+			data.Console[i].ExecTimeoutMinutes = types.Int64Value(value.Int())
+		} else {
+			data.Console[i].ExecTimeoutMinutes = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "exec-timeout/seconds"); value.Exists() && !data.Console[i].ExecTimeoutSeconds.IsNull() {
+			data.Console[i].ExecTimeoutSeconds = types.Int64Value(value.Int())
+		} else {
+			data.Console[i].ExecTimeoutSeconds = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "login/local"); !data.Console[i].LoginLocal.IsNull() {
+			if value.Exists() {
+				data.Console[i].LoginLocal = types.BoolValue(true)
+			} else {
+				data.Console[i].LoginLocal = types.BoolValue(false)
+			}
+		} else {
+			data.Console[i].LoginLocal = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "login/authentication"); value.Exists() && !data.Console[i].LoginAuthentication.IsNull() {
+			data.Console[i].LoginAuthentication = types.StringValue(value.String())
+		} else {
+			data.Console[i].LoginAuthentication = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "privilege/level/number"); value.Exists() && !data.Console[i].PrivilegeLevel.IsNull() {
+			data.Console[i].PrivilegeLevel = types.Int64Value(value.Int())
+		} else {
+			data.Console[i].PrivilegeLevel = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "stopbits"); value.Exists() && !data.Console[i].Stopbits.IsNull() {
+			data.Console[i].Stopbits = types.StringValue(value.String())
+		} else {
+			data.Console[i].Stopbits = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "password/level"); value.Exists() && !data.Console[i].PasswordLevel.IsNull() {
+			data.Console[i].PasswordLevel = types.Int64Value(value.Int())
+		} else {
+			data.Console[i].PasswordLevel = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "escape-character/char"); value.Exists() && !data.Console[i].EscapeCharacter.IsNull() {
+			data.Console[i].EscapeCharacter = types.StringValue(value.String())
+		} else {
+			data.Console[i].EscapeCharacter = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "logging/synchronous"); !data.Console[i].LoggingSynchronous.IsNull() {
+			if value.Exists() {
+				data.Console[i].LoggingSynchronous = types.BoolValue(true)
+			} else {
+				data.Console[i].LoggingSynchronous = types.BoolValue(false)
+			}
+		} else {
+			data.Console[i].LoggingSynchronous = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/output/all"); !data.Console[i].TransportOutputAll.IsNull() {
+			if value.Exists() {
+				data.Console[i].TransportOutputAll = types.BoolValue(true)
+			} else {
+				data.Console[i].TransportOutputAll = types.BoolValue(false)
+			}
+		} else {
+			data.Console[i].TransportOutputAll = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/output/none"); !data.Console[i].TransportOutputNone.IsNull() {
+			if value.Exists() {
+				data.Console[i].TransportOutputNone = types.BoolValue(true)
+			} else {
+				data.Console[i].TransportOutputNone = types.BoolValue(false)
+			}
+		} else {
+			data.Console[i].TransportOutputNone = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/output/output"); value.Exists() && !data.Console[i].TransportOutput.IsNull() {
+			data.Console[i].TransportOutput = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Console[i].TransportOutput = types.ListNull(types.StringType)
+		}
+	}
+	for i := range data.Vty {
+		keys := [...]string{"first"}
+		keyValues := [...]string{strconv.FormatInt(data.Vty[i].First.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vty").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "first"); value.Exists() && !data.Vty[i].First.IsNull() {
+			data.Vty[i].First = types.Int64Value(value.Int())
+		} else {
+			data.Vty[i].First = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "last"); value.Exists() && !data.Vty[i].Last.IsNull() {
+			data.Vty[i].Last = types.Int64Value(value.Int())
+		} else {
+			data.Vty[i].Last = types.Int64Null()
+		}
+		for ci := range data.Vty[i].AccessClasses {
+			keys := [...]string{"direction"}
+			keyValues := [...]string{data.Vty[i].AccessClasses[ci].Direction.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "access-class/acccess-list").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "direction"); value.Exists() && !data.Vty[i].AccessClasses[ci].Direction.IsNull() {
+				data.Vty[i].AccessClasses[ci].Direction = types.StringValue(value.String())
+			} else {
+				data.Vty[i].AccessClasses[ci].Direction = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "access-list"); value.Exists() && !data.Vty[i].AccessClasses[ci].AccessList.IsNull() {
+				data.Vty[i].AccessClasses[ci].AccessList = types.StringValue(value.String())
+			} else {
+				data.Vty[i].AccessClasses[ci].AccessList = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "vrf-also"); !data.Vty[i].AccessClasses[ci].VrfAlso.IsNull() {
+				if value.Exists() {
+					data.Vty[i].AccessClasses[ci].VrfAlso = types.BoolValue(true)
+				} else {
+					data.Vty[i].AccessClasses[ci].VrfAlso = types.BoolValue(false)
+				}
+			} else {
+				data.Vty[i].AccessClasses[ci].VrfAlso = types.BoolNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "exec-timeout/minutes"); value.Exists() && !data.Vty[i].ExecTimeoutMinutes.IsNull() {
+			data.Vty[i].ExecTimeoutMinutes = types.Int64Value(value.Int())
+		} else {
+			data.Vty[i].ExecTimeoutMinutes = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "exec-timeout/seconds"); value.Exists() && !data.Vty[i].ExecTimeoutSeconds.IsNull() {
+			data.Vty[i].ExecTimeoutSeconds = types.Int64Value(value.Int())
+		} else {
+			data.Vty[i].ExecTimeoutSeconds = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "password/level"); value.Exists() && !data.Vty[i].PasswordLevel.IsNull() {
+			data.Vty[i].PasswordLevel = types.Int64Value(value.Int())
+		} else {
+			data.Vty[i].PasswordLevel = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "login/authentication"); value.Exists() && !data.Vty[i].LoginAuthentication.IsNull() {
+			data.Vty[i].LoginAuthentication = types.StringValue(value.String())
+		} else {
+			data.Vty[i].LoginAuthentication = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/preferred/protocol"); value.Exists() && !data.Vty[i].TransportPreferredProtocol.IsNull() {
+			data.Vty[i].TransportPreferredProtocol = types.StringValue(value.String())
+		} else {
+			data.Vty[i].TransportPreferredProtocol = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "escape-character/char"); value.Exists() && !data.Vty[i].EscapeCharacter.IsNull() {
+			data.Vty[i].EscapeCharacter = types.StringValue(value.String())
+		} else {
+			data.Vty[i].EscapeCharacter = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "authorization/exec/authorization-name"); value.Exists() && !data.Vty[i].AuthorizationExec.IsNull() {
+			data.Vty[i].AuthorizationExec = types.StringValue(value.String())
+		} else {
+			data.Vty[i].AuthorizationExec = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "authorization/exec/default"); !data.Vty[i].AuthorizationExecDefault.IsNull() {
+			if value.Exists() {
+				data.Vty[i].AuthorizationExecDefault = types.BoolValue(true)
+			} else {
+				data.Vty[i].AuthorizationExecDefault = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].AuthorizationExecDefault = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/input/all"); !data.Vty[i].TransportInputAll.IsNull() {
+			if value.Exists() {
+				data.Vty[i].TransportInputAll = types.BoolValue(true)
+			} else {
+				data.Vty[i].TransportInputAll = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].TransportInputAll = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/input/none"); !data.Vty[i].TransportInputNone.IsNull() {
+			if value.Exists() {
+				data.Vty[i].TransportInputNone = types.BoolValue(true)
+			} else {
+				data.Vty[i].TransportInputNone = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].TransportInputNone = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/input/input"); value.Exists() && !data.Vty[i].TransportInput.IsNull() {
+			data.Vty[i].TransportInput = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Vty[i].TransportInput = types.ListNull(types.StringType)
+		}
+		if value := helpers.GetFromXPath(r, "monitor"); !data.Vty[i].Monitor.IsNull() {
+			if value.Exists() {
+				data.Vty[i].Monitor = types.BoolValue(true)
+			} else {
+				data.Vty[i].Monitor = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].Monitor = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "session-timeout/session-timeout-value"); value.Exists() && !data.Vty[i].SessionTimeout.IsNull() {
+			data.Vty[i].SessionTimeout = types.Int64Value(value.Int())
+		} else {
+			data.Vty[i].SessionTimeout = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "stopbits"); value.Exists() && !data.Vty[i].Stopbits.IsNull() {
+			data.Vty[i].Stopbits = types.StringValue(value.String())
+		} else {
+			data.Vty[i].Stopbits = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "logging/synchronous"); !data.Vty[i].LoggingSynchronous.IsNull() {
+			if value.Exists() {
+				data.Vty[i].LoggingSynchronous = types.BoolValue(true)
+			} else {
+				data.Vty[i].LoggingSynchronous = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].LoggingSynchronous = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/output/all"); !data.Vty[i].TransportOutputAll.IsNull() {
+			if value.Exists() {
+				data.Vty[i].TransportOutputAll = types.BoolValue(true)
+			} else {
+				data.Vty[i].TransportOutputAll = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].TransportOutputAll = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/output/none"); !data.Vty[i].TransportOutputNone.IsNull() {
+			if value.Exists() {
+				data.Vty[i].TransportOutputNone = types.BoolValue(true)
+			} else {
+				data.Vty[i].TransportOutputNone = types.BoolValue(false)
+			}
+		} else {
+			data.Vty[i].TransportOutputNone = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/output/output"); value.Exists() && !data.Vty[i].TransportOutput.IsNull() {
+			data.Vty[i].TransportOutput = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Vty[i].TransportOutput = types.ListNull(types.StringType)
+		}
+	}
+	for i := range data.Aux {
+		keys := [...]string{"first"}
+		keyValues := [...]string{data.Aux[i].First.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/aux").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "first"); value.Exists() && !data.Aux[i].First.IsNull() {
+			data.Aux[i].First = types.StringValue(value.String())
+		} else {
+			data.Aux[i].First = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "escape-character/char"); value.Exists() && !data.Aux[i].EscapeCharacter.IsNull() {
+			data.Aux[i].EscapeCharacter = types.StringValue(value.String())
+		} else {
+			data.Aux[i].EscapeCharacter = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "logging/synchronous"); !data.Aux[i].LoggingSynchronous.IsNull() {
+			if value.Exists() {
+				data.Aux[i].LoggingSynchronous = types.BoolValue(true)
+			} else {
+				data.Aux[i].LoggingSynchronous = types.BoolValue(false)
+			}
+		} else {
+			data.Aux[i].LoggingSynchronous = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "exec-timeout/minutes"); value.Exists() && !data.Aux[i].ExecTimeoutMinutes.IsNull() {
+			data.Aux[i].ExecTimeoutMinutes = types.Int64Value(value.Int())
+		} else {
+			data.Aux[i].ExecTimeoutMinutes = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "exec-timeout/seconds"); value.Exists() && !data.Aux[i].ExecTimeoutSeconds.IsNull() {
+			data.Aux[i].ExecTimeoutSeconds = types.Int64Value(value.Int())
+		} else {
+			data.Aux[i].ExecTimeoutSeconds = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "monitor"); !data.Aux[i].Monitor.IsNull() {
+			if value.Exists() {
+				data.Aux[i].Monitor = types.BoolValue(true)
+			} else {
+				data.Aux[i].Monitor = types.BoolValue(false)
+			}
+		} else {
+			data.Aux[i].Monitor = types.BoolNull()
+		}
+		if value := helpers.GetFromXPath(r, "transport/output/none"); !data.Aux[i].TransportOutputNone.IsNull() {
+			if value.Exists() {
+				data.Aux[i].TransportOutputNone = types.BoolValue(true)
+			} else {
+				data.Aux[i].TransportOutputNone = types.BoolValue(false)
+			}
+		} else {
+			data.Aux[i].TransportOutputNone = types.BoolNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -1163,6 +1799,438 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *Line) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/console"); value.Exists() {
+		data.Console = make([]LineConsole, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LineConsole{}
+			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
+				item.First = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "login/local"); cValue.Exists() {
+				item.LoginLocal = types.BoolValue(true)
+			} else {
+				item.LoginLocal = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "login/authentication"); cValue.Exists() {
+				item.LoginAuthentication = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "privilege/level/number"); cValue.Exists() {
+				item.PrivilegeLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "escape-character/char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "logging/synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/all"); cValue.Exists() {
+				item.TransportOutputAll = types.BoolValue(true)
+			} else {
+				item.TransportOutputAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/output"); cValue.Exists() {
+				item.TransportOutput = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.TransportOutput = types.ListNull(types.StringType)
+			}
+			data.Console = append(data.Console, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vty"); value.Exists() {
+		data.Vty = make([]LineVty, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LineVty{}
+			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
+				item.First = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "last"); cValue.Exists() {
+				item.Last = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "access-class/acccess-list"); cValue.Exists() {
+				item.AccessClasses = make([]LineVtyAccessClasses, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LineVtyAccessClasses{}
+					if ccValue := helpers.GetFromXPath(cv, "direction"); ccValue.Exists() {
+						cItem.Direction = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "access-list"); ccValue.Exists() {
+						cItem.AccessList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "vrf-also"); ccValue.Exists() {
+						cItem.VrfAlso = types.BoolValue(true)
+					} else {
+						cItem.VrfAlso = types.BoolValue(false)
+					}
+					item.AccessClasses = append(item.AccessClasses, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "login/authentication"); cValue.Exists() {
+				item.LoginAuthentication = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/preferred/protocol"); cValue.Exists() {
+				item.TransportPreferredProtocol = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "escape-character/char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "authorization/exec/authorization-name"); cValue.Exists() {
+				item.AuthorizationExec = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "authorization/exec/default"); cValue.Exists() {
+				item.AuthorizationExecDefault = types.BoolValue(true)
+			} else {
+				item.AuthorizationExecDefault = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/input/all"); cValue.Exists() {
+				item.TransportInputAll = types.BoolValue(true)
+			} else {
+				item.TransportInputAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/input/none"); cValue.Exists() {
+				item.TransportInputNone = types.BoolValue(true)
+			} else {
+				item.TransportInputNone = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/input/input"); cValue.Exists() {
+				item.TransportInput = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.TransportInput = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "monitor"); cValue.Exists() {
+				item.Monitor = types.BoolValue(true)
+			} else {
+				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "session-timeout/session-timeout-value"); cValue.Exists() {
+				item.SessionTimeout = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "logging/synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/all"); cValue.Exists() {
+				item.TransportOutputAll = types.BoolValue(true)
+			} else {
+				item.TransportOutputAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/output"); cValue.Exists() {
+				item.TransportOutput = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.TransportOutput = types.ListNull(types.StringType)
+			}
+			data.Vty = append(data.Vty, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/aux"); value.Exists() {
+		data.Aux = make([]LineAux, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LineAux{}
+			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
+				item.First = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "escape-character/char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "logging/synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "monitor"); cValue.Exists() {
+				item.Monitor = types.BoolValue(true)
+			} else {
+				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			data.Aux = append(data.Aux, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/console"); value.Exists() {
+		data.Console = make([]LineConsole, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LineConsole{}
+			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
+				item.First = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "login/local"); cValue.Exists() {
+				item.LoginLocal = types.BoolValue(true)
+			} else {
+				item.LoginLocal = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "login/authentication"); cValue.Exists() {
+				item.LoginAuthentication = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "privilege/level/number"); cValue.Exists() {
+				item.PrivilegeLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "escape-character/char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "logging/synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/all"); cValue.Exists() {
+				item.TransportOutputAll = types.BoolValue(true)
+			} else {
+				item.TransportOutputAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/output"); cValue.Exists() {
+				item.TransportOutput = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.TransportOutput = types.ListNull(types.StringType)
+			}
+			data.Console = append(data.Console, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vty"); value.Exists() {
+		data.Vty = make([]LineVty, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LineVty{}
+			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
+				item.First = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "last"); cValue.Exists() {
+				item.Last = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "access-class/acccess-list"); cValue.Exists() {
+				item.AccessClasses = make([]LineVtyAccessClasses, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := LineVtyAccessClasses{}
+					if ccValue := helpers.GetFromXPath(cv, "direction"); ccValue.Exists() {
+						cItem.Direction = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "access-list"); ccValue.Exists() {
+						cItem.AccessList = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "vrf-also"); ccValue.Exists() {
+						cItem.VrfAlso = types.BoolValue(true)
+					} else {
+						cItem.VrfAlso = types.BoolValue(false)
+					}
+					item.AccessClasses = append(item.AccessClasses, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/level"); cValue.Exists() {
+				item.PasswordLevel = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/type"); cValue.Exists() {
+				item.PasswordType = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password/secret"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "login/authentication"); cValue.Exists() {
+				item.LoginAuthentication = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/preferred/protocol"); cValue.Exists() {
+				item.TransportPreferredProtocol = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "escape-character/char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "authorization/exec/authorization-name"); cValue.Exists() {
+				item.AuthorizationExec = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "authorization/exec/default"); cValue.Exists() {
+				item.AuthorizationExecDefault = types.BoolValue(true)
+			} else {
+				item.AuthorizationExecDefault = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/input/all"); cValue.Exists() {
+				item.TransportInputAll = types.BoolValue(true)
+			} else {
+				item.TransportInputAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/input/none"); cValue.Exists() {
+				item.TransportInputNone = types.BoolValue(true)
+			} else {
+				item.TransportInputNone = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/input/input"); cValue.Exists() {
+				item.TransportInput = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.TransportInput = types.ListNull(types.StringType)
+			}
+			if cValue := helpers.GetFromXPath(v, "monitor"); cValue.Exists() {
+				item.Monitor = types.BoolValue(true)
+			} else {
+				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "session-timeout/session-timeout-value"); cValue.Exists() {
+				item.SessionTimeout = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "stopbits"); cValue.Exists() {
+				item.Stopbits = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "logging/synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/all"); cValue.Exists() {
+				item.TransportOutputAll = types.BoolValue(true)
+			} else {
+				item.TransportOutputAll = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/output"); cValue.Exists() {
+				item.TransportOutput = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.TransportOutput = types.ListNull(types.StringType)
+			}
+			data.Vty = append(data.Vty, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/aux"); value.Exists() {
+		data.Aux = make([]LineAux, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := LineAux{}
+			if cValue := helpers.GetFromXPath(v, "first"); cValue.Exists() {
+				item.First = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "escape-character/char"); cValue.Exists() {
+				item.EscapeCharacter = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "logging/synchronous"); cValue.Exists() {
+				item.LoggingSynchronous = types.BoolValue(true)
+			} else {
+				item.LoggingSynchronous = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/minutes"); cValue.Exists() {
+				item.ExecTimeoutMinutes = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "exec-timeout/seconds"); cValue.Exists() {
+				item.ExecTimeoutSeconds = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "monitor"); cValue.Exists() {
+				item.Monitor = types.BoolValue(true)
+			} else {
+				item.Monitor = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "transport/output/none"); cValue.Exists() {
+				item.TransportOutputNone = types.BoolValue(true)
+			} else {
+				item.TransportOutputNone = types.BoolValue(false)
+			}
+			data.Aux = append(data.Aux, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
@@ -1456,6 +2524,319 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Console {
+		stateKeys := [...]string{"first"}
+		stateKeyValues := [...]string{state.Console[i].First.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Console[i].First.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Console {
+			found = true
+			if state.Console[i].First.ValueString() != data.Console[j].First.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Console[i].ExecTimeoutMinutes.IsNull() && data.Console[j].ExecTimeoutMinutes.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/exec-timeout/minutes", predicates))
+				}
+				if !state.Console[i].ExecTimeoutSeconds.IsNull() && data.Console[j].ExecTimeoutSeconds.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/exec-timeout/seconds", predicates))
+				}
+				if !state.Console[i].LoginLocal.IsNull() && data.Console[j].LoginLocal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/login/local", predicates))
+				}
+				if !state.Console[i].LoginAuthentication.IsNull() && data.Console[j].LoginAuthentication.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/login/authentication", predicates))
+				}
+				if !state.Console[i].PrivilegeLevel.IsNull() && data.Console[j].PrivilegeLevel.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/privilege/level/number", predicates))
+				}
+				if !state.Console[i].Stopbits.IsNull() && data.Console[j].Stopbits.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/stopbits", predicates))
+				}
+				if !state.Console[i].PasswordLevel.IsNull() && data.Console[j].PasswordLevel.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/level", predicates))
+				}
+				if !state.Console[i].PasswordType.IsNull() && data.Console[j].PasswordType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/type", predicates))
+				}
+				if !state.Console[i].Password.IsNull() && data.Console[j].Password.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/secret", predicates))
+				}
+				if !state.Console[i].EscapeCharacter.IsNull() && data.Console[j].EscapeCharacter.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/escape-character/char", predicates))
+				}
+				if !state.Console[i].LoggingSynchronous.IsNull() && data.Console[j].LoggingSynchronous.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/logging/synchronous", predicates))
+				}
+				if !state.Console[i].TransportOutputAll.IsNull() && data.Console[j].TransportOutputAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/all", predicates))
+				}
+				if !state.Console[i].TransportOutputNone.IsNull() && data.Console[j].TransportOutputNone.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/none", predicates))
+				}
+				if !state.Console[i].TransportOutput.IsNull() {
+					if data.Console[j].TransportOutput.IsNull() {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/output", predicates))
+					} else {
+						var dataValues, stateValues []string
+						data.Console[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Console[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/output[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v", predicates))
+		}
+	}
+	for i := range state.Vty {
+		stateKeys := [...]string{"first"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.Vty[i].First.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vty[i].First.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vty {
+			found = true
+			if state.Vty[i].First.ValueInt64() != data.Vty[j].First.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.Vty[i].Last.IsNull() && data.Vty[j].Last.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/last", predicates))
+				}
+				for ci := range state.Vty[i].AccessClasses {
+					cstateKeys := [...]string{"direction"}
+					cstateKeyValues := [...]string{state.Vty[i].AccessClasses[ci].Direction.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vty[i].AccessClasses[ci].Direction.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vty[j].AccessClasses {
+						found = true
+						if state.Vty[i].AccessClasses[ci].Direction.ValueString() != data.Vty[j].AccessClasses[cj].Direction.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vty[i].AccessClasses[ci].AccessList.IsNull() && data.Vty[j].AccessClasses[cj].AccessList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/access-class/acccess-list%v/access-list", predicates, cpredicates))
+							}
+							if !state.Vty[i].AccessClasses[ci].VrfAlso.IsNull() && data.Vty[j].AccessClasses[cj].VrfAlso.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/access-class/acccess-list%v/vrf-also", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/access-class/acccess-list%v", predicates, cpredicates))
+					}
+				}
+				if !state.Vty[i].ExecTimeoutMinutes.IsNull() && data.Vty[j].ExecTimeoutMinutes.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/exec-timeout/minutes", predicates))
+				}
+				if !state.Vty[i].ExecTimeoutSeconds.IsNull() && data.Vty[j].ExecTimeoutSeconds.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/exec-timeout/seconds", predicates))
+				}
+				if !state.Vty[i].PasswordLevel.IsNull() && data.Vty[j].PasswordLevel.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/level", predicates))
+				}
+				if !state.Vty[i].PasswordType.IsNull() && data.Vty[j].PasswordType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/type", predicates))
+				}
+				if !state.Vty[i].Password.IsNull() && data.Vty[j].Password.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/secret", predicates))
+				}
+				if !state.Vty[i].LoginAuthentication.IsNull() && data.Vty[j].LoginAuthentication.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/login/authentication", predicates))
+				}
+				if !state.Vty[i].TransportPreferredProtocol.IsNull() && data.Vty[j].TransportPreferredProtocol.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/preferred/protocol", predicates))
+				}
+				if !state.Vty[i].EscapeCharacter.IsNull() && data.Vty[j].EscapeCharacter.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/escape-character/char", predicates))
+				}
+				if !state.Vty[i].AuthorizationExec.IsNull() && data.Vty[j].AuthorizationExec.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/authorization/exec/authorization-name", predicates))
+				}
+				if !state.Vty[i].AuthorizationExecDefault.IsNull() && data.Vty[j].AuthorizationExecDefault.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/authorization/exec/default", predicates))
+				}
+				if !state.Vty[i].TransportInputAll.IsNull() && data.Vty[j].TransportInputAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/all", predicates))
+				}
+				if !state.Vty[i].TransportInputNone.IsNull() && data.Vty[j].TransportInputNone.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/none", predicates))
+				}
+				if !state.Vty[i].TransportInput.IsNull() {
+					if data.Vty[j].TransportInput.IsNull() {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/input", predicates))
+					} else {
+						var dataValues, stateValues []string
+						data.Vty[i].TransportInput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[j].TransportInput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/input[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Vty[i].Monitor.IsNull() && data.Vty[j].Monitor.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/monitor", predicates))
+				}
+				if !state.Vty[i].SessionTimeout.IsNull() && data.Vty[j].SessionTimeout.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/session-timeout/session-timeout-value", predicates))
+				}
+				if !state.Vty[i].Stopbits.IsNull() && data.Vty[j].Stopbits.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/stopbits", predicates))
+				}
+				if !state.Vty[i].LoggingSynchronous.IsNull() && data.Vty[j].LoggingSynchronous.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/logging/synchronous", predicates))
+				}
+				if !state.Vty[i].TransportOutputAll.IsNull() && data.Vty[j].TransportOutputAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/all", predicates))
+				}
+				if !state.Vty[i].TransportOutputNone.IsNull() && data.Vty[j].TransportOutputNone.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/none", predicates))
+				}
+				if !state.Vty[i].TransportOutput.IsNull() {
+					if data.Vty[j].TransportOutput.IsNull() {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/output", predicates))
+					} else {
+						var dataValues, stateValues []string
+						data.Vty[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/output[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v", predicates))
+		}
+	}
+	for i := range state.Aux {
+		stateKeys := [...]string{"first"}
+		stateKeyValues := [...]string{state.Aux[i].First.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Aux[i].First.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Aux {
+			found = true
+			if state.Aux[i].First.ValueString() != data.Aux[j].First.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Aux[i].EscapeCharacter.IsNull() && data.Aux[j].EscapeCharacter.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/escape-character/char", predicates))
+				}
+				if !state.Aux[i].LoggingSynchronous.IsNull() && data.Aux[j].LoggingSynchronous.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/logging/synchronous", predicates))
+				}
+				if !state.Aux[i].ExecTimeoutMinutes.IsNull() && data.Aux[j].ExecTimeoutMinutes.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/exec-timeout/minutes", predicates))
+				}
+				if !state.Aux[i].ExecTimeoutSeconds.IsNull() && data.Aux[j].ExecTimeoutSeconds.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/exec-timeout/seconds", predicates))
+				}
+				if !state.Aux[i].Monitor.IsNull() && data.Aux[j].Monitor.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/monitor", predicates))
+				}
+				if !state.Aux[i].TransportOutputNone.IsNull() && data.Aux[j].TransportOutputNone.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/transport/output/none", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v", predicates))
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *Line) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -1536,3 +2917,13 @@ func (data *Line) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *Line) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

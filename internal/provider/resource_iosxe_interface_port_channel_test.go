@@ -121,7 +121,7 @@ func iosxeInterfacePortChannelImportStateIdFunc(resourceName string) resource.Im
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePortChannelPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -139,7 +139,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeInterfacePortChannelConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel" "test" {` + "\n"
 	config += `	name = 10` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -202,7 +202,7 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	load_interval = 30` + "\n"
 	config += `	snmp_trap_link_status = true` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

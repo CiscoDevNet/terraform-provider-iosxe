@@ -83,7 +83,7 @@ func iosxeInterfacePIMImportStateIdFunc(resourceName string) resource.ImportStat
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeInterfacePIMPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
 	attributes = {
 		"name" = "100"
@@ -100,7 +100,7 @@ func testAccIosxeInterfacePIMConfig_minimum() string {
 	config := `resource "iosxe_interface_pim" "test" {` + "\n"
 	config += `	type = "Loopback"` + "\n"
 	config += `	name = "100"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -121,7 +121,7 @@ func testAccIosxeInterfacePIMConfig_all() string {
 	config += `	border = false` + "\n"
 	config += `	bsr_border = false` + "\n"
 	config += `	dr_priority = 10` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

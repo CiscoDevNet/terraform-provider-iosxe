@@ -85,7 +85,7 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeLoggingPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -95,13 +95,13 @@ resource "iosxe_restconf" "PreReq0" {
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
 	attributes = {
 		"name" = "100"
 		"vrf/forwarding" = "VRF1"
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
 `
@@ -191,7 +191,7 @@ func testAccDataSourceIosxeLoggingConfig() string {
 	config += `			port_number = 10002` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

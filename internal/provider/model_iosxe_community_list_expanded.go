@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -79,6 +82,19 @@ func (data CommunityListExpanded) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data CommunityListExpanded) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/expanded=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
+func (data CommunityListExpandedData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/expanded=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -103,6 +119,34 @@ func (data CommunityListExpanded) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data CommunityListExpanded) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if len(data.Entries) > 0 {
+		for _, item := range data.Entries {
+			cBody := netconf.Body{}
+			if !item.Action.IsNull() && !item.Action.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "action", item.Action.ValueString())
+			}
+			if !item.Regex.IsNull() && !item.Regex.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "string", item.Regex.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/extended-grouping/extended_grouping", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -154,6 +198,52 @@ func (data *CommunityListExpanded) updateFromBody(ctx context.Context, res gjson
 
 // End of section. //template:end updateFromBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *CommunityListExpanded) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	for i := range data.Entries {
+		keys := [...]string{"action", "string"}
+		keyValues := [...]string{data.Entries[i].Action.ValueString(), data.Entries[i].Regex.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "action"); value.Exists() && !data.Entries[i].Action.IsNull() {
+			data.Entries[i].Action = types.StringValue(value.String())
+		} else {
+			data.Entries[i].Action = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "string"); value.Exists() && !data.Entries[i].Regex.IsNull() {
+			data.Entries[i].Regex = types.StringValue(value.String())
+		} else {
+			data.Entries[i].Regex = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
 func (data *CommunityListExpanded) fromBody(ctx context.Context, res gjson.Result) {
@@ -204,6 +294,48 @@ func (data *CommunityListExpandedData) fromBody(ctx context.Context, res gjson.R
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *CommunityListExpanded) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
+		data.Entries = make([]CommunityListExpandedEntries, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CommunityListExpandedEntries{}
+			if cValue := helpers.GetFromXPath(v, "action"); cValue.Exists() {
+				item.Action = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "string"); cValue.Exists() {
+				item.Regex = types.StringValue(cValue.String())
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *CommunityListExpandedData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
+		data.Entries = make([]CommunityListExpandedEntries, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CommunityListExpandedEntries{}
+			if cValue := helpers.GetFromXPath(v, "action"); cValue.Exists() {
+				item.Action = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "string"); cValue.Exists() {
+				item.Regex = types.StringValue(cValue.String())
+			}
+			data.Entries = append(data.Entries, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CommunityListExpanded) getDeletedItems(ctx context.Context, state CommunityListExpanded) []string {
@@ -245,6 +377,52 @@ func (data *CommunityListExpanded) getDeletedItems(ctx context.Context, state Co
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *CommunityListExpanded) addDeletedItemsXML(ctx context.Context, state CommunityListExpanded, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Entries {
+		stateKeys := [...]string{"action", "string"}
+		stateKeyValues := [...]string{state.Entries[i].Action.ValueString(), state.Entries[i].Regex.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Entries[i].Action.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Entries[i].Regex.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Entries {
+			found = true
+			if state.Entries[i].Action.ValueString() != data.Entries[j].Action.ValueString() {
+				found = false
+			}
+			if state.Entries[i].Regex.ValueString() != data.Entries[j].Regex.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/extended-grouping/extended_grouping%v", predicates))
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *CommunityListExpanded) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -269,3 +447,23 @@ func (data *CommunityListExpanded) getDeletePaths(ctx context.Context) []string 
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *CommunityListExpanded) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Entries {
+		keys := [...]string{"action", "string"}
+		keyValues := [...]string{data.Entries[i].Action.ValueString(), data.Entries[i].Regex.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/extended-grouping/extended_grouping%v", predicates))
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

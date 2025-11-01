@@ -39,6 +39,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
 	"github.com/netascode/go-restconf"
 )
 
@@ -261,37 +262,47 @@ func (r *InterfaceLoopbackResource) Create(ctx context.Context, req resource.Cre
 	}
 
 	if device.Managed {
-		// Create object
-		body := plan.toBody(ctx)
+		if device.Protocol == "restconf" {
+			// Create object
+			body := plan.toBody(ctx)
 
-		emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
-		tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
+			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
+			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
-		if YangPatch {
-			edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
-			for _, i := range emptyLeafsDelete {
-				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-			}
-			_, err := device.Client.YangPatchData("", "1", "", edits)
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object, got error: %s", err))
-				return
-			}
-		} else {
-			res, err := device.Client.PatchData(plan.getPathShort(), body)
-			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-				_, err = device.Client.PutData(plan.getPath(), body)
-			}
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
-				return
-			}
-			for _, i := range emptyLeafsDelete {
-				res, err := device.Client.DeleteData(i)
-				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
+			if YangPatch {
+				edits := []restconf.YangPatchEdit{restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body})}
+				for _, i := range emptyLeafsDelete {
+					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
+				}
+				_, err := device.RestconfClient.YangPatchData("", "1", "", edits)
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object, got error: %s", err))
 					return
 				}
+			} else {
+				res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
+				if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
+					_, err = device.RestconfClient.PutData(plan.getPath(), body)
+				}
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
+					return
+				}
+				for _, i := range emptyLeafsDelete {
+					res, err := device.RestconfClient.DeleteData(i)
+					if err != nil && res.StatusCode != 404 {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
+						return
+					}
+				}
+			}
+		} else {
+			// NETCONF
+			body := plan.toBodyXML(ctx)
+
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
+				return
 			}
 		}
 	}
@@ -329,25 +340,42 @@ func (r *InterfaceLoopbackResource) Read(ctx context.Context, req resource.ReadR
 	}
 
 	if device.Managed {
-		res, err := device.Client.GetData(state.Id.ValueString())
-		if res.StatusCode == 404 {
-			state = InterfaceLoopback{Device: state.Device, Id: state.Id}
-		} else {
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
-				return
-			}
+		imp, diags := helpers.IsFlagImporting(ctx, req)
+		if resp.Diagnostics.Append(diags...); resp.Diagnostics.HasError() {
+			return
+		}
 
-			imp, diags := helpers.IsFlagImporting(ctx, req)
-			if resp.Diagnostics.Append(diags...); resp.Diagnostics.HasError() {
+		if device.Protocol == "restconf" {
+			res, err := device.RestconfClient.GetData(state.Id.ValueString())
+			if res.StatusCode == 404 {
+				state = InterfaceLoopback{Device: state.Device, Id: state.Id}
+			} else {
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.Id.ValueString(), err))
+					return
+				}
+
+				// After `terraform import` we switch to a full read.
+				if imp {
+					state.fromBody(ctx, res.Res)
+				} else {
+					state.updateFromBody(ctx, res.Res)
+				}
+			}
+		} else {
+			// NETCONF
+			filter := helpers.GetXpathFilter(state.getXPath())
+			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", state.getPath(), err))
 				return
 			}
 
 			// After `terraform import` we switch to a full read.
 			if imp {
-				state.fromBody(ctx, res.Res)
+				state.fromBodyXML(ctx, res.Res)
 			} else {
-				state.updateFromBody(ctx, res.Res)
+				state.updateFromBodyXML(ctx, res.Res)
 			}
 		}
 	}
@@ -390,50 +418,61 @@ func (r *InterfaceLoopbackResource) Update(ctx context.Context, req resource.Upd
 	}
 
 	if device.Managed {
-		body := plan.toBody(ctx)
+		if device.Protocol == "restconf" {
+			body := plan.toBody(ctx)
 
-		deletedItems := plan.getDeletedItems(ctx, state)
-		tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
+			deletedItems := plan.getDeletedItems(ctx, state)
+			tflog.Debug(ctx, fmt.Sprintf("Removed items to delete: %+v", deletedItems))
 
-		emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
-		tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
+			emptyLeafsDelete := plan.getEmptyLeafsDelete(ctx)
+			tflog.Debug(ctx, fmt.Sprintf("List of empty leafs to delete: %+v", emptyLeafsDelete))
 
-		if YangPatch {
-			var edits []restconf.YangPatchEdit
-			for _, i := range deletedItems {
-				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-			}
-			edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
-			for _, i := range emptyLeafsDelete {
-				edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-			}
-			_, err := device.Client.YangPatchData("", "1", "", edits)
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update object, got error: %s", err))
-				return
+			if YangPatch {
+				var edits []restconf.YangPatchEdit
+				for _, i := range deletedItems {
+					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
+				}
+				edits = append(edits, restconf.NewYangPatchEdit("merge", plan.getPath(), restconf.Body{Str: body}))
+				for _, i := range emptyLeafsDelete {
+					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
+				}
+				_, err := device.RestconfClient.YangPatchData("", "1", "", edits)
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to update object, got error: %s", err))
+					return
+				}
+			} else {
+				for _, i := range deletedItems {
+					res, err := device.RestconfClient.DeleteData(i)
+					if err != nil && res.StatusCode != 404 {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
+						return
+					}
+				}
+				res, err := device.RestconfClient.PatchData(plan.getPathShort(), body)
+				if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
+					_, err = device.RestconfClient.PutData(plan.getPath(), body)
+				}
+				if err != nil {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
+					return
+				}
+				for _, i := range emptyLeafsDelete {
+					res, err := device.RestconfClient.DeleteData(i)
+					if err != nil && res.StatusCode != 404 {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
+						return
+					}
+				}
 			}
 		} else {
-			for _, i := range deletedItems {
-				res, err := device.Client.DeleteData(i)
-				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-					return
-				}
-			}
-			res, err := device.Client.PatchData(plan.getPathShort(), body)
-			if len(res.Errors.Error) > 0 && res.Errors.Error[0].ErrorMessage == "patch to a nonexistent resource" {
-				_, err = device.Client.PutData(plan.getPath(), body)
-			}
-			if err != nil {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to configure object (PATCH, %s), got error: %s", plan.getPathShort(), err))
+			// NETCONF
+			body := plan.toBodyXML(ctx)
+			body = plan.addDeletedItemsXML(ctx, state, body)
+
+			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
-			}
-			for _, i := range emptyLeafsDelete {
-				res, err := device.Client.DeleteData(i)
-				if err != nil && res.StatusCode != 404 {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
-					return
-				}
 			}
 		}
 	}
@@ -475,31 +514,52 @@ func (r *InterfaceLoopbackResource) Delete(ctx context.Context, req resource.Del
 		}
 
 		if deleteMode == "all" {
-			res, err := device.Client.DeleteData(state.Id.ValueString())
-			if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
-				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
-				return
-			}
-		} else {
-			deletePaths := state.getDeletePaths(ctx)
-			tflog.Debug(ctx, fmt.Sprintf("Paths to delete: %+v", deletePaths))
-
-			if YangPatch {
-				edits := []restconf.YangPatchEdit{}
-				for _, i := range deletePaths {
-					edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
-				}
-				_, err := device.Client.YangPatchData("", "1", "", edits)
-				if err != nil {
-					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+			if device.Protocol == "restconf" {
+				res, err := device.RestconfClient.DeleteData(state.Id.ValueString())
+				if err != nil && res.StatusCode != 404 && res.StatusCode != 400 {
+					resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object (%s), got error: %s", state.Id.ValueString(), err))
 					return
 				}
 			} else {
-				for _, i := range deletePaths {
-					res, err := device.Client.DeleteData(i)
-					if err != nil && res.StatusCode != 404 {
-						resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
+				// NETCONF
+				body := netconf.Body{}
+				body = helpers.RemoveFromXPath(body, state.getXPath())
+
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
+					resp.Diagnostics.AddError("Client Error", err.Error())
+					return
+				}
+			}
+		} else {
+			if device.Protocol == "restconf" {
+				deletePaths := state.getDeletePaths(ctx)
+				tflog.Debug(ctx, fmt.Sprintf("Paths to delete: %+v", deletePaths))
+
+				if YangPatch {
+					edits := []restconf.YangPatchEdit{}
+					for _, i := range deletePaths {
+						edits = append(edits, restconf.NewYangPatchEdit("remove", i, restconf.Body{}))
 					}
+					_, err := device.RestconfClient.YangPatchData("", "1", "", edits)
+					if err != nil {
+						resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to delete object, got error: %s", err))
+						return
+					}
+				} else {
+					for _, i := range deletePaths {
+						res, err := device.RestconfClient.DeleteData(i)
+						if err != nil && res.StatusCode != 404 {
+							resp.Diagnostics.AddWarning("Client Warning", fmt.Sprintf("Failed to delete object (%s), got error: %s", i, err))
+						}
+					}
+				}
+			} else {
+				// NETCONF
+				body := state.addDeletePathsXML(ctx, "")
+
+				if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
+					resp.Diagnostics.AddError("Client Error", err.Error())
+					return
 				}
 			}
 		}

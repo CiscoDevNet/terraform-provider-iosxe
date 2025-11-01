@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -73,6 +76,19 @@ func (data BGPAddressFamilyL2VPN) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data BGPAddressFamilyL2VPN) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/l2vpn=%s")
+	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), "af-name", url.QueryEscape(fmt.Sprintf("%v", data.AfName.ValueString())))
+	return path
+}
+
+func (data BGPAddressFamilyL2VPNData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/l2vpn=%s")
+	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), "af-name", url.QueryEscape(fmt.Sprintf("%v", data.AfName.ValueString())))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -86,6 +102,22 @@ func (data BGPAddressFamilyL2VPN) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data BGPAddressFamilyL2VPN) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.AfName.IsNull() && !data.AfName.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/af-name", data.AfName.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -102,6 +134,18 @@ func (data *BGPAddressFamilyL2VPN) updateFromBody(ctx context.Context, res gjson
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *BGPAddressFamilyL2VPN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/af-name"); value.Exists() && !data.AfName.IsNull() {
+		data.AfName = types.StringValue(value.String())
+	} else {
+		data.AfName = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -125,6 +169,20 @@ func (data *BGPAddressFamilyL2VPNData) fromBody(ctx context.Context, res gjson.R
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *BGPAddressFamilyL2VPN) fromBodyXML(ctx context.Context, res xmldot.Result) {
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *BGPAddressFamilyL2VPNData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *BGPAddressFamilyL2VPN) getDeletedItems(ctx context.Context, state BGPAddressFamilyL2VPN) []string {
@@ -134,6 +192,16 @@ func (data *BGPAddressFamilyL2VPN) getDeletedItems(ctx context.Context, state BG
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *BGPAddressFamilyL2VPN) addDeletedItemsXML(ctx context.Context, state BGPAddressFamilyL2VPN, body string) string {
+	b := netconf.NewBody(body)
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -154,3 +222,13 @@ func (data *BGPAddressFamilyL2VPN) getDeletePaths(ctx context.Context) []string 
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *BGPAddressFamilyL2VPN) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

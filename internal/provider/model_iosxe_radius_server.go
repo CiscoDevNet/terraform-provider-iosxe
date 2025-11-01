@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -89,6 +92,17 @@ func (data RadiusServer) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data RadiusServer) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/radius-server")
+	return path
+}
+
+func (data RadiusServerData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/radius-server")
+	return path
 }
 
 // End of section. //template:end getPath
@@ -152,6 +166,78 @@ func (data RadiusServer) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data RadiusServer) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if len(data.Attributes) > 0 {
+		for _, item := range data.Attributes {
+			cBody := netconf.Body{}
+			if !item.Number.IsNull() && !item.Number.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "number", item.Number.ValueString())
+			}
+			if !item.AccessRequestInclude.IsNull() && !item.AccessRequestInclude.IsUnknown() {
+				if item.AccessRequestInclude.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "access-request/include", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "access-request/include")
+				}
+			}
+			if len(item.Attribute31Parameters) > 0 {
+				for _, citem := range item.Attribute31Parameters {
+					ccBody := netconf.Body{}
+					if !citem.CallingStationId.IsNull() && !citem.CallingStationId.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "calling-station-id", citem.CallingStationId.ValueString())
+					}
+					if !citem.IdMacFormat.IsNull() && !citem.IdMacFormat.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "id-mac/format", citem.IdMacFormat.ValueString())
+					}
+					if !citem.IdMacLuCase.IsNull() && !citem.IdMacLuCase.IsUnknown() {
+						ccBody = helpers.SetFromXPath(ccBody, "id-mac/lu-case", citem.IdMacLuCase.ValueString())
+					}
+					if !citem.IdSendNasPortDetail.IsNull() && !citem.IdSendNasPortDetail.IsUnknown() {
+						if citem.IdSendNasPortDetail.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "id-send/nas-port-detail", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "id-send/nas-port-detail")
+						}
+					}
+					if !citem.IdSendMacOnly.IsNull() && !citem.IdSendMacOnly.IsUnknown() {
+						if citem.IdSendMacOnly.ValueBool() {
+							ccBody = helpers.SetFromXPath(ccBody, "id-send/mac-only", "")
+						} else {
+							ccBody = helpers.RemoveFromXPath(ccBody, "id-send/mac-only")
+						}
+					}
+					cBody = helpers.SetRawFromXPath(cBody, "attri31/attri31-list", ccBody.Res())
+				}
+			}
+			if !item.SendAttributes.IsNull() && !item.SendAttributes.IsUnknown() {
+				var values []string
+				item.SendAttributes.ElementsAs(ctx, &values, false)
+				cBody = helpers.SetFromXPath(cBody, "send-attribute", values)
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:attribute", cBody.Res())
+		}
+	}
+	if !data.DeadCriteriaTime.IsNull() && !data.DeadCriteriaTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time", strconv.FormatInt(data.DeadCriteriaTime.ValueInt64(), 10))
+	}
+	if !data.DeadCriteriaTries.IsNull() && !data.DeadCriteriaTries.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries", strconv.FormatInt(data.DeadCriteriaTries.ValueInt64(), 10))
+	}
+	if !data.Deadtime.IsNull() && !data.Deadtime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime", strconv.FormatInt(data.Deadtime.ValueInt64(), 10))
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -278,6 +364,128 @@ func (data *RadiusServer) updateFromBody(ctx context.Context, res gjson.Result) 
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *RadiusServer) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	for i := range data.Attributes {
+		keys := [...]string{"number"}
+		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "number"); value.Exists() && !data.Attributes[i].Number.IsNull() {
+			data.Attributes[i].Number = types.StringValue(value.String())
+		} else {
+			data.Attributes[i].Number = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "access-request/include"); !data.Attributes[i].AccessRequestInclude.IsNull() {
+			if value.Exists() {
+				data.Attributes[i].AccessRequestInclude = types.BoolValue(true)
+			} else {
+				data.Attributes[i].AccessRequestInclude = types.BoolValue(false)
+			}
+		} else {
+			data.Attributes[i].AccessRequestInclude = types.BoolNull()
+		}
+		for ci := range data.Attributes[i].Attribute31Parameters {
+			keys := [...]string{"calling-station-id"}
+			keyValues := [...]string{data.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
+
+			var cr xmldot.Result
+			helpers.GetFromXPath(r, "attri31/attri31-list").ForEach(
+				func(_ int, v xmldot.Result) bool {
+					found := false
+					for ik := range keys {
+						if v.Get(keys[ik]).String() == keyValues[ik] {
+							found = true
+							continue
+						}
+						found = false
+						break
+					}
+					if found {
+						cr = v
+						return false
+					}
+					return true
+				},
+			)
+			if value := helpers.GetFromXPath(cr, "calling-station-id"); value.Exists() && !data.Attributes[i].Attribute31Parameters[ci].CallingStationId.IsNull() {
+				data.Attributes[i].Attribute31Parameters[ci].CallingStationId = types.StringValue(value.String())
+			} else {
+				data.Attributes[i].Attribute31Parameters[ci].CallingStationId = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "id-mac/format"); value.Exists() && !data.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() {
+				data.Attributes[i].Attribute31Parameters[ci].IdMacFormat = types.StringValue(value.String())
+			} else {
+				data.Attributes[i].Attribute31Parameters[ci].IdMacFormat = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "id-mac/lu-case"); value.Exists() && !data.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() {
+				data.Attributes[i].Attribute31Parameters[ci].IdMacLuCase = types.StringValue(value.String())
+			} else {
+				data.Attributes[i].Attribute31Parameters[ci].IdMacLuCase = types.StringNull()
+			}
+			if value := helpers.GetFromXPath(cr, "id-send/nas-port-detail"); !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() {
+				if value.Exists() {
+					data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail = types.BoolValue(true)
+				} else {
+					data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail = types.BoolValue(false)
+				}
+			} else {
+				data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail = types.BoolNull()
+			}
+			if value := helpers.GetFromXPath(cr, "id-send/mac-only"); !data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() {
+				if value.Exists() {
+					data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly = types.BoolValue(true)
+				} else {
+					data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly = types.BoolValue(false)
+				}
+			} else {
+				data.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly = types.BoolNull()
+			}
+		}
+		if value := helpers.GetFromXPath(r, "send-attribute"); value.Exists() && !data.Attributes[i].SendAttributes.IsNull() {
+			data.Attributes[i].SendAttributes = helpers.GetStringListXML(value.Array())
+		} else {
+			data.Attributes[i].SendAttributes = types.ListNull(types.StringType)
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() && !data.DeadCriteriaTime.IsNull() {
+		data.DeadCriteriaTime = types.Int64Value(value.Int())
+	} else {
+		data.DeadCriteriaTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() && !data.DeadCriteriaTries.IsNull() {
+		data.DeadCriteriaTries = types.Int64Value(value.Int())
+	} else {
+		data.DeadCriteriaTries = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() && !data.Deadtime.IsNull() {
+		data.Deadtime = types.Int64Value(value.Int())
+	} else {
+		data.Deadtime = types.Int64Null()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -415,6 +623,134 @@ func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *RadiusServer) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute"); value.Exists() {
+		data.Attributes = make([]RadiusServerAttributes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := RadiusServerAttributes{}
+			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
+				item.Number = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "access-request/include"); cValue.Exists() {
+				item.AccessRequestInclude = types.BoolValue(true)
+			} else {
+				item.AccessRequestInclude = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "attri31/attri31-list"); cValue.Exists() {
+				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31Parameters, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := RadiusServerAttributesAttribute31Parameters{}
+					if ccValue := helpers.GetFromXPath(cv, "calling-station-id"); ccValue.Exists() {
+						cItem.CallingStationId = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "id-mac/format"); ccValue.Exists() {
+						cItem.IdMacFormat = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "id-mac/lu-case"); ccValue.Exists() {
+						cItem.IdMacLuCase = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "id-send/nas-port-detail"); ccValue.Exists() {
+						cItem.IdSendNasPortDetail = types.BoolValue(true)
+					} else {
+						cItem.IdSendNasPortDetail = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "id-send/mac-only"); ccValue.Exists() {
+						cItem.IdSendMacOnly = types.BoolValue(true)
+					} else {
+						cItem.IdSendMacOnly = types.BoolValue(false)
+					}
+					item.Attribute31Parameters = append(item.Attribute31Parameters, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "send-attribute"); cValue.Exists() {
+				item.SendAttributes = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.SendAttributes = types.ListNull(types.StringType)
+			}
+			data.Attributes = append(data.Attributes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() {
+		data.DeadCriteriaTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() {
+		data.DeadCriteriaTries = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() {
+		data.Deadtime = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *RadiusServerData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute"); value.Exists() {
+		data.Attributes = make([]RadiusServerAttributes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := RadiusServerAttributes{}
+			if cValue := helpers.GetFromXPath(v, "number"); cValue.Exists() {
+				item.Number = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "access-request/include"); cValue.Exists() {
+				item.AccessRequestInclude = types.BoolValue(true)
+			} else {
+				item.AccessRequestInclude = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "attri31/attri31-list"); cValue.Exists() {
+				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31Parameters, 0)
+				cValue.ForEach(func(_ int, cv xmldot.Result) bool {
+					cItem := RadiusServerAttributesAttribute31Parameters{}
+					if ccValue := helpers.GetFromXPath(cv, "calling-station-id"); ccValue.Exists() {
+						cItem.CallingStationId = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "id-mac/format"); ccValue.Exists() {
+						cItem.IdMacFormat = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "id-mac/lu-case"); ccValue.Exists() {
+						cItem.IdMacLuCase = types.StringValue(ccValue.String())
+					}
+					if ccValue := helpers.GetFromXPath(cv, "id-send/nas-port-detail"); ccValue.Exists() {
+						cItem.IdSendNasPortDetail = types.BoolValue(true)
+					} else {
+						cItem.IdSendNasPortDetail = types.BoolValue(false)
+					}
+					if ccValue := helpers.GetFromXPath(cv, "id-send/mac-only"); ccValue.Exists() {
+						cItem.IdSendMacOnly = types.BoolValue(true)
+					} else {
+						cItem.IdSendMacOnly = types.BoolValue(false)
+					}
+					item.Attribute31Parameters = append(item.Attribute31Parameters, cItem)
+					return true
+				})
+			}
+			if cValue := helpers.GetFromXPath(v, "send-attribute"); cValue.Exists() {
+				item.SendAttributes = helpers.GetStringListXML(cValue.Array())
+			} else {
+				item.SendAttributes = types.ListNull(types.StringType)
+			}
+			data.Attributes = append(data.Attributes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() {
+		data.DeadCriteriaTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() {
+		data.DeadCriteriaTries = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() {
+		data.Deadtime = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServer) []string {
@@ -520,6 +856,121 @@ func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServe
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusServer, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Attributes {
+		stateKeys := [...]string{"number"}
+		stateKeyValues := [...]string{state.Attributes[i].Number.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Attributes[i].Number.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Attributes {
+			found = true
+			if state.Attributes[i].Number.ValueString() != data.Attributes[j].Number.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Attributes[i].AccessRequestInclude.IsNull() && data.Attributes[j].AccessRequestInclude.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/access-request/include", predicates))
+				}
+				for ci := range state.Attributes[i].Attribute31Parameters {
+					cstateKeys := [...]string{"calling-station-id"}
+					cstateKeyValues := [...]string{state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Attributes[j].Attribute31Parameters {
+						found = true
+						if state.Attributes[i].Attribute31Parameters[ci].CallingStationId.ValueString() != data.Attributes[j].Attribute31Parameters[cj].CallingStationId.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacFormat.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-mac/format", predicates, cpredicates))
+							}
+							if !state.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacLuCase.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-mac/lu-case", predicates, cpredicates))
+							}
+							if !state.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendNasPortDetail.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-send/nas-port-detail", predicates, cpredicates))
+							}
+							if !state.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendMacOnly.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-send/mac-only", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v", predicates, cpredicates))
+					}
+				}
+				if !state.Attributes[i].SendAttributes.IsNull() {
+					if data.Attributes[j].SendAttributes.IsNull() {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/send-attribute", predicates))
+					} else {
+						var dataValues, stateValues []string
+						data.Attributes[i].SendAttributes.ElementsAs(ctx, &dataValues, false)
+						state.Attributes[j].SendAttributes.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/send-attribute[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v", predicates))
+		}
+	}
+	if !state.DeadCriteriaTime.IsNull() && data.DeadCriteriaTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time")
+	}
+	if !state.DeadCriteriaTries.IsNull() && data.DeadCriteriaTries.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries")
+	}
+	if !state.Deadtime.IsNull() && data.Deadtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:deadtime")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *RadiusServer) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -570,3 +1021,32 @@ func (data *RadiusServer) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *RadiusServer) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Attributes {
+		keys := [...]string{"number"}
+		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v", predicates))
+	}
+	if !data.DeadCriteriaTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time")
+	}
+	if !data.DeadCriteriaTries.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries")
+	}
+	if !data.Deadtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

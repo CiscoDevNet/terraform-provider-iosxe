@@ -52,7 +52,7 @@ func TestAccDataSourceIosxePolicyMap(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxePolicyMapPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CLASS1"
 	attributes = {
 		"name" = "CLASS1"
@@ -77,7 +77,7 @@ func testAccDataSourceIosxePolicyMapConfig() string {
 	config += `			bandwidth_percent = 10` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

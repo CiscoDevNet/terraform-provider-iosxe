@@ -29,6 +29,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -93,6 +96,19 @@ func (data Radius) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data Radius) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v")
+	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
+func (data RadiusData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v")
+	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -143,6 +159,63 @@ func (data Radius) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data Radius) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/id", data.Name.ValueString())
+	}
+	if !data.Ipv4Address.IsNull() && !data.Ipv4Address.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address/ipv4", data.Ipv4Address.ValueString())
+	}
+	if !data.AuthenticationPort.IsNull() && !data.AuthenticationPort.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address/auth-port", strconv.FormatInt(data.AuthenticationPort.ValueInt64(), 10))
+	}
+	if !data.AccountingPort.IsNull() && !data.AccountingPort.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/address/acct-port", strconv.FormatInt(data.AccountingPort.ValueInt64(), 10))
+	}
+	if !data.Timeout.IsNull() && !data.Timeout.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/timeout", strconv.FormatInt(data.Timeout.ValueInt64(), 10))
+	}
+	if !data.Retransmit.IsNull() && !data.Retransmit.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/retransmit", strconv.FormatInt(data.Retransmit.ValueInt64(), 10))
+	}
+	if !data.Key.IsNull() && !data.Key.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/key/key", data.Key.ValueString())
+	}
+	if !data.AutomateTesterUsername.IsNull() && !data.AutomateTesterUsername.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/username", data.AutomateTesterUsername.ValueString())
+	}
+	if !data.AutomateTesterIgnoreAcctPort.IsNull() && !data.AutomateTesterIgnoreAcctPort.IsUnknown() {
+		if data.AutomateTesterIgnoreAcctPort.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/ignore-acct-port", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/automate-tester/ignore-acct-port")
+		}
+	}
+	if !data.AutomateTesterProbeOnConfig.IsNull() && !data.AutomateTesterProbeOnConfig.IsUnknown() {
+		if data.AutomateTesterProbeOnConfig.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/automate-tester/probe-on-config", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/automate-tester/probe-on-config")
+		}
+	}
+	if !data.PacKey.IsNull() && !data.PacKey.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/pac/key/key", data.PacKey.ValueString())
+	}
+	if !data.PacKeyEncryption.IsNull() && !data.PacKeyEncryption.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/pac/key/encryption", data.PacKeyEncryption.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -212,6 +285,71 @@ func (data *Radius) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *Radius) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/id"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/ipv4"); value.Exists() && !data.Ipv4Address.IsNull() {
+		data.Ipv4Address = types.StringValue(value.String())
+	} else {
+		data.Ipv4Address = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/auth-port"); value.Exists() && !data.AuthenticationPort.IsNull() {
+		data.AuthenticationPort = types.Int64Value(value.Int())
+	} else {
+		data.AuthenticationPort = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/acct-port"); value.Exists() && !data.AccountingPort.IsNull() {
+		data.AccountingPort = types.Int64Value(value.Int())
+	} else {
+		data.AccountingPort = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timeout"); value.Exists() && !data.Timeout.IsNull() {
+		data.Timeout = types.Int64Value(value.Int())
+	} else {
+		data.Timeout = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/retransmit"); value.Exists() && !data.Retransmit.IsNull() {
+		data.Retransmit = types.Int64Value(value.Int())
+	} else {
+		data.Retransmit = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/username"); value.Exists() && !data.AutomateTesterUsername.IsNull() {
+		data.AutomateTesterUsername = types.StringValue(value.String())
+	} else {
+		data.AutomateTesterUsername = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/ignore-acct-port"); !data.AutomateTesterIgnoreAcctPort.IsNull() {
+		if value.Exists() {
+			data.AutomateTesterIgnoreAcctPort = types.BoolValue(true)
+		} else {
+			data.AutomateTesterIgnoreAcctPort = types.BoolValue(false)
+		}
+	} else {
+		data.AutomateTesterIgnoreAcctPort = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/probe-on-config"); !data.AutomateTesterProbeOnConfig.IsNull() {
+		if value.Exists() {
+			data.AutomateTesterProbeOnConfig = types.BoolValue(true)
+		} else {
+			data.AutomateTesterProbeOnConfig = types.BoolValue(false)
+		}
+	} else {
+		data.AutomateTesterProbeOnConfig = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/pac/key/encryption"); value.Exists() && !data.PacKeyEncryption.IsNull() {
+		data.PacKeyEncryption = types.StringValue(value.String())
+	} else {
+		data.PacKeyEncryption = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -309,6 +447,94 @@ func (data *RadiusData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *Radius) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/ipv4"); value.Exists() {
+		data.Ipv4Address = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/auth-port"); value.Exists() {
+		data.AuthenticationPort = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/acct-port"); value.Exists() {
+		data.AccountingPort = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timeout"); value.Exists() {
+		data.Timeout = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/retransmit"); value.Exists() {
+		data.Retransmit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/key/key"); value.Exists() {
+		data.Key = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/username"); value.Exists() {
+		data.AutomateTesterUsername = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/ignore-acct-port"); value.Exists() {
+		data.AutomateTesterIgnoreAcctPort = types.BoolValue(true)
+	} else {
+		data.AutomateTesterIgnoreAcctPort = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/probe-on-config"); value.Exists() {
+		data.AutomateTesterProbeOnConfig = types.BoolValue(true)
+	} else {
+		data.AutomateTesterProbeOnConfig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/pac/key/key"); value.Exists() {
+		data.PacKey = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/pac/key/encryption"); value.Exists() {
+		data.PacKeyEncryption = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *RadiusData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/ipv4"); value.Exists() {
+		data.Ipv4Address = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/auth-port"); value.Exists() {
+		data.AuthenticationPort = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/address/acct-port"); value.Exists() {
+		data.AccountingPort = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timeout"); value.Exists() {
+		data.Timeout = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/retransmit"); value.Exists() {
+		data.Retransmit = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/key/key"); value.Exists() {
+		data.Key = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/username"); value.Exists() {
+		data.AutomateTesterUsername = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/ignore-acct-port"); value.Exists() {
+		data.AutomateTesterIgnoreAcctPort = types.BoolValue(true)
+	} else {
+		data.AutomateTesterIgnoreAcctPort = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/automate-tester/probe-on-config"); value.Exists() {
+		data.AutomateTesterProbeOnConfig = types.BoolValue(true)
+	} else {
+		data.AutomateTesterProbeOnConfig = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/pac/key/key"); value.Exists() {
+		data.PacKey = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/pac/key/encryption"); value.Exists() {
+		data.PacKeyEncryption = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string {
@@ -351,6 +577,49 @@ func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string 
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *Radius) addDeletedItemsXML(ctx context.Context, state Radius, body string) string {
+	b := netconf.NewBody(body)
+	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address/ipv4")
+	}
+	if !state.AuthenticationPort.IsNull() && data.AuthenticationPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address/auth-port")
+	}
+	if !state.AccountingPort.IsNull() && data.AccountingPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/address/acct-port")
+	}
+	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timeout")
+	}
+	if !state.Retransmit.IsNull() && data.Retransmit.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/retransmit")
+	}
+	if !state.Key.IsNull() && data.Key.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
+	}
+	if !state.AutomateTesterUsername.IsNull() && data.AutomateTesterUsername.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/username")
+	}
+	if !state.AutomateTesterIgnoreAcctPort.IsNull() && data.AutomateTesterIgnoreAcctPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/ignore-acct-port")
+	}
+	if !state.AutomateTesterProbeOnConfig.IsNull() && data.AutomateTesterProbeOnConfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/probe-on-config")
+	}
+	if !state.PacKey.IsNull() && data.PacKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key")
+	}
+	if !state.PacKeyEncryption.IsNull() && data.PacKeyEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -410,3 +679,46 @@ func (data *Radius) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *Radius) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.Ipv4Address.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address/ipv4")
+	}
+	if !data.AuthenticationPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address/auth-port")
+	}
+	if !data.AccountingPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/address/acct-port")
+	}
+	if !data.Timeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timeout")
+	}
+	if !data.Retransmit.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/retransmit")
+	}
+	if !data.Key.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
+	}
+	if !data.AutomateTesterUsername.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/automate-tester/username")
+	}
+	if !data.AutomateTesterIgnoreAcctPort.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/automate-tester/ignore-acct-port")
+	}
+	if !data.AutomateTesterProbeOnConfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/automate-tester/probe-on-config")
+	}
+	if !data.PacKey.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key")
+	}
+	if !data.PacKeyEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

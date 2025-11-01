@@ -31,6 +31,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -86,6 +89,19 @@ func (data CryptoIKEv2Policy) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data CryptoIKEv2Policy) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
+func (data CryptoIKEv2PolicyData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/policy=%v")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -125,6 +141,53 @@ func (data CryptoIKEv2Policy) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data CryptoIKEv2Policy) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.MatchInboundOnly.IsNull() && !data.MatchInboundOnly.IsUnknown() {
+		if data.MatchInboundOnly.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/inbound-only", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/inbound-only")
+		}
+	}
+	if !data.MatchAddressLocalIp.IsNull() && !data.MatchAddressLocalIp.IsUnknown() {
+		var values []string
+		data.MatchAddressLocalIp.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/address/local-ip", values)
+	}
+	if !data.MatchFvrf.IsNull() && !data.MatchFvrf.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/match/fvrf/name", data.MatchFvrf.ValueString())
+	}
+	if !data.MatchFvrfAny.IsNull() && !data.MatchFvrfAny.IsUnknown() {
+		if data.MatchFvrfAny.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/match/fvrf/any", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/match/fvrf/any")
+		}
+	}
+	if len(data.Proposals) > 0 {
+		for _, item := range data.Proposals {
+			cBody := netconf.Body{}
+			if !item.Proposals.IsNull() && !item.Proposals.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "proposals", item.Proposals.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/proposal", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -198,6 +261,75 @@ func (data *CryptoIKEv2Policy) updateFromBody(ctx context.Context, res gjson.Res
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *CryptoIKEv2Policy) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/inbound-only"); !data.MatchInboundOnly.IsNull() {
+		if value.Exists() {
+			data.MatchInboundOnly = types.BoolValue(true)
+		} else {
+			data.MatchInboundOnly = types.BoolValue(false)
+		}
+	} else {
+		data.MatchInboundOnly = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/address/local-ip"); value.Exists() && !data.MatchAddressLocalIp.IsNull() {
+		data.MatchAddressLocalIp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchAddressLocalIp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/fvrf/name"); value.Exists() && !data.MatchFvrf.IsNull() {
+		data.MatchFvrf = types.StringValue(value.String())
+	} else {
+		data.MatchFvrf = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/fvrf/any"); !data.MatchFvrfAny.IsNull() {
+		if value.Exists() {
+			data.MatchFvrfAny = types.BoolValue(true)
+		} else {
+			data.MatchFvrfAny = types.BoolValue(false)
+		}
+	} else {
+		data.MatchFvrfAny = types.BoolNull()
+	}
+	for i := range data.Proposals {
+		keys := [...]string{"proposals"}
+		keyValues := [...]string{data.Proposals[i].Proposals.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/proposal").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "proposals"); value.Exists() && !data.Proposals[i].Proposals.IsNull() {
+			data.Proposals[i].Proposals = types.StringValue(value.String())
+		} else {
+			data.Proposals[i].Proposals = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -279,6 +411,78 @@ func (data *CryptoIKEv2PolicyData) fromBody(ctx context.Context, res gjson.Resul
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *CryptoIKEv2Policy) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/inbound-only"); value.Exists() {
+		data.MatchInboundOnly = types.BoolValue(true)
+	} else {
+		data.MatchInboundOnly = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/address/local-ip"); value.Exists() {
+		data.MatchAddressLocalIp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchAddressLocalIp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/fvrf/name"); value.Exists() {
+		data.MatchFvrf = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/fvrf/any"); value.Exists() {
+		data.MatchFvrfAny = types.BoolValue(true)
+	} else {
+		data.MatchFvrfAny = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/proposal"); value.Exists() {
+		data.Proposals = make([]CryptoIKEv2PolicyProposals, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoIKEv2PolicyProposals{}
+			if cValue := helpers.GetFromXPath(v, "proposals"); cValue.Exists() {
+				item.Proposals = types.StringValue(cValue.String())
+			}
+			data.Proposals = append(data.Proposals, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *CryptoIKEv2PolicyData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/inbound-only"); value.Exists() {
+		data.MatchInboundOnly = types.BoolValue(true)
+	} else {
+		data.MatchInboundOnly = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/address/local-ip"); value.Exists() {
+		data.MatchAddressLocalIp = helpers.GetStringListXML(value.Array())
+	} else {
+		data.MatchAddressLocalIp = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/fvrf/name"); value.Exists() {
+		data.MatchFvrf = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/fvrf/any"); value.Exists() {
+		data.MatchFvrfAny = types.BoolValue(true)
+	} else {
+		data.MatchFvrfAny = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/proposal"); value.Exists() {
+		data.Proposals = make([]CryptoIKEv2PolicyProposals, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CryptoIKEv2PolicyProposals{}
+			if cValue := helpers.GetFromXPath(v, "proposals"); cValue.Exists() {
+				item.Proposals = types.StringValue(cValue.String())
+			}
+			data.Proposals = append(data.Proposals, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state CryptoIKEv2Policy) []string {
@@ -344,6 +548,76 @@ func (data *CryptoIKEv2Policy) getDeletedItems(ctx context.Context, state Crypto
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *CryptoIKEv2Policy) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2Policy, body string) string {
+	b := netconf.NewBody(body)
+	if !state.MatchInboundOnly.IsNull() && data.MatchInboundOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/inbound-only")
+	}
+	if !state.MatchAddressLocalIp.IsNull() {
+		if data.MatchAddressLocalIp.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/address/local-ip")
+		} else {
+			var dataValues, stateValues []string
+			data.MatchAddressLocalIp.ElementsAs(ctx, &dataValues, false)
+			state.MatchAddressLocalIp.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/address/local-ip[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.MatchFvrf.IsNull() && data.MatchFvrf.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/fvrf/name")
+	}
+	if !state.MatchFvrfAny.IsNull() && data.MatchFvrfAny.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/fvrf/any")
+	}
+	for i := range state.Proposals {
+		stateKeys := [...]string{"proposals"}
+		stateKeyValues := [...]string{state.Proposals[i].Proposals.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Proposals[i].Proposals.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Proposals {
+			found = true
+			if state.Proposals[i].Proposals.ValueString() != data.Proposals[j].Proposals.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/proposal%v", predicates))
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *CryptoIKEv2Policy) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -387,3 +661,35 @@ func (data *CryptoIKEv2Policy) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *CryptoIKEv2Policy) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.MatchInboundOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/inbound-only")
+	}
+	if !data.MatchAddressLocalIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/address/local-ip")
+	}
+	if !data.MatchFvrf.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/fvrf/name")
+	}
+	if !data.MatchFvrfAny.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/fvrf/any")
+	}
+	for i := range data.Proposals {
+		keys := [...]string{"proposals"}
+		keyValues := [...]string{data.Proposals[i].Proposals.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/proposal%v", predicates))
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

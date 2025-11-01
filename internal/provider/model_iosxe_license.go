@@ -28,6 +28,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -101,6 +104,17 @@ func (data License) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data License) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/license")
+	return path
+}
+
+func (data LicenseData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/license")
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -171,6 +185,91 @@ func (data License) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data License) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.BootLevelNetworkAdvantage.IsNull() && !data.BootLevelNetworkAdvantage.IsUnknown() {
+		if data.BootLevelNetworkAdvantage.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/boot/level/network-advantage", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/boot/level/network-advantage")
+		}
+	}
+	if !data.BootLevelNetworkAdvantageAddon.IsNull() && !data.BootLevelNetworkAdvantageAddon.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/boot/level/network-advantage/addon", data.BootLevelNetworkAdvantageAddon.ValueString())
+	}
+	if !data.BootLevelNetworkEssentials.IsNull() && !data.BootLevelNetworkEssentials.IsUnknown() {
+		if data.BootLevelNetworkEssentials.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/boot/level/network-essentials", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/boot/level/network-essentials")
+		}
+	}
+	if !data.BootLevelNetworkEssentialsAddon.IsNull() && !data.BootLevelNetworkEssentialsAddon.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/boot/level/network-essentials/addon", data.BootLevelNetworkEssentialsAddon.ValueString())
+	}
+	if !data.SmartTransportType.IsNull() && !data.SmartTransportType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/smart/transport-type", data.SmartTransportType.ValueString())
+	}
+	if !data.SmartUrlCslu.IsNull() && !data.SmartUrlCslu.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/smart/url/cslu", data.SmartUrlCslu.ValueString())
+	}
+	if !data.AcceptAgreement.IsNull() && !data.AcceptAgreement.IsUnknown() {
+		if data.AcceptAgreement.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/accept/agreement", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/accept/agreement")
+		}
+	}
+	if !data.AcceptEnd.IsNull() && !data.AcceptEnd.IsUnknown() {
+		if data.AcceptEnd.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/accept/end", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/accept/end")
+		}
+	}
+	if !data.AcceptUser.IsNull() && !data.AcceptUser.IsUnknown() {
+		if data.AcceptUser.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/accept/user", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/accept/user")
+		}
+	}
+	if !data.UdiPid.IsNull() && !data.UdiPid.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/udi/pid", data.UdiPid.ValueString())
+	}
+	if !data.UdiSn.IsNull() && !data.UdiSn.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/udi/sn", data.UdiSn.ValueString())
+	}
+	if !data.FeatureName.IsNull() && !data.FeatureName.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/feature/name", data.FeatureName.ValueString())
+	}
+	if !data.FeaturePortBulk.IsNull() && !data.FeaturePortBulk.IsUnknown() {
+		if data.FeaturePortBulk.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/feature/port/bulk", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/feature/port/bulk")
+		}
+	}
+	if !data.FeaturePortOnegig.IsNull() && !data.FeaturePortOnegig.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/feature/port/onegig", strconv.FormatInt(data.FeaturePortOnegig.ValueInt64(), 10))
+	}
+	if !data.FeaturePortB6xonegig.IsNull() && !data.FeaturePortB6xonegig.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/feature/port/b-6xonegig", strconv.FormatInt(data.FeaturePortB6xonegig.ValueInt64(), 10))
+	}
+	if !data.FeaturePortTengig.IsNull() && !data.FeaturePortTengig.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/feature/port/tengig", strconv.FormatInt(data.FeaturePortTengig.ValueInt64(), 10))
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -286,6 +385,117 @@ func (data *License) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *License) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-advantage"); !data.BootLevelNetworkAdvantage.IsNull() {
+		if value.Exists() {
+			data.BootLevelNetworkAdvantage = types.BoolValue(true)
+		} else {
+			data.BootLevelNetworkAdvantage = types.BoolValue(false)
+		}
+	} else {
+		data.BootLevelNetworkAdvantage = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-advantage/addon"); value.Exists() && !data.BootLevelNetworkAdvantageAddon.IsNull() {
+		data.BootLevelNetworkAdvantageAddon = types.StringValue(value.String())
+	} else {
+		data.BootLevelNetworkAdvantageAddon = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-essentials"); !data.BootLevelNetworkEssentials.IsNull() {
+		if value.Exists() {
+			data.BootLevelNetworkEssentials = types.BoolValue(true)
+		} else {
+			data.BootLevelNetworkEssentials = types.BoolValue(false)
+		}
+	} else {
+		data.BootLevelNetworkEssentials = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-essentials/addon"); value.Exists() && !data.BootLevelNetworkEssentialsAddon.IsNull() {
+		data.BootLevelNetworkEssentialsAddon = types.StringValue(value.String())
+	} else {
+		data.BootLevelNetworkEssentialsAddon = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/smart/transport-type"); value.Exists() && !data.SmartTransportType.IsNull() {
+		data.SmartTransportType = types.StringValue(value.String())
+	} else {
+		data.SmartTransportType = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/smart/url/cslu"); value.Exists() && !data.SmartUrlCslu.IsNull() {
+		data.SmartUrlCslu = types.StringValue(value.String())
+	} else {
+		data.SmartUrlCslu = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/agreement"); !data.AcceptAgreement.IsNull() {
+		if value.Exists() {
+			data.AcceptAgreement = types.BoolValue(true)
+		} else {
+			data.AcceptAgreement = types.BoolValue(false)
+		}
+	} else {
+		data.AcceptAgreement = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/end"); !data.AcceptEnd.IsNull() {
+		if value.Exists() {
+			data.AcceptEnd = types.BoolValue(true)
+		} else {
+			data.AcceptEnd = types.BoolValue(false)
+		}
+	} else {
+		data.AcceptEnd = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/user"); !data.AcceptUser.IsNull() {
+		if value.Exists() {
+			data.AcceptUser = types.BoolValue(true)
+		} else {
+			data.AcceptUser = types.BoolValue(false)
+		}
+	} else {
+		data.AcceptUser = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/udi/pid"); value.Exists() && !data.UdiPid.IsNull() {
+		data.UdiPid = types.StringValue(value.String())
+	} else {
+		data.UdiPid = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/udi/sn"); value.Exists() && !data.UdiSn.IsNull() {
+		data.UdiSn = types.StringValue(value.String())
+	} else {
+		data.UdiSn = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/name"); value.Exists() && !data.FeatureName.IsNull() {
+		data.FeatureName = types.StringValue(value.String())
+	} else {
+		data.FeatureName = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/bulk"); !data.FeaturePortBulk.IsNull() {
+		if value.Exists() {
+			data.FeaturePortBulk = types.BoolValue(true)
+		} else {
+			data.FeaturePortBulk = types.BoolValue(false)
+		}
+	} else {
+		data.FeaturePortBulk = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/onegig"); value.Exists() && !data.FeaturePortOnegig.IsNull() {
+		data.FeaturePortOnegig = types.Int64Value(value.Int())
+	} else {
+		data.FeaturePortOnegig = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/b-6xonegig"); value.Exists() && !data.FeaturePortB6xonegig.IsNull() {
+		data.FeaturePortB6xonegig = types.Int64Value(value.Int())
+	} else {
+		data.FeaturePortB6xonegig = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/tengig"); value.Exists() && !data.FeaturePortTengig.IsNull() {
+		data.FeaturePortTengig = types.Int64Value(value.Int())
+	} else {
+		data.FeaturePortTengig = types.Int64Null()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -429,6 +639,140 @@ func (data *LicenseData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *License) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-advantage"); value.Exists() {
+		data.BootLevelNetworkAdvantage = types.BoolValue(true)
+	} else {
+		data.BootLevelNetworkAdvantage = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-advantage/addon"); value.Exists() {
+		data.BootLevelNetworkAdvantageAddon = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-essentials"); value.Exists() {
+		data.BootLevelNetworkEssentials = types.BoolValue(true)
+	} else {
+		data.BootLevelNetworkEssentials = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-essentials/addon"); value.Exists() {
+		data.BootLevelNetworkEssentialsAddon = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/smart/transport-type"); value.Exists() {
+		data.SmartTransportType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/smart/url/cslu"); value.Exists() {
+		data.SmartUrlCslu = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/agreement"); value.Exists() {
+		data.AcceptAgreement = types.BoolValue(true)
+	} else {
+		data.AcceptAgreement = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/end"); value.Exists() {
+		data.AcceptEnd = types.BoolValue(true)
+	} else {
+		data.AcceptEnd = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/user"); value.Exists() {
+		data.AcceptUser = types.BoolValue(true)
+	} else {
+		data.AcceptUser = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/udi/pid"); value.Exists() {
+		data.UdiPid = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/udi/sn"); value.Exists() {
+		data.UdiSn = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/name"); value.Exists() {
+		data.FeatureName = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/bulk"); value.Exists() {
+		data.FeaturePortBulk = types.BoolValue(true)
+	} else {
+		data.FeaturePortBulk = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/onegig"); value.Exists() {
+		data.FeaturePortOnegig = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/b-6xonegig"); value.Exists() {
+		data.FeaturePortB6xonegig = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/tengig"); value.Exists() {
+		data.FeaturePortTengig = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *LicenseData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-advantage"); value.Exists() {
+		data.BootLevelNetworkAdvantage = types.BoolValue(true)
+	} else {
+		data.BootLevelNetworkAdvantage = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-advantage/addon"); value.Exists() {
+		data.BootLevelNetworkAdvantageAddon = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-essentials"); value.Exists() {
+		data.BootLevelNetworkEssentials = types.BoolValue(true)
+	} else {
+		data.BootLevelNetworkEssentials = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/boot/level/network-essentials/addon"); value.Exists() {
+		data.BootLevelNetworkEssentialsAddon = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/smart/transport-type"); value.Exists() {
+		data.SmartTransportType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/smart/url/cslu"); value.Exists() {
+		data.SmartUrlCslu = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/agreement"); value.Exists() {
+		data.AcceptAgreement = types.BoolValue(true)
+	} else {
+		data.AcceptAgreement = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/end"); value.Exists() {
+		data.AcceptEnd = types.BoolValue(true)
+	} else {
+		data.AcceptEnd = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/accept/user"); value.Exists() {
+		data.AcceptUser = types.BoolValue(true)
+	} else {
+		data.AcceptUser = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/udi/pid"); value.Exists() {
+		data.UdiPid = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/udi/sn"); value.Exists() {
+		data.UdiSn = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/name"); value.Exists() {
+		data.FeatureName = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/bulk"); value.Exists() {
+		data.FeaturePortBulk = types.BoolValue(true)
+	} else {
+		data.FeaturePortBulk = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/onegig"); value.Exists() {
+		data.FeaturePortOnegig = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/b-6xonegig"); value.Exists() {
+		data.FeaturePortB6xonegig = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/feature/port/tengig"); value.Exists() {
+		data.FeaturePortTengig = types.Int64Value(value.Int())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *License) getDeletedItems(ctx context.Context, state License) []string {
@@ -486,6 +830,64 @@ func (data *License) getDeletedItems(ctx context.Context, state License) []strin
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *License) addDeletedItemsXML(ctx context.Context, state License, body string) string {
+	b := netconf.NewBody(body)
+	if !state.BootLevelNetworkAdvantage.IsNull() && data.BootLevelNetworkAdvantage.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/boot/level/network-advantage")
+	}
+	if !state.BootLevelNetworkAdvantageAddon.IsNull() && data.BootLevelNetworkAdvantageAddon.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/boot/level/network-advantage/addon")
+	}
+	if !state.BootLevelNetworkEssentials.IsNull() && data.BootLevelNetworkEssentials.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/boot/level/network-essentials")
+	}
+	if !state.BootLevelNetworkEssentialsAddon.IsNull() && data.BootLevelNetworkEssentialsAddon.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/boot/level/network-essentials/addon")
+	}
+	if !state.SmartTransportType.IsNull() && data.SmartTransportType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/smart/transport-type")
+	}
+	if !state.SmartUrlCslu.IsNull() && data.SmartUrlCslu.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/smart/url/cslu")
+	}
+	if !state.AcceptAgreement.IsNull() && data.AcceptAgreement.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/accept/agreement")
+	}
+	if !state.AcceptEnd.IsNull() && data.AcceptEnd.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/accept/end")
+	}
+	if !state.AcceptUser.IsNull() && data.AcceptUser.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/accept/user")
+	}
+	if !state.UdiPid.IsNull() && data.UdiPid.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/udi/pid")
+	}
+	if !state.UdiSn.IsNull() && data.UdiSn.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/udi/sn")
+	}
+	if !state.FeatureName.IsNull() && data.FeatureName.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/feature/name")
+	}
+	if !state.FeaturePortBulk.IsNull() && data.FeaturePortBulk.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/feature/port/bulk")
+	}
+	if !state.FeaturePortOnegig.IsNull() && data.FeaturePortOnegig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/feature/port/onegig")
+	}
+	if !state.FeaturePortB6xonegig.IsNull() && data.FeaturePortB6xonegig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/feature/port/b-6xonegig")
+	}
+	if !state.FeaturePortTengig.IsNull() && data.FeaturePortTengig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/feature/port/tengig")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -572,3 +974,61 @@ func (data *License) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *License) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.BootLevelNetworkAdvantage.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/boot/level/network-advantage")
+	}
+	if !data.BootLevelNetworkAdvantageAddon.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/boot/level/network-advantage/addon")
+	}
+	if !data.BootLevelNetworkEssentials.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/boot/level/network-essentials")
+	}
+	if !data.BootLevelNetworkEssentialsAddon.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/boot/level/network-essentials/addon")
+	}
+	if !data.SmartTransportType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/smart/transport-type")
+	}
+	if !data.SmartUrlCslu.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/smart/url/cslu")
+	}
+	if !data.AcceptAgreement.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/accept/agreement")
+	}
+	if !data.AcceptEnd.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/accept/end")
+	}
+	if !data.AcceptUser.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/accept/user")
+	}
+	if !data.UdiPid.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/udi/pid")
+	}
+	if !data.UdiSn.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/udi/sn")
+	}
+	if !data.FeatureName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/feature/name")
+	}
+	if !data.FeaturePortBulk.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/feature/port/bulk")
+	}
+	if !data.FeaturePortOnegig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/feature/port/onegig")
+	}
+	if !data.FeaturePortB6xonegig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/feature/port/b-6xonegig")
+	}
+	if !data.FeaturePortTengig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/feature/port/tengig")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

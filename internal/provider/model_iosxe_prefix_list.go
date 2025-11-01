@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -86,6 +89,17 @@ func (data PrefixList) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data PrefixList) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/prefix-lists")
+	return path
+}
+
+func (data PrefixListData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/prefix-lists")
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -130,6 +144,55 @@ func (data PrefixList) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data PrefixList) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if len(data.Prefixes) > 0 {
+		for _, item := range data.Prefixes {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Seq.IsNull() && !item.Seq.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "no", strconv.FormatInt(item.Seq.ValueInt64(), 10))
+			}
+			if !item.Action.IsNull() && !item.Action.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "action", item.Action.ValueString())
+			}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ip", item.Ip.ValueString())
+			}
+			if !item.Ge.IsNull() && !item.Ge.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ge", strconv.FormatInt(item.Ge.ValueInt64(), 10))
+			}
+			if !item.Le.IsNull() && !item.Le.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "le", strconv.FormatInt(item.Le.ValueInt64(), 10))
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/prefixes", cBody.Res())
+		}
+	}
+	if len(data.PrefixListDescription) > 0 {
+		for _, item := range data.PrefixListDescription {
+			cBody := netconf.Body{}
+			if !item.Name.IsNull() && !item.Name.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "name", item.Name.ValueString())
+			}
+			if !item.Description.IsNull() && !item.Description.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "description", item.Description.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/prefix-list-description", cBody.Res())
+		}
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -229,6 +292,101 @@ func (data *PrefixList) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *PrefixList) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	for i := range data.Prefixes {
+		keys := [...]string{"name", "no"}
+		keyValues := [...]string{data.Prefixes[i].Name.ValueString(), strconv.FormatInt(data.Prefixes[i].Seq.ValueInt64(), 10)}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prefixes").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.Prefixes[i].Name.IsNull() {
+			data.Prefixes[i].Name = types.StringValue(value.String())
+		} else {
+			data.Prefixes[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "no"); value.Exists() && !data.Prefixes[i].Seq.IsNull() {
+			data.Prefixes[i].Seq = types.Int64Value(value.Int())
+		} else {
+			data.Prefixes[i].Seq = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "action"); value.Exists() && !data.Prefixes[i].Action.IsNull() {
+			data.Prefixes[i].Action = types.StringValue(value.String())
+		} else {
+			data.Prefixes[i].Action = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ip"); value.Exists() && !data.Prefixes[i].Ip.IsNull() {
+			data.Prefixes[i].Ip = types.StringValue(value.String())
+		} else {
+			data.Prefixes[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "ge"); value.Exists() && !data.Prefixes[i].Ge.IsNull() {
+			data.Prefixes[i].Ge = types.Int64Value(value.Int())
+		} else {
+			data.Prefixes[i].Ge = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "le"); value.Exists() && !data.Prefixes[i].Le.IsNull() {
+			data.Prefixes[i].Le = types.Int64Value(value.Int())
+		} else {
+			data.Prefixes[i].Le = types.Int64Null()
+		}
+	}
+	for i := range data.PrefixListDescription {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PrefixListDescription[i].Name.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prefix-list-description").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "name"); value.Exists() && !data.PrefixListDescription[i].Name.IsNull() {
+			data.PrefixListDescription[i].Name = types.StringValue(value.String())
+		} else {
+			data.PrefixListDescription[i].Name = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "description"); value.Exists() && !data.PrefixListDescription[i].Description.IsNull() {
+			data.PrefixListDescription[i].Description = types.StringValue(value.String())
+		} else {
+			data.PrefixListDescription[i].Description = types.StringNull()
+		}
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -332,6 +490,100 @@ func (data *PrefixListData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *PrefixList) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prefixes"); value.Exists() {
+		data.Prefixes = make([]PrefixListPrefixes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PrefixListPrefixes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "no"); cValue.Exists() {
+				item.Seq = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "action"); cValue.Exists() {
+				item.Action = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ge"); cValue.Exists() {
+				item.Ge = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "le"); cValue.Exists() {
+				item.Le = types.Int64Value(cValue.Int())
+			}
+			data.Prefixes = append(data.Prefixes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prefix-list-description"); value.Exists() {
+		data.PrefixListDescription = make([]PrefixListPrefixListDescription, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PrefixListPrefixListDescription{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			data.PrefixListDescription = append(data.PrefixListDescription, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *PrefixListData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prefixes"); value.Exists() {
+		data.Prefixes = make([]PrefixListPrefixes, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PrefixListPrefixes{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "no"); cValue.Exists() {
+				item.Seq = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "action"); cValue.Exists() {
+				item.Action = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ip"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "ge"); cValue.Exists() {
+				item.Ge = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "le"); cValue.Exists() {
+				item.Le = types.Int64Value(cValue.Int())
+			}
+			data.Prefixes = append(data.Prefixes, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prefix-list-description"); value.Exists() {
+		data.PrefixListDescription = make([]PrefixListPrefixListDescription, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := PrefixListPrefixListDescription{}
+			if cValue := helpers.GetFromXPath(v, "name"); cValue.Exists() {
+				item.Name = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "description"); cValue.Exists() {
+				item.Description = types.StringValue(cValue.String())
+			}
+			data.PrefixListDescription = append(data.PrefixListDescription, item)
+			return true
+		})
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *PrefixList) getDeletedItems(ctx context.Context, state PrefixList) []string {
@@ -413,6 +665,97 @@ func (data *PrefixList) getDeletedItems(ctx context.Context, state PrefixList) [
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *PrefixList) addDeletedItemsXML(ctx context.Context, state PrefixList, body string) string {
+	b := netconf.NewBody(body)
+	for i := range state.Prefixes {
+		stateKeys := [...]string{"name", "no"}
+		stateKeyValues := [...]string{state.Prefixes[i].Name.ValueString(), strconv.FormatInt(state.Prefixes[i].Seq.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Prefixes[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.Prefixes[i].Seq.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Prefixes {
+			found = true
+			if state.Prefixes[i].Name.ValueString() != data.Prefixes[j].Name.ValueString() {
+				found = false
+			}
+			if state.Prefixes[i].Seq.ValueInt64() != data.Prefixes[j].Seq.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.Prefixes[i].Action.IsNull() && data.Prefixes[j].Action.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v/action", predicates))
+				}
+				if !state.Prefixes[i].Ip.IsNull() && data.Prefixes[j].Ip.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v/ip", predicates))
+				}
+				if !state.Prefixes[i].Ge.IsNull() && data.Prefixes[j].Ge.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v/ge", predicates))
+				}
+				if !state.Prefixes[i].Le.IsNull() && data.Prefixes[j].Le.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v/le", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefixes%v", predicates))
+		}
+	}
+	for i := range state.PrefixListDescription {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.PrefixListDescription[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.PrefixListDescription[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.PrefixListDescription {
+			found = true
+			if state.PrefixListDescription[i].Name.ValueString() != data.PrefixListDescription[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.PrefixListDescription[i].Description.IsNull() && data.PrefixListDescription[j].Description.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefix-list-description%v/description", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/prefix-list-description%v", predicates))
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *PrefixList) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -442,3 +785,33 @@ func (data *PrefixList) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *PrefixList) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	for i := range data.Prefixes {
+		keys := [...]string{"name", "no"}
+		keyValues := [...]string{data.Prefixes[i].Name.ValueString(), strconv.FormatInt(data.Prefixes[i].Seq.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/prefixes%v", predicates))
+	}
+	for i := range data.PrefixListDescription {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.PrefixListDescription[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/prefix-list-description%v", predicates))
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

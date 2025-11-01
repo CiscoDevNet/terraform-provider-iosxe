@@ -29,6 +29,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -83,6 +86,19 @@ func (data Username) getPathShort() string {
 	return matches[1]
 }
 
+// getXPath returns the XPath for NETCONF operations
+func (data Username) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/username=%s")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
+func (data UsernameData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/username=%s")
+	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	return path
+}
+
 // End of section. //template:end getPath
 
 // Section below is generated&owned by "gen/generator.go". //template:begin toBody
@@ -115,6 +131,40 @@ func (data Username) toBody(ctx context.Context) string {
 
 // End of section. //template:end toBody
 
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data Username) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.Name.IsNull() && !data.Name.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/name", data.Name.ValueString())
+	}
+	if !data.Privilege.IsNull() && !data.Privilege.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/privilege", strconv.FormatInt(data.Privilege.ValueInt64(), 10))
+	}
+	if !data.Description.IsNull() && !data.Description.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
+	}
+	if !data.PasswordEncryption.IsNull() && !data.PasswordEncryption.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/password/encryption", data.PasswordEncryption.ValueString())
+	}
+	if !data.Password.IsNull() && !data.Password.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/password/password", data.Password.ValueString())
+	}
+	if !data.SecretEncryption.IsNull() && !data.SecretEncryption.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/secret/encryption", data.SecretEncryption.ValueString())
+	}
+	if !data.Secret.IsNull() && !data.Secret.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/secret/secret", data.Secret.ValueString())
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
 func (data *Username) updateFromBody(ctx context.Context, res gjson.Result) {
@@ -145,6 +195,33 @@ func (data *Username) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *Username) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+		data.Name = types.StringValue(value.String())
+	} else {
+		data.Name = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/privilege"); value.Exists() && !data.Privilege.IsNull() {
+		data.Privilege = types.Int64Value(value.Int())
+	} else {
+		data.Privilege = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+		data.Description = types.StringValue(value.String())
+	} else {
+		data.Description = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/secret/encryption"); value.Exists() && !data.SecretEncryption.IsNull() {
+		data.SecretEncryption = types.StringValue(value.String())
+	} else {
+		data.SecretEncryption = types.StringNull()
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -204,6 +281,56 @@ func (data *UsernameData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *Username) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/privilege"); value.Exists() {
+		data.Privilege = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password/encryption"); value.Exists() {
+		data.PasswordEncryption = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password/password"); value.Exists() {
+		data.Password = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/secret/encryption"); value.Exists() {
+		data.SecretEncryption = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/secret/secret"); value.Exists() {
+		data.Secret = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *UsernameData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/privilege"); value.Exists() {
+		data.Privilege = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() {
+		data.Description = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password/encryption"); value.Exists() {
+		data.PasswordEncryption = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password/password"); value.Exists() {
+		data.Password = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/secret/encryption"); value.Exists() {
+		data.SecretEncryption = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/secret/secret"); value.Exists() {
+		data.Secret = types.StringValue(value.String())
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *Username) getDeletedItems(ctx context.Context, state Username) []string {
@@ -231,6 +358,34 @@ func (data *Username) getDeletedItems(ctx context.Context, state Username) []str
 }
 
 // End of section. //template:end getDeletedItems
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *Username) addDeletedItemsXML(ctx context.Context, state Username, body string) string {
+	b := netconf.NewBody(body)
+	if !state.Privilege.IsNull() && data.Privilege.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/privilege")
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
+	}
+	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password/encryption")
+	}
+	if !state.Password.IsNull() && data.Password.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password/password")
+	}
+	if !state.SecretEncryption.IsNull() && data.SecretEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/secret/encryption")
+	}
+	if !state.Secret.IsNull() && data.Secret.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/secret/secret")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
@@ -269,3 +424,31 @@ func (data *Username) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *Username) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.Privilege.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/privilege")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
+	}
+	if !data.PasswordEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password/encryption")
+	}
+	if !data.Password.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password/password")
+	}
+	if !data.SecretEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/secret/encryption")
+	}
+	if !data.Secret.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/secret/secret")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

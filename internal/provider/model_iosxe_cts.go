@@ -30,6 +30,9 @@ import (
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/netascode/go-netconf"
+	"github.com/netascode/xmldot"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -118,6 +121,17 @@ func (data CTS) getPathShort() string {
 		return path
 	}
 	return matches[1]
+}
+
+// getXPath returns the XPath for NETCONF operations
+func (data CTS) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/cts")
+	return path
+}
+
+func (data CTSData) getXPath() string {
+	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/cts")
+	return path
 }
 
 // End of section. //template:end getPath
@@ -230,6 +244,123 @@ func (data CTS) toBody(ctx context.Context) string {
 }
 
 // End of section. //template:end toBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin toBodyXML
+
+func (data CTS) toBodyXML(ctx context.Context) string {
+	body := netconf.Body{}
+	if !data.AuthorizationList.IsNull() && !data.AuthorizationList.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:authorization/list", data.AuthorizationList.ValueString())
+	}
+	if !data.Sgt.IsNull() && !data.Sgt.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sgt", strconv.FormatInt(data.Sgt.ValueInt64(), 10))
+	}
+	if !data.SxpEnable.IsNull() && !data.SxpEnable.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/sxp-def-enable", data.SxpEnable.ValueBool())
+	}
+	if !data.SxpDefaultPasswordType.IsNull() && !data.SxpDefaultPasswordType.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/type", data.SxpDefaultPasswordType.ValueString())
+	}
+	if !data.SxpDefaultPassword.IsNull() && !data.SxpDefaultPassword.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret", data.SxpDefaultPassword.ValueString())
+	}
+	if !data.SxpRetryPeriod.IsNull() && !data.SxpRetryPeriod.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period", strconv.FormatInt(data.SxpRetryPeriod.ValueInt64(), 10))
+	}
+	if len(data.SxpConnectionPeersIpv4) > 0 {
+		for _, item := range data.SxpConnectionPeersIpv4 {
+			cBody := netconf.Body{}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv4", item.Ip.ValueString())
+			}
+			if !item.SourceIp.IsNull() && !item.SourceIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source", item.SourceIp.ValueString())
+			}
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password", item.Password.ValueString())
+			}
+			if !item.ConnectionMode.IsNull() && !item.ConnectionMode.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "mode", item.ConnectionMode.ValueString())
+			}
+			if !item.Option.IsNull() && !item.Option.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "option", item.Option.ValueString())
+			}
+			if !item.HoldTime.IsNull() && !item.HoldTime.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "hold-time", strconv.FormatInt(item.HoldTime.ValueInt64(), 10))
+			}
+			if !item.MaxTime.IsNull() && !item.MaxTime.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "max-time", strconv.FormatInt(item.MaxTime.ValueInt64(), 10))
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf", cBody.Res())
+		}
+	}
+	if len(data.SxpConnectionPeersIpv4Vrf) > 0 {
+		for _, item := range data.SxpConnectionPeersIpv4Vrf {
+			cBody := netconf.Body{}
+			if !item.Ip.IsNull() && !item.Ip.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "ipv4", item.Ip.ValueString())
+			}
+			if !item.Vrf.IsNull() && !item.Vrf.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "vrf", item.Vrf.ValueString())
+			}
+			if !item.SourceIp.IsNull() && !item.SourceIp.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "source", item.SourceIp.ValueString())
+			}
+			if !item.Password.IsNull() && !item.Password.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "password", item.Password.ValueString())
+			}
+			if !item.ConnectionMode.IsNull() && !item.ConnectionMode.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "mode", item.ConnectionMode.ValueString())
+			}
+			if !item.Option.IsNull() && !item.Option.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "option", item.Option.ValueString())
+			}
+			if !item.HoldTime.IsNull() && !item.HoldTime.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "hold-time", strconv.FormatInt(item.HoldTime.ValueInt64(), 10))
+			}
+			if !item.MaxTime.IsNull() && !item.MaxTime.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "max-time", strconv.FormatInt(item.MaxTime.ValueInt64(), 10))
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf", cBody.Res())
+		}
+	}
+	if !data.SxpSpeakerHoldTime.IsNull() && !data.SxpSpeakerHoldTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time", strconv.FormatInt(data.SxpSpeakerHoldTime.ValueInt64(), 10))
+	}
+	if !data.SxpListenerHoldMinTime.IsNull() && !data.SxpListenerHoldMinTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time", strconv.FormatInt(data.SxpListenerHoldMinTime.ValueInt64(), 10))
+	}
+	if !data.SxpListenerHoldMaxTime.IsNull() && !data.SxpListenerHoldMaxTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time", strconv.FormatInt(data.SxpListenerHoldMaxTime.ValueInt64(), 10))
+	}
+	if !data.RoleBasedEnforcement.IsNull() && !data.RoleBasedEnforcement.IsUnknown() {
+		if data.RoleBasedEnforcement.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement")
+		}
+	}
+	if !data.RoleBasedEnforcementLoggingInterval.IsNull() && !data.RoleBasedEnforcementLoggingInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval", strconv.FormatInt(data.RoleBasedEnforcementLoggingInterval.ValueInt64(), 10))
+	}
+	if !data.RoleBasedEnforcementVlanLists.IsNull() && !data.RoleBasedEnforcementVlanLists.IsUnknown() {
+		var values []int
+		data.RoleBasedEnforcementVlanLists.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists", values)
+	}
+	if !data.RoleBasedPermissionsDefaultAclName.IsNull() && !data.RoleBasedPermissionsDefaultAclName.IsUnknown() {
+		var values []string
+		data.RoleBasedPermissionsDefaultAclName.ElementsAs(ctx, &values, false)
+		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new", values)
+	}
+	bodyString, err := body.String()
+	if err != nil {
+		tflog.Error(ctx, fmt.Sprintf("Error converting body to string: %s", err))
+	}
+	return bodyString
+}
+
+// End of section. //template:end toBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBody
 
@@ -415,6 +546,187 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 }
 
 // End of section. //template:end updateFromBody
+
+// Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
+
+func (data *CTS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:authorization/list"); value.Exists() && !data.AuthorizationList.IsNull() {
+		data.AuthorizationList = types.StringValue(value.String())
+	} else {
+		data.AuthorizationList = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sgt"); value.Exists() && !data.Sgt.IsNull() {
+		data.Sgt = types.Int64Value(value.Int())
+	} else {
+		data.Sgt = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/sxp-def-enable"); !data.SxpEnable.IsNull() {
+		if value.Exists() {
+			data.SxpEnable = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.SxpEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period"); value.Exists() && !data.SxpRetryPeriod.IsNull() {
+		data.SxpRetryPeriod = types.Int64Value(value.Int())
+	} else {
+		data.SxpRetryPeriod = types.Int64Null()
+	}
+	for i := range data.SxpConnectionPeersIpv4 {
+		keys := [...]string{"ipv4"}
+		keyValues := [...]string{data.SxpConnectionPeersIpv4[i].Ip.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv4"); value.Exists() && !data.SxpConnectionPeersIpv4[i].Ip.IsNull() {
+			data.SxpConnectionPeersIpv4[i].Ip = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source"); value.Exists() && !data.SxpConnectionPeersIpv4[i].SourceIp.IsNull() {
+			data.SxpConnectionPeersIpv4[i].SourceIp = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4[i].SourceIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "mode"); value.Exists() && !data.SxpConnectionPeersIpv4[i].ConnectionMode.IsNull() {
+			data.SxpConnectionPeersIpv4[i].ConnectionMode = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4[i].ConnectionMode = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "option"); value.Exists() && !data.SxpConnectionPeersIpv4[i].Option.IsNull() {
+			data.SxpConnectionPeersIpv4[i].Option = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4[i].Option = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "hold-time"); value.Exists() && !data.SxpConnectionPeersIpv4[i].HoldTime.IsNull() {
+			data.SxpConnectionPeersIpv4[i].HoldTime = types.Int64Value(value.Int())
+		} else {
+			data.SxpConnectionPeersIpv4[i].HoldTime = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "max-time"); value.Exists() && !data.SxpConnectionPeersIpv4[i].MaxTime.IsNull() {
+			data.SxpConnectionPeersIpv4[i].MaxTime = types.Int64Value(value.Int())
+		} else {
+			data.SxpConnectionPeersIpv4[i].MaxTime = types.Int64Null()
+		}
+	}
+	for i := range data.SxpConnectionPeersIpv4Vrf {
+		keys := [...]string{"ipv4", "vrf"}
+		keyValues := [...]string{data.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString(), data.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "ipv4"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Ip.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].Ip = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4Vrf[i].Ip = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "vrf"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Vrf.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].Vrf = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4Vrf[i].Vrf = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "source"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].SourceIp.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].SourceIp = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4Vrf[i].SourceIp = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "mode"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].ConnectionMode.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].ConnectionMode = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4Vrf[i].ConnectionMode = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "option"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].Option.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].Option = types.StringValue(value.String())
+		} else {
+			data.SxpConnectionPeersIpv4Vrf[i].Option = types.StringNull()
+		}
+		if value := helpers.GetFromXPath(r, "hold-time"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].HoldTime.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].HoldTime = types.Int64Value(value.Int())
+		} else {
+			data.SxpConnectionPeersIpv4Vrf[i].HoldTime = types.Int64Null()
+		}
+		if value := helpers.GetFromXPath(r, "max-time"); value.Exists() && !data.SxpConnectionPeersIpv4Vrf[i].MaxTime.IsNull() {
+			data.SxpConnectionPeersIpv4Vrf[i].MaxTime = types.Int64Value(value.Int())
+		} else {
+			data.SxpConnectionPeersIpv4Vrf[i].MaxTime = types.Int64Null()
+		}
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time"); value.Exists() && !data.SxpSpeakerHoldTime.IsNull() {
+		data.SxpSpeakerHoldTime = types.Int64Value(value.Int())
+	} else {
+		data.SxpSpeakerHoldTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time"); value.Exists() && !data.SxpListenerHoldMinTime.IsNull() {
+		data.SxpListenerHoldMinTime = types.Int64Value(value.Int())
+	} else {
+		data.SxpListenerHoldMinTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time"); value.Exists() && !data.SxpListenerHoldMaxTime.IsNull() {
+		data.SxpListenerHoldMaxTime = types.Int64Value(value.Int())
+	} else {
+		data.SxpListenerHoldMaxTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement"); !data.RoleBasedEnforcement.IsNull() {
+		if value.Exists() {
+			data.RoleBasedEnforcement = types.BoolValue(true)
+		} else {
+			data.RoleBasedEnforcement = types.BoolValue(false)
+		}
+	} else {
+		data.RoleBasedEnforcement = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval"); value.Exists() && !data.RoleBasedEnforcementLoggingInterval.IsNull() {
+		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
+	} else {
+		data.RoleBasedEnforcementLoggingInterval = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists"); value.Exists() && !data.RoleBasedEnforcementVlanLists.IsNull() {
+		data.RoleBasedEnforcementVlanLists = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.RoleBasedEnforcementVlanLists = types.ListNull(types.Int64Type)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new"); value.Exists() && !data.RoleBasedPermissionsDefaultAclName.IsNull() {
+		data.RoleBasedPermissionsDefaultAclName = helpers.GetStringListXML(value.Array())
+	} else {
+		data.RoleBasedPermissionsDefaultAclName = types.ListNull(types.StringType)
+	}
+}
+
+// End of section. //template:end updateFromBodyXML
 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBody
 
@@ -654,6 +966,236 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 
 // End of section. //template:end fromBodyData
 
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
+
+func (data *CTS) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:authorization/list"); value.Exists() {
+		data.AuthorizationList = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sgt"); value.Exists() {
+		data.Sgt = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/sxp-def-enable"); value.Exists() {
+		data.SxpEnable = types.BoolValue(value.Bool())
+	} else {
+		data.SxpEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/type"); value.Exists() {
+		data.SxpDefaultPasswordType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret"); value.Exists() {
+		data.SxpDefaultPassword = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period"); value.Exists() {
+		data.SxpRetryPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf"); value.Exists() {
+		data.SxpConnectionPeersIpv4 = make([]CTSSxpConnectionPeersIpv4, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CTSSxpConnectionPeersIpv4{}
+			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source"); cValue.Exists() {
+				item.SourceIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mode"); cValue.Exists() {
+				item.ConnectionMode = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "option"); cValue.Exists() {
+				item.Option = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hold-time"); cValue.Exists() {
+				item.HoldTime = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "max-time"); cValue.Exists() {
+				item.MaxTime = types.Int64Value(cValue.Int())
+			}
+			data.SxpConnectionPeersIpv4 = append(data.SxpConnectionPeersIpv4, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf"); value.Exists() {
+		data.SxpConnectionPeersIpv4Vrf = make([]CTSSxpConnectionPeersIpv4Vrf, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CTSSxpConnectionPeersIpv4Vrf{}
+			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source"); cValue.Exists() {
+				item.SourceIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mode"); cValue.Exists() {
+				item.ConnectionMode = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "option"); cValue.Exists() {
+				item.Option = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hold-time"); cValue.Exists() {
+				item.HoldTime = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "max-time"); cValue.Exists() {
+				item.MaxTime = types.Int64Value(cValue.Int())
+			}
+			data.SxpConnectionPeersIpv4Vrf = append(data.SxpConnectionPeersIpv4Vrf, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time"); value.Exists() {
+		data.SxpSpeakerHoldTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time"); value.Exists() {
+		data.SxpListenerHoldMinTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time"); value.Exists() {
+		data.SxpListenerHoldMaxTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement"); value.Exists() {
+		data.RoleBasedEnforcement = types.BoolValue(true)
+	} else {
+		data.RoleBasedEnforcement = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval"); value.Exists() {
+		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists"); value.Exists() {
+		data.RoleBasedEnforcementVlanLists = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.RoleBasedEnforcementVlanLists = types.ListNull(types.Int64Type)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new"); value.Exists() {
+		data.RoleBasedPermissionsDefaultAclName = helpers.GetStringListXML(value.Array())
+	} else {
+		data.RoleBasedPermissionsDefaultAclName = types.ListNull(types.StringType)
+	}
+}
+
+// End of section. //template:end fromBodyXML
+
+// Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
+
+func (data *CTSData) fromBodyXML(ctx context.Context, res xmldot.Result) {
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:authorization/list"); value.Exists() {
+		data.AuthorizationList = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sgt"); value.Exists() {
+		data.Sgt = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/sxp-def-enable"); value.Exists() {
+		data.SxpEnable = types.BoolValue(value.Bool())
+	} else {
+		data.SxpEnable = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/type"); value.Exists() {
+		data.SxpDefaultPasswordType = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret"); value.Exists() {
+		data.SxpDefaultPassword = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period"); value.Exists() {
+		data.SxpRetryPeriod = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf"); value.Exists() {
+		data.SxpConnectionPeersIpv4 = make([]CTSSxpConnectionPeersIpv4, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CTSSxpConnectionPeersIpv4{}
+			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source"); cValue.Exists() {
+				item.SourceIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mode"); cValue.Exists() {
+				item.ConnectionMode = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "option"); cValue.Exists() {
+				item.Option = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hold-time"); cValue.Exists() {
+				item.HoldTime = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "max-time"); cValue.Exists() {
+				item.MaxTime = types.Int64Value(cValue.Int())
+			}
+			data.SxpConnectionPeersIpv4 = append(data.SxpConnectionPeersIpv4, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf"); value.Exists() {
+		data.SxpConnectionPeersIpv4Vrf = make([]CTSSxpConnectionPeersIpv4Vrf, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := CTSSxpConnectionPeersIpv4Vrf{}
+			if cValue := helpers.GetFromXPath(v, "ipv4"); cValue.Exists() {
+				item.Ip = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "vrf"); cValue.Exists() {
+				item.Vrf = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "source"); cValue.Exists() {
+				item.SourceIp = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "password"); cValue.Exists() {
+				item.Password = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "mode"); cValue.Exists() {
+				item.ConnectionMode = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "option"); cValue.Exists() {
+				item.Option = types.StringValue(cValue.String())
+			}
+			if cValue := helpers.GetFromXPath(v, "hold-time"); cValue.Exists() {
+				item.HoldTime = types.Int64Value(cValue.Int())
+			}
+			if cValue := helpers.GetFromXPath(v, "max-time"); cValue.Exists() {
+				item.MaxTime = types.Int64Value(cValue.Int())
+			}
+			data.SxpConnectionPeersIpv4Vrf = append(data.SxpConnectionPeersIpv4Vrf, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time"); value.Exists() {
+		data.SxpSpeakerHoldTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time"); value.Exists() {
+		data.SxpListenerHoldMinTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time"); value.Exists() {
+		data.SxpListenerHoldMaxTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement"); value.Exists() {
+		data.RoleBasedEnforcement = types.BoolValue(true)
+	} else {
+		data.RoleBasedEnforcement = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval"); value.Exists() {
+		data.RoleBasedEnforcementLoggingInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists"); value.Exists() {
+		data.RoleBasedEnforcementVlanLists = helpers.GetInt64ListXML(value.Array())
+	} else {
+		data.RoleBasedEnforcementVlanLists = types.ListNull(types.Int64Type)
+	}
+	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new"); value.Exists() {
+		data.RoleBasedPermissionsDefaultAclName = helpers.GetStringListXML(value.Array())
+	} else {
+		data.RoleBasedPermissionsDefaultAclName = types.ListNull(types.StringType)
+	}
+}
+
+// End of section. //template:end fromBodyDataXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getDeletedItems
 
 func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
@@ -831,6 +1373,193 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 
 // End of section. //template:end getDeletedItems
 
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletedItemsXML
+
+func (data *CTS) addDeletedItemsXML(ctx context.Context, state CTS, body string) string {
+	b := netconf.NewBody(body)
+	if !state.AuthorizationList.IsNull() && data.AuthorizationList.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:authorization/list")
+	}
+	if !state.Sgt.IsNull() && data.Sgt.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sgt")
+	}
+	if !state.SxpEnable.IsNull() && data.SxpEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/sxp-def-enable")
+	}
+	if !state.SxpDefaultPasswordType.IsNull() && data.SxpDefaultPasswordType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/type")
+	}
+	if !state.SxpDefaultPassword.IsNull() && data.SxpDefaultPassword.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret")
+	}
+	if !state.SxpRetryPeriod.IsNull() && data.SxpRetryPeriod.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period")
+	}
+	for i := range state.SxpConnectionPeersIpv4 {
+		stateKeys := [...]string{"ipv4"}
+		stateKeyValues := [...]string{state.SxpConnectionPeersIpv4[i].Ip.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.SxpConnectionPeersIpv4[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.SxpConnectionPeersIpv4 {
+			found = true
+			if state.SxpConnectionPeersIpv4[i].Ip.ValueString() != data.SxpConnectionPeersIpv4[j].Ip.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.SxpConnectionPeersIpv4[i].SourceIp.IsNull() && data.SxpConnectionPeersIpv4[j].SourceIp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/source", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4[i].Password.IsNull() && data.SxpConnectionPeersIpv4[j].Password.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/password", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4[i].ConnectionMode.IsNull() && data.SxpConnectionPeersIpv4[j].ConnectionMode.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/mode", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4[i].Option.IsNull() && data.SxpConnectionPeersIpv4[j].Option.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/option", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4[i].HoldTime.IsNull() && data.SxpConnectionPeersIpv4[j].HoldTime.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/hold-time", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4[i].MaxTime.IsNull() && data.SxpConnectionPeersIpv4[j].MaxTime.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v/max-time", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v", predicates))
+		}
+	}
+	for i := range state.SxpConnectionPeersIpv4Vrf {
+		stateKeys := [...]string{"ipv4", "vrf"}
+		stateKeyValues := [...]string{state.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString(), state.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if !reflect.ValueOf(state.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.SxpConnectionPeersIpv4Vrf {
+			found = true
+			if state.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString() != data.SxpConnectionPeersIpv4Vrf[j].Ip.ValueString() {
+				found = false
+			}
+			if state.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString() != data.SxpConnectionPeersIpv4Vrf[j].Vrf.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.SxpConnectionPeersIpv4Vrf[i].SourceIp.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].SourceIp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/source", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4Vrf[i].Password.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].Password.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/password", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4Vrf[i].ConnectionMode.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].ConnectionMode.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/mode", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4Vrf[i].Option.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].Option.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/option", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4Vrf[i].HoldTime.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].HoldTime.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/hold-time", predicates))
+				}
+				if !state.SxpConnectionPeersIpv4Vrf[i].MaxTime.IsNull() && data.SxpConnectionPeersIpv4Vrf[j].MaxTime.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v/max-time", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v", predicates))
+		}
+	}
+	if !state.SxpSpeakerHoldTime.IsNull() && data.SxpSpeakerHoldTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time")
+	}
+	if !state.SxpListenerHoldMinTime.IsNull() && data.SxpListenerHoldMinTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time")
+	}
+	if !state.SxpListenerHoldMaxTime.IsNull() && data.SxpListenerHoldMaxTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time")
+	}
+	if !state.RoleBasedEnforcement.IsNull() && data.RoleBasedEnforcement.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement")
+	}
+	if !state.RoleBasedEnforcementLoggingInterval.IsNull() && data.RoleBasedEnforcementLoggingInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval")
+	}
+	if !state.RoleBasedEnforcementVlanLists.IsNull() {
+		if data.RoleBasedEnforcementVlanLists.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists")
+		} else {
+			var dataValues, stateValues []int
+			data.RoleBasedEnforcementVlanLists.ElementsAs(ctx, &dataValues, false)
+			state.RoleBasedEnforcementVlanLists.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.RoleBasedPermissionsDefaultAclName.IsNull() {
+		if data.RoleBasedPermissionsDefaultAclName.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new")
+		} else {
+			var dataValues, stateValues []string
+			data.RoleBasedPermissionsDefaultAclName.ElementsAs(ctx, &dataValues, false)
+			state.RoleBasedPermissionsDefaultAclName.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new[.=%v]", v))
+				}
+			}
+		}
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletedItemsXML
+
 // Section below is generated&owned by "gen/generator.go". //template:begin getEmptyLeafsDelete
 
 func (data *CTS) getEmptyLeafsDelete(ctx context.Context) []string {
@@ -902,3 +1631,72 @@ func (data *CTS) getDeletePaths(ctx context.Context) []string {
 }
 
 // End of section. //template:end getDeletePaths
+
+// Section below is generated&owned by "gen/generator.go". //template:begin addDeletePathsXML
+
+func (data *CTS) addDeletePathsXML(ctx context.Context, body string) string {
+	b := netconf.NewBody(body)
+	if !data.AuthorizationList.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:authorization/list")
+	}
+	if !data.Sgt.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:sgt")
+	}
+	if !data.SxpEnable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/sxp-def-enable")
+	}
+	if !data.SxpDefaultPasswordType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/type")
+	}
+	if !data.SxpDefaultPassword.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/default/password/secret")
+	}
+	if !data.SxpRetryPeriod.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/retry/period")
+	}
+	for i := range data.SxpConnectionPeersIpv4 {
+		keys := [...]string{"ipv4"}
+		keyValues := [...]string{data.SxpConnectionPeersIpv4[i].Ip.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-no-vrf%v", predicates))
+	}
+	for i := range data.SxpConnectionPeersIpv4Vrf {
+		keys := [...]string{"ipv4", "vrf"}
+		keyValues := [...]string{data.SxpConnectionPeersIpv4Vrf[i].Ip.ValueString(), data.SxpConnectionPeersIpv4Vrf[i].Vrf.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-cts:sxp/connection/peer/ipv4-with-vrf%v", predicates))
+	}
+	if !data.SxpSpeakerHoldTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/speaker/hold-time")
+	}
+	if !data.SxpListenerHoldMinTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/min-time")
+	}
+	if !data.SxpListenerHoldMaxTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:sxp/listener/hold-time/max-time")
+	}
+	if !data.RoleBasedEnforcement.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement")
+	}
+	if !data.RoleBasedEnforcementLoggingInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/logging-interval")
+	}
+	if !data.RoleBasedEnforcementVlanLists.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists")
+	}
+	if !data.RoleBasedPermissionsDefaultAclName.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new")
+	}
+
+	return b.Res()
+}
+
+// End of section. //template:end addDeletePathsXML

@@ -84,31 +84,31 @@ func iosxeBGPIPv4UnicastNeighborImportStateIdFunc(resourceName string) resource.
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPIPv4UnicastNeighborPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
 	attributes = {
 		"id" = "65000"
 	}
 }
 
-resource "iosxe_restconf" "PreReq1" {
+resource "iosxe_yang" "PreReq1" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv4=unicast"
 	attributes = {
 		"af-name" = "unicast"
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
-resource "iosxe_restconf" "PreReq2" {
+resource "iosxe_yang" "PreReq2" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/neighbor=3.3.3.3"
 	attributes = {
 		"id" = "3.3.3.3"
 		"remote-as" = "65000"
 	}
-	depends_on = [iosxe_restconf.PreReq0, ]
+	depends_on = [iosxe_yang.PreReq0, ]
 }
 
-resource "iosxe_restconf" "PreReq3" {
+resource "iosxe_yang" "PreReq3" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
 	attributes = {
 		"name" = "100"
@@ -125,7 +125,7 @@ func testAccIosxeBGPIPv4UnicastNeighborConfig_minimum() string {
 	config := `resource "iosxe_bgp_ipv4_unicast_neighbor" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	ip = "3.3.3.3"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -148,7 +148,7 @@ func testAccIosxeBGPIPv4UnicastNeighborConfig_all() string {
 	config += `		in_out = "in"` + "\n"
 	config += `		route_map_name = "RM1"` + "\n"
 	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

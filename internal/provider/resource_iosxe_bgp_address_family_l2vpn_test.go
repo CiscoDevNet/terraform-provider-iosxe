@@ -80,7 +80,7 @@ func iosxeBGPAddressFamilyL2VPNImportStateIdFunc(resourceName string) resource.I
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPAddressFamilyL2VPNPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
 	attributes = {
 		"id" = "65000"
@@ -97,7 +97,7 @@ func testAccIosxeBGPAddressFamilyL2VPNConfig_minimum() string {
 	config := `resource "iosxe_bgp_address_family_l2vpn" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "evpn"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -110,7 +110,7 @@ func testAccIosxeBGPAddressFamilyL2VPNConfig_all() string {
 	config := `resource "iosxe_bgp_address_family_l2vpn" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
 	config += `	af_name = "evpn"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

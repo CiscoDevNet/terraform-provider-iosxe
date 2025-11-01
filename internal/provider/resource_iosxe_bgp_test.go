@@ -79,7 +79,7 @@ func iosxeBGPImportStateIdFunc(resourceName string) resource.ImportStateIdFunc {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeBGPPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
 	attributes = {
 		"name" = "100"
@@ -97,7 +97,7 @@ resource "iosxe_restconf" "PreReq0" {
 func testAccIosxeBGPConfig_minimum() string {
 	config := `resource "iosxe_bgp" "test" {` + "\n"
 	config += `	asn = "65000"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -113,7 +113,7 @@ func testAccIosxeBGPConfig_all() string {
 	config += `	log_neighbor_changes = true` + "\n"
 	config += `	router_id_loopback = 100` + "\n"
 	config += `	router_id_ip = "172.16.255.1"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }

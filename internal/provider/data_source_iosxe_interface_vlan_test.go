@@ -82,7 +82,7 @@ func TestAccDataSourceIosxeInterfaceVLAN(t *testing.T) {
 
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeInterfaceVLANPrerequisitesConfig = `
-resource "iosxe_restconf" "PreReq0" {
+resource "iosxe_yang" "PreReq0" {
 	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
 	delete = false
 	attributes = {
@@ -138,7 +138,7 @@ func testAccDataSourceIosxeInterfaceVLANConfig() string {
 	config += `	}]` + "\n"
 	config += `	load_interval = 30` + "\n"
 	config += `	mac_address = "0000.dead.beef"` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
+	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

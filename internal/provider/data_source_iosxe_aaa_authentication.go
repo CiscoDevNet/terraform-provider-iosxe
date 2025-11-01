@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -381,16 +382,28 @@ func (d *AAAAuthenticationDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	res, err := device.Client.GetData(config.getPath())
-	if res.StatusCode == 404 {
-		config = AAAAuthenticationData{Device: config.Device}
+	if device.Protocol == "restconf" {
+		res, err := device.RestconfClient.GetData(config.getPath())
+		if res.StatusCode == 404 {
+			config = AAAAuthenticationData{Device: config.Device}
+		} else {
+			if err != nil {
+				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
+				return
+			}
+
+			config.fromBody(ctx, res.Res)
+		}
 	} else {
+		// NETCONF
+		filter := helpers.GetXpathFilter(config.getXPath())
+		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object (%s), got error: %s", config.getPath(), err))
 			return
 		}
 
-		config.fromBody(ctx, res.Res)
+		config.fromBodyXML(ctx, res.Res)
 	}
 
 	config.Id = types.StringValue(config.getPath())

@@ -84,9 +84,9 @@ func main() {
 		}
 	}
 
-	// update iosxe_restconf resource and data source
+	// update iosxe_yang resource and data source
 	for _, path := range docPaths {
-		filename := path + "restconf.md"
+		filename := path + "yang.md"
 		content, err := os.ReadFile(filename)
 		if err != nil {
 			log.Fatalf("Error opening documentation: %v", err)
