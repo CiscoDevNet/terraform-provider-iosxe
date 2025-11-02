@@ -3854,7 +3854,7 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/service-policy/output/policy-map-name")
 	}
 	if !state.SourceTemplate.IsNull() && data.SourceTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/template")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/")
 	}
 	if !state.SwitchportModeTrunk.IsNull() && data.SwitchportModeTrunk.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/mode/trunk")
@@ -3881,7 +3881,7 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type")
 	}
 	if !state.SwitchportPortSecurityAgingTypeInactivity.IsNull() && data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type/inactivity")
 	}
 	for i := range state.SwitchportPortSecurityMaximumRange {
 		stateKeys := [...]string{"range"}
@@ -3935,10 +3935,10 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/voice/vlan")
 	}
 	if !state.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association/primary-range")
 	}
 	if !state.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association/secondary-range")
 	}
 	if !state.SwitchportTrunkAllowedVlans.IsNull() && data.SwitchportTrunkAllowedVlans.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/allowed/vlan/vlans")
@@ -4514,7 +4514,7 @@ func (data *Template) addDeletePathsXML(ctx context.Context, body string) string
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/service-policy/output/policy-map-name")
 	}
 	if !data.SourceTemplate.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/source/template")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/")
 	}
 	if !data.SwitchportModeTrunk.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/mode/trunk")
@@ -4541,7 +4541,7 @@ func (data *Template) addDeletePathsXML(ctx context.Context, body string) string
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/type")
 	}
 	if !data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/type")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/type/inactivity")
 	}
 	for i := range data.SwitchportPortSecurityMaximumRange {
 		keys := [...]string{"range"}
@@ -4569,10 +4569,10 @@ func (data *Template) addDeletePathsXML(ctx context.Context, body string) string
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/voice/vlan")
 	}
 	if !data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association/primary-range")
 	}
 	if !data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association/secondary-range")
 	}
 	if !data.SwitchportTrunkAllowedVlans.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/trunk/allowed/vlan/vlans")

@@ -2978,22 +2978,22 @@ func (data *Errdisable) addDeletedItemsXML(ctx context.Context, state Errdisable
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detect/cause/loopdetect")
 	}
 	if !state.FlapSettingCauseDtpFlapMaxFlaps.IsNull() && data.FlapSettingCauseDtpFlapMaxFlaps.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/dtp-flap")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/dtp-flap/max-flaps")
 	}
 	if !state.FlapSettingCauseDtpFlapTime.IsNull() && data.FlapSettingCauseDtpFlapTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/dtp-flap")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/dtp-flap/time")
 	}
 	if !state.FlapSettingCauseLinkFlapMaxFlaps.IsNull() && data.FlapSettingCauseLinkFlapMaxFlaps.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/link-flap")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/link-flap/max-flaps")
 	}
 	if !state.FlapSettingCauseLinkFlapTime.IsNull() && data.FlapSettingCauseLinkFlapTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/link-flap")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/link-flap/time")
 	}
 	if !state.FlapSettingCausePagpFlapMaxFlaps.IsNull() && data.FlapSettingCausePagpFlapMaxFlaps.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/pagp-flap")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/pagp-flap/max-flaps")
 	}
 	if !state.FlapSettingCausePagpFlapTime.IsNull() && data.FlapSettingCausePagpFlapTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/pagp-flap")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/flap-setting/cause/pagp-flap/time")
 	}
 	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/recovery/interval")
@@ -3461,22 +3461,22 @@ func (data *Errdisable) addDeletePathsXML(ctx context.Context, body string) stri
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/detect/cause/loopdetect")
 	}
 	if !data.FlapSettingCauseDtpFlapMaxFlaps.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/dtp-flap")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/dtp-flap/max-flaps")
 	}
 	if !data.FlapSettingCauseDtpFlapTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/dtp-flap")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/dtp-flap/time")
 	}
 	if !data.FlapSettingCauseLinkFlapMaxFlaps.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/link-flap")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/link-flap/max-flaps")
 	}
 	if !data.FlapSettingCauseLinkFlapTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/link-flap")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/link-flap/time")
 	}
 	if !data.FlapSettingCausePagpFlapMaxFlaps.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/pagp-flap")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/pagp-flap/max-flaps")
 	}
 	if !data.FlapSettingCausePagpFlapTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/pagp-flap")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/flap-setting/cause/pagp-flap/time")
 	}
 	if !data.RecoveryInterval.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/recovery/interval")

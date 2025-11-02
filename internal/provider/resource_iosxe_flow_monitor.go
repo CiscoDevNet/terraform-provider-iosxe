@@ -168,21 +168,6 @@ func (r *FlowMonitorResource) Create(ctx context.Context, req resource.CreateReq
 		return
 	}
 
-	// Ensure NETCONF connection is closed after operation completes
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		if device.NetconfClient.IsClosed() {
-			if err := device.NetconfClient.Reopen(); err != nil {
-				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
-				return
-			}
-		}
-		defer func() {
-			if err := device.NetconfClient.Close(); err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
-			}
-		}()
-	}
-
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
@@ -219,7 +204,16 @@ func (r *FlowMonitorResource) Create(ctx context.Context, req resource.CreateReq
 				}
 			}
 		} else {
-			// NETCONF
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := plan.toBodyXML(ctx)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
@@ -261,21 +255,6 @@ func (r *FlowMonitorResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	// Ensure NETCONF connection is closed after operation completes
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		if device.NetconfClient.IsClosed() {
-			if err := device.NetconfClient.Reopen(); err != nil {
-				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
-				return
-			}
-		}
-		defer func() {
-			if err := device.NetconfClient.Close(); err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
-			}
-		}()
-	}
-
 	if device.Managed {
 		imp, diags := helpers.IsFlagImporting(ctx, req)
 		if resp.Diagnostics.Append(diags...); resp.Diagnostics.HasError() {
@@ -300,7 +279,16 @@ func (r *FlowMonitorResource) Read(ctx context.Context, req resource.ReadRequest
 				}
 			}
 		} else {
-			// NETCONF
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			filter := helpers.GetXpathFilter(state.getXPath())
 			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 			if err != nil {
@@ -354,21 +342,6 @@ func (r *FlowMonitorResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	// Ensure NETCONF connection is closed after operation completes
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		if device.NetconfClient.IsClosed() {
-			if err := device.NetconfClient.Reopen(); err != nil {
-				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
-				return
-			}
-		}
-		defer func() {
-			if err := device.NetconfClient.Close(); err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
-			}
-		}()
-	}
-
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			body := plan.toBody(ctx)
@@ -418,7 +391,16 @@ func (r *FlowMonitorResource) Update(ctx context.Context, req resource.UpdateReq
 				}
 			}
 		} else {
-			// NETCONF
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := plan.toBodyXML(ctx)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
@@ -457,22 +439,16 @@ func (r *FlowMonitorResource) Delete(ctx context.Context, req resource.DeleteReq
 		return
 	}
 
-	// Ensure NETCONF connection is closed after operation completes
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		if device.NetconfClient.IsClosed() {
-			if err := device.NetconfClient.Reopen(); err != nil {
-				resp.Diagnostics.AddError("Connection Error", fmt.Sprintf("Failed to reopen NETCONF connection: %s", err))
+	if device.Managed {
+		// Manage NETCONF connection lifecycle
+		if device.Protocol == "netconf" && device.NetconfClient != nil {
+			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			if err != nil {
+				resp.Diagnostics.AddError("Connection Error", err.Error())
 				return
 			}
+			defer cleanup()
 		}
-		defer func() {
-			if err := device.NetconfClient.Close(); err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
-			}
-		}()
-	}
-
-	if device.Managed {
 		deleteMode := "all"
 		if state.DeleteMode.ValueString() == "all" {
 			deleteMode = "all"

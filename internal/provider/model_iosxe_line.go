@@ -423,7 +423,9 @@ func (data Line) toBodyXML(ctx context.Context) string {
 			if !item.TransportOutput.IsNull() && !item.TransportOutput.IsUnknown() {
 				var values []string
 				item.TransportOutput.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "transport/output/output", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "transport/output/output", v)
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/console", cBody.Res())
 		}
@@ -507,7 +509,9 @@ func (data Line) toBodyXML(ctx context.Context) string {
 			if !item.TransportInput.IsNull() && !item.TransportInput.IsUnknown() {
 				var values []string
 				item.TransportInput.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "transport/input/input", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "transport/input/input", v)
+				}
 			}
 			if !item.Monitor.IsNull() && !item.Monitor.IsUnknown() {
 				if item.Monitor.ValueBool() {
@@ -546,7 +550,9 @@ func (data Line) toBodyXML(ctx context.Context) string {
 			if !item.TransportOutput.IsNull() && !item.TransportOutput.IsUnknown() {
 				var values []string
 				item.TransportOutput.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "transport/output/output", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "transport/output/output", v)
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/vty", cBody.Res())
 		}

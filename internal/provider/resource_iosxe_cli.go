@@ -130,6 +130,16 @@ func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, re
 				return
 			}
 		} else {
+			// Manage NETCONF connection lifecycle
+			if d.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := netconf.Body{}
 			if raw.ValueBool() {
 				body = helpers.SetFromXPath(body, "/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc/config-clis", cli.ValueString())
@@ -206,6 +216,16 @@ func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, re
 				return
 			}
 		} else {
+			// Manage NETCONF connection lifecycle
+			if d.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := netconf.Body{}
 			if raw.ValueBool() {
 				body = helpers.SetFromXPath(body, "/Cisco-IOS-XE-cli-rpc:config-ios-cli-rpc/config-clis", cli.ValueString())

@@ -376,16 +376,6 @@ func (r *BFDResource) Create(ctx context.Context, req resource.CreateRequest, re
 		return
 	}
 
-	// Manage NETCONF connection lifecycle
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-		if err != nil {
-			resp.Diagnostics.AddError("Connection Error", err.Error())
-			return
-		}
-		defer cleanup()
-	}
-
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			// Create object
@@ -422,7 +412,16 @@ func (r *BFDResource) Create(ctx context.Context, req resource.CreateRequest, re
 				}
 			}
 		} else {
-			// NETCONF
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := plan.toBodyXML(ctx)
 
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
@@ -464,16 +463,6 @@ func (r *BFDResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 		return
 	}
 
-	// Manage NETCONF connection lifecycle
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-		if err != nil {
-			resp.Diagnostics.AddError("Connection Error", err.Error())
-			return
-		}
-		defer cleanup()
-	}
-
 	if device.Managed {
 		imp, diags := helpers.IsFlagImporting(ctx, req)
 		if resp.Diagnostics.Append(diags...); resp.Diagnostics.HasError() {
@@ -498,7 +487,16 @@ func (r *BFDResource) Read(ctx context.Context, req resource.ReadRequest, resp *
 				}
 			}
 		} else {
-			// NETCONF
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			filter := helpers.GetXpathFilter(state.getXPath())
 			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 			if err != nil {
@@ -552,16 +550,6 @@ func (r *BFDResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		return
 	}
 
-	// Manage NETCONF connection lifecycle
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-		if err != nil {
-			resp.Diagnostics.AddError("Connection Error", err.Error())
-			return
-		}
-		defer cleanup()
-	}
-
 	if device.Managed {
 		if device.Protocol == "restconf" {
 			body := plan.toBody(ctx)
@@ -611,7 +599,16 @@ func (r *BFDResource) Update(ctx context.Context, req resource.UpdateRequest, re
 				}
 			}
 		} else {
-			// NETCONF
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := plan.toBodyXML(ctx)
 			body = plan.addDeletedItemsXML(ctx, state, body)
 
@@ -650,17 +647,16 @@ func (r *BFDResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 		return
 	}
 
-	// Manage NETCONF connection lifecycle
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-		if err != nil {
-			resp.Diagnostics.AddError("Connection Error", err.Error())
-			return
-		}
-		defer cleanup()
-	}
-
 	if device.Managed {
+		// Manage NETCONF connection lifecycle
+		if device.Protocol == "netconf" && device.NetconfClient != nil {
+			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			if err != nil {
+				resp.Diagnostics.AddError("Connection Error", err.Error())
+				return
+			}
+			defer cleanup()
+		}
 		deleteMode := "all"
 		if state.DeleteMode.ValueString() == "all" {
 			deleteMode = "all"

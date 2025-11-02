@@ -117,7 +117,9 @@ func (data VLANFilter) toBodyXML(ctx context.Context) string {
 	if !data.VlanLists.IsNull() && !data.VlanLists.IsUnknown() {
 		var values []int
 		data.VlanLists.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/vlan-lists", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/vlan-lists", v)
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {

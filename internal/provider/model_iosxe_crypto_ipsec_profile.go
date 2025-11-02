@@ -127,7 +127,9 @@ func (data CryptoIPSecProfile) toBodyXML(ctx context.Context) string {
 	if !data.SetTransformSet.IsNull() && !data.SetTransformSet.IsUnknown() {
 		var values []string
 		data.SetTransformSet.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/set/transform-set", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/set/transform-set", v)
+		}
 	}
 	if !data.SetIkev2Profile.IsNull() && !data.SetIkev2Profile.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/set/ikev2-profile", data.SetIkev2Profile.ValueString())

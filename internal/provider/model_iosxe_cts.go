@@ -346,12 +346,16 @@ func (data CTS) toBodyXML(ctx context.Context) string {
 	if !data.RoleBasedEnforcementVlanLists.IsNull() && !data.RoleBasedEnforcementVlanLists.IsUnknown() {
 		var values []int
 		data.RoleBasedEnforcementVlanLists.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists", v)
+		}
 	}
 	if !data.RoleBasedPermissionsDefaultAclName.IsNull() && !data.RoleBasedPermissionsDefaultAclName.IsUnknown() {
 		var values []string
 		data.RoleBasedPermissionsDefaultAclName.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new", v)
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {

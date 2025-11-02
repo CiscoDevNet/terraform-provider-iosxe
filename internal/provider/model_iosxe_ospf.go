@@ -639,7 +639,9 @@ func (data OSPF) toBodyXML(ctx context.Context) string {
 	if !data.PassiveInterface.IsNull() && !data.PassiveInterface.IsUnknown() {
 		var values []string
 		data.PassiveInterface.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/passive-interface/interface", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/passive-interface/interface", v)
+		}
 	}
 	if len(data.PassiveInterfaceDisableGigabitEthernets) > 0 {
 		for _, item := range data.PassiveInterfaceDisableGigabitEthernets {
@@ -4243,7 +4245,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableTwoGigabitEthernets {
@@ -4273,7 +4275,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwoGigabitEthernet%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableFiveGigabitEthernets {
@@ -4303,7 +4305,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FiveGigabitEthernet%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableTenGigabitEthernets {
@@ -4333,7 +4335,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TenGigabitEthernet%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableTwentyFiveGigabitEthernets {
@@ -4363,7 +4365,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwentyFiveGigabitE%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableFortyGigabitEthernets {
@@ -4393,7 +4395,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FortyGigabitEthernet%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableHundredGigabitEthernets {
@@ -4423,7 +4425,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/HundredGigabitE%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableTwoHundredGigabitEthernets {
@@ -4453,7 +4455,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/TwoHundredGigabitE%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableFourHundredGigabitEthernets {
@@ -4483,7 +4485,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/FourHundredGigabitE%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableLoopbacks {
@@ -4513,7 +4515,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Loopback%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableVlans {
@@ -4543,7 +4545,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Vlan%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisableTunnels {
@@ -4573,7 +4575,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Tunnel%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisablePortChannels {
@@ -4603,7 +4605,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Port-channel%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.PassiveInterfaceDisablePortChannelSubinterfaces {
@@ -4633,7 +4635,7 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 

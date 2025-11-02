@@ -2044,10 +2044,10 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vrf/forwarding")
 	}
 	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary/address")
 	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary/mask")
 	}
 	if !state.Unnumbered.IsNull() && data.Unnumbered.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/unnumbered")
@@ -2059,13 +2059,13 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl/in")
 	}
 	if !state.IpAccessGroupIn.IsNull() && data.IpAccessGroupIn.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl/acl-name")
 	}
 	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/out/acl/out")
 	}
 	if !state.IpAccessGroupOut.IsNull() && data.IpAccessGroupOut.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/out/acl")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/out/acl/acl-name")
 	}
 	for i := range state.HelperAddresses {
 		stateKeys := [...]string{"address"}
@@ -2113,13 +2113,13 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:local-address")
 	}
 	if !state.BfdInterval.IsNull() && data.BfdInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/msecs")
 	}
 	if !state.BfdIntervalMinRx.IsNull() && data.BfdIntervalMinRx.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx")
 	}
 	if !state.BfdIntervalMultiplier.IsNull() && data.BfdIntervalMultiplier.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier")
 	}
 	if !state.BfdEcho.IsNull() && data.BfdEcho.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bfd/Cisco-IOS-XE-bfd:echo")
@@ -2407,10 +2407,10 @@ func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) s
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vrf/forwarding")
 	}
 	if !data.Ipv4Address.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary/address")
 	}
 	if !data.Ipv4AddressMask.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary/mask")
 	}
 	if !data.Unnumbered.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/unnumbered")
@@ -2422,13 +2422,13 @@ func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) s
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl/in")
 	}
 	if !data.IpAccessGroupIn.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl/acl-name")
 	}
 	if !data.IpAccessGroupOutEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/out/acl/out")
 	}
 	if !data.IpAccessGroupOut.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/out/acl")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/out/acl/acl-name")
 	}
 	for i := range data.HelperAddresses {
 		keys := [...]string{"address"}
@@ -2450,13 +2450,13 @@ func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) s
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:local-address")
 	}
 	if !data.BfdInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/msecs")
 	}
 	if !data.BfdIntervalMinRx.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/min_rx")
 	}
 	if !data.BfdIntervalMultiplier.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:interval-interface/multiplier")
 	}
 	if !data.BfdEcho.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bfd/Cisco-IOS-XE-bfd:echo")

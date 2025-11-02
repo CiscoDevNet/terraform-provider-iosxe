@@ -657,7 +657,7 @@ func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string)
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 	for i := range state.Schedules {
@@ -684,7 +684,7 @@ func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string)
 			}
 			if found {
 				if !state.Schedules[i].Life.IsNull() && data.Schedules[j].Life.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v/life", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v/", predicates))
 				}
 				if !state.Schedules[i].StartTimeNow.IsNull() && data.Schedules[j].StartTimeNow.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v/start-time/now-config", predicates))
@@ -693,7 +693,7 @@ func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string)
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
 		}
 	}
 

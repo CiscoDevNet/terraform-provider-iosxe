@@ -1083,7 +1083,9 @@ func (data System) toBodyXML(ctx context.Context) string {
 	if !data.IpNameServers.IsNull() && !data.IpNameServers.IsUnknown() {
 		var values []string
 		data.IpNameServers.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/name-server/no-vrf-ordered", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/ip/name-server/no-vrf-ordered", v)
+		}
 	}
 	if len(data.IpNameServersVrf) > 0 {
 		for _, item := range data.IpNameServersVrf {
@@ -1094,7 +1096,9 @@ func (data System) toBodyXML(ctx context.Context) string {
 			if !item.Servers.IsNull() && !item.Servers.IsUnknown() {
 				var values []string
 				item.Servers.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "server-ip-list-ordered", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "server-ip-list-ordered", v)
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/name-server/vrf", cBody.Res())
 		}
@@ -1359,7 +1363,9 @@ func (data System) toBodyXML(ctx context.Context) string {
 			if !item.Ips.IsNull() && !item.Ips.IsUnknown() {
 				var values []string
 				item.Ips.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "ip-list-ordered", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "ip-list-ordered", v)
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/ip/host/host-list", cBody.Res())
 		}
@@ -1379,7 +1385,9 @@ func (data System) toBodyXML(ctx context.Context) string {
 					if !citem.Ips.IsNull() && !citem.Ips.IsUnknown() {
 						var values []string
 						citem.Ips.ElementsAs(ctx, &values, false)
-						ccBody = helpers.SetFromXPath(ccBody, "ip-list", values)
+						for _, v := range values {
+							ccBody = helpers.AppendFromXPath(ccBody, "ip-list", v)
+						}
 					}
 					cBody = helpers.SetRawFromXPath(cBody, "host-name", ccBody.Res())
 				}
@@ -1473,7 +1481,9 @@ func (data System) toBodyXML(ctx context.Context) string {
 	if !data.IpDomainListNames.IsNull() && !data.IpDomainListNames.IsUnknown() {
 		var values []string
 		data.IpDomainListNames.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/domain/list/domain-name", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/ip/domain/list/domain-name", v)
+		}
 	}
 	if !data.IpDomainListVrfDomain.IsNull() && !data.IpDomainListVrfDomain.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/domain/list/vrf/domain-name", data.IpDomainListVrfDomain.ValueString())
@@ -7149,7 +7159,7 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 		}
 	}
 	if !state.EnableSecret.IsNull() && data.EnableSecret.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/secret")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/secret/secret")
 	}
 	if !state.EnableSecretType.IsNull() && data.EnableSecretType.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/secret/type")
@@ -8267,7 +8277,7 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/boot/system/bootfile/filename-list-ordered-by-user%v", predicates))
 	}
 	if !data.EnableSecret.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/secret")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/secret/secret")
 	}
 	if !data.EnableSecretType.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/secret/type")

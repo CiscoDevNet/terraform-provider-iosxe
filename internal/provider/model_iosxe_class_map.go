@@ -289,7 +289,9 @@ func (data ClassMap) toBodyXML(ctx context.Context) string {
 	if !data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() && !data.MatchAuthorizingMethodPriorityGreaterThan.IsUnknown() {
 		var values []int
 		data.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/authorizing-method-priority/greater-than", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/authorizing-method-priority/greater-than", v)
+		}
 	}
 	if !data.MatchMethodDot1x.IsNull() && !data.MatchMethodDot1x.IsUnknown() {
 		if data.MatchMethodDot1x.ValueBool() {
@@ -336,7 +338,9 @@ func (data ClassMap) toBodyXML(ctx context.Context) string {
 	if !data.MatchDscp.IsNull() && !data.MatchDscp.IsUnknown() {
 		var values []string
 		data.MatchDscp.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/dscp", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/dscp", v)
+		}
 	}
 	if !data.Description.IsNull() && !data.Description.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/description", data.Description.ValueString())
@@ -344,17 +348,23 @@ func (data ClassMap) toBodyXML(ctx context.Context) string {
 	if !data.MatchAccessGroupName.IsNull() && !data.MatchAccessGroupName.IsUnknown() {
 		var values []string
 		data.MatchAccessGroupName.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/access-group/name", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/access-group/name", v)
+		}
 	}
 	if !data.MatchIpDscp.IsNull() && !data.MatchIpDscp.IsUnknown() {
 		var values []string
 		data.MatchIpDscp.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/ip/dscp", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/ip/dscp", v)
+		}
 	}
 	if !data.MatchIpPrecedence.IsNull() && !data.MatchIpPrecedence.IsUnknown() {
 		var values []string
 		data.MatchIpPrecedence.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/ip/precedence", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/ip/precedence", v)
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {

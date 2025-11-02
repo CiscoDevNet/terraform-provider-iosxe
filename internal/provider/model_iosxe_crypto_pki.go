@@ -200,7 +200,9 @@ func (data CryptoPKI) toBodyXML(ctx context.Context) string {
 			if !item.RevocationCheck.IsNull() && !item.RevocationCheck.IsUnknown() {
 				var values []string
 				item.RevocationCheck.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "revocation-check", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "revocation-check", v)
+				}
 			}
 			if !item.SubjectName.IsNull() && !item.SubjectName.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "subject-name", item.SubjectName.ValueString())

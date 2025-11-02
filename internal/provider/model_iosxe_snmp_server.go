@@ -13650,7 +13650,7 @@ func (data *SNMPServer) addDeletedItemsXML(ctx context.Context, state SNMPServer
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity")
 	}
 	if !state.EnableTrapsPwVc.IsNull() && data.EnableTrapsPwVc.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw/vc")
 	}
 	if !state.EnableTrapsEnvmon.IsNull() && data.EnableTrapsEnvmon.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/envmon")
@@ -13770,16 +13770,16 @@ func (data *SNMPServer) addDeletedItemsXML(ctx context.Context, state SNMPServer
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/inconsistency")
 	}
 	if !state.EnableTrapsStpxRootInconsistency.IsNull() && data.EnableTrapsStpxRootInconsistency.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/root-inconsistency")
 	}
 	if !state.EnableTrapsStpxLoopInconsistency.IsNull() && data.EnableTrapsStpxLoopInconsistency.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/loop-inconsistency")
 	}
 	if !state.EnableTrapsSyslog.IsNull() && data.EnableTrapsSyslog.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog")
 	}
 	if !state.EnableTrapsBgpCbgp2.IsNull() && data.EnableTrapsBgpCbgp2.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp/cbgp2")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/")
 	}
 	if !state.EnableTrapsNhrpNhs.IsNull() && data.EnableTrapsNhrpNhs.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/nhs")
@@ -15798,7 +15798,7 @@ func (data *SNMPServer) addDeletePathsXML(ctx context.Context, body string) stri
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity")
 	}
 	if !data.EnableTrapsPwVc.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw/vc")
 	}
 	if !data.EnableTrapsEnvmon.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/envmon")
@@ -15918,16 +15918,16 @@ func (data *SNMPServer) addDeletePathsXML(ctx context.Context, body string) stri
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/inconsistency")
 	}
 	if !data.EnableTrapsStpxRootInconsistency.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/root-inconsistency")
 	}
 	if !data.EnableTrapsStpxLoopInconsistency.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/loop-inconsistency")
 	}
 	if !data.EnableTrapsSyslog.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog")
 	}
 	if !data.EnableTrapsBgpCbgp2.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp/cbgp2")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/")
 	}
 	if !data.EnableTrapsNhrpNhs.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/nhrp/nhs")

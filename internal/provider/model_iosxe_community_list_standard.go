@@ -124,12 +124,16 @@ func (data CommunityListStandard) toBodyXML(ctx context.Context) string {
 	if !data.DenyEntries.IsNull() && !data.DenyEntries.IsUnknown() {
 		var values []string
 		data.DenyEntries.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/deny/deny-list", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/deny/deny-list", v)
+		}
 	}
 	if !data.PermitEntries.IsNull() && !data.PermitEntries.IsUnknown() {
 		var values []string
 		data.PermitEntries.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/permit/permit-list", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/permit/permit-list", v)
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {

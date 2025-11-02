@@ -129,6 +129,16 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 			state.Attributes = types.MapValueMust(types.StringType, attributes)
 		}
 	} else {
+		// Manage NETCONF connection lifecycle
+		if device.NetconfClient != nil {
+			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			if err != nil {
+				resp.Diagnostics.AddError("Connection Error", err.Error())
+				return
+			}
+			defer cleanup()
+		}
+
 		res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(config.Path.ValueString()))
 		if err != nil {
 			resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to retrieve object, got error: %s", err))

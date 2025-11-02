@@ -315,10 +315,10 @@ func (data *TACACSServer) addDeletedItemsXML(ctx context.Context, state TACACSSe
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timeout")
 	}
 	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key/encryption")
 	}
 	if !state.Key.IsNull() && data.Key.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key/key")
 	}
 
 	return b.Res()
@@ -369,10 +369,10 @@ func (data *TACACSServer) addDeletePathsXML(ctx context.Context, body string) st
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timeout")
 	}
 	if !data.Encryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key/encryption")
 	}
 	if !data.Key.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key/key")
 	}
 
 	return b.Res()

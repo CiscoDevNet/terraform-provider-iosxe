@@ -598,7 +598,7 @@ func (data *Radius) addDeletedItemsXML(ctx context.Context, state Radius, body s
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/retransmit")
 	}
 	if !state.Key.IsNull() && data.Key.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key/key")
 	}
 	if !state.AutomateTesterUsername.IsNull() && data.AutomateTesterUsername.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/username")
@@ -610,10 +610,10 @@ func (data *Radius) addDeletedItemsXML(ctx context.Context, state Radius, body s
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/probe-on-config")
 	}
 	if !state.PacKey.IsNull() && data.PacKey.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key/key")
 	}
 	if !state.PacKeyEncryption.IsNull() && data.PacKeyEncryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key/encryption")
 	}
 
 	return b.Res()
@@ -700,7 +700,7 @@ func (data *Radius) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/retransmit")
 	}
 	if !data.Key.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key/key")
 	}
 	if !data.AutomateTesterUsername.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/automate-tester/username")
@@ -712,10 +712,10 @@ func (data *Radius) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/automate-tester/probe-on-config")
 	}
 	if !data.PacKey.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key/key")
 	}
 	if !data.PacKeyEncryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key/encryption")
 	}
 
 	return b.Res()

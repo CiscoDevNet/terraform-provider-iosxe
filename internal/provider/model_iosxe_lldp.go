@@ -172,12 +172,16 @@ func (data LLDP) toBodyXML(ctx context.Context) string {
 	if !data.Ipv4ManagementAddresses.IsNull() && !data.Ipv4ManagementAddresses.IsUnknown() {
 		var values []string
 		data.Ipv4ManagementAddresses.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/management-address/ipv4", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/management-address/ipv4", v)
+		}
 	}
 	if !data.Ipv6ManagementAddresses.IsNull() && !data.Ipv6ManagementAddresses.IsUnknown() {
 		var values []string
 		data.Ipv6ManagementAddresses.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/management-address/ipv6", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/management-address/ipv6", v)
+		}
 	}
 	if len(data.SystemNames) > 0 {
 		for _, item := range data.SystemNames {

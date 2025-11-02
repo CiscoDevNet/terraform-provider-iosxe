@@ -138,12 +138,16 @@ func (data VLANAccessMap) toBodyXML(ctx context.Context) string {
 	if !data.MatchIpv6Address.IsNull() && !data.MatchIpv6Address.IsUnknown() {
 		var values []string
 		data.MatchIpv6Address.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/ipv6/address", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/ipv6/address", v)
+		}
 	}
 	if !data.MatchIpAddress.IsNull() && !data.MatchIpAddress.IsUnknown() {
 		var values []string
 		data.MatchIpAddress.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/ip/address", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/ip/address", v)
+		}
 	}
 	if !data.Action.IsNull() && !data.Action.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/action", data.Action.ValueString())

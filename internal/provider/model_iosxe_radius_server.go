@@ -216,7 +216,9 @@ func (data RadiusServer) toBodyXML(ctx context.Context) string {
 			if !item.SendAttributes.IsNull() && !item.SendAttributes.IsUnknown() {
 				var values []string
 				item.SendAttributes.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "send-attribute", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "send-attribute", v)
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-aaa:attribute", cBody.Res())
 		}

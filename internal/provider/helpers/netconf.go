@@ -366,7 +366,9 @@ func splitXPathSegments(xPath string) []string {
 
 // buildXPathStructure is a helper that creates all elements in an XPath, including keys and namespaces.
 // Returns the body with the structure created and the path segments for further processing.
-func buildXPathStructure(body netconf.Body, xPath string) (netconf.Body, []string) {
+// The ensureStructure parameter controls whether an empty element should be created at the final path
+// if it doesn't already exist. Set to false when a value will be immediately set afterward.
+func buildXPathStructure(body netconf.Body, xPath string, ensureStructure bool) (netconf.Body, []string) {
 	// Remove leading slash if present
 	xPath = strings.TrimPrefix(xPath, "/")
 
@@ -393,9 +395,9 @@ func buildXPathStructure(body netconf.Body, xPath string) (netconf.Body, []strin
 		}
 	}
 
-	// Ensure the complete path structure exists, including non-predicate elements.
-	// Only create the structure if it doesn't already exist to avoid overwriting key values.
-	if len(pathSegments) > 0 {
+	// Optionally ensure the complete path structure exists, including non-predicate elements.
+	// Only create the structure if requested and if it doesn't already exist.
+	if ensureStructure && len(pathSegments) > 0 {
 		fullPath := strings.Join(pathSegments, ".")
 		existingContent := xmldot.Get(body.Res(), dotPath(fullPath)).String()
 		if existingContent == "" {
@@ -459,7 +461,8 @@ func parseXPathSegment(segment string) (string, []KeyValue) {
 // Example: /native/interface[name='Gi1']/ip/address
 // Creates: <native><interface><name>Gi1</name><ip><address operation="remove"/></ip></interface></native>
 func RemoveFromXPath(body netconf.Body, xPath string) netconf.Body {
-	body, pathSegments := buildXPathStructure(body, xPath)
+	// We don't need empty structure since operation="remove" will create the element
+	body, pathSegments := buildXPathStructure(body, xPath, false)
 
 	// Set operation="remove" on the last element
 	if len(pathSegments) > 0 {
@@ -495,12 +498,49 @@ func RemoveFromXPath(body netconf.Body, xPath string) netconf.Body {
 //	body = SetFromXPath(body, "permit/std-ace/prefix", "192.168.0.0")
 //	// Result: <sequence>10</sequence><deny>...</deny><permit>...</permit>
 func SetFromXPath(body netconf.Body, xPath string, value any) netconf.Body {
-	body, pathSegments := buildXPathStructure(body, xPath)
+	// Determine if we need to create empty structure
+	// Only create empty structure if no value will be set
+	hasValue := value != nil && value != ""
+	ensureStructure := !hasValue
+
+	body, pathSegments := buildXPathStructure(body, xPath, ensureStructure)
 
 	// Only set the value if it's not nil and not empty string
 	// This prevents overwriting key children when no value is needed
-	if len(pathSegments) > 0 && value != nil && value != "" {
+	if hasValue && len(pathSegments) > 0 {
 		fullPath := strings.Join(pathSegments, ".")
+		body = setWithNamespaces(body, fullPath, value)
+	}
+
+	return body
+}
+
+// AppendFromXPath creates all elements in an XPath and appends a value to a list by using
+// the ".-1" syntax. This is useful for adding multiple items to a list without keys.
+// The function automatically appends ".-1" to the final element in the path.
+//
+// Example:
+//
+//	body := netconf.Body{}
+//	body = AppendFromXPath(body, "native/route-map/rule/match/ip/address", "10")
+//	body = AppendFromXPath(body, "native/route-map/rule/match/ip/address", "20")
+//	// Result: <native><route-map><rule><match><ip>
+//	//           <address>10</address>
+//	//           <address>20</address>
+//	//         </ip></match></rule></route-map></native>
+//
+// Note: This function is designed for simple list items without keys. For lists with keys,
+// use SetFromXPath with predicates instead.
+func AppendFromXPath(body netconf.Body, xPath string, value any) netconf.Body {
+	// Determine if we need to create empty structure
+	hasValue := value != nil && value != ""
+	ensureStructure := !hasValue
+
+	body, pathSegments := buildXPathStructure(body, xPath, ensureStructure)
+
+	// Append to the list using .-1 syntax
+	if hasValue && len(pathSegments) > 0 {
+		fullPath := strings.Join(pathSegments, ".") + ".-1"
 		body = setWithNamespaces(body, fullPath, value)
 	}
 
@@ -570,7 +610,8 @@ func SetRawFromXPath(body netconf.Body, xPath string, value string) netconf.Body
 	// Build parent structure (everything except the final element)
 	if len(segments) > 1 {
 		parentXPath := "/" + strings.Join(segments[:len(segments)-1], "/")
-		body, _ = buildXPathStructure(body, parentXPath)
+		// Build structure but don't create empty elements (may already have content)
+		body, _ = buildXPathStructure(body, parentXPath, false)
 
 		// Get parent path for setting content
 		parentPathSegments := make([]string, 0, len(segments)-1)

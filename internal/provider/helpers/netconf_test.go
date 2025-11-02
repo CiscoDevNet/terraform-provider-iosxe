@@ -1,6 +1,8 @@
 package helpers
 
 import (
+	"fmt"
+
 	"reflect"
 	"strings"
 	"testing"
@@ -1099,4 +1101,277 @@ func TestSetRawFromXPath_WithPredicates(t *testing.T) {
 	}
 
 	t.Log("✓ XPath predicates properly stripped in namespace augmentation")
+}
+
+// TestSetFromXPath_NoDuplicateElements verifies that SetFromXPath doesn't create
+// duplicate elements when setting a value at a leaf path. This was a bug where
+// paths like "match/authorizing-method-priority/greater-than" with value "20"
+// would create both an empty <greater-than></greater-than> and <greater-than>20</greater-than>.
+func TestSetFromXPath_NoDuplicateElements(t *testing.T) {
+	body := netconf.Body{}
+
+	// Test the case that was causing duplicate elements
+	body = SetFromXPath(body, "match/authorizing-method-priority/greater-than", 20)
+
+	xml := body.Res()
+
+	// Count occurrences of "<greater-than>"
+	openingTagCount := 0
+	search := "<greater-than>"
+	str := xml
+	for {
+		idx := strings.Index(str, search)
+		if idx == -1 {
+			break
+		}
+		openingTagCount++
+		str = str[idx+len(search):]
+	}
+
+	if openingTagCount != 1 {
+		t.Errorf("Expected exactly 1 <greater-than> element, found %d. XML:\n%s", openingTagCount, xml)
+	}
+
+	// Verify the value is set correctly
+	result := xmldot.Get(body.Res(), "match.authorizing-method-priority.greater-than")
+	if result.Int() != 20 {
+		t.Errorf("Expected value 20, got %d", result.Int())
+	}
+
+	t.Logf("✓ No duplicate elements, value correctly set to: %d", result.Int())
+}
+
+// TestSetFromXPath_BooleanEmptyValue tests that boolean true values (empty strings)
+// correctly create empty elements in XML for NETCONF presence containers.
+func TestSetFromXPath_BooleanEmptyValue(t *testing.T) {
+	body := netconf.Body{}
+
+	// Test setting an empty string (boolean true in NETCONF)
+	body = SetFromXPath(body, "match/authorization-status/authorized", "")
+
+	xml := body.Res()
+	t.Logf("Generated XML:\n%s", xml)
+
+	// Check that the authorized element exists
+	if !strings.Contains(xml, "<authorized>") && !strings.Contains(xml, "<authorized/>") {
+		t.Errorf("Expected <authorized> element to be present in XML")
+	}
+
+	// Verify the element exists using xmldot
+	result := xmldot.Get(body.Res(), "match.authorization-status.authorized")
+	if !result.Exists() {
+		t.Errorf("Expected match.authorization-status.authorized to exist")
+	}
+
+	t.Log("✓ Boolean empty value correctly creates presence container element")
+}
+
+// TestGetXPathFormat tests what format getXPath produces
+func TestGetXPathFormat(t *testing.T) {
+	// Test ConvertRestconfPathToXPath
+	path := ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=%v")
+	t.Logf("After ConvertRestconfPathToXPath: %s", path)
+
+	// Then sprintf with key
+	finalPath := fmt.Sprintf(path, "name", "CM1")
+	t.Logf("After fmt.Sprintf: %s", finalPath)
+}
+
+// TestSetFromXPath_ClassMapSequence tests the exact sequence used in class-map
+// to understand why authorized element is missing.
+func TestSetFromXPath_ClassMapSequence(t *testing.T) {
+	body := netconf.Body{}
+	path := "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map[name=CM1]"
+
+	// authorized (boolean empty)
+	body = SetFromXPath(body, path+"/match/authorization-status/authorized", "")
+	t.Log("After authorized:")
+	t.Log(body.Res())
+
+	// aaa-timeout (boolean empty)
+	body = SetFromXPath(body, path+"/match/result-type/aaa-timeout", "")
+	t.Log("\nAfter aaa-timeout:")
+	t.Log(body.Res())
+
+	// activated-service-template list
+	cBody := netconf.Body{}
+	cBody = SetFromXPath(cBody, "service-name", "CRITICAL_AUTH_ACCESS")
+	body = SetRawFromXPath(body, path+"/match/activated-service-template", cBody.Res())
+	t.Log("\nAfter activated-service-template:")
+	t.Log(body.Res())
+
+	// Check both elements still exist
+	authResult := xmldot.Get(body.Res(), "native.policy.class-map.match.authorization-status.authorized")
+	if !authResult.Exists() {
+		t.Error("❌ authorized element missing after list addition!")
+	} else {
+		t.Log("✓ authorized element still exists")
+	}
+
+	aaaResult := xmldot.Get(body.Res(), "native.policy.class-map.match.result-type.aaa-timeout")
+	if !aaaResult.Exists() {
+		t.Error("❌ aaa-timeout element missing after list addition!")
+	} else {
+		t.Log("✓ aaa-timeout element still exists")
+	}
+}
+
+// TestSetRawFromXPath_DebugParentPath debugs the parent path resolution
+func TestSetRawFromXPath_DebugParentPath(t *testing.T) {
+	body := netconf.Body{}
+	path := "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map[name=CM1]"
+
+	// Set some initial content
+	body = SetFromXPath(body, path+"/match/authorization-status/authorized", "")
+	body = SetFromXPath(body, path+"/match/result-type/aaa-timeout", "")
+
+	t.Log("Initial XML:")
+	t.Log(body.Res())
+
+	// Now add the list item
+	t.Log("\nAdding activated-service-template...")
+	cBody := netconf.Body{}
+	cBody = SetFromXPath(cBody, "service-name", "CRITICAL_AUTH_ACCESS")
+
+	// What is the parent path for activated-service-template?
+	fullPath := path + "/match/activated-service-template"
+	segments := splitXPathSegments(strings.TrimPrefix(fullPath, "/"))
+	t.Logf("Segments: %v", segments)
+	t.Logf("Number of segments: %d", len(segments))
+
+	parentPathSegments := make([]string, 0, len(segments)-1)
+	for _, segment := range segments[:len(segments)-1] {
+		elementName, _ := parseXPathSegment(segment)
+		parentPathSegments = append(parentPathSegments, elementName)
+	}
+	parentPath := dotPath(strings.Join(parentPathSegments, "."))
+	t.Logf("Parent path: %s", parentPath)
+
+	// What content exists at parent path?
+	existingXML := xmldot.Get(body.Res(), parentPath).Raw
+	t.Logf("Existing XML at parent: %s", existingXML)
+
+	body = SetRawFromXPath(body, fullPath, cBody.Res())
+
+	t.Log("\nAfter SetRawFromXPath:")
+	t.Log(body.Res())
+}
+
+// TestBodySetRaw tests how body.SetRaw behaves
+func TestBodySetRaw(t *testing.T) {
+	body := netconf.Body{}
+
+	// Create initial structure
+	body = body.Set("match.foo", "value1")
+	t.Log("Initial:")
+	t.Log(body.Res())
+
+	// Now try to SetRaw at match with combined content
+	existing := xmldot.Get(body.Res(), "match").Raw
+	t.Logf("\nExisting at 'match': %s", existing)
+
+	newContent := "<bar>value2</bar>"
+	combined := existing + newContent
+	t.Logf("Combined: %s", combined)
+
+	body = body.SetRaw("match", combined)
+	t.Log("\nAfter SetRaw:")
+	t.Log(body.Res())
+}
+
+// TestAppendFromXPath tests the AppendFromXPath function
+func TestAppendFromXPath(t *testing.T) {
+	body := netconf.Body{}
+	path := "native/route-map/rule/match/ip/address"
+
+	// Add first item
+	body = AppendFromXPath(body, path, "10")
+	t.Log("After first append:")
+	t.Log(body.Res())
+
+	// Add second item
+	body = AppendFromXPath(body, path, "20")
+	t.Log("\nAfter second append:")
+	t.Log(body.Res())
+
+	// Add third item
+	body = AppendFromXPath(body, path, "30")
+	t.Log("\nAfter third append:")
+	t.Log(body.Res())
+
+	// Verify all three items exist
+	result1 := xmldot.Get(body.Res(), "native.route-map.rule.match.ip.address.0")
+	result2 := xmldot.Get(body.Res(), "native.route-map.rule.match.ip.address.1")
+	result3 := xmldot.Get(body.Res(), "native.route-map.rule.match.ip.address.2")
+
+	if result1.String() != "10" {
+		t.Errorf("Expected first item to be '10', got '%s'", result1.String())
+	}
+	if result2.String() != "20" {
+		t.Errorf("Expected second item to be '20', got '%s'", result2.String())
+	}
+	if result3.String() != "30" {
+		t.Errorf("Expected third item to be '30', got '%s'", result3.String())
+	}
+
+	t.Log("✓ All three items appended successfully")
+}
+
+// TestAppendFromXPath_WithNamespaces tests AppendFromXPath with namespace prefixes
+func TestAppendFromXPath_WithNamespaces(t *testing.T) {
+	body := netconf.Body{}
+	path := "Cisco-IOS-XE-native:native/Cisco-IOS-XE-policy:class-map[name=CM1]/match/dscp"
+
+	// Append multiple dscp values
+	body = AppendFromXPath(body, path, 8)
+	body = AppendFromXPath(body, path, 16)
+	body = AppendFromXPath(body, path, 24)
+
+	t.Log("Generated XML with namespaces:")
+	t.Log(body.Res())
+
+	// Verify all items exist
+	result1 := xmldot.Get(body.Res(), "native.class-map.match.dscp.0")
+	result2 := xmldot.Get(body.Res(), "native.class-map.match.dscp.1")
+	result3 := xmldot.Get(body.Res(), "native.class-map.match.dscp.2")
+
+	if result1.Int() != 8 {
+		t.Errorf("Expected first dscp to be 8, got %d", result1.Int())
+	}
+	if result2.Int() != 16 {
+		t.Errorf("Expected second dscp to be 16, got %d", result2.Int())
+	}
+	if result3.Int() != 24 {
+		t.Errorf("Expected third dscp to be 24, got %d", result3.Int())
+	}
+
+	// Verify namespace declarations
+	if !strings.Contains(body.Res(), `xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native"`) {
+		t.Error("Missing Cisco-IOS-XE-native namespace declaration")
+	}
+	if !strings.Contains(body.Res(), `xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-policy"`) {
+		t.Error("Missing Cisco-IOS-XE-policy namespace declaration")
+	}
+
+	t.Log("✓ List items appended with proper namespaces")
+}
+
+// TestAppendFromXPath_EmptyValue tests AppendFromXPath with empty values (boolean presence)
+func TestAppendFromXPath_EmptyValue(t *testing.T) {
+	body := netconf.Body{}
+	path := "native/feature/item"
+
+	// Append empty values (presence containers)
+	body = AppendFromXPath(body, path, "")
+	body = AppendFromXPath(body, path, "")
+
+	t.Log("Generated XML with empty values:")
+	t.Log(body.Res())
+
+	// Verify structure exists
+	if !strings.Contains(body.Res(), "<item></item>") && !strings.Contains(body.Res(), "<item/>") {
+		t.Error("Expected empty <item> elements")
+	}
+
+	t.Log("✓ Empty values (presence containers) appended successfully")
 }

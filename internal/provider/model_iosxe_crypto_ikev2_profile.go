@@ -283,12 +283,16 @@ func (data CryptoIKEv2Profile) toBodyXML(ctx context.Context) string {
 	if !data.MatchIdentityRemoteIpv6Prefixes.IsNull() && !data.MatchIdentityRemoteIpv6Prefixes.IsUnknown() {
 		var values []string
 		data.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/identity/remote/address/ipv6-prefix", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/identity/remote/address/ipv6-prefix", v)
+		}
 	}
 	if !data.MatchIdentityRemoteKeys.IsNull() && !data.MatchIdentityRemoteKeys.IsUnknown() {
 		var values []string
 		data.MatchIdentityRemoteKeys.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/identity/remote/key-ids", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/identity/remote/key-ids", v)
+		}
 	}
 	if !data.KeyringLocal.IsNull() && !data.KeyringLocal.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/keyring/local/name", data.KeyringLocal.ValueString())
@@ -1209,13 +1213,13 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ivrf")
 	}
 	if !state.DpdInterval.IsNull() && data.DpdInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd/interval")
 	}
 	if !state.DpdRetry.IsNull() && data.DpdRetry.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd/retry")
 	}
 	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd/query")
 	}
 	if !state.ConfigExchangeRequest.IsNull() && data.ConfigExchangeRequest.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/config-exchange/request-1")
@@ -1369,13 +1373,13 @@ func (data *CryptoIKEv2Profile) addDeletePathsXML(ctx context.Context, body stri
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ivrf")
 	}
 	if !data.DpdInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd/interval")
 	}
 	if !data.DpdRetry.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd/retry")
 	}
 	if !data.DpdQuery.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd/query")
 	}
 	if !data.ConfigExchangeRequest.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/config-exchange/request-1")

@@ -356,16 +356,16 @@ func (data *CryptoIKEv2) addDeletedItemsXML(ctx context.Context, state CryptoIKE
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nat/keepalive")
 	}
 	if !state.Dpd.IsNull() && data.Dpd.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/dpd")
 	}
 	if !state.DpdRetryInterval.IsNull() && data.DpdRetryInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/retry-interval")
 	}
 	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/dpd-query")
 	}
 	if !state.HttpUrlCert.IsNull() && data.HttpUrlCert.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/http-url")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/http-url/cert-leaf")
 	}
 
 	return b.Res()
@@ -416,16 +416,16 @@ func (data *CryptoIKEv2) addDeletePathsXML(ctx context.Context, body string) str
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nat/keepalive")
 	}
 	if !data.Dpd.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/dpd")
 	}
 	if !data.DpdRetryInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/retry-interval")
 	}
 	if !data.DpdQuery.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/dpd-query")
 	}
 	if !data.HttpUrlCert.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/http-url")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/http-url/cert-leaf")
 	}
 
 	return b.Res()

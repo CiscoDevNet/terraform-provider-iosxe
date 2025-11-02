@@ -298,16 +298,6 @@ func (d *BFDDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 		return
 	}
 
-	// Manage NETCONF connection lifecycle
-	if device.Protocol == "netconf" && device.NetconfClient != nil {
-		cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
-		if err != nil {
-			resp.Diagnostics.AddError("Connection Error", err.Error())
-			return
-		}
-		defer cleanup()
-	}
-
 	if device.Protocol == "restconf" {
 		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
@@ -321,6 +311,16 @@ func (d *BFDDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 			config.fromBody(ctx, res.Res)
 		}
 	} else {
+		// Manage NETCONF connection lifecycle
+		if device.NetconfClient != nil {
+			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			if err != nil {
+				resp.Diagnostics.AddError("Connection Error", err.Error())
+				return
+			}
+			defer cleanup()
+		}
+
 		// NETCONF
 		filter := helpers.GetXpathFilter(config.getXPath())
 		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)

@@ -848,16 +848,16 @@ func (data *EVPN) addDeletedItemsXML(ctx context.Context, state EVPN, body strin
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/replication-type/mp2mp")
 	}
 	if !state.MacDuplicationLimit.IsNull() && data.MacDuplicationLimit.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication/limit")
 	}
 	if !state.MacDuplicationTime.IsNull() && data.MacDuplicationTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication/time")
 	}
 	if !state.IpDuplicationLimit.IsNull() && data.IpDuplicationLimit.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication/limit")
 	}
 	if !state.IpDuplicationTime.IsNull() && data.IpDuplicationTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication/time")
 	}
 	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/router-id/interface/Loopback")
@@ -989,16 +989,16 @@ func (data *EVPN) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/replication-type/mp2mp")
 	}
 	if !data.MacDuplicationLimit.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication/limit")
 	}
 	if !data.MacDuplicationTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication/time")
 	}
 	if !data.IpDuplicationLimit.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication/limit")
 	}
 	if !data.IpDuplicationTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication/time")
 	}
 	if !data.RouterIdLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/router-id/interface/Loopback")

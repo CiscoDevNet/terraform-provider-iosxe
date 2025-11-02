@@ -159,7 +159,9 @@ func (data CryptoIKEv2Policy) toBodyXML(ctx context.Context) string {
 	if !data.MatchAddressLocalIp.IsNull() && !data.MatchAddressLocalIp.IsUnknown() {
 		var values []string
 		data.MatchAddressLocalIp.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath()+"/match/address/local-ip", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath()+"/match/address/local-ip", v)
+		}
 	}
 	if !data.MatchFvrf.IsNull() && !data.MatchFvrf.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/match/fvrf/name", data.MatchFvrf.ValueString())

@@ -107,6 +107,16 @@ func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequ
 				return
 			}
 		} else {
+			// Manage NETCONF connection lifecycle
+			if d.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := netconf.Body{}
 			body = helpers.SetFromXPath(body, "/cisco-ia:save-config", "")
 			body = body.SetAttr("save-config", "xmlns", "http://cisco.com/yang/cisco-ia")
@@ -162,6 +172,16 @@ func (r *SaveConfigResource) Update(ctx context.Context, req resource.UpdateRequ
 				return
 			}
 		} else {
+			// Manage NETCONF connection lifecycle
+			if d.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := netconf.Body{}
 			body = helpers.SetFromXPath(body, "/save-config", "")
 			body = body.SetAttr("save-config", "xmlns", "http://cisco.com/yang/cisco-ia")

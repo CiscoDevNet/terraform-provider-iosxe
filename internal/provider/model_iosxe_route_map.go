@@ -678,27 +678,37 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.MatchInterfaces.IsNull() && !item.MatchInterfaces.IsUnknown() {
 				var values []string
 				item.MatchInterfaces.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/interface/interface", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/interface/interface", v)
+				}
 			}
 			if !item.MatchIpAddressAccessLists.IsNull() && !item.MatchIpAddressAccessLists.IsUnknown() {
 				var values []string
 				item.MatchIpAddressAccessLists.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/ip/address/access-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/ip/address/access-list", v)
+				}
 			}
 			if !item.MatchIpAddressPrefixLists.IsNull() && !item.MatchIpAddressPrefixLists.IsUnknown() {
 				var values []string
 				item.MatchIpAddressPrefixLists.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/ip/address/prefix-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/ip/address/prefix-list", v)
+				}
 			}
 			if !item.MatchIpNextHopAccessLists.IsNull() && !item.MatchIpNextHopAccessLists.IsUnknown() {
 				var values []string
 				item.MatchIpNextHopAccessLists.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/ip/next-hop/access-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/ip/next-hop/access-list", v)
+				}
 			}
 			if !item.MatchIpNextHopPrefixLists.IsNull() && !item.MatchIpNextHopPrefixLists.IsUnknown() {
 				var values []string
 				item.MatchIpNextHopPrefixLists.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/ip/next-hop/prefix-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/ip/next-hop/prefix-list", v)
+				}
 			}
 			if !item.MatchIpv6AddressAccessLists.IsNull() && !item.MatchIpv6AddressAccessLists.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "match/ipv6/address/access-list", item.MatchIpv6AddressAccessLists.ValueString())
@@ -771,7 +781,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.MatchSourceProtocolBgp.IsNull() && !item.MatchSourceProtocolBgp.IsUnknown() {
 				var values []string
 				item.MatchSourceProtocolBgp.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/source-protocol/bgp", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/source-protocol/bgp", v)
+				}
 			}
 			if !item.MatchSourceProtocolConnected.IsNull() && !item.MatchSourceProtocolConnected.IsUnknown() {
 				if item.MatchSourceProtocolConnected.ValueBool() {
@@ -783,7 +795,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.MatchSourceProtocolEigrp.IsNull() && !item.MatchSourceProtocolEigrp.IsUnknown() {
 				var values []string
 				item.MatchSourceProtocolEigrp.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/source-protocol/eigrp", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/source-protocol/eigrp", v)
+				}
 			}
 			if !item.MatchSourceProtocolIsis.IsNull() && !item.MatchSourceProtocolIsis.IsUnknown() {
 				if item.MatchSourceProtocolIsis.ValueBool() {
@@ -802,12 +816,16 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.MatchSourceProtocolOspf.IsNull() && !item.MatchSourceProtocolOspf.IsUnknown() {
 				var values []string
 				item.MatchSourceProtocolOspf.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/source-protocol/ospf", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/source-protocol/ospf", v)
+				}
 			}
 			if !item.MatchSourceProtocolOspfv3.IsNull() && !item.MatchSourceProtocolOspfv3.IsUnknown() {
 				var values []string
 				item.MatchSourceProtocolOspfv3.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/source-protocol/ospfv3", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/source-protocol/ospfv3", v)
+				}
 			}
 			if !item.MatchSourceProtocolRip.IsNull() && !item.MatchSourceProtocolRip.IsUnknown() {
 				if item.MatchSourceProtocolRip.ValueBool() {
@@ -826,7 +844,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.MatchTags.IsNull() && !item.MatchTags.IsUnknown() {
 				var values []int
 				item.MatchTags.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/tag/tag_value", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/tag/tag_value", v)
+				}
 			}
 			if !item.MatchTrack.IsNull() && !item.MatchTrack.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "match/track", strconv.FormatInt(item.MatchTrack.ValueInt64(), 10))
@@ -834,32 +854,44 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.MatchAsPathsLegacy.IsNull() && !item.MatchAsPathsLegacy.IsUnknown() {
 				var values []int
 				item.MatchAsPathsLegacy.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/as-path/access-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/as-path/access-list", v)
+				}
 			}
 			if !item.MatchCommunityListsLegacy.IsNull() && !item.MatchCommunityListsLegacy.IsUnknown() {
 				var values []string
 				item.MatchCommunityListsLegacy.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/community/name", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/community/name", v)
+				}
 			}
 			if !item.MatchExtcommunityListsLegacy.IsNull() && !item.MatchExtcommunityListsLegacy.IsUnknown() {
 				var values []string
 				item.MatchExtcommunityListsLegacy.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/extcommunity/name", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/extcommunity/name", v)
+				}
 			}
 			if !item.MatchLocalPreferencesLegacy.IsNull() && !item.MatchLocalPreferencesLegacy.IsUnknown() {
 				var values []int
 				item.MatchLocalPreferencesLegacy.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/local-preference/values", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/local-preference/values", v)
+				}
 			}
 			if !item.MatchAsPaths.IsNull() && !item.MatchAsPaths.IsUnknown() {
 				var values []int
 				item.MatchAsPaths.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/as-path/access-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/as-path/access-list", v)
+				}
 			}
 			if !item.MatchCommunityLists.IsNull() && !item.MatchCommunityLists.IsUnknown() {
 				var values []string
 				item.MatchCommunityLists.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/bgp-community/community-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/bgp-community/community-list", v)
+				}
 			}
 			if !item.MatchCommunityListExactMatch.IsNull() && !item.MatchCommunityListExactMatch.IsUnknown() {
 				if item.MatchCommunityListExactMatch.ValueBool() {
@@ -871,17 +903,23 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.MatchExtcommunityLists.IsNull() && !item.MatchExtcommunityLists.IsUnknown() {
 				var values []string
 				item.MatchExtcommunityLists.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/extcommunity/extcommunity-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/extcommunity/extcommunity-list", v)
+				}
 			}
 			if !item.MatchLocalPreferences.IsNull() && !item.MatchLocalPreferences.IsUnknown() {
 				var values []int
 				item.MatchLocalPreferences.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/local-preference/values", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "match/Cisco-IOS-XE-bgp:bgp-route-map-match/local-preference/values", v)
+				}
 			}
 			if !item.SetDefaultInterfaces.IsNull() && !item.SetDefaultInterfaces.IsUnknown() {
 				var values []string
 				item.SetDefaultInterfaces.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/default/interface-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/default/interface-list", v)
+				}
 			}
 			if !item.SetGlobal.IsNull() && !item.SetGlobal.IsUnknown() {
 				if item.SetGlobal.ValueBool() {
@@ -893,7 +931,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.SetInterfaces.IsNull() && !item.SetInterfaces.IsUnknown() {
 				var values []string
 				item.SetInterfaces.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/interface-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/interface-list", v)
+				}
 			}
 			if !item.SetIpAddress.IsNull() && !item.SetIpAddress.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "set/ip/address/prefix-list", item.SetIpAddress.ValueString())
@@ -901,22 +941,30 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.SetIpDefaultGlobalNextHopAddress.IsNull() && !item.SetIpDefaultGlobalNextHopAddress.IsUnknown() {
 				var values []string
 				item.SetIpDefaultGlobalNextHopAddress.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/ip/default/global/next-hop/address", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/ip/default/global/next-hop/address", v)
+				}
 			}
 			if !item.SetIpDefaultNextHopAddress.IsNull() && !item.SetIpDefaultNextHopAddress.IsUnknown() {
 				var values []string
 				item.SetIpDefaultNextHopAddress.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/ip/default/next-hop/address", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/ip/default/next-hop/address", v)
+				}
 			}
 			if !item.SetIpGlobalNextHopAddress.IsNull() && !item.SetIpGlobalNextHopAddress.IsUnknown() {
 				var values []string
 				item.SetIpGlobalNextHopAddress.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/ip/global/next-hop/address", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/ip/global/next-hop/address", v)
+				}
 			}
 			if !item.SetIpNextHopAddress.IsNull() && !item.SetIpNextHopAddress.IsUnknown() {
 				var values []string
 				item.SetIpNextHopAddress.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/ip/next-hop/address", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/ip/next-hop/address", v)
+				}
 			}
 			if !item.SetIpNextHopSelf.IsNull() && !item.SetIpNextHopSelf.IsUnknown() {
 				if item.SetIpNextHopSelf.ValueBool() {
@@ -931,7 +979,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.SetIpv6Address.IsNull() && !item.SetIpv6Address.IsUnknown() {
 				var values []string
 				item.SetIpv6Address.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/ipv6/address/prefix-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/ipv6/address/prefix-list", v)
+				}
 			}
 			if !item.SetIpv6DefaultGlobalNextHop.IsNull() && !item.SetIpv6DefaultGlobalNextHop.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "set/ipv6/default/global/next-hop", item.SetIpv6DefaultGlobalNextHop.ValueString())
@@ -939,12 +989,16 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.SetIpv6DefaultNextHop.IsNull() && !item.SetIpv6DefaultNextHop.IsUnknown() {
 				var values []string
 				item.SetIpv6DefaultNextHop.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/ipv6/default/next-hop/ipv6", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/ipv6/default/next-hop/ipv6", v)
+				}
 			}
 			if !item.SetIpv6NextHop.IsNull() && !item.SetIpv6NextHop.IsUnknown() {
 				var values []string
 				item.SetIpv6NextHop.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/ipv6/next-hop/ipv6", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/ipv6/next-hop/ipv6", v)
+				}
 			}
 			if !item.SetLevel1.IsNull() && !item.SetLevel1.IsUnknown() {
 				if item.SetLevel1.ValueBool() {
@@ -1017,7 +1071,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.SetCommunitiesLegacy.IsNull() && !item.SetCommunitiesLegacy.IsUnknown() {
 				var values []string
 				item.SetCommunitiesLegacy.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/community/community-well-known/community-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/community/community-well-known/community-list", v)
+				}
 			}
 			if !item.SetCommunitiesAdditiveLegacy.IsNull() && !item.SetCommunitiesAdditiveLegacy.IsUnknown() {
 				if item.SetCommunitiesAdditiveLegacy.ValueBool() {
@@ -1045,7 +1101,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.SetExtcomunityRtLegacy.IsNull() && !item.SetExtcomunityRtLegacy.IsUnknown() {
 				var values []string
 				item.SetExtcomunityRtLegacy.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/extcommunity/rt/asn-nn", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/extcommunity/rt/asn-nn", v)
+				}
 			}
 			if !item.SetExtcomunitySooLegacy.IsNull() && !item.SetExtcomunitySooLegacy.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "set/extcommunity/soo/asn-nn", item.SetExtcomunitySooLegacy.ValueString())
@@ -1098,7 +1156,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.SetCommunities.IsNull() && !item.SetCommunities.IsUnknown() {
 				var values []string
 				item.SetCommunities.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/bgp-community/community-well-known/community-list", v)
+				}
 			}
 			if !item.SetCommunitiesAdditive.IsNull() && !item.SetCommunitiesAdditive.IsUnknown() {
 				if item.SetCommunitiesAdditive.ValueBool() {
@@ -1126,7 +1186,9 @@ func (data RouteMap) toBodyXML(ctx context.Context) string {
 			if !item.SetExtcomunityRt.IsNull() && !item.SetExtcomunityRt.IsUnknown() {
 				var values []string
 				item.SetExtcomunityRt.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/rt/asn-nn", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/rt/asn-nn", v)
+				}
 			}
 			if !item.SetExtcomunitySoo.IsNull() && !item.SetExtcomunitySoo.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "set/Cisco-IOS-XE-bgp:bgp-route-map-set/extcommunity/soo/asn-nn", item.SetExtcomunitySoo.ValueString())

@@ -178,6 +178,16 @@ func (r *YangResource) Create(ctx context.Context, req resource.CreateRequest, r
 				return
 			}
 		} else {
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := plan.toBodyXML(ctx)
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -231,6 +241,16 @@ func (r *YangResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 				state.fromBody(ctx, res.Res)
 			}
 		} else {
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			filter := helpers.GetXpathFilter(state.getPath())
 			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 			if err != nil {
@@ -296,6 +316,16 @@ func (r *YangResource) Update(ctx context.Context, req resource.UpdateRequest, r
 				}
 			}
 		} else {
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := plan.toBodyXML(ctx)
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
@@ -340,6 +370,16 @@ func (r *YangResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 				return
 			}
 		} else {
+			// Manage NETCONF connection lifecycle
+			if device.NetconfClient != nil {
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				if err != nil {
+					resp.Diagnostics.AddError("Connection Error", err.Error())
+					return
+				}
+				defer cleanup()
+			}
+
 			body := netconf.Body{}
 			body = helpers.RemoveFromXPath(body, state.getPath())
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {

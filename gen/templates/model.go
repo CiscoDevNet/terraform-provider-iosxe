@@ -299,11 +299,15 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context) string {
 		{{- else if or (eq .Type "StringList") (eq .Type "StringSet")}}
 		var values []string
 		data.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath() + "/{{.XPath}}", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath() + "/{{.XPath}}", v)
+		}
 		{{- else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}
 		var values []int
 		data.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
-		body = helpers.SetFromXPath(body, data.getXPath() + "/{{.XPath}}", values)
+		for _, v := range values {
+			body = helpers.AppendFromXPath(body, data.getXPath() + "/{{.XPath}}", v)
+		}
 		{{- end}}
 	}
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
@@ -330,11 +334,15 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context) string {
 				{{- else if or (eq .Type "StringList") (eq .Type "StringSet")}}
 				var values []string
 				item.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "{{.XPath}}", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "{{.XPath}}", v)
+				}
 				{{- else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}
 				var values []int
 				item.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "{{.XPath}}", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "{{.XPath}}", v)
+				}
 				{{- end}}
 			}
 			{{- else if or (eq .Type "List") (eq .Type "Set")}}
@@ -360,11 +368,15 @@ func (data {{camelCase .Name}}) toBodyXML(ctx context.Context) string {
 						{{- else if or (eq .Type "StringList") (eq .Type "StringSet")}}
 						var values []string
 						citem.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
-						ccBody = helpers.SetFromXPath(ccBody, "{{.XPath}}", values)
+						for _, v := range values {
+							ccBody = helpers.AppendFromXPath(ccBody, "{{.XPath}}", v)
+						}
 						{{- else if or (eq .Type "Int64List") (eq .Type "Int64Set")}}
 						var values []int
 						citem.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
-						ccBody = helpers.SetFromXPath(ccBody, "{{.XPath}}", values)
+						for _, v := range values {
+							ccBody = helpers.AppendFromXPath(ccBody, "{{.XPath}}", v)
+						}
 						{{- end}}
 					}
 					{{- end}}
@@ -1472,7 +1484,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 	{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 	if !state.{{toGoName .TfName}}.IsNull() {
 		if data.{{toGoName .TfName}}.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/{{getDeletePath .}}")
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/{{.XPath}}")
 		} else {
 			var dataValues, stateValues []{{ if or (eq .Type "StringList") (eq .Type "StringSet") }}string{{else}}int{{end}}
 			data.{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -1486,14 +1498,14 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 					}
 				}
 				if !found {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{getDeletePath .}}[.=%v]", v))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{.XPath}}[.=%v]", v))
 				}
 			}
 		}
 	}
 	{{- else if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
 	if !state.{{toGoName .TfName}}.IsNull() && data.{{toGoName .TfName}}.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/{{getDeletePath .}}")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/{{.XPath}}")
 	}
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
 	{{- $xpath := .XPath}}
@@ -1533,7 +1545,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 				{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
 					if data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{getDeletePath .}}", predicates))
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{.XPath}}", predicates))
 					} else {
 						var dataValues, stateValues []{{ if or (eq .Type "StringList") (eq .Type "StringSet") }}string{{else}}int{{end}}
 						data.{{$list}}[i].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -1547,14 +1559,14 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 								}
 							}
 							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{getDeletePath .}}[.=%v]", predicates, v))
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{.XPath}}[.=%v]", predicates, v))
 							}
 						}
 					}
 				}
 				{{- else if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{getDeletePath .}}", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{.XPath}}", predicates))
 				}
 				{{- else if or (eq .Type "List") (eq .Type "Set")}}
 				{{- $cXpath := .XPath}}
@@ -1594,7 +1606,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 							{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
 								if data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
-									b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{getDeletePath .}}", predicates, cpredicates))
+									b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{.XPath}}", predicates, cpredicates))
 								} else {
 									var dataValues, stateValues []{{ if or (eq .Type "StringList") (eq .Type "StringSet") }}string{{else}}int{{end}}
 									data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ElementsAs(ctx, &dataValues, false)
@@ -1608,14 +1620,14 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 											}
 										}
 										if !found {
-											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{getDeletePath .}}=[.%v]", predicates, cpredicates, v))
+											b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{.XPath}}=[.%v]", predicates, cpredicates, v))
 										}
 									}
 								}
 							}
 							{{- else if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() && data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{getDeletePath .}}", predicates, cpredicates))
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{$cXpath}}%v/{{.XPath}}", predicates, cpredicates))
 							}
 							{{- end}}
 							{{- end}}
@@ -1623,7 +1635,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 						}
 					}
 					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{getDeletePath .}}%v", predicates, cpredicates))
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{$xpath}}%v/{{.XPath}}%v", predicates, cpredicates))
 					}
 				}
 				{{- end}}
@@ -1632,7 +1644,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{getDeletePath .}}%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/{{.XPath}}%v", predicates))
 		}
 	}
 	{{- end}}
@@ -1728,7 +1740,7 @@ func (data *{{camelCase .Name}}) addDeletePathsXML(ctx context.Context, body str
 	{{- range .Attributes}}
 	{{- if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
 	if !data.{{toGoName .TfName}}.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/{{getDeletePath .}}")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/{{.XPath}}")
 	}
 	{{- else if and (or (eq .Type "List") (eq .Type "Set")) (not .NoDelete)}}
 	for i := range data.{{toGoName .TfName}} {

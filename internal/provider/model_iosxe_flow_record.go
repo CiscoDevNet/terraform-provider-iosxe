@@ -2055,10 +2055,10 @@ func (data *FlowRecord) addDeletedItemsXML(ctx context.Context, state FlowRecord
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/interface/output")
 	}
 	if !state.CollectCounterBytesLong.IsNull() && data.CollectCounterBytesLong.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/counter/bytes")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/counter/bytes/long")
 	}
 	if !state.CollectCounterPacketsLong.IsNull() && data.CollectCounterPacketsLong.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/counter/packets")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/counter/packets/long")
 	}
 	if !state.CollectTransportTcpFlags.IsNull() && data.CollectTransportTcpFlags.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/collect/transport/tcp/flags")
@@ -2379,10 +2379,10 @@ func (data *FlowRecord) addDeletePathsXML(ctx context.Context, body string) stri
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/interface/output")
 	}
 	if !data.CollectCounterBytesLong.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/counter/bytes")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/counter/bytes/long")
 	}
 	if !data.CollectCounterPacketsLong.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/counter/packets")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/counter/packets/long")
 	}
 	if !data.CollectTransportTcpFlags.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/collect/transport/tcp/flags")

@@ -222,7 +222,9 @@ func (data SpanningTree) toBodyXML(ctx context.Context) string {
 			if !item.VlanIds.IsNull() && !item.VlanIds.IsUnknown() {
 				var values []int
 				item.VlanIds.ElementsAs(ctx, &values, false)
-				cBody = helpers.SetFromXPath(cBody, "vlan-ids", values)
+				for _, v := range values {
+					cBody = helpers.AppendFromXPath(cBody, "vlan-ids", v)
+				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance", cBody.Res())
 		}
