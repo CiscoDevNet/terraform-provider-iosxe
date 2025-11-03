@@ -288,6 +288,33 @@ func (r *CTSResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 				ElementType:         types.StringType,
 				Optional:            true,
 			},
+			"credentials_id": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify the TrustSec Network Access Device (NAD) identification name which should be same as mentioned in the Identity Services Engine (ISE)(upto 32 char)").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 32),
+				},
+			},
+			"credentials_password_set": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the password for the device.").String,
+				Optional:            true,
+			},
+			"credentials_password_type": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify the password encryption type").AddStringEnumDescription("0", "6", "7").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("0", "6", "7"),
+				},
+			},
+			"credentials_password": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Specify the password for the device").String,
+				Optional:            true,
+				Sensitive:           true,
+				Validators: []validator.String{
+					stringvalidator.LengthBetween(1, 162),
+					stringvalidator.RegexMatches(regexp.MustCompile(`.*`), ""),
+				},
+			},
 		},
 	}
 }

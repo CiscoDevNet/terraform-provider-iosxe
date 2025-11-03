@@ -2,7 +2,7 @@
 name: CTS
 path: Cisco-IOS-XE-native:native/cts
 doc_category: CTS
-test_tags: [C9000V]
+test_tags: [C8000V]  # Note: CTS credentials only available in config mode on Cat8k; Cat9k requires enable mode
 attributes:
   - yang_name: Cisco-IOS-XE-cts:authorization/list
     example: Tacacs-GROUP
@@ -92,6 +92,21 @@ attributes:
     tf_name: role_based_permissions_default_acl_name
     example: ACL1
     exclude_test: true
+  - yang_name: Cisco-IOS-XE-cts:credentials/id
+    example: DEVICE123
+  - yang_name: Cisco-IOS-XE-cts:credentials/password
+    tf_name: credentials_password_set
+    example: true
+    exclude_test: true
+  - yang_name: Cisco-IOS-XE-cts:credentials/type
+    tf_name: credentials_password_type
+    write_only: true
+    example: 0
+  - yang_name: Cisco-IOS-XE-cts:credentials/secret
+    tf_name: credentials_password
+    write_only: true
+    sensitive: true
+    example: MySecretPassword123
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1

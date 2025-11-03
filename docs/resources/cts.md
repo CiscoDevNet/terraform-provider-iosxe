@@ -48,6 +48,9 @@ resource "iosxe_cts" "example" {
   sxp_listener_hold_max_time              = 300
   role_based_enforcement                  = true
   role_based_enforcement_logging_interval = 300
+  credentials_id                          = "DEVICE123"
+  credentials_password_type               = "0"
+  credentials_password                    = "MySecretPassword123"
 }
 ```
 
@@ -57,6 +60,11 @@ resource "iosxe_cts" "example" {
 ### Optional
 
 - `authorization_list` (String) Local authorization list to use for CTS
+- `credentials_id` (String) Specify the TrustSec Network Access Device (NAD) identification name which should be same as mentioned in the Identity Services Engine (ISE)(upto 32 char)
+- `credentials_password` (String, Sensitive) Specify the password for the device
+- `credentials_password_set` (Boolean) Set the password for the device.
+- `credentials_password_type` (String) Specify the password encryption type
+  - Choices: `0`, `6`, `7`
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`
 - `device` (String) A device name from the provider configuration.

@@ -33,4 +33,7 @@ resource "iosxe_cts" "example" {
   sxp_listener_hold_max_time              = 300
   role_based_enforcement                  = true
   role_based_enforcement_logging_interval = 300
+  credentials_id                          = "DEVICE123"
+  credentials_password_type               = "0"
+  credentials_password                    = "MySecretPassword123"
 }

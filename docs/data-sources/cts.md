@@ -27,6 +27,10 @@ data "iosxe_cts" "example" {
 ### Read-Only
 
 - `authorization_list` (String) Local authorization list to use for CTS
+- `credentials_id` (String) Specify the TrustSec Network Access Device (NAD) identification name which should be same as mentioned in the Identity Services Engine (ISE)(upto 32 char)
+- `credentials_password` (String, Sensitive) Specify the password for the device
+- `credentials_password_set` (Boolean) Set the password for the device.
+- `credentials_password_type` (String) Specify the password encryption type
 - `id` (String) The path of the retrieved object.
 - `role_based_enforcement` (Boolean) Enable Role-based Access Control enforcement
 - `role_based_enforcement_logging_interval` (Number) Configure sgacl logging interval

@@ -200,6 +200,23 @@ func (d *CTSDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 				ElementType:         types.StringType,
 				Computed:            true,
 			},
+			"credentials_id": schema.StringAttribute{
+				MarkdownDescription: "Specify the TrustSec Network Access Device (NAD) identification name which should be same as mentioned in the Identity Services Engine (ISE)(upto 32 char)",
+				Computed:            true,
+			},
+			"credentials_password_set": schema.BoolAttribute{
+				MarkdownDescription: "Set the password for the device.",
+				Computed:            true,
+			},
+			"credentials_password_type": schema.StringAttribute{
+				MarkdownDescription: "Specify the password encryption type",
+				Computed:            true,
+			},
+			"credentials_password": schema.StringAttribute{
+				MarkdownDescription: "Specify the password for the device",
+				Computed:            true,
+				Sensitive:           true,
+			},
 		},
 	}
 }

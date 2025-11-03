@@ -58,6 +58,7 @@ func TestAccDataSourceIosxeCTS(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "sxp_listener_hold_max_time", "300"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "role_based_enforcement", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "role_based_enforcement_logging_interval", "300"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_cts.test", "credentials_id", "DEVICE123"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -123,6 +124,9 @@ func testAccDataSourceIosxeCTSConfig() string {
 	config += `	sxp_listener_hold_max_time = 300` + "\n"
 	config += `	role_based_enforcement = true` + "\n"
 	config += `	role_based_enforcement_logging_interval = 300` + "\n"
+	config += `	credentials_id = "DEVICE123"` + "\n"
+	config += `	credentials_password_type = "0"` + "\n"
+	config += `	credentials_password = "MySecretPassword123"` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

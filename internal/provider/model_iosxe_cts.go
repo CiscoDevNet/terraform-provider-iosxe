@@ -56,6 +56,10 @@ type CTS struct {
 	RoleBasedEnforcementLoggingInterval types.Int64                    `tfsdk:"role_based_enforcement_logging_interval"`
 	RoleBasedEnforcementVlanLists       types.List                     `tfsdk:"role_based_enforcement_vlan_lists"`
 	RoleBasedPermissionsDefaultAclName  types.List                     `tfsdk:"role_based_permissions_default_acl_name"`
+	CredentialsId                       types.String                   `tfsdk:"credentials_id"`
+	CredentialsPasswordSet              types.Bool                     `tfsdk:"credentials_password_set"`
+	CredentialsPasswordType             types.String                   `tfsdk:"credentials_password_type"`
+	CredentialsPassword                 types.String                   `tfsdk:"credentials_password"`
 }
 
 type CTSData struct {
@@ -76,6 +80,10 @@ type CTSData struct {
 	RoleBasedEnforcementLoggingInterval types.Int64                    `tfsdk:"role_based_enforcement_logging_interval"`
 	RoleBasedEnforcementVlanLists       types.List                     `tfsdk:"role_based_enforcement_vlan_lists"`
 	RoleBasedPermissionsDefaultAclName  types.List                     `tfsdk:"role_based_permissions_default_acl_name"`
+	CredentialsId                       types.String                   `tfsdk:"credentials_id"`
+	CredentialsPasswordSet              types.Bool                     `tfsdk:"credentials_password_set"`
+	CredentialsPasswordType             types.String                   `tfsdk:"credentials_password_type"`
+	CredentialsPassword                 types.String                   `tfsdk:"credentials_password"`
 }
 type CTSSxpConnectionPeersIpv4 struct {
 	Ip             types.String `tfsdk:"ip"`
@@ -170,6 +178,20 @@ func (data CTS) toBody(ctx context.Context) string {
 		var values []string
 		data.RoleBasedPermissionsDefaultAclName.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:role-based.permissions.default.ACL-name-new", values)
+	}
+	if !data.CredentialsId.IsNull() && !data.CredentialsId.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:credentials.id", data.CredentialsId.ValueString())
+	}
+	if !data.CredentialsPasswordSet.IsNull() && !data.CredentialsPasswordSet.IsUnknown() {
+		if data.CredentialsPasswordSet.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:credentials.password", map[string]string{})
+		}
+	}
+	if !data.CredentialsPasswordType.IsNull() && !data.CredentialsPasswordType.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:credentials.type", data.CredentialsPasswordType.ValueString())
+	}
+	if !data.CredentialsPassword.IsNull() && !data.CredentialsPassword.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:credentials.secret", data.CredentialsPassword.ValueString())
 	}
 	if len(data.SxpConnectionPeersIpv4) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-cts:sxp.connection.peer.ipv4-no-vrf", []interface{}{})
@@ -412,6 +434,20 @@ func (data *CTS) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.RoleBasedPermissionsDefaultAclName = types.ListNull(types.StringType)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.id"); value.Exists() && !data.CredentialsId.IsNull() {
+		data.CredentialsId = types.StringValue(value.String())
+	} else {
+		data.CredentialsId = types.StringNull()
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.password"); !data.CredentialsPasswordSet.IsNull() {
+		if value.Exists() {
+			data.CredentialsPasswordSet = types.BoolValue(true)
+		} else {
+			data.CredentialsPasswordSet = types.BoolValue(false)
+		}
+	} else {
+		data.CredentialsPasswordSet = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -530,6 +566,20 @@ func (data *CTS) fromBody(ctx context.Context, res gjson.Result) {
 		data.RoleBasedPermissionsDefaultAclName = helpers.GetStringList(value.Array())
 	} else {
 		data.RoleBasedPermissionsDefaultAclName = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.id"); value.Exists() {
+		data.CredentialsId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.password"); value.Exists() {
+		data.CredentialsPasswordSet = types.BoolValue(true)
+	} else {
+		data.CredentialsPasswordSet = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.type"); value.Exists() {
+		data.CredentialsPasswordType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.secret"); value.Exists() {
+		data.CredentialsPassword = types.StringValue(value.String())
 	}
 }
 
@@ -650,6 +700,20 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.RoleBasedPermissionsDefaultAclName = types.ListNull(types.StringType)
 	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.id"); value.Exists() {
+		data.CredentialsId = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.password"); value.Exists() {
+		data.CredentialsPasswordSet = types.BoolValue(true)
+	} else {
+		data.CredentialsPasswordSet = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.type"); value.Exists() {
+		data.CredentialsPasswordType = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "Cisco-IOS-XE-cts:credentials.secret"); value.Exists() {
+		data.CredentialsPassword = types.StringValue(value.String())
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -658,6 +722,18 @@ func (data *CTSData) fromBody(ctx context.Context, res gjson.Result) {
 
 func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 	deletedItems := make([]string, 0)
+	if !state.CredentialsPassword.IsNull() && data.CredentialsPassword.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/secret", state.getPath()))
+	}
+	if !state.CredentialsPasswordType.IsNull() && data.CredentialsPasswordType.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/type", state.getPath()))
+	}
+	if !state.CredentialsPasswordSet.IsNull() && data.CredentialsPasswordSet.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/password", state.getPath()))
+	}
+	if !state.CredentialsId.IsNull() && data.CredentialsId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/id", state.getPath()))
+	}
 	if !state.RoleBasedPermissionsDefaultAclName.IsNull() {
 		if data.RoleBasedPermissionsDefaultAclName.IsNull() {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new", state.getPath()))
@@ -835,6 +911,9 @@ func (data *CTS) getDeletedItems(ctx context.Context, state CTS) []string {
 
 func (data *CTS) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.CredentialsPasswordSet.IsNull() && !data.CredentialsPasswordSet.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/password", data.getPath()))
+	}
 	if !data.RoleBasedEnforcement.IsNull() && !data.RoleBasedEnforcement.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/enforcement-only/enforcement", data.getPath()))
 	}
@@ -848,6 +927,18 @@ func (data *CTS) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *CTS) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.CredentialsPassword.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/secret", data.getPath()))
+	}
+	if !data.CredentialsPasswordType.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/type", data.getPath()))
+	}
+	if !data.CredentialsPasswordSet.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/password", data.getPath()))
+	}
+	if !data.CredentialsId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:credentials/id", data.getPath()))
+	}
 	if !data.RoleBasedPermissionsDefaultAclName.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new", data.getPath()))
 	}
