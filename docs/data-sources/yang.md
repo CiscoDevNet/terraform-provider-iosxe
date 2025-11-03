@@ -14,7 +14,7 @@ This data source can retrieve one or more attributes via YANG paths.
 
 ```terraform
 data "iosxe_yang" "example" {
-  path = "Cisco-IOS-XE-native:native/banner/login"
+  path = "/Cisco-IOS-XE-native:native/banner/login"
 }
 ```
 

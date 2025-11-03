@@ -14,14 +14,14 @@ Manages IOS-XE objects via YANG paths. This resource can only manage a single ob
 
 ```terraform
 resource "iosxe_yang" "simple" {
-  path = "Cisco-IOS-XE-native:native/banner/login"
+  path = "/Cisco-IOS-XE-native:native/banner/login"
   attributes = {
     banner = "My Banner"
   }
 }
 
 resource "iosxe_yang" "nested_list" {
-  path = "Cisco-IOS-XE-native:native/ip"
+  path = "/Cisco-IOS-XE-native:native/ip"
   attributes = {
     source-route = "true"
   }
@@ -75,5 +75,5 @@ Import is supported using the following syntax:
 The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
-terraform import iosxe_yang.example "Cisco-IOS-XE-native:native/banner/login"
+terraform import iosxe_yang.example "/Cisco-IOS-XE-native:native/banner/login"
 ```
