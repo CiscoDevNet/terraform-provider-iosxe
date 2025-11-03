@@ -15,6 +15,51 @@ attributes:
     xpath: source/Loopback
     tf_name: source_loopback
     example: 123
+  - yang_name: source/interface-choice/GigabitEthernet/GigabitEthernet
+    xpath: source/GigabitEthernet
+    tf_name: source_gigabit_ethernet
+    exclude_test: true
+    example: 0/0/1
+  - yang_name: source/interface-choice/TwoGigabitEthernet/TwoGigabitEthernet
+    xpath: source/TwoGigabitEthernet
+    tf_name: source_two_gigabit_ethernet
+    exclude_test: true
+    example: 0/0/1
+  - yang_name: source/interface-choice/FiveGigabitEthernet/FiveGigabitEthernet
+    xpath: source/FiveGigabitEthernet
+    tf_name: source_five_gigabit_ethernet
+    exclude_test: true
+    example: 0/0/1
+  - yang_name: source/interface-choice/TenGigabitEthernet/TenGigabitEthernet
+    xpath: source/TenGigabitEthernet
+    tf_name: source_ten_gigabit_ethernet
+    exclude_test: true
+    example: 0/0/1
+  - yang_name: source/interface-choice/TwentyFiveGigE/TwentyFiveGigE
+    xpath: source/TwentyFiveGigE
+    tf_name: source_twenty_five_gig_e
+    exclude_test: true
+    example: 0/0/1
+  - yang_name: source/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
+    xpath: source/FortyGigabitEthernet
+    tf_name: source_forty_gigabit_ethernet
+    exclude_test: true
+    example: 0/0/1
+  - yang_name: source/interface-choice/HundredGigE/HundredGigE
+    xpath: source/HundredGigE
+    tf_name: source_hundred_gig_e
+    exclude_test: true
+    example: 0/0/1
+  - yang_name: source/interface-choice/Vlan/Vlan
+    xpath: source/Vlan
+    tf_name: source_vlan
+    exclude_test: true
+    example: 100
+  - yang_name: source/interface-choice/Port-channel/Port-channel
+    xpath: source/Port-channel
+    tf_name: source_port_channel
+    exclude_test: true
+    example: 1
   - yang_name: transport/udp
     example: 655
   - yang_name: template/data/timeout

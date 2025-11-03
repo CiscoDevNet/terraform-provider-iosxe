@@ -14,22 +14,25 @@ This resource can manage the Flow Record configuration.
 
 ```terraform
 resource "iosxe_flow_record" "example" {
-  name                             = "FNF1"
-  description                      = "My flow record"
-  match_ipv4_source_address        = true
-  match_ipv4_destination_address   = true
-  match_ipv4_protocol              = true
-  match_ipv4_tos                   = true
-  match_transport_source_port      = true
-  match_transport_destination_port = true
-  match_interface_input            = true
-  match_flow_direction             = true
-  collect_interface_output         = true
-  collect_counter_bytes_long       = true
-  collect_counter_packets_long     = true
-  collect_transport_tcp_flags      = true
-  collect_timestamp_absolute_first = true
-  collect_timestamp_absolute_last  = true
+  name                                         = "FNF1"
+  description                                  = "My flow record"
+  match_ipv4_source_address                    = true
+  match_ipv4_destination_address               = true
+  match_ipv4_protocol                          = true
+  match_ipv4_tos                               = true
+  match_transport_source_port                  = true
+  match_transport_destination_port             = true
+  match_interface_input                        = true
+  match_flow_direction                         = true
+  collect_interface_output                     = true
+  collect_counter_bytes_long                   = true
+  collect_counter_packets_long                 = true
+  collect_transport_tcp_flags                  = true
+  collect_timestamp_absolute_first             = true
+  collect_timestamp_absolute_last              = true
+  match_datalink_mac_source_address_input      = true
+  match_datalink_mac_destination_address_input = true
+  match_ipv4_ttl                               = true
 }
 ```
 
@@ -64,6 +67,12 @@ resource "iosxe_flow_record" "example" {
 - `match_connection_server_ipv4_address` (Boolean) IPv4 address of the flow responder
 - `match_connection_server_ipv6_address` (Boolean) IPv6 address of the flow responder
 - `match_connection_server_transport_port` (Boolean) Transport port of the flow responder
+- `match_datalink_destination_vlan_id` (Boolean) Match destination VLAN ID, available on router platforms (C8K, CSR1K)
+- `match_datalink_mac_destination_address_input` (Boolean) Destination MAC address from packet at input
+- `match_datalink_mac_source_address_input` (Boolean) Source MAC address from packet at input
+- `match_datalink_source_vlan_id` (Boolean) Match source VLAN ID, available on router platforms (C8K, CSR1K)
+- `match_datalink_vlan` (String) Match VLAN input/output, available on switch platforms (C9K)
+  - Choices: `input`, `output`
 - `match_flow_direction` (Boolean) Direction the flow was monitored in
 - `match_flow_observation_point` (Boolean) Observation point ID
 - `match_interface_input` (Boolean) The input interface
@@ -71,6 +80,7 @@ resource "iosxe_flow_record" "example" {
 - `match_ipv4_protocol` (Boolean) IPv4 protocol
 - `match_ipv4_source_address` (Boolean) IPv4 source address
 - `match_ipv4_tos` (Boolean) IPv4 type of service
+- `match_ipv4_ttl` (Boolean) IPv4 TTL
 - `match_ipv4_version` (Boolean) IP version from IPv4 header
 - `match_ipv6_destination_address` (Boolean) IPv6 destination address
 - `match_ipv6_protocol` (Boolean) IPv6 payload protocol
