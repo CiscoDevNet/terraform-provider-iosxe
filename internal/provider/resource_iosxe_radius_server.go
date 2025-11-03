@@ -87,10 +87,6 @@ func (r *RadiusServerResource) Schema(ctx context.Context, req resource.SchemaRe
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Required:            true,
 						},
-						"access_request_include": schema.BoolAttribute{
-							MarkdownDescription: helpers.NewAttributeDescription("Include attribute").String,
-							Optional:            true,
-						},
 						"attribute_31_parameters": schema.ListNestedAttribute{
 							MarkdownDescription: helpers.NewAttributeDescription("").String,
 							Optional:            true,

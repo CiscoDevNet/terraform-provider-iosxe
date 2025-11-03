@@ -11,9 +11,6 @@ attributes:
       - yang_name: number
         id: true
         example: 31
-      - yang_name: access-request/include
-        example: true
-        exclude_test: true
       - yang_name: attri31/attri31-list
         tf_name: attribute_31_parameters
         type: List

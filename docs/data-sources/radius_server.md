@@ -37,7 +37,6 @@ data "iosxe_radius_server" "example" {
 
 Read-Only:
 
-- `access_request_include` (Boolean) Include attribute
 - `attribute_31_parameters` (Attributes List) (see [below for nested schema](#nestedatt--attributes--attribute_31_parameters))
 - `number` (String)
 - `send_attributes` (List of String)

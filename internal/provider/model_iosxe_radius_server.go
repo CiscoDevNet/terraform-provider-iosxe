@@ -56,7 +56,6 @@ type RadiusServerData struct {
 }
 type RadiusServerAttributes struct {
 	Number                types.String                                  `tfsdk:"number"`
-	AccessRequestInclude  types.Bool                                    `tfsdk:"access_request_include"`
 	Attribute31Parameters []RadiusServerAttributesAttribute31Parameters `tfsdk:"attribute_31_parameters"`
 	SendAttributes        types.List                                    `tfsdk:"send_attributes"`
 }
@@ -111,11 +110,6 @@ func (data RadiusServer) toBody(ctx context.Context) string {
 		for index, item := range data.Attributes {
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
 				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"number", item.Number.ValueString())
-			}
-			if !item.AccessRequestInclude.IsNull() && !item.AccessRequestInclude.IsUnknown() {
-				if item.AccessRequestInclude.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-aaa:attribute"+"."+strconv.Itoa(index)+"."+"access-request.include", map[string]string{})
-				}
 			}
 			if !item.SendAttributes.IsNull() && !item.SendAttributes.IsUnknown() {
 				var values []string
@@ -187,15 +181,6 @@ func (data *RadiusServer) updateFromBody(ctx context.Context, res gjson.Result) 
 			data.Attributes[i].Number = types.StringValue(value.String())
 		} else {
 			data.Attributes[i].Number = types.StringNull()
-		}
-		if value := r.Get("access-request.include"); !data.Attributes[i].AccessRequestInclude.IsNull() {
-			if value.Exists() {
-				data.Attributes[i].AccessRequestInclude = types.BoolValue(true)
-			} else {
-				data.Attributes[i].AccessRequestInclude = types.BoolValue(false)
-			}
-		} else {
-			data.Attributes[i].AccessRequestInclude = types.BoolNull()
 		}
 		for ci := range data.Attributes[i].Attribute31Parameters {
 			keys := [...]string{"calling-station-id"}
@@ -293,11 +278,6 @@ func (data *RadiusServer) fromBody(ctx context.Context, res gjson.Result) {
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Number = types.StringValue(cValue.String())
 			}
-			if cValue := v.Get("access-request.include"); cValue.Exists() {
-				item.AccessRequestInclude = types.BoolValue(true)
-			} else {
-				item.AccessRequestInclude = types.BoolValue(false)
-			}
 			if cValue := v.Get("attri31.attri31-list"); cValue.Exists() {
 				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31Parameters, 0)
 				cValue.ForEach(func(ck, cv gjson.Result) bool {
@@ -360,11 +340,6 @@ func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 			item := RadiusServerAttributes{}
 			if cValue := v.Get("number"); cValue.Exists() {
 				item.Number = types.StringValue(cValue.String())
-			}
-			if cValue := v.Get("access-request.include"); cValue.Exists() {
-				item.AccessRequestInclude = types.BoolValue(true)
-			} else {
-				item.AccessRequestInclude = types.BoolValue(false)
 			}
 			if cValue := v.Get("attri31.attri31-list"); cValue.Exists() {
 				item.Attribute31Parameters = make([]RadiusServerAttributesAttribute31Parameters, 0)
@@ -504,9 +479,6 @@ func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServe
 						deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v", state.getPath(), strings.Join(stateKeyValues[:], ","), strings.Join(cstateKeyValues[:], ",")))
 					}
 				}
-				if !state.Attributes[i].AccessRequestInclude.IsNull() && data.Attributes[j].AccessRequestInclude.IsNull() {
-					deletedItems = append(deletedItems, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/access-request/include", state.getPath(), strings.Join(stateKeyValues[:], ",")))
-				}
 				break
 			}
 		}
@@ -536,9 +508,6 @@ func (data *RadiusServer) getEmptyLeafsDelete(ctx context.Context) []string {
 			if !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && !data.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.ValueBool() {
 				emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/attri31/attri31-list=%v/id-send/nas-port-detail", data.getPath(), strings.Join(keyValues[:], ","), strings.Join(ckeyValues[:], ",")))
 			}
-		}
-		if !data.Attributes[i].AccessRequestInclude.IsNull() && !data.Attributes[i].AccessRequestInclude.ValueBool() {
-			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/Cisco-IOS-XE-aaa:attribute=%v/access-request/include", data.getPath(), strings.Join(keyValues[:], ",")))
 		}
 	}
 

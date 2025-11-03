@@ -59,7 +59,6 @@ Required:
 
 Optional:
 
-- `access_request_include` (Boolean) Include attribute
 - `attribute_31_parameters` (Attributes List) (see [below for nested schema](#nestedatt--attributes--attribute_31_parameters))
 - `send_attributes` (List of String)
 

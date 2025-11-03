@@ -76,10 +76,6 @@ func (d *RadiusServerDataSource) Schema(ctx context.Context, req datasource.Sche
 							MarkdownDescription: "",
 							Computed:            true,
 						},
-						"access_request_include": schema.BoolAttribute{
-							MarkdownDescription: "Include attribute",
-							Computed:            true,
-						},
 						"attribute_31_parameters": schema.ListNestedAttribute{
 							MarkdownDescription: "",
 							Computed:            true,
