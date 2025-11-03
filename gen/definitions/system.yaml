@@ -343,6 +343,10 @@ attributes:
     tf_name: ip_ssh_source_interface_hundred_gigabit_ethernet
     example: 1
     exclude_test: true
+  - yang_name: ip/ssh/bulk-mode
+    example: true
+  - yang_name: ip/ssh/bulk-mode/window-size
+    example: 262144
   - yang_name: control-plane/Cisco-IOS-XE-policy:service-policy/input
     example: system-cpp-policy
     exclude_test: true

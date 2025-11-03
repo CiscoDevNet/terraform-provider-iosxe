@@ -108,6 +108,8 @@ data "iosxe_system" "example" {
 - `ip_scp_server_enable` (Boolean) Enable server side of SCP
 - `ip_source_route` (Boolean) Process packets with source routing header options
 - `ip_ssh_authentication_retries` (Number) Specify number of authentication retries
+- `ip_ssh_bulk_mode` (Boolean) Enable optimizations for bulk data transfer procedures
+- `ip_ssh_bulk_mode_window_size` (Number) Window-size value
 - `ip_ssh_source_interface_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `ip_ssh_source_interface_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `ip_ssh_source_interface_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
