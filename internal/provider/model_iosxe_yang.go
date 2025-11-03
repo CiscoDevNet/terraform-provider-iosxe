@@ -221,7 +221,7 @@ func (data *Yang) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	// Parse attributes
 	attributes := data.Attributes.Elements()
 	for attr := range attributes {
-		value := helpers.GetFromXPath(res, "data/"+data.getPath()+"/"+attr)
+		value := helpers.GetFromXPath(res, "data"+data.Path.ValueString()+"/"+attr)
 		if !value.Exists() || value.String() == "" {
 			attributes[attr] = types.StringValue("")
 		} else {
@@ -255,7 +255,7 @@ func (data *Yang) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				itemXPath := listName + xpathPredicates
 
 				// Find the matching list item in XML response
-				itemResult := helpers.GetFromXPath(res, "data/"+data.getPath()+"/"+itemXPath)
+				itemResult := helpers.GetFromXPath(res, "data"+data.Path.ValueString()+"/"+itemXPath)
 
 				// Parse attributes from the matched item
 				itemAttributes := data.Lists[i].Items[ii].Elements()
@@ -271,7 +271,7 @@ func (data *Yang) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			}
 		} else if len(data.Lists[i].Values.Elements()) > 0 {
 			// Simple leaf-list values
-			listResult := helpers.GetFromXPath(res, "data/"+data.getPath()+"/"+listName)
+			listResult := helpers.GetFromXPath(res, "data"+data.Path.ValueString()+"/"+listName)
 			if listResult.IsArray() {
 				values := make([]attr.Value, 0)
 				for _, v := range listResult.Array() {
