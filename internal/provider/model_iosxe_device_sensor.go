@@ -140,12 +140,12 @@ func (data DeviceSensor) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data DeviceSensor) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor")
+	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor"
 	return path
 }
 
 func (data DeviceSensorData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor")
+	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor"
 	return path
 }
 

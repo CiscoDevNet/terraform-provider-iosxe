@@ -100,14 +100,14 @@ func (data StaticRoute) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data StaticRoute) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list=%s,%s")
-	path = fmt.Sprintf(path, "prefix", url.QueryEscape(fmt.Sprintf("%v", data.Prefix.ValueString())), "mask", url.QueryEscape(fmt.Sprintf("%v", data.Mask.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list[prefix=%s][mask=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Prefix.ValueString()), fmt.Sprintf("%v", data.Mask.ValueString()))
 	return path
 }
 
 func (data StaticRouteData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list=%s,%s")
-	path = fmt.Sprintf(path, "prefix", url.QueryEscape(fmt.Sprintf("%v", data.Prefix.ValueString())), "mask", url.QueryEscape(fmt.Sprintf("%v", data.Mask.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/ip/route/ip-route-interface-forwarding-list[prefix=%s][mask=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Prefix.ValueString()), fmt.Sprintf("%v", data.Mask.ValueString()))
 	return path
 }
 

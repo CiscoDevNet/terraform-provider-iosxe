@@ -56,12 +56,16 @@ type YangDataSourceModel struct {
 }
 
 func (data Yang) getPath() string {
-	return data.Path.ValueString()
+	return helpers.ConvertXPathToRestconfPath(data.Path.ValueString())
+}
+
+func (data YangDataSourceModel) getPath() string {
+	return helpers.ConvertXPathToRestconfPath(data.Path.ValueString())
 }
 
 // if last path element has a key -> remove it
 func (data Yang) getPathShort() string {
-	path := data.Path.ValueString()
+	path := data.getPath()
 	re := regexp.MustCompile(`(.*)=[^\/]*$`)
 	matches := re.FindStringSubmatch(path)
 	if len(matches) <= 1 {
@@ -71,19 +75,19 @@ func (data Yang) getPathShort() string {
 }
 
 func (data Yang) toBody(ctx context.Context) string {
-	body := `{"` + helpers.LastElement(data.Path.ValueString()) + `":{}}`
+	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 
 	var attributes map[string]string
 	data.Attributes.ElementsAs(ctx, &attributes, false)
 
 	for attr, value := range attributes {
 		attr = strings.ReplaceAll(attr, "/", ".")
-		body, _ = sjson.Set(body, helpers.LastElement(data.Path.ValueString())+"."+attr, value)
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+attr, value)
 	}
 	for i := range data.Lists {
 		listName := strings.ReplaceAll(data.Lists[i].Name.ValueString(), "/", ".")
 		if len(data.Lists[i].Items) > 0 {
-			body, _ = sjson.Set(body, helpers.LastElement(data.Path.ValueString())+"."+listName, []interface{}{})
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+listName, []interface{}{})
 			for ii := range data.Lists[i].Items {
 				var listAttributes map[string]string
 				data.Lists[i].Items[ii].ElementsAs(ctx, &listAttributes, false)
@@ -92,12 +96,12 @@ func (data Yang) toBody(ctx context.Context) string {
 					attr = strings.ReplaceAll(attr, "/", ".")
 					attrs = attrs.Set(attr, value)
 				}
-				body, _ = sjson.SetRaw(body, helpers.LastElement(data.Path.ValueString())+"."+listName+".-1", attrs.Str)
+				body, _ = sjson.SetRaw(body, helpers.LastElement(data.getPath())+"."+listName+".-1", attrs.Str)
 			}
 		} else if len(data.Lists[i].Values.Elements()) > 0 {
 			var values []string
 			data.Lists[i].Values.ElementsAs(ctx, &values, false)
-			body, _ = sjson.Set(body, helpers.LastElement(data.Path.ValueString())+"."+listName, values)
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+listName, values)
 		}
 	}
 

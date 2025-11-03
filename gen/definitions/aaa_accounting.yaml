@@ -1,6 +1,6 @@
 ---
 name: AAA Accounting
-path: Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:accounting
+path: /Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:accounting
 doc_category: AAA
 attributes:
   - yang_name: update/update-choice/newinfo/newinfo/periodic

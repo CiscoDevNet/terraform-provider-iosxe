@@ -1,6 +1,6 @@
 ---
 name: SNMP Server
-path: Cisco-IOS-XE-native:native/snmp-server
+path: /Cisco-IOS-XE-native:native/snmp-server
 doc_category: Management
 attributes:
   - yang_name: Cisco-IOS-XE-snmp:chassis-id
@@ -997,11 +997,11 @@ attributes:
         exclude_test: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=1
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]
     attributes:
       - name: name
         value: 1
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

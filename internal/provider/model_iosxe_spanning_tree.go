@@ -99,12 +99,12 @@ func (data SpanningTree) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data SpanningTree) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/spanning-tree")
+	path := "/Cisco-IOS-XE-native:native/spanning-tree"
 	return path
 }
 
 func (data SpanningTreeData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/spanning-tree")
+	path := "/Cisco-IOS-XE-native:native/spanning-tree"
 	return path
 }
 

@@ -1,6 +1,6 @@
 ---
 name: OSPF VRF
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf=%v,%s
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id-vrf[id=%v][vrf=%s]
 doc_category: OSPF
 attributes:
   - yang_name: id
@@ -268,7 +268,7 @@ attributes:
         example: 1
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

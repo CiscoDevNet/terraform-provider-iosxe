@@ -93,12 +93,12 @@ func (data CDP) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data CDP) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/cdp")
+	path := "/Cisco-IOS-XE-native:native/cdp"
 	return path
 }
 
 func (data CDPData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/cdp")
+	path := "/Cisco-IOS-XE-native:native/cdp"
 	return path
 }
 

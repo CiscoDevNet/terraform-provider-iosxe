@@ -1,6 +1,6 @@
 ---
 name: Dot1x
-path: Cisco-IOS-XE-native:native/dot1x
+path: /Cisco-IOS-XE-native:native/dot1x
 doc_category: System
 attributes:
   - yang_name: Cisco-IOS-XE-dot1x:auth-fail/eapol

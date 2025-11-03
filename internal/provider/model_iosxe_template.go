@@ -234,14 +234,14 @@ func (data Template) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Template) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=%v")
-	path = fmt.Sprintf(path, "template_name", url.QueryEscape(fmt.Sprintf("%v", data.TemplateName.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details[template_name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.TemplateName.ValueString()))
 	return path
 }
 
 func (data TemplateData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details=%v")
-	path = fmt.Sprintf(path, "template_name", url.QueryEscape(fmt.Sprintf("%v", data.TemplateName.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details[template_name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.TemplateName.ValueString()))
 	return path
 }
 
@@ -276,7 +276,7 @@ func (data Template) toBody(ctx context.Context) string {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"service-policy.output.policy-map-name", data.ServicePolicyOutput.ValueString())
 	}
 	if !data.SourceTemplate.IsNull() && !data.SourceTemplate.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.template", data.SourceTemplate.ValueString())
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"", data.SourceTemplate.ValueString())
 	}
 	if !data.SwitchportModeTrunk.IsNull() && !data.SwitchportModeTrunk.IsUnknown() {
 		if data.SwitchportModeTrunk.ValueBool() {
@@ -1015,7 +1015,7 @@ func (data *Template) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.ServicePolicyOutput = types.StringNull()
 	}
-	if value := res.Get(prefix + "source.template"); value.Exists() && !data.SourceTemplate.IsNull() {
+	if value := res.Get(prefix + ""); value.Exists() && !data.SourceTemplate.IsNull() {
 		data.SourceTemplate = types.StringValue(value.String())
 	} else {
 		data.SourceTemplate = types.StringNull()
@@ -2214,7 +2214,7 @@ func (data *Template) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "service-policy.output.policy-map-name"); value.Exists() {
 		data.ServicePolicyOutput = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "source.template"); value.Exists() {
+	if value := res.Get(prefix + ""); value.Exists() {
 		data.SourceTemplate = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "switchport.mode.trunk"); value.Exists() {
@@ -2552,7 +2552,7 @@ func (data *TemplateData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "service-policy.output.policy-map-name"); value.Exists() {
 		data.ServicePolicyOutput = types.StringValue(value.String())
 	}
-	if value := res.Get(prefix + "source.template"); value.Exists() {
+	if value := res.Get(prefix + ""); value.Exists() {
 		data.SourceTemplate = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "switchport.mode.trunk"); value.Exists() {

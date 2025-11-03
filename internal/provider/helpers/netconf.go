@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"sync"
 
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
@@ -40,17 +41,20 @@ const namespaceBaseURL = "http://cisco.com/ns/yang/"
 
 // ManageNetconfConnection manages NETCONF connection lifecycle based on reuse policy.
 //
+// The connMutex parameter serializes connection state changes (Reopen/Close) to prevent
+// race conditions when multiple goroutines access the same NETCONF session concurrently.
+//
 // When reuseConnection is true (default):
-//   - Reopens connection if closed
+//   - Reopens connection if closed (with mutex protection)
 //   - Returns no-op defer function (keeps connection open for subsequent operations)
 //
 // When reuseConnection is false:
-//   - Reopens connection if closed
-//   - Returns defer function to close connection after operation (legacy behavior)
+//   - Reopens connection if closed (with mutex protection)
+//   - Returns defer function to close connection after operation (with mutex protection)
 //
 // Usage:
 //
-//	cleanup, err := helpers.ManageNetconfConnection(ctx, client, reuseConnection)
+//	cleanup, err := helpers.ManageNetconfConnection(ctx, client, &device.NetconfConnMutex, reuseConnection)
 //	if err != nil {
 //	    return err
 //	}
@@ -58,14 +62,21 @@ const namespaceBaseURL = "http://cisco.com/ns/yang/"
 func ManageNetconfConnection(
 	ctx context.Context,
 	client *netconf.Client,
+	connMutex *sync.Mutex,
 	reuseConnection bool,
 ) (cleanup func(), err error) {
+	// Serialize connection state changes (Reopen/Close)
+	connMutex.Lock()
+
 	// Reopen connection if closed (required regardless of reuse policy)
 	if client.IsClosed() {
 		if err := client.Reopen(); err != nil {
+			connMutex.Unlock()
 			return nil, fmt.Errorf("failed to reopen NETCONF connection: %w", err)
 		}
 	}
+
+	connMutex.Unlock()
 
 	// Return appropriate cleanup function based on reuse policy
 	if reuseConnection {
@@ -73,8 +84,10 @@ func ManageNetconfConnection(
 		return func() {}, nil
 	}
 
-	// Close connection after operation (legacy behavior)
+	// Close connection after operation (legacy behavior) with mutex protection
 	return func() {
+		connMutex.Lock()
+		defer connMutex.Unlock()
 		if err := client.Close(); err != nil {
 			tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
 		}
@@ -86,8 +99,9 @@ func ManageNetconfConnection(
 // and commit it to the running datastore if commit is true.
 // If the server does not support the candidate capability, it will edit the configuration in the running datastore.
 //
-// IMPORTANT: IOS-XE devices with writable-running capability may not respond to Lock/Unlock operations.
-// This function skips locking when only writable-running is available, as locking is optional for that capability.
+// IMPORTANT: When connection reuse is enabled, callers MUST serialize calls to EditConfig using an
+// application-level mutex that also covers ManageNetconfConnection(). This prevents concurrent goroutines
+// from attempting to acquire NETCONF datastore locks simultaneously on the same session.
 //
 // Parameters:
 //   - ctx: context.Context
@@ -95,8 +109,8 @@ func ManageNetconfConnection(
 //   - body: string
 //   - commit: bool
 func EditConfig(ctx context.Context, client *netconf.Client, body string, commit bool) error {
+
 	candidate := client.ServerHasCapability("urn:ietf:params:netconf:capability:candidate:1.0")
-	writableRunning := client.ServerHasCapability("urn:ietf:params:netconf:capability:writable-running:1.0")
 
 	if candidate {
 		// Lock running datastore
@@ -120,14 +134,7 @@ func EditConfig(ctx context.Context, client *netconf.Client, body string, commit
 				return fmt.Errorf("failed to commit config: %w", err)
 			}
 		}
-	} else if writableRunning {
-		// IOS-XE devices support writable-running but Lock operations may hang
-		// Edit running config directly without locking (optional for writable-running)
-		if _, err := client.EditConfig(ctx, "running", body); err != nil {
-			return fmt.Errorf("failed to edit config: %w", err)
-		}
 	} else {
-		// Fallback: try with lock (standard NETCONF behavior)
 		// Lock running datastore
 		if _, err := client.Lock(ctx, "running"); err != nil {
 			return fmt.Errorf("failed to lock running datastore: %w", err)

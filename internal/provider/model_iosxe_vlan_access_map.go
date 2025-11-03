@@ -84,14 +84,14 @@ func (data VLANAccessMap) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data VLANAccessMap) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=%v,%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), "value", url.QueryEscape(fmt.Sprintf("%v", data.Sequence.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map[name=%v][value=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.Sequence.ValueInt64()))
 	return path
 }
 
 func (data VLANAccessMapData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=%v,%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), "value", url.QueryEscape(fmt.Sprintf("%v", data.Sequence.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map[name=%v][value=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.Sequence.ValueInt64()))
 	return path
 }
 

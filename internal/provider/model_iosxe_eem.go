@@ -190,12 +190,12 @@ func (data EEM) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data EEM) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager")
+	path := "/Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager"
 	return path
 }
 
 func (data EEMData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager")
+	path := "/Cisco-IOS-XE-native:native/event/Cisco-IOS-XE-eem:manager"
 	return path
 }
 

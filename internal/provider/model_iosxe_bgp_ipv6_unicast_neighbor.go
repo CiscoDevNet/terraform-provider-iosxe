@@ -99,14 +99,14 @@ func (data BGPIPv6UnicastNeighbor) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data BGPIPv6UnicastNeighbor) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv6=unicast/ipv6-unicast/neighbor=%s")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), "id", url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv6[af-name=unicast]/ipv6-unicast/neighbor[id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
 	return path
 }
 
 func (data BGPIPv6UnicastNeighborData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/ipv6=unicast/ipv6-unicast/neighbor=%s")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), "id", url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/ipv6[af-name=unicast]/ipv6-unicast/neighbor[id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
 	return path
 }
 

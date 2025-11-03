@@ -106,12 +106,12 @@ func (data License) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data License) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/license")
+	path := "/Cisco-IOS-XE-native:native/license"
 	return path
 }
 
 func (data LicenseData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/license")
+	path := "/Cisco-IOS-XE-native:native/license"
 	return path
 }
 

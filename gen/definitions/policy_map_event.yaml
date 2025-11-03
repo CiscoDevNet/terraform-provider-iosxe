@@ -1,6 +1,6 @@
 ---
 name: Policy Map Event
-path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=%s/event=%v
+path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[name=%v]
 doc_category: QoS
 no_delete_attributes: true
 attributes:
@@ -107,7 +107,7 @@ attributes:
             example: name1
             exclude_test: true
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=dot1x_policy
+  - path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=dot1x_policy]
     attributes:
       - name: name
         value: dot1x_policy
@@ -115,7 +115,7 @@ test_prerequisites:
         value: control
       - name: subscriber
         value: ""
-  - path: Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=MY_CLASS
+  - path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map[name=MY_CLASS]
     attributes:
       - name: name
         value: MY_CLASS

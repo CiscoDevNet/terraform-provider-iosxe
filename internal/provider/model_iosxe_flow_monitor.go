@@ -92,14 +92,14 @@ func (data FlowMonitor) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data FlowMonitor) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data FlowMonitorData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:monitor[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

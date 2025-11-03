@@ -1,6 +1,6 @@
 ---
 name: Crypto PKI
-path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki
 doc_category: Crypto
 test_tags: [CRYPTO_PKI]
 attributes:

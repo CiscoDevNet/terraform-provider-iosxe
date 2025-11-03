@@ -1,6 +1,6 @@
 ---
 name: VLAN Group
-path: Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group=%s
+path: /Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:group[name=%s]
 no_delete_attributes: true
 test_tags: [C9000V]
 doc_category: Switching

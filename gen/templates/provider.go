@@ -28,6 +28,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
@@ -83,11 +84,13 @@ type IosxeProviderData struct {
 }
 
 type IosxeProviderDataDevice struct {
-	RestconfClient  *restconf.Client
-	NetconfClient   *netconf.Client
-	Protocol        string
-	ReuseConnection bool
-	Managed         bool
+	RestconfClient    *restconf.Client
+	NetconfClient     *netconf.Client
+	Protocol          string
+	ReuseConnection   bool
+	Managed           bool
+	NetconfWriteMutex sync.Mutex // Serializes NETCONF write operations
+	NetconfConnMutex  sync.Mutex // Serializes NETCONF connection management (Reopen/Close)
 }
 
 func (p *IosxeProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {

@@ -366,14 +366,14 @@ func (data InterfaceEthernet) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceEthernet) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/%s=%v")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data InterfaceEthernetData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/%s=%v")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

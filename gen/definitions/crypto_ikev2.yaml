@@ -1,6 +1,6 @@
 ---
 name: Crypto IKEv2
-path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2
 doc_category: Crypto
 attributes:
   - yang_name: nat/keepalive

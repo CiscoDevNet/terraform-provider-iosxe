@@ -383,9 +383,12 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Create(ctx context.Context, req reso
 				}
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
+			// Serialize NETCONF operations
+			device.NetconfWriteMutex.Lock()
+			defer device.NetconfWriteMutex.Unlock()
+
 			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return
@@ -460,7 +463,7 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Read(ctx context.Context, req resour
 		} else {
 			// Manage NETCONF connection lifecycle
 			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return
@@ -570,9 +573,12 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Update(ctx context.Context, req reso
 				}
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
+			// Serialize NETCONF operations
+			device.NetconfWriteMutex.Lock()
+			defer device.NetconfWriteMutex.Unlock()
+
 			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return
@@ -619,9 +625,12 @@ func (r *BGPIPv4UnicastVRFNeighborResource) Delete(ctx context.Context, req reso
 	}
 
 	if device.Managed {
-		// Manage NETCONF connection lifecycle
+		// Serialize NETCONF operations
+		device.NetconfWriteMutex.Lock()
+		defer device.NetconfWriteMutex.Unlock()
+
 		if device.Protocol == "netconf" && device.NetconfClient != nil {
-			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 			if err != nil {
 				resp.Diagnostics.AddError("Connection Error", err.Error())
 				return

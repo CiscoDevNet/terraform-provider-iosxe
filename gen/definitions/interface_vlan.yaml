@@ -1,6 +1,6 @@
 ---
 name: Interface VLAN
-path: Cisco-IOS-XE-native:native/interface/Vlan=%v
+path: /Cisco-IOS-XE-native:native/interface/Vlan[name=%v]
 test_tags: [C9000V]
 doc_category: Interface
 attributes:
@@ -135,7 +135,7 @@ attributes:
     example: 0000.dead.beef
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

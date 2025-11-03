@@ -84,14 +84,14 @@ func (data VLANConfiguration) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data VLANConfiguration) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration=%v")
-	path = fmt.Sprintf(path, "vlan-id", url.QueryEscape(fmt.Sprintf("%v", data.VlanId.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration[vlan-id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.VlanId.ValueInt64()))
 	return path
 }
 
 func (data VLANConfigurationData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration=%v")
-	path = fmt.Sprintf(path, "vlan-id", url.QueryEscape(fmt.Sprintf("%v", data.VlanId.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:configuration[vlan-id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.VlanId.ValueInt64()))
 	return path
 }
 

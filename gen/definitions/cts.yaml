@@ -1,6 +1,6 @@
 ---
 name: CTS
-path: Cisco-IOS-XE-native:native/cts
+path: /Cisco-IOS-XE-native:native/cts
 doc_category: CTS
 test_tags: [C9000V]
 attributes:
@@ -94,7 +94,7 @@ attributes:
     exclude_test: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

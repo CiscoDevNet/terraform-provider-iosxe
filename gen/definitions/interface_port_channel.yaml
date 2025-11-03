@@ -1,6 +1,6 @@
 ---
 name: Interface Port Channel
-path: Cisco-IOS-XE-native:native/interface/Port-channel=%v
+path: /Cisco-IOS-XE-native:native/interface/Port-channel[name=%v]
 doc_category: Interface
 attributes:
   - yang_name: name
@@ -208,7 +208,7 @@ attributes:
     exclude_test: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

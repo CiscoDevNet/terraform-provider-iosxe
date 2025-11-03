@@ -116,14 +116,14 @@ func (data BFDTemplateMultiHop) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data BFDTemplateMultiHop) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=%s")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data BFDTemplateMultiHopData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop=%s")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:multi-hop[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

@@ -1,6 +1,6 @@
 ---
 name: VRF
-path: Cisco-IOS-XE-native:native/vrf/definition=%s
+path: /Cisco-IOS-XE-native:native/vrf/definition[name=%s]
 doc_category: VRF
 attributes:
   - yang_name: name

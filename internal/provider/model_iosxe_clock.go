@@ -124,12 +124,12 @@ func (data Clock) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Clock) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/clock")
+	path := "/Cisco-IOS-XE-native:native/clock"
 	return path
 }
 
 func (data ClockData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/clock")
+	path := "/Cisco-IOS-XE-native:native/clock"
 	return path
 }
 

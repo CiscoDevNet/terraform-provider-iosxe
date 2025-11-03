@@ -1,6 +1,6 @@
 ---
 name: SLA
-path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-sla:sla
+path: /Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-sla:sla
 doc_category: System
 no_delete: true
 no_augment_config: true

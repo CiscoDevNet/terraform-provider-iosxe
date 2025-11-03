@@ -1,6 +1,6 @@
 ---
 name: Community List Expanded
-path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/expanded=%v
+path: /Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-bgp:community-list/expanded[name=%v]
 no_delete_attributes: true
 skip_minimum_test: true
 doc_category: BGP

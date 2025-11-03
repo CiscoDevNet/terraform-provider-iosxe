@@ -87,7 +87,7 @@ func TestAccDataSourceIosxePIM(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxePIMPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -96,7 +96,7 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=200"
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=200]"
 	attributes = {
 		"name" = "200"
 		"vrf/forwarding" = "VRF1"
@@ -107,7 +107,7 @@ resource "iosxe_yang" "PreReq1" {
 }
 
 resource "iosxe_yang" "PreReq2" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
 		"ip/address/primary/address" = "200.200.200.200"

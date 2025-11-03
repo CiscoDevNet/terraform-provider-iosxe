@@ -1,7 +1,7 @@
 ---
 name: Interface Switchport
-path: Cisco-IOS-XE-native:native/interface/%s=%v/switchport-config/switchport
-augment_path: Cisco-IOS-XE-native:native/interface/GigabitEthernet=%v/switchport-config/switchport
+path: /Cisco-IOS-XE-native:native/interface/%s[name=%v]/switchport-config/switchport
+augment_path: /Cisco-IOS-XE-native:native/interface/GigabitEthernet[name=%v]/switchport-config/switchport
 test_tags: [C9000V]
 doc_category: Switching
 attributes:

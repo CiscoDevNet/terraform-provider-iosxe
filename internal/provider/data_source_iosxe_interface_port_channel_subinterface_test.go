@@ -86,7 +86,7 @@ func TestAccDataSourceIosxeInterfacePortChannelSubinterface(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeInterfacePortChannelSubinterfacePrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"
@@ -95,14 +95,14 @@ resource "iosxe_yang" "PreReq0" {
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/interface/Port-channel=10"
+	path = "/Cisco-IOS-XE-native:native/interface/Port-channel[name=10]"
 	attributes = {
 		"name" = "10"
 	}
 }
 
 resource "iosxe_yang" "PreReq2" {
-	path = "Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=10.666"
+	path = "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=10.666]"
 	attributes = {
 		"name" = "10.666"
 	}

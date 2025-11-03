@@ -131,12 +131,12 @@ func (data AAA) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data AAA) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/aaa")
+	path := "/Cisco-IOS-XE-native:native/aaa"
 	return path
 }
 
 func (data AAAData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/aaa")
+	path := "/Cisco-IOS-XE-native:native/aaa"
 	return path
 }
 

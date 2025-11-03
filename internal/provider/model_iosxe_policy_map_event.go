@@ -127,14 +127,14 @@ func (data PolicyMapEvent) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data PolicyMapEvent) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=%s/event=%v")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), "event-type", url.QueryEscape(fmt.Sprintf("%v", data.EventType.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.EventType.ValueString()))
 	return path
 }
 
 func (data PolicyMapEventData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map=%s/event=%v")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())), "event-type", url.QueryEscape(fmt.Sprintf("%v", data.EventType.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.EventType.ValueString()))
 	return path
 }
 

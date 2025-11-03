@@ -85,14 +85,14 @@ func (data TACACSServer) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data TACACSServer) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data TACACSServerData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/tacacs/Cisco-IOS-XE-aaa:server[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

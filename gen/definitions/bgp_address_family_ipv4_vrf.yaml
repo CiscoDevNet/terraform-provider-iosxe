@@ -1,6 +1,6 @@
 ---
 name: BGP Address Family IPv4 VRF
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv4=%s
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/with-vrf/ipv4[af-name=%s]
 skip_minimum_test: true
 doc_category: BGP
 attributes:
@@ -112,7 +112,7 @@ attributes:
         example: 200
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
@@ -121,12 +121,12 @@ test_prerequisites:
         value: 1:1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
       - name: id
         value: 65000
     dependencies: [0]
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=101
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=101]
     attributes:
       - name: name
         value: 101

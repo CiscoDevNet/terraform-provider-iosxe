@@ -158,7 +158,7 @@ func (r *YangResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Create", plan.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Create", plan.Path.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
 	if !ok {
@@ -178,9 +178,12 @@ func (r *YangResource) Create(ctx context.Context, req resource.CreateRequest, r
 				return
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
+			// Serialize NETCONF operations
+			device.NetconfWriteMutex.Lock()
+			defer device.NetconfWriteMutex.Unlock()
+
 			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return
@@ -202,7 +205,7 @@ func (r *YangResource) Create(ctx context.Context, req resource.CreateRequest, r
 		plan.Attributes = types.MapNull(types.StringType)
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Create finished successfully", plan.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Create finished successfully", plan.Path.ValueString()))
 
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -218,7 +221,7 @@ func (r *YangResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", state.Path.ValueString()))
 
 	device, ok := r.data.Devices[state.Device.ValueString()]
 	if !ok {
@@ -243,7 +246,7 @@ func (r *YangResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		} else {
 			// Manage NETCONF connection lifecycle
 			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return
@@ -251,7 +254,7 @@ func (r *YangResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 				defer cleanup()
 			}
 
-			filter := helpers.GetXpathFilter(state.getPath())
+			filter := helpers.GetXpathFilter(state.Path.ValueString())
 			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 			if err != nil {
 				resp.Diagnostics.AddError("Client Error", fmt.Sprintf("Failed to read object, got error: %s", err))
@@ -262,7 +265,7 @@ func (r *YangResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		}
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", state.Path.ValueString()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -285,7 +288,7 @@ func (r *YangResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Update", plan.Path.ValueString()))
 
 	device, ok := r.data.Devices[plan.Device.ValueString()]
 	if !ok {
@@ -316,9 +319,12 @@ func (r *YangResource) Update(ctx context.Context, req resource.UpdateRequest, r
 				}
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
+			// Serialize NETCONF operations
+			device.NetconfWriteMutex.Lock()
+			defer device.NetconfWriteMutex.Unlock()
+
 			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return
@@ -338,7 +344,7 @@ func (r *YangResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		plan.Attributes = types.MapNull(types.StringType)
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Update finished successfully", plan.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Update finished successfully", plan.Path.ValueString()))
 
 	diags = resp.State.Set(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -354,7 +360,7 @@ func (r *YangResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Delete", state.Path.ValueString()))
 
 	device, ok := r.data.Devices[state.Device.ValueString()]
 	if !ok {
@@ -370,9 +376,12 @@ func (r *YangResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 				return
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
+			// Serialize NETCONF operations
+			device.NetconfWriteMutex.Lock()
+			defer device.NetconfWriteMutex.Unlock()
+
 			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return
@@ -381,7 +390,7 @@ func (r *YangResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 			}
 
 			body := netconf.Body{}
-			body = helpers.RemoveFromXPath(body, state.getPath())
+			body = helpers.RemoveFromXPath(body, state.Path.ValueString())
 			if err := helpers.EditConfig(ctx, device.NetconfClient, body.Res(), true); err != nil {
 				resp.Diagnostics.AddError("Client Error", err.Error())
 				return
@@ -389,7 +398,7 @@ func (r *YangResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 		}
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Delete finished successfully", state.getPath()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Delete finished successfully", state.Path.ValueString()))
 
 	resp.State.RemoveResource(ctx)
 }

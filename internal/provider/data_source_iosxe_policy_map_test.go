@@ -53,7 +53,7 @@ func TestAccDataSourceIosxePolicyMap(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxePolicyMapPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=CLASS1"
+	path = "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map[name=CLASS1]"
 	attributes = {
 		"name" = "CLASS1"
 		"prematch" = "match-all"

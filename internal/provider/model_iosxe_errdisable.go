@@ -180,12 +180,12 @@ func (data Errdisable) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Errdisable) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/errdisable")
+	path := "/Cisco-IOS-XE-native:native/errdisable"
 	return path
 }
 
 func (data ErrdisableData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/errdisable")
+	path := "/Cisco-IOS-XE-native:native/errdisable"
 	return path
 }
 

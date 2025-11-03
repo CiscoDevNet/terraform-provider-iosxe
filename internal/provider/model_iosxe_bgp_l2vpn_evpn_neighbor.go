@@ -86,14 +86,14 @@ func (data BGPL2VPNEVPNNeighbor) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data BGPL2VPNEVPNNeighbor) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/l2vpn=evpn/l2vpn-evpn/neighbor=%s")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), "id", url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/l2vpn[af-name=evpn]/l2vpn-evpn/neighbor[id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
 	return path
 }
 
 func (data BGPL2VPNEVPNNeighborData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/l2vpn=evpn/l2vpn-evpn/neighbor=%s")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), "id", url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/l2vpn[af-name=evpn]/l2vpn-evpn/neighbor[id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
 	return path
 }
 

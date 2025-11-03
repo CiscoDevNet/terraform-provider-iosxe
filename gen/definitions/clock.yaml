@@ -1,6 +1,6 @@
 ---
 name: Clock
-path: Cisco-IOS-XE-native:native/clock
+path: /Cisco-IOS-XE-native:native/clock
 doc_category: System
 attributes:
   - yang_name: calendar-valid

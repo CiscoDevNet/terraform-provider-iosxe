@@ -121,14 +121,14 @@ func (data BGPAddressFamilyIPv4VRF) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data BGPAddressFamilyIPv4VRF) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv4=%s")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), "af-name", url.QueryEscape(fmt.Sprintf("%v", data.AfName.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/with-vrf/ipv4[af-name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.AfName.ValueString()))
 	return path
 }
 
 func (data BGPAddressFamilyIPv4VRFData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv4=%s")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), "af-name", url.QueryEscape(fmt.Sprintf("%v", data.AfName.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/with-vrf/ipv4[af-name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.AfName.ValueString()))
 	return path
 }
 

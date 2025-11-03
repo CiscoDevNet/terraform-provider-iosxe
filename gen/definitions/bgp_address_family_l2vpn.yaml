@@ -1,6 +1,6 @@
 ---
 name: BGP Address Family L2VPN
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/no-vrf/l2vpn=%s
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/no-vrf/l2vpn[af-name=%s]
 doc_category: BGP
 test_tags: [C9000V]
 attributes:
@@ -10,7 +10,7 @@ attributes:
   - yang_name: af-name
     example: evpn
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
     attributes:
       - name: id
         value: 65000

@@ -1,6 +1,6 @@
 ---
 name: Flow Exporter
-path: Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=%v
+path: /Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter[name=%v]
 doc_category: Flow
 attributes:
   - yang_name: name

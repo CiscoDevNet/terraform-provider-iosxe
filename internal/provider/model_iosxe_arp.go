@@ -108,12 +108,12 @@ func (data ARP) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data ARP) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/arp")
+	path := "/Cisco-IOS-XE-native:native/ip/arp"
 	return path
 }
 
 func (data ARPData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/arp")
+	path := "/Cisco-IOS-XE-native:native/ip/arp"
 	return path
 }
 

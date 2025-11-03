@@ -337,7 +337,7 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Read(ctx context.Context, r
 	} else {
 		// Manage NETCONF connection lifecycle
 		if device.NetconfClient != nil {
-			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 			if err != nil {
 				resp.Diagnostics.AddError("Connection Error", err.Error())
 				return
@@ -345,7 +345,6 @@ func (d *InterfacePortChannelSubinterfaceDataSource) Read(ctx context.Context, r
 			defer cleanup()
 		}
 
-		// NETCONF
 		filter := helpers.GetXpathFilter(config.getXPath())
 		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
 		if err != nil {

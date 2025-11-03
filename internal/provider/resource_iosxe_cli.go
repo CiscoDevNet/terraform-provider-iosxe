@@ -132,7 +132,7 @@ func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, re
 		} else {
 			// Manage NETCONF connection lifecycle
 			if d.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, &d.NetconfConnMutex, d.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return
@@ -218,7 +218,7 @@ func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, re
 		} else {
 			// Manage NETCONF connection lifecycle
 			if d.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
+				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, &d.NetconfConnMutex, d.ReuseConnection)
 				if err != nil {
 					resp.Diagnostics.AddError("Connection Error", err.Error())
 					return

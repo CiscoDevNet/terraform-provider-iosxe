@@ -122,12 +122,12 @@ func (data Service) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Service) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/service")
+	path := "/Cisco-IOS-XE-native:native/service"
 	return path
 }
 
 func (data ServiceData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/service")
+	path := "/Cisco-IOS-XE-native:native/service"
 	return path
 }
 

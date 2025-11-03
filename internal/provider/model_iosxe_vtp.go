@@ -124,12 +124,12 @@ func (data VTP) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data VTP) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/vtp")
+	path := "/Cisco-IOS-XE-native:native/vtp"
 	return path
 }
 
 func (data VTPData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/vtp")
+	path := "/Cisco-IOS-XE-native:native/vtp"
 	return path
 }
 

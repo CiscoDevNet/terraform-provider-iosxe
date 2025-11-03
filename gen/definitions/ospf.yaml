@@ -1,6 +1,6 @@
 ---
 name: OSPF
-path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id=%v
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-ospf:router-ospf/ospf/process-id[id=%v]
 doc_category: OSPF
 attributes:
   - yang_name: id

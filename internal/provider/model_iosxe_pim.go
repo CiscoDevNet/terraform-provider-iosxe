@@ -147,12 +147,12 @@ func (data PIM) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data PIM) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/pim")
+	path := "/Cisco-IOS-XE-native:native/ip/pim"
 	return path
 }
 
 func (data PIMData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/pim")
+	path := "/Cisco-IOS-XE-native:native/ip/pim"
 	return path
 }
 

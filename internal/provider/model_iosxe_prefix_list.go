@@ -91,12 +91,12 @@ func (data PrefixList) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data PrefixList) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/prefix-lists")
+	path := "/Cisco-IOS-XE-native:native/ip/prefix-lists"
 	return path
 }
 
 func (data PrefixListData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/prefix-lists")
+	path := "/Cisco-IOS-XE-native:native/ip/prefix-lists"
 	return path
 }
 

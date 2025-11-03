@@ -1,6 +1,6 @@
 ---
 name: Banner
-path: Cisco-IOS-XE-native:native/banner
+path: /Cisco-IOS-XE-native:native/banner
 doc_category: System
 attributes:
   - yang_name: exec/banner

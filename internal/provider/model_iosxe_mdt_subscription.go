@@ -99,14 +99,14 @@ func (data MDTSubscription) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data MDTSubscription) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=%s")
-	path = fmt.Sprintf(path, "subscription-id", url.QueryEscape(fmt.Sprintf("%v", data.SubscriptionId.ValueInt64())))
+	path := "/Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription[subscription-id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.SubscriptionId.ValueInt64()))
 	return path
 }
 
 func (data MDTSubscriptionData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription=%s")
-	path = fmt.Sprintf(path, "subscription-id", url.QueryEscape(fmt.Sprintf("%v", data.SubscriptionId.ValueInt64())))
+	path := "/Cisco-IOS-XE-mdt-cfg:mdt-config-data/mdt-subscription[subscription-id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.SubscriptionId.ValueInt64()))
 	return path
 }
 

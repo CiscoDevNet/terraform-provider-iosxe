@@ -138,12 +138,12 @@ func (data Line) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Line) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/line")
+	path := "/Cisco-IOS-XE-native:native/line"
 	return path
 }
 
 func (data LineData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/line")
+	path := "/Cisco-IOS-XE-native:native/line"
 	return path
 }
 

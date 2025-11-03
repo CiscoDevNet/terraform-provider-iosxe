@@ -18,8 +18,6 @@
 package helpers
 
 import (
-	"strings"
-
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/netascode/xmldot"
@@ -34,26 +32,6 @@ func Contains(s []string, str string) bool {
 		}
 	}
 	return false
-}
-
-// LastElement returns the last element of a YANG path with its namespace prefix.
-// Example: "Cisco-IOS-XE-native:native/interface/GigabitEthernet[name='1']" -> "Cisco-IOS-XE-native:GigabitEthernet"
-func LastElement(path string) string {
-	pes := strings.Split(path, "/")
-	var prefix, element string
-	for _, pe := range pes {
-		// remove key
-		if strings.Contains(pe, "=") {
-			pe = pe[:strings.Index(pe, "=")]
-		}
-		if strings.Contains(pe, ":") {
-			prefix = strings.Split(pe, ":")[0]
-			element = strings.Split(pe, ":")[1]
-		} else {
-			element = pe
-		}
-	}
-	return prefix + ":" + element
 }
 
 // GetValueSlice converts a slice of gjson.Result to a slice of Terraform attr.Value.

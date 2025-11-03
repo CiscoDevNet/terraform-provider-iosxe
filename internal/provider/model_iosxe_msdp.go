@@ -110,12 +110,12 @@ func (data MSDP) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data MSDP) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp")
+	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp"
 	return path
 }
 
 func (data MSDPData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp")
+	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp"
 	return path
 }
 

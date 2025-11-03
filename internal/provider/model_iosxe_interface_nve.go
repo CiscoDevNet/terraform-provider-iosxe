@@ -100,14 +100,14 @@ func (data InterfaceNVE) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceNVE) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/nve=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/interface/nve[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
 	return path
 }
 
 func (data InterfaceNVEData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/nve=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/interface/nve[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
 	return path
 }
 

@@ -1,6 +1,6 @@
 ---
 name: Logging
-path: Cisco-IOS-XE-native:native/logging
+path: /Cisco-IOS-XE-native:native/logging
 no_delete: true
 doc_category: Management
 attributes:
@@ -236,7 +236,7 @@ attributes:
             exclude_test: true
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
@@ -245,7 +245,7 @@ test_prerequisites:
         value: ""
       - name: address-family/ipv6
         value: ""
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

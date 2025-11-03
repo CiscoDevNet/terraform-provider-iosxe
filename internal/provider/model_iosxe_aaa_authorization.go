@@ -155,12 +155,12 @@ func (data AAAAuthorization) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data AAAAuthorization) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authorization")
+	path := "/Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authorization"
 	return path
 }
 
 func (data AAAAuthorizationData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authorization")
+	path := "/Cisco-IOS-XE-native:native/aaa/Cisco-IOS-XE-aaa:authorization"
 	return path
 }
 

@@ -79,7 +79,7 @@ func iosxeCryptoIKEv2PolicyImportStateIdFunc(resourceName string) resource.Impor
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeCryptoIKEv2PolicyPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal=proposal123"
+	path = "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/proposal[name=proposal123]"
 	attributes = {
 		"name" = "proposal123"
 		"encryption/aes-cbc-256" = ""

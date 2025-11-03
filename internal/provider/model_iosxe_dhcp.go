@@ -106,12 +106,12 @@ func (data DHCP) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data DHCP) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/dhcp")
+	path := "/Cisco-IOS-XE-native:native/ip/dhcp"
 	return path
 }
 
 func (data DHCPData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/dhcp")
+	path := "/Cisco-IOS-XE-native:native/ip/dhcp"
 	return path
 }
 

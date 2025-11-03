@@ -120,14 +120,14 @@ func (data EVPNInstance) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data EVPNInstance) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=%v")
-	path = fmt.Sprintf(path, "evpn-instance-num", url.QueryEscape(fmt.Sprintf("%v", data.EvpnInstanceNum.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance[evpn-instance-num=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.EvpnInstanceNum.ValueInt64()))
 	return path
 }
 
 func (data EVPNInstanceData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance=%v")
-	path = fmt.Sprintf(path, "evpn-instance-num", url.QueryEscape(fmt.Sprintf("%v", data.EvpnInstanceNum.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-instance/evpn/instance/instance[evpn-instance-num=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.EvpnInstanceNum.ValueInt64()))
 	return path
 }
 

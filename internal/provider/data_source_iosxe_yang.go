@@ -93,7 +93,7 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", config.Id.ValueString()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Beginning Read", config.Path.ValueString()))
 
 	device, ok := d.data.Devices[config.Device.ValueString()]
 	if !ok {
@@ -102,7 +102,7 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	}
 
 	if device.Protocol == "restconf" {
-		res, err := device.RestconfClient.GetData(config.Path.ValueString())
+		res, err := device.RestconfClient.GetData(config.getPath())
 		if res.StatusCode == 404 {
 			state.Attributes = types.MapValueMust(types.StringType, map[string]attr.Value{})
 		} else {
@@ -116,7 +116,7 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 
 			attributes := make(map[string]attr.Value)
 
-			for attr, value := range res.Res.Get(helpers.LastElement(config.Path.ValueString())).Map() {
+			for attr, value := range res.Res.Get(helpers.LastElement(config.getPath())).Map() {
 				// handle empty maps
 				if value.IsObject() && len(value.Map()) == 0 {
 					attributes[attr] = types.StringValue("")
@@ -131,7 +131,7 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 	} else {
 		// Manage NETCONF connection lifecycle
 		if device.NetconfClient != nil {
-			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
 			if err != nil {
 				resp.Diagnostics.AddError("Connection Error", err.Error())
 				return
@@ -178,7 +178,7 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		}
 	}
 
-	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", config.Id.ValueString()))
+	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", config.Path.ValueString()))
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)

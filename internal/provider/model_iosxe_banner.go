@@ -81,12 +81,12 @@ func (data Banner) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Banner) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/banner")
+	path := "/Cisco-IOS-XE-native:native/banner"
 	return path
 }
 
 func (data BannerData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/banner")
+	path := "/Cisco-IOS-XE-native:native/banner"
 	return path
 }
 

@@ -1,6 +1,6 @@
 ---
 name: MSDP
-path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp
+path: /Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-multicast:msdp
 doc_category: Multicast
 attributes:
   - yang_name: originator-id
@@ -70,21 +70,21 @@ attributes:
             sensitive: true
             example: Cisco123
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
         value: VRF1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=200
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=200]
     attributes:
       - name: name
         value: 200
       - name: vrf/forwarding
         value: VRF1
     dependencies: [0]
-  - path: Cisco-IOS-XE-native:native/interface/Loopback=100
+  - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:
       - name: name
         value: 100

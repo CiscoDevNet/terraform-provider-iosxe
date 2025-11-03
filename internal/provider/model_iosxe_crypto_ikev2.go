@@ -84,12 +84,12 @@ func (data CryptoIKEv2) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data CryptoIKEv2) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2")
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2"
 	return path
 }
 
 func (data CryptoIKEv2Data) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2")
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2"
 	return path
 }
 

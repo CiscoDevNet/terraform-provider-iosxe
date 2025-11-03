@@ -142,12 +142,12 @@ func (data BFD) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data BFD) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/bfd")
+	path := "/Cisco-IOS-XE-native:native/bfd"
 	return path
 }
 
 func (data BFDData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/bfd")
+	path := "/Cisco-IOS-XE-native:native/bfd"
 	return path
 }
 

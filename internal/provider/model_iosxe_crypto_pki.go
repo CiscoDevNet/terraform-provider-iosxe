@@ -91,12 +91,12 @@ func (data CryptoPKI) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data CryptoPKI) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki")
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki"
 	return path
 }
 
 func (data CryptoPKIData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki")
+	path := "/Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:pki"
 	return path
 }
 

@@ -102,14 +102,14 @@ func (data StaticRoutesVRF) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data StaticRoutesVRF) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/route/vrf=%s")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Vrf.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/ip/route/vrf[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Vrf.ValueString()))
 	return path
 }
 
 func (data StaticRoutesVRFData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/route/vrf=%s")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Vrf.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/ip/route/vrf[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Vrf.ValueString()))
 	return path
 }
 

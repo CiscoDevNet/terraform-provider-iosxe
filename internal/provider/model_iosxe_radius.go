@@ -98,14 +98,14 @@ func (data Radius) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Radius) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v")
-	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server[id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data RadiusData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server=%v")
-	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server[id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

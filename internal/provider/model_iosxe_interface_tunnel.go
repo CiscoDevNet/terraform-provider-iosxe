@@ -172,14 +172,14 @@ func (data InterfaceTunnel) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceTunnel) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/Tunnel=%s")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/interface/Tunnel[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
 	return path
 }
 
 func (data InterfaceTunnelData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/Tunnel=%s")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/interface/Tunnel[name=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
 	return path
 }
 

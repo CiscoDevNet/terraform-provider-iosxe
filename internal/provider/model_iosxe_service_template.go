@@ -131,14 +131,14 @@ func (data ServiceTemplate) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data ServiceTemplate) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=%v")
-	path = fmt.Sprintf(path, "word", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template[word=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data ServiceTemplateData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template=%v")
-	path = fmt.Sprintf(path, "word", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-switch:service-template[word=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

@@ -163,14 +163,14 @@ func (data BGPIPv4UnicastVRFNeighbor) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data BGPIPv4UnicastVRFNeighbor) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv4=unicast/vrf=%s/ipv4-unicast/neighbor=%s")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Vrf.ValueString())), "id", url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/with-vrf/ipv4[af-name=unicast]/vrf[name=%s]/ipv4-unicast/neighbor[id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Vrf.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
 	return path
 }
 
 func (data BGPIPv4UnicastVRFNeighborData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/address-family/with-vrf/ipv4=unicast/vrf=%s/ipv4-unicast/neighbor=%s")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Vrf.ValueString())), "id", url.QueryEscape(fmt.Sprintf("%v", data.Ip.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/address-family/with-vrf/ipv4[af-name=unicast]/vrf[name=%s]/ipv4-unicast/neighbor[id=%s]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()), fmt.Sprintf("%v", data.Vrf.ValueString()), fmt.Sprintf("%v", data.Ip.ValueString()))
 	return path
 }
 

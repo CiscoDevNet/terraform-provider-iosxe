@@ -86,12 +86,12 @@ func (data NAT) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data NAT) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat")
+	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat"
 	return path
 }
 
 func (data NATData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat")
+	path := "/Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat"
 	return path
 }
 

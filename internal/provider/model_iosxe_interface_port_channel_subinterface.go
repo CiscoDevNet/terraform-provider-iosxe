@@ -180,14 +180,14 @@ func (data InterfacePortChannelSubinterface) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfacePortChannelSubinterface) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data InterfacePortChannelSubinterfaceData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

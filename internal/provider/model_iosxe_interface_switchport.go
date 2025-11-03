@@ -105,14 +105,14 @@ func (data InterfaceSwitchport) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceSwitchport) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/%s=%v/switchport-config/switchport")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/switchport-config/switchport"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data InterfaceSwitchportData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/%s=%v/switchport-config/switchport")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/switchport-config/switchport"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

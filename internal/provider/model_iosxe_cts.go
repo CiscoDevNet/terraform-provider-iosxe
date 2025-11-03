@@ -125,12 +125,12 @@ func (data CTS) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data CTS) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/cts")
+	path := "/Cisco-IOS-XE-native:native/cts"
 	return path
 }
 
 func (data CTSData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/cts")
+	path := "/Cisco-IOS-XE-native:native/cts"
 	return path
 }
 

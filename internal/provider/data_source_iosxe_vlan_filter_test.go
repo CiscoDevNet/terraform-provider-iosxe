@@ -54,7 +54,7 @@ func TestAccDataSourceIosxeVLANFilter(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeVLANFilterPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map=VAM1,10"
+	path = "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:access-map[name=VAM1][value=10]"
 	attributes = {
 		"name" = "VAM1"
 		"value" = "10"

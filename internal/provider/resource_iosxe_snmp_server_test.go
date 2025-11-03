@@ -361,14 +361,14 @@ func iosxeSNMPServerImportStateIdFunc(resourceName string) resource.ImportStateI
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccIosxeSNMPServerPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=1"
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=1]"
 	attributes = {
 		"name" = "1"
 	}
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/vrf/definition=VRF1"
+	path = "/Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]"
 	delete = false
 	attributes = {
 		"name" = "VRF1"

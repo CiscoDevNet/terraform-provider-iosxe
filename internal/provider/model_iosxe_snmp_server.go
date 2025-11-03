@@ -575,12 +575,12 @@ func (data SNMPServer) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data SNMPServer) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/snmp-server")
+	path := "/Cisco-IOS-XE-native:native/snmp-server"
 	return path
 }
 
 func (data SNMPServerData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/snmp-server")
+	path := "/Cisco-IOS-XE-native:native/snmp-server"
 	return path
 }
 
@@ -1056,7 +1056,7 @@ func (data SNMPServer) toBody(ctx context.Context) string {
 	}
 	if !data.EnableTrapsBgpCbgp2.IsNull() && !data.EnableTrapsBgpCbgp2.IsUnknown() {
 		if data.EnableTrapsBgpCbgp2.ValueBool() {
-			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp.cbgp2", map[string]string{})
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"", map[string]string{})
 		}
 	}
 	if !data.EnableTrapsNhrpNhs.IsNull() && !data.EnableTrapsNhrpNhs.IsUnknown() {
@@ -4230,7 +4230,7 @@ func (data *SNMPServer) updateFromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsSyslog = types.BoolNull()
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp.cbgp2"); !data.EnableTrapsBgpCbgp2.IsNull() {
+	if value := res.Get(prefix + ""); !data.EnableTrapsBgpCbgp2.IsNull() {
 		if value.Exists() {
 			data.EnableTrapsBgpCbgp2 = types.BoolValue(true)
 		} else {
@@ -8140,7 +8140,7 @@ func (data *SNMPServer) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsSyslog = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp.cbgp2"); value.Exists() {
+	if value := res.Get(prefix + ""); value.Exists() {
 		data.EnableTrapsBgpCbgp2 = types.BoolValue(true)
 	} else {
 		data.EnableTrapsBgpCbgp2 = types.BoolValue(false)
@@ -9344,7 +9344,7 @@ func (data *SNMPServerData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.EnableTrapsSyslog = types.BoolValue(false)
 	}
-	if value := res.Get(prefix + "Cisco-IOS-XE-snmp:enable.enable-choice.traps.Cisco-IOS-XE-bgp:bgp.cbgp2"); value.Exists() {
+	if value := res.Get(prefix + ""); value.Exists() {
 		data.EnableTrapsBgpCbgp2 = types.BoolValue(true)
 	} else {
 		data.EnableTrapsBgpCbgp2 = types.BoolValue(false)

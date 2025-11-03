@@ -57,21 +57,21 @@ func TestAccDataSourceIosxeBGPIPv6UnicastNeighbor(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeBGPIPv6UnicastNeighborPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/ipv6"
+	path = "/Cisco-IOS-XE-native:native/ipv6"
 	attributes = {
 		"unicast-routing" = ""
 	}
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000"
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]"
 	attributes = {
 		"id" = "65000"
 	}
 }
 
 resource "iosxe_yang" "PreReq2" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/address-family/no-vrf/ipv6=unicast"
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/address-family/no-vrf/ipv6[af-name=unicast]"
 	attributes = {
 		"af-name" = "unicast"
 	}
@@ -79,7 +79,7 @@ resource "iosxe_yang" "PreReq2" {
 }
 
 resource "iosxe_yang" "PreReq3" {
-	path = "Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=65000/neighbor=3.3.3.3"
+	path = "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]/neighbor[id=3.3.3.3]"
 	attributes = {
 		"id" = "3.3.3.3"
 		"remote-as" = "65000"
@@ -88,7 +88,7 @@ resource "iosxe_yang" "PreReq3" {
 }
 
 resource "iosxe_yang" "PreReq4" {
-	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
+	path = "/Cisco-IOS-XE-native:native/interface/Loopback[name=100]"
 	attributes = {
 		"name" = "100"
 	}

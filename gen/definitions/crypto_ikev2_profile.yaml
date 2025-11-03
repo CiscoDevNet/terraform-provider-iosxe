@@ -1,6 +1,6 @@
 ---
 name: Crypto IKEv2 Profile
-path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/profile=%v
+path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/profile[name=%v]
 doc_category: Crypto
 attributes:
   - yang_name: name
@@ -68,11 +68,11 @@ attributes:
     example: false
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring=test
+  - path: /Cisco-IOS-XE-native:native/crypto/Cisco-IOS-XE-crypto:ikev2/keyring[name=test]
     attributes:
       - name: name
         value: test
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name

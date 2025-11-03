@@ -90,14 +90,14 @@ func (data VLAN) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data VLAN) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list=%v")
-	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.VlanId.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list[id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.VlanId.ValueInt64()))
 	return path
 }
 
 func (data VLANData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list=%v")
-	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.VlanId.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/vlan/Cisco-IOS-XE-vlan:vlan-list[id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.VlanId.ValueInt64()))
 	return path
 }
 

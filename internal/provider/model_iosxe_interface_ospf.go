@@ -117,14 +117,14 @@ func (data InterfaceOSPF) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceOSPF) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/%s=%v/ip/Cisco-IOS-XE-ospf:router-ospf/ospf")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/ip/Cisco-IOS-XE-ospf:router-ospf/ospf"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data InterfaceOSPFData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/%s=%v/ip/Cisco-IOS-XE-ospf:router-ospf/ospf")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/ip/Cisco-IOS-XE-ospf:router-ospf/ospf"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

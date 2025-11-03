@@ -1,6 +1,6 @@
 ---
 name: Device Sensor
-path: Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor
+path: /Cisco-IOS-XE-native:native/Cisco-IOS-XE-device-sensor:device-sensor
 test_tags: [C9000V]
 doc_category: System
 attributes:

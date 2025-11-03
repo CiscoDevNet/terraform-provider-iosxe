@@ -1,6 +1,6 @@
 ---
 name: NAT
-path: Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat
+path: /Cisco-IOS-XE-native:native/ip/Cisco-IOS-XE-nat:nat
 doc_category: System
 test_tags: [C8000V]
 attributes:

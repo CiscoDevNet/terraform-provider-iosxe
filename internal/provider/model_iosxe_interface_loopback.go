@@ -127,14 +127,14 @@ func (data InterfaceLoopback) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceLoopback) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/Loopback=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/interface/Loopback[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
 	return path
 }
 
 func (data InterfaceLoopbackData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/Loopback=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/interface/Loopback[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
 	return path
 }
 

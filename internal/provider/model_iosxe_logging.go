@@ -211,12 +211,12 @@ func (data Logging) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Logging) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/logging")
+	path := "/Cisco-IOS-XE-native:native/logging"
 	return path
 }
 
 func (data LoggingData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/logging")
+	path := "/Cisco-IOS-XE-native:native/logging"
 	return path
 }
 

@@ -54,14 +54,14 @@ func TestAccDataSourceIosxeFlowMonitor(t *testing.T) {
 // Section below is generated&owned by "gen/generator.go". //template:begin testPrerequisites
 const testAccDataSourceIosxeFlowMonitorPrerequisitesConfig = `
 resource "iosxe_yang" "PreReq0" {
-	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter=EXPORTER1"
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:exporter[name=EXPORTER1]"
 	attributes = {
 		"name" = "EXPORTER1"
 	}
 }
 
 resource "iosxe_yang" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record=FNF1"
+	path = "/Cisco-IOS-XE-native:native/flow/Cisco-IOS-XE-flow:record[name=FNF1]"
 	attributes = {
 		"name" = "FNF1"
 	}

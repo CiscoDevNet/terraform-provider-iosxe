@@ -85,14 +85,14 @@ func (data BGP) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data BGP) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v")
-	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()))
 	return path
 }
 
 func (data BGPData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v")
-	path = fmt.Sprintf(path, "id", url.QueryEscape(fmt.Sprintf("%v", data.Asn.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Asn.ValueString()))
 	return path
 }
 

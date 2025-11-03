@@ -109,12 +109,12 @@ func (data Dot1x) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Dot1x) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/dot1x")
+	path := "/Cisco-IOS-XE-native:native/dot1x"
 	return path
 }
 
 func (data Dot1xData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/dot1x")
+	path := "/Cisco-IOS-XE-native:native/dot1x"
 	return path
 }
 

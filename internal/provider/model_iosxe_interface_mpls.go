@@ -82,14 +82,14 @@ func (data InterfaceMPLS) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data InterfaceMPLS) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/%s=%v/mpls")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/mpls"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 
 func (data InterfaceMPLSData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/interface/%s=%v/mpls")
-	path = fmt.Sprintf(path, url.QueryEscape(fmt.Sprintf("%v", data.Type.ValueString())), url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueString())))
+	path := "/Cisco-IOS-XE-native:native/interface/%s[name=%v]/mpls"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Type.ValueString()), fmt.Sprintf("%v", data.Name.ValueString()))
 	return path
 }
 

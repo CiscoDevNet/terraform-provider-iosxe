@@ -84,14 +84,14 @@ func (data ASPathAccessList) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data ASPathAccessList) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
 	return path
 }
 
 func (data ASPathAccessListData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list=%v")
-	path = fmt.Sprintf(path, "name", url.QueryEscape(fmt.Sprintf("%v", data.Name.ValueInt64())))
+	path := "/Cisco-IOS-XE-native:native/ip/as-path/Cisco-IOS-XE-bgp:access-list[name=%v]"
+	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueInt64()))
 	return path
 }
 

@@ -81,12 +81,12 @@ func (data Platform) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data Platform) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/platform")
+	path := "/Cisco-IOS-XE-native:native/platform"
 	return path
 }
 
 func (data PlatformData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/platform")
+	path := "/Cisco-IOS-XE-native:native/platform"
 	return path
 }
 

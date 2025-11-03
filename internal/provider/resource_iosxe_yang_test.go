@@ -32,20 +32,20 @@ func TestAccIosxeYang(t *testing.T) {
 			{
 				Config: testAccIosxeYangConfig_empty(),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("iosxe_yang.test", "id", "Cisco-IOS-XE-native:native/banner/login"),
+					resource.TestCheckResourceAttr("iosxe_yang.test", "id", "/Cisco-IOS-XE-native:native/banner/login"),
 				),
 			},
 			{
 				Config: testAccIosxeYangConfig_banner("My Banner"),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("iosxe_yang.test", "id", "Cisco-IOS-XE-native:native/banner/login"),
+					resource.TestCheckResourceAttr("iosxe_yang.test", "id", "/Cisco-IOS-XE-native:native/banner/login"),
 					resource.TestCheckResourceAttr("iosxe_yang.test", "attributes.banner", "My Banner"),
 				),
 			},
 			{
 				ResourceName:  "iosxe_yang.test",
 				ImportState:   true,
-				ImportStateId: "Cisco-IOS-XE-native:native/banner/login",
+				ImportStateId: "/Cisco-IOS-XE-native:native/banner/login",
 			},
 			{
 				Config: testAccIosxeYangConfig_banner("My New Banner"),
@@ -68,7 +68,7 @@ func TestAccIosxeYang(t *testing.T) {
 func testAccIosxeYangConfig_empty() string {
 	return `
 	resource "iosxe_yang" "test" {
-		path = "Cisco-IOS-XE-native:native/banner/login"
+		path = "/Cisco-IOS-XE-native:native/banner/login"
 	}
 	`
 }
@@ -76,7 +76,7 @@ func testAccIosxeYangConfig_empty() string {
 func testAccIosxeYangConfig_banner(message string) string {
 	return fmt.Sprintf(`
 	resource "iosxe_yang" "test" {
-		path = "Cisco-IOS-XE-native:native/banner/login"
+		path = "/Cisco-IOS-XE-native:native/banner/login"
 		attributes = {
 			banner = "%s"
 		}
@@ -87,7 +87,7 @@ func testAccIosxeYangConfig_banner(message string) string {
 func testAccIosxeYangConfig_nested() string {
 	return `
 	resource "iosxe_yang" "nested" {
-		path = "Cisco-IOS-XE-native:native"
+		path = "/Cisco-IOS-XE-native:native"
 		delete = false
 		attributes = {
 			hostname = "R1"

@@ -31,7 +31,7 @@ func TestAccDataSourceIosxeYang(t *testing.T) {
 			{
 				Config: testAccDataSourceIosxeYangConfigInterface,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("data.iosxe_yang.test", "id", "Cisco-IOS-XE-native:native/banner/login"),
+					resource.TestCheckResourceAttr("data.iosxe_yang.test", "id", "/Cisco-IOS-XE-native:native/banner/login"),
 					resource.TestCheckResourceAttr("data.iosxe_yang.test", "attributes.banner", "My Banner"),
 				),
 			},
@@ -41,14 +41,14 @@ func TestAccDataSourceIosxeYang(t *testing.T) {
 
 const testAccDataSourceIosxeYangConfigInterface = `
 resource "iosxe_yang" "test" {
-	path = "Cisco-IOS-XE-native:native/banner/login"
+	path = "/Cisco-IOS-XE-native:native/banner/login"
 	attributes = {
 		banner = "My Banner"
 	}
 }
 
 data "iosxe_yang" "test" {
-	path = "Cisco-IOS-XE-native:native/banner/login"
+	path = "/Cisco-IOS-XE-native:native/banner/login"
 	depends_on = [iosxe_yang.test]
 }
 `

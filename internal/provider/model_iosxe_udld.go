@@ -82,12 +82,12 @@ func (data UDLD) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data UDLD) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/udld")
+	path := "/Cisco-IOS-XE-native:native/udld"
 	return path
 }
 
 func (data UDLDData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/udld")
+	path := "/Cisco-IOS-XE-native:native/udld"
 	return path
 }
 

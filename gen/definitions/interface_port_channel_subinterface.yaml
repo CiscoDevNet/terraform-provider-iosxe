@@ -1,6 +1,6 @@
 ---
 name: Interface Port Channel Subinterface
-path: Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=%v
+path: /Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=%v]
 test_tags: [C8000V]
 doc_category: Interface
 attributes:
@@ -173,18 +173,18 @@ attributes:
     test_tags: [C9000V]
 
 test_prerequisites:
-  - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
+  - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true
     attributes:
       - name: name
         value: VRF1
       - name: address-family/ipv4
         value: ""
-  - path: Cisco-IOS-XE-native:native/interface/Port-channel=10
+  - path: /Cisco-IOS-XE-native:native/interface/Port-channel[name=10]
     attributes:
       - name: name
         value: 10
-  - path: Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel=10.666
+  - path: /Cisco-IOS-XE-native:native/interface/Port-channel-subinterface/Port-channel[name=10.666]
     attributes:
       - name: name
         value: "10.666"

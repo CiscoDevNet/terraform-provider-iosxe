@@ -94,12 +94,12 @@ func (data LLDP) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data LLDP) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp")
+	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp"
 	return path
 }
 
 func (data LLDPData) getXPath() string {
-	path := helpers.ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp")
+	path := "/Cisco-IOS-XE-native:native/Cisco-IOS-XE-lldp:lldp"
 	return path
 }
 
