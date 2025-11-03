@@ -540,6 +540,17 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
 				Optional:            true,
 			},
+			"ip_ssh_bulk_mode": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable optimizations for bulk data transfer procedures").String,
+				Optional:            true,
+			},
+			"ip_ssh_bulk_mode_window_size": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Window-size value").AddIntegerRangeDescription(131072, 1073741824).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(131072, 1073741824),
+				},
+			},
 			"control_plane_service_policy_input": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Assign policy-map to the input of an interface").String,
 				Optional:            true,
@@ -912,6 +923,10 @@ func (r *SystemResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Validators: []validator.String{
 					stringvalidator.OneOf("disable", "enable"),
 				},
+			},
+			"ip_routing_protocol_purge_interface": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Perform IP routing protocol routes purge on link failures").String,
+				Optional:            true,
 			},
 		},
 	}

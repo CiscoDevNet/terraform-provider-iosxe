@@ -73,6 +73,8 @@ func TestAccIosxeSystem(t *testing.T) {
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_time_out", "120"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_authentication_retries", "3"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_bulk_mode", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_ssh_bulk_mode_window_size", "262144"))
 	if os.Getenv("IOSXE1715") != "" {
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.name", "test.router.com"))
 		checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_hosts.0.ips.0", "3.3.3.3"))
@@ -84,6 +86,7 @@ func TestAccIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_multicast_route_limit", "200000"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_list_vrf_domain", "example.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_list_vrf", "VRF1"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_routing_protocol_purge_interface", "true"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -194,6 +197,8 @@ func testAccIosxeSystemConfig_all() string {
 	}
 	config += `	ip_ssh_time_out = 120` + "\n"
 	config += `	ip_ssh_authentication_retries = 3` + "\n"
+	config += `	ip_ssh_bulk_mode = true` + "\n"
+	config += `	ip_ssh_bulk_mode_window_size = 262144` + "\n"
 	if os.Getenv("IOSXE1715") != "" {
 		config += `	ip_hosts = [{` + "\n"
 		config += `		name = "test.router.com"` + "\n"
@@ -207,6 +212,7 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	ip_multicast_route_limit = 200000` + "\n"
 	config += `	ip_domain_list_vrf_domain = "example.com"` + "\n"
 	config += `	ip_domain_list_vrf = "VRF1"` + "\n"
+	config += `	ip_routing_protocol_purge_interface = true` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 	return config

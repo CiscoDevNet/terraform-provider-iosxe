@@ -14,6 +14,7 @@ description: |-
 - Add `iosxe_evpn_ethernet_segment` resource and data source for managing L2VPN EVPN Ethernet Segment configuration
 - Add `evpn_ethernet_segments` attribute to `iosxe_interface_ethernet` and `iosxe_interface_port_channel` resources and data sources
 - Add `iosxe_interface_igmp` resource and data source for managing IGMP configuration on interfaces
+- Add `ip_ssh_bulk_mode` and `ip_ssh_bulk_mode_window_size` attributes to `iosxe_system` resource and data source
 - Add `set_ip_next_hop_unchanged` attribute to `iosxe_route_map` resource and data source
 - Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
 

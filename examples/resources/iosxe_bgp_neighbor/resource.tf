@@ -20,5 +20,5 @@ resource "iosxe_bgp_neighbor" "example" {
   timers_keepalive_interval                 = 655
   timers_holdtime                           = 866
   timers_minimum_neighbor_hold              = 222
-  update_source_loopback                    = 100
+  update_source_interface_loopback          = 100
 }
