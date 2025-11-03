@@ -464,11 +464,13 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 			)
 			return
 		}
-		defer func() {
-			if err := c.Close(); err != nil {
-				tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
-			}
-		}()
+		if !reuseConnection {
+			defer func() {
+				if err := c.Close(); err != nil {
+					tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+				}
+			}()
+		}
 		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, Managed: true}
 	}
 
@@ -538,11 +540,13 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				)
 				return
 			}
-			defer func() {
-				if err := c.Close(); err != nil {
-					tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
-				}
-			}()
+			if !reuseConnection {
+				defer func() {
+					if err := c.Close(); err != nil {
+						tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+					}
+				}()
+			}
 			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, Managed: managed}
 		}
 	}
