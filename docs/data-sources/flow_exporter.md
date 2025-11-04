@@ -43,11 +43,11 @@ data "iosxe_flow_exporter" "example" {
 - `source_five_gigabit_ethernet` (String) Five GigabitEthernet
 - `source_forty_gigabit_ethernet` (String) Forty GigabitEthernet
 - `source_gigabit_ethernet` (String) GigabitEthernet IEEE 802.3z
-- `source_hundred_gig_e` (String) Hundred GigabitEthernet
+- `source_hundred_gigabit_ethernet` (String) Hundred GigabitEthernet
 - `source_loopback` (Number) Loopback interface
 - `source_port_channel` (Number) Ethernet Channel of interfaces
 - `source_ten_gigabit_ethernet` (String) Ten Gigabit Ethernet
-- `source_twenty_five_gig_e` (String) Twenty Five GigabitEthernet
+- `source_twenty_five_gigabit_ethernet` (String) Twenty Five GigabitEthernet
 - `source_two_gigabit_ethernet` (String) Two GigabitEthernet
 - `source_vlan` (Number) Iosxr Vlans
 - `template_data_timeout` (Number) Resend data based on a timeout

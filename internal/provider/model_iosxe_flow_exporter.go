@@ -48,9 +48,9 @@ type FlowExporter struct {
 	SourceTwoGigabitEthernet           types.String `tfsdk:"source_two_gigabit_ethernet"`
 	SourceFiveGigabitEthernet          types.String `tfsdk:"source_five_gigabit_ethernet"`
 	SourceTenGigabitEthernet           types.String `tfsdk:"source_ten_gigabit_ethernet"`
-	SourceTwentyFiveGigE               types.String `tfsdk:"source_twenty_five_gig_e"`
+	SourceTwentyFiveGigabitEthernet    types.String `tfsdk:"source_twenty_five_gigabit_ethernet"`
 	SourceFortyGigabitEthernet         types.String `tfsdk:"source_forty_gigabit_ethernet"`
-	SourceHundredGigE                  types.String `tfsdk:"source_hundred_gig_e"`
+	SourceHundredGigabitEthernet       types.String `tfsdk:"source_hundred_gigabit_ethernet"`
 	SourceVlan                         types.Int64  `tfsdk:"source_vlan"`
 	SourcePortChannel                  types.Int64  `tfsdk:"source_port_channel"`
 	TransportUdp                       types.Int64  `tfsdk:"transport_udp"`
@@ -74,9 +74,9 @@ type FlowExporterData struct {
 	SourceTwoGigabitEthernet           types.String `tfsdk:"source_two_gigabit_ethernet"`
 	SourceFiveGigabitEthernet          types.String `tfsdk:"source_five_gigabit_ethernet"`
 	SourceTenGigabitEthernet           types.String `tfsdk:"source_ten_gigabit_ethernet"`
-	SourceTwentyFiveGigE               types.String `tfsdk:"source_twenty_five_gig_e"`
+	SourceTwentyFiveGigabitEthernet    types.String `tfsdk:"source_twenty_five_gigabit_ethernet"`
 	SourceFortyGigabitEthernet         types.String `tfsdk:"source_forty_gigabit_ethernet"`
-	SourceHundredGigE                  types.String `tfsdk:"source_hundred_gig_e"`
+	SourceHundredGigabitEthernet       types.String `tfsdk:"source_hundred_gigabit_ethernet"`
 	SourceVlan                         types.Int64  `tfsdk:"source_vlan"`
 	SourcePortChannel                  types.Int64  `tfsdk:"source_port_channel"`
 	TransportUdp                       types.Int64  `tfsdk:"transport_udp"`
@@ -142,14 +142,14 @@ func (data FlowExporter) toBody(ctx context.Context) string {
 	if !data.SourceTenGigabitEthernet.IsNull() && !data.SourceTenGigabitEthernet.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.TenGigabitEthernet", data.SourceTenGigabitEthernet.ValueString())
 	}
-	if !data.SourceTwentyFiveGigE.IsNull() && !data.SourceTwentyFiveGigE.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.TwentyFiveGigE", data.SourceTwentyFiveGigE.ValueString())
+	if !data.SourceTwentyFiveGigabitEthernet.IsNull() && !data.SourceTwentyFiveGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.TwentyFiveGigE", data.SourceTwentyFiveGigabitEthernet.ValueString())
 	}
 	if !data.SourceFortyGigabitEthernet.IsNull() && !data.SourceFortyGigabitEthernet.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.FortyGigabitEthernet", data.SourceFortyGigabitEthernet.ValueString())
 	}
-	if !data.SourceHundredGigE.IsNull() && !data.SourceHundredGigE.IsUnknown() {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.HundredGigE", data.SourceHundredGigE.ValueString())
+	if !data.SourceHundredGigabitEthernet.IsNull() && !data.SourceHundredGigabitEthernet.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.HundredGigE", data.SourceHundredGigabitEthernet.ValueString())
 	}
 	if !data.SourceVlan.IsNull() && !data.SourceVlan.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"source.Vlan", strconv.FormatInt(data.SourceVlan.ValueInt64(), 10))
@@ -235,20 +235,20 @@ func (data *FlowExporter) updateFromBody(ctx context.Context, res gjson.Result) 
 	} else {
 		data.SourceTenGigabitEthernet = types.StringNull()
 	}
-	if value := res.Get(prefix + "source.TwentyFiveGigE"); value.Exists() && !data.SourceTwentyFiveGigE.IsNull() {
-		data.SourceTwentyFiveGigE = types.StringValue(value.String())
+	if value := res.Get(prefix + "source.TwentyFiveGigE"); value.Exists() && !data.SourceTwentyFiveGigabitEthernet.IsNull() {
+		data.SourceTwentyFiveGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.SourceTwentyFiveGigE = types.StringNull()
+		data.SourceTwentyFiveGigabitEthernet = types.StringNull()
 	}
 	if value := res.Get(prefix + "source.FortyGigabitEthernet"); value.Exists() && !data.SourceFortyGigabitEthernet.IsNull() {
 		data.SourceFortyGigabitEthernet = types.StringValue(value.String())
 	} else {
 		data.SourceFortyGigabitEthernet = types.StringNull()
 	}
-	if value := res.Get(prefix + "source.HundredGigE"); value.Exists() && !data.SourceHundredGigE.IsNull() {
-		data.SourceHundredGigE = types.StringValue(value.String())
+	if value := res.Get(prefix + "source.HundredGigE"); value.Exists() && !data.SourceHundredGigabitEthernet.IsNull() {
+		data.SourceHundredGigabitEthernet = types.StringValue(value.String())
 	} else {
-		data.SourceHundredGigE = types.StringNull()
+		data.SourceHundredGigabitEthernet = types.StringNull()
 	}
 	if value := res.Get(prefix + "source.Vlan"); value.Exists() && !data.SourceVlan.IsNull() {
 		data.SourceVlan = types.Int64Value(value.Int())
@@ -337,13 +337,13 @@ func (data *FlowExporter) fromBody(ctx context.Context, res gjson.Result) {
 		data.SourceTenGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "source.TwentyFiveGigE"); value.Exists() {
-		data.SourceTwentyFiveGigE = types.StringValue(value.String())
+		data.SourceTwentyFiveGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "source.FortyGigabitEthernet"); value.Exists() {
 		data.SourceFortyGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "source.HundredGigE"); value.Exists() {
-		data.SourceHundredGigE = types.StringValue(value.String())
+		data.SourceHundredGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "source.Vlan"); value.Exists() {
 		data.SourceVlan = types.Int64Value(value.Int())
@@ -410,13 +410,13 @@ func (data *FlowExporterData) fromBody(ctx context.Context, res gjson.Result) {
 		data.SourceTenGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "source.TwentyFiveGigE"); value.Exists() {
-		data.SourceTwentyFiveGigE = types.StringValue(value.String())
+		data.SourceTwentyFiveGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "source.FortyGigabitEthernet"); value.Exists() {
 		data.SourceFortyGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "source.HundredGigE"); value.Exists() {
-		data.SourceHundredGigE = types.StringValue(value.String())
+		data.SourceHundredGigabitEthernet = types.StringValue(value.String())
 	}
 	if value := res.Get(prefix + "source.Vlan"); value.Exists() {
 		data.SourceVlan = types.Int64Value(value.Int())
@@ -488,13 +488,13 @@ func (data *FlowExporter) getDeletedItems(ctx context.Context, state FlowExporte
 	if !state.SourceVlan.IsNull() && data.SourceVlan.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/source/Vlan", state.getPath()))
 	}
-	if !state.SourceHundredGigE.IsNull() && data.SourceHundredGigE.IsNull() {
+	if !state.SourceHundredGigabitEthernet.IsNull() && data.SourceHundredGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/source/HundredGigE", state.getPath()))
 	}
 	if !state.SourceFortyGigabitEthernet.IsNull() && data.SourceFortyGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/source/FortyGigabitEthernet", state.getPath()))
 	}
-	if !state.SourceTwentyFiveGigE.IsNull() && data.SourceTwentyFiveGigE.IsNull() {
+	if !state.SourceTwentyFiveGigabitEthernet.IsNull() && data.SourceTwentyFiveGigabitEthernet.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/source/TwentyFiveGigE", state.getPath()))
 	}
 	if !state.SourceTenGigabitEthernet.IsNull() && data.SourceTenGigabitEthernet.IsNull() {
@@ -571,13 +571,13 @@ func (data *FlowExporter) getDeletePaths(ctx context.Context) []string {
 	if !data.SourceVlan.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/Vlan", data.getPath()))
 	}
-	if !data.SourceHundredGigE.IsNull() {
+	if !data.SourceHundredGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/HundredGigE", data.getPath()))
 	}
 	if !data.SourceFortyGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/FortyGigabitEthernet", data.getPath()))
 	}
-	if !data.SourceTwentyFiveGigE.IsNull() {
+	if !data.SourceTwentyFiveGigabitEthernet.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/source/TwentyFiveGigE", data.getPath()))
 	}
 	if !data.SourceTenGigabitEthernet.IsNull() {

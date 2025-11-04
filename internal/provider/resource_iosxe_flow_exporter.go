@@ -127,7 +127,7 @@ func (r *FlowExporterResource) Schema(ctx context.Context, req resource.SchemaRe
 				MarkdownDescription: helpers.NewAttributeDescription("Ten Gigabit Ethernet").String,
 				Optional:            true,
 			},
-			"source_twenty_five_gig_e": schema.StringAttribute{
+			"source_twenty_five_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Twenty Five GigabitEthernet ").String,
 				Optional:            true,
 			},
@@ -135,7 +135,7 @@ func (r *FlowExporterResource) Schema(ctx context.Context, req resource.SchemaRe
 				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
 				Optional:            true,
 			},
-			"source_hundred_gig_e": schema.StringAttribute{
+			"source_hundred_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
 				Optional:            true,
 			},

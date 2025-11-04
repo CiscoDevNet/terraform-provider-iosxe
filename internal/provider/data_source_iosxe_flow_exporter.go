@@ -99,7 +99,7 @@ func (d *FlowExporterDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Ten Gigabit Ethernet",
 				Computed:            true,
 			},
-			"source_twenty_five_gig_e": schema.StringAttribute{
+			"source_twenty_five_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "Twenty Five GigabitEthernet ",
 				Computed:            true,
 			},
@@ -107,7 +107,7 @@ func (d *FlowExporterDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Forty GigabitEthernet ",
 				Computed:            true,
 			},
-			"source_hundred_gig_e": schema.StringAttribute{
+			"source_hundred_gigabit_ethernet": schema.StringAttribute{
 				MarkdownDescription: "Hundred GigabitEthernet",
 				Computed:            true,
 			},
