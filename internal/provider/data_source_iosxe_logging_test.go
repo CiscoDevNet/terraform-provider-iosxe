@@ -69,6 +69,11 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "logging_count", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_url", "flash:/local_logging"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_size", "1000000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_filesize", "500000"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "rate_limit_all", "200"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -191,6 +196,11 @@ func testAccDataSourceIosxeLoggingConfig() string {
 	config += `			port_number = 10002` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
+	config += `	logging_count = true` + "\n"
+	config += `	persistent_url = "flash:/local_logging"` + "\n"
+	config += `	persistent_size = 1000000` + "\n"
+	config += `	persistent_filesize = 500000` + "\n"
+	config += `	rate_limit_all = 200` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
 	config += `}` + "\n"
 
