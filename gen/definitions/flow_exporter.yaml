@@ -37,7 +37,7 @@ attributes:
     example: 0/0/1
   - yang_name: source/interface-choice/TwentyFiveGigE/TwentyFiveGigE
     xpath: source/TwentyFiveGigE
-    tf_name: source_twenty_five_gig_e
+    tf_name: source_twenty_five_gigabit_ethernet
     exclude_test: true
     example: 0/0/1
   - yang_name: source/interface-choice/FortyGigabitEthernet/FortyGigabitEthernet
@@ -47,7 +47,7 @@ attributes:
     example: 0/0/1
   - yang_name: source/interface-choice/HundredGigE/HundredGigE
     xpath: source/HundredGigE
-    tf_name: source_hundred_gig_e
+    tf_name: source_hundred_gigabit_ethernet
     exclude_test: true
     example: 0/0/1
   - yang_name: source/interface-choice/Vlan/Vlan
