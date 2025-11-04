@@ -37,6 +37,13 @@ resource "iosxe_vrf" "example" {
       value = "22:22"
     }
   ]
+  ipv4_route_replicate = [
+    {
+      name        = "VRF1"
+      unicast_all = true
+      route_map   = "RM1"
+    }
+  ]
   ipv6_route_target_import = [
     {
       value = "22:22"

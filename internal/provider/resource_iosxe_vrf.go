@@ -235,6 +235,29 @@ func (r *VRFResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					},
 				},
 			},
+			"ipv4_route_replicate": schema.ListNestedAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").String,
+				Optional:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Source VRF name or 'global'").String,
+							Required:            true,
+							Validators: []validator.String{
+								stringvalidator.RegexMatches(regexp.MustCompile(`([^g].*)|(g[^l].*)|(gl[^o].*)(glo[^b])|(glob[^a].*)|(globa..*)`), ""),
+							},
+						},
+						"unicast_all": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("All routes").String,
+							Optional:            true,
+						},
+						"route_map": schema.StringAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Route map reference").String,
+							Optional:            true,
+						},
+					},
+				},
+			},
 			"ipv6_route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Import Target-VPN community").String,
 				Optional:            true,
