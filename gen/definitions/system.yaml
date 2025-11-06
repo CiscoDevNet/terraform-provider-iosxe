@@ -651,6 +651,25 @@ attributes:
   - yang_name: ip/routing-new/routing/protocol/purge/interface
     tf_name: ip_routing_protocol_purge_interface
     example: true
+  - yang_name: ip/cef-v2/ios-cef:load-sharing-v2/ios-cef:algorithm-v2/alg-type/include-ports/ios-cef:include-ports-v2/source
+    xpath: ip/cef-v2/ios-cef:load-sharing-v2/ios-cef:algorithm-v2/ios-cef:include-ports-v2/source
+    tf_name: ip_cef_load_sharing_algorithm_include_ports_source
+    example: true
+  - yang_name: ip/cef-v2/ios-cef:load-sharing-v2/ios-cef:algorithm-v2/alg-type/include-ports/ios-cef:include-ports-v2/destination
+    xpath: ip/cef-v2/ios-cef:load-sharing-v2/ios-cef:algorithm-v2/ios-cef:include-ports-v2/destination
+    tf_name: ip_cef_load_sharing_algorithm_include_ports_destination
+    example: true
+  - yang_name: ipv6/cef-v2/ios-cef:load-sharing-v2/ios-cef:algorithm-v2/alg-type/include-ports/ios-cef:include-ports-v2/source
+    xpath: ipv6/cef-v2/ios-cef:load-sharing-v2/ios-cef:algorithm-v2/ios-cef:include-ports-v2/source
+    tf_name: ipv6_cef_load_sharing_algorithm_include_ports_source
+    example: true
+  - yang_name: ipv6/cef-v2/ios-cef:load-sharing-v2/ios-cef:algorithm-v2/alg-type/include-ports/ios-cef:include-ports-v2/destination
+    xpath: ipv6/cef-v2/ios-cef:load-sharing-v2/ios-cef:algorithm-v2/ios-cef:include-ports-v2/destination
+    tf_name: ipv6_cef_load_sharing_algorithm_include_ports_destination
+    example: true
+  - yang_name: port-channel/ios-eth:load-balance/load-balance
+    tf_name: port_channel_load_balance
+    example: src-dst-mixed-ip-port
 
 test_prerequisites:
   - path: Cisco-IOS-XE-native:native/vrf/definition=VRF1
