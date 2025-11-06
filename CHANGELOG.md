@@ -6,7 +6,7 @@
 - Add `evpn_ethernet_segments` attribute to `iosxe_interface_ethernet` and `iosxe_interface_port_channel` resources and data sources
 - Add `set_ip_next_hop_unchanged` attribute to `iosxe_route_map` resource and data source
 - Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
-- Add support for maximum-path (ebgp and ibgp) for BGP ipv4 unicast with VRF
+- Add `ipv4_unicast_maximum_paths_ebgp` and `ipv4_unicast_maximum_paths_ibgp` attributes to the `iosxe_bgp_address_family_ipv4` resource and `iosxe_bgp_address_family_ipv4` resource
 
 ## 0.9.3
 
