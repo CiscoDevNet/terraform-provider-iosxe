@@ -4,11 +4,9 @@ path: Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp=%v/template/peer-po
 doc_category: BGP
 attributes:
   - yang_name: id
-    yang_scope: bgp
     tf_name: asn
     example: 65000
   - yang_name: name
-    yang_scope: peer-policy
     example: PEERPOLICY_1
   - yang_name: route-reflector-client
     example: true
