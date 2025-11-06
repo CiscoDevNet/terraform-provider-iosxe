@@ -154,6 +154,10 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 											stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 										},
 									},
+									"summary_only": schema.BoolAttribute{
+										MarkdownDescription: helpers.NewAttributeDescription("Filter more specific routes from updates").String,
+										Optional:            true,
+									},
 								},
 							},
 						},
@@ -289,6 +293,10 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 							Validators: []validator.Int64{
 								int64validator.Between(1, 32),
 							},
+						},
+						"ipv4_unicast_import_path_selection_all": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Import all available paths").String,
+							Optional:            true,
 						},
 					},
 				},

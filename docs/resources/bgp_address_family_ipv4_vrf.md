@@ -26,6 +26,7 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
         {
           ipv4_address = "50.0.0.0"
           ipv4_mask    = "255.255.0.0"
+          summary_only = true
         }
       ]
       ipv4_unicast_redistribute_static = true
@@ -56,6 +57,7 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
       ipv4_unicast_distance_bgp_local    = 200
       ipv4_unicast_maximum_paths_ebgp    = 2
       ipv4_unicast_maximum_paths_ibgp    = 2
+      ipv4_unicast_import_path_selection_all = true
     }
   ]
 }
@@ -81,6 +83,7 @@ resource "iosxe_bgp_address_family_ipv4_vrf" "example" {
 - `id` (String) The path of the object.
 
 <a id="nestedatt--vrfs"></a>
+
 ### Nested Schema for `vrfs`
 
 Required:
@@ -95,9 +98,15 @@ Optional:
 - `ipv4_unicast_distance_bgp_external` (Number) - Range: `1`-`255`
 - `ipv4_unicast_distance_bgp_internal` (Number) - Range: `1`-`255`
 - `ipv4_unicast_distance_bgp_local` (Number) - Range: `1`-`255`
+<<<<<<< HEAD
 - `ipv4_unicast_maximum_paths_ebgp` (Number) eBGP-multipath
   - Range: `1`-`32`
 - `ipv4_unicast_maximum_paths_ibgp` (Number) - Range: `1`-`32`
+=======
+- `ipv4_unicast_import_path_selection_all` (Boolean) Import all available paths
+
+>>>>>>> 4d83599c (feat: Implement VRF Advanced Support in Terraform Provider)
+
 - `ipv4_unicast_networks` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks))
 - `ipv4_unicast_networks_mask` (Attributes List) Specify a network to announce via BGP (see [below for nested schema](#nestedatt--vrfs--ipv4_unicast_networks_mask))
 - `ipv4_unicast_redistribute_connected` (Boolean) Connected
@@ -107,6 +116,7 @@ Optional:
   - Range: `0`-`2147483647`
 
 <a id="nestedatt--vrfs--ipv4_unicast_admin_distances"></a>
+
 ### Nested Schema for `vrfs.ipv4_unicast_admin_distances`
 
 Required:
@@ -119,8 +129,8 @@ Optional:
 
 - `acl` (String)
 
-
 <a id="nestedatt--vrfs--ipv4_unicast_aggregate_addresses"></a>
+
 ### Nested Schema for `vrfs.ipv4_unicast_aggregate_addresses`
 
 Required:
@@ -128,8 +138,12 @@ Required:
 - `ipv4_address` (String)
 - `ipv4_mask` (String)
 
+Optional:
+
+- `summary_only` (Boolean) Filter more specific routes from updates
 
 <a id="nestedatt--vrfs--ipv4_unicast_networks"></a>
+
 ### Nested Schema for `vrfs.ipv4_unicast_networks`
 
 Required:
@@ -142,8 +156,8 @@ Optional:
 - `evpn` (Boolean) Advertise or export to EVPN address-family
 - `route_map` (String) Route-map to modify the attributes
 
-
 <a id="nestedatt--vrfs--ipv4_unicast_networks_mask"></a>
+
 ### Nested Schema for `vrfs.ipv4_unicast_networks_mask`
 
 Required:

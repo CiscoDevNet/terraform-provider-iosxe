@@ -40,6 +40,8 @@ func TestAccDataSourceIosxeBGPL2VPNEVPNNeighbor(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_l2vpn_evpn_neighbor.test", "send_community", "both"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_l2vpn_evpn_neighbor.test", "route_reflector_client", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_l2vpn_evpn_neighbor.test", "soft_reconfiguration", "inbound"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_l2vpn_evpn_neighbor.test", "route_map.0.inout", "in"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp_l2vpn_evpn_neighbor.test", "route_map.0.route_map_name", "RM1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -80,6 +82,13 @@ resource "iosxe_yang" "PreReq2" {
 	depends_on = [iosxe_yang.PreReq0, ]
 }
 
+resource "iosxe_restconf" "PreReq3" {
+	path = "Cisco-IOS-XE-native:native/route-map=RM1"
+	attributes = {
+		"name" = "RM1"
+	}
+}
+
 `
 
 // End of section. //template:end testPrerequisites
@@ -95,7 +104,11 @@ func testAccDataSourceIosxeBGPL2VPNEVPNNeighborConfig() string {
 	config += `	send_community = "both"` + "\n"
 	config += `	route_reflector_client = false` + "\n"
 	config += `	soft_reconfiguration = "inbound"` + "\n"
-	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, ]` + "\n"
+	config += `	route_map = [{` + "\n"
+	config += `		in_out = "in"` + "\n"
+	config += `		route_map_name = "RM1"` + "\n"
+	config += `	}]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, ]` + "\n"
 	config += `}` + "\n"
 
 	config += `

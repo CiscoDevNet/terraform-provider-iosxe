@@ -24,7 +24,10 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"regexp"
+	"strconv"
+	"strings"
 
 	"github.com/CiscoDevNet/terraform-provider-iosxe/internal/provider/helpers"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -39,26 +42,32 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type BGPL2VPNEVPNNeighbor struct {
-	Device               types.String `tfsdk:"device"`
-	Id                   types.String `tfsdk:"id"`
-	DeleteMode           types.String `tfsdk:"delete_mode"`
-	Asn                  types.String `tfsdk:"asn"`
-	Ip                   types.String `tfsdk:"ip"`
-	Activate             types.Bool   `tfsdk:"activate"`
-	SendCommunity        types.String `tfsdk:"send_community"`
-	RouteReflectorClient types.Bool   `tfsdk:"route_reflector_client"`
-	SoftReconfiguration  types.String `tfsdk:"soft_reconfiguration"`
+	Device               types.String                   `tfsdk:"device"`
+	Id                   types.String                   `tfsdk:"id"`
+	DeleteMode           types.String                   `tfsdk:"delete_mode"`
+	Asn                  types.String                   `tfsdk:"asn"`
+	Ip                   types.String                   `tfsdk:"ip"`
+	Activate             types.Bool                     `tfsdk:"activate"`
+	SendCommunity        types.String                   `tfsdk:"send_community"`
+	RouteReflectorClient types.Bool                     `tfsdk:"route_reflector_client"`
+	SoftReconfiguration  types.String                   `tfsdk:"soft_reconfiguration"`
+	RouteMap             []BGPL2VPNEVPNNeighborRouteMap `tfsdk:"route_map"`
 }
 
 type BGPL2VPNEVPNNeighborData struct {
-	Device               types.String `tfsdk:"device"`
-	Id                   types.String `tfsdk:"id"`
-	Asn                  types.String `tfsdk:"asn"`
-	Ip                   types.String `tfsdk:"ip"`
-	Activate             types.Bool   `tfsdk:"activate"`
-	SendCommunity        types.String `tfsdk:"send_community"`
-	RouteReflectorClient types.Bool   `tfsdk:"route_reflector_client"`
-	SoftReconfiguration  types.String `tfsdk:"soft_reconfiguration"`
+	Device               types.String                   `tfsdk:"device"`
+	Id                   types.String                   `tfsdk:"id"`
+	Asn                  types.String                   `tfsdk:"asn"`
+	Ip                   types.String                   `tfsdk:"ip"`
+	Activate             types.Bool                     `tfsdk:"activate"`
+	SendCommunity        types.String                   `tfsdk:"send_community"`
+	RouteReflectorClient types.Bool                     `tfsdk:"route_reflector_client"`
+	SoftReconfiguration  types.String                   `tfsdk:"soft_reconfiguration"`
+	RouteMap             []BGPL2VPNEVPNNeighborRouteMap `tfsdk:"route_map"`
+}
+type BGPL2VPNEVPNNeighborRouteMap struct {
+	Inout        types.String `tfsdk:"inout"`
+	RouteMapName types.String `tfsdk:"route_map_name"`
 }
 
 // End of section. //template:end types
@@ -121,6 +130,17 @@ func (data BGPL2VPNEVPNNeighbor) toBody(ctx context.Context) string {
 	}
 	if !data.SoftReconfiguration.IsNull() && !data.SoftReconfiguration.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"soft-reconfiguration", data.SoftReconfiguration.ValueString())
+	}
+	if len(data.RouteMap) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map", []interface{}{})
+		for index, item := range data.RouteMap {
+			if !item.Inout.IsNull() && !item.Inout.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map"+"."+strconv.Itoa(index)+"."+"inout", item.Inout.ValueString())
+			}
+			if !item.RouteMapName.IsNull() && !item.RouteMapName.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"route-map"+"."+strconv.Itoa(index)+"."+"route-map-name", item.RouteMapName.ValueString())
+			}
+		}
 	}
 	return body
 }
@@ -203,6 +223,40 @@ func (data *BGPL2VPNEVPNNeighbor) updateFromBody(ctx context.Context, res gjson.
 	} else {
 		data.SoftReconfiguration = types.StringNull()
 	}
+	for i := range data.RouteMap {
+		keys := [...]string{"inout"}
+		keyValues := [...]string{data.RouteMap[i].Inout.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "route-map").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("inout"); value.Exists() && !data.RouteMap[i].Inout.IsNull() {
+			data.RouteMap[i].Inout = types.StringValue(value.String())
+		} else {
+			data.RouteMap[i].Inout = types.StringNull()
+		}
+		if value := r.Get("route-map-name"); value.Exists() && !data.RouteMap[i].RouteMapName.IsNull() {
+			data.RouteMap[i].RouteMapName = types.StringValue(value.String())
+		} else {
+			data.RouteMap[i].RouteMapName = types.StringNull()
+		}
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -270,6 +324,20 @@ func (data *BGPL2VPNEVPNNeighbor) fromBody(ctx context.Context, res gjson.Result
 	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
 		data.SoftReconfiguration = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "route-map"); value.Exists() {
+		data.RouteMap = make([]BGPL2VPNEVPNNeighborRouteMap, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPL2VPNEVPNNeighborRouteMap{}
+			if cValue := v.Get("inout"); cValue.Exists() {
+				item.Inout = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("route-map-name"); cValue.Exists() {
+				item.RouteMapName = types.StringValue(cValue.String())
+			}
+			data.RouteMap = append(data.RouteMap, item)
+			return true
+		})
+	}
 }
 
 // End of section. //template:end fromBody
@@ -296,6 +364,20 @@ func (data *BGPL2VPNEVPNNeighborData) fromBody(ctx context.Context, res gjson.Re
 	}
 	if value := res.Get(prefix + "soft-reconfiguration"); value.Exists() {
 		data.SoftReconfiguration = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "route-map"); value.Exists() {
+		data.RouteMap = make([]BGPL2VPNEVPNNeighborRouteMap, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := BGPL2VPNEVPNNeighborRouteMap{}
+			if cValue := v.Get("inout"); cValue.Exists() {
+				item.Inout = types.StringValue(cValue.String())
+			}
+			if cValue := v.Get("route-map-name"); cValue.Exists() {
+				item.RouteMapName = types.StringValue(cValue.String())
+			}
+			data.RouteMap = append(data.RouteMap, item)
+			return true
+		})
 	}
 }
 
@@ -351,6 +433,34 @@ func (data *BGPL2VPNEVPNNeighborData) fromBodyXML(ctx context.Context, res xmldo
 
 func (data *BGPL2VPNEVPNNeighbor) getDeletedItems(ctx context.Context, state BGPL2VPNEVPNNeighbor) []string {
 	deletedItems := make([]string, 0)
+	for i := range state.RouteMap {
+		stateKeyValues := [...]string{state.RouteMap[i].Inout.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.RouteMap[i].Inout.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.RouteMap {
+			found = true
+			if state.RouteMap[i].Inout.ValueString() != data.RouteMap[j].Inout.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.RouteMap[i].RouteMapName.IsNull() && data.RouteMap[j].RouteMapName.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v/route-map-name", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/route-map=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
 	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/soft-reconfiguration", state.getPath()))
 	}
@@ -390,6 +500,7 @@ func (data *BGPL2VPNEVPNNeighbor) addDeletedItemsXML(ctx context.Context, state 
 
 func (data *BGPL2VPNEVPNNeighbor) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+
 	if !data.RouteReflectorClient.IsNull() && !data.RouteReflectorClient.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/route-reflector-client", data.getPath()))
 	}
@@ -406,6 +517,11 @@ func (data *BGPL2VPNEVPNNeighbor) getEmptyLeafsDelete(ctx context.Context) []str
 
 func (data *BGPL2VPNEVPNNeighbor) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	for i := range data.RouteMap {
+		keyValues := [...]string{data.RouteMap[i].Inout.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/route-map=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	if !data.SoftReconfiguration.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/soft-reconfiguration", data.getPath()))
 	}
