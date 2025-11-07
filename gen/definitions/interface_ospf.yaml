@@ -71,6 +71,14 @@ attributes:
           - yang_name: area-id
             id: true
             example: 0
+  - yang_name: multi-area/multi-area-id
+    tf_name: multi_area_ids
+    type: List
+    attributes:
+      - yang_name: area-id
+        id: true
+        type: String
+        example: "10"
   - yang_name: message-digest-key
     tf_name: message_digest_keys
     type: List

@@ -39,11 +39,24 @@ data "iosxe_ospf" "example" {
 - `default_metric` (Number) Set metric of redistributed routes
 - `distance` (Number) Administrative distance
 - `domain_tag` (Number) OSPF domain-tag
+- `fast_reroute_per_prefix_enable_prefix_priority` (String) Priority of prefixes to be protected
 - `id` (String) The path of the retrieved object.
+- `log_adjacency_changes` (Boolean) Log changes in adjacency state
+- `log_adjacency_changes_detail` (Boolean) Log all state changes
+- `max_metric_router_lsa` (Boolean) Maximum metric in self-originated router-LSAs
+- `max_metric_router_lsa_external_lsa_metric` (Number)
+- `max_metric_router_lsa_include_stub` (Boolean) Set maximum metric for stub links in router-LSAs
+- `max_metric_router_lsa_on_startup_time` (Number)
+- `max_metric_router_lsa_on_startup_wait_for_bgp` (Boolean) Let BGP decide when to originate router-LSA with normal metric
+- `max_metric_router_lsa_summary_lsa_metric` (Number)
 - `mpls_ldp_autoconfig` (Boolean) Configure LDP automatic configuration
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
 - `neighbors` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbors))
 - `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
+- `nsf_cisco` (Boolean) Cisco Non-stop forwarding
+- `nsf_cisco_enforce_global` (Boolean) For the whole OSPF process
+- `nsf_ietf` (Boolean) IETF graceful restart
+- `nsf_ietf_restart_interval` (Number) Graceful restart interval
 - `passive_interface` (List of String)
 - `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
 - `passive_interface_disable_five_gigabit_ethernets` (Attributes Set) (see [below for nested schema](#nestedatt--passive_interface_disable_five_gigabit_ethernets))
@@ -61,6 +74,8 @@ data "iosxe_ospf" "example" {
 - `passive_interface_disable_two_hundred_gigabit_ethernets` (Attributes Set) (see [below for nested schema](#nestedatt--passive_interface_disable_two_hundred_gigabit_ethernets))
 - `passive_interface_disable_vlans` (Attributes Set) (see [below for nested schema](#nestedatt--passive_interface_disable_vlans))
 - `priority` (Number) OSPF topology priority
+- `redistribute_connected_subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
+- `redistribute_static_subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
 - `router_id` (String) Configure router identifier. New router-id will take effect immediately (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
 - `summary_addresses` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_addresses))

@@ -138,6 +138,74 @@ func (r *OSPFVRFResource) Schema(ctx context.Context, req resource.SchemaRequest
 					int64validator.Between(1, 4294967295),
 				},
 			},
+			"log_adjacency_changes": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Log changes in adjacency state").String,
+				Optional:            true,
+			},
+			"log_adjacency_changes_detail": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Log all state changes").String,
+				Optional:            true,
+			},
+			"nsf_cisco": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Cisco Non-stop forwarding").String,
+				Optional:            true,
+			},
+			"nsf_cisco_enforce_global": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("For the whole OSPF process").String,
+				Optional:            true,
+			},
+			"nsf_ietf": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IETF graceful restart").String,
+				Optional:            true,
+			},
+			"nsf_ietf_restart_interval": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Graceful restart interval").AddIntegerRangeDescription(1, 1800).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 1800),
+				},
+			},
+			"max_metric_router_lsa": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Maximum metric in self-originated router-LSAs").String,
+				Optional:            true,
+			},
+			"max_metric_router_lsa_summary_lsa_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 16777214),
+				},
+			},
+			"max_metric_router_lsa_external_lsa_metric": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 16777214).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 16777214),
+				},
+			},
+			"max_metric_router_lsa_include_stub": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set maximum metric for stub links in router-LSAs").String,
+				Optional:            true,
+			},
+			"max_metric_router_lsa_on_startup_time": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(5, 86400).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(5, 86400),
+				},
+			},
+			"max_metric_router_lsa_on_startup_wait_for_bgp": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Let BGP decide when to originate router-LSA with normal metric").String,
+				Optional:            true,
+			},
+			"redistribute_static_subnets": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
+				Optional:            true,
+			},
+			"redistribute_connected_subnets": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Consider subnets for redistribution into OSPF (Will be removed in the future)").String,
+				Optional:            true,
+			},
 			"mpls_ldp_autoconfig": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Configure LDP automatic configuration").String,
 				Optional:            true,
