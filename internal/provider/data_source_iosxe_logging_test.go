@@ -21,6 +21,7 @@ package provider
 
 // Section below is generated&owned by "gen/generator.go". //template:begin imports
 import (
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -69,7 +70,9 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_udp_ports.0.port_number", "10000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tcp_ports.0.port_number", "10001"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "ipv6_vrf_hosts_transport.0.transport_tls_ports.0.port_number", "10002"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "logging_count", "true"))
+	if os.Getenv("IOSXE1715") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "logging_count", "true"))
+	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_url", "flash:/local_logging"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_size", "1000000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_filesize", "500000"))
@@ -196,7 +199,9 @@ func testAccDataSourceIosxeLoggingConfig() string {
 	config += `			port_number = 10002` + "\n"
 	config += `		}]` + "\n"
 	config += `	}]` + "\n"
-	config += `	logging_count = true` + "\n"
+	if os.Getenv("IOSXE1715") != "" {
+		config += `	logging_count = true` + "\n"
+	}
 	config += `	persistent_url = "flash:/local_logging"` + "\n"
 	config += `	persistent_size = 1000000` + "\n"
 	config += `	persistent_filesize = 500000` + "\n"
