@@ -34,8 +34,9 @@ func TestAccDataSourceIosxeBGP(t *testing.T) {
 	var checks []resource.TestCheckFunc
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "default_ipv4_unicast", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "log_neighbor_changes", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "router_id_loopback", "100"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "router_id_ip", "172.16.255.1"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "bgp_graceful_restart", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_bgp.test", "bgp_update_delay", "200"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -73,8 +74,9 @@ func testAccDataSourceIosxeBGPConfig() string {
 	config += `	asn = "65000"` + "\n"
 	config += `	default_ipv4_unicast = false` + "\n"
 	config += `	log_neighbor_changes = true` + "\n"
-	config += `	router_id_loopback = 100` + "\n"
 	config += `	router_id_ip = "172.16.255.1"` + "\n"
+	config += `	bgp_graceful_restart = true` + "\n"
+	config += `	bgp_update_delay = 200` + "\n"
 	config += `	depends_on = [iosxe_restconf.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

@@ -7,6 +7,7 @@
 - Add `ip_ssh_bulk_mode` and `ip_ssh_bulk_mode_window_size` attributes to `iosxe_system` resource and data source
 - Add `set_ip_next_hop_unchanged` attribute to `iosxe_route_map` resource and data source
 - Enhance `set_communities` attribute documentation in `iosxe_route_map` to clarify support for well-known BGP community values (internet, local-AS, no-advertise, no-export, gshut)
+- Add `router_id_ip`, `bgp_graceful_restart`, and `bgp_update_delay` to `iosxe_bgp` resource and data source
 
 ## 0.9.3
 
@@ -21,7 +22,7 @@
 - Add `passive_interface_disable_*` attributes to `iosxe_ospf` and `iosxe_ospf_vrf` resources and data sources
 - Fix issue with destroying `iosxe_interface_ethernet` resources
 - Change route target attributes of `iosxe_vrf` from type "List" to "Set"
-- Add `role_based_enforcement` attributes to `iosxe_cts` 
+- Add `role_based_enforcement` attributes to `iosxe_cts`
 - Add `tftp_source_interface_*` attributes to `iosxe_system` resource and data source
 - Add `hash` attribute to `iosxe_crypto_pki` resource and data source
 - Add `snooping_information_option`, `snooping_information_option_allow_untrusted` and `snooping_information_option_format_remote_id_string` attributes to `iosxe_dhcp` resource and data source
@@ -66,7 +67,7 @@
 - Add `level`, `list_name`, `action_type`, `broadcast`, `group_broadcast`, `group_logger`, `group1_group`, `group2_group`, `group3_group`, `group4_group`, `name`, `default`, `none`, `start_stop_broadcast`, `start_stop_logger`, `start_stop_group1`, `start_stop_group2`, `start_stop_group3`, `start_stop_group4`, `stop_only_broadcast`, `stop_only_logger`, `stop_only_group1`, `stop_only_group2`, `stop_only_group3`, `stop_only_group4`, `wait_start_broadcast`, `wait_start_logger`, `wait_start_group1`, `wait_start_group2`, `wait_start_group3`, `wait_start_group4`, `name`, `none`, `start_stop_broadcast`, `start_stop_logger`, `start_stop_group1`, `start_stop_group2`, `start_stop_group3`, `start_stop_group4`, `stop_only_broadcast`, `stop_only_logger`, `stop_only_group1`, `stop_only_group2`, `stop_only_group3`, `stop_only_group4`, `wait_start_broadcast`, `wait_start_logger`, `wait_start_group1`, `wait_start_group2`, `wait_start_group3`, and `wait_start_group4` attributes to `iosxe_aaa_accounting` resource and data source
 - Add `enable_default_group1_cache`, `enable_default_group1_enable`, `enable_default_group1_group`, `enable_default_group1_line`, `enable_default_group1_none`, `enable_default_group2_cache`, `enable_default_group2_enable`, `enable_default_group2_group`, `enable_default_group2_line`, `enable_default_group2_none`, `enable_default_group3_cache`, `enable_default_group3_enable`, `enable_default_group3_group`, `enable_default_group3_line`, `enable_default_group3_none`, `enable_default_group4_cache`, `enable_default_group4_enable`, `enable_default_group4_group`, `enable_default_group4_line`, and `enable_default_group4_none` attributes to `iosxe_aaa_authentication` resource and data source
 - Add `level`, `list_name`, `a1_group`, `a1_local`, `a1_if_authenticated`, `a1_none`, `a1_radius`, `a1_tacacs`, `a2_group`, `a2_local`, `a2_if_authenticated`, `a2_none`, `a2_radius`, `a2_tacacs`, `a3_group`, `a3_local`, `a3_if_authenticated`, `a3_none`, `a3_radius`, `a3_tacacs`, `a4_group`, `a4_local`, `a4_if_authenticated`, `a4_none`, `a4_radius`, `a4_tacacs`, `name`, `group1_cache`, `group1_group`, `group1_radius`, and `group1_tacacs` attributes to `iosxe_aaa_authorization` resource and data source
-- Add `vrf`, `local_authentication_type`, `local_authorization`, and `local_auth_max_fail_attempts` attributes to `iosxe_aaa` resrouce and data source 
+- Add `vrf`, `local_authentication_type`, `local_authorization`, and `local_auth_max_fail_attempts` attributes to `iosxe_aaa` resrouce and data source
 - Add `icmp_named_msg_type`, `destination_port_equal_2`, `destination_port_equal_3`, `destination_port_equal_4`, `destination_port_equal_5`, `destination_port_equal_6`, `destination_port_equal_7`, `destination_port_equal_8`, `destination_port_equal_9`, `destination_port_equal_10`, `icmp_msg_type`, and `icmp_msg_code` attributes to `iosxe_access_list_extended` resource and data source
 - Add `iosxe_access_list_role_based` resource and data source
 - Add `filter_lists_cdp` attribute to `iosxe_device_sensor` resource and data source

@@ -31,6 +31,8 @@ data "iosxe_bgp" "example" {
 
 ### Read-Only
 
+- `bgp_graceful_restart` (Boolean) Graceful restart capability parameters
+- `bgp_update_delay` (Number) Set the max initial delay for sending update
 - `default_ipv4_unicast` (Boolean) Activate ipv4-unicast for a peer by default
 - `id` (String) The path of the retrieved object.
 - `log_neighbor_changes` (Boolean) Log neighbor up/down and reset reason

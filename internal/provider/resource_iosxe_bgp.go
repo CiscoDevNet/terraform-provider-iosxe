@@ -115,6 +115,17 @@ func (r *BGPResource) Schema(ctx context.Context, req resource.SchemaRequest, re
 					stringvalidator.RegexMatches(regexp.MustCompile(`(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(%[\p{N}\p{L}]+)?`), ""),
 				},
 			},
+			"bgp_graceful_restart": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Graceful restart capability parameters").String,
+				Optional:            true,
+			},
+			"bgp_update_delay": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Set the max initial delay for sending update").AddIntegerRangeDescription(1, 3600).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(1, 3600),
+				},
+			},
 		},
 	}
 }
