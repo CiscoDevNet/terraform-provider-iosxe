@@ -20,9 +20,8 @@ resource "iosxe_evpn_ethernet_segment" "example" {
   redundancy_single_active = true
   identifier_types = [
     {
-      type       = 0
-      hex_string = "0001.0000.0000.0000.000A"
-      system_mac = "00:11:22:33:44:55"
+      type       = 3
+      system_mac = "0011.2233.4455"
     }
   ]
 }
