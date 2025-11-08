@@ -548,6 +548,7 @@ func (p *IosxeProvider) Resources(ctx context.Context) []func() resource.Resourc
 		NewYangResource,
 		NewSaveConfigResource,
 		NewCliResource,
+		NewCommitResource,
 		NewAAAResource,
 		NewAAAAccountingResource,
 		NewAAAAuthenticationResource,

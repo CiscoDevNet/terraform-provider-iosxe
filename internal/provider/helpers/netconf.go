@@ -196,6 +196,34 @@ func EditConfig(ctx context.Context, client *netconf.Client, body string, commit
 	return nil
 }
 
+// Commit commits the candidate datastore to the running datastore
+func Commit(ctx context.Context, client *netconf.Client) error {
+	if err := client.Open(); err != nil {
+		return fmt.Errorf("failed to open NETCONF connection: %w", err)
+	}
+
+	candidate := client.ServerHasCapability("urn:ietf:params:netconf:capability:candidate:1.0")
+
+	if candidate {
+		// Lock running datastore
+		if _, err := client.Lock(ctx, "running"); err != nil {
+			return fmt.Errorf("failed to lock running datastore: %s", FormatNetconfError(err))
+		}
+		defer client.Unlock(ctx, "running")
+
+		// Lock candidate datastore
+		if _, err := client.Lock(ctx, "candidate"); err != nil {
+			return fmt.Errorf("failed to lock candidate datastore: %s", FormatNetconfError(err))
+		}
+		defer client.Unlock(ctx, "candidate")
+
+		if _, err := client.Commit(ctx); err != nil {
+			return fmt.Errorf("failed to commit config: %s", FormatNetconfError(err))
+		}
+	}
+	return nil
+}
+
 // GetXpathFilter creates a NETCONF XPath filter with namespace prefixes removed.
 // It processes the XPath expression to strip namespace prefixes from both element names
 // and predicate key names, preserving the path structure.
