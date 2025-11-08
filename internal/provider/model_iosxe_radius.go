@@ -583,10 +583,10 @@ func (data *Radius) getDeletedItems(ctx context.Context, state Radius) []string 
 func (data *Radius) addDeletedItemsXML(ctx context.Context, state Radius, body string) string {
 	b := netconf.NewBody(body)
 	if !state.PacKeyEncryption.IsNull() && data.PacKeyEncryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key/encryption")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key")
 	}
 	if !state.PacKey.IsNull() && data.PacKey.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key/key")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pac/key")
 	}
 	if !state.AutomateTesterProbeOnConfig.IsNull() && data.AutomateTesterProbeOnConfig.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/probe-on-config")
@@ -598,7 +598,7 @@ func (data *Radius) addDeletedItemsXML(ctx context.Context, state Radius, body s
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/automate-tester/username")
 	}
 	if !state.Key.IsNull() && data.Key.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key/key")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
 	}
 	if !state.Retransmit.IsNull() && data.Retransmit.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/retransmit")
@@ -686,10 +686,10 @@ func (data *Radius) getDeletePaths(ctx context.Context) []string {
 func (data *Radius) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.PacKeyEncryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key/encryption")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key")
 	}
 	if !data.PacKey.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key/key")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pac/key")
 	}
 	if !data.AutomateTesterProbeOnConfig.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/automate-tester/probe-on-config")
@@ -701,7 +701,7 @@ func (data *Radius) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/automate-tester/username")
 	}
 	if !data.Key.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key/key")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
 	}
 	if !data.Retransmit.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/retransmit")

@@ -1431,22 +1431,22 @@ func (data *BGPNeighbor) addDeletedItemsXML(ctx context.Context, state BGPNeighb
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ttl-security/hops")
 	}
 	if !state.TimersMinimumNeighborHold.IsNull() && data.TimersMinimumNeighborHold.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers/minimum-neighbor-hold")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
 	if !state.TimersHoldtime.IsNull() && data.TimersHoldtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers/holdtime")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
 	if !state.TimersKeepaliveInterval.IsNull() && data.TimersKeepaliveInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers/keepalive-interval")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
 	if !state.PeerGroup.IsNull() && data.PeerGroup.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/peer-group/peer-group-name")
 	}
 	if !state.Password.IsNull() && data.Password.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password/text")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password")
 	}
 	if !state.PasswordType.IsNull() && data.PasswordType.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password/enctype")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password")
 	}
 	if !state.LogNeighborChanges.IsNull() && data.LogNeighborChanges.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-neighbor-changes")
@@ -1669,22 +1669,22 @@ func (data *BGPNeighbor) addDeletePathsXML(ctx context.Context, body string) str
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ttl-security/hops")
 	}
 	if !data.TimersMinimumNeighborHold.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers/minimum-neighbor-hold")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers")
 	}
 	if !data.TimersHoldtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers/holdtime")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers")
 	}
 	if !data.TimersKeepaliveInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers/keepalive-interval")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers")
 	}
 	if !data.PeerGroup.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/peer-group/peer-group-name")
 	}
 	if !data.Password.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password/text")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password")
 	}
 	if !data.PasswordType.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password/enctype")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password")
 	}
 	if !data.LogNeighborChanges.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/log-neighbor-changes")

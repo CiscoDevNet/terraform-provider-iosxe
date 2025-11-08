@@ -326,7 +326,11 @@ func (data *CommunityListStandard) addDeletedItemsXML(ctx context.Context, state
 	b := netconf.NewBody(body)
 	if !state.PermitEntries.IsNull() {
 		if data.PermitEntries.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/permit/permit-list")
+			var values []string
+			state.PermitEntries.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/permit/permit-list[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.PermitEntries.ElementsAs(ctx, &dataValues, false)
@@ -347,7 +351,11 @@ func (data *CommunityListStandard) addDeletedItemsXML(ctx context.Context, state
 	}
 	if !state.DenyEntries.IsNull() {
 		if data.DenyEntries.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/deny/deny-list")
+			var values []string
+			state.DenyEntries.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/deny/deny-list[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.DenyEntries.ElementsAs(ctx, &dataValues, false)

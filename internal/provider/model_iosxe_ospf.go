@@ -4430,7 +4430,11 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 	}
 	if !state.PassiveInterface.IsNull() {
 		if data.PassiveInterface.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/passive-interface/interface")
+			var values []string
+			state.PassiveInterface.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface/interface[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.PassiveInterface.ElementsAs(ctx, &dataValues, false)

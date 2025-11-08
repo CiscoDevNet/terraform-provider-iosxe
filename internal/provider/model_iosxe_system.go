@@ -6677,7 +6677,11 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	}
 	if !state.IpDomainListNames.IsNull() {
 		if data.IpDomainListNames.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/domain/list/domain-name")
+			var values []string
+			state.IpDomainListNames.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/domain/list/domain-name[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.IpDomainListNames.ElementsAs(ctx, &dataValues, false)
@@ -6840,7 +6844,11 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 						if found {
 							if !state.IpHostsVrf[i].Hosts[ci].Ips.IsNull() {
 								if data.IpHostsVrf[j].Hosts[cj].Ips.IsNull() {
-									b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/host/vrf%v/host-name%v/ip-list", predicates, cpredicates))
+									var values []string
+									state.IpHostsVrf[i].Hosts[ci].Ips.ElementsAs(ctx, &values, false)
+									for _, v := range values {
+										b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/host/vrf%v/host-name%v/ip-list[.=%v]", predicates, cpredicates, v))
+									}
 								} else {
 									var dataValues, stateValues []string
 									data.IpHostsVrf[i].Hosts[ci].Ips.ElementsAs(ctx, &dataValues, false)
@@ -6898,7 +6906,11 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 			if found {
 				if !state.IpHosts[i].Ips.IsNull() {
 					if data.IpHosts[j].Ips.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/host/host-list%v/ip-list-ordered", predicates))
+						var values []string
+						state.IpHosts[i].Ips.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/host/host-list%v/ip-list-ordered[.=%v]", predicates, v))
+						}
 					} else {
 						var dataValues, stateValues []string
 						data.IpHosts[i].Ips.ElementsAs(ctx, &dataValues, false)
@@ -6931,7 +6943,7 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/secret/type")
 	}
 	if !state.EnableSecret.IsNull() && data.EnableSecret.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/secret/secret")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/secret")
 	}
 	for i := range state.BootSystemBootfiles {
 		stateKeys := [...]string{"filename"}
@@ -7231,7 +7243,11 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 			if found {
 				if !state.IpNameServersVrf[i].Servers.IsNull() {
 					if data.IpNameServersVrf[j].Servers.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/name-server/vrf%v/server-ip-list-ordered", predicates))
+						var values []string
+						state.IpNameServersVrf[i].Servers.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/name-server/vrf%v/server-ip-list-ordered[.=%v]", predicates, v))
+						}
 					} else {
 						var dataValues, stateValues []string
 						data.IpNameServersVrf[i].Servers.ElementsAs(ctx, &dataValues, false)
@@ -7259,7 +7275,11 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 	}
 	if !state.IpNameServers.IsNull() {
 		if data.IpNameServers.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/name-server/no-vrf-ordered")
+			var values []string
+			state.IpNameServers.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/ip/name-server/no-vrf-ordered[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.IpNameServers.ElementsAs(ctx, &dataValues, false)
@@ -8069,7 +8089,7 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/secret/type")
 	}
 	if !data.EnableSecret.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/secret/secret")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/secret")
 	}
 	for i := range data.BootSystemBootfiles {
 		keys := [...]string{"filename"}

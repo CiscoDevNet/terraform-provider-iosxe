@@ -381,7 +381,11 @@ func (data *VLANAccessMap) addDeletedItemsXML(ctx context.Context, state VLANAcc
 	}
 	if !state.MatchIpAddress.IsNull() {
 		if data.MatchIpAddress.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ip/address")
+			var values []string
+			state.MatchIpAddress.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/ip/address[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchIpAddress.ElementsAs(ctx, &dataValues, false)
@@ -402,7 +406,11 @@ func (data *VLANAccessMap) addDeletedItemsXML(ctx context.Context, state VLANAcc
 	}
 	if !state.MatchIpv6Address.IsNull() {
 		if data.MatchIpv6Address.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/address")
+			var values []string
+			state.MatchIpv6Address.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/ipv6/address[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchIpv6Address.ElementsAs(ctx, &dataValues, false)

@@ -677,7 +677,11 @@ func (data *LLDP) addDeletedItemsXML(ctx context.Context, state LLDP, body strin
 	}
 	if !state.Ipv6ManagementAddresses.IsNull() {
 		if data.Ipv6ManagementAddresses.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-address/ipv6")
+			var values []string
+			state.Ipv6ManagementAddresses.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/management-address/ipv6[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.Ipv6ManagementAddresses.ElementsAs(ctx, &dataValues, false)
@@ -698,7 +702,11 @@ func (data *LLDP) addDeletedItemsXML(ctx context.Context, state LLDP, body strin
 	}
 	if !state.Ipv4ManagementAddresses.IsNull() {
 		if data.Ipv4ManagementAddresses.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-address/ipv4")
+			var values []string
+			state.Ipv4ManagementAddresses.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/management-address/ipv4[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.Ipv4ManagementAddresses.ElementsAs(ctx, &dataValues, false)

@@ -896,7 +896,11 @@ func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusSe
 			if found {
 				if !state.Attributes[i].SendAttributes.IsNull() {
 					if data.Attributes[j].SendAttributes.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/send-attribute", predicates))
+						var values []string
+						state.Attributes[i].SendAttributes.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/send-attribute[.=%v]", predicates, v))
+						}
 					} else {
 						var dataValues, stateValues []string
 						data.Attributes[i].SendAttributes.ElementsAs(ctx, &dataValues, false)

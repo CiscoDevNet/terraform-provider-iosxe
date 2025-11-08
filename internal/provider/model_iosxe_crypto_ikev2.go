@@ -353,16 +353,16 @@ func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2)
 func (data *CryptoIKEv2) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2, body string) string {
 	b := netconf.NewBody(body)
 	if !state.HttpUrlCert.IsNull() && data.HttpUrlCert.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/http-url/cert-leaf")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/http-url")
 	}
 	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/dpd-query")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
 	}
 	if !state.DpdRetryInterval.IsNull() && data.DpdRetryInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/retry-interval")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
 	}
 	if !state.Dpd.IsNull() && data.Dpd.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/dpd")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container")
 	}
 	if !state.NatKeepalive.IsNull() && data.NatKeepalive.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nat/keepalive")
@@ -414,16 +414,16 @@ func (data *CryptoIKEv2) getDeletePaths(ctx context.Context) []string {
 func (data *CryptoIKEv2) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.HttpUrlCert.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/http-url/cert-leaf")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/http-url")
 	}
 	if !data.DpdQuery.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/dpd-query")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container")
 	}
 	if !data.DpdRetryInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/retry-interval")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container")
 	}
 	if !data.Dpd.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/dpd")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container")
 	}
 	if !data.NatKeepalive.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nat/keepalive")

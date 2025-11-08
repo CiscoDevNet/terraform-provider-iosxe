@@ -2586,16 +2586,16 @@ func (data *PIM) addDeletedItemsXML(ctx context.Context, state PIM, body string)
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/ssm/range", predicates))
 				}
 				if !state.Vrfs[i].BsrCandidateAcceptRpCandidate.IsNull() && data.Vrfs[j].BsrCandidateAcceptRpCandidate.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate/accept-rp-candidate", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
 				}
 				if !state.Vrfs[i].BsrCandidatePriority.IsNull() && data.Vrfs[j].BsrCandidatePriority.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate/priority", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
 				}
 				if !state.Vrfs[i].BsrCandidateMask.IsNull() && data.Vrfs[j].BsrCandidateMask.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate/mask", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
 				}
 				if !state.Vrfs[i].BsrCandidateLoopback.IsNull() && data.Vrfs[j].BsrCandidateLoopback.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate/Loopback", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/bsr-candidate", predicates))
 				}
 				if !state.Vrfs[i].AutorpListener.IsNull() && data.Vrfs[j].AutorpListener.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-multicast:vrf%v/autorp-container/listener", predicates))
@@ -2707,16 +2707,16 @@ func (data *PIM) addDeletedItemsXML(ctx context.Context, state PIM, body string)
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range")
 	}
 	if !state.BsrCandidateAcceptRpCandidate.IsNull() && data.BsrCandidateAcceptRpCandidate.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
 	}
 	if !state.BsrCandidatePriority.IsNull() && data.BsrCandidatePriority.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/priority")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
 	}
 	if !state.BsrCandidateMask.IsNull() && data.BsrCandidateMask.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/mask")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
 	}
 	if !state.BsrCandidateLoopback.IsNull() && data.BsrCandidateLoopback.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/Loopback")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
 	}
 	if !state.AutorpListener.IsNull() && data.AutorpListener.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener")
@@ -2914,16 +2914,16 @@ func (data *PIM) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:ssm/range")
 	}
 	if !data.BsrCandidateAcceptRpCandidate.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/accept-rp-candidate")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
 	}
 	if !data.BsrCandidatePriority.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/priority")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
 	}
 	if !data.BsrCandidateMask.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/mask")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
 	}
 	if !data.BsrCandidateLoopback.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate/Loopback")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:bsr-candidate")
 	}
 	if !data.AutorpListener.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-multicast:autorp-container/listener")

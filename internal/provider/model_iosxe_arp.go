@@ -1005,25 +1005,25 @@ func (data *ARP) addDeletedItemsXML(ctx context.Context, state ARP, body string)
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/vlan")
 	}
 	if !state.InspectionLogBufferLogsInterval.IsNull() && data.InspectionLogBufferLogsInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs/interval")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs")
 	}
 	if !state.InspectionLogBufferLogsEntries.IsNull() && data.InspectionLogBufferLogsEntries.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs/entries")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/logs")
 	}
 	if !state.InspectionLogBufferEntries.IsNull() && data.InspectionLogBufferEntries.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/log-buffer/entries")
 	}
 	if !state.InspectionValidateAllowZeros.IsNull() && data.InspectionValidateAllowZeros.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate/allow/zeros")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate/allow")
 	}
 	if !state.InspectionValidateIp.IsNull() && data.InspectionValidateIp.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate/ip")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
 	if !state.InspectionValidateDstMac.IsNull() && data.InspectionValidateDstMac.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate/dst-mac")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
 	if !state.InspectionValidateSrcMac.IsNull() && data.InspectionValidateSrcMac.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate/src-mac")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/inspection/validate")
 	}
 	for i := range state.InspectionFilters {
 		stateKeys := [...]string{"arpacl"}
@@ -1196,25 +1196,25 @@ func (data *ARP) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/vlan")
 	}
 	if !data.InspectionLogBufferLogsInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/log-buffer/logs/interval")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/log-buffer/logs")
 	}
 	if !data.InspectionLogBufferLogsEntries.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/log-buffer/logs/entries")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/log-buffer/logs")
 	}
 	if !data.InspectionLogBufferEntries.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/log-buffer/entries")
 	}
 	if !data.InspectionValidateAllowZeros.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate/allow/zeros")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate/allow")
 	}
 	if !data.InspectionValidateIp.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate/ip")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate")
 	}
 	if !data.InspectionValidateDstMac.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate/dst-mac")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate")
 	}
 	if !data.InspectionValidateSrcMac.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate/src-mac")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/inspection/validate")
 	}
 	for i := range data.InspectionFilters {
 		keys := [...]string{"arpacl"}

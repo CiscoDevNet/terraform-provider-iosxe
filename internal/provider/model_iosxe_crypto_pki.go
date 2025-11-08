@@ -806,7 +806,11 @@ func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, 
 				}
 				if !state.Trustpoints[i].RevocationCheck.IsNull() {
 					if data.Trustpoints[j].RevocationCheck.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/revocation-check", predicates))
+						var values []string
+						state.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/revocation-check[.=%v]", predicates, v))
+						}
 					} else {
 						var dataValues, stateValues []string
 						data.Trustpoints[i].RevocationCheck.ElementsAs(ctx, &dataValues, false)

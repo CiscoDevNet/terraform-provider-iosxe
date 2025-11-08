@@ -1322,7 +1322,11 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 	b := netconf.NewBody(body)
 	if !state.MatchIpPrecedence.IsNull() {
 		if data.MatchIpPrecedence.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ip/precedence")
+			var values []string
+			state.MatchIpPrecedence.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/ip/precedence[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchIpPrecedence.ElementsAs(ctx, &dataValues, false)
@@ -1343,7 +1347,11 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 	}
 	if !state.MatchIpDscp.IsNull() {
 		if data.MatchIpDscp.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ip/dscp")
+			var values []string
+			state.MatchIpDscp.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/ip/dscp[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchIpDscp.ElementsAs(ctx, &dataValues, false)
@@ -1364,7 +1372,11 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 	}
 	if !state.MatchAccessGroupName.IsNull() {
 		if data.MatchAccessGroupName.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/access-group/name")
+			var values []string
+			state.MatchAccessGroupName.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/access-group/name[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchAccessGroupName.ElementsAs(ctx, &dataValues, false)
@@ -1388,7 +1400,11 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 	}
 	if !state.MatchDscp.IsNull() {
 		if data.MatchDscp.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/dscp")
+			var values []string
+			state.MatchDscp.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/dscp[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchDscp.ElementsAs(ctx, &dataValues, false)
@@ -1427,7 +1443,11 @@ func (data *ClassMap) addDeletedItemsXML(ctx context.Context, state ClassMap, bo
 	}
 	if !state.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
 		if data.MatchAuthorizingMethodPriorityGreaterThan.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/authorizing-method-priority/greater-than")
+			var values []string
+			state.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/authorizing-method-priority/greater-than[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []int
 			data.MatchAuthorizingMethodPriorityGreaterThan.ElementsAs(ctx, &dataValues, false)

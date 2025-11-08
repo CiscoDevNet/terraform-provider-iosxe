@@ -309,10 +309,10 @@ func (data *TACACSServer) getDeletedItems(ctx context.Context, state TACACSServe
 func (data *TACACSServer) addDeletedItemsXML(ctx context.Context, state TACACSServer, body string) string {
 	b := netconf.NewBody(body)
 	if !state.Key.IsNull() && data.Key.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key/key")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
 	}
 	if !state.Encryption.IsNull() && data.Encryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key/encryption")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/key")
 	}
 	if !state.Timeout.IsNull() && data.Timeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timeout")
@@ -364,10 +364,10 @@ func (data *TACACSServer) getDeletePaths(ctx context.Context) []string {
 func (data *TACACSServer) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.Key.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key/key")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
 	}
 	if !data.Encryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key/encryption")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/key")
 	}
 	if !data.Timeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timeout")

@@ -1383,7 +1383,11 @@ func (data *CTS) addDeletedItemsXML(ctx context.Context, state CTS, body string)
 	b := netconf.NewBody(body)
 	if !state.RoleBasedPermissionsDefaultAclName.IsNull() {
 		if data.RoleBasedPermissionsDefaultAclName.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new")
+			var values []string
+			state.RoleBasedPermissionsDefaultAclName.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:role-based/permissions/default/ACL-name-new[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.RoleBasedPermissionsDefaultAclName.ElementsAs(ctx, &dataValues, false)
@@ -1404,7 +1408,11 @@ func (data *CTS) addDeletedItemsXML(ctx context.Context, state CTS, body string)
 	}
 	if !state.RoleBasedEnforcementVlanLists.IsNull() {
 		if data.RoleBasedEnforcementVlanLists.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists")
+			var values []string
+			state.RoleBasedEnforcementVlanLists.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cts:role-based/enforcement/vlan-lists[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []int
 			data.RoleBasedEnforcementVlanLists.ElementsAs(ctx, &dataValues, false)

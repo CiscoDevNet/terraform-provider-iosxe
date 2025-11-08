@@ -592,7 +592,11 @@ func (data *CryptoIKEv2Policy) addDeletedItemsXML(ctx context.Context, state Cry
 	}
 	if !state.MatchAddressLocalIp.IsNull() {
 		if data.MatchAddressLocalIp.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/address/local-ip")
+			var values []string
+			state.MatchAddressLocalIp.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/address/local-ip[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchAddressLocalIp.ElementsAs(ctx, &dataValues, false)

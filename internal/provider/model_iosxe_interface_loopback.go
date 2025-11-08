@@ -1473,22 +1473,22 @@ func (data *InterfaceLoopback) addDeletedItemsXML(ctx context.Context, state Int
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ipv6/enable")
 	}
 	if !state.IpAccessGroupOut.IsNull() && data.IpAccessGroupOut.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/out/acl/acl-name")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/out/acl")
 	}
 	if !state.IpAccessGroupOutEnable.IsNull() && data.IpAccessGroupOutEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/out/acl/out")
 	}
 	if !state.IpAccessGroupIn.IsNull() && data.IpAccessGroupIn.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl/acl-name")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl")
 	}
 	if !state.IpAccessGroupInEnable.IsNull() && data.IpAccessGroupInEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/access-group/in/acl/in")
 	}
 	if !state.Ipv4AddressMask.IsNull() && data.Ipv4AddressMask.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary/mask")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary")
 	}
 	if !state.Ipv4Address.IsNull() && data.Ipv4Address.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary/address")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/address/primary")
 	}
 	if !state.VrfForwarding.IsNull() && data.VrfForwarding.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/vrf/forwarding")
@@ -1677,22 +1677,22 @@ func (data *InterfaceLoopback) addDeletePathsXML(ctx context.Context, body strin
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ipv6/enable")
 	}
 	if !data.IpAccessGroupOut.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/out/acl/acl-name")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/out/acl")
 	}
 	if !data.IpAccessGroupOutEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/out/acl/out")
 	}
 	if !data.IpAccessGroupIn.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl/acl-name")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl")
 	}
 	if !data.IpAccessGroupInEnable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/access-group/in/acl/in")
 	}
 	if !data.Ipv4AddressMask.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary/mask")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary")
 	}
 	if !data.Ipv4Address.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary/address")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/address/primary")
 	}
 	if !data.VrfForwarding.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vrf/forwarding")

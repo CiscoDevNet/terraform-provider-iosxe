@@ -333,7 +333,11 @@ func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state Cr
 	}
 	if !state.SetTransformSet.IsNull() {
 		if data.SetTransformSet.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/transform-set")
+			var values []string
+			state.SetTransformSet.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/set/transform-set[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.SetTransformSet.ElementsAs(ctx, &dataValues, false)

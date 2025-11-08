@@ -2086,19 +2086,19 @@ func (data *BGPIPv4UnicastVRFNeighbor) addDeletedItemsXML(ctx context.Context, s
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/version")
 	}
 	if !state.TimersMinimumNeighborHold.IsNull() && data.TimersMinimumNeighborHold.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers/minimum-neighbor-hold")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
 	if !state.TimersHoldtime.IsNull() && data.TimersHoldtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers/holdtime")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
 	if !state.TimersKeepaliveInterval.IsNull() && data.TimersKeepaliveInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers/keepalive-interval")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timers")
 	}
 	if !state.Password.IsNull() && data.Password.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password/text")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password")
 	}
 	if !state.PasswordType.IsNull() && data.PasswordType.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password/enctype")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password")
 	}
 	if !state.LogNeighborChangesDisable.IsNull() && data.LogNeighborChangesDisable.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-neighbor-changes/disable")
@@ -2397,19 +2397,19 @@ func (data *BGPIPv4UnicastVRFNeighbor) addDeletePathsXML(ctx context.Context, bo
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/version")
 	}
 	if !data.TimersMinimumNeighborHold.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers/minimum-neighbor-hold")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers")
 	}
 	if !data.TimersHoldtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers/holdtime")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers")
 	}
 	if !data.TimersKeepaliveInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers/keepalive-interval")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timers")
 	}
 	if !data.Password.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password/text")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password")
 	}
 	if !data.PasswordType.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password/enctype")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password")
 	}
 	if !data.LogNeighborChangesDisable.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/log-neighbor-changes/disable")

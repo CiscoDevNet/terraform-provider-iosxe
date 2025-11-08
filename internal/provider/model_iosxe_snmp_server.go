@@ -13826,10 +13826,10 @@ func (data *SNMPServer) addDeletedItemsXML(ctx context.Context, state SNMPServer
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog")
 	}
 	if !state.EnableTrapsStpxLoopInconsistency.IsNull() && data.EnableTrapsStpxLoopInconsistency.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/loop-inconsistency")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx")
 	}
 	if !state.EnableTrapsStpxRootInconsistency.IsNull() && data.EnableTrapsStpxRootInconsistency.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/root-inconsistency")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx")
 	}
 	if !state.EnableTrapsStpxInconsistency.IsNull() && data.EnableTrapsStpxInconsistency.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/inconsistency")
@@ -13949,7 +13949,7 @@ func (data *SNMPServer) addDeletedItemsXML(ctx context.Context, state SNMPServer
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/envmon")
 	}
 	if !state.EnableTrapsPwVc.IsNull() && data.EnableTrapsPwVc.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw/vc")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw")
 	}
 	if !state.EnableTrapsEntity.IsNull() && data.EnableTrapsEntity.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity")
@@ -15816,10 +15816,10 @@ func (data *SNMPServer) addDeletePathsXML(ctx context.Context, body string) stri
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/syslog")
 	}
 	if !data.EnableTrapsStpxLoopInconsistency.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/loop-inconsistency")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx")
 	}
 	if !data.EnableTrapsStpxRootInconsistency.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/root-inconsistency")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx")
 	}
 	if !data.EnableTrapsStpxInconsistency.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/stpx/inconsistency")
@@ -15939,7 +15939,7 @@ func (data *SNMPServer) addDeletePathsXML(ctx context.Context, body string) stri
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/envmon")
 	}
 	if !data.EnableTrapsPwVc.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw/vc")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/pw")
 	}
 	if !data.EnableTrapsEntity.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-snmp:enable/enable-choice/traps/entity")

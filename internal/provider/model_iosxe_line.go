@@ -2607,7 +2607,11 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 			if found {
 				if !state.Vty[i].TransportOutput.IsNull() {
 					if data.Vty[j].TransportOutput.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/output", predicates))
+						var values []string
+						state.Vty[i].TransportOutput.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/output[.=%v]", predicates, v))
+						}
 					} else {
 						var dataValues, stateValues []string
 						data.Vty[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
@@ -2646,7 +2650,11 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 				}
 				if !state.Vty[i].TransportInput.IsNull() {
 					if data.Vty[j].TransportInput.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/input", predicates))
+						var values []string
+						state.Vty[i].TransportInput.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/input[.=%v]", predicates, v))
+						}
 					} else {
 						var dataValues, stateValues []string
 						data.Vty[i].TransportInput.ElementsAs(ctx, &dataValues, false)
@@ -2772,7 +2780,11 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 			if found {
 				if !state.Console[i].TransportOutput.IsNull() {
 					if data.Console[j].TransportOutput.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/output", predicates))
+						var values []string
+						state.Console[i].TransportOutput.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/output[.=%v]", predicates, v))
+						}
 					} else {
 						var dataValues, stateValues []string
 						data.Console[i].TransportOutput.ElementsAs(ctx, &dataValues, false)

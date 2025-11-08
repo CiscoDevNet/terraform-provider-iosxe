@@ -1108,13 +1108,13 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/config-exchange/request-1")
 	}
 	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd/query")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
 	}
 	if !state.DpdRetry.IsNull() && data.DpdRetry.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd/retry")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
 	}
 	if !state.DpdInterval.IsNull() && data.DpdInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd/interval")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd")
 	}
 	if !state.Ivrf.IsNull() && data.Ivrf.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ivrf")
@@ -1124,7 +1124,11 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 	}
 	if !state.MatchIdentityRemoteKeys.IsNull() {
 		if data.MatchIdentityRemoteKeys.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/identity/remote/key-ids")
+			var values []string
+			state.MatchIdentityRemoteKeys.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/identity/remote/key-ids[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchIdentityRemoteKeys.ElementsAs(ctx, &dataValues, false)
@@ -1145,7 +1149,11 @@ func (data *CryptoIKEv2Profile) addDeletedItemsXML(ctx context.Context, state Cr
 	}
 	if !state.MatchIdentityRemoteIpv6Prefixes.IsNull() {
 		if data.MatchIdentityRemoteIpv6Prefixes.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/identity/remote/address/ipv6-prefix")
+			var values []string
+			state.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/identity/remote/address/ipv6-prefix[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []string
 			data.MatchIdentityRemoteIpv6Prefixes.ElementsAs(ctx, &dataValues, false)
@@ -1328,13 +1336,13 @@ func (data *CryptoIKEv2Profile) addDeletePathsXML(ctx context.Context, body stri
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/config-exchange/request-1")
 	}
 	if !data.DpdQuery.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd/query")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd")
 	}
 	if !data.DpdRetry.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd/retry")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd")
 	}
 	if !data.DpdInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd/interval")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd")
 	}
 	if !data.Ivrf.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ivrf")

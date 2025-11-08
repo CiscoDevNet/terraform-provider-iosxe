@@ -4028,10 +4028,10 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/trunk/allowed/vlan/vlans")
 	}
 	if !state.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association/secondary-range")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association")
 	}
 	if !state.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() && data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association/primary-range")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/private-vlan/host-association")
 	}
 	if !state.SwitchportVoiceVlan.IsNull() && data.SwitchportVoiceVlan.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/voice/vlan")
@@ -4085,7 +4085,7 @@ func (data *Template) addDeletedItemsXML(ctx context.Context, state Template, bo
 		}
 	}
 	if !state.SwitchportPortSecurityAgingTypeInactivity.IsNull() && data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type/inactivity")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type")
 	}
 	if !state.SwitchportPortSecurityAgingType.IsNull() && data.SwitchportPortSecurityAgingType.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/switchport/port-security/aging/type")
@@ -4643,10 +4643,10 @@ func (data *Template) addDeletePathsXML(ctx context.Context, body string) string
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/trunk/allowed/vlan/vlans")
 	}
 	if !data.SwitchportPrivateVlanHostAssociationSecondaryRange.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association/secondary-range")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association")
 	}
 	if !data.SwitchportPrivateVlanHostAssociationPrimaryRange.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association/primary-range")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/private-vlan/host-association")
 	}
 	if !data.SwitchportVoiceVlan.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/voice/vlan")
@@ -4674,7 +4674,7 @@ func (data *Template) addDeletePathsXML(ctx context.Context, body string) string
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/switchport/port-security/maximum/range%v", predicates))
 	}
 	if !data.SwitchportPortSecurityAgingTypeInactivity.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/type/inactivity")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/type")
 	}
 	if !data.SwitchportPortSecurityAgingType.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/switchport/port-security/aging/type")

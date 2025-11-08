@@ -261,7 +261,11 @@ func (data *VLANGroup) addDeletedItemsXML(ctx context.Context, state VLANGroup, 
 	b := netconf.NewBody(body)
 	if !state.VlanLists.IsNull() {
 		if data.VlanLists.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/vlan-lists")
+			var values []string
+			state.VlanLists.ElementsAs(ctx, &values, false)
+			for _, v := range values {
+				b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vlan-lists[.=%v]", v))
+			}
 		} else {
 			var dataValues, stateValues []int
 			data.VlanLists.ElementsAs(ctx, &dataValues, false)

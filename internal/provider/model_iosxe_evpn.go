@@ -854,16 +854,16 @@ func (data *EVPN) addDeletedItemsXML(ctx context.Context, state EVPN, body strin
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/router-id/interface/Loopback")
 	}
 	if !state.IpDuplicationTime.IsNull() && data.IpDuplicationTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication/time")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication")
 	}
 	if !state.IpDuplicationLimit.IsNull() && data.IpDuplicationLimit.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication/limit")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/duplication")
 	}
 	if !state.MacDuplicationTime.IsNull() && data.MacDuplicationTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication/time")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication")
 	}
 	if !state.MacDuplicationLimit.IsNull() && data.MacDuplicationLimit.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication/limit")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac/duplication")
 	}
 	if !state.ReplicationTypeMp2mp.IsNull() && data.ReplicationTypeMp2mp.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/replication-type/mp2mp")
@@ -996,16 +996,16 @@ func (data *EVPN) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/router-id/interface/Loopback")
 	}
 	if !data.IpDuplicationTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication/time")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication")
 	}
 	if !data.IpDuplicationLimit.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication/limit")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/duplication")
 	}
 	if !data.MacDuplicationTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication/time")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication")
 	}
 	if !data.MacDuplicationLimit.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication/limit")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac/duplication")
 	}
 	if !data.ReplicationTypeMp2mp.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/replication-type/mp2mp")

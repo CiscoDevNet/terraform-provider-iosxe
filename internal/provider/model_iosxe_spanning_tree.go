@@ -933,7 +933,11 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 			if found {
 				if !state.MstInstances[i].VlanIds.IsNull() {
 					if data.MstInstances[j].VlanIds.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids", predicates))
+						var values []string
+						state.MstInstances[i].VlanIds.ElementsAs(ctx, &values, false)
+						for _, v := range values {
+							b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v/vlan-ids[.=%v]", predicates, v))
+						}
 					} else {
 						var dataValues, stateValues []int
 						data.MstInstances[i].VlanIds.ElementsAs(ctx, &dataValues, false)
