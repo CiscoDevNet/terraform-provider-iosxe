@@ -22,7 +22,7 @@ attributes:
   - yang_name: ip/source-route
     example: false
   - yang_name: ip/domain/lookup
-    example: false
+    example: true
   - yang_name: ip/domain/name
     example: test.com
   - yang_name: login/delay
