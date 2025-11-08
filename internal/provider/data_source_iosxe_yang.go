@@ -145,34 +145,15 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		state.Path = config.Path
 		state.Id = config.Path
 
-		// Get the result at the specified path
-		result := helpers.GetFromXPath(res.Res, config.Path.ValueString())
+		attributes := make(map[string]attr.Value)
 
-		if !result.Exists() {
-			state.Attributes = types.MapValueMust(types.StringType, map[string]attr.Value{})
-		} else {
-			attributes := make(map[string]attr.Value)
-
-			// If the result is an array, use the first element
-			if result.IsArray() {
-				resultArray := result.Array()
-				if len(resultArray) > 0 {
-					result = resultArray[0]
-				}
+		for attr, value := range helpers.GetFromXPath(res.Res, "/data"+config.Path.ValueString()).Map() {
+			if value.IsArray() {
+				continue
 			}
-
-			// Parse the raw XML to get child elements
-			// The result.Raw contains the XML content, we need to parse it to get attributes
-			// For simplicity, we'll just return the raw content as a single attribute if needed
-			// In a real implementation, you would parse child elements here
-
-			// For now, store the entire content as a single value if it's a simple type
-			if result.String() != "" {
-				attributes["value"] = types.StringValue(result.String())
-			}
-
-			state.Attributes = types.MapValueMust(types.StringType, attributes)
+			attributes[attr] = types.StringValue(value.String())
 		}
+		state.Attributes = types.MapValueMust(types.StringType, attributes)
 	}
 
 	tflog.Debug(ctx, fmt.Sprintf("%s: Read finished successfully", config.Path.ValueString()))
