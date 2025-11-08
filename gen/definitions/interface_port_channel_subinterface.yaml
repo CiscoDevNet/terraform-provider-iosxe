@@ -28,7 +28,7 @@ attributes:
     xpath: ip/address/primary/address
     tf_name: ipv4_address
     delete_parent: true
-    example: 192.0.2.2
+    example: 192.68.1.1
   - yang_name: ip/address-choice/address/address/address-choice/fixed-case/primary/mask
     xpath: ip/address/primary/mask
     tf_name: ipv4_address_mask
