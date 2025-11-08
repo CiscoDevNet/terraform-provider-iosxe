@@ -39,9 +39,4 @@ resource "iosxe_interface_port_channel" "example" {
   load_interval                    = 30
   snmp_trap_link_status            = true
   logging_event_link_status_enable = false
-  evpn_ethernet_segments = [
-    {
-      es_value = 1
-    }
-  ]
 }

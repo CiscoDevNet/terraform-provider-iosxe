@@ -81,7 +81,6 @@ func TestAccIosxeInterfacePortChannel(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "load_interval", "30"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "snmp_trap_link_status", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "logging_event_link_status_enable", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_interface_port_channel.test", "evpn_ethernet_segments.0.es_value", "1"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -128,13 +127,42 @@ resource "iosxe_restconf" "PreReq0" {
 	attributes = {
 		"name" = "VRF1"
 		"address-family/ipv4" = ""
+		"address-family/ipv6" = ""
 	}
 }
 
 resource "iosxe_restconf" "PreReq1" {
-	path = "Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1"
+	path = "Cisco-IOS-XE-native:native/interface/Loopback=100"
 	attributes = {
-		"es-value" = "1"
+		"name" = "100"
+		"ip/address/primary/address" = "10.0.0.100"
+		"ip/address/primary/mask" = "255.255.255.255"
+	}
+}
+
+resource "iosxe_restconf" "PreReq2" {
+	path = "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=1"
+	attributes = {
+		"name" = "1"
+	}
+}
+
+resource "iosxe_restconf" "PreReq3" {
+	path = "Cisco-IOS-XE-native:native/ip/access-list/Cisco-IOS-XE-acl:standard=1/access-list-seq-rule=10"
+	attributes = {
+		"sequence" = "10"
+		"permit/std-ace/any" = ""
+	}
+	depends_on = [iosxe_restconf.PreReq2, ]
+}
+
+resource "iosxe_restconf" "PreReq4" {
+	path = "Cisco-IOS-XE-native:native/bfd-template/Cisco-IOS-XE-bfd:single-hop=bfd_template1"
+	attributes = {
+		"name" = "bfd_template1"
+		"interval-singlehop-v2/mill-unit/min-tx" = "200"
+		"interval-singlehop-v2/mill-unit/min-rx" = "200"
+		"interval-singlehop-v2/mill-unit/multiplier" = "4"
 	}
 }
 
@@ -147,7 +175,7 @@ resource "iosxe_restconf" "PreReq1" {
 func testAccIosxeInterfacePortChannelConfig_minimum() string {
 	config := `resource "iosxe_interface_port_channel" "test" {` + "\n"
 	config += `	name = 10` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
@@ -210,10 +238,7 @@ func testAccIosxeInterfacePortChannelConfig_all() string {
 	config += `	load_interval = 30` + "\n"
 	config += `	snmp_trap_link_status = true` + "\n"
 	config += `	logging_event_link_status_enable = false` + "\n"
-	config += `	evpn_ethernet_segments = [{` + "\n"
-	config += `		es_value = 1` + "\n"
-	config += `	}]` + "\n"
-	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, ]` + "\n"
+	config += `	depends_on = [iosxe_restconf.PreReq0, iosxe_restconf.PreReq1, iosxe_restconf.PreReq2, iosxe_restconf.PreReq3, iosxe_restconf.PreReq4, ]` + "\n"
 	config += `}` + "\n"
 	return config
 }
