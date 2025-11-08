@@ -187,6 +187,8 @@ attributes:
     example: true
     # Excluding this due to an IOS-XE interoperability issue with the EVPN ES
     # feature.
+    # TODO: chart2/ChristopherJHart to un-exclude these tests when the issue
+    # is fixed.
     exclude_test: true
   - yang_name: logging/event/link-status-enable
     example: false
