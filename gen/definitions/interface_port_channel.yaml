@@ -2,6 +2,7 @@
 name: Interface Port Channel
 path: Cisco-IOS-XE-native:native/interface/Port-channel=%v
 doc_category: Interface
+test_tags: [C9000V]
 attributes:
   - yang_name: name
     example: 10
@@ -12,16 +13,12 @@ attributes:
   - yang_name: switchport-conf/switchport
     tf_name: switchport
     example: false
-    test_tags: [C9000V]
   - yang_name: ip/proxy-arp
     example: false
-    test_tags: [C8000V]
   - yang_name: ip/redirects
     example: false
-    test_tags: [C8000V]
   - yang_name: ip/Cisco-IOS-XE-icmp:unreachables
     example: false
-    test_tags: [C8000V]
   - yang_name: vrf-choice/vrf/vrf/forwarding
     xpath: vrf/forwarding
     tf_name: vrf_forwarding
@@ -176,10 +173,8 @@ attributes:
     example: 2147
   - yang_name: ip/arp/inspection/trust
     example: true
-    test_tags: [C9000V]
   - yang_name: ip/arp/inspection/limit/rate
     example: 1000
-    test_tags: [C9000V]
   - yang_name: Cisco-IOS-XE-spanning-tree:spanning-tree/link-type
     example: point-to-point
     exclude_test: true
@@ -190,6 +185,9 @@ attributes:
     example: 30
   - yang_name: Cisco-IOS-XE-snmp:snmp/trap/link-status
     example: true
+    # Excluding this due to an IOS-XE interoperability issue with the EVPN ES
+    # feature.
+    exclude_test: true
   - yang_name: logging/event/link-status-enable
     example: false
   - yang_name: Cisco-IOS-XE-switch:device-tracking
@@ -210,8 +208,6 @@ attributes:
     xpath: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment-num/ethernet-segment
     tf_name: evpn_ethernet_segments
     type: List
-    # ESIs cannot be attached to L3 interfaces.
-    exclude_test: true
     attributes:
       - yang_name: es-value
         id: true
@@ -256,3 +252,18 @@ test_prerequisites:
         value: 200
       - name: interval-singlehop-v2/mill-unit/multiplier
         value: 4
+  - path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1
+    no_delete: true
+    attributes:
+      - name: es-value
+        value: 1
+      - name: redundancy/single-active
+        value: ""
+  - path: Cisco-IOS-XE-native:native/l2vpn/Cisco-IOS-XE-l2vpn:evpn_cont/evpn-ethernet-segment/evpn/ethernet-segment=1/identifier/type=3
+    no_delete: true
+    attributes:
+      - name: identifier-type
+        value: 3
+      - name: system-mac
+        value: 0011.2233.4455
+    dependencies: [5]
