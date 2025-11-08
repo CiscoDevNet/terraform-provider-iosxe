@@ -120,7 +120,6 @@ resource "iosxe_logging" "example" {
       ]
     }
   ]
-  logging_count       = true
   persistent_url      = "flash:/local_logging"
   persistent_size     = 1000000
   persistent_filesize = 500000

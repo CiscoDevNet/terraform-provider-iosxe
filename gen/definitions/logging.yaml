@@ -237,6 +237,7 @@ attributes:
   - yang_name: count
     tf_name: logging_count
     example: true
+    test_tags: [IOSXE1715]
   - yang_name: persistent/url
     example: flash:/local_logging
   - yang_name: persistent/size
