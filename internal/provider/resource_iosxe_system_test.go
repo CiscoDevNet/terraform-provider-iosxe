@@ -39,7 +39,7 @@ func TestAccIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_bgp_community_new_format", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ipv6_unicast_routing", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_source_route", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_lookup", "false"))
+	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_lookup", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "ip_domain_name", "test.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "login_delay", "10"))
 	checks = append(checks, resource.TestCheckResourceAttr("iosxe_system.test", "login_on_failure", "true"))
@@ -157,7 +157,7 @@ func testAccIosxeSystemConfig_all() string {
 	config += `	ip_bgp_community_new_format = true` + "\n"
 	config += `	ipv6_unicast_routing = true` + "\n"
 	config += `	ip_source_route = false` + "\n"
-	config += `	ip_domain_lookup = false` + "\n"
+	config += `	ip_domain_lookup = true` + "\n"
 	config += `	ip_domain_name = "test.com"` + "\n"
 	config += `	login_delay = 10` + "\n"
 	config += `	login_on_failure = true` + "\n"
