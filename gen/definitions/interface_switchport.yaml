@@ -69,5 +69,5 @@ attributes:
   - yang_name: Cisco-IOS-XE-switch:trunk/native/vlan/vlan-id
     tf_name: trunk_native_vlan
     example: 100
-  - yang_name: host
+  - yang_name: Cisco-IOS-XE-switch:host
     example: false

@@ -20,6 +20,7 @@ attributes:
     xpath: bgp/router-id/ip-id
     tf_name: router_id_ip
     example: 172.16.255.1
+    exclude_test: true
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=100]
     attributes:

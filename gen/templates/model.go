@@ -661,19 +661,19 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 	{{- range .Attributes}}
 	{{- if and (not .Reference) (not .WriteOnly)}}
 	{{- if eq .Type "Int64"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = types.Int64Value(value.Int())
 	} else {
 		data.{{toGoName .TfName}} = types.Int64Null()
 	}
 	{{- else if eq .Type "Float64"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = types.Float64Value(value.Float())
 	} else {
 		data.{{toGoName .TfName}} = types.Float64Null()
 	}
 	{{- else if eq .Type "Bool"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); !data.{{toGoName .TfName}}.IsNull() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); !data.{{toGoName .TfName}}.IsNull() {
 		{{- if eq .TypeYangBool "boolean"}}
 		if value.Exists() {
 			data.{{toGoName .TfName}} = types.BoolValue(value.Bool())
@@ -689,31 +689,31 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		data.{{toGoName .TfName}} = types.BoolNull()
 	}
 	{{- else if eq .Type "String"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = types.StringValue(value.String())
 	} else {
 		data.{{toGoName .TfName}} = types.StringNull()
 	}
 	{{- else if eq .Type "StringList"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
 	{{- else if eq .Type "Int64List"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = helpers.GetInt64ListXML(value.Array())
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.Int64Type)
 	}
 	{{- else if eq .Type "StringSet"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = helpers.GetStringSetXML(value.Array())
 	} else {
 		data.{{toGoName .TfName}} = types.SetNull(types.StringType)
 	}
 	{{- else if eq .Type "Int64Set"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() && !data.{{toGoName .TfName}}.IsNull() {
 		data.{{toGoName .TfName}} = helpers.GetInt64SetXML(value.Array())
 	} else {
 		data.{{toGoName .TfName}} = types.SetNull(types.Int64Type)
@@ -725,7 +725,7 @@ func (data *{{camelCase .Name}}) updateFromBodyXML(ctx context.Context, res xmld
 		keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}").ForEach(
+		helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1117,15 +1117,15 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 	{{- $cname := toGoName .TfName}}
 	{{- if and (not .Reference) (not .Id)}}
 	{{- if eq .Type "Int64"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = types.Int64Value(value.Int())
 	}
 	{{- else if eq .Type "Float64"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = types.Float64Value(value.Float())
 	}
 	{{- else if eq .Type "Bool"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		{{- if eq .TypeYangBool "boolean"}}
 		data.{{toGoName .TfName}} = types.BoolValue(value.Bool())
 		{{- else}}
@@ -1139,35 +1139,35 @@ func (data *{{camelCase .Name}}) fromBodyXML(ctx context.Context, res xmldot.Res
 		{{- end}}
 	}
 	{{- else if eq .Type "String"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = types.StringValue(value.String())
 	}
 	{{- else if eq .Type "StringList"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = helpers.GetStringListXML(value.Array())
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.StringType)
 	}
 	{{- else if eq .Type "Int64List"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = helpers.GetInt64ListXML(value.Array())
 	} else {
 		data.{{toGoName .TfName}} = types.ListNull(types.Int64Type)
 	}
 	{{- else if eq .Type "StringSet"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = helpers.GetStringSetXML(value.Array())
 	} else {
 		data.{{toGoName .TfName}} = types.SetNull(types.StringType)
 	}
 	{{- else if eq .Type "Int64Set"}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = helpers.GetInt64SetXML(value.Array())
 	} else {
 		data.{{toGoName .TfName}} = types.SetNull(types.Int64Type)
 	}
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
-	if value := helpers.GetFromXPath(res, "data/" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data" + data.getXPath() + "/{{.XPath}}"); value.Exists() {
 		data.{{toGoName .TfName}} = make([]{{$name}}{{toGoName .TfName}}, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := {{$name}}{{toGoName .TfName}}{}
@@ -1339,7 +1339,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/{{getDeletePath .}}", state.getPath()))
 	}
 	{{- else if or (eq .Type "List") (eq .Type "Set")}}
-	{{- $xpath := getXPath .YangName .XPath}}
+	{{- $xpath := .XPath}}
 	for i := range state.{{toGoName .TfName}} {
 		{{- $list := (toGoName .TfName)}}
 		stateKeyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(state.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(state.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}state.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -1395,7 +1395,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/{{$xpath}}=%v/{{getDeletePath .}}", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
 				{{- else if or (eq .Type "List") (eq .Type "Set")}}
-				{{- $cXpath := getXPath .YangName .XPath}}
+				{{- $cXpath := .XPath}}
 				for ci := range state.{{$list}}[i].{{toGoName .TfName}} {
 					{{- $clist := (toGoName .TfName)}}
 					cstateKeyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -1480,7 +1480,7 @@ func (data *{{camelCase .Name}}) getDeletedItems(ctx context.Context, state {{ca
 
 func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {{camelCase .Name}}, body string) string {
 	b := netconf.NewBody(body)
-	{{- range .Attributes}}
+	{{- range reverseAttributes .Attributes}}
 	{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 	if !state.{{toGoName .TfName}}.IsNull() {
 		if data.{{toGoName .TfName}}.IsNull() {
@@ -1541,7 +1541,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 			{{- end}}
 			{{- end}}
 			if found {
-				{{- range .Attributes}}
+				{{- range reverseAttributes .Attributes}}
 				{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 				if !state.{{$list}}[i].{{toGoName .TfName}}.IsNull() {
 					if data.{{$list}}[j].{{toGoName .TfName}}.IsNull() {
@@ -1602,7 +1602,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 						{{- end}}
 						{{- end}}
 						if found {
-							{{- range .Attributes}}
+							{{- range reverseAttributes .Attributes}}
 							{{- if or (eq .Type "StringList") (eq .Type "Int64List") (eq .Type "StringSet") (eq .Type "Int64Set")}}
 							if !state.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.IsNull() {
 								if data.{{$list}}[j].{{$clist}}[cj].{{toGoName .TfName}}.IsNull() {
@@ -1650,6 +1650,7 @@ func (data *{{camelCase .Name}}) addDeletedItemsXML(ctx context.Context, state {
 	{{- end}}
 	{{- end}}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1670,7 +1671,7 @@ func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []stri
 	{{ range .Attributes}}{{ if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}{{ $hasEmpty = true}}{{ end}}{{- end}}
 	{{ range .Attributes}}{{if eq .Type "List"}}{{ range .Attributes}}{{ if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}{{ $hasEmpty = true}}{{ end}}{{end}}{{end}}{{- end}}
 	{{- if $hasEmpty}}
-	{{- $yangName := getXPath .YangName .XPath}}
+	{{- $yangName := .XPath}}
 	for i := range data.{{toGoName .TfName}} {
 		{{- $list := (toGoName .TfName)}}
 		keyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -1684,7 +1685,7 @@ func (data *{{camelCase .Name}}) getEmptyLeafsDelete(ctx context.Context) []stri
 		{{- $hasEmpty := false}}
 		{{ range .Attributes}}{{ if and (eq .Type "Bool") (ne .TypeYangBool "boolean")}}{{ $hasEmpty = true}}{{ end}}{{- end}}
 		{{- if $hasEmpty}}
-		{{- $cyangName := getXPath .YangName .XPath}}
+		{{- $cyangName := .XPath}}
 		for ci := range data.{{$list}}[i].{{toGoName .TfName}} {
 			{{- $clist := (toGoName .TfName)}}
 			ckeyValues := [...]string{ {{range .Attributes}}{{if .Id}}{{if eq .Type "Int64"}}strconv.FormatInt(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueInt64(), 10), {{else if eq .Type "Bool"}}strconv.FormatBool(data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.ValueBool()), {{else}}data.{{$list}}[i].{{$clist}}[ci].{{toGoName .TfName}}.Value{{.Type}}(), {{end}}{{end}}{{end}} }
@@ -1737,8 +1738,24 @@ func (data *{{camelCase .Name}}) getDeletePaths(ctx context.Context) []string {
 
 func (data *{{camelCase .Name}}) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	{{- range .Attributes}}
-	{{- if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
+	{{- range reverseAttributes .Attributes}}
+	{{- if and (or (eq .Type "StringList") (eq .Type "StringSet")) (not .NoDelete)}}
+	if !data.{{toGoName .TfName}}.IsNull() {
+		var values []string
+		data.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/{{.XPath}}[.=%v]", v))
+		}
+	}
+	{{- else if and (or (eq .Type "Int64List") (eq .Type "Int64Set")) (not .NoDelete)}}
+	if !data.{{toGoName .TfName}}.IsNull() {
+		var values []int64
+		data.{{toGoName .TfName}}.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/{{.XPath}}[.=%v]", v))
+		}
+	}
+	{{- else if and (not .Reference) (not .Id) (ne .Type "List") (ne .Type "Set") (not .NoDelete)}}
 	if !data.{{toGoName .TfName}}.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/{{.XPath}}")
 	}
@@ -1757,6 +1774,7 @@ func (data *{{camelCase .Name}}) addDeletePathsXML(ctx context.Context, body str
 	{{- end}}
 	{{- end}}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

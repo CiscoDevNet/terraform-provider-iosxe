@@ -115,44 +115,6 @@ func TestConvertXPathToRestconfPath(t *testing.T) {
 	}
 }
 
-// TestConvertXPathToRestconfPath_RoundTrip tests converting back and forth
-func TestConvertXPathToRestconfPath_RoundTrip(t *testing.T) {
-	tests := []struct {
-		name         string
-		restconfPath string
-		xPath        string
-	}{
-		{
-			name:         "simple path",
-			restconfPath: "native/interface=%v",
-			xPath:        "native/interface[%v=%v]",
-		},
-		{
-			name:         "with namespace",
-			restconfPath: "Cisco-IOS-XE-native:native/Cisco-IOS-XE-policy:class-map=%v",
-			xPath:        "Cisco-IOS-XE-native:native/Cisco-IOS-XE-policy:class-map[%v=%v]",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// RESTCONF → XPath
-			converted := ConvertRestconfPathToXPath(tt.restconfPath)
-			if converted != tt.xPath {
-				t.Errorf("ConvertRestconfPathToXPath(%q) = %q, expected %q", tt.restconfPath, converted, tt.xPath)
-			}
-
-			// XPath → RESTCONF
-			reverted := ConvertXPathToRestconfPath(tt.xPath)
-			if reverted != tt.restconfPath {
-				t.Errorf("ConvertXPathToRestconfPath(%q) = %q, expected %q", tt.xPath, reverted, tt.restconfPath)
-			}
-
-			t.Logf("✓ Round-trip successful: %q ↔ %q", tt.restconfPath, tt.xPath)
-		})
-	}
-}
-
 // TestConvertXPathToRestconfPath_URLEncoding tests URL encoding of special characters
 func TestConvertXPathToRestconfPath_URLEncoding(t *testing.T) {
 	tests := []struct {

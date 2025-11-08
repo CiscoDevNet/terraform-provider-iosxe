@@ -286,7 +286,7 @@ func (data *LLDP) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *LLDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/run"); !data.Run.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/run"); !data.Run.IsNull() {
 		if value.Exists() {
 			data.Run = types.BoolValue(true)
 		} else {
@@ -295,27 +295,27 @@ func (data *LLDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Run = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/holdtime"); value.Exists() && !data.Holdtime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/holdtime"); value.Exists() && !data.Holdtime.IsNull() {
 		data.Holdtime = types.Int64Value(value.Int())
 	} else {
 		data.Holdtime = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-vlan"); value.Exists() && !data.ManagementVlan.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-vlan"); value.Exists() && !data.ManagementVlan.IsNull() {
 		data.ManagementVlan = types.Int64Value(value.Int())
 	} else {
 		data.ManagementVlan = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timer"); value.Exists() && !data.Timer.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timer"); value.Exists() && !data.Timer.IsNull() {
 		data.Timer = types.Int64Value(value.Int())
 	} else {
 		data.Timer = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv4"); value.Exists() && !data.Ipv4ManagementAddresses.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-address/ipv4"); value.Exists() && !data.Ipv4ManagementAddresses.IsNull() {
 		data.Ipv4ManagementAddresses = helpers.GetStringListXML(value.Array())
 	} else {
 		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv6"); value.Exists() && !data.Ipv6ManagementAddresses.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-address/ipv6"); value.Exists() && !data.Ipv6ManagementAddresses.IsNull() {
 		data.Ipv6ManagementAddresses = helpers.GetStringListXML(value.Array())
 	} else {
 		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
@@ -325,7 +325,7 @@ func (data *LLDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/system-name").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/system-name").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -459,31 +459,31 @@ func (data *LLDPData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *LLDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/run"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/run"); value.Exists() {
 		data.Run = types.BoolValue(true)
 	} else {
 		data.Run = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/holdtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/holdtime"); value.Exists() {
 		data.Holdtime = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-vlan"); value.Exists() {
 		data.ManagementVlan = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timer"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timer"); value.Exists() {
 		data.Timer = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv4"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-address/ipv4"); value.Exists() {
 		data.Ipv4ManagementAddresses = helpers.GetStringListXML(value.Array())
 	} else {
 		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv6"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-address/ipv6"); value.Exists() {
 		data.Ipv6ManagementAddresses = helpers.GetStringListXML(value.Array())
 	} else {
 		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/system-name"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system-name"); value.Exists() {
 		data.SystemNames = make([]LLDPSystemNames, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := LLDPSystemNames{}
@@ -504,31 +504,31 @@ func (data *LLDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *LLDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/run"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/run"); value.Exists() {
 		data.Run = types.BoolValue(true)
 	} else {
 		data.Run = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/holdtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/holdtime"); value.Exists() {
 		data.Holdtime = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-vlan"); value.Exists() {
 		data.ManagementVlan = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timer"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timer"); value.Exists() {
 		data.Timer = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv4"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-address/ipv4"); value.Exists() {
 		data.Ipv4ManagementAddresses = helpers.GetStringListXML(value.Array())
 	} else {
 		data.Ipv4ManagementAddresses = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/management-address/ipv6"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/management-address/ipv6"); value.Exists() {
 		data.Ipv6ManagementAddresses = helpers.GetStringListXML(value.Array())
 	} else {
 		data.Ipv6ManagementAddresses = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/system-name"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/system-name"); value.Exists() {
 		data.SystemNames = make([]LLDPSystemNames, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := LLDPSystemNames{}
@@ -642,60 +642,6 @@ func (data *LLDP) getDeletedItems(ctx context.Context, state LLDP) []string {
 
 func (data *LLDP) addDeletedItemsXML(ctx context.Context, state LLDP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Run.IsNull() && data.Run.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/run")
-	}
-	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/holdtime")
-	}
-	if !state.ManagementVlan.IsNull() && data.ManagementVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-vlan")
-	}
-	if !state.Timer.IsNull() && data.Timer.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timer")
-	}
-	if !state.Ipv4ManagementAddresses.IsNull() {
-		if data.Ipv4ManagementAddresses.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-address/ipv4")
-		} else {
-			var dataValues, stateValues []string
-			data.Ipv4ManagementAddresses.ElementsAs(ctx, &dataValues, false)
-			state.Ipv4ManagementAddresses.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/management-address/ipv4[.=%v]", v))
-				}
-			}
-		}
-	}
-	if !state.Ipv6ManagementAddresses.IsNull() {
-		if data.Ipv6ManagementAddresses.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-address/ipv6")
-		} else {
-			var dataValues, stateValues []string
-			data.Ipv6ManagementAddresses.ElementsAs(ctx, &dataValues, false)
-			state.Ipv6ManagementAddresses.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/management-address/ipv6[.=%v]", v))
-				}
-			}
-		}
-	}
 	for i := range state.SystemNames {
 		stateKeys := [...]string{"switch-id"}
 		stateKeyValues := [...]string{strconv.FormatInt(state.SystemNames[i].SwitchId.ValueInt64(), 10)}
@@ -729,7 +675,62 @@ func (data *LLDP) addDeletedItemsXML(ctx context.Context, state LLDP, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/system-name%v", predicates))
 		}
 	}
+	if !state.Ipv6ManagementAddresses.IsNull() {
+		if data.Ipv6ManagementAddresses.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-address/ipv6")
+		} else {
+			var dataValues, stateValues []string
+			data.Ipv6ManagementAddresses.ElementsAs(ctx, &dataValues, false)
+			state.Ipv6ManagementAddresses.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/management-address/ipv6[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.Ipv4ManagementAddresses.IsNull() {
+		if data.Ipv4ManagementAddresses.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-address/ipv4")
+		} else {
+			var dataValues, stateValues []string
+			data.Ipv4ManagementAddresses.ElementsAs(ctx, &dataValues, false)
+			state.Ipv4ManagementAddresses.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/management-address/ipv4[.=%v]", v))
+				}
+			}
+		}
+	}
+	if !state.Timer.IsNull() && data.Timer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timer")
+	}
+	if !state.ManagementVlan.IsNull() && data.ManagementVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/management-vlan")
+	}
+	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/holdtime")
+	}
+	if !state.Run.IsNull() && data.Run.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/run")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -786,24 +787,6 @@ func (data *LLDP) getDeletePaths(ctx context.Context) []string {
 
 func (data *LLDP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Run.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/run")
-	}
-	if !data.Holdtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/holdtime")
-	}
-	if !data.ManagementVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/management-vlan")
-	}
-	if !data.Timer.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timer")
-	}
-	if !data.Ipv4ManagementAddresses.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/management-address/ipv4")
-	}
-	if !data.Ipv6ManagementAddresses.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/management-address/ipv6")
-	}
 	for i := range data.SystemNames {
 		keys := [...]string{"switch-id"}
 		keyValues := [...]string{strconv.FormatInt(data.SystemNames[i].SwitchId.ValueInt64(), 10)}
@@ -814,7 +797,34 @@ func (data *LLDP) addDeletePathsXML(ctx context.Context, body string) string {
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/system-name%v", predicates))
 	}
+	if !data.Ipv6ManagementAddresses.IsNull() {
+		var values []string
+		data.Ipv6ManagementAddresses.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/management-address/ipv6[.=%v]", v))
+		}
+	}
+	if !data.Ipv4ManagementAddresses.IsNull() {
+		var values []string
+		data.Ipv4ManagementAddresses.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/management-address/ipv4[.=%v]", v))
+		}
+	}
+	if !data.Timer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timer")
+	}
+	if !data.ManagementVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/management-vlan")
+	}
+	if !data.Holdtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/holdtime")
+	}
+	if !data.Run.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/run")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

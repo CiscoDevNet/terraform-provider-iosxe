@@ -345,7 +345,7 @@ func (data *CryptoPKI) updateFromBodyXML(ctx context.Context, res xmldot.Result)
 		keyValues := [...]string{data.Trustpoints[i].Id.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/trustpoint").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/trustpoint").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -566,7 +566,7 @@ func (data *CryptoPKIData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CryptoPKI) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/trustpoint"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trustpoint"); value.Exists() {
 		data.Trustpoints = make([]CryptoPKITrustpoints, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := CryptoPKITrustpoints{}
@@ -624,7 +624,7 @@ func (data *CryptoPKI) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CryptoPKIData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/trustpoint"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/trustpoint"); value.Exists() {
 		data.Trustpoints = make([]CryptoPKITrustpoints, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := CryptoPKITrustpoints{}
@@ -789,17 +789,20 @@ func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, 
 				found = false
 			}
 			if found {
-				if !state.Trustpoints[i].EnrollmentPkcs12.IsNull() && data.Trustpoints[j].EnrollmentPkcs12.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/enrollment-method/pkcs12", predicates))
+				if !state.Trustpoints[i].Hash.IsNull() && data.Trustpoints[j].Hash.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/hash", predicates))
 				}
-				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && data.Trustpoints[j].EnrollmentSelfsigned.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/enrollment-method/selfsigned", predicates))
+				if !state.Trustpoints[i].SourceInterface.IsNull() && data.Trustpoints[j].SourceInterface.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/source/interface", predicates))
 				}
-				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && data.Trustpoints[j].EnrollmentModeRa.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/mode/ra", predicates))
+				if !state.Trustpoints[i].Usage.IsNull() && data.Trustpoints[j].Usage.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/usage", predicates))
 				}
-				if !state.Trustpoints[i].EnrollmentTerminal.IsNull() && data.Trustpoints[j].EnrollmentTerminal.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/terminal", predicates))
+				if !state.Trustpoints[i].Rsakeypair.IsNull() && data.Trustpoints[j].Rsakeypair.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/rsakeypair/key-label", predicates))
+				}
+				if !state.Trustpoints[i].SubjectName.IsNull() && data.Trustpoints[j].SubjectName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/subject-name", predicates))
 				}
 				if !state.Trustpoints[i].RevocationCheck.IsNull() {
 					if data.Trustpoints[j].RevocationCheck.IsNull() {
@@ -822,20 +825,17 @@ func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, 
 						}
 					}
 				}
-				if !state.Trustpoints[i].SubjectName.IsNull() && data.Trustpoints[j].SubjectName.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/subject-name", predicates))
+				if !state.Trustpoints[i].EnrollmentTerminal.IsNull() && data.Trustpoints[j].EnrollmentTerminal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/terminal", predicates))
 				}
-				if !state.Trustpoints[i].Rsakeypair.IsNull() && data.Trustpoints[j].Rsakeypair.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/rsakeypair/key-label", predicates))
+				if !state.Trustpoints[i].EnrollmentModeRa.IsNull() && data.Trustpoints[j].EnrollmentModeRa.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/mode/ra", predicates))
 				}
-				if !state.Trustpoints[i].Usage.IsNull() && data.Trustpoints[j].Usage.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/usage", predicates))
+				if !state.Trustpoints[i].EnrollmentSelfsigned.IsNull() && data.Trustpoints[j].EnrollmentSelfsigned.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/enrollment-method/selfsigned", predicates))
 				}
-				if !state.Trustpoints[i].SourceInterface.IsNull() && data.Trustpoints[j].SourceInterface.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/source/interface", predicates))
-				}
-				if !state.Trustpoints[i].Hash.IsNull() && data.Trustpoints[j].Hash.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/hash", predicates))
+				if !state.Trustpoints[i].EnrollmentPkcs12.IsNull() && data.Trustpoints[j].EnrollmentPkcs12.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/trustpoint%v/enrollment/enrollment-method/pkcs12", predicates))
 				}
 				break
 			}
@@ -845,6 +845,7 @@ func (data *CryptoPKI) addDeletedItemsXML(ctx context.Context, state CryptoPKI, 
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -906,6 +907,7 @@ func (data *CryptoPKI) addDeletePathsXML(ctx context.Context, body string) strin
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/trustpoint%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

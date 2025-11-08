@@ -1,6 +1,6 @@
 ---
 name: Policy Map Event
-path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[name=%v]
+path: /Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[event-type=%v]
 doc_category: QoS
 no_delete_attributes: true
 attributes:

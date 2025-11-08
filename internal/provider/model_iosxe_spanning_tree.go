@@ -382,12 +382,12 @@ func (data *SpanningTree) updateFromBody(ctx context.Context, res gjson.Result) 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode"); value.Exists() && !data.Mode.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode"); value.Exists() && !data.Mode.IsNull() {
 		data.Mode = types.StringValue(value.String())
 	} else {
 		data.Mode = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging"); !data.Logging.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging"); !data.Logging.IsNull() {
 		if value.Exists() {
 			data.Logging = types.BoolValue(true)
 		} else {
@@ -396,7 +396,7 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.Logging = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default"); !data.LoopguardDefault.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default"); !data.LoopguardDefault.IsNull() {
 		if value.Exists() {
 			data.LoopguardDefault = types.BoolValue(true)
 		} else {
@@ -405,7 +405,7 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.LoopguardDefault = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default"); !data.PortfastDefault.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default"); !data.PortfastDefault.IsNull() {
 		if value.Exists() {
 			data.PortfastDefault = types.BoolValue(true)
 		} else {
@@ -414,7 +414,7 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.PortfastDefault = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default"); !data.PortfastBpduguardDefault.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default"); !data.PortfastBpduguardDefault.IsNull() {
 		if value.Exists() {
 			data.PortfastBpduguardDefault = types.BoolValue(true)
 		} else {
@@ -423,7 +423,7 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.PortfastBpduguardDefault = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:extend/system-id"); !data.ExtendSystemId.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:extend/system-id"); !data.ExtendSystemId.IsNull() {
 		if value.Exists() {
 			data.ExtendSystemId = types.BoolValue(true)
 		} else {
@@ -437,7 +437,7 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 		keyValues := [...]string{strconv.FormatInt(data.MstInstances[i].Id.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -471,7 +471,7 @@ func (data *SpanningTree) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -645,35 +645,35 @@ func (data *SpanningTreeData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *SpanningTree) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode"); value.Exists() {
 		data.Mode = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging"); value.Exists() {
 		data.Logging = types.BoolValue(true)
 	} else {
 		data.Logging = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default"); value.Exists() {
 		data.LoopguardDefault = types.BoolValue(true)
 	} else {
 		data.LoopguardDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default"); value.Exists() {
 		data.PortfastDefault = types.BoolValue(true)
 	} else {
 		data.PortfastDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default"); value.Exists() {
 		data.PortfastBpduguardDefault = types.BoolValue(true)
 	} else {
 		data.PortfastBpduguardDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:extend/system-id"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:extend/system-id"); value.Exists() {
 		data.ExtendSystemId = types.BoolValue(true)
 	} else {
 		data.ExtendSystemId = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance"); value.Exists() {
 		data.MstInstances = make([]SpanningTreeMstInstances, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := SpanningTreeMstInstances{}
@@ -689,7 +689,7 @@ func (data *SpanningTree) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
 		data.Vlans = make([]SpanningTreeVlans, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := SpanningTreeVlans{}
@@ -710,35 +710,35 @@ func (data *SpanningTree) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode"); value.Exists() {
 		data.Mode = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging"); value.Exists() {
 		data.Logging = types.BoolValue(true)
 	} else {
 		data.Logging = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default"); value.Exists() {
 		data.LoopguardDefault = types.BoolValue(true)
 	} else {
 		data.LoopguardDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default"); value.Exists() {
 		data.PortfastDefault = types.BoolValue(true)
 	} else {
 		data.PortfastDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default"); value.Exists() {
 		data.PortfastBpduguardDefault = types.BoolValue(true)
 	} else {
 		data.PortfastBpduguardDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:extend/system-id"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:extend/system-id"); value.Exists() {
 		data.ExtendSystemId = types.BoolValue(true)
 	} else {
 		data.ExtendSystemId = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance"); value.Exists() {
 		data.MstInstances = make([]SpanningTreeMstInstances, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := SpanningTreeMstInstances{}
@@ -754,7 +754,7 @@ func (data *SpanningTreeData) fromBodyXML(ctx context.Context, res xmldot.Result
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan"); value.Exists() {
 		data.Vlans = make([]SpanningTreeVlans, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := SpanningTreeVlans{}
@@ -875,20 +875,38 @@ func (data *SpanningTree) getDeletedItems(ctx context.Context, state SpanningTre
 
 func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state SpanningTree, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Mode.IsNull() && data.Mode.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode")
-	}
-	if !state.Logging.IsNull() && data.Logging.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging")
-	}
-	if !state.LoopguardDefault.IsNull() && data.LoopguardDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default")
-	}
-	if !state.PortfastDefault.IsNull() && data.PortfastDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default")
-	}
-	if !state.PortfastBpduguardDefault.IsNull() && data.PortfastBpduguardDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
+	for i := range state.Vlans {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Vlans[i].Id.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Vlans {
+			found = true
+			if state.Vlans[i].Id.ValueString() != data.Vlans[j].Id.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Vlans[i].Priority.IsNull() && data.Vlans[j].Priority.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
+		}
 	}
 	for i := range state.MstInstances {
 		stateKeys := [...]string{"id"}
@@ -941,40 +959,23 @@ func (data *SpanningTree) addDeletedItemsXML(ctx context.Context, state Spanning
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
 		}
 	}
-	for i := range state.Vlans {
-		stateKeys := [...]string{"id"}
-		stateKeyValues := [...]string{state.Vlans[i].Id.ValueString()}
-		predicates := ""
-		for i := range stateKeys {
-			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
-		}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Vlans[i].Id.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Vlans {
-			found = true
-			if state.Vlans[i].Id.ValueString() != data.Vlans[j].Id.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Vlans[i].Priority.IsNull() && data.Vlans[j].Priority.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v/priority", predicates))
-				}
-				break
-			}
-		}
-		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
-		}
+	if !state.PortfastBpduguardDefault.IsNull() && data.PortfastBpduguardDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
+	}
+	if !state.PortfastDefault.IsNull() && data.PortfastDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default")
+	}
+	if !state.LoopguardDefault.IsNull() && data.LoopguardDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default")
+	}
+	if !state.Logging.IsNull() && data.Logging.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging")
+	}
+	if !state.Mode.IsNull() && data.Mode.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1045,20 +1046,15 @@ func (data *SpanningTree) getDeletePaths(ctx context.Context) []string {
 
 func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Mode.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode")
-	}
-	if !data.Logging.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging")
-	}
-	if !data.LoopguardDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default")
-	}
-	if !data.PortfastDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default")
-	}
-	if !data.PortfastBpduguardDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
+	for i := range data.Vlans {
+		keys := [...]string{"id"}
+		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
 	}
 	for i := range data.MstInstances {
 		keys := [...]string{"id"}
@@ -1070,17 +1066,23 @@ func (data *SpanningTree) addDeletePathsXML(ctx context.Context, body string) st
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mst/configuration/instance%v", predicates))
 	}
-	for i := range data.Vlans {
-		keys := [...]string{"id"}
-		keyValues := [...]string{data.Vlans[i].Id.ValueString()}
-		predicates := ""
-		for i := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
-		}
-
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-spanning-tree:vlan%v", predicates))
+	if !data.PortfastBpduguardDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/bpduguard/default")
+	}
+	if !data.PortfastDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:portfast/default")
+	}
+	if !data.LoopguardDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:loopguard/default")
+	}
+	if !data.Logging.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:logging")
+	}
+	if !data.Mode.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-spanning-tree:mode")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

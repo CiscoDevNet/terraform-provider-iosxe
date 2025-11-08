@@ -1502,7 +1502,7 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.EnvironmentVariables[i].Name.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/environment").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/environment").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1531,32 +1531,32 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 			data.EnvironmentVariables[i].Value = types.StringNull()
 		}
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/session/cli/username/username_in_word_set"); value.Exists() && !data.SessionCliUsername.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/cli/username/username_in_word_set"); value.Exists() && !data.SessionCliUsername.IsNull() {
 		data.SessionCliUsername = types.StringValue(value.String())
 	} else {
 		data.SessionCliUsername = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/session/cli/username/privilege_set"); value.Exists() && !data.SessionCliUsernamePrivilege.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/cli/username/privilege_set"); value.Exists() && !data.SessionCliUsernamePrivilege.IsNull() {
 		data.SessionCliUsernamePrivilege = types.Int64Value(value.Int())
 	} else {
 		data.SessionCliUsernamePrivilege = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/history/size/events"); value.Exists() && !data.HistorySizeEvents.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size/events"); value.Exists() && !data.HistorySizeEvents.IsNull() {
 		data.HistorySizeEvents = types.Int64Value(value.Int())
 	} else {
 		data.HistorySizeEvents = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/history/size/traps"); value.Exists() && !data.HistorySizeTraps.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size/traps"); value.Exists() && !data.HistorySizeTraps.IsNull() {
 		data.HistorySizeTraps = types.Int64Value(value.Int())
 	} else {
 		data.HistorySizeTraps = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/directory/user/policy"); value.Exists() && !data.DirectoryUserPolicy.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/directory/user/policy"); value.Exists() && !data.DirectoryUserPolicy.IsNull() {
 		data.DirectoryUserPolicy = types.StringValue(value.String())
 	} else {
 		data.DirectoryUserPolicy = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/scheduler/applet/thread/class/default"); !data.SchedulerAppletThreadClassDefault.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/default"); !data.SchedulerAppletThreadClassDefault.IsNull() {
 		if value.Exists() {
 			data.SchedulerAppletThreadClassDefault = types.BoolValue(true)
 		} else {
@@ -1565,17 +1565,17 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.SchedulerAppletThreadClassDefault = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() && !data.SchedulerAppletThreadClassNumber.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() && !data.SchedulerAppletThreadClassNumber.IsNull() {
 		data.SchedulerAppletThreadClassNumber = types.Int64Value(value.Int())
 	} else {
 		data.SchedulerAppletThreadClassNumber = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() && !data.DetectorRpcMaxSessions.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() && !data.DetectorRpcMaxSessions.IsNull() {
 		data.DetectorRpcMaxSessions = types.Int64Value(value.Int())
 	} else {
 		data.DetectorRpcMaxSessions = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() && !data.DetectorRoutingBootupDelay.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() && !data.DetectorRoutingBootupDelay.IsNull() {
 		data.DetectorRoutingBootupDelay = types.Float64Value(value.Float())
 	} else {
 		data.DetectorRoutingBootupDelay = types.Float64Null()
@@ -1585,7 +1585,7 @@ func (data *EEM) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.Applets[i].Name.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/applet").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/applet").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -2779,7 +2779,7 @@ func (data *EEMData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/environment"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/environment"); value.Exists() {
 		data.EnvironmentVariables = make([]EEMEnvironmentVariables, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := EEMEnvironmentVariables{}
@@ -2793,36 +2793,36 @@ func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/session/cli/username/username_in_word_set"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/cli/username/username_in_word_set"); value.Exists() {
 		data.SessionCliUsername = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/session/cli/username/privilege_set"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/cli/username/privilege_set"); value.Exists() {
 		data.SessionCliUsernamePrivilege = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/history/size/events"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size/events"); value.Exists() {
 		data.HistorySizeEvents = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/history/size/traps"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size/traps"); value.Exists() {
 		data.HistorySizeTraps = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/directory/user/policy"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/directory/user/policy"); value.Exists() {
 		data.DirectoryUserPolicy = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/scheduler/applet/thread/class/default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/default"); value.Exists() {
 		data.SchedulerAppletThreadClassDefault = types.BoolValue(true)
 	} else {
 		data.SchedulerAppletThreadClassDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() {
 		data.SchedulerAppletThreadClassNumber = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() {
 		data.DetectorRpcMaxSessions = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() {
 		data.DetectorRoutingBootupDelay = types.Float64Value(value.Float())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/applet"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/applet"); value.Exists() {
 		data.Applets = make([]EEMApplets, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := EEMApplets{}
@@ -3117,7 +3117,7 @@ func (data *EEM) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/environment"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/environment"); value.Exists() {
 		data.EnvironmentVariables = make([]EEMEnvironmentVariables, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := EEMEnvironmentVariables{}
@@ -3131,36 +3131,36 @@ func (data *EEMData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/session/cli/username/username_in_word_set"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/cli/username/username_in_word_set"); value.Exists() {
 		data.SessionCliUsername = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/session/cli/username/privilege_set"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/session/cli/username/privilege_set"); value.Exists() {
 		data.SessionCliUsernamePrivilege = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/history/size/events"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size/events"); value.Exists() {
 		data.HistorySizeEvents = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/history/size/traps"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/history/size/traps"); value.Exists() {
 		data.HistorySizeTraps = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/directory/user/policy"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/directory/user/policy"); value.Exists() {
 		data.DirectoryUserPolicy = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/scheduler/applet/thread/class/default"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/default"); value.Exists() {
 		data.SchedulerAppletThreadClassDefault = types.BoolValue(true)
 	} else {
 		data.SchedulerAppletThreadClassDefault = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/scheduler/applet/thread/class/number"); value.Exists() {
 		data.SchedulerAppletThreadClassNumber = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/rpc/max-sessions"); value.Exists() {
 		data.DetectorRpcMaxSessions = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/detector/routing/bootup-delay"); value.Exists() {
 		data.DetectorRoutingBootupDelay = types.Float64Value(value.Float())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/applet"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/applet"); value.Exists() {
 		data.Applets = make([]EEMApplets, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := EEMApplets{}
@@ -3817,6 +3817,339 @@ func (data *EEM) getDeletedItems(ctx context.Context, state EEM) []string {
 
 func (data *EEM) addDeletedItemsXML(ctx context.Context, state EEM, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.Applets {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Applets[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Applets[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Applets {
+			found = true
+			if state.Applets[i].Name.ValueString() != data.Applets[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Applets[i].EventTimerCronRatelimit.IsNull() && data.Applets[j].EventTimerCronRatelimit.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/ratelimit-set", predicates))
+				}
+				if !state.Applets[i].EventTimerCronMaxrun.IsNull() && data.Applets[j].EventTimerCronMaxrun.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/maxrun-set", predicates))
+				}
+				if !state.Applets[i].EventTimerCronName.IsNull() && data.Applets[j].EventTimerCronName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/name", predicates))
+				}
+				if !state.Applets[i].EventTimerCronEntry.IsNull() && data.Applets[j].EventTimerCronEntry.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/cron-entry", predicates))
+				}
+				if !state.Applets[i].EventTimerWatchdogRatelimit.IsNull() && data.Applets[j].EventTimerWatchdogRatelimit.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/watchdog/ratelimit-set", predicates))
+				}
+				if !state.Applets[i].EventTimerWatchdogMaxrun.IsNull() && data.Applets[j].EventTimerWatchdogMaxrun.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/watchdog/maxrun-set", predicates))
+				}
+				if !state.Applets[i].EventTimerWatchdogName.IsNull() && data.Applets[j].EventTimerWatchdogName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/watchdog/name", predicates))
+				}
+				if !state.Applets[i].EventTimerWatchdogTime.IsNull() && data.Applets[j].EventTimerWatchdogTime.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/watchdog/time-set", predicates))
+				}
+				for ci := range state.Applets[i].Actions {
+					cstateKeys := [...]string{"name"}
+					cstateKeyValues := [...]string{state.Applets[i].Actions[ci].Name.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Applets[i].Actions[ci].Name.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Applets[j].Actions {
+						found = true
+						if state.Applets[i].Actions[ci].Name.ValueString() != data.Applets[j].Actions[cj].Name.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim/first/string-op-2", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim/first/string-op-1", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidTypeValue.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/oid-type-value", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidType.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidType.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/oid-type", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOid.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/oid", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpVar.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVar.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/variable-name", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].SnmpTrapStrdata.IsNull() && data.Applets[j].Actions[cj].SnmpTrapStrdata.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/snmp-trap/strdata", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].SnmpTrapIntdata2.IsNull() && data.Applets[j].Actions[cj].SnmpTrapIntdata2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/snmp-trap/intdata2", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].SnmpTrapIntdata1.IsNull() && data.Applets[j].Actions[cj].SnmpTrapIntdata1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/snmp-trap/intdata1", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].CounterOpNop.IsNull() && data.Applets[j].Actions[cj].CounterOpNop.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/op/nop", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].CounterOpSet.IsNull() && data.Applets[j].Actions[cj].CounterOpSet.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/op/set", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].CounterOpInc.IsNull() && data.Applets[j].Actions[cj].CounterOpInc.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/op/inc", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].CounterOpDec.IsNull() && data.Applets[j].Actions[cj].CounterOpDec.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/op/dec", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].CounterValue.IsNull() && data.Applets[j].Actions[cj].CounterValue.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/value", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].CounterName.IsNull() && data.Applets[j].Actions[cj].CounterName.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/name", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].HandleErrorType.IsNull() && data.Applets[j].Actions[cj].HandleErrorType.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/handle-error/type", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapVar.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapTrapVar.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/trap-var", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapTrapOid.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/trap-oid", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapSpecificTrapnum.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapSpecificTrapnum.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/specific-trapnum", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapGenericTrapnum.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapGenericTrapnum.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/generic-trapnum", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapEnterpriseOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapEnterpriseOid.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/enterprise-oid", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].StringTrim.IsNull() && data.Applets[j].Actions[cj].StringTrim.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ContextSaveVariable.IsNull() && data.Applets[j].Actions[cj].ContextSaveVariable.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/context/save/variable", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ContextSaveKey.IsNull() && data.Applets[j].Actions[cj].ContextSaveKey.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/context/save/key", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ContextRetrieveVariable.IsNull() && data.Applets[j].Actions[cj].ContextRetrieveVariable.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/context/retrieve/variable", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ContextRetrieveKey.IsNull() && data.Applets[j].Actions[cj].ContextRetrieveKey.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/context/retrieve/key", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].Reload.IsNull() && data.Applets[j].Actions[cj].Reload.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/reload", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].Exit.IsNull() && data.Applets[j].Actions[cj].Exit.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/exit", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].End.IsNull() && data.Applets[j].Actions[cj].End.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/end", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].Wait.IsNull() && data.Applets[j].Actions[cj].Wait.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/wait", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].Puts.IsNull() && data.Applets[j].Actions[cj].Puts.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/puts", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].Gets.IsNull() && data.Applets[j].Actions[cj].Gets.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/gets", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ForeachDelimiter.IsNull() && data.Applets[j].Actions[cj].ForeachDelimiter.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/foreach/delimiter", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ForeachIterator.IsNull() && data.Applets[j].Actions[cj].ForeachIterator.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/foreach/iterator", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ForeachLoopvar.IsNull() && data.Applets[j].Actions[cj].ForeachLoopvar.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/foreach/loopvar", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].DivideOperand2.IsNull() && data.Applets[j].Actions[cj].DivideOperand2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/divide/operand2", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].DivideOperand1.IsNull() && data.Applets[j].Actions[cj].DivideOperand1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/divide/operand1", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].AppendValue.IsNull() && data.Applets[j].Actions[cj].AppendValue.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/append/value", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].AppendVarname.IsNull() && data.Applets[j].Actions[cj].AppendVarname.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/append/varname", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].DecrementValue.IsNull() && data.Applets[j].Actions[cj].DecrementValue.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/decrement/value", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].DecrementVarname.IsNull() && data.Applets[j].Actions[cj].DecrementVarname.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/decrement/varname", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].IncrementValue.IsNull() && data.Applets[j].Actions[cj].IncrementValue.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/increment/value", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].IncrementVarname.IsNull() && data.Applets[j].Actions[cj].IncrementVarname.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/increment/varname", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].Continue.IsNull() && data.Applets[j].Actions[cj].Continue.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/continue", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].Break.IsNull() && data.Applets[j].Actions[cj].Break.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/break", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].WhileOperand2.IsNull() && data.Applets[j].Actions[cj].WhileOperand2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/while/operand2", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].WhileOperation.IsNull() && data.Applets[j].Actions[cj].WhileOperation.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/while/operation", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].WhileOperand1.IsNull() && data.Applets[j].Actions[cj].WhileOperand1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/while/operand1", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].Else.IsNull() && data.Applets[j].Actions[cj].Else.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/else", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ElseifOperand2.IsNull() && data.Applets[j].Actions[cj].ElseifOperand2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/elseif/operand2", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ElseifOperation.IsNull() && data.Applets[j].Actions[cj].ElseifOperation.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/elseif/operation", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].ElseifOperand1.IsNull() && data.Applets[j].Actions[cj].ElseifOperand1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/elseif/operand1", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].IfGoto.IsNull() && data.Applets[j].Actions[cj].IfGoto.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/if/goto", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].IfStringOp2.IsNull() && data.Applets[j].Actions[cj].IfStringOp2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/if/string-op-2", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].IfKeyword.IsNull() && data.Applets[j].Actions[cj].IfKeyword.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/if/keyword", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].IfStringOp1.IsNull() && data.Applets[j].Actions[cj].IfStringOp1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/if/string-op-1", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].SetValue.IsNull() && data.Applets[j].Actions[cj].SetValue.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/set/value", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].SetVarname.IsNull() && data.Applets[j].Actions[cj].SetVarname.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/set/varname", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].SyslogPriority.IsNull() && data.Applets[j].Actions[cj].SyslogPriority.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/syslog-option/priority", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].SyslogMsg.IsNull() && data.Applets[j].Actions[cj].SyslogMsg.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/syslog-option/msg", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].SyslogFacility.IsNull() && data.Applets[j].Actions[cj].SyslogFacility.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/syslog-option/facility", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].RegexpStringMatch3.IsNull() && data.Applets[j].Actions[cj].RegexpStringMatch3.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-submatch3", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].RegexpStringMatch2.IsNull() && data.Applets[j].Actions[cj].RegexpStringMatch2.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-submatch2", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].RegexpStringMatch1.IsNull() && data.Applets[j].Actions[cj].RegexpStringMatch1.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-submatch1", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].RegexpStringMatch.IsNull() && data.Applets[j].Actions[cj].RegexpStringMatch.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-match", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].RegexpStringInput.IsNull() && data.Applets[j].Actions[cj].RegexpStringInput.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-input", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].RegexpStringPattern.IsNull() && data.Applets[j].Actions[cj].RegexpStringPattern.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-pattern", predicates, cpredicates))
+							}
+							if !state.Applets[i].Actions[ci].CliCommand.IsNull() && data.Applets[j].Actions[cj].CliCommand.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/cli-choice/command", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v", predicates, cpredicates))
+					}
+				}
+				if !state.Applets[i].EventCliSkip.IsNull() && data.Applets[j].EventCliSkip.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/cli/skip", predicates))
+				}
+				if !state.Applets[i].EventCliSync.IsNull() && data.Applets[j].EventCliSync.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/cli/sync", predicates))
+				}
+				if !state.Applets[i].EventCliPattern.IsNull() && data.Applets[j].EventCliPattern.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/cli/pattern", predicates))
+				}
+				if !state.Applets[i].Description.IsNull() && data.Applets[j].Description.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/description", predicates))
+				}
+				if !state.Applets[i].Class.IsNull() && data.Applets[j].Class.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/class", predicates))
+				}
+				if !state.Applets[i].Authorization.IsNull() && data.Applets[j].Authorization.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/authorization", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v", predicates))
+		}
+	}
+	if !state.DetectorRoutingBootupDelay.IsNull() && data.DetectorRoutingBootupDelay.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detector/routing/bootup-delay")
+	}
+	if !state.DetectorRpcMaxSessions.IsNull() && data.DetectorRpcMaxSessions.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detector/rpc/max-sessions")
+	}
+	if !state.SchedulerAppletThreadClassNumber.IsNull() && data.SchedulerAppletThreadClassNumber.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/scheduler/applet/thread/class/number")
+	}
+	if !state.SchedulerAppletThreadClassDefault.IsNull() && data.SchedulerAppletThreadClassDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/scheduler/applet/thread/class/default")
+	}
+	if !state.DirectoryUserPolicy.IsNull() && data.DirectoryUserPolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/directory/user/policy")
+	}
+	if !state.HistorySizeTraps.IsNull() && data.HistorySizeTraps.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/history/size/traps")
+	}
+	if !state.HistorySizeEvents.IsNull() && data.HistorySizeEvents.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/history/size/events")
+	}
+	if !state.SessionCliUsernamePrivilege.IsNull() && data.SessionCliUsernamePrivilege.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/session/cli/username/privilege_set")
+	}
+	if !state.SessionCliUsername.IsNull() && data.SessionCliUsername.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/session/cli/username/username_in_word_set")
+	}
 	for i := range state.EnvironmentVariables {
 		stateKeys := [...]string{"name"}
 		stateKeyValues := [...]string{state.EnvironmentVariables[i].Name.ValueString()}
@@ -3850,340 +4183,8 @@ func (data *EEM) addDeletedItemsXML(ctx context.Context, state EEM, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/environment%v", predicates))
 		}
 	}
-	if !state.SessionCliUsername.IsNull() && data.SessionCliUsername.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/session/cli/username/username_in_word_set")
-	}
-	if !state.SessionCliUsernamePrivilege.IsNull() && data.SessionCliUsernamePrivilege.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/session/cli/username/privilege_set")
-	}
-	if !state.HistorySizeEvents.IsNull() && data.HistorySizeEvents.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/history/size/events")
-	}
-	if !state.HistorySizeTraps.IsNull() && data.HistorySizeTraps.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/history/size/traps")
-	}
-	if !state.DirectoryUserPolicy.IsNull() && data.DirectoryUserPolicy.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/directory/user/policy")
-	}
-	if !state.SchedulerAppletThreadClassDefault.IsNull() && data.SchedulerAppletThreadClassDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/scheduler/applet/thread/class/default")
-	}
-	if !state.SchedulerAppletThreadClassNumber.IsNull() && data.SchedulerAppletThreadClassNumber.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/scheduler/applet/thread/class/number")
-	}
-	if !state.DetectorRpcMaxSessions.IsNull() && data.DetectorRpcMaxSessions.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detector/rpc/max-sessions")
-	}
-	if !state.DetectorRoutingBootupDelay.IsNull() && data.DetectorRoutingBootupDelay.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/detector/routing/bootup-delay")
-	}
-	for i := range state.Applets {
-		stateKeys := [...]string{"name"}
-		stateKeyValues := [...]string{state.Applets[i].Name.ValueString()}
-		predicates := ""
-		for i := range stateKeys {
-			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
-		}
 
-		emptyKeys := true
-		if !reflect.ValueOf(state.Applets[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Applets {
-			found = true
-			if state.Applets[i].Name.ValueString() != data.Applets[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Applets[i].Authorization.IsNull() && data.Applets[j].Authorization.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/authorization", predicates))
-				}
-				if !state.Applets[i].Class.IsNull() && data.Applets[j].Class.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/class", predicates))
-				}
-				if !state.Applets[i].Description.IsNull() && data.Applets[j].Description.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/description", predicates))
-				}
-				if !state.Applets[i].EventCliPattern.IsNull() && data.Applets[j].EventCliPattern.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/cli/pattern", predicates))
-				}
-				if !state.Applets[i].EventCliSync.IsNull() && data.Applets[j].EventCliSync.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/cli/sync", predicates))
-				}
-				if !state.Applets[i].EventCliSkip.IsNull() && data.Applets[j].EventCliSkip.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/cli/skip", predicates))
-				}
-				for ci := range state.Applets[i].Actions {
-					cstateKeys := [...]string{"name"}
-					cstateKeyValues := [...]string{state.Applets[i].Actions[ci].Name.ValueString()}
-					cpredicates := ""
-					for i := range cstateKeys {
-						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
-					}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Applets[i].Actions[ci].Name.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Applets[j].Actions {
-						found = true
-						if state.Applets[i].Actions[ci].Name.ValueString() != data.Applets[j].Actions[cj].Name.ValueString() {
-							found = false
-						}
-						if found {
-							if !state.Applets[i].Actions[ci].CliCommand.IsNull() && data.Applets[j].Actions[cj].CliCommand.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/cli-choice/command", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].RegexpStringPattern.IsNull() && data.Applets[j].Actions[cj].RegexpStringPattern.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-pattern", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].RegexpStringInput.IsNull() && data.Applets[j].Actions[cj].RegexpStringInput.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-input", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].RegexpStringMatch.IsNull() && data.Applets[j].Actions[cj].RegexpStringMatch.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-match", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].RegexpStringMatch1.IsNull() && data.Applets[j].Actions[cj].RegexpStringMatch1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-submatch1", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].RegexpStringMatch2.IsNull() && data.Applets[j].Actions[cj].RegexpStringMatch2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-submatch2", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].RegexpStringMatch3.IsNull() && data.Applets[j].Actions[cj].RegexpStringMatch3.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/regexp-option/string-submatch3", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].SyslogFacility.IsNull() && data.Applets[j].Actions[cj].SyslogFacility.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/syslog-option/facility", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].SyslogMsg.IsNull() && data.Applets[j].Actions[cj].SyslogMsg.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/syslog-option/msg", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].SyslogPriority.IsNull() && data.Applets[j].Actions[cj].SyslogPriority.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/syslog-option/priority", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].SetVarname.IsNull() && data.Applets[j].Actions[cj].SetVarname.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/set/varname", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].SetValue.IsNull() && data.Applets[j].Actions[cj].SetValue.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/set/value", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].IfStringOp1.IsNull() && data.Applets[j].Actions[cj].IfStringOp1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/if/string-op-1", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].IfKeyword.IsNull() && data.Applets[j].Actions[cj].IfKeyword.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/if/keyword", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].IfStringOp2.IsNull() && data.Applets[j].Actions[cj].IfStringOp2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/if/string-op-2", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].IfGoto.IsNull() && data.Applets[j].Actions[cj].IfGoto.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/if/goto", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ElseifOperand1.IsNull() && data.Applets[j].Actions[cj].ElseifOperand1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/elseif/operand1", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ElseifOperation.IsNull() && data.Applets[j].Actions[cj].ElseifOperation.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/elseif/operation", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ElseifOperand2.IsNull() && data.Applets[j].Actions[cj].ElseifOperand2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/elseif/operand2", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].Else.IsNull() && data.Applets[j].Actions[cj].Else.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/else", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].WhileOperand1.IsNull() && data.Applets[j].Actions[cj].WhileOperand1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/while/operand1", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].WhileOperation.IsNull() && data.Applets[j].Actions[cj].WhileOperation.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/while/operation", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].WhileOperand2.IsNull() && data.Applets[j].Actions[cj].WhileOperand2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/while/operand2", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].Break.IsNull() && data.Applets[j].Actions[cj].Break.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/break", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].Continue.IsNull() && data.Applets[j].Actions[cj].Continue.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/continue", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].IncrementVarname.IsNull() && data.Applets[j].Actions[cj].IncrementVarname.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/increment/varname", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].IncrementValue.IsNull() && data.Applets[j].Actions[cj].IncrementValue.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/increment/value", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].DecrementVarname.IsNull() && data.Applets[j].Actions[cj].DecrementVarname.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/decrement/varname", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].DecrementValue.IsNull() && data.Applets[j].Actions[cj].DecrementValue.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/decrement/value", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].AppendVarname.IsNull() && data.Applets[j].Actions[cj].AppendVarname.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/append/varname", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].AppendValue.IsNull() && data.Applets[j].Actions[cj].AppendValue.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/append/value", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].DivideOperand1.IsNull() && data.Applets[j].Actions[cj].DivideOperand1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/divide/operand1", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].DivideOperand2.IsNull() && data.Applets[j].Actions[cj].DivideOperand2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/divide/operand2", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ForeachLoopvar.IsNull() && data.Applets[j].Actions[cj].ForeachLoopvar.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/foreach/loopvar", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ForeachIterator.IsNull() && data.Applets[j].Actions[cj].ForeachIterator.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/foreach/iterator", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ForeachDelimiter.IsNull() && data.Applets[j].Actions[cj].ForeachDelimiter.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/foreach/delimiter", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].Gets.IsNull() && data.Applets[j].Actions[cj].Gets.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/gets", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].Puts.IsNull() && data.Applets[j].Actions[cj].Puts.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/puts", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].Wait.IsNull() && data.Applets[j].Actions[cj].Wait.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/wait", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].End.IsNull() && data.Applets[j].Actions[cj].End.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/end", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].Exit.IsNull() && data.Applets[j].Actions[cj].Exit.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/exit", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].Reload.IsNull() && data.Applets[j].Actions[cj].Reload.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/reload", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ContextRetrieveKey.IsNull() && data.Applets[j].Actions[cj].ContextRetrieveKey.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/context/retrieve/key", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ContextRetrieveVariable.IsNull() && data.Applets[j].Actions[cj].ContextRetrieveVariable.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/context/retrieve/variable", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ContextSaveKey.IsNull() && data.Applets[j].Actions[cj].ContextSaveKey.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/context/save/key", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].ContextSaveVariable.IsNull() && data.Applets[j].Actions[cj].ContextSaveVariable.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/context/save/variable", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].StringTrim.IsNull() && data.Applets[j].Actions[cj].StringTrim.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapEnterpriseOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapEnterpriseOid.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/enterprise-oid", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapGenericTrapnum.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapGenericTrapnum.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/generic-trapnum", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapSpecificTrapnum.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapSpecificTrapnum.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/specific-trapnum", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapTrapOid.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/trap-oid", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpTrapTrapVar.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpTrapTrapVar.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/trap/trap-var", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].HandleErrorType.IsNull() && data.Applets[j].Actions[cj].HandleErrorType.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/handle-error/type", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].CounterName.IsNull() && data.Applets[j].Actions[cj].CounterName.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/name", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].CounterValue.IsNull() && data.Applets[j].Actions[cj].CounterValue.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/value", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].CounterOpDec.IsNull() && data.Applets[j].Actions[cj].CounterOpDec.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/op/dec", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].CounterOpInc.IsNull() && data.Applets[j].Actions[cj].CounterOpInc.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/op/inc", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].CounterOpSet.IsNull() && data.Applets[j].Actions[cj].CounterOpSet.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/op/set", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].CounterOpNop.IsNull() && data.Applets[j].Actions[cj].CounterOpNop.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/counter/op/nop", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].SnmpTrapIntdata1.IsNull() && data.Applets[j].Actions[cj].SnmpTrapIntdata1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/snmp-trap/intdata1", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].SnmpTrapIntdata2.IsNull() && data.Applets[j].Actions[cj].SnmpTrapIntdata2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/snmp-trap/intdata2", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].SnmpTrapStrdata.IsNull() && data.Applets[j].Actions[cj].SnmpTrapStrdata.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/snmp-trap/strdata", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpVar.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVar.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/variable-name", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOid.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOid.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/oid", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidType.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidType.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/oid-type", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].InfoTypeSnmpVarOidTypeValue.IsNull() && data.Applets[j].Actions[cj].InfoTypeSnmpVarOidTypeValue.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/info/type/snmp/var/oid-type-value", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp1.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp1.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim/first/string-op-1", predicates, cpredicates))
-							}
-							if !state.Applets[i].Actions[ci].StringTrimFirstStringOp2.IsNull() && data.Applets[j].Actions[cj].StringTrimFirstStringOp2.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v/string/trim/first/string-op-2", predicates, cpredicates))
-							}
-							break
-						}
-					}
-					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/action-config/action%v", predicates, cpredicates))
-					}
-				}
-				if !state.Applets[i].EventTimerWatchdogTime.IsNull() && data.Applets[j].EventTimerWatchdogTime.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/watchdog/time-set", predicates))
-				}
-				if !state.Applets[i].EventTimerWatchdogName.IsNull() && data.Applets[j].EventTimerWatchdogName.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/watchdog/name", predicates))
-				}
-				if !state.Applets[i].EventTimerWatchdogMaxrun.IsNull() && data.Applets[j].EventTimerWatchdogMaxrun.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/watchdog/maxrun-set", predicates))
-				}
-				if !state.Applets[i].EventTimerWatchdogRatelimit.IsNull() && data.Applets[j].EventTimerWatchdogRatelimit.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/watchdog/ratelimit-set", predicates))
-				}
-				if !state.Applets[i].EventTimerCronEntry.IsNull() && data.Applets[j].EventTimerCronEntry.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/cron-entry", predicates))
-				}
-				if !state.Applets[i].EventTimerCronName.IsNull() && data.Applets[j].EventTimerCronName.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/name", predicates))
-				}
-				if !state.Applets[i].EventTimerCronMaxrun.IsNull() && data.Applets[j].EventTimerCronMaxrun.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/maxrun-set", predicates))
-				}
-				if !state.Applets[i].EventTimerCronRatelimit.IsNull() && data.Applets[j].EventTimerCronRatelimit.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v/event/timer-choice/cron/ratelimit-set", predicates))
-				}
-				break
-			}
-		}
-		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/applet%v", predicates))
-		}
-	}
-
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -4291,43 +4292,6 @@ func (data *EEM) getDeletePaths(ctx context.Context) []string {
 
 func (data *EEM) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	for i := range data.EnvironmentVariables {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.EnvironmentVariables[i].Name.ValueString()}
-		predicates := ""
-		for i := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
-		}
-
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/environment%v", predicates))
-	}
-	if !data.SessionCliUsername.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/session/cli/username/username_in_word_set")
-	}
-	if !data.SessionCliUsernamePrivilege.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/session/cli/username/privilege_set")
-	}
-	if !data.HistorySizeEvents.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/history/size/events")
-	}
-	if !data.HistorySizeTraps.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/history/size/traps")
-	}
-	if !data.DirectoryUserPolicy.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/directory/user/policy")
-	}
-	if !data.SchedulerAppletThreadClassDefault.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/scheduler/applet/thread/class/default")
-	}
-	if !data.SchedulerAppletThreadClassNumber.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/scheduler/applet/thread/class/number")
-	}
-	if !data.DetectorRpcMaxSessions.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/detector/rpc/max-sessions")
-	}
-	if !data.DetectorRoutingBootupDelay.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/detector/routing/bootup-delay")
-	}
 	for i := range data.Applets {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.Applets[i].Name.ValueString()}
@@ -4338,7 +4302,45 @@ func (data *EEM) addDeletePathsXML(ctx context.Context, body string) string {
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/applet%v", predicates))
 	}
+	if !data.DetectorRoutingBootupDelay.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/detector/routing/bootup-delay")
+	}
+	if !data.DetectorRpcMaxSessions.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/detector/rpc/max-sessions")
+	}
+	if !data.SchedulerAppletThreadClassNumber.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/scheduler/applet/thread/class/number")
+	}
+	if !data.SchedulerAppletThreadClassDefault.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/scheduler/applet/thread/class/default")
+	}
+	if !data.DirectoryUserPolicy.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/directory/user/policy")
+	}
+	if !data.HistorySizeTraps.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/history/size/traps")
+	}
+	if !data.HistorySizeEvents.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/history/size/events")
+	}
+	if !data.SessionCliUsernamePrivilege.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/session/cli/username/privilege_set")
+	}
+	if !data.SessionCliUsername.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/session/cli/username/username_in_word_set")
+	}
+	for i := range data.EnvironmentVariables {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.EnvironmentVariables[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
 
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/environment%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

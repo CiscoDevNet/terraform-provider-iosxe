@@ -178,18 +178,12 @@ func (r *UDLDResource) Create(ctx context.Context, req resource.CreateRequest, r
 				}
 			}
 		} else {
-			// Serialize NETCONF operations
-			device.NetconfWriteMutex.Lock()
-			defer device.NetconfWriteMutex.Unlock()
-
-			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
-				if err != nil {
-					resp.Diagnostics.AddError("Connection Error", err.Error())
-					return
-				}
-				defer cleanup()
+			// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
+			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+			if locked {
+				defer device.NetconfOpMutex.Unlock()
 			}
+			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
 			body := plan.toBodyXML(ctx)
 
@@ -256,15 +250,12 @@ func (r *UDLDResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 				}
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
-			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
-				if err != nil {
-					resp.Diagnostics.AddError("Connection Error", err.Error())
-					return
-				}
-				defer cleanup()
+			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+			if locked {
+				defer device.NetconfOpMutex.Unlock()
 			}
+			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
 			filter := helpers.GetXpathFilter(state.getXPath())
 			res, err := device.NetconfClient.GetConfig(ctx, "running", filter)
@@ -368,18 +359,12 @@ func (r *UDLDResource) Update(ctx context.Context, req resource.UpdateRequest, r
 				}
 			}
 		} else {
-			// Serialize NETCONF operations
-			device.NetconfWriteMutex.Lock()
-			defer device.NetconfWriteMutex.Unlock()
-
-			if device.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
-				if err != nil {
-					resp.Diagnostics.AddError("Connection Error", err.Error())
-					return
-				}
-				defer cleanup()
+			// Serialize NETCONF operations when reuse disabled, or writes when reuse enabled
+			locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+			if locked {
+				defer device.NetconfOpMutex.Unlock()
 			}
+			defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
 			body := plan.toBodyXML(ctx)
 			body = plan.addDeletedItemsXML(ctx, state, body)
@@ -420,18 +405,6 @@ func (r *UDLDResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 	}
 
 	if device.Managed {
-		// Serialize NETCONF operations
-		device.NetconfWriteMutex.Lock()
-		defer device.NetconfWriteMutex.Unlock()
-
-		if device.Protocol == "netconf" && device.NetconfClient != nil {
-			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
-			if err != nil {
-				resp.Diagnostics.AddError("Connection Error", err.Error())
-				return
-			}
-			defer cleanup()
-		}
 		deleteMode := "all"
 		if state.DeleteMode.ValueString() == "all" {
 			deleteMode = "all"
@@ -447,7 +420,13 @@ func (r *UDLDResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 					return
 				}
 			} else {
-				// NETCONF
+				// NETCONF - Serialize write operations
+				locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+				if locked {
+					defer device.NetconfOpMutex.Unlock()
+				}
+				defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
 				body := netconf.Body{}
 				body = helpers.RemoveFromXPath(body, state.getXPath())
 
@@ -480,7 +459,13 @@ func (r *UDLDResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 					}
 				}
 			} else {
-				// NETCONF
+				// NETCONF - Serialize write operations
+				locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, true)
+				if locked {
+					defer device.NetconfOpMutex.Unlock()
+				}
+				defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+
 				body := state.addDeletePathsXML(ctx, "")
 
 				if err := helpers.EditConfig(ctx, device.NetconfClient, body, true); err != nil {

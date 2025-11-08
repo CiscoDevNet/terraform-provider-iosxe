@@ -22,6 +22,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/logging/setop
     tf_name: enable_logging_setop
     example: true
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/informs
     tf_name: enable_informs
     example: true
@@ -55,6 +56,7 @@ attributes:
         write_only: true
         sensitive: true
         example: 08116C5D1A0E550518
+        id: true
       - yang_name: version
         example: 2c
       - yang_name: encryption
@@ -76,6 +78,7 @@ attributes:
         write_only: true
         sensitive: true
         example: 08116C5D1A0E550518
+        id: true
       - yang_name: version
         example: 2c
       - yang_name: encryption
@@ -353,6 +356,7 @@ attributes:
     tf_name: enable_traps_syslog
     example: true
   - yang_name: Cisco-IOS-XE-snmp:enable/enable-choice/traps/Cisco-IOS-XE-bgp:bgp/cbgp2
+    xpath: Cisco-IOS-XE-snmp:enable/Cisco-IOS-XE-bgp:bgp/cbgp2
     tf_name: enable_traps_bgp_cbgp2
     type: Bool
     type_yang_bool: empty
@@ -766,6 +770,7 @@ attributes:
     xpath: Cisco-IOS-XE-snmp:source-interface/traps/Loopback
     tf_name: source_interface_traps_loopback
     example: 1
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:source-interface/traps/interface-choice/Port-channel/Port-channel
     xpath: Cisco-IOS-XE-snmp:source-interface/traps/Port-channel
     tf_name: source_interface_traps_port_channel
@@ -805,6 +810,7 @@ attributes:
     xpath: Cisco-IOS-XE-snmp:trap-source/Loopback
     tf_name: trap_source_loopback
     example: 1
+    exclude_test: true
   - yang_name: Cisco-IOS-XE-snmp:trap-source/interface-choice/Port-channel/Port-channel
     xpath: Cisco-IOS-XE-snmp:trap-source/Port-channel
     tf_name: trap_source_port_channel
@@ -876,7 +882,8 @@ attributes:
             example: CON1
           - yang_name: match-node
             example: exact
-            test_tags: [C9000V]
+            exclude_test: true
+            allow_import_changes: true
           - yang_name: read-node
             example: VIEW1
           - yang_name: write-node
@@ -899,16 +906,21 @@ attributes:
   - yang_name: Cisco-IOS-XE-snmp:user/names
     tf_name: users
     type: List
+    write_only: true
+    allow_import_changes: true
     attributes:
       - yang_name: username
         id: true
         example: USER1
+        write_only: true
       - yang_name: grpname
         id: true
         example: GROUP1
+        write_only: true
       - yang_name: v3/auth-config/algorithm
         tf_name: v3_auth_algorithm
         example: sha
+        write_only: true
       - yang_name: v3/auth-config/password
         tf_name: v3_auth_password
         write_only: true
@@ -918,6 +930,7 @@ attributes:
         xpath: v3/auth-config/priv-config/aes/algorithm
         tf_name: v3_auth_priv_aes_algorithm
         example: 128
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/password
         xpath: v3/auth-config/priv-config/aes/password
         tf_name: v3_auth_priv_aes_password
@@ -928,15 +941,18 @@ attributes:
         xpath: v3/auth-config/priv-config/aes/access-config/ipv6-acl
         tf_name: v3_auth_priv_aes_access_ipv6_acl
         example: V6ACL1
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/access-config/access-option/standard-acl/standard-acl
         xpath: v3/auth-config/priv-config/aes/access-config/standard-acl
         tf_name: v3_auth_priv_aes_access_standard_acl
         example: 1
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/aes/aes/access-config/access-option/acl-name/acl-name
         xpath: v3/auth-config/priv-config/aes/access-config/acl-name
         tf_name: v3_auth_priv_aes_access_acl_name
         example: ACL123
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/des/des/password
         xpath: v3/auth-config/priv-config/des/password
         tf_name: v3_auth_priv_des_password
@@ -949,16 +965,19 @@ attributes:
         tf_name: v3_auth_priv_des_access_ipv6_acl
         example: V6ACL1
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/des/des/access-config/access-option/standard-acl/standard-acl
         xpath: v3/auth-config/priv-config/des/access-config/standard-acl
         tf_name: v3_auth_priv_des_access_standard_acl
         example: 1
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/des/des/access-config/access-option/acl-name/acl-name
         xpath: v3/auth-config/priv-config/des/access-config/acl-name
         tf_name: v3_auth_priv_des_access_acl_name
         example: ACL123
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/password
         xpath: v3/auth-config/priv-config/des3/password
         tf_name: v3_auth_priv_des3_password
@@ -971,30 +990,36 @@ attributes:
         tf_name: v3_auth_priv_des3_access_ipv6_acl
         example: V6ACL1
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/access-config/access-option/standard-acl/standard-acl
         xpath: v3/auth-config/priv-config/des3/access-config/standard-acl
         tf_name: v3_auth_priv_des3_access_standard_acl
         example: 1
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/priv-config/priv-option/des3/des3/access-config/access-option/acl-name/acl-name
         xpath: v3/auth-config/priv-config/des3/access-config/acl-name
         tf_name: v3_auth_priv_des3_access_acl_name
         example: ACL123
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/access-config/ipv6-acl
         tf_name: v3_auth_access_ipv6_acl
         example: V6ACL1
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/access-config/access-option/standard-acl/standard-acl
         xpath: v3/auth-config/access-config/standard-acl
         tf_name: v3_auth_access_standard_acl
         example: 1
         exclude_test: true
+        write_only: true
       - yang_name: v3/auth-config/access-config/access-option/acl-name/acl-name
         xpath: v3/auth-config/access-config/acl-name
         tf_name: v3_auth_access_acl_name
         example: ACL123
         exclude_test: true
+        write_only: true
 
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/interface/Loopback[name=1]

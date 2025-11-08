@@ -1033,7 +1033,7 @@ func (data *AccessListRoleBased) updateFromBody(ctx context.Context, res gjson.R
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *AccessListRoleBased) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
@@ -1043,7 +1043,7 @@ func (data *AccessListRoleBased) updateFromBodyXML(ctx context.Context, res xmld
 		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1852,7 +1852,7 @@ func (data *AccessListRoleBasedData) fromBody(ctx context.Context, res gjson.Res
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *AccessListRoleBased) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
 		data.Entries = make([]AccessListRoleBasedEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AccessListRoleBasedEntries{}
@@ -2064,7 +2064,7 @@ func (data *AccessListRoleBased) fromBodyXML(ctx context.Context, res xmldot.Res
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *AccessListRoleBasedData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
 		data.Entries = make([]AccessListRoleBasedEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AccessListRoleBasedEntries{}
@@ -2461,131 +2461,131 @@ func (data *AccessListRoleBased) addDeletedItemsXML(ctx context.Context, state A
 				found = false
 			}
 			if found {
-				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/remark", predicates))
-				}
-				if !state.Entries[i].AceRuleAction.IsNull() && data.Entries[j].AceRuleAction.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/action", predicates))
-				}
-				if !state.Entries[i].AceRuleProtocol.IsNull() && data.Entries[j].AceRuleProtocol.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/protocol", predicates))
-				}
-				if !state.Entries[i].Ack.IsNull() && data.Entries[j].Ack.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/ack", predicates))
-				}
-				if !state.Entries[i].Fin.IsNull() && data.Entries[j].Fin.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fin", predicates))
-				}
-				if !state.Entries[i].Psh.IsNull() && data.Entries[j].Psh.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/psh", predicates))
-				}
-				if !state.Entries[i].Rst.IsNull() && data.Entries[j].Rst.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/rst", predicates))
-				}
-				if !state.Entries[i].Syn.IsNull() && data.Entries[j].Syn.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/syn", predicates))
-				}
-				if !state.Entries[i].Urg.IsNull() && data.Entries[j].Urg.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/urg", predicates))
-				}
-				if !state.Entries[i].Established.IsNull() && data.Entries[j].Established.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/established", predicates))
-				}
-				if !state.Entries[i].Dscp.IsNull() && data.Entries[j].Dscp.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dscp", predicates))
-				}
-				if !state.Entries[i].Fragments.IsNull() && data.Entries[j].Fragments.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fragments", predicates))
-				}
-				if !state.Entries[i].Option.IsNull() && data.Entries[j].Option.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/option", predicates))
-				}
-				if !state.Entries[i].Precedence.IsNull() && data.Entries[j].Precedence.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/precedence", predicates))
-				}
-				if !state.Entries[i].TimeRange.IsNull() && data.Entries[j].TimeRange.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/time-range", predicates))
-				}
-				if !state.Entries[i].Tos.IsNull() && data.Entries[j].Tos.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/tos", predicates))
-				}
-				if !state.Entries[i].Log.IsNull() && data.Entries[j].Log.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log", predicates))
-				}
-				if !state.Entries[i].LogInput.IsNull() && data.Entries[j].LogInput.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log-input", predicates))
-				}
-				if !state.Entries[i].MatchAllPlusack.IsNull() && data.Entries[j].MatchAllPlusack.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusack", predicates))
-				}
-				if !state.Entries[i].MatchAllPlusfin.IsNull() && data.Entries[j].MatchAllPlusfin.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusfin", predicates))
-				}
-				if !state.Entries[i].MatchAllPluspsh.IsNull() && data.Entries[j].MatchAllPluspsh.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/pluspsh", predicates))
-				}
-				if !state.Entries[i].MatchAllPlusrst.IsNull() && data.Entries[j].MatchAllPlusrst.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusrst", predicates))
-				}
-				if !state.Entries[i].MatchAllPlussyn.IsNull() && data.Entries[j].MatchAllPlussyn.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plussyn", predicates))
-				}
-				if !state.Entries[i].MatchAllPlusurg.IsNull() && data.Entries[j].MatchAllPlusurg.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusurg", predicates))
-				}
-				if !state.Entries[i].MatchAllMinusack.IsNull() && data.Entries[j].MatchAllMinusack.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusack", predicates))
-				}
-				if !state.Entries[i].MatchAllMinusfin.IsNull() && data.Entries[j].MatchAllMinusfin.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusfin", predicates))
-				}
-				if !state.Entries[i].MatchAllMinuspsh.IsNull() && data.Entries[j].MatchAllMinuspsh.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minuspsh", predicates))
-				}
-				if !state.Entries[i].MatchAllMinusrst.IsNull() && data.Entries[j].MatchAllMinusrst.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusrst", predicates))
-				}
-				if !state.Entries[i].MatchAllMinussyn.IsNull() && data.Entries[j].MatchAllMinussyn.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minussyn", predicates))
-				}
-				if !state.Entries[i].MatchAllMinusurg.IsNull() && data.Entries[j].MatchAllMinusurg.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusurg", predicates))
-				}
-				if !state.Entries[i].MatchAnyPlusack.IsNull() && data.Entries[j].MatchAnyPlusack.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusack", predicates))
-				}
-				if !state.Entries[i].MatchAnyPlusfin.IsNull() && data.Entries[j].MatchAnyPlusfin.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusfin", predicates))
-				}
-				if !state.Entries[i].MatchAnyPluspsh.IsNull() && data.Entries[j].MatchAnyPluspsh.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/pluspsh", predicates))
-				}
-				if !state.Entries[i].MatchAnyPlusrst.IsNull() && data.Entries[j].MatchAnyPlusrst.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusrst", predicates))
-				}
-				if !state.Entries[i].MatchAnyPlussyn.IsNull() && data.Entries[j].MatchAnyPlussyn.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plussyn", predicates))
-				}
-				if !state.Entries[i].MatchAnyPlusurg.IsNull() && data.Entries[j].MatchAnyPlusurg.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusurg", predicates))
-				}
-				if !state.Entries[i].MatchAnyMinusack.IsNull() && data.Entries[j].MatchAnyMinusack.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusack", predicates))
-				}
-				if !state.Entries[i].MatchAnyMinusfin.IsNull() && data.Entries[j].MatchAnyMinusfin.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusfin", predicates))
-				}
-				if !state.Entries[i].MatchAnyMinuspsh.IsNull() && data.Entries[j].MatchAnyMinuspsh.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minuspsh", predicates))
-				}
-				if !state.Entries[i].MatchAnyMinusrst.IsNull() && data.Entries[j].MatchAnyMinusrst.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusrst", predicates))
+				if !state.Entries[i].MatchAnyMinusurg.IsNull() && data.Entries[j].MatchAnyMinusurg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusurg", predicates))
 				}
 				if !state.Entries[i].MatchAnyMinussyn.IsNull() && data.Entries[j].MatchAnyMinussyn.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minussyn", predicates))
 				}
-				if !state.Entries[i].MatchAnyMinusurg.IsNull() && data.Entries[j].MatchAnyMinusurg.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusurg", predicates))
+				if !state.Entries[i].MatchAnyMinusrst.IsNull() && data.Entries[j].MatchAnyMinusrst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusrst", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinuspsh.IsNull() && data.Entries[j].MatchAnyMinuspsh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minuspsh", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinusfin.IsNull() && data.Entries[j].MatchAnyMinusfin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusfin", predicates))
+				}
+				if !state.Entries[i].MatchAnyMinusack.IsNull() && data.Entries[j].MatchAnyMinusack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/minusack", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlusurg.IsNull() && data.Entries[j].MatchAnyPlusurg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusurg", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlussyn.IsNull() && data.Entries[j].MatchAnyPlussyn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plussyn", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlusrst.IsNull() && data.Entries[j].MatchAnyPlusrst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusrst", predicates))
+				}
+				if !state.Entries[i].MatchAnyPluspsh.IsNull() && data.Entries[j].MatchAnyPluspsh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/pluspsh", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlusfin.IsNull() && data.Entries[j].MatchAnyPlusfin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusfin", predicates))
+				}
+				if !state.Entries[i].MatchAnyPlusack.IsNull() && data.Entries[j].MatchAnyPlusack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-any/plusack", predicates))
+				}
+				if !state.Entries[i].MatchAllMinusurg.IsNull() && data.Entries[j].MatchAllMinusurg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusurg", predicates))
+				}
+				if !state.Entries[i].MatchAllMinussyn.IsNull() && data.Entries[j].MatchAllMinussyn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minussyn", predicates))
+				}
+				if !state.Entries[i].MatchAllMinusrst.IsNull() && data.Entries[j].MatchAllMinusrst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusrst", predicates))
+				}
+				if !state.Entries[i].MatchAllMinuspsh.IsNull() && data.Entries[j].MatchAllMinuspsh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minuspsh", predicates))
+				}
+				if !state.Entries[i].MatchAllMinusfin.IsNull() && data.Entries[j].MatchAllMinusfin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusfin", predicates))
+				}
+				if !state.Entries[i].MatchAllMinusack.IsNull() && data.Entries[j].MatchAllMinusack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/minusack", predicates))
+				}
+				if !state.Entries[i].MatchAllPlusurg.IsNull() && data.Entries[j].MatchAllPlusurg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusurg", predicates))
+				}
+				if !state.Entries[i].MatchAllPlussyn.IsNull() && data.Entries[j].MatchAllPlussyn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plussyn", predicates))
+				}
+				if !state.Entries[i].MatchAllPlusrst.IsNull() && data.Entries[j].MatchAllPlusrst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusrst", predicates))
+				}
+				if !state.Entries[i].MatchAllPluspsh.IsNull() && data.Entries[j].MatchAllPluspsh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/pluspsh", predicates))
+				}
+				if !state.Entries[i].MatchAllPlusfin.IsNull() && data.Entries[j].MatchAllPlusfin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusfin", predicates))
+				}
+				if !state.Entries[i].MatchAllPlusack.IsNull() && data.Entries[j].MatchAllPlusack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/match-all/plusack", predicates))
+				}
+				if !state.Entries[i].LogInput.IsNull() && data.Entries[j].LogInput.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log-input", predicates))
+				}
+				if !state.Entries[i].Log.IsNull() && data.Entries[j].Log.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log", predicates))
+				}
+				if !state.Entries[i].Tos.IsNull() && data.Entries[j].Tos.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/tos", predicates))
+				}
+				if !state.Entries[i].TimeRange.IsNull() && data.Entries[j].TimeRange.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/time-range", predicates))
+				}
+				if !state.Entries[i].Precedence.IsNull() && data.Entries[j].Precedence.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/precedence", predicates))
+				}
+				if !state.Entries[i].Option.IsNull() && data.Entries[j].Option.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/option", predicates))
+				}
+				if !state.Entries[i].Fragments.IsNull() && data.Entries[j].Fragments.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fragments", predicates))
+				}
+				if !state.Entries[i].Dscp.IsNull() && data.Entries[j].Dscp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dscp", predicates))
+				}
+				if !state.Entries[i].Established.IsNull() && data.Entries[j].Established.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/established", predicates))
+				}
+				if !state.Entries[i].Urg.IsNull() && data.Entries[j].Urg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/urg", predicates))
+				}
+				if !state.Entries[i].Syn.IsNull() && data.Entries[j].Syn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/syn", predicates))
+				}
+				if !state.Entries[i].Rst.IsNull() && data.Entries[j].Rst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/rst", predicates))
+				}
+				if !state.Entries[i].Psh.IsNull() && data.Entries[j].Psh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/psh", predicates))
+				}
+				if !state.Entries[i].Fin.IsNull() && data.Entries[j].Fin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fin", predicates))
+				}
+				if !state.Entries[i].Ack.IsNull() && data.Entries[j].Ack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/ack", predicates))
+				}
+				if !state.Entries[i].AceRuleProtocol.IsNull() && data.Entries[j].AceRuleProtocol.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/protocol", predicates))
+				}
+				if !state.Entries[i].AceRuleAction.IsNull() && data.Entries[j].AceRuleAction.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/action", predicates))
+				}
+				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/remark", predicates))
 				}
 				break
 			}
@@ -2595,6 +2595,7 @@ func (data *AccessListRoleBased) addDeletedItemsXML(ctx context.Context, state A
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -2746,6 +2747,7 @@ func (data *AccessListRoleBased) addDeletePathsXML(ctx context.Context, body str
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/access-list-seq-rule%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

@@ -670,14 +670,14 @@ func (data *Service) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/pad-conf/pad"); !data.Pad.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pad-conf/pad"); !data.Pad.IsNull() {
 		if value.Exists() {
 			data.Pad = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.Pad = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password-encryption"); !data.PasswordEncryption.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/password-encryption"); !data.PasswordEncryption.IsNull() {
 		if value.Exists() {
 			data.PasswordEncryption = types.BoolValue(true)
 		} else {
@@ -686,14 +686,14 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.PasswordEncryption = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password-recovery"); !data.PasswordRecovery.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/password-recovery"); !data.PasswordRecovery.IsNull() {
 		if value.Exists() {
 			data.PasswordRecovery = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.PasswordRecovery = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps"); !data.Timestamps.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps"); !data.Timestamps.IsNull() {
 		if value.Exists() {
 			data.Timestamps = types.BoolValue(true)
 		} else {
@@ -702,7 +702,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Timestamps = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config"); !data.TimestampsDebug.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config"); !data.TimestampsDebug.IsNull() {
 		if value.Exists() {
 			data.TimestampsDebug = types.BoolValue(true)
 		} else {
@@ -711,7 +711,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsDebug = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime"); !data.TimestampsDebugDatetime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime"); !data.TimestampsDebugDatetime.IsNull() {
 		if value.Exists() {
 			data.TimestampsDebugDatetime = types.BoolValue(true)
 		} else {
@@ -720,7 +720,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsDebugDatetime = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/msec"); !data.TimestampsDebugDatetimeMsec.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/msec"); !data.TimestampsDebugDatetimeMsec.IsNull() {
 		if value.Exists() {
 			data.TimestampsDebugDatetimeMsec = types.BoolValue(true)
 		} else {
@@ -729,7 +729,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsDebugDatetimeMsec = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/localtime"); !data.TimestampsDebugDatetimeLocaltime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/localtime"); !data.TimestampsDebugDatetimeLocaltime.IsNull() {
 		if value.Exists() {
 			data.TimestampsDebugDatetimeLocaltime = types.BoolValue(true)
 		} else {
@@ -738,7 +738,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsDebugDatetimeLocaltime = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/show-timezone"); !data.TimestampsDebugDatetimeShowTimezone.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/show-timezone"); !data.TimestampsDebugDatetimeShowTimezone.IsNull() {
 		if value.Exists() {
 			data.TimestampsDebugDatetimeShowTimezone = types.BoolValue(true)
 		} else {
@@ -747,7 +747,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsDebugDatetimeShowTimezone = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/year"); !data.TimestampsDebugDatetimeYear.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/year"); !data.TimestampsDebugDatetimeYear.IsNull() {
 		if value.Exists() {
 			data.TimestampsDebugDatetimeYear = types.BoolValue(true)
 		} else {
@@ -756,7 +756,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsDebugDatetimeYear = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/uptime"); !data.TimestampsDebugUptime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/uptime"); !data.TimestampsDebugUptime.IsNull() {
 		if value.Exists() {
 			data.TimestampsDebugUptime = types.BoolValue(true)
 		} else {
@@ -765,7 +765,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsDebugUptime = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config"); !data.TimestampsLog.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config"); !data.TimestampsLog.IsNull() {
 		if value.Exists() {
 			data.TimestampsLog = types.BoolValue(true)
 		} else {
@@ -774,7 +774,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsLog = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime"); !data.TimestampsLogDatetime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime"); !data.TimestampsLogDatetime.IsNull() {
 		if value.Exists() {
 			data.TimestampsLogDatetime = types.BoolValue(true)
 		} else {
@@ -783,7 +783,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsLogDatetime = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/msec"); !data.TimestampsLogDatetimeMsec.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/msec"); !data.TimestampsLogDatetimeMsec.IsNull() {
 		if value.Exists() {
 			data.TimestampsLogDatetimeMsec = types.BoolValue(true)
 		} else {
@@ -792,7 +792,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsLogDatetimeMsec = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/localtime"); !data.TimestampsLogDatetimeLocaltime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/localtime"); !data.TimestampsLogDatetimeLocaltime.IsNull() {
 		if value.Exists() {
 			data.TimestampsLogDatetimeLocaltime = types.BoolValue(true)
 		} else {
@@ -801,7 +801,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsLogDatetimeLocaltime = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/show-timezone"); !data.TimestampsLogDatetimeShowTimezone.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/show-timezone"); !data.TimestampsLogDatetimeShowTimezone.IsNull() {
 		if value.Exists() {
 			data.TimestampsLogDatetimeShowTimezone = types.BoolValue(true)
 		} else {
@@ -810,7 +810,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsLogDatetimeShowTimezone = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/year"); !data.TimestampsLogDatetimeYear.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/year"); !data.TimestampsLogDatetimeYear.IsNull() {
 		if value.Exists() {
 			data.TimestampsLogDatetimeYear = types.BoolValue(true)
 		} else {
@@ -819,7 +819,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsLogDatetimeYear = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/uptime"); !data.TimestampsLogUptime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/uptime"); !data.TimestampsLogUptime.IsNull() {
 		if value.Exists() {
 			data.TimestampsLogUptime = types.BoolValue(true)
 		} else {
@@ -828,7 +828,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TimestampsLogUptime = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dhcp"); !data.Dhcp.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dhcp"); !data.Dhcp.IsNull() {
 		if value.Exists() {
 			data.Dhcp = types.BoolValue(true)
 		} else {
@@ -837,7 +837,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Dhcp = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/tcp-keepalives-in"); !data.TcpKeepalivesIn.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tcp-keepalives-in"); !data.TcpKeepalivesIn.IsNull() {
 		if value.Exists() {
 			data.TcpKeepalivesIn = types.BoolValue(true)
 		} else {
@@ -846,7 +846,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TcpKeepalivesIn = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/tcp-keepalives-out"); !data.TcpKeepalivesOut.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tcp-keepalives-out"); !data.TcpKeepalivesOut.IsNull() {
 		if value.Exists() {
 			data.TcpKeepalivesOut = types.BoolValue(true)
 		} else {
@@ -855,7 +855,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.TcpKeepalivesOut = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/compress-config"); !data.CompressConfig.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/compress-config"); !data.CompressConfig.IsNull() {
 		if value.Exists() {
 			data.CompressConfig = types.BoolValue(true)
 		} else {
@@ -864,7 +864,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.CompressConfig = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/sequence-numbers"); !data.SequenceNumbers.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sequence-numbers"); !data.SequenceNumbers.IsNull() {
 		if value.Exists() {
 			data.SequenceNumbers = types.BoolValue(true)
 		} else {
@@ -873,7 +873,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.SequenceNumbers = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/call-home"); !data.CallHome.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/call-home"); !data.CallHome.IsNull() {
 		if value.Exists() {
 			data.CallHome = types.BoolValue(true)
 		} else {
@@ -882,7 +882,7 @@ func (data *Service) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.CallHome = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dhcp-config"); !data.DhcpConfig.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dhcp-config"); !data.DhcpConfig.IsNull() {
 		if value.Exists() {
 			data.DhcpConfig = types.BoolValue(value.Bool())
 		}
@@ -1168,127 +1168,127 @@ func (data *ServiceData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *Service) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/pad-conf/pad"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pad-conf/pad"); value.Exists() {
 		data.Pad = types.BoolValue(value.Bool())
 	} else {
 		data.Pad = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password-encryption"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/password-encryption"); value.Exists() {
 		data.PasswordEncryption = types.BoolValue(true)
 	} else {
 		data.PasswordEncryption = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password-recovery"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/password-recovery"); value.Exists() {
 		data.PasswordRecovery = types.BoolValue(value.Bool())
 	} else {
 		data.PasswordRecovery = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps"); value.Exists() {
 		data.Timestamps = types.BoolValue(true)
 	} else {
 		data.Timestamps = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config"); value.Exists() {
 		data.TimestampsDebug = types.BoolValue(true)
 	} else {
 		data.TimestampsDebug = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime"); value.Exists() {
 		data.TimestampsDebugDatetime = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/msec"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/msec"); value.Exists() {
 		data.TimestampsDebugDatetimeMsec = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetimeMsec = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/localtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/localtime"); value.Exists() {
 		data.TimestampsDebugDatetimeLocaltime = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetimeLocaltime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/show-timezone"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/show-timezone"); value.Exists() {
 		data.TimestampsDebugDatetimeShowTimezone = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetimeShowTimezone = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/year"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/year"); value.Exists() {
 		data.TimestampsDebugDatetimeYear = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetimeYear = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/uptime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/uptime"); value.Exists() {
 		data.TimestampsDebugUptime = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugUptime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config"); value.Exists() {
 		data.TimestampsLog = types.BoolValue(true)
 	} else {
 		data.TimestampsLog = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime"); value.Exists() {
 		data.TimestampsLogDatetime = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/msec"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/msec"); value.Exists() {
 		data.TimestampsLogDatetimeMsec = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetimeMsec = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/localtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/localtime"); value.Exists() {
 		data.TimestampsLogDatetimeLocaltime = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetimeLocaltime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/show-timezone"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/show-timezone"); value.Exists() {
 		data.TimestampsLogDatetimeShowTimezone = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetimeShowTimezone = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/year"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/year"); value.Exists() {
 		data.TimestampsLogDatetimeYear = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetimeYear = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/uptime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/uptime"); value.Exists() {
 		data.TimestampsLogUptime = types.BoolValue(true)
 	} else {
 		data.TimestampsLogUptime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dhcp"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dhcp"); value.Exists() {
 		data.Dhcp = types.BoolValue(true)
 	} else {
 		data.Dhcp = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/tcp-keepalives-in"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tcp-keepalives-in"); value.Exists() {
 		data.TcpKeepalivesIn = types.BoolValue(true)
 	} else {
 		data.TcpKeepalivesIn = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/tcp-keepalives-out"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tcp-keepalives-out"); value.Exists() {
 		data.TcpKeepalivesOut = types.BoolValue(true)
 	} else {
 		data.TcpKeepalivesOut = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/compress-config"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/compress-config"); value.Exists() {
 		data.CompressConfig = types.BoolValue(true)
 	} else {
 		data.CompressConfig = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/sequence-numbers"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sequence-numbers"); value.Exists() {
 		data.SequenceNumbers = types.BoolValue(true)
 	} else {
 		data.SequenceNumbers = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/call-home"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/call-home"); value.Exists() {
 		data.CallHome = types.BoolValue(true)
 	} else {
 		data.CallHome = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dhcp-config"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dhcp-config"); value.Exists() {
 		data.DhcpConfig = types.BoolValue(value.Bool())
 	} else {
 		data.DhcpConfig = types.BoolNull()
@@ -1300,127 +1300,127 @@ func (data *Service) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *ServiceData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/pad-conf/pad"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/pad-conf/pad"); value.Exists() {
 		data.Pad = types.BoolValue(value.Bool())
 	} else {
 		data.Pad = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password-encryption"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/password-encryption"); value.Exists() {
 		data.PasswordEncryption = types.BoolValue(true)
 	} else {
 		data.PasswordEncryption = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password-recovery"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/password-recovery"); value.Exists() {
 		data.PasswordRecovery = types.BoolValue(value.Bool())
 	} else {
 		data.PasswordRecovery = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps"); value.Exists() {
 		data.Timestamps = types.BoolValue(true)
 	} else {
 		data.Timestamps = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config"); value.Exists() {
 		data.TimestampsDebug = types.BoolValue(true)
 	} else {
 		data.TimestampsDebug = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime"); value.Exists() {
 		data.TimestampsDebugDatetime = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/msec"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/msec"); value.Exists() {
 		data.TimestampsDebugDatetimeMsec = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetimeMsec = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/localtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/localtime"); value.Exists() {
 		data.TimestampsDebugDatetimeLocaltime = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetimeLocaltime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/show-timezone"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/show-timezone"); value.Exists() {
 		data.TimestampsDebugDatetimeShowTimezone = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetimeShowTimezone = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/datetime/year"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/datetime/year"); value.Exists() {
 		data.TimestampsDebugDatetimeYear = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugDatetimeYear = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/debug-config/uptime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/debug-config/uptime"); value.Exists() {
 		data.TimestampsDebugUptime = types.BoolValue(true)
 	} else {
 		data.TimestampsDebugUptime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config"); value.Exists() {
 		data.TimestampsLog = types.BoolValue(true)
 	} else {
 		data.TimestampsLog = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime"); value.Exists() {
 		data.TimestampsLogDatetime = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/msec"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/msec"); value.Exists() {
 		data.TimestampsLogDatetimeMsec = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetimeMsec = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/localtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/localtime"); value.Exists() {
 		data.TimestampsLogDatetimeLocaltime = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetimeLocaltime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/show-timezone"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/show-timezone"); value.Exists() {
 		data.TimestampsLogDatetimeShowTimezone = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetimeShowTimezone = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/datetime/year"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/datetime/year"); value.Exists() {
 		data.TimestampsLogDatetimeYear = types.BoolValue(true)
 	} else {
 		data.TimestampsLogDatetimeYear = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/timestamps/log-config/uptime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/timestamps/log-config/uptime"); value.Exists() {
 		data.TimestampsLogUptime = types.BoolValue(true)
 	} else {
 		data.TimestampsLogUptime = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dhcp"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dhcp"); value.Exists() {
 		data.Dhcp = types.BoolValue(true)
 	} else {
 		data.Dhcp = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/tcp-keepalives-in"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tcp-keepalives-in"); value.Exists() {
 		data.TcpKeepalivesIn = types.BoolValue(true)
 	} else {
 		data.TcpKeepalivesIn = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/tcp-keepalives-out"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tcp-keepalives-out"); value.Exists() {
 		data.TcpKeepalivesOut = types.BoolValue(true)
 	} else {
 		data.TcpKeepalivesOut = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/compress-config"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/compress-config"); value.Exists() {
 		data.CompressConfig = types.BoolValue(true)
 	} else {
 		data.CompressConfig = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/sequence-numbers"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/sequence-numbers"); value.Exists() {
 		data.SequenceNumbers = types.BoolValue(true)
 	} else {
 		data.SequenceNumbers = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/call-home"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/call-home"); value.Exists() {
 		data.CallHome = types.BoolValue(true)
 	} else {
 		data.CallHome = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dhcp-config"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dhcp-config"); value.Exists() {
 		data.DhcpConfig = types.BoolValue(value.Bool())
 	} else {
 		data.DhcpConfig = types.BoolNull()
@@ -1515,79 +1515,80 @@ func (data *Service) getDeletedItems(ctx context.Context, state Service) []strin
 
 func (data *Service) addDeletedItemsXML(ctx context.Context, state Service, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Pad.IsNull() && data.Pad.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pad-conf/pad")
-	}
-	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password-encryption")
-	}
-	if !state.Timestamps.IsNull() && data.Timestamps.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps")
-	}
-	if !state.TimestampsDebug.IsNull() && data.TimestampsDebug.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config")
-	}
-	if !state.TimestampsDebugDatetime.IsNull() && data.TimestampsDebugDatetime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime")
-	}
-	if !state.TimestampsDebugDatetimeMsec.IsNull() && data.TimestampsDebugDatetimeMsec.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/msec")
-	}
-	if !state.TimestampsDebugDatetimeLocaltime.IsNull() && data.TimestampsDebugDatetimeLocaltime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/localtime")
-	}
-	if !state.TimestampsDebugDatetimeShowTimezone.IsNull() && data.TimestampsDebugDatetimeShowTimezone.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/show-timezone")
-	}
-	if !state.TimestampsDebugDatetimeYear.IsNull() && data.TimestampsDebugDatetimeYear.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/year")
-	}
-	if !state.TimestampsDebugUptime.IsNull() && data.TimestampsDebugUptime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/uptime")
-	}
-	if !state.TimestampsLog.IsNull() && data.TimestampsLog.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config")
-	}
-	if !state.TimestampsLogDatetime.IsNull() && data.TimestampsLogDatetime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime")
-	}
-	if !state.TimestampsLogDatetimeMsec.IsNull() && data.TimestampsLogDatetimeMsec.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/msec")
-	}
-	if !state.TimestampsLogDatetimeLocaltime.IsNull() && data.TimestampsLogDatetimeLocaltime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/localtime")
-	}
-	if !state.TimestampsLogDatetimeShowTimezone.IsNull() && data.TimestampsLogDatetimeShowTimezone.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/show-timezone")
-	}
-	if !state.TimestampsLogDatetimeYear.IsNull() && data.TimestampsLogDatetimeYear.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/year")
-	}
-	if !state.TimestampsLogUptime.IsNull() && data.TimestampsLogUptime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/uptime")
-	}
-	if !state.Dhcp.IsNull() && data.Dhcp.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dhcp")
-	}
-	if !state.TcpKeepalivesIn.IsNull() && data.TcpKeepalivesIn.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp-keepalives-in")
-	}
-	if !state.TcpKeepalivesOut.IsNull() && data.TcpKeepalivesOut.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp-keepalives-out")
-	}
-	if !state.CompressConfig.IsNull() && data.CompressConfig.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/compress-config")
-	}
-	if !state.SequenceNumbers.IsNull() && data.SequenceNumbers.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sequence-numbers")
+	if !state.DhcpConfig.IsNull() && data.DhcpConfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dhcp-config")
 	}
 	if !state.CallHome.IsNull() && data.CallHome.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/call-home")
 	}
-	if !state.DhcpConfig.IsNull() && data.DhcpConfig.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dhcp-config")
+	if !state.SequenceNumbers.IsNull() && data.SequenceNumbers.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/sequence-numbers")
+	}
+	if !state.CompressConfig.IsNull() && data.CompressConfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/compress-config")
+	}
+	if !state.TcpKeepalivesOut.IsNull() && data.TcpKeepalivesOut.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp-keepalives-out")
+	}
+	if !state.TcpKeepalivesIn.IsNull() && data.TcpKeepalivesIn.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/tcp-keepalives-in")
+	}
+	if !state.Dhcp.IsNull() && data.Dhcp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dhcp")
+	}
+	if !state.TimestampsLogUptime.IsNull() && data.TimestampsLogUptime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/uptime")
+	}
+	if !state.TimestampsLogDatetimeYear.IsNull() && data.TimestampsLogDatetimeYear.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/year")
+	}
+	if !state.TimestampsLogDatetimeShowTimezone.IsNull() && data.TimestampsLogDatetimeShowTimezone.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/show-timezone")
+	}
+	if !state.TimestampsLogDatetimeLocaltime.IsNull() && data.TimestampsLogDatetimeLocaltime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/localtime")
+	}
+	if !state.TimestampsLogDatetimeMsec.IsNull() && data.TimestampsLogDatetimeMsec.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime/msec")
+	}
+	if !state.TimestampsLogDatetime.IsNull() && data.TimestampsLogDatetime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config/datetime")
+	}
+	if !state.TimestampsLog.IsNull() && data.TimestampsLog.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/log-config")
+	}
+	if !state.TimestampsDebugUptime.IsNull() && data.TimestampsDebugUptime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/uptime")
+	}
+	if !state.TimestampsDebugDatetimeYear.IsNull() && data.TimestampsDebugDatetimeYear.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/year")
+	}
+	if !state.TimestampsDebugDatetimeShowTimezone.IsNull() && data.TimestampsDebugDatetimeShowTimezone.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/show-timezone")
+	}
+	if !state.TimestampsDebugDatetimeLocaltime.IsNull() && data.TimestampsDebugDatetimeLocaltime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/localtime")
+	}
+	if !state.TimestampsDebugDatetimeMsec.IsNull() && data.TimestampsDebugDatetimeMsec.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime/msec")
+	}
+	if !state.TimestampsDebugDatetime.IsNull() && data.TimestampsDebugDatetime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config/datetime")
+	}
+	if !state.TimestampsDebug.IsNull() && data.TimestampsDebug.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps/debug-config")
+	}
+	if !state.Timestamps.IsNull() && data.Timestamps.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/timestamps")
+	}
+	if !state.PasswordEncryption.IsNull() && data.PasswordEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/password-encryption")
+	}
+	if !state.Pad.IsNull() && data.Pad.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/pad-conf/pad")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1755,79 +1756,80 @@ func (data *Service) getDeletePaths(ctx context.Context) []string {
 
 func (data *Service) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Pad.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pad-conf/pad")
-	}
-	if !data.PasswordEncryption.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password-encryption")
-	}
-	if !data.Timestamps.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps")
-	}
-	if !data.TimestampsDebug.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config")
-	}
-	if !data.TimestampsDebugDatetime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime")
-	}
-	if !data.TimestampsDebugDatetimeMsec.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime/msec")
-	}
-	if !data.TimestampsDebugDatetimeLocaltime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime/localtime")
-	}
-	if !data.TimestampsDebugDatetimeShowTimezone.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime/show-timezone")
-	}
-	if !data.TimestampsDebugDatetimeYear.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime/year")
-	}
-	if !data.TimestampsDebugUptime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/uptime")
-	}
-	if !data.TimestampsLog.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config")
-	}
-	if !data.TimestampsLogDatetime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime")
-	}
-	if !data.TimestampsLogDatetimeMsec.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime/msec")
-	}
-	if !data.TimestampsLogDatetimeLocaltime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime/localtime")
-	}
-	if !data.TimestampsLogDatetimeShowTimezone.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime/show-timezone")
-	}
-	if !data.TimestampsLogDatetimeYear.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime/year")
-	}
-	if !data.TimestampsLogUptime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/uptime")
-	}
-	if !data.Dhcp.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dhcp")
-	}
-	if !data.TcpKeepalivesIn.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tcp-keepalives-in")
-	}
-	if !data.TcpKeepalivesOut.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tcp-keepalives-out")
-	}
-	if !data.CompressConfig.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/compress-config")
-	}
-	if !data.SequenceNumbers.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/sequence-numbers")
+	if !data.DhcpConfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dhcp-config")
 	}
 	if !data.CallHome.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/call-home")
 	}
-	if !data.DhcpConfig.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dhcp-config")
+	if !data.SequenceNumbers.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/sequence-numbers")
+	}
+	if !data.CompressConfig.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/compress-config")
+	}
+	if !data.TcpKeepalivesOut.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tcp-keepalives-out")
+	}
+	if !data.TcpKeepalivesIn.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/tcp-keepalives-in")
+	}
+	if !data.Dhcp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dhcp")
+	}
+	if !data.TimestampsLogUptime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/uptime")
+	}
+	if !data.TimestampsLogDatetimeYear.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime/year")
+	}
+	if !data.TimestampsLogDatetimeShowTimezone.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime/show-timezone")
+	}
+	if !data.TimestampsLogDatetimeLocaltime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime/localtime")
+	}
+	if !data.TimestampsLogDatetimeMsec.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime/msec")
+	}
+	if !data.TimestampsLogDatetime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config/datetime")
+	}
+	if !data.TimestampsLog.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/log-config")
+	}
+	if !data.TimestampsDebugUptime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/uptime")
+	}
+	if !data.TimestampsDebugDatetimeYear.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime/year")
+	}
+	if !data.TimestampsDebugDatetimeShowTimezone.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime/show-timezone")
+	}
+	if !data.TimestampsDebugDatetimeLocaltime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime/localtime")
+	}
+	if !data.TimestampsDebugDatetimeMsec.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime/msec")
+	}
+	if !data.TimestampsDebugDatetime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config/datetime")
+	}
+	if !data.TimestampsDebug.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps/debug-config")
+	}
+	if !data.Timestamps.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/timestamps")
+	}
+	if !data.PasswordEncryption.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/password-encryption")
+	}
+	if !data.Pad.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/pad-conf/pad")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

@@ -180,22 +180,22 @@ func (data *CryptoIPSecProfile) updateFromBody(ctx context.Context, res gjson.Re
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CryptoIPSecProfile) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/transform-set"); value.Exists() && !data.SetTransformSet.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/transform-set"); value.Exists() && !data.SetTransformSet.IsNull() {
 		data.SetTransformSet = helpers.GetStringListXML(value.Array())
 	} else {
 		data.SetTransformSet = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/ikev2-profile"); value.Exists() && !data.SetIkev2Profile.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/ikev2-profile"); value.Exists() && !data.SetIkev2Profile.IsNull() {
 		data.SetIkev2Profile = types.StringValue(value.String())
 	} else {
 		data.SetIkev2Profile = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/isakmp-profile"); value.Exists() && !data.SetIsakmpProfile.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/isakmp-profile"); value.Exists() && !data.SetIsakmpProfile.IsNull() {
 		data.SetIsakmpProfile = types.StringValue(value.String())
 	} else {
 		data.SetIsakmpProfile = types.StringNull()
@@ -251,15 +251,15 @@ func (data *CryptoIPSecProfileData) fromBody(ctx context.Context, res gjson.Resu
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CryptoIPSecProfile) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/transform-set"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/transform-set"); value.Exists() {
 		data.SetTransformSet = helpers.GetStringListXML(value.Array())
 	} else {
 		data.SetTransformSet = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/ikev2-profile"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/ikev2-profile"); value.Exists() {
 		data.SetIkev2Profile = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/isakmp-profile"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/isakmp-profile"); value.Exists() {
 		data.SetIsakmpProfile = types.StringValue(value.String())
 	}
 }
@@ -269,15 +269,15 @@ func (data *CryptoIPSecProfile) fromBodyXML(ctx context.Context, res xmldot.Resu
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CryptoIPSecProfileData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/transform-set"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/transform-set"); value.Exists() {
 		data.SetTransformSet = helpers.GetStringListXML(value.Array())
 	} else {
 		data.SetTransformSet = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/ikev2-profile"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/ikev2-profile"); value.Exists() {
 		data.SetIkev2Profile = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/set/isakmp-profile"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/set/isakmp-profile"); value.Exists() {
 		data.SetIsakmpProfile = types.StringValue(value.String())
 	}
 }
@@ -325,6 +325,12 @@ func (data *CryptoIPSecProfile) getDeletedItems(ctx context.Context, state Crypt
 
 func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state CryptoIPSecProfile, body string) string {
 	b := netconf.NewBody(body)
+	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/isakmp-profile")
+	}
+	if !state.SetIkev2Profile.IsNull() && data.SetIkev2Profile.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/ikev2-profile")
+	}
 	if !state.SetTransformSet.IsNull() {
 		if data.SetTransformSet.IsNull() {
 			b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/transform-set")
@@ -346,13 +352,8 @@ func (data *CryptoIPSecProfile) addDeletedItemsXML(ctx context.Context, state Cr
 			}
 		}
 	}
-	if !state.SetIkev2Profile.IsNull() && data.SetIkev2Profile.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/ikev2-profile")
-	}
-	if !state.SetIsakmpProfile.IsNull() && data.SetIsakmpProfile.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/set/isakmp-profile")
-	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -391,16 +392,21 @@ func (data *CryptoIPSecProfile) getDeletePaths(ctx context.Context) []string {
 
 func (data *CryptoIPSecProfile) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.SetTransformSet.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/transform-set")
+	if !data.SetIsakmpProfile.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/isakmp-profile")
 	}
 	if !data.SetIkev2Profile.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/ikev2-profile")
 	}
-	if !data.SetIsakmpProfile.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/set/isakmp-profile")
+	if !data.SetTransformSet.IsNull() {
+		var values []string
+		data.SetTransformSet.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/set/transform-set[.=%v]", v))
+		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

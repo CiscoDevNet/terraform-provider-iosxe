@@ -897,7 +897,7 @@ func (data *AccessListExtended) updateFromBody(ctx context.Context, res gjson.Re
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
@@ -907,7 +907,7 @@ func (data *AccessListExtended) updateFromBodyXML(ctx context.Context, res xmldo
 		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1617,7 +1617,7 @@ func (data *AccessListExtendedData) fromBody(ctx context.Context, res gjson.Resu
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
 		data.Entries = make([]AccessListExtendedEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AccessListExtendedEntries{}
@@ -1806,7 +1806,7 @@ func (data *AccessListExtended) fromBodyXML(ctx context.Context, res xmldot.Resu
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *AccessListExtendedData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
 		data.Entries = make([]AccessListExtendedEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AccessListExtendedEntries{}
@@ -2201,152 +2201,152 @@ func (data *AccessListExtended) addDeletedItemsXML(ctx context.Context, state Ac
 				found = false
 			}
 			if found {
-				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/remark", predicates))
-				}
-				if !state.Entries[i].AceRuleAction.IsNull() && data.Entries[j].AceRuleAction.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/action", predicates))
-				}
-				if !state.Entries[i].AceRuleProtocol.IsNull() && data.Entries[j].AceRuleProtocol.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/protocol", predicates))
-				}
-				if !state.Entries[i].ServiceObjectGroup.IsNull() && data.Entries[j].ServiceObjectGroup.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/object-group-str", predicates))
-				}
-				if !state.Entries[i].SourcePrefix.IsNull() && data.Entries[j].SourcePrefix.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/ipv4-address", predicates))
-				}
-				if !state.Entries[i].SourcePrefixMask.IsNull() && data.Entries[j].SourcePrefixMask.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/mask", predicates))
-				}
-				if !state.Entries[i].SourceAny.IsNull() && data.Entries[j].SourceAny.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/any", predicates))
-				}
-				if !state.Entries[i].SourceHost.IsNull() && data.Entries[j].SourceHost.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/host-address", predicates))
-				}
-				if !state.Entries[i].SourceObjectGroup.IsNull() && data.Entries[j].SourceObjectGroup.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/object-group", predicates))
-				}
-				if !state.Entries[i].SourcePortEqual.IsNull() && data.Entries[j].SourcePortEqual.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq", predicates))
-				}
-				if !state.Entries[i].SourcePortGreaterThan.IsNull() && data.Entries[j].SourcePortGreaterThan.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-gt", predicates))
-				}
-				if !state.Entries[i].SourcePortLesserThan.IsNull() && data.Entries[j].SourcePortLesserThan.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-lt", predicates))
-				}
-				if !state.Entries[i].SourcePortRangeFrom.IsNull() && data.Entries[j].SourcePortRangeFrom.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-range1", predicates))
-				}
-				if !state.Entries[i].SourcePortRangeTo.IsNull() && data.Entries[j].SourcePortRangeTo.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-range2", predicates))
-				}
-				if !state.Entries[i].DestinationPrefix.IsNull() && data.Entries[j].DestinationPrefix.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dest-ipv4-address", predicates))
-				}
-				if !state.Entries[i].DestinationPrefixMask.IsNull() && data.Entries[j].DestinationPrefixMask.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dest-mask", predicates))
-				}
-				if !state.Entries[i].DestinationAny.IsNull() && data.Entries[j].DestinationAny.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-any", predicates))
-				}
-				if !state.Entries[i].DestinationHost.IsNull() && data.Entries[j].DestinationHost.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-host-address", predicates))
-				}
-				if !state.Entries[i].DestinationObjectGroup.IsNull() && data.Entries[j].DestinationObjectGroup.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-object-group", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual.IsNull() && data.Entries[j].DestinationPortEqual.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq", predicates))
-				}
-				if !state.Entries[i].DestinationPortGreaterThan.IsNull() && data.Entries[j].DestinationPortGreaterThan.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-gt", predicates))
-				}
-				if !state.Entries[i].DestinationPortLesserThan.IsNull() && data.Entries[j].DestinationPortLesserThan.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-lt", predicates))
-				}
-				if !state.Entries[i].DestinationPortRangeFrom.IsNull() && data.Entries[j].DestinationPortRangeFrom.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-range1", predicates))
-				}
-				if !state.Entries[i].DestinationPortRangeTo.IsNull() && data.Entries[j].DestinationPortRangeTo.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-range2", predicates))
-				}
-				if !state.Entries[i].Ack.IsNull() && data.Entries[j].Ack.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/ack", predicates))
-				}
-				if !state.Entries[i].Fin.IsNull() && data.Entries[j].Fin.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fin", predicates))
-				}
-				if !state.Entries[i].Psh.IsNull() && data.Entries[j].Psh.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/psh", predicates))
-				}
-				if !state.Entries[i].Rst.IsNull() && data.Entries[j].Rst.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/rst", predicates))
-				}
-				if !state.Entries[i].Syn.IsNull() && data.Entries[j].Syn.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/syn", predicates))
-				}
-				if !state.Entries[i].Urg.IsNull() && data.Entries[j].Urg.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/urg", predicates))
-				}
-				if !state.Entries[i].Established.IsNull() && data.Entries[j].Established.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/established", predicates))
-				}
-				if !state.Entries[i].Dscp.IsNull() && data.Entries[j].Dscp.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dscp", predicates))
-				}
-				if !state.Entries[i].Fragments.IsNull() && data.Entries[j].Fragments.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fragments", predicates))
-				}
-				if !state.Entries[i].Precedence.IsNull() && data.Entries[j].Precedence.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/precedence", predicates))
-				}
-				if !state.Entries[i].Tos.IsNull() && data.Entries[j].Tos.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/tos", predicates))
-				}
-				if !state.Entries[i].Log.IsNull() && data.Entries[j].Log.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log", predicates))
-				}
-				if !state.Entries[i].LogInput.IsNull() && data.Entries[j].LogInput.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log-input", predicates))
-				}
-				if !state.Entries[i].IcmpNamedMsgType.IsNull() && data.Entries[j].IcmpNamedMsgType.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/named-msg-type", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual2.IsNull() && data.Entries[j].DestinationPortEqual2.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port2", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual3.IsNull() && data.Entries[j].DestinationPortEqual3.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port3", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual4.IsNull() && data.Entries[j].DestinationPortEqual4.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port4", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual5.IsNull() && data.Entries[j].DestinationPortEqual5.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port5", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual6.IsNull() && data.Entries[j].DestinationPortEqual6.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port6", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual7.IsNull() && data.Entries[j].DestinationPortEqual7.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port7", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual8.IsNull() && data.Entries[j].DestinationPortEqual8.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port8", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual9.IsNull() && data.Entries[j].DestinationPortEqual9.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port9", predicates))
-				}
-				if !state.Entries[i].DestinationPortEqual10.IsNull() && data.Entries[j].DestinationPortEqual10.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port10", predicates))
+				if !state.Entries[i].IcmpMsgCode.IsNull() && data.Entries[j].IcmpMsgCode.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/msg-code", predicates))
 				}
 				if !state.Entries[i].IcmpMsgType.IsNull() && data.Entries[j].IcmpMsgType.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/msg-type", predicates))
 				}
-				if !state.Entries[i].IcmpMsgCode.IsNull() && data.Entries[j].IcmpMsgCode.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/msg-code", predicates))
+				if !state.Entries[i].DestinationPortEqual10.IsNull() && data.Entries[j].DestinationPortEqual10.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port10", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual9.IsNull() && data.Entries[j].DestinationPortEqual9.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port9", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual8.IsNull() && data.Entries[j].DestinationPortEqual8.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port8", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual7.IsNull() && data.Entries[j].DestinationPortEqual7.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port7", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual6.IsNull() && data.Entries[j].DestinationPortEqual6.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port6", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual5.IsNull() && data.Entries[j].DestinationPortEqual5.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port5", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual4.IsNull() && data.Entries[j].DestinationPortEqual4.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port4", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual3.IsNull() && data.Entries[j].DestinationPortEqual3.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port3", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual2.IsNull() && data.Entries[j].DestinationPortEqual2.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq-port2", predicates))
+				}
+				if !state.Entries[i].IcmpNamedMsgType.IsNull() && data.Entries[j].IcmpNamedMsgType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/named-msg-type", predicates))
+				}
+				if !state.Entries[i].LogInput.IsNull() && data.Entries[j].LogInput.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log-input", predicates))
+				}
+				if !state.Entries[i].Log.IsNull() && data.Entries[j].Log.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/log", predicates))
+				}
+				if !state.Entries[i].Tos.IsNull() && data.Entries[j].Tos.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/tos", predicates))
+				}
+				if !state.Entries[i].Precedence.IsNull() && data.Entries[j].Precedence.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/precedence", predicates))
+				}
+				if !state.Entries[i].Fragments.IsNull() && data.Entries[j].Fragments.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fragments", predicates))
+				}
+				if !state.Entries[i].Dscp.IsNull() && data.Entries[j].Dscp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dscp", predicates))
+				}
+				if !state.Entries[i].Established.IsNull() && data.Entries[j].Established.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/established", predicates))
+				}
+				if !state.Entries[i].Urg.IsNull() && data.Entries[j].Urg.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/urg", predicates))
+				}
+				if !state.Entries[i].Syn.IsNull() && data.Entries[j].Syn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/syn", predicates))
+				}
+				if !state.Entries[i].Rst.IsNull() && data.Entries[j].Rst.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/rst", predicates))
+				}
+				if !state.Entries[i].Psh.IsNull() && data.Entries[j].Psh.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/psh", predicates))
+				}
+				if !state.Entries[i].Fin.IsNull() && data.Entries[j].Fin.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/fin", predicates))
+				}
+				if !state.Entries[i].Ack.IsNull() && data.Entries[j].Ack.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/ack", predicates))
+				}
+				if !state.Entries[i].DestinationPortRangeTo.IsNull() && data.Entries[j].DestinationPortRangeTo.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-range2", predicates))
+				}
+				if !state.Entries[i].DestinationPortRangeFrom.IsNull() && data.Entries[j].DestinationPortRangeFrom.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-range1", predicates))
+				}
+				if !state.Entries[i].DestinationPortLesserThan.IsNull() && data.Entries[j].DestinationPortLesserThan.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-lt", predicates))
+				}
+				if !state.Entries[i].DestinationPortGreaterThan.IsNull() && data.Entries[j].DestinationPortGreaterThan.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-gt", predicates))
+				}
+				if !state.Entries[i].DestinationPortEqual.IsNull() && data.Entries[j].DestinationPortEqual.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-eq", predicates))
+				}
+				if !state.Entries[i].DestinationObjectGroup.IsNull() && data.Entries[j].DestinationObjectGroup.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-object-group", predicates))
+				}
+				if !state.Entries[i].DestinationHost.IsNull() && data.Entries[j].DestinationHost.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-host-address", predicates))
+				}
+				if !state.Entries[i].DestinationAny.IsNull() && data.Entries[j].DestinationAny.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dst-any", predicates))
+				}
+				if !state.Entries[i].DestinationPrefixMask.IsNull() && data.Entries[j].DestinationPrefixMask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dest-mask", predicates))
+				}
+				if !state.Entries[i].DestinationPrefix.IsNull() && data.Entries[j].DestinationPrefix.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/dest-ipv4-address", predicates))
+				}
+				if !state.Entries[i].SourcePortRangeTo.IsNull() && data.Entries[j].SourcePortRangeTo.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-range2", predicates))
+				}
+				if !state.Entries[i].SourcePortRangeFrom.IsNull() && data.Entries[j].SourcePortRangeFrom.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-range1", predicates))
+				}
+				if !state.Entries[i].SourcePortLesserThan.IsNull() && data.Entries[j].SourcePortLesserThan.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-lt", predicates))
+				}
+				if !state.Entries[i].SourcePortGreaterThan.IsNull() && data.Entries[j].SourcePortGreaterThan.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-gt", predicates))
+				}
+				if !state.Entries[i].SourcePortEqual.IsNull() && data.Entries[j].SourcePortEqual.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/src-eq", predicates))
+				}
+				if !state.Entries[i].SourceObjectGroup.IsNull() && data.Entries[j].SourceObjectGroup.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/object-group", predicates))
+				}
+				if !state.Entries[i].SourceHost.IsNull() && data.Entries[j].SourceHost.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/host-address", predicates))
+				}
+				if !state.Entries[i].SourceAny.IsNull() && data.Entries[j].SourceAny.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/any", predicates))
+				}
+				if !state.Entries[i].SourcePrefixMask.IsNull() && data.Entries[j].SourcePrefixMask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/mask", predicates))
+				}
+				if !state.Entries[i].SourcePrefix.IsNull() && data.Entries[j].SourcePrefix.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/ipv4-address", predicates))
+				}
+				if !state.Entries[i].ServiceObjectGroup.IsNull() && data.Entries[j].ServiceObjectGroup.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/object-group-str", predicates))
+				}
+				if !state.Entries[i].AceRuleProtocol.IsNull() && data.Entries[j].AceRuleProtocol.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/protocol", predicates))
+				}
+				if !state.Entries[i].AceRuleAction.IsNull() && data.Entries[j].AceRuleAction.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/ace-rule/action", predicates))
+				}
+				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/remark", predicates))
 				}
 				break
 			}
@@ -2356,6 +2356,7 @@ func (data *AccessListExtended) addDeletedItemsXML(ctx context.Context, state Ac
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -2441,6 +2442,7 @@ func (data *AccessListExtended) addDeletePathsXML(ctx context.Context, body stri
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/access-list-seq-rule%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

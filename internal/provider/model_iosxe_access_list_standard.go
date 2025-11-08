@@ -361,7 +361,7 @@ func (data *AccessListStandard) updateFromBody(ctx context.Context, res gjson.Re
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *AccessListStandard) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
@@ -371,7 +371,7 @@ func (data *AccessListStandard) updateFromBodyXML(ctx context.Context, res xmldo
 		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Sequence.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -599,7 +599,7 @@ func (data *AccessListStandardData) fromBody(ctx context.Context, res gjson.Resu
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *AccessListStandard) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
 		data.Entries = make([]AccessListStandardEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AccessListStandardEntries{}
@@ -658,7 +658,7 @@ func (data *AccessListStandard) fromBodyXML(ctx context.Context, res xmldot.Resu
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *AccessListStandardData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/access-list-seq-rule"); value.Exists() {
 		data.Entries = make([]AccessListStandardEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AccessListStandardEntries{}
@@ -809,38 +809,38 @@ func (data *AccessListStandard) addDeletedItemsXML(ctx context.Context, state Ac
 				found = false
 			}
 			if found {
-				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/remark", predicates))
-				}
-				if !state.Entries[i].DenyPrefix.IsNull() && data.Entries[j].DenyPrefix.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/ipv4-address-prefix", predicates))
-				}
-				if !state.Entries[i].DenyPrefixMask.IsNull() && data.Entries[j].DenyPrefixMask.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/mask", predicates))
-				}
-				if !state.Entries[i].DenyAny.IsNull() && data.Entries[j].DenyAny.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/any", predicates))
-				}
-				if !state.Entries[i].DenyHost.IsNull() && data.Entries[j].DenyHost.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/host-address", predicates))
-				}
-				if !state.Entries[i].DenyLog.IsNull() && data.Entries[j].DenyLog.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/log", predicates))
-				}
-				if !state.Entries[i].PermitPrefix.IsNull() && data.Entries[j].PermitPrefix.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/ipv4-address-prefix", predicates))
-				}
-				if !state.Entries[i].PermitPrefixMask.IsNull() && data.Entries[j].PermitPrefixMask.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/mask", predicates))
-				}
-				if !state.Entries[i].PermitAny.IsNull() && data.Entries[j].PermitAny.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/any", predicates))
+				if !state.Entries[i].PermitLog.IsNull() && data.Entries[j].PermitLog.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/log", predicates))
 				}
 				if !state.Entries[i].PermitHost.IsNull() && data.Entries[j].PermitHost.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/host-address", predicates))
 				}
-				if !state.Entries[i].PermitLog.IsNull() && data.Entries[j].PermitLog.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/log", predicates))
+				if !state.Entries[i].PermitAny.IsNull() && data.Entries[j].PermitAny.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/any", predicates))
+				}
+				if !state.Entries[i].PermitPrefixMask.IsNull() && data.Entries[j].PermitPrefixMask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/mask", predicates))
+				}
+				if !state.Entries[i].PermitPrefix.IsNull() && data.Entries[j].PermitPrefix.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/permit/std-ace/ipv4-address-prefix", predicates))
+				}
+				if !state.Entries[i].DenyLog.IsNull() && data.Entries[j].DenyLog.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/log", predicates))
+				}
+				if !state.Entries[i].DenyHost.IsNull() && data.Entries[j].DenyHost.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/host-address", predicates))
+				}
+				if !state.Entries[i].DenyAny.IsNull() && data.Entries[j].DenyAny.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/any", predicates))
+				}
+				if !state.Entries[i].DenyPrefixMask.IsNull() && data.Entries[j].DenyPrefixMask.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/mask", predicates))
+				}
+				if !state.Entries[i].DenyPrefix.IsNull() && data.Entries[j].DenyPrefix.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/deny/std-ace/ipv4-address-prefix", predicates))
+				}
+				if !state.Entries[i].Remark.IsNull() && data.Entries[j].Remark.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/access-list-seq-rule%v/remark", predicates))
 				}
 				break
 			}
@@ -850,6 +850,7 @@ func (data *AccessListStandard) addDeletedItemsXML(ctx context.Context, state Ac
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -911,6 +912,7 @@ func (data *AccessListStandard) addDeletePathsXML(ctx context.Context, body stri
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/access-list-seq-rule%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

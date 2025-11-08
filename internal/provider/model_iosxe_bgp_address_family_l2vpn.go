@@ -138,7 +138,7 @@ func (data *BGPAddressFamilyL2VPN) updateFromBody(ctx context.Context, res gjson
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *BGPAddressFamilyL2VPN) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/af-name"); value.Exists() && !data.AfName.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/af-name"); value.Exists() && !data.AfName.IsNull() {
 		data.AfName = types.StringValue(value.String())
 	} else {
 		data.AfName = types.StringNull()
@@ -198,6 +198,7 @@ func (data *BGPAddressFamilyL2VPN) getDeletedItems(ctx context.Context, state BG
 func (data *BGPAddressFamilyL2VPN) addDeletedItemsXML(ctx context.Context, state BGPAddressFamilyL2VPN, body string) string {
 	b := netconf.NewBody(body)
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -228,6 +229,7 @@ func (data *BGPAddressFamilyL2VPN) getDeletePaths(ctx context.Context) []string 
 func (data *BGPAddressFamilyL2VPN) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

@@ -107,15 +107,12 @@ func (r *SaveConfigResource) Create(ctx context.Context, req resource.CreateRequ
 				return
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
-			if d.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, &d.NetconfConnMutex, d.ReuseConnection)
-				if err != nil {
-					resp.Diagnostics.AddError("Connection Error", err.Error())
-					return
-				}
-				defer cleanup()
+			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+			locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+			if locked {
+				defer d.NetconfOpMutex.Unlock()
 			}
+			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
 			body := netconf.Body{}
 			body = helpers.SetFromXPath(body, "/cisco-ia:save-config", "")
@@ -172,15 +169,12 @@ func (r *SaveConfigResource) Update(ctx context.Context, req resource.UpdateRequ
 				return
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
-			if d.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, &d.NetconfConnMutex, d.ReuseConnection)
-				if err != nil {
-					resp.Diagnostics.AddError("Connection Error", err.Error())
-					return
-				}
-				defer cleanup()
+			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+			locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+			if locked {
+				defer d.NetconfOpMutex.Unlock()
 			}
+			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
 			body := netconf.Body{}
 			body = helpers.SetFromXPath(body, "/save-config", "")

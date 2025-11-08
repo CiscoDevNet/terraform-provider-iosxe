@@ -468,29 +468,29 @@ func (data *InterfaceOSPF) updateFromBody(ctx context.Context, res gjson.Result)
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/cost"); value.Exists() && !data.Cost.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cost"); value.Exists() && !data.Cost.IsNull() {
 		data.Cost = types.Int64Value(value.Int())
 	} else {
 		data.Cost = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dead-interval"); value.Exists() && !data.DeadInterval.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dead-interval"); value.Exists() && !data.DeadInterval.IsNull() {
 		data.DeadInterval = types.Int64Value(value.Int())
 	} else {
 		data.DeadInterval = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/hello-interval"); value.Exists() && !data.HelloInterval.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hello-interval"); value.Exists() && !data.HelloInterval.IsNull() {
 		data.HelloInterval = types.Int64Value(value.Int())
 	} else {
 		data.HelloInterval = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mtu-ignore"); !data.MtuIgnore.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu-ignore"); !data.MtuIgnore.IsNull() {
 		if value.Exists() {
 			data.MtuIgnore = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.MtuIgnore = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/broadcast"); !data.NetworkTypeBroadcast.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/broadcast"); !data.NetworkTypeBroadcast.IsNull() {
 		if value.Exists() {
 			data.NetworkTypeBroadcast = types.BoolValue(true)
 		} else {
@@ -499,7 +499,7 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.NetworkTypeBroadcast = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/non-broadcast"); !data.NetworkTypeNonBroadcast.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/non-broadcast"); !data.NetworkTypeNonBroadcast.IsNull() {
 		if value.Exists() {
 			data.NetworkTypeNonBroadcast = types.BoolValue(true)
 		} else {
@@ -508,7 +508,7 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.NetworkTypeNonBroadcast = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/point-to-multipoint"); !data.NetworkTypePointToMultipoint.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/point-to-multipoint"); !data.NetworkTypePointToMultipoint.IsNull() {
 		if value.Exists() {
 			data.NetworkTypePointToMultipoint = types.BoolValue(true)
 		} else {
@@ -517,7 +517,7 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.NetworkTypePointToMultipoint = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/point-to-point"); !data.NetworkTypePointToPoint.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/point-to-point"); !data.NetworkTypePointToPoint.IsNull() {
 		if value.Exists() {
 			data.NetworkTypePointToPoint = types.BoolValue(true)
 		} else {
@@ -526,12 +526,12 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.NetworkTypePointToPoint = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() && !data.Priority.IsNull() {
 		data.Priority = types.Int64Value(value.Int())
 	} else {
 		data.Priority = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ttl-security/hops"); value.Exists() && !data.TtlSecurityHops.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ttl-security/hops"); value.Exists() && !data.TtlSecurityHops.IsNull() {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	} else {
 		data.TtlSecurityHops = types.Int64Null()
@@ -541,7 +541,7 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/process-id").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -599,7 +599,7 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/message-digest-key").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/message-digest-key").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -810,47 +810,47 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *InterfaceOSPF) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/cost"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cost"); value.Exists() {
 		data.Cost = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dead-interval"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dead-interval"); value.Exists() {
 		data.DeadInterval = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/hello-interval"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hello-interval"); value.Exists() {
 		data.HelloInterval = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mtu-ignore"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu-ignore"); value.Exists() {
 		data.MtuIgnore = types.BoolValue(value.Bool())
 	} else {
 		data.MtuIgnore = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/broadcast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/broadcast"); value.Exists() {
 		data.NetworkTypeBroadcast = types.BoolValue(true)
 	} else {
 		data.NetworkTypeBroadcast = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/non-broadcast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/non-broadcast"); value.Exists() {
 		data.NetworkTypeNonBroadcast = types.BoolValue(true)
 	} else {
 		data.NetworkTypeNonBroadcast = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/point-to-multipoint"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/point-to-multipoint"); value.Exists() {
 		data.NetworkTypePointToMultipoint = types.BoolValue(true)
 	} else {
 		data.NetworkTypePointToMultipoint = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/point-to-point"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/point-to-point"); value.Exists() {
 		data.NetworkTypePointToPoint = types.BoolValue(true)
 	} else {
 		data.NetworkTypePointToPoint = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/priority"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() {
 		data.Priority = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ttl-security/hops"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ttl-security/hops"); value.Exists() {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/process-id"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id"); value.Exists() {
 		data.ProcessIds = make([]InterfaceOSPFProcessIds, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := InterfaceOSPFProcessIds{}
@@ -872,7 +872,7 @@ func (data *InterfaceOSPF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/message-digest-key"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/message-digest-key"); value.Exists() {
 		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := InterfaceOSPFMessageDigestKeys{}
@@ -896,47 +896,47 @@ func (data *InterfaceOSPF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *InterfaceOSPFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/cost"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cost"); value.Exists() {
 		data.Cost = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dead-interval"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dead-interval"); value.Exists() {
 		data.DeadInterval = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/hello-interval"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/hello-interval"); value.Exists() {
 		data.HelloInterval = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mtu-ignore"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mtu-ignore"); value.Exists() {
 		data.MtuIgnore = types.BoolValue(value.Bool())
 	} else {
 		data.MtuIgnore = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/broadcast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/broadcast"); value.Exists() {
 		data.NetworkTypeBroadcast = types.BoolValue(true)
 	} else {
 		data.NetworkTypeBroadcast = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/non-broadcast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/non-broadcast"); value.Exists() {
 		data.NetworkTypeNonBroadcast = types.BoolValue(true)
 	} else {
 		data.NetworkTypeNonBroadcast = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/point-to-multipoint"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/point-to-multipoint"); value.Exists() {
 		data.NetworkTypePointToMultipoint = types.BoolValue(true)
 	} else {
 		data.NetworkTypePointToMultipoint = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network/point-to-point"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network/point-to-point"); value.Exists() {
 		data.NetworkTypePointToPoint = types.BoolValue(true)
 	} else {
 		data.NetworkTypePointToPoint = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/priority"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/priority"); value.Exists() {
 		data.Priority = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/ttl-security/hops"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ttl-security/hops"); value.Exists() {
 		data.TtlSecurityHops = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/process-id"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/process-id"); value.Exists() {
 		data.ProcessIds = make([]InterfaceOSPFProcessIds, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := InterfaceOSPFProcessIds{}
@@ -958,7 +958,7 @@ func (data *InterfaceOSPFData) fromBodyXML(ctx context.Context, res xmldot.Resul
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/message-digest-key"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/message-digest-key"); value.Exists() {
 		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := InterfaceOSPFMessageDigestKeys{}
@@ -1101,35 +1101,38 @@ func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceO
 
 func (data *InterfaceOSPF) addDeletedItemsXML(ctx context.Context, state InterfaceOSPF, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Cost.IsNull() && data.Cost.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cost")
-	}
-	if !state.DeadInterval.IsNull() && data.DeadInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dead-interval")
-	}
-	if !state.HelloInterval.IsNull() && data.HelloInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/hello-interval")
-	}
-	if !state.MtuIgnore.IsNull() && data.MtuIgnore.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mtu-ignore")
-	}
-	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/broadcast")
-	}
-	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/non-broadcast")
-	}
-	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/point-to-multipoint")
-	}
-	if !state.NetworkTypePointToPoint.IsNull() && data.NetworkTypePointToPoint.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/point-to-point")
-	}
-	if !state.Priority.IsNull() && data.Priority.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
-	}
-	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ttl-security/hops")
+	for i := range state.MessageDigestKeys {
+		stateKeys := [...]string{"id"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.MessageDigestKeys[i].Id.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.MessageDigestKeys[i].Id.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.MessageDigestKeys {
+			found = true
+			if state.MessageDigestKeys[i].Id.ValueInt64() != data.MessageDigestKeys[j].Id.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.MessageDigestKeys[i].Md5AuthKey.IsNull() && data.MessageDigestKeys[j].Md5AuthKey.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/message-digest-key%v/md5/auth-key", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/message-digest-key%v", predicates))
+		}
 	}
 	for i := range state.ProcessIds {
 		stateKeys := [...]string{"id"}
@@ -1191,40 +1194,38 @@ func (data *InterfaceOSPF) addDeletedItemsXML(ctx context.Context, state Interfa
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/process-id%v", predicates))
 		}
 	}
-	for i := range state.MessageDigestKeys {
-		stateKeys := [...]string{"id"}
-		stateKeyValues := [...]string{strconv.FormatInt(state.MessageDigestKeys[i].Id.ValueInt64(), 10)}
-		predicates := ""
-		for i := range stateKeys {
-			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
-		}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.MessageDigestKeys[i].Id.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.MessageDigestKeys {
-			found = true
-			if state.MessageDigestKeys[i].Id.ValueInt64() != data.MessageDigestKeys[j].Id.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.MessageDigestKeys[i].Md5AuthKey.IsNull() && data.MessageDigestKeys[j].Md5AuthKey.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/message-digest-key%v/md5/auth-key", predicates))
-				}
-				break
-			}
-		}
-		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/message-digest-key%v", predicates))
-		}
+	if !state.TtlSecurityHops.IsNull() && data.TtlSecurityHops.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ttl-security/hops")
+	}
+	if !state.Priority.IsNull() && data.Priority.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/priority")
+	}
+	if !state.NetworkTypePointToPoint.IsNull() && data.NetworkTypePointToPoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/point-to-point")
+	}
+	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/point-to-multipoint")
+	}
+	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/non-broadcast")
+	}
+	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network/broadcast")
+	}
+	if !state.MtuIgnore.IsNull() && data.MtuIgnore.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mtu-ignore")
+	}
+	if !state.HelloInterval.IsNull() && data.HelloInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/hello-interval")
+	}
+	if !state.DeadInterval.IsNull() && data.DeadInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dead-interval")
+	}
+	if !state.Cost.IsNull() && data.Cost.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cost")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1307,35 +1308,15 @@ func (data *InterfaceOSPF) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceOSPF) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Cost.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cost")
-	}
-	if !data.DeadInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dead-interval")
-	}
-	if !data.HelloInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/hello-interval")
-	}
-	if !data.MtuIgnore.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mtu-ignore")
-	}
-	if !data.NetworkTypeBroadcast.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network/broadcast")
-	}
-	if !data.NetworkTypeNonBroadcast.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network/non-broadcast")
-	}
-	if !data.NetworkTypePointToMultipoint.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network/point-to-multipoint")
-	}
-	if !data.NetworkTypePointToPoint.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network/point-to-point")
-	}
-	if !data.Priority.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/priority")
-	}
-	if !data.TtlSecurityHops.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ttl-security/hops")
+	for i := range data.MessageDigestKeys {
+		keys := [...]string{"id"}
+		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/message-digest-key%v", predicates))
 	}
 	for i := range data.ProcessIds {
 		keys := [...]string{"id"}
@@ -1347,17 +1328,38 @@ func (data *InterfaceOSPF) addDeletePathsXML(ctx context.Context, body string) s
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/process-id%v", predicates))
 	}
-	for i := range data.MessageDigestKeys {
-		keys := [...]string{"id"}
-		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
-		predicates := ""
-		for i := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
-		}
-
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/message-digest-key%v", predicates))
+	if !data.TtlSecurityHops.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ttl-security/hops")
+	}
+	if !data.Priority.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/priority")
+	}
+	if !data.NetworkTypePointToPoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network/point-to-point")
+	}
+	if !data.NetworkTypePointToMultipoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network/point-to-multipoint")
+	}
+	if !data.NetworkTypeNonBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network/non-broadcast")
+	}
+	if !data.NetworkTypeBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network/broadcast")
+	}
+	if !data.MtuIgnore.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mtu-ignore")
+	}
+	if !data.HelloInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/hello-interval")
+	}
+	if !data.DeadInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dead-interval")
+	}
+	if !data.Cost.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cost")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

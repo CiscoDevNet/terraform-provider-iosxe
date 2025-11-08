@@ -154,12 +154,12 @@ func (data *VLANFilter) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *VLANFilter) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/word"); value.Exists() && !data.Word.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/word"); value.Exists() && !data.Word.IsNull() {
 		data.Word = types.StringValue(value.String())
 	} else {
 		data.Word = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vlan-lists"); value.Exists() && !data.VlanLists.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() && !data.VlanLists.IsNull() {
 		data.VlanLists = helpers.GetInt64ListXML(value.Array())
 	} else {
 		data.VlanLists = types.ListNull(types.Int64Type)
@@ -203,7 +203,7 @@ func (data *VLANFilterData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *VLANFilter) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vlan-lists"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() {
 		data.VlanLists = helpers.GetInt64ListXML(value.Array())
 	} else {
 		data.VlanLists = types.ListNull(types.Int64Type)
@@ -215,7 +215,7 @@ func (data *VLANFilter) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *VLANFilterData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vlan-lists"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() {
 		data.VlanLists = helpers.GetInt64ListXML(value.Array())
 	} else {
 		data.VlanLists = types.ListNull(types.Int64Type)
@@ -281,6 +281,7 @@ func (data *VLANFilter) addDeletedItemsXML(ctx context.Context, state VLANFilter
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -314,9 +315,14 @@ func (data *VLANFilter) getDeletePaths(ctx context.Context) []string {
 func (data *VLANFilter) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.VlanLists.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vlan-lists")
+		var values []int64
+		data.VlanLists.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/vlan-lists[.=%v]", v))
+		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

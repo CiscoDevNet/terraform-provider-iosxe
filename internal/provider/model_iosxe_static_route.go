@@ -403,12 +403,12 @@ func (data *StaticRoute) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *StaticRoute) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prefix"); value.Exists() && !data.Prefix.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prefix"); value.Exists() && !data.Prefix.IsNull() {
 		data.Prefix = types.StringValue(value.String())
 	} else {
 		data.Prefix = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mask"); value.Exists() && !data.Mask.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mask"); value.Exists() && !data.Mask.IsNull() {
 		data.Mask = types.StringValue(value.String())
 	} else {
 		data.Mask = types.StringNull()
@@ -418,7 +418,7 @@ func (data *StaticRoute) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/fwd-list").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -480,7 +480,7 @@ func (data *StaticRoute) updateFromBodyXML(ctx context.Context, res xmldot.Resul
 		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/fwd-list-with-track").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list-with-track").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -678,7 +678,7 @@ func (data *StaticRouteData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *StaticRoute) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/fwd-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list"); value.Exists() {
 		data.NextHops = make([]StaticRouteNextHops, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := StaticRouteNextHops{}
@@ -708,7 +708,7 @@ func (data *StaticRoute) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/fwd-list-with-track"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list-with-track"); value.Exists() {
 		data.NextHopsWithTrack = make([]StaticRouteNextHopsWithTrack, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := StaticRouteNextHopsWithTrack{}
@@ -743,7 +743,7 @@ func (data *StaticRoute) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *StaticRouteData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/fwd-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list"); value.Exists() {
 		data.NextHops = make([]StaticRouteNextHops, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := StaticRouteNextHops{}
@@ -773,7 +773,7 @@ func (data *StaticRouteData) fromBodyXML(ctx context.Context, res xmldot.Result)
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/fwd-list-with-track"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fwd-list-with-track"); value.Exists() {
 		data.NextHopsWithTrack = make([]StaticRouteNextHopsWithTrack, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := StaticRouteNextHopsWithTrack{}
@@ -899,51 +899,6 @@ func (data *StaticRoute) getDeletedItems(ctx context.Context, state StaticRoute)
 
 func (data *StaticRoute) addDeletedItemsXML(ctx context.Context, state StaticRoute, body string) string {
 	b := netconf.NewBody(body)
-	for i := range state.NextHops {
-		stateKeys := [...]string{"fwd"}
-		stateKeyValues := [...]string{state.NextHops[i].NextHop.ValueString()}
-		predicates := ""
-		for i := range stateKeys {
-			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
-		}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.NextHops[i].NextHop.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.NextHops {
-			found = true
-			if state.NextHops[i].NextHop.ValueString() != data.NextHops[j].NextHop.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.NextHops[i].Distance.IsNull() && data.NextHops[j].Distance.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/metric", predicates))
-				}
-				if !state.NextHops[i].Global.IsNull() && data.NextHops[j].Global.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/global", predicates))
-				}
-				if !state.NextHops[i].Name.IsNull() && data.NextHops[j].Name.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/name", predicates))
-				}
-				if !state.NextHops[i].Permanent.IsNull() && data.NextHops[j].Permanent.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/permanent", predicates))
-				}
-				if !state.NextHops[i].Tag.IsNull() && data.NextHops[j].Tag.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/tag", predicates))
-				}
-				break
-			}
-		}
-		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v", predicates))
-		}
-	}
 	for i := range state.NextHopsWithTrack {
 		stateKeys := [...]string{"fwd"}
 		stateKeyValues := [...]string{state.NextHopsWithTrack[i].NextHop.ValueString()}
@@ -967,20 +922,20 @@ func (data *StaticRoute) addDeletedItemsXML(ctx context.Context, state StaticRou
 				found = false
 			}
 			if found {
-				if !state.NextHopsWithTrack[i].Name.IsNull() && data.NextHopsWithTrack[j].Name.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/name", predicates))
-				}
-				if !state.NextHopsWithTrack[i].TrackIdName.IsNull() && data.NextHopsWithTrack[j].TrackIdName.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/track-id-name/id", predicates))
-				}
-				if !state.NextHopsWithTrack[i].Distance.IsNull() && data.NextHopsWithTrack[j].Distance.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/metric", predicates))
+				if !state.NextHopsWithTrack[i].Permanent.IsNull() && data.NextHopsWithTrack[j].Permanent.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/permanent", predicates))
 				}
 				if !state.NextHopsWithTrack[i].Tag.IsNull() && data.NextHopsWithTrack[j].Tag.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/tag", predicates))
 				}
-				if !state.NextHopsWithTrack[i].Permanent.IsNull() && data.NextHopsWithTrack[j].Permanent.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/permanent", predicates))
+				if !state.NextHopsWithTrack[i].Distance.IsNull() && data.NextHopsWithTrack[j].Distance.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/metric", predicates))
+				}
+				if !state.NextHopsWithTrack[i].TrackIdName.IsNull() && data.NextHopsWithTrack[j].TrackIdName.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/track-id-name/id", predicates))
+				}
+				if !state.NextHopsWithTrack[i].Name.IsNull() && data.NextHopsWithTrack[j].Name.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v/name", predicates))
 				}
 				break
 			}
@@ -989,7 +944,53 @@ func (data *StaticRoute) addDeletedItemsXML(ctx context.Context, state StaticRou
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list-with-track%v", predicates))
 		}
 	}
+	for i := range state.NextHops {
+		stateKeys := [...]string{"fwd"}
+		stateKeyValues := [...]string{state.NextHops[i].NextHop.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
 
+		emptyKeys := true
+		if !reflect.ValueOf(state.NextHops[i].NextHop.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.NextHops {
+			found = true
+			if state.NextHops[i].NextHop.ValueString() != data.NextHops[j].NextHop.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.NextHops[i].Tag.IsNull() && data.NextHops[j].Tag.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/tag", predicates))
+				}
+				if !state.NextHops[i].Permanent.IsNull() && data.NextHops[j].Permanent.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/permanent", predicates))
+				}
+				if !state.NextHops[i].Name.IsNull() && data.NextHops[j].Name.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/name", predicates))
+				}
+				if !state.NextHops[i].Global.IsNull() && data.NextHops[j].Global.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/global", predicates))
+				}
+				if !state.NextHops[i].Distance.IsNull() && data.NextHops[j].Distance.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v/metric", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/fwd-list%v", predicates))
+		}
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1046,16 +1047,6 @@ func (data *StaticRoute) getDeletePaths(ctx context.Context) []string {
 
 func (data *StaticRoute) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	for i := range data.NextHops {
-		keys := [...]string{"fwd"}
-		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
-		predicates := ""
-		for i := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
-		}
-
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/fwd-list%v", predicates))
-	}
 	for i := range data.NextHopsWithTrack {
 		keys := [...]string{"fwd"}
 		keyValues := [...]string{data.NextHopsWithTrack[i].NextHop.ValueString()}
@@ -1066,7 +1057,18 @@ func (data *StaticRoute) addDeletePathsXML(ctx context.Context, body string) str
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/fwd-list-with-track%v", predicates))
 	}
+	for i := range data.NextHops {
+		keys := [...]string{"fwd"}
+		keyValues := [...]string{data.NextHops[i].NextHop.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
 
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/fwd-list%v", predicates))
+	}
+
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

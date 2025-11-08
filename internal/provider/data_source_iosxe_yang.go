@@ -129,15 +129,12 @@ func (d *YangDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 			state.Attributes = types.MapValueMust(types.StringType, attributes)
 		}
 	} else {
-		// Manage NETCONF connection lifecycle
-		if device.NetconfClient != nil {
-			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
-			if err != nil {
-				resp.Diagnostics.AddError("Connection Error", err.Error())
-				return
-			}
-			defer cleanup()
+		// Serialize NETCONF operations (all ops when reuse disabled, reads concurrent when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
 		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
 		res, err := device.NetconfClient.GetConfig(ctx, "running", helpers.GetXpathFilter(config.Path.ValueString()))
 		if err != nil {

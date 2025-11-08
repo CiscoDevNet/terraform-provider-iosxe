@@ -188,27 +188,27 @@ func (data *CryptoIKEv2) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CryptoIKEv2) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/nat/keepalive"); value.Exists() && !data.NatKeepalive.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nat/keepalive"); value.Exists() && !data.NatKeepalive.IsNull() {
 		data.NatKeepalive = types.Int64Value(value.Int())
 	} else {
 		data.NatKeepalive = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/dpd"); value.Exists() && !data.Dpd.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/dpd"); value.Exists() && !data.Dpd.IsNull() {
 		data.Dpd = types.Int64Value(value.Int())
 	} else {
 		data.Dpd = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/retry-interval"); value.Exists() && !data.DpdRetryInterval.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/retry-interval"); value.Exists() && !data.DpdRetryInterval.IsNull() {
 		data.DpdRetryInterval = types.Int64Value(value.Int())
 	} else {
 		data.DpdRetryInterval = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/dpd-query"); value.Exists() && !data.DpdQuery.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/dpd-query"); value.Exists() && !data.DpdQuery.IsNull() {
 		data.DpdQuery = types.StringValue(value.String())
 	} else {
 		data.DpdQuery = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/http-url/cert-leaf"); !data.HttpUrlCert.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/http-url/cert-leaf"); !data.HttpUrlCert.IsNull() {
 		if value.Exists() {
 			data.HttpUrlCert = types.BoolValue(value.Bool())
 		}
@@ -278,19 +278,19 @@ func (data *CryptoIKEv2Data) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CryptoIKEv2) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/nat/keepalive"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nat/keepalive"); value.Exists() {
 		data.NatKeepalive = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/dpd"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/dpd"); value.Exists() {
 		data.Dpd = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/retry-interval"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/retry-interval"); value.Exists() {
 		data.DpdRetryInterval = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/dpd-query"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/dpd-query"); value.Exists() {
 		data.DpdQuery = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/http-url/cert-leaf"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/http-url/cert-leaf"); value.Exists() {
 		data.HttpUrlCert = types.BoolValue(value.Bool())
 	} else {
 		data.HttpUrlCert = types.BoolNull()
@@ -302,19 +302,19 @@ func (data *CryptoIKEv2) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CryptoIKEv2Data) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/nat/keepalive"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nat/keepalive"); value.Exists() {
 		data.NatKeepalive = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/dpd"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/dpd"); value.Exists() {
 		data.Dpd = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/retry-interval"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/retry-interval"); value.Exists() {
 		data.DpdRetryInterval = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dpd-container/dpd-query"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dpd-container/dpd-query"); value.Exists() {
 		data.DpdQuery = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/http-url/cert-leaf"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/http-url/cert-leaf"); value.Exists() {
 		data.HttpUrlCert = types.BoolValue(value.Bool())
 	} else {
 		data.HttpUrlCert = types.BoolNull()
@@ -352,22 +352,23 @@ func (data *CryptoIKEv2) getDeletedItems(ctx context.Context, state CryptoIKEv2)
 
 func (data *CryptoIKEv2) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2, body string) string {
 	b := netconf.NewBody(body)
-	if !state.NatKeepalive.IsNull() && data.NatKeepalive.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nat/keepalive")
-	}
-	if !state.Dpd.IsNull() && data.Dpd.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/dpd")
-	}
-	if !state.DpdRetryInterval.IsNull() && data.DpdRetryInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/retry-interval")
+	if !state.HttpUrlCert.IsNull() && data.HttpUrlCert.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/http-url/cert-leaf")
 	}
 	if !state.DpdQuery.IsNull() && data.DpdQuery.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/dpd-query")
 	}
-	if !state.HttpUrlCert.IsNull() && data.HttpUrlCert.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/http-url/cert-leaf")
+	if !state.DpdRetryInterval.IsNull() && data.DpdRetryInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/retry-interval")
+	}
+	if !state.Dpd.IsNull() && data.Dpd.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dpd-container/dpd")
+	}
+	if !state.NatKeepalive.IsNull() && data.NatKeepalive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nat/keepalive")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -412,22 +413,23 @@ func (data *CryptoIKEv2) getDeletePaths(ctx context.Context) []string {
 
 func (data *CryptoIKEv2) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.NatKeepalive.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nat/keepalive")
-	}
-	if !data.Dpd.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/dpd")
-	}
-	if !data.DpdRetryInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/retry-interval")
+	if !data.HttpUrlCert.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/http-url/cert-leaf")
 	}
 	if !data.DpdQuery.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/dpd-query")
 	}
-	if !data.HttpUrlCert.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/http-url/cert-leaf")
+	if !data.DpdRetryInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/retry-interval")
+	}
+	if !data.Dpd.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dpd-container/dpd")
+	}
+	if !data.NatKeepalive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nat/keepalive")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

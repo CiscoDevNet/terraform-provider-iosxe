@@ -37,10 +37,6 @@ func TestAccDataSourceIosxeVRF(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv4", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "address_family_ipv6", "true"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "vpn_id", "22:22"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "route_target_import.0.value", "22:22"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "route_target_import.0.stitching", "false"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "route_target_export.0.value", "22:22"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "route_target_export.0.stitching", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_import.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_import_stitching.0.value", "22:22"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_vrf.test", "ipv4_route_target_export.0.value", "22:22"))
@@ -77,14 +73,6 @@ func testAccDataSourceIosxeVRFConfig() string {
 	config += `	address_family_ipv4 = true` + "\n"
 	config += `	address_family_ipv6 = true` + "\n"
 	config += `	vpn_id = "22:22"` + "\n"
-	config += `	route_target_import = [{` + "\n"
-	config += `		value = "22:22"` + "\n"
-	config += `		stitching = false` + "\n"
-	config += `	}]` + "\n"
-	config += `	route_target_export = [{` + "\n"
-	config += `		value = "22:22"` + "\n"
-	config += `		stitching = false` + "\n"
-	config += `	}]` + "\n"
 	config += `	ipv4_route_target_import = [{` + "\n"
 	config += `		value = "22:22"` + "\n"
 	config += `	}]` + "\n"

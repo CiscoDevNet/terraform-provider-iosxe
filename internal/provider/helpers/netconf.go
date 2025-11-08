@@ -39,59 +39,102 @@ var (
 // Namespace base URL for Cisco YANG models
 const namespaceBaseURL = "http://cisco.com/ns/yang/"
 
-// ManageNetconfConnection manages NETCONF connection lifecycle based on reuse policy.
+// namespaceExceptions maps namespace prefixes to their full namespace URLs
+// for modules that don't follow the standard pattern
+var namespaceExceptions = map[string]string{
+	"Cisco-IOS-XE-template": "http://cisco.com/ns/yang/ios-xe/template",
+}
+
+// AcquireNetconfLock acquires the appropriate lock for a NETCONF operation.
 //
-// The connMutex parameter serializes connection state changes (Reopen/Close) to prevent
-// race conditions when multiple goroutines access the same NETCONF session concurrently.
+// Lock strategy based on reuseConnection and operation type:
+// - When reuseConnection=false: Lock for ALL operations (serializes everything including Close)
+// - When reuseConnection=true && isWrite=true: Lock for WRITE operations (Lock/EditConfig/Commit sequence)
+// - When reuseConnection=true && isWrite=false: NO lock for READ operations (concurrent reads allowed)
 //
-// When reuseConnection is true (default):
-//   - Reopens connection if closed (with mutex protection)
-//   - Returns no-op defer function (keeps connection open for subsequent operations)
+// This prevents issues:
+// - When reuse disabled: Prevents concurrent Close() attempts on same connection
+// - When reuse enabled: Serializes write sequences but allows concurrent reads
 //
-// When reuseConnection is false:
-//   - Reopens connection if closed (with mutex protection)
-//   - Returns defer function to close connection after operation (with mutex protection)
+// Returns true if lock was acquired, false if not acquired.
 //
 // Usage:
 //
-//	cleanup, err := helpers.ManageNetconfConnection(ctx, client, &device.NetconfConnMutex, reuseConnection)
-//	if err != nil {
-//	    return err
+//	locked := helpers.AcquireNetconfLock(opMutex, reuseConnection, isWrite)
+//	if locked {
+//	    defer opMutex.Unlock()
 //	}
-//	defer cleanup()
-func ManageNetconfConnection(
-	ctx context.Context,
-	client *netconf.Client,
-	connMutex *sync.Mutex,
-	reuseConnection bool,
-) (cleanup func(), err error) {
-	// Serialize connection state changes (Reopen/Close)
-	connMutex.Lock()
-
-	// Reopen connection if closed (required regardless of reuse policy)
-	if client.IsClosed() {
-		if err := client.Reopen(); err != nil {
-			connMutex.Unlock()
-			return nil, fmt.Errorf("failed to reopen NETCONF connection: %w", err)
-		}
+//	defer helpers.CloseNetconfConnection(ctx, client, reuseConnection)
+func AcquireNetconfLock(opMutex *sync.Mutex, reuseConnection bool, isWrite bool) bool {
+	// Serialize all operations when reuse disabled (prevent concurrent Close)
+	if !reuseConnection {
+		opMutex.Lock()
+		return true
 	}
 
-	connMutex.Unlock()
+	// When reuse enabled, only serialize write operations
+	// Read operations can run concurrently
+	if isWrite {
+		opMutex.Lock()
+		return true
+	}
 
-	// Return appropriate cleanup function based on reuse policy
+	return false
+}
+
+// CloseNetconfConnection safely closes a NETCONF connection if reuse is disabled.
+//
+// IMPORTANT: This must be called with the operation mutex still held (deferred after AcquireNetconfLock)
+// to prevent concurrent close attempts.
+//
+// Usage:
+//
+//	defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
+func CloseNetconfConnection(ctx context.Context, client *netconf.Client, reuseConnection bool) {
 	if reuseConnection {
-		// Keep connection open - return no-op cleanup
-		return func() {}, nil
+		return // Keep connection open for reuse
 	}
 
-	// Close connection after operation (legacy behavior) with mutex protection
-	return func() {
-		connMutex.Lock()
-		defer connMutex.Unlock()
-		if err := client.Close(); err != nil {
-			tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+	// Close the connection (mutex already held by caller)
+	if err := client.Close(); err != nil {
+		// Log error but don't fail - connection cleanup is best-effort
+		tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
+	}
+}
+
+// FormatNetconfError extracts detailed error information from a NETCONF error
+func FormatNetconfError(err error) string {
+	if netconfErr, ok := err.(*netconf.NetconfError); ok {
+		var details strings.Builder
+		details.WriteString(netconfErr.Message)
+
+		// Add detailed error information from each ErrorModel
+		for i, e := range netconfErr.Errors {
+			if i == 0 {
+				details.WriteString("\n\nError Details:")
+			}
+			details.WriteString(fmt.Sprintf("\n  [%d] ", i+1))
+
+			if e.ErrorMessage != "" {
+				details.WriteString(e.ErrorMessage)
+			}
+
+			if e.ErrorPath != "" {
+				details.WriteString(fmt.Sprintf(" (path: %s)", e.ErrorPath))
+			}
+
+			if e.ErrorType != "" || e.ErrorTag != "" {
+				details.WriteString(fmt.Sprintf(" [type=%s, tag=%s]", e.ErrorType, e.ErrorTag))
+			}
+
+			if e.ErrorInfo != "" {
+				details.WriteString(fmt.Sprintf("\n      Info: %s", e.ErrorInfo))
+			}
 		}
-	}, nil
+
+		return details.String()
+	}
+	return err.Error()
 }
 
 // EditConfig edits the configuration on the device
@@ -109,40 +152,45 @@ func ManageNetconfConnection(
 //   - body: string
 //   - commit: bool
 func EditConfig(ctx context.Context, client *netconf.Client, body string, commit bool) error {
+	// Ensure connection is open before checking capabilities
+	// With lazy connections, Open() is idempotent and safe to call multiple times
+	if err := client.Open(); err != nil {
+		return fmt.Errorf("failed to open NETCONF connection: %w", err)
+	}
 
 	candidate := client.ServerHasCapability("urn:ietf:params:netconf:capability:candidate:1.0")
 
 	if candidate {
 		// Lock running datastore
 		if _, err := client.Lock(ctx, "running"); err != nil {
-			return fmt.Errorf("failed to lock running datastore: %w", err)
+			return fmt.Errorf("failed to lock running datastore: %s", FormatNetconfError(err))
 		}
 		defer client.Unlock(ctx, "running")
 
 		// Lock candidate datastore
 		if _, err := client.Lock(ctx, "candidate"); err != nil {
-			return fmt.Errorf("failed to lock candidate datastore: %w", err)
+			return fmt.Errorf("failed to lock candidate datastore: %s", FormatNetconfError(err))
 		}
 		defer client.Unlock(ctx, "candidate")
 
 		if _, err := client.EditConfig(ctx, "candidate", body); err != nil {
-			return fmt.Errorf("failed to edit config: %w", err)
+			return fmt.Errorf("failed to edit config: %s", FormatNetconfError(err))
 		}
 
 		if commit {
 			if _, err := client.Commit(ctx); err != nil {
-				return fmt.Errorf("failed to commit config: %w", err)
+				return fmt.Errorf("failed to commit config: %s", FormatNetconfError(err))
 			}
 		}
 	} else {
 		// Lock running datastore
 		if _, err := client.Lock(ctx, "running"); err != nil {
-			return fmt.Errorf("failed to lock running datastore: %w", err)
+			return fmt.Errorf("failed to lock running datastore: %s", FormatNetconfError(err))
 		}
 		defer client.Unlock(ctx, "running")
 
 		if _, err := client.EditConfig(ctx, "running", body); err != nil {
-			return fmt.Errorf("failed to edit config: %w", err)
+			return fmt.Errorf("failed to edit config: %s", FormatNetconfError(err))
 		}
 	}
 	return nil
@@ -210,57 +258,6 @@ func GetXpathFilter(xPath string) netconf.Filter {
 	return netconf.XPathFilter(cleanedPath)
 }
 
-// ConvertRestconfPathToXPath converts a RESTCONF-style path to XPath-style with predicates.
-// Key names are always converted to %v placeholders for generic path handling.
-//
-// RESTCONF uses: element=value
-// XPath uses: element[%v=value]
-//
-// Examples:
-//   - "interface/%s=%v" → "interface/%s[%v=%v]"
-//   - "interface/GigabitEthernet=1" → "interface/GigabitEthernet[%v=1]"
-//   - "vrf=VRF1,af=ipv4" → "vrf[%v=VRF1][%v=ipv4]"
-//   - "native/vrf=VRF1/address-family=ipv4" → "native/vrf[%v=VRF1]/address-family[%v=ipv4]"
-func ConvertRestconfPathToXPath(path string) string {
-	// Replace =placeholder patterns with [%v=placeholder]
-	// This handles: %s=%v, %d=%v, %v=%v, etc.
-	re := regexp.MustCompile(`=(%[sdv])`)
-	path = re.ReplaceAllString(path, "[%v=$1]")
-
-	// Handle concrete paths with actual key values
-	// Split path into segments
-	segments := strings.Split(path, "/")
-	result := make([]string, 0, len(segments))
-
-	for _, segment := range segments {
-		if !strings.Contains(segment, "=") || strings.Contains(segment, "[") {
-			// No key in this segment, or already processed, keep as-is
-			result = append(result, segment)
-			continue
-		}
-
-		// Extract element name and key values
-		parts := strings.SplitN(segment, "=", 2)
-		if len(parts) != 2 {
-			result = append(result, segment)
-			continue
-		}
-
-		elementName := parts[0]
-		keyValues := strings.Split(parts[1], ",")
-
-		// Build XPath predicates with %v placeholders for key names
-		predicates := ""
-		for _, keyValue := range keyValues {
-			predicates += fmt.Sprintf("[%%v=%s]", keyValue)
-		}
-
-		result = append(result, elementName+predicates)
-	}
-
-	return strings.Join(result, "/")
-}
-
 // KeyValue represents a key-value pair with preserved order
 type KeyValue struct {
 	Key   string
@@ -320,7 +317,13 @@ func augmentNamespaces(body netconf.Body, path string) netconf.Body {
 		if idx := strings.Index(segment, ":"); idx != -1 {
 			prefix := segment[:idx]
 			currentPath := strings.Join(pathWithoutPrefix, ".")
-			namespace := namespaceBaseURL + prefix
+
+			// Check for namespace exceptions first
+			namespace, ok := namespaceExceptions[prefix]
+			if !ok {
+				// Use default pattern if no exception exists
+				namespace = namespaceBaseURL + prefix
+			}
 
 			xmlnsPath := currentPath + ".@xmlns"
 			if !xmldot.Get(body.Res(), xmlnsPath).Exists() {
@@ -468,7 +471,7 @@ func parseXPathSegment(segment string) (string, []KeyValue) {
 // Example: /native/interface[name='Gi1']/ip/address
 // Creates: <native><interface><name>Gi1</name><ip><address operation="remove"/></ip></interface></native>
 func RemoveFromXPath(body netconf.Body, xPath string) netconf.Body {
-	// We don't need empty structure since operation="remove" will create the element
+	// Build the structure and set operation="remove" on the last element
 	body, pathSegments := buildXPathStructure(body, xPath, false)
 
 	// Set operation="remove" on the last element
@@ -476,6 +479,252 @@ func RemoveFromXPath(body netconf.Body, xPath string) netconf.Body {
 		targetPath := strings.Join(pathSegments, ".")
 		operationPath := targetPath + ".@operation"
 		body = setWithNamespaces(body, operationPath, "remove")
+	}
+
+	// Clean up any redundant child operations
+	body = CleanupRedundantRemoveOperations(body)
+
+	return body
+}
+
+// CleanupRedundantRemoveOperations removes redundant operation="remove" attributes from child elements
+// when a parent element already has operation="remove". This is called after the full NETCONF payload
+// has been built to sanitize the XML before sending to the device.
+//
+// Example:
+//
+//	Input:  <trap operation="remove"><severity operation="remove"></severity></trap>
+//	Output: <trap operation="remove"></trap>
+//
+// This prevents NETCONF errors like '"" is not a valid value' for empty child elements.
+func CleanupRedundantRemoveOperations(body netconf.Body) netconf.Body {
+	if body.Res() == "" {
+		return body
+	}
+
+	// Start recursive cleanup from root level
+	body = cleanupRedundantRemoveRecursive(body, "", make(map[string]bool))
+
+	return body
+}
+
+// cleanupRedundantRemoveRecursive walks through the XML tree and removes redundant child operations.
+// It processes the tree level by level, tracking which elements have operation="remove" to avoid
+// checking the same elements multiple times.
+func cleanupRedundantRemoveRecursive(body netconf.Body, basePath string, visited map[string]bool) netconf.Body {
+	xml := body.Res()
+	if xml == "" {
+		return body
+	}
+
+	// Skip if we've already processed this path
+	if visited[basePath] {
+		return body
+	}
+	visited[basePath] = true
+
+	// Get content at current path
+	var currentResult xmldot.Result
+	if basePath == "" {
+		currentResult = xmldot.Get(xml, "")
+	} else {
+		currentResult = xmldot.Get(xml, basePath)
+		if !currentResult.Exists() {
+			return body
+		}
+	}
+
+	// Find immediate child elements at this level by parsing Raw content
+	// We need to find child element names, not search for operation="remove" yet
+	rawXML := xml
+	if basePath != "" {
+		rawXML = currentResult.Raw
+	}
+
+	// Extract child element names from the raw XML
+	childPattern := regexp.MustCompile(`<([a-zA-Z0-9\-_]+)[\s>]`)
+	matches := childPattern.FindAllStringSubmatch(rawXML, -1)
+
+	seen := make(map[string]bool)
+	for _, match := range matches {
+		if len(match) > 1 {
+			elementName := match[1]
+			if seen[elementName] {
+				continue
+			}
+			seen[elementName] = true
+
+			// Build path to this child element
+			var childPath string
+			if basePath == "" {
+				childPath = elementName
+			} else {
+				childPath = basePath + "." + elementName
+			}
+
+			// Check if this child has operation="remove"
+			operationPath := childPath + ".@operation"
+			hasRemove := xmldot.Get(body.Res(), operationPath).String() == "remove"
+
+			if hasRemove {
+				// This element has operation="remove", clean up its children
+				body = removeAllChildOperations(body, childPath)
+			}
+
+			// Recursively process this child's descendants
+			body = cleanupRedundantRemoveRecursive(body, childPath, visited)
+		}
+	}
+
+	return body
+}
+
+// removeAllChildOperations removes all child elements that have operation="remove" from under the given parent path.
+// When a parent has operation="remove", all its children will be removed by the device anyway, so we delete
+// child elements entirely to avoid redundant operations and prevent empty element errors.
+// However, we preserve key elements (list identifiers) as they may be needed for identification.
+func removeAllChildOperations(body netconf.Body, parentPath string) netconf.Body {
+	xml := body.Res()
+
+	parentResult := xmldot.Get(xml, parentPath)
+	if !parentResult.Exists() {
+		return body
+	}
+
+	rawXML := parentResult.Raw
+	if rawXML == "" {
+		return body
+	}
+
+	// Find all immediate child elements at this level
+	childPattern := regexp.MustCompile(`<([a-zA-Z0-9\-_]+)[\s>]`)
+	matches := childPattern.FindAllStringSubmatch(rawXML, -1)
+
+	seen := make(map[string]bool)
+	for _, match := range matches {
+		if len(match) > 1 {
+			childName := match[1]
+			if seen[childName] {
+				continue
+			}
+			seen[childName] = true
+
+			childPath := parentPath + "." + childName
+
+			// Check if this child exists and what it contains
+			childResult := xmldot.Get(body.Res(), childPath)
+			if !childResult.Exists() {
+				continue
+			}
+
+			// Check if this child has operation="remove"
+			operationPath := childPath + ".@operation"
+			hasRemove := xmldot.Get(body.Res(), operationPath).String() == "remove"
+
+			if hasRemove {
+				// This child has operation="remove" under a parent that also has operation="remove"
+				// Check if it contains keys - if so, keep it but remove the operation attribute
+				// If it doesn't contain keys (empty or only has other operations), delete it entirely
+				childContent := childResult.Raw
+
+				if shouldDeleteEntireElement(childContent) || !containsKeys(childContent) {
+					// No keys found, safe to delete entirely
+					body = body.Delete(childPath)
+				} else {
+					// Has keys, just remove the operation attribute but keep the element
+					body = body.Delete(operationPath)
+
+					// Now recursively clean this element's children
+					// Since the parent (host) has operation="remove", ALL descendants are redundant
+					body = removeAllDescendantOperations(body, childPath)
+				}
+			} else {
+				// Child doesn't have operation="remove", but we still need to check its descendants
+				// because they might have redundant operation="remove" attributes
+				body = removeAllDescendantOperations(body, childPath)
+			}
+		}
+	}
+
+	return body
+}
+
+// shouldDeleteEntireElement determines if an element should be deleted entirely or just have
+// its operation attribute removed. Elements with only keys and operation="remove" should be
+// deleted entirely to avoid empty elements like <severity operation="remove"></severity>.
+func shouldDeleteEntireElement(content string) bool {
+	if content == "" || strings.TrimSpace(content) == "" {
+		return true
+	}
+
+	// Check if content only contains simple key elements (elements with text content only)
+	// Pattern: <elementName>text</elementName>
+	keyPattern := regexp.MustCompile(`^\s*(?:<[a-zA-Z0-9\-_]+>[^<]+</[a-zA-Z0-9\-_]+>\s*)+$`)
+	return keyPattern.MatchString(content)
+}
+
+// containsKeys checks if the content contains key elements (simple elements with text content).
+// Returns true if there are any key-like elements: <elementName>value</elementName>
+func containsKeys(content string) bool {
+	if content == "" || strings.TrimSpace(content) == "" {
+		return false
+	}
+
+	// Pattern matches key elements: <elementName>text</elementName>
+	keyPattern := regexp.MustCompile(`<[a-zA-Z0-9\-_]+>[^<]+</[a-zA-Z0-9\-_]+>`)
+	return keyPattern.MatchString(content)
+}
+
+// removeAllDescendantOperations removes all operation="remove" attributes and elements from
+// descendants of the given path. This is used when a parent has operation="remove" and we've
+// decided to keep a child (because it has keys), but need to clean up all of that child's descendants.
+func removeAllDescendantOperations(body netconf.Body, parentPath string) netconf.Body {
+	xml := body.Res()
+
+	parentResult := xmldot.Get(xml, parentPath)
+	if !parentResult.Exists() {
+		return body
+	}
+
+	rawXML := parentResult.Raw
+	if rawXML == "" {
+		return body
+	}
+
+	// Find all child elements at this level
+	childPattern := regexp.MustCompile(`<([a-zA-Z0-9\-_]+)[\s>]`)
+	matches := childPattern.FindAllStringSubmatch(rawXML, -1)
+
+	seen := make(map[string]bool)
+	for _, match := range matches {
+		if len(match) > 1 {
+			elementName := match[1]
+			if seen[elementName] {
+				continue
+			}
+			seen[elementName] = true
+
+			childPath := parentPath + "." + elementName
+
+			// Check if this child exists
+			childResult := xmldot.Get(body.Res(), childPath)
+			if !childResult.Exists() {
+				continue
+			}
+
+			// Check if this child has operation="remove"
+			operationPath := childPath + ".@operation"
+			hasRemove := xmldot.Get(body.Res(), operationPath).String() == "remove"
+
+			if hasRemove {
+				// This descendant has operation="remove", delete it entirely
+				// (we don't need to preserve it since the ancestor will be removed)
+				body = body.Delete(childPath)
+			} else {
+				// No operation attribute, but recurse to check its children
+				body = removeAllDescendantOperations(body, childPath)
+			}
+		}
 	}
 
 	return body
@@ -608,14 +857,15 @@ func SetRawFromXPath(body netconf.Body, xPath string, value string) netconf.Body
 		return body
 	}
 
-	// Extract the final element name to wrap the content
+	// Extract the final element name
 	finalSegment := segments[len(segments)-1]
 	finalElement, keys := parseXPathSegment(finalSegment)
 	finalElementClean := removeNamespacePrefix(finalElement)
-	wrappedContent := "<" + finalElementClean + ">" + value + "</" + finalElementClean + ">"
 
 	// Build parent structure (everything except the final element)
 	if len(segments) > 1 {
+		// Multi-segment path: wrap the content with the final element tag
+		wrappedContent := "<" + finalElementClean + ">" + value + "</" + finalElementClean + ">"
 		parentXPath := "/" + strings.Join(segments[:len(segments)-1], "/")
 		// Build structure but don't create empty elements (may already have content)
 		body, _ = buildXPathStructure(body, parentXPath, false)
@@ -641,24 +891,29 @@ func SetRawFromXPath(body netconf.Body, xPath string, value string) netconf.Body
 			body = body.SetRaw(parentPath, wrappedContent)
 		}
 	} else {
-		// No parent path - the element is at root level
-		// Build any keys if present
+		// Single-segment path - SetRaw will wrap the content for us
+		// Just prepare the inner content (with keys if present)
+		innerContent := value
 		if len(keys) > 0 {
 			tempBody := netconf.Body{}
 			for _, kv := range keys {
 				tempBody = setWithNamespaces(tempBody, kv.Key, kv.Value)
 			}
-			wrappedContent = "<" + finalElementClean + ">" + tempBody.Res() + value + "</" + finalElementClean + ">"
+			innerContent = tempBody.Res() + value
 		}
 
-		// Check if root already has content
-		existingXML := body.Res()
+		// Use the element name as the dotPath for SetRaw
+		// SetRaw will create <finalElementClean>innerContent</finalElementClean>
+		// Check if this element already exists at the root
+		existingXML := xmldot.Get(body.Res(), finalElementClean).Raw
 		if existingXML != "" {
-			// Append as sibling
-			body = body.SetRaw("", existingXML+wrappedContent)
+			// Append as sibling - need to wrap each occurrence
+			wrappedNew := "<" + finalElementClean + ">" + innerContent + "</" + finalElementClean + ">"
+			combinedXML := existingXML + wrappedNew
+			body = body.SetRaw(finalElementClean, combinedXML)
 		} else {
-			// First element
-			body = body.SetRaw("", wrappedContent)
+			// First element at this path - SetRaw will wrap it
+			body = body.SetRaw(finalElementClean, innerContent)
 		}
 	}
 
@@ -672,8 +927,8 @@ func SetRawFromXPath(body netconf.Body, xPath string, value string) netconf.Body
 	return body
 }
 
-// GetFromXPath converts an XPath expression to a xmldot path with filters and retrieves the result.
-// Uses xmldot's native filter syntax #() for single predicates, manual filtering for multiple.
+// GetFromXPath converts an XPath expression to a xmldot path and retrieves the result.
+// Uses manual filtering to correctly handle both single and multiple elements with predicates.
 // Supports the same XPath formats as SetFromXPath:
 //   - Single: /interface[name='GigabitEthernet1']
 //   - Multiple predicates: /interface[name='GigabitEthernet1'][vrf='VRF1']
@@ -682,7 +937,7 @@ func SetRawFromXPath(body netconf.Body, xPath string, value string) netconf.Body
 //   - Nested paths: /native/interface[name='Gi1']/ip/address
 //
 // Example: /native/interface[name='Gi1']/ip/address
-// Converts to: native.interface.#(name==Gi1).ip.address
+// Processes path segments, validates predicates, and constructs the final xmldot path
 func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 	// Remove leading slash if present
 	xPath = strings.TrimPrefix(xPath, "/")
@@ -690,52 +945,9 @@ func GetFromXPath(res xmldot.Result, xPath string) xmldot.Result {
 	// Split into segments while respecting bracket boundaries
 	segments := splitXPathSegments(xPath)
 
-	// Check if we need manual filtering:
-	// 1. Any segment has multiple predicates
-	// 2. Multiple segments have predicates (nested filters not supported by xmldot)
-	needsManualFiltering := false
-	segmentsWithKeys := 0
-	for _, segment := range segments {
-		_, keys := parseXPathSegment(segment)
-		if len(keys) > 1 {
-			needsManualFiltering = true
-			break
-		}
-		if len(keys) > 0 {
-			segmentsWithKeys++
-		}
-	}
-	if segmentsWithKeys > 1 {
-		needsManualFiltering = true
-	}
-
-	// If only single predicates, use xmldot's native filter syntax (fast path)
-	if !needsManualFiltering {
-		pathParts := make([]string, 0, len(segments))
-		for _, segment := range segments {
-			elementName, keys := parseXPathSegment(segment)
-
-			// Remove namespace prefix from element name only
-			elementName = removeNamespacePrefix(elementName)
-
-			if len(keys) == 1 {
-				// Single predicate - use xmldot's native filter syntax
-				// Also remove namespace prefix from key name
-				kv := keys[0]
-				keyName := removeNamespacePrefix(kv.Key)
-				pathParts = append(pathParts, elementName+".#("+keyName+"=="+kv.Value+")")
-			} else {
-				// No predicates
-				pathParts = append(pathParts, elementName)
-			}
-		}
-
-		dotPath := strings.Join(pathParts, ".")
-		return res.Get(dotPath)
-	}
-
-	// Slow path: manual filtering for multiple predicates
-	// Since we need to work with absolute paths for counting, get the XML from res.Raw
+	// Use manual filtering to handle both single and multiple elements with predicates.
+	// xmldot's #() filter syntax doesn't work reliably with single elements, so we
+	// always use the manual path which correctly handles both cases.
 	xml := res.Raw
 	pathSoFar := make([]string, 0, len(segments))
 

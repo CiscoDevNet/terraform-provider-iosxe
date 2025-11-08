@@ -44,6 +44,7 @@ attributes:
         example: 3.3.3.0
         id: true
       - yang_name: wildcard
+        id: true
         example: 0.0.0.255
       - yang_name: area
         example: 0
@@ -60,6 +61,7 @@ attributes:
         example: 3.3.3.0
         id: true
       - yang_name: mask
+        id: true
         example: 255.255.255.0
   - yang_name: area
     tf_name: areas
@@ -99,150 +101,175 @@ attributes:
     example: Loopback0
     exclude_test: true
   - yang_name: passive-interface-config/disable-interface/GigabitEthernet
+    xpath: passive-interface-config/disable-interface/GigabitEthernet
     tf_name: passive_interface_disable_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwoGigabitEthernet
+    xpath: passive-interface-config/disable-interface/TwoGigabitEthernet
     tf_name: passive_interface_disable_two_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/FiveGigabitEthernet
+    xpath: passive-interface-config/disable-interface/FiveGigabitEthernet
     tf_name: passive_interface_disable_five_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/TenGigabitEthernet
+    xpath: passive-interface-config/disable-interface/TenGigabitEthernet
     tf_name: passive_interface_disable_ten_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwentyFiveGigabitE
+    xpath: passive-interface-config/disable-interface/TwentyFiveGigabitE
     tf_name: passive_interface_disable_twenty_five_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/FortyGigabitEthernet
+    xpath: passive-interface-config/disable-interface/FortyGigabitEthernet
     tf_name: passive_interface_disable_forty_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/HundredGigabitE
+    xpath: passive-interface-config/disable-interface/HundredGigabitE
     tf_name: passive_interface_disable_hundred_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/TwoHundredGigabitE
+    xpath: passive-interface-config/disable-interface/TwoHundredGigabitE
     tf_name: passive_interface_disable_two_hundred_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/FourHundredGigabitE
+    xpath: passive-interface-config/disable-interface/FourHundredGigabitE
     tf_name: passive_interface_disable_four_hundred_gigabit_ethernets
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Loopback
+    xpath: passive-interface-config/disable-interface/Loopback
     tf_name: passive_interface_disable_loopbacks
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Vlan
+    xpath: passive-interface-config/disable-interface/Vlan
     tf_name: passive_interface_disable_vlans
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Tunnel
+    xpath: passive-interface-config/disable-interface/Tunnel
     tf_name: passive_interface_disable_tunnels
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Port-channel
+    xpath: passive-interface-config/disable-interface/Port-channel
     tf_name: passive_interface_disable_port_channels
     type: Set
     no_augment_config: true
@@ -255,12 +282,14 @@ attributes:
         no_augment_config: true
         example: 1
   - yang_name: passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel
+    xpath: passive-interface-config/disable-interface/Port-channel-subinterface/Port-channel
     tf_name: passive_interface_disable_port_channel_subinterfaces
     type: Set
     no_augment_config: true
     exclude_test: true
     attributes:
       - yang_name: name
+        xpath: name
         tf_name: name
         id: true
         type: String

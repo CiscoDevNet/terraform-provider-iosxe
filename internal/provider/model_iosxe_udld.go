@@ -193,7 +193,7 @@ func (data *UDLD) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *UDLD) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); !data.Aggressive.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); !data.Aggressive.IsNull() {
 		if value.Exists() {
 			data.Aggressive = types.BoolValue(true)
 		} else {
@@ -202,7 +202,7 @@ func (data *UDLD) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Aggressive = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); !data.Enable.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); !data.Enable.IsNull() {
 		if value.Exists() {
 			data.Enable = types.BoolValue(true)
 		} else {
@@ -211,12 +211,12 @@ func (data *UDLD) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Enable = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() && !data.MessageTime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() && !data.MessageTime.IsNull() {
 		data.MessageTime = types.Int64Value(value.Int())
 	} else {
 		data.MessageTime = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() && !data.RecoveryInterval.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() && !data.RecoveryInterval.IsNull() {
 		data.RecoveryInterval = types.Int64Value(value.Int())
 	} else {
 		data.RecoveryInterval = types.Int64Null()
@@ -282,20 +282,20 @@ func (data *UDLDData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *UDLD) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); value.Exists() {
 		data.Aggressive = types.BoolValue(true)
 	} else {
 		data.Aggressive = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); value.Exists() {
 		data.Enable = types.BoolValue(true)
 	} else {
 		data.Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() {
 		data.MessageTime = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() {
 		data.RecoveryInterval = types.Int64Value(value.Int())
 	}
 }
@@ -305,20 +305,20 @@ func (data *UDLD) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *UDLDData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:aggressive"); value.Exists() {
 		data.Aggressive = types.BoolValue(true)
 	} else {
 		data.Aggressive = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:enable"); value.Exists() {
 		data.Enable = types.BoolValue(true)
 	} else {
 		data.Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:message/time"); value.Exists() {
 		data.MessageTime = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval"); value.Exists() {
 		data.RecoveryInterval = types.Int64Value(value.Int())
 	}
 }
@@ -351,19 +351,20 @@ func (data *UDLD) getDeletedItems(ctx context.Context, state UDLD) []string {
 
 func (data *UDLD) addDeletedItemsXML(ctx context.Context, state UDLD, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Aggressive.IsNull() && data.Aggressive.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
-	}
-	if !state.Enable.IsNull() && data.Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:enable")
+	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval")
 	}
 	if !state.MessageTime.IsNull() && data.MessageTime.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:message/time")
 	}
-	if !state.RecoveryInterval.IsNull() && data.RecoveryInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval")
+	if !state.Enable.IsNull() && data.Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:enable")
+	}
+	if !state.Aggressive.IsNull() && data.Aggressive.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -411,19 +412,20 @@ func (data *UDLD) getDeletePaths(ctx context.Context) []string {
 
 func (data *UDLD) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Aggressive.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
-	}
-	if !data.Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:enable")
+	if !data.RecoveryInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval")
 	}
 	if !data.MessageTime.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:message/time")
 	}
-	if !data.RecoveryInterval.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:recovery/interval")
+	if !data.Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:enable")
+	}
+	if !data.Aggressive.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-udld:aggressive")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

@@ -173,17 +173,17 @@ func (data *CommunityListStandard) updateFromBody(ctx context.Context, res gjson
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CommunityListStandard) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/deny/deny-list"); value.Exists() && !data.DenyEntries.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/deny/deny-list"); value.Exists() && !data.DenyEntries.IsNull() {
 		data.DenyEntries = helpers.GetStringSetXML(value.Array())
 	} else {
 		data.DenyEntries = types.SetNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/permit/permit-list"); value.Exists() && !data.PermitEntries.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/permit/permit-list"); value.Exists() && !data.PermitEntries.IsNull() {
 		data.PermitEntries = helpers.GetStringSetXML(value.Array())
 	} else {
 		data.PermitEntries = types.SetNull(types.StringType)
@@ -237,12 +237,12 @@ func (data *CommunityListStandardData) fromBody(ctx context.Context, res gjson.R
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CommunityListStandard) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/deny/deny-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/deny/deny-list"); value.Exists() {
 		data.DenyEntries = helpers.GetStringSetXML(value.Array())
 	} else {
 		data.DenyEntries = types.SetNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/permit/permit-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/permit/permit-list"); value.Exists() {
 		data.PermitEntries = helpers.GetStringSetXML(value.Array())
 	} else {
 		data.PermitEntries = types.SetNull(types.StringType)
@@ -254,12 +254,12 @@ func (data *CommunityListStandard) fromBodyXML(ctx context.Context, res xmldot.R
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CommunityListStandardData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/deny/deny-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/deny/deny-list"); value.Exists() {
 		data.DenyEntries = helpers.GetStringSetXML(value.Array())
 	} else {
 		data.DenyEntries = types.SetNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/permit/permit-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/permit/permit-list"); value.Exists() {
 		data.PermitEntries = helpers.GetStringSetXML(value.Array())
 	} else {
 		data.PermitEntries = types.SetNull(types.StringType)
@@ -324,27 +324,6 @@ func (data *CommunityListStandard) getDeletedItems(ctx context.Context, state Co
 
 func (data *CommunityListStandard) addDeletedItemsXML(ctx context.Context, state CommunityListStandard, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DenyEntries.IsNull() {
-		if data.DenyEntries.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/deny/deny-list")
-		} else {
-			var dataValues, stateValues []string
-			data.DenyEntries.ElementsAs(ctx, &dataValues, false)
-			state.DenyEntries.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/deny/deny-list[.=%v]", v))
-				}
-			}
-		}
-	}
 	if !state.PermitEntries.IsNull() {
 		if data.PermitEntries.IsNull() {
 			b = helpers.RemoveFromXPath(b, state.getXPath()+"/permit/permit-list")
@@ -366,7 +345,29 @@ func (data *CommunityListStandard) addDeletedItemsXML(ctx context.Context, state
 			}
 		}
 	}
+	if !state.DenyEntries.IsNull() {
+		if data.DenyEntries.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/deny/deny-list")
+		} else {
+			var dataValues, stateValues []string
+			data.DenyEntries.ElementsAs(ctx, &dataValues, false)
+			state.DenyEntries.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/deny/deny-list[.=%v]", v))
+				}
+			}
+		}
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -402,13 +403,22 @@ func (data *CommunityListStandard) getDeletePaths(ctx context.Context) []string 
 
 func (data *CommunityListStandard) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.DenyEntries.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/deny/deny-list")
-	}
 	if !data.PermitEntries.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/permit/permit-list")
+		var values []string
+		data.PermitEntries.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/permit/permit-list[.=%v]", v))
+		}
+	}
+	if !data.DenyEntries.IsNull() {
+		var values []string
+		data.DenyEntries.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/deny/deny-list[.=%v]", v))
+		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

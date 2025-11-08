@@ -248,15 +248,12 @@ func (d *CTSDataSource) Read(ctx context.Context, req datasource.ReadRequest, re
 			config.fromBody(ctx, res.Res)
 		}
 	} else {
-		// Manage NETCONF connection lifecycle
-		if device.NetconfClient != nil {
-			cleanup, err := helpers.ManageNetconfConnection(ctx, device.NetconfClient, &device.NetconfConnMutex, device.ReuseConnection)
-			if err != nil {
-				resp.Diagnostics.AddError("Connection Error", err.Error())
-				return
-			}
-			defer cleanup()
+		// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+		locked := helpers.AcquireNetconfLock(&device.NetconfOpMutex, device.ReuseConnection, false)
+		if locked {
+			defer device.NetconfOpMutex.Unlock()
 		}
+		defer helpers.CloseNetconfConnection(ctx, device.NetconfClient, device.ReuseConnection)
 
 		filter := helpers.GetXpathFilter(config.getXPath())
 		res, err := device.NetconfClient.GetConfig(ctx, "running", filter)

@@ -163,7 +163,7 @@ func (data *InterfaceMPLS) updateFromBody(ctx context.Context, res gjson.Result)
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *InterfaceMPLS) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-mpls:ip"); !data.Ip.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-mpls:ip"); !data.Ip.IsNull() {
 		if value.Exists() {
 			data.Ip = types.BoolValue(true)
 		} else {
@@ -172,7 +172,7 @@ func (data *InterfaceMPLS) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.Ip = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-mpls:mtu"); value.Exists() && !data.Mtu.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-mpls:mtu"); value.Exists() && !data.Mtu.IsNull() {
 		data.Mtu = types.StringValue(value.String())
 	} else {
 		data.Mtu = types.StringNull()
@@ -222,12 +222,12 @@ func (data *InterfaceMPLSData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *InterfaceMPLS) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-mpls:ip"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-mpls:ip"); value.Exists() {
 		data.Ip = types.BoolValue(true)
 	} else {
 		data.Ip = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-mpls:mtu"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-mpls:mtu"); value.Exists() {
 		data.Mtu = types.StringValue(value.String())
 	}
 }
@@ -237,12 +237,12 @@ func (data *InterfaceMPLS) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *InterfaceMPLSData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-mpls:ip"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-mpls:ip"); value.Exists() {
 		data.Ip = types.BoolValue(true)
 	} else {
 		data.Ip = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-mpls:mtu"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-mpls:mtu"); value.Exists() {
 		data.Mtu = types.StringValue(value.String())
 	}
 }
@@ -269,13 +269,14 @@ func (data *InterfaceMPLS) getDeletedItems(ctx context.Context, state InterfaceM
 
 func (data *InterfaceMPLS) addDeletedItemsXML(ctx context.Context, state InterfaceMPLS, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Ip.IsNull() && data.Ip.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-mpls:ip")
-	}
 	if !state.Mtu.IsNull() && data.Mtu.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-mpls:mtu")
 	}
+	if !state.Ip.IsNull() && data.Ip.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-mpls:ip")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -314,13 +315,14 @@ func (data *InterfaceMPLS) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceMPLS) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Ip.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-mpls:ip")
-	}
 	if !data.Mtu.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-mpls:mtu")
 	}
+	if !data.Ip.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-mpls:ip")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

@@ -632,22 +632,22 @@ func (data *VTP) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:file"); value.Exists() && !data.File.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:file"); value.Exists() && !data.File.IsNull() {
 		data.File = types.StringValue(value.String())
 	} else {
 		data.File = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:version"); value.Exists() && !data.Version.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:version"); value.Exists() && !data.Version.IsNull() {
 		data.Version = types.Int64Value(value.Int())
 	} else {
 		data.Version = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name"); value.Exists() && !data.Interface.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name"); value.Exists() && !data.Interface.IsNull() {
 		data.Interface = types.StringValue(value.String())
 	} else {
 		data.Interface = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/only"); !data.InterfaceOnly.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/only"); !data.InterfaceOnly.IsNull() {
 		if value.Exists() {
 			data.InterfaceOnly = types.BoolValue(true)
 		} else {
@@ -656,7 +656,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.InterfaceOnly = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden"); !data.PasswordHidden.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden"); !data.PasswordHidden.IsNull() {
 		if value.Exists() {
 			data.PasswordHidden = types.BoolValue(true)
 		} else {
@@ -665,7 +665,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.PasswordHidden = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:pruning"); !data.Pruning.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:pruning"); !data.Pruning.IsNull() {
 		if value.Exists() {
 			data.Pruning = types.BoolValue(true)
 		} else {
@@ -674,12 +674,12 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.Pruning = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:domain"); value.Exists() && !data.Domain.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:domain"); value.Exists() && !data.Domain.IsNull() {
 		data.Domain = types.StringValue(value.String())
 	} else {
 		data.Domain = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client"); !data.ModeClient.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client"); !data.ModeClient.IsNull() {
 		if value.Exists() {
 			data.ModeClient = types.BoolValue(true)
 		} else {
@@ -688,7 +688,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeClient = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst"); !data.ModeClientMst.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst"); !data.ModeClientMst.IsNull() {
 		if value.Exists() {
 			data.ModeClientMst = types.BoolValue(true)
 		} else {
@@ -697,7 +697,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeClientMst = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown"); !data.ModeClientUnknown.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown"); !data.ModeClientUnknown.IsNull() {
 		if value.Exists() {
 			data.ModeClientUnknown = types.BoolValue(true)
 		} else {
@@ -706,7 +706,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeClientUnknown = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan"); !data.ModeClientVlan.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan"); !data.ModeClientVlan.IsNull() {
 		if value.Exists() {
 			data.ModeClientVlan = types.BoolValue(true)
 		} else {
@@ -715,7 +715,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeClientVlan = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off"); !data.ModeOff.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off"); !data.ModeOff.IsNull() {
 		if value.Exists() {
 			data.ModeOff = types.BoolValue(true)
 		} else {
@@ -724,7 +724,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeOff = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst"); !data.ModeOffMst.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst"); !data.ModeOffMst.IsNull() {
 		if value.Exists() {
 			data.ModeOffMst = types.BoolValue(true)
 		} else {
@@ -733,7 +733,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeOffMst = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown"); !data.ModeOffUnknown.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown"); !data.ModeOffUnknown.IsNull() {
 		if value.Exists() {
 			data.ModeOffUnknown = types.BoolValue(true)
 		} else {
@@ -742,7 +742,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeOffUnknown = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan"); !data.ModeOffVlan.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan"); !data.ModeOffVlan.IsNull() {
 		if value.Exists() {
 			data.ModeOffVlan = types.BoolValue(true)
 		} else {
@@ -751,7 +751,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeOffVlan = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server"); !data.ModeServer.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server"); !data.ModeServer.IsNull() {
 		if value.Exists() {
 			data.ModeServer = types.BoolValue(true)
 		} else {
@@ -760,7 +760,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeServer = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst"); !data.ModeServerMst.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst"); !data.ModeServerMst.IsNull() {
 		if value.Exists() {
 			data.ModeServerMst = types.BoolValue(true)
 		} else {
@@ -769,7 +769,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeServerMst = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown"); !data.ModeServerUnknown.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown"); !data.ModeServerUnknown.IsNull() {
 		if value.Exists() {
 			data.ModeServerUnknown = types.BoolValue(true)
 		} else {
@@ -778,7 +778,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeServerUnknown = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan"); !data.ModeServerVlan.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan"); !data.ModeServerVlan.IsNull() {
 		if value.Exists() {
 			data.ModeServerVlan = types.BoolValue(true)
 		} else {
@@ -787,7 +787,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeServerVlan = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent"); !data.ModeTransparent.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent"); !data.ModeTransparent.IsNull() {
 		if value.Exists() {
 			data.ModeTransparent = types.BoolValue(true)
 		} else {
@@ -796,7 +796,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeTransparent = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst"); !data.ModeTransparentMst.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst"); !data.ModeTransparentMst.IsNull() {
 		if value.Exists() {
 			data.ModeTransparentMst = types.BoolValue(true)
 		} else {
@@ -805,7 +805,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeTransparentMst = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/unknown"); !data.ModeTransparentUnknown.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/unknown"); !data.ModeTransparentUnknown.IsNull() {
 		if value.Exists() {
 			data.ModeTransparentUnknown = types.BoolValue(true)
 		} else {
@@ -814,7 +814,7 @@ func (data *VTP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.ModeTransparentUnknown = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan"); !data.ModeTransparentVlan.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan"); !data.ModeTransparentVlan.IsNull() {
 		if value.Exists() {
 			data.ModeTransparentVlan = types.BoolValue(true)
 		} else {
@@ -1082,117 +1082,117 @@ func (data *VTPData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *VTP) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:file"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:file"); value.Exists() {
 		data.File = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:version"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:version"); value.Exists() {
 		data.Version = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name"); value.Exists() {
 		data.Interface = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/only"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/only"); value.Exists() {
 		data.InterfaceOnly = types.BoolValue(true)
 	} else {
 		data.InterfaceOnly = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/password"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/password"); value.Exists() {
 		data.Password = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden"); value.Exists() {
 		data.PasswordHidden = types.BoolValue(true)
 	} else {
 		data.PasswordHidden = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/secret"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/secret"); value.Exists() {
 		data.PasswordSecret = types.BoolValue(true)
 	} else {
 		data.PasswordSecret = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:pruning"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:pruning"); value.Exists() {
 		data.Pruning = types.BoolValue(true)
 	} else {
 		data.Pruning = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:domain"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:domain"); value.Exists() {
 		data.Domain = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client"); value.Exists() {
 		data.ModeClient = types.BoolValue(true)
 	} else {
 		data.ModeClient = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst"); value.Exists() {
 		data.ModeClientMst = types.BoolValue(true)
 	} else {
 		data.ModeClientMst = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown"); value.Exists() {
 		data.ModeClientUnknown = types.BoolValue(true)
 	} else {
 		data.ModeClientUnknown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan"); value.Exists() {
 		data.ModeClientVlan = types.BoolValue(true)
 	} else {
 		data.ModeClientVlan = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off"); value.Exists() {
 		data.ModeOff = types.BoolValue(true)
 	} else {
 		data.ModeOff = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst"); value.Exists() {
 		data.ModeOffMst = types.BoolValue(true)
 	} else {
 		data.ModeOffMst = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown"); value.Exists() {
 		data.ModeOffUnknown = types.BoolValue(true)
 	} else {
 		data.ModeOffUnknown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan"); value.Exists() {
 		data.ModeOffVlan = types.BoolValue(true)
 	} else {
 		data.ModeOffVlan = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server"); value.Exists() {
 		data.ModeServer = types.BoolValue(true)
 	} else {
 		data.ModeServer = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst"); value.Exists() {
 		data.ModeServerMst = types.BoolValue(true)
 	} else {
 		data.ModeServerMst = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown"); value.Exists() {
 		data.ModeServerUnknown = types.BoolValue(true)
 	} else {
 		data.ModeServerUnknown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan"); value.Exists() {
 		data.ModeServerVlan = types.BoolValue(true)
 	} else {
 		data.ModeServerVlan = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent"); value.Exists() {
 		data.ModeTransparent = types.BoolValue(true)
 	} else {
 		data.ModeTransparent = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst"); value.Exists() {
 		data.ModeTransparentMst = types.BoolValue(true)
 	} else {
 		data.ModeTransparentMst = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/unknown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/unknown"); value.Exists() {
 		data.ModeTransparentUnknown = types.BoolValue(true)
 	} else {
 		data.ModeTransparentUnknown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan"); value.Exists() {
 		data.ModeTransparentVlan = types.BoolValue(true)
 	} else {
 		data.ModeTransparentVlan = types.BoolValue(false)
@@ -1204,117 +1204,117 @@ func (data *VTP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *VTPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:file"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:file"); value.Exists() {
 		data.File = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:version"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:version"); value.Exists() {
 		data.Version = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name"); value.Exists() {
 		data.Interface = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/only"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:interface/only"); value.Exists() {
 		data.InterfaceOnly = types.BoolValue(true)
 	} else {
 		data.InterfaceOnly = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/password"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/password"); value.Exists() {
 		data.Password = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden"); value.Exists() {
 		data.PasswordHidden = types.BoolValue(true)
 	} else {
 		data.PasswordHidden = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/secret"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:password/secret"); value.Exists() {
 		data.PasswordSecret = types.BoolValue(true)
 	} else {
 		data.PasswordSecret = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:pruning"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:pruning"); value.Exists() {
 		data.Pruning = types.BoolValue(true)
 	} else {
 		data.Pruning = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:domain"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:domain"); value.Exists() {
 		data.Domain = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client"); value.Exists() {
 		data.ModeClient = types.BoolValue(true)
 	} else {
 		data.ModeClient = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst"); value.Exists() {
 		data.ModeClientMst = types.BoolValue(true)
 	} else {
 		data.ModeClientMst = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown"); value.Exists() {
 		data.ModeClientUnknown = types.BoolValue(true)
 	} else {
 		data.ModeClientUnknown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan"); value.Exists() {
 		data.ModeClientVlan = types.BoolValue(true)
 	} else {
 		data.ModeClientVlan = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off"); value.Exists() {
 		data.ModeOff = types.BoolValue(true)
 	} else {
 		data.ModeOff = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst"); value.Exists() {
 		data.ModeOffMst = types.BoolValue(true)
 	} else {
 		data.ModeOffMst = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown"); value.Exists() {
 		data.ModeOffUnknown = types.BoolValue(true)
 	} else {
 		data.ModeOffUnknown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan"); value.Exists() {
 		data.ModeOffVlan = types.BoolValue(true)
 	} else {
 		data.ModeOffVlan = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server"); value.Exists() {
 		data.ModeServer = types.BoolValue(true)
 	} else {
 		data.ModeServer = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst"); value.Exists() {
 		data.ModeServerMst = types.BoolValue(true)
 	} else {
 		data.ModeServerMst = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown"); value.Exists() {
 		data.ModeServerUnknown = types.BoolValue(true)
 	} else {
 		data.ModeServerUnknown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan"); value.Exists() {
 		data.ModeServerVlan = types.BoolValue(true)
 	} else {
 		data.ModeServerVlan = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent"); value.Exists() {
 		data.ModeTransparent = types.BoolValue(true)
 	} else {
 		data.ModeTransparent = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst"); value.Exists() {
 		data.ModeTransparentMst = types.BoolValue(true)
 	} else {
 		data.ModeTransparentMst = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/unknown"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/unknown"); value.Exists() {
 		data.ModeTransparentUnknown = types.BoolValue(true)
 	} else {
 		data.ModeTransparentUnknown = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan"); value.Exists() {
 		data.ModeTransparentVlan = types.BoolValue(true)
 	} else {
 		data.ModeTransparentVlan = types.BoolValue(false)
@@ -1406,76 +1406,77 @@ func (data *VTP) getDeletedItems(ctx context.Context, state VTP) []string {
 
 func (data *VTP) addDeletedItemsXML(ctx context.Context, state VTP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.File.IsNull() && data.File.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:file")
-	}
-	if !state.Interface.IsNull() && data.Interface.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name")
-	}
-	if !state.InterfaceOnly.IsNull() && data.InterfaceOnly.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:interface/only")
-	}
-	if !state.Password.IsNull() && data.Password.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:password/password")
-	}
-	if !state.PasswordHidden.IsNull() && data.PasswordHidden.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden")
-	}
-	if !state.PasswordSecret.IsNull() && data.PasswordSecret.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:password/secret")
-	}
-	if !state.Pruning.IsNull() && data.Pruning.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:pruning")
-	}
-	if !state.ModeClient.IsNull() && data.ModeClient.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/client")
-	}
-	if !state.ModeClientMst.IsNull() && data.ModeClientMst.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst")
-	}
-	if !state.ModeClientUnknown.IsNull() && data.ModeClientUnknown.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown")
-	}
-	if !state.ModeClientVlan.IsNull() && data.ModeClientVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan")
-	}
-	if !state.ModeOff.IsNull() && data.ModeOff.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/off")
-	}
-	if !state.ModeOffMst.IsNull() && data.ModeOffMst.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst")
-	}
-	if !state.ModeOffUnknown.IsNull() && data.ModeOffUnknown.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown")
-	}
-	if !state.ModeOffVlan.IsNull() && data.ModeOffVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan")
-	}
-	if !state.ModeServer.IsNull() && data.ModeServer.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/server")
-	}
-	if !state.ModeServerMst.IsNull() && data.ModeServerMst.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst")
-	}
-	if !state.ModeServerUnknown.IsNull() && data.ModeServerUnknown.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown")
-	}
-	if !state.ModeServerVlan.IsNull() && data.ModeServerVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan")
-	}
-	if !state.ModeTransparent.IsNull() && data.ModeTransparent.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent")
-	}
-	if !state.ModeTransparentMst.IsNull() && data.ModeTransparentMst.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst")
+	if !state.ModeTransparentVlan.IsNull() && data.ModeTransparentVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan")
 	}
 	if !state.ModeTransparentUnknown.IsNull() && data.ModeTransparentUnknown.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/unknown")
 	}
-	if !state.ModeTransparentVlan.IsNull() && data.ModeTransparentVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan")
+	if !state.ModeTransparentMst.IsNull() && data.ModeTransparentMst.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst")
+	}
+	if !state.ModeTransparent.IsNull() && data.ModeTransparent.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent")
+	}
+	if !state.ModeServerVlan.IsNull() && data.ModeServerVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan")
+	}
+	if !state.ModeServerUnknown.IsNull() && data.ModeServerUnknown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown")
+	}
+	if !state.ModeServerMst.IsNull() && data.ModeServerMst.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst")
+	}
+	if !state.ModeServer.IsNull() && data.ModeServer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/server")
+	}
+	if !state.ModeOffVlan.IsNull() && data.ModeOffVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan")
+	}
+	if !state.ModeOffUnknown.IsNull() && data.ModeOffUnknown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown")
+	}
+	if !state.ModeOffMst.IsNull() && data.ModeOffMst.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst")
+	}
+	if !state.ModeOff.IsNull() && data.ModeOff.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/off")
+	}
+	if !state.ModeClientVlan.IsNull() && data.ModeClientVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan")
+	}
+	if !state.ModeClientUnknown.IsNull() && data.ModeClientUnknown.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown")
+	}
+	if !state.ModeClientMst.IsNull() && data.ModeClientMst.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst")
+	}
+	if !state.ModeClient.IsNull() && data.ModeClient.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:mode/client")
+	}
+	if !state.Pruning.IsNull() && data.Pruning.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:pruning")
+	}
+	if !state.PasswordSecret.IsNull() && data.PasswordSecret.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:password/secret")
+	}
+	if !state.PasswordHidden.IsNull() && data.PasswordHidden.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden")
+	}
+	if !state.Password.IsNull() && data.Password.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:password/password")
+	}
+	if !state.InterfaceOnly.IsNull() && data.InterfaceOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:interface/only")
+	}
+	if !state.Interface.IsNull() && data.Interface.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name")
+	}
+	if !state.File.IsNull() && data.File.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-vtp:file")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1634,76 +1635,77 @@ func (data *VTP) getDeletePaths(ctx context.Context) []string {
 
 func (data *VTP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.File.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:file")
-	}
-	if !data.Interface.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name")
-	}
-	if !data.InterfaceOnly.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:interface/only")
-	}
-	if !data.Password.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:password/password")
-	}
-	if !data.PasswordHidden.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden")
-	}
-	if !data.PasswordSecret.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:password/secret")
-	}
-	if !data.Pruning.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:pruning")
-	}
-	if !data.ModeClient.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client")
-	}
-	if !data.ModeClientMst.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst")
-	}
-	if !data.ModeClientUnknown.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown")
-	}
-	if !data.ModeClientVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan")
-	}
-	if !data.ModeOff.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off")
-	}
-	if !data.ModeOffMst.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst")
-	}
-	if !data.ModeOffUnknown.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown")
-	}
-	if !data.ModeOffVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan")
-	}
-	if !data.ModeServer.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server")
-	}
-	if !data.ModeServerMst.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst")
-	}
-	if !data.ModeServerUnknown.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown")
-	}
-	if !data.ModeServerVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan")
-	}
-	if !data.ModeTransparent.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent")
-	}
-	if !data.ModeTransparentMst.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst")
+	if !data.ModeTransparentVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan")
 	}
 	if !data.ModeTransparentUnknown.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/unknown")
 	}
-	if !data.ModeTransparentVlan.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/vlan")
+	if !data.ModeTransparentMst.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent/mst")
+	}
+	if !data.ModeTransparent.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/transparent")
+	}
+	if !data.ModeServerVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/vlan")
+	}
+	if !data.ModeServerUnknown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/unknown")
+	}
+	if !data.ModeServerMst.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server/mst")
+	}
+	if !data.ModeServer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/server")
+	}
+	if !data.ModeOffVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/vlan")
+	}
+	if !data.ModeOffUnknown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/unknown")
+	}
+	if !data.ModeOffMst.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off/mst")
+	}
+	if !data.ModeOff.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/off")
+	}
+	if !data.ModeClientVlan.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/vlan")
+	}
+	if !data.ModeClientUnknown.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/unknown")
+	}
+	if !data.ModeClientMst.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client/mst")
+	}
+	if !data.ModeClient.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:mode/client")
+	}
+	if !data.Pruning.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:pruning")
+	}
+	if !data.PasswordSecret.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:password/secret")
+	}
+	if !data.PasswordHidden.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:password/hidden")
+	}
+	if !data.Password.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:password/password")
+	}
+	if !data.InterfaceOnly.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:interface/only")
+	}
+	if !data.Interface.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:interface/interface-name")
+	}
+	if !data.File.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-vtp:file")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

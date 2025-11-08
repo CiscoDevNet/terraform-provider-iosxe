@@ -477,7 +477,7 @@ func (data *MSDP) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *MSDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/originator-id"); value.Exists() && !data.OriginatorId.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/originator-id"); value.Exists() && !data.OriginatorId.IsNull() {
 		data.OriginatorId = types.StringValue(value.String())
 	} else {
 		data.OriginatorId = types.StringNull()
@@ -487,7 +487,7 @@ func (data *MSDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.Peers[i].Addr.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/peer").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -526,7 +526,7 @@ func (data *MSDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.Passwords[i].Addr.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password/peer-list").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/password/peer-list").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -555,7 +555,7 @@ func (data *MSDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vrf").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -851,10 +851,10 @@ func (data *MSDPData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *MSDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/originator-id"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/originator-id"); value.Exists() {
 		data.OriginatorId = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/peer"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer"); value.Exists() {
 		data.Peers = make([]MSDPPeers, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := MSDPPeers{}
@@ -871,7 +871,7 @@ func (data *MSDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password/peer-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/password/peer-list"); value.Exists() {
 		data.Passwords = make([]MSDPPasswords, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := MSDPPasswords{}
@@ -888,7 +888,7 @@ func (data *MSDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vrf"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf"); value.Exists() {
 		data.Vrfs = make([]MSDPVrfs, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := MSDPVrfs{}
@@ -943,10 +943,10 @@ func (data *MSDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *MSDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/originator-id"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/originator-id"); value.Exists() {
 		data.OriginatorId = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/peer"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/peer"); value.Exists() {
 		data.Peers = make([]MSDPPeers, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := MSDPPeers{}
@@ -963,7 +963,7 @@ func (data *MSDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/password/peer-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/password/peer-list"); value.Exists() {
 		data.Passwords = make([]MSDPPasswords, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := MSDPPasswords{}
@@ -980,7 +980,7 @@ func (data *MSDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vrf"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf"); value.Exists() {
 		data.Vrfs = make([]MSDPVrfs, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := MSDPVrfs{}
@@ -1201,19 +1201,16 @@ func (data *MSDP) getDeletedItems(ctx context.Context, state MSDP) []string {
 
 func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.OriginatorId.IsNull() && data.OriginatorId.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/originator-id")
-	}
-	for i := range state.Peers {
-		stateKeys := [...]string{"addr"}
-		stateKeyValues := [...]string{state.Peers[i].Addr.ValueString()}
+	for i := range state.Vrfs {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Vrfs[i].Vrf.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Peers[i].Addr.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Vrfs[i].Vrf.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1221,23 +1218,92 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 		}
 
 		found := false
-		for j := range data.Peers {
+		for j := range data.Vrfs {
 			found = true
-			if state.Peers[i].Addr.ValueString() != data.Peers[j].Addr.ValueString() {
+			if state.Vrfs[i].Vrf.ValueString() != data.Vrfs[j].Vrf.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Peers[i].RemoteAs.IsNull() && data.Peers[j].RemoteAs.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/remote-as", predicates))
+				for ci := range state.Vrfs[i].Passwords {
+					cstateKeys := [...]string{"addr"}
+					cstateKeyValues := [...]string{state.Vrfs[i].Passwords[ci].Addr.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Passwords[ci].Addr.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Passwords {
+						found = true
+						if state.Vrfs[i].Passwords[ci].Addr.ValueString() != data.Vrfs[j].Passwords[cj].Addr.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Passwords[ci].Password.IsNull() && data.Vrfs[j].Passwords[cj].Password.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/password/peer-list%v/password", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].Passwords[ci].Encryption.IsNull() && data.Vrfs[j].Passwords[cj].Encryption.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/password/peer-list%v/encryption", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/password/peer-list%v", predicates, cpredicates))
+					}
 				}
-				if !state.Peers[i].ConnectSourceLoopback.IsNull() && data.Peers[j].ConnectSourceLoopback.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/connect-source/Loopback", predicates))
+				for ci := range state.Vrfs[i].Peers {
+					cstateKeys := [...]string{"addr"}
+					cstateKeyValues := [...]string{state.Vrfs[i].Peers[ci].Addr.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Peers[ci].Addr.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Peers {
+						found = true
+						if state.Vrfs[i].Peers[ci].Addr.ValueString() != data.Vrfs[j].Peers[cj].Addr.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Peers[ci].ConnectSourceLoopback.IsNull() && data.Vrfs[j].Peers[cj].ConnectSourceLoopback.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v/connect-source/Loopback", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].Peers[ci].RemoteAs.IsNull() && data.Vrfs[j].Peers[cj].RemoteAs.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v/remote-as", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v", predicates, cpredicates))
+					}
+				}
+				if !state.Vrfs[i].OriginatorId.IsNull() && data.Vrfs[j].OriginatorId.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/originator-id", predicates))
 				}
 				break
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v", predicates))
 		}
 	}
 	for i := range state.Passwords {
@@ -1263,11 +1329,11 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 				found = false
 			}
 			if found {
-				if !state.Passwords[i].Encryption.IsNull() && data.Passwords[j].Encryption.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/password/peer-list%v/encryption", predicates))
-				}
 				if !state.Passwords[i].Password.IsNull() && data.Passwords[j].Password.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/password/peer-list%v/password", predicates))
+				}
+				if !state.Passwords[i].Encryption.IsNull() && data.Passwords[j].Encryption.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/password/peer-list%v/encryption", predicates))
 				}
 				break
 			}
@@ -1276,16 +1342,16 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/password/peer-list%v", predicates))
 		}
 	}
-	for i := range state.Vrfs {
-		stateKeys := [...]string{"name"}
-		stateKeyValues := [...]string{state.Vrfs[i].Vrf.ValueString()}
+	for i := range state.Peers {
+		stateKeys := [...]string{"addr"}
+		stateKeyValues := [...]string{state.Peers[i].Addr.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Vrfs[i].Vrf.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Peers[i].Addr.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -1293,95 +1359,30 @@ func (data *MSDP) addDeletedItemsXML(ctx context.Context, state MSDP, body strin
 		}
 
 		found := false
-		for j := range data.Vrfs {
+		for j := range data.Peers {
 			found = true
-			if state.Vrfs[i].Vrf.ValueString() != data.Vrfs[j].Vrf.ValueString() {
+			if state.Peers[i].Addr.ValueString() != data.Peers[j].Addr.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Vrfs[i].OriginatorId.IsNull() && data.Vrfs[j].OriginatorId.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/originator-id", predicates))
+				if !state.Peers[i].ConnectSourceLoopback.IsNull() && data.Peers[j].ConnectSourceLoopback.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/connect-source/Loopback", predicates))
 				}
-				for ci := range state.Vrfs[i].Peers {
-					cstateKeys := [...]string{"addr"}
-					cstateKeyValues := [...]string{state.Vrfs[i].Peers[ci].Addr.ValueString()}
-					cpredicates := ""
-					for i := range cstateKeys {
-						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
-					}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Vrfs[i].Peers[ci].Addr.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Vrfs[j].Peers {
-						found = true
-						if state.Vrfs[i].Peers[ci].Addr.ValueString() != data.Vrfs[j].Peers[cj].Addr.ValueString() {
-							found = false
-						}
-						if found {
-							if !state.Vrfs[i].Peers[ci].RemoteAs.IsNull() && data.Vrfs[j].Peers[cj].RemoteAs.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v/remote-as", predicates, cpredicates))
-							}
-							if !state.Vrfs[i].Peers[ci].ConnectSourceLoopback.IsNull() && data.Vrfs[j].Peers[cj].ConnectSourceLoopback.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v/connect-source/Loopback", predicates, cpredicates))
-							}
-							break
-						}
-					}
-					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/peer%v", predicates, cpredicates))
-					}
-				}
-				for ci := range state.Vrfs[i].Passwords {
-					cstateKeys := [...]string{"addr"}
-					cstateKeyValues := [...]string{state.Vrfs[i].Passwords[ci].Addr.ValueString()}
-					cpredicates := ""
-					for i := range cstateKeys {
-						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
-					}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Vrfs[i].Passwords[ci].Addr.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Vrfs[j].Passwords {
-						found = true
-						if state.Vrfs[i].Passwords[ci].Addr.ValueString() != data.Vrfs[j].Passwords[cj].Addr.ValueString() {
-							found = false
-						}
-						if found {
-							if !state.Vrfs[i].Passwords[ci].Encryption.IsNull() && data.Vrfs[j].Passwords[cj].Encryption.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/password/peer-list%v/encryption", predicates, cpredicates))
-							}
-							if !state.Vrfs[i].Passwords[ci].Password.IsNull() && data.Vrfs[j].Passwords[cj].Password.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/password/peer-list%v/password", predicates, cpredicates))
-							}
-							break
-						}
-					}
-					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/password/peer-list%v", predicates, cpredicates))
-					}
+				if !state.Peers[i].RemoteAs.IsNull() && data.Peers[j].RemoteAs.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v/remote-as", predicates))
 				}
 				break
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/peer%v", predicates))
 		}
 	}
+	if !state.OriginatorId.IsNull() && data.OriginatorId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/originator-id")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1429,18 +1430,15 @@ func (data *MSDP) getDeletePaths(ctx context.Context) []string {
 
 func (data *MSDP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.OriginatorId.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/originator-id")
-	}
-	for i := range data.Peers {
-		keys := [...]string{"addr"}
-		keyValues := [...]string{data.Peers[i].Addr.ValueString()}
+	for i := range data.Vrfs {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
 		predicates := ""
 		for i := range keys {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/peer%v", predicates))
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/vrf%v", predicates))
 	}
 	for i := range data.Passwords {
 		keys := [...]string{"addr"}
@@ -1452,17 +1450,21 @@ func (data *MSDP) addDeletePathsXML(ctx context.Context, body string) string {
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/password/peer-list%v", predicates))
 	}
-	for i := range data.Vrfs {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Vrfs[i].Vrf.ValueString()}
+	for i := range data.Peers {
+		keys := [...]string{"addr"}
+		keyValues := [...]string{data.Peers[i].Addr.ValueString()}
 		predicates := ""
 		for i := range keys {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/vrf%v", predicates))
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/peer%v", predicates))
+	}
+	if !data.OriginatorId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/originator-id")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

@@ -39,7 +39,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"github.com/netascode/go-netconf"
 	"github.com/netascode/go-restconf"
 )
@@ -84,13 +83,12 @@ type IosxeProviderData struct {
 }
 
 type IosxeProviderDataDevice struct {
-	RestconfClient    *restconf.Client
-	NetconfClient     *netconf.Client
-	Protocol          string
-	ReuseConnection   bool
-	Managed           bool
-	NetconfWriteMutex sync.Mutex // Serializes NETCONF write operations
-	NetconfConnMutex  sync.Mutex // Serializes NETCONF connection management (Reopen/Close)
+	RestconfClient  *restconf.Client
+	NetconfClient   *netconf.Client
+	Protocol        string
+	ReuseConnection bool
+	Managed         bool
+	NetconfOpMutex  sync.Mutex // Serializes NETCONF operations (all ops when reuse disabled, writes only when reuse enabled)
 }
 
 func (p *IosxeProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -131,7 +129,7 @@ func (p *IosxeProvider) Schema(ctx context.Context, req provider.SchemaRequest, 
 				},
 			},
 			"retries": schema.Int64Attribute{
-				MarkdownDescription: "Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10`.",
+				MarkdownDescription: "Number of retries for REST API calls. This can also be set as the IOSXE_RETRIES environment variable. Defaults to `10` for RESTCONF and `3` for NETCONF.",
 				Optional:            true,
 				Validators: []validator.Int64{
 					int64validator.Between(0, 99),
@@ -342,27 +340,6 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		insecure = config.Insecure.ValueBool()
 	}
 
-	var retries int64
-	if config.Retries.IsUnknown() {
-		// Cannot connect to client with an unknown value
-		resp.Diagnostics.AddWarning(
-			"Unable to create client",
-			"Cannot use unknown value as retries",
-		)
-		return
-	}
-
-	if config.Retries.IsNull() {
-		retriesStr := os.Getenv("IOSXE_RETRIES")
-		if retriesStr == "" {
-			retries = 10
-		} else {
-			retries, _ = strconv.ParseInt(retriesStr, 0, 64)
-		}
-	} else {
-		retries = config.Retries.ValueInt64()
-	}
-
 	var lockReleaseTimeout int64
 	if config.LockReleaseTimeout.IsUnknown() {
 		// Cannot connect to client with an unknown value
@@ -424,6 +401,31 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 		resp.Diagnostics.Append(diags...)
 	}
 
+	var retries int64
+	if config.Retries.IsUnknown() {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as retries",
+		)
+		return
+	}
+
+	if config.Retries.IsNull() {
+		retriesStr := os.Getenv("IOSXE_RETRIES")
+		if retriesStr == "" {
+			if protocol == "restconf" {
+				retries = 10
+			} else {
+				retries = 3
+			}
+		} else {
+			retries, _ = strconv.ParseInt(retriesStr, 0, 64)
+		}
+	} else {
+		retries = config.Retries.ValueInt64()
+	}
+
 	data := IosxeProviderData{}
 	data.Devices = make(map[string]*IosxeProviderDataDevice)
 
@@ -463,13 +465,6 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 				"Unable to create NETCONF client:\n\n"+err.Error(),
 			)
 			return
-		}
-		if !reuseConnection {
-			defer func() {
-				if err := c.Close(); err != nil {
-					tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
-				}
-			}()
 		}
 		data.Devices[""] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, Managed: true}
 	}
@@ -539,13 +534,6 @@ func (p *IosxeProvider) Configure(ctx context.Context, req provider.ConfigureReq
 					fmt.Sprintf("Unable to create NETCONF client for device '%s':\n\n%s", device.Name.ValueString(), err.Error()),
 				)
 				return
-			}
-			if !reuseConnection {
-				defer func() {
-					if err := c.Close(); err != nil {
-						tflog.Warn(ctx, fmt.Sprintf("Failed to close NETCONF connection: %s", err))
-					}
-				}()
 			}
 			data.Devices[device.Name.ValueString()] = &IosxeProviderDataDevice{NetconfClient: c, Protocol: "netconf", ReuseConnection: reuseConnection, Managed: managed}
 		}

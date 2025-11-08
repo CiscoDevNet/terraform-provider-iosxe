@@ -130,15 +130,12 @@ func (r *CliResource) Create(ctx context.Context, req resource.CreateRequest, re
 				return
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
-			if d.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, &d.NetconfConnMutex, d.ReuseConnection)
-				if err != nil {
-					resp.Diagnostics.AddError("Connection Error", err.Error())
-					return
-				}
-				defer cleanup()
+			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+			locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+			if locked {
+				defer d.NetconfOpMutex.Unlock()
 			}
+			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
 			body := netconf.Body{}
 			if raw.ValueBool() {
@@ -216,15 +213,12 @@ func (r *CliResource) Update(ctx context.Context, req resource.UpdateRequest, re
 				return
 			}
 		} else {
-			// Manage NETCONF connection lifecycle
-			if d.NetconfClient != nil {
-				cleanup, err := helpers.ManageNetconfConnection(ctx, d.NetconfClient, &d.NetconfConnMutex, d.ReuseConnection)
-				if err != nil {
-					resp.Diagnostics.AddError("Connection Error", err.Error())
-					return
-				}
-				defer cleanup()
+			// Serialize NETCONF operations when reuse disabled (concurrent reads allowed when reuse enabled)
+			locked := helpers.AcquireNetconfLock(&d.NetconfOpMutex, d.ReuseConnection, false)
+			if locked {
+				defer d.NetconfOpMutex.Unlock()
 			}
+			defer helpers.CloseNetconfConnection(ctx, d.NetconfClient, d.ReuseConnection)
 
 			body := netconf.Body{}
 			if raw.ValueBool() {

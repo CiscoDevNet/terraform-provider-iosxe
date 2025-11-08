@@ -193,31 +193,31 @@ func (data *BGP) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *BGP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/id"); value.Exists() && !data.Asn.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/id"); value.Exists() && !data.Asn.IsNull() {
 		data.Asn = types.StringValue(value.String())
 	} else {
 		data.Asn = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/default/ipv4-unicast"); !data.DefaultIpv4Unicast.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/default/ipv4-unicast"); !data.DefaultIpv4Unicast.IsNull() {
 		if value.Exists() {
 			data.DefaultIpv4Unicast = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.DefaultIpv4Unicast = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/log-neighbor-changes"); !data.LogNeighborChanges.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/log-neighbor-changes"); !data.LogNeighborChanges.IsNull() {
 		if value.Exists() {
 			data.LogNeighborChanges = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.LogNeighborChanges = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/router-id/interface/Loopback"); value.Exists() && !data.RouterIdLoopback.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/router-id/interface/Loopback"); value.Exists() && !data.RouterIdLoopback.IsNull() {
 		data.RouterIdLoopback = types.Int64Value(value.Int())
 	} else {
 		data.RouterIdLoopback = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/router-id/ip-id"); value.Exists() && !data.RouterIdIp.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/router-id/ip-id"); value.Exists() && !data.RouterIdIp.IsNull() {
 		data.RouterIdIp = types.StringValue(value.String())
 	} else {
 		data.RouterIdIp = types.StringNull()
@@ -283,20 +283,20 @@ func (data *BGPData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *BGP) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/default/ipv4-unicast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/default/ipv4-unicast"); value.Exists() {
 		data.DefaultIpv4Unicast = types.BoolValue(value.Bool())
 	} else {
 		data.DefaultIpv4Unicast = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/log-neighbor-changes"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/log-neighbor-changes"); value.Exists() {
 		data.LogNeighborChanges = types.BoolValue(value.Bool())
 	} else {
 		data.LogNeighborChanges = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/router-id/interface/Loopback"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/router-id/interface/Loopback"); value.Exists() {
 		data.RouterIdLoopback = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/router-id/ip-id"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/router-id/ip-id"); value.Exists() {
 		data.RouterIdIp = types.StringValue(value.String())
 	}
 }
@@ -306,20 +306,20 @@ func (data *BGP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *BGPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/default/ipv4-unicast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/default/ipv4-unicast"); value.Exists() {
 		data.DefaultIpv4Unicast = types.BoolValue(value.Bool())
 	} else {
 		data.DefaultIpv4Unicast = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/log-neighbor-changes"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/log-neighbor-changes"); value.Exists() {
 		data.LogNeighborChanges = types.BoolValue(value.Bool())
 	} else {
 		data.LogNeighborChanges = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/router-id/interface/Loopback"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/router-id/interface/Loopback"); value.Exists() {
 		data.RouterIdLoopback = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/bgp/router-id/ip-id"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/bgp/router-id/ip-id"); value.Exists() {
 		data.RouterIdIp = types.StringValue(value.String())
 	}
 }
@@ -352,19 +352,20 @@ func (data *BGP) getDeletedItems(ctx context.Context, state BGP) []string {
 
 func (data *BGP) addDeletedItemsXML(ctx context.Context, state BGP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.DefaultIpv4Unicast.IsNull() && data.DefaultIpv4Unicast.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/default/ipv4-unicast")
-	}
-	if !state.LogNeighborChanges.IsNull() && data.LogNeighborChanges.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/log-neighbor-changes")
+	if !state.RouterIdIp.IsNull() && data.RouterIdIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/router-id/ip-id")
 	}
 	if !state.RouterIdLoopback.IsNull() && data.RouterIdLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/router-id/interface/Loopback")
 	}
-	if !state.RouterIdIp.IsNull() && data.RouterIdIp.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/router-id/ip-id")
+	if !state.LogNeighborChanges.IsNull() && data.LogNeighborChanges.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/log-neighbor-changes")
+	}
+	if !state.DefaultIpv4Unicast.IsNull() && data.DefaultIpv4Unicast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/bgp/default/ipv4-unicast")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -406,19 +407,20 @@ func (data *BGP) getDeletePaths(ctx context.Context) []string {
 
 func (data *BGP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.DefaultIpv4Unicast.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/default/ipv4-unicast")
-	}
-	if !data.LogNeighborChanges.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/log-neighbor-changes")
+	if !data.RouterIdIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/router-id/ip-id")
 	}
 	if !data.RouterIdLoopback.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/router-id/interface/Loopback")
 	}
-	if !data.RouterIdIp.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/router-id/ip-id")
+	if !data.LogNeighborChanges.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/log-neighbor-changes")
+	}
+	if !data.DefaultIpv4Unicast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/bgp/default/ipv4-unicast")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

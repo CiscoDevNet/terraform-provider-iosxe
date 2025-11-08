@@ -1426,7 +1426,7 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 		keyValues := [...]string{data.Logins[i].Name.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/login").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/login").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1619,7 +1619,7 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 		keyValues := [...]string{data.Dot1x[i].Name.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/dot1x-list").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/dot1x-list").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1755,12 +1755,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 			data.Dot1x[i].A4Radius = types.BoolNull()
 		}
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a1-config/group"); value.Exists() && !data.Dot1xDefaultA1Group.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a1-config/group"); value.Exists() && !data.Dot1xDefaultA1Group.IsNull() {
 		data.Dot1xDefaultA1Group = types.StringValue(value.String())
 	} else {
 		data.Dot1xDefaultA1Group = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a1-config/local"); !data.Dot1xDefaultA1Local.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a1-config/local"); !data.Dot1xDefaultA1Local.IsNull() {
 		if value.Exists() {
 			data.Dot1xDefaultA1Local = types.BoolValue(true)
 		} else {
@@ -1769,12 +1769,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Dot1xDefaultA1Local = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a2-config/group"); value.Exists() && !data.Dot1xDefaultA2Group.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a2-config/group"); value.Exists() && !data.Dot1xDefaultA2Group.IsNull() {
 		data.Dot1xDefaultA2Group = types.StringValue(value.String())
 	} else {
 		data.Dot1xDefaultA2Group = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a2-config/local"); !data.Dot1xDefaultA2Local.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a2-config/local"); !data.Dot1xDefaultA2Local.IsNull() {
 		if value.Exists() {
 			data.Dot1xDefaultA2Local = types.BoolValue(true)
 		} else {
@@ -1783,12 +1783,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Dot1xDefaultA2Local = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a3-config/group"); value.Exists() && !data.Dot1xDefaultA3Group.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a3-config/group"); value.Exists() && !data.Dot1xDefaultA3Group.IsNull() {
 		data.Dot1xDefaultA3Group = types.StringValue(value.String())
 	} else {
 		data.Dot1xDefaultA3Group = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a3-config/local"); !data.Dot1xDefaultA3Local.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a3-config/local"); !data.Dot1xDefaultA3Local.IsNull() {
 		if value.Exists() {
 			data.Dot1xDefaultA3Local = types.BoolValue(true)
 		} else {
@@ -1797,12 +1797,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Dot1xDefaultA3Local = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a4-config/group"); value.Exists() && !data.Dot1xDefaultA4Group.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a4-config/group"); value.Exists() && !data.Dot1xDefaultA4Group.IsNull() {
 		data.Dot1xDefaultA4Group = types.StringValue(value.String())
 	} else {
 		data.Dot1xDefaultA4Group = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a4-config/local"); !data.Dot1xDefaultA4Local.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a4-config/local"); !data.Dot1xDefaultA4Local.IsNull() {
 		if value.Exists() {
 			data.Dot1xDefaultA4Local = types.BoolValue(true)
 		} else {
@@ -1811,12 +1811,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.Dot1xDefaultA4Local = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/cache"); value.Exists() && !data.EnableDefaultGroup1Cache.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/cache"); value.Exists() && !data.EnableDefaultGroup1Cache.IsNull() {
 		data.EnableDefaultGroup1Cache = types.StringValue(value.String())
 	} else {
 		data.EnableDefaultGroup1Cache = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/enable"); !data.EnableDefaultGroup1Enable.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/enable"); !data.EnableDefaultGroup1Enable.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup1Enable = types.BoolValue(true)
 		} else {
@@ -1825,12 +1825,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup1Enable = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/group"); value.Exists() && !data.EnableDefaultGroup1Group.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/group"); value.Exists() && !data.EnableDefaultGroup1Group.IsNull() {
 		data.EnableDefaultGroup1Group = types.StringValue(value.String())
 	} else {
 		data.EnableDefaultGroup1Group = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/line"); !data.EnableDefaultGroup1Line.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/line"); !data.EnableDefaultGroup1Line.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup1Line = types.BoolValue(true)
 		} else {
@@ -1839,7 +1839,7 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup1Line = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/none"); !data.EnableDefaultGroup1None.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/none"); !data.EnableDefaultGroup1None.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup1None = types.BoolValue(true)
 		} else {
@@ -1848,12 +1848,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup1None = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/cache"); value.Exists() && !data.EnableDefaultGroup2Cache.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/cache"); value.Exists() && !data.EnableDefaultGroup2Cache.IsNull() {
 		data.EnableDefaultGroup2Cache = types.StringValue(value.String())
 	} else {
 		data.EnableDefaultGroup2Cache = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/enable"); !data.EnableDefaultGroup2Enable.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/enable"); !data.EnableDefaultGroup2Enable.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup2Enable = types.BoolValue(true)
 		} else {
@@ -1862,12 +1862,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup2Enable = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/group"); value.Exists() && !data.EnableDefaultGroup2Group.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/group"); value.Exists() && !data.EnableDefaultGroup2Group.IsNull() {
 		data.EnableDefaultGroup2Group = types.StringValue(value.String())
 	} else {
 		data.EnableDefaultGroup2Group = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/line"); !data.EnableDefaultGroup2Line.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/line"); !data.EnableDefaultGroup2Line.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup2Line = types.BoolValue(true)
 		} else {
@@ -1876,7 +1876,7 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup2Line = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/none"); !data.EnableDefaultGroup2None.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/none"); !data.EnableDefaultGroup2None.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup2None = types.BoolValue(true)
 		} else {
@@ -1885,12 +1885,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup2None = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/cache"); value.Exists() && !data.EnableDefaultGroup3Cache.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/cache"); value.Exists() && !data.EnableDefaultGroup3Cache.IsNull() {
 		data.EnableDefaultGroup3Cache = types.StringValue(value.String())
 	} else {
 		data.EnableDefaultGroup3Cache = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/enable"); !data.EnableDefaultGroup3Enable.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/enable"); !data.EnableDefaultGroup3Enable.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup3Enable = types.BoolValue(true)
 		} else {
@@ -1899,12 +1899,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup3Enable = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/group"); value.Exists() && !data.EnableDefaultGroup3Group.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/group"); value.Exists() && !data.EnableDefaultGroup3Group.IsNull() {
 		data.EnableDefaultGroup3Group = types.StringValue(value.String())
 	} else {
 		data.EnableDefaultGroup3Group = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/line"); !data.EnableDefaultGroup3Line.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/line"); !data.EnableDefaultGroup3Line.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup3Line = types.BoolValue(true)
 		} else {
@@ -1913,7 +1913,7 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup3Line = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/none"); !data.EnableDefaultGroup3None.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/none"); !data.EnableDefaultGroup3None.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup3None = types.BoolValue(true)
 		} else {
@@ -1922,12 +1922,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup3None = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/cache"); value.Exists() && !data.EnableDefaultGroup4Cache.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/cache"); value.Exists() && !data.EnableDefaultGroup4Cache.IsNull() {
 		data.EnableDefaultGroup4Cache = types.StringValue(value.String())
 	} else {
 		data.EnableDefaultGroup4Cache = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/enable"); !data.EnableDefaultGroup4Enable.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/enable"); !data.EnableDefaultGroup4Enable.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup4Enable = types.BoolValue(true)
 		} else {
@@ -1936,12 +1936,12 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup4Enable = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/group"); value.Exists() && !data.EnableDefaultGroup4Group.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/group"); value.Exists() && !data.EnableDefaultGroup4Group.IsNull() {
 		data.EnableDefaultGroup4Group = types.StringValue(value.String())
 	} else {
 		data.EnableDefaultGroup4Group = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/line"); !data.EnableDefaultGroup4Line.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/line"); !data.EnableDefaultGroup4Line.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup4Line = types.BoolValue(true)
 		} else {
@@ -1950,7 +1950,7 @@ func (data *AAAAuthentication) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.EnableDefaultGroup4Line = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/none"); !data.EnableDefaultGroup4None.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/none"); !data.EnableDefaultGroup4None.IsNull() {
 		if value.Exists() {
 			data.EnableDefaultGroup4None = types.BoolValue(true)
 		} else {
@@ -2576,7 +2576,7 @@ func (data *AAAAuthenticationData) fromBody(ctx context.Context, res gjson.Resul
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *AAAAuthentication) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/login"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login"); value.Exists() {
 		data.Logins = make([]AAAAuthenticationLogins, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AAAAuthenticationLogins{}
@@ -2679,7 +2679,7 @@ func (data *AAAAuthentication) fromBodyXML(ctx context.Context, res xmldot.Resul
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/dot1x-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/dot1x-list"); value.Exists() {
 		data.Dot1x = make([]AAAAuthenticationDot1x, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AAAAuthenticationDot1x{}
@@ -2754,118 +2754,118 @@ func (data *AAAAuthentication) fromBodyXML(ctx context.Context, res xmldot.Resul
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a1-config/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a1-config/group"); value.Exists() {
 		data.Dot1xDefaultA1Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a1-config/local"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a1-config/local"); value.Exists() {
 		data.Dot1xDefaultA1Local = types.BoolValue(true)
 	} else {
 		data.Dot1xDefaultA1Local = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a2-config/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a2-config/group"); value.Exists() {
 		data.Dot1xDefaultA2Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a2-config/local"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a2-config/local"); value.Exists() {
 		data.Dot1xDefaultA2Local = types.BoolValue(true)
 	} else {
 		data.Dot1xDefaultA2Local = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a3-config/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a3-config/group"); value.Exists() {
 		data.Dot1xDefaultA3Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a3-config/local"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a3-config/local"); value.Exists() {
 		data.Dot1xDefaultA3Local = types.BoolValue(true)
 	} else {
 		data.Dot1xDefaultA3Local = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a4-config/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a4-config/group"); value.Exists() {
 		data.Dot1xDefaultA4Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a4-config/local"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a4-config/local"); value.Exists() {
 		data.Dot1xDefaultA4Local = types.BoolValue(true)
 	} else {
 		data.Dot1xDefaultA4Local = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/cache"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/cache"); value.Exists() {
 		data.EnableDefaultGroup1Cache = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/enable"); value.Exists() {
 		data.EnableDefaultGroup1Enable = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup1Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/group"); value.Exists() {
 		data.EnableDefaultGroup1Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/line"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/line"); value.Exists() {
 		data.EnableDefaultGroup1Line = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup1Line = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/none"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/none"); value.Exists() {
 		data.EnableDefaultGroup1None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup1None = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/cache"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/cache"); value.Exists() {
 		data.EnableDefaultGroup2Cache = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/enable"); value.Exists() {
 		data.EnableDefaultGroup2Enable = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup2Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/group"); value.Exists() {
 		data.EnableDefaultGroup2Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/line"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/line"); value.Exists() {
 		data.EnableDefaultGroup2Line = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup2Line = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/none"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/none"); value.Exists() {
 		data.EnableDefaultGroup2None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup2None = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/cache"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/cache"); value.Exists() {
 		data.EnableDefaultGroup3Cache = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/enable"); value.Exists() {
 		data.EnableDefaultGroup3Enable = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup3Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/group"); value.Exists() {
 		data.EnableDefaultGroup3Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/line"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/line"); value.Exists() {
 		data.EnableDefaultGroup3Line = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup3Line = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/none"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/none"); value.Exists() {
 		data.EnableDefaultGroup3None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup3None = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/cache"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/cache"); value.Exists() {
 		data.EnableDefaultGroup4Cache = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/enable"); value.Exists() {
 		data.EnableDefaultGroup4Enable = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup4Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/group"); value.Exists() {
 		data.EnableDefaultGroup4Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/line"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/line"); value.Exists() {
 		data.EnableDefaultGroup4Line = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup4Line = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/none"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/none"); value.Exists() {
 		data.EnableDefaultGroup4None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup4None = types.BoolValue(false)
@@ -2877,7 +2877,7 @@ func (data *AAAAuthentication) fromBodyXML(ctx context.Context, res xmldot.Resul
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *AAAAuthenticationData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/login"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/login"); value.Exists() {
 		data.Logins = make([]AAAAuthenticationLogins, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AAAAuthenticationLogins{}
@@ -2980,7 +2980,7 @@ func (data *AAAAuthenticationData) fromBodyXML(ctx context.Context, res xmldot.R
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/dot1x-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/dot1x-list"); value.Exists() {
 		data.Dot1x = make([]AAAAuthenticationDot1x, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := AAAAuthenticationDot1x{}
@@ -3055,118 +3055,118 @@ func (data *AAAAuthenticationData) fromBodyXML(ctx context.Context, res xmldot.R
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a1-config/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a1-config/group"); value.Exists() {
 		data.Dot1xDefaultA1Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a1-config/local"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a1-config/local"); value.Exists() {
 		data.Dot1xDefaultA1Local = types.BoolValue(true)
 	} else {
 		data.Dot1xDefaultA1Local = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a2-config/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a2-config/group"); value.Exists() {
 		data.Dot1xDefaultA2Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a2-config/local"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a2-config/local"); value.Exists() {
 		data.Dot1xDefaultA2Local = types.BoolValue(true)
 	} else {
 		data.Dot1xDefaultA2Local = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a3-config/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a3-config/group"); value.Exists() {
 		data.Dot1xDefaultA3Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a3-config/local"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a3-config/local"); value.Exists() {
 		data.Dot1xDefaultA3Local = types.BoolValue(true)
 	} else {
 		data.Dot1xDefaultA3Local = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a4-config/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a4-config/group"); value.Exists() {
 		data.Dot1xDefaultA4Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/dot1x/default/a4-config/local"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/dot1x/default/a4-config/local"); value.Exists() {
 		data.Dot1xDefaultA4Local = types.BoolValue(true)
 	} else {
 		data.Dot1xDefaultA4Local = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/cache"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/cache"); value.Exists() {
 		data.EnableDefaultGroup1Cache = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/enable"); value.Exists() {
 		data.EnableDefaultGroup1Enable = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup1Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/group"); value.Exists() {
 		data.EnableDefaultGroup1Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/line"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/line"); value.Exists() {
 		data.EnableDefaultGroup1Line = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup1Line = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group1/none"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group1/none"); value.Exists() {
 		data.EnableDefaultGroup1None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup1None = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/cache"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/cache"); value.Exists() {
 		data.EnableDefaultGroup2Cache = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/enable"); value.Exists() {
 		data.EnableDefaultGroup2Enable = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup2Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/group"); value.Exists() {
 		data.EnableDefaultGroup2Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/line"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/line"); value.Exists() {
 		data.EnableDefaultGroup2Line = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup2Line = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group2/none"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group2/none"); value.Exists() {
 		data.EnableDefaultGroup2None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup2None = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/cache"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/cache"); value.Exists() {
 		data.EnableDefaultGroup3Cache = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/enable"); value.Exists() {
 		data.EnableDefaultGroup3Enable = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup3Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/group"); value.Exists() {
 		data.EnableDefaultGroup3Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/line"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/line"); value.Exists() {
 		data.EnableDefaultGroup3Line = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup3Line = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group3/none"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group3/none"); value.Exists() {
 		data.EnableDefaultGroup3None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup3None = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/cache"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/cache"); value.Exists() {
 		data.EnableDefaultGroup4Cache = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/enable"); value.Exists() {
 		data.EnableDefaultGroup4Enable = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup4Enable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/group"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/group"); value.Exists() {
 		data.EnableDefaultGroup4Group = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/line"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/line"); value.Exists() {
 		data.EnableDefaultGroup4Line = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup4Line = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/enable/default/group4/none"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/enable/default/group4/none"); value.Exists() {
 		data.EnableDefaultGroup4None = types.BoolValue(true)
 	} else {
 		data.EnableDefaultGroup4None = types.BoolValue(false)
@@ -3431,95 +3431,89 @@ func (data *AAAAuthentication) getDeletedItems(ctx context.Context, state AAAAut
 
 func (data *AAAAuthentication) addDeletedItemsXML(ctx context.Context, state AAAAuthentication, body string) string {
 	b := netconf.NewBody(body)
-	for i := range state.Logins {
-		stateKeys := [...]string{"name"}
-		stateKeyValues := [...]string{state.Logins[i].Name.ValueString()}
-		predicates := ""
-		for i := range stateKeys {
-			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
-		}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Logins[i].Name.ValueString()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Logins {
-			found = true
-			if state.Logins[i].Name.ValueString() != data.Logins[j].Name.ValueString() {
-				found = false
-			}
-			if found {
-				if !state.Logins[i].A1None.IsNull() && data.Logins[j].A1None.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/none", predicates))
-				}
-				if !state.Logins[i].A1Line.IsNull() && data.Logins[j].A1Line.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/line", predicates))
-				}
-				if !state.Logins[i].A1Enable.IsNull() && data.Logins[j].A1Enable.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/enable", predicates))
-				}
-				if !state.Logins[i].A1Local.IsNull() && data.Logins[j].A1Local.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/local", predicates))
-				}
-				if !state.Logins[i].A1Group.IsNull() && data.Logins[j].A1Group.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/group", predicates))
-				}
-				if !state.Logins[i].A2None.IsNull() && data.Logins[j].A2None.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/none", predicates))
-				}
-				if !state.Logins[i].A2Line.IsNull() && data.Logins[j].A2Line.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/line", predicates))
-				}
-				if !state.Logins[i].A2Enable.IsNull() && data.Logins[j].A2Enable.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/enable", predicates))
-				}
-				if !state.Logins[i].A2Local.IsNull() && data.Logins[j].A2Local.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/local", predicates))
-				}
-				if !state.Logins[i].A2Group.IsNull() && data.Logins[j].A2Group.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/group", predicates))
-				}
-				if !state.Logins[i].A3None.IsNull() && data.Logins[j].A3None.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/none", predicates))
-				}
-				if !state.Logins[i].A3Line.IsNull() && data.Logins[j].A3Line.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/line", predicates))
-				}
-				if !state.Logins[i].A3Enable.IsNull() && data.Logins[j].A3Enable.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/enable", predicates))
-				}
-				if !state.Logins[i].A3Local.IsNull() && data.Logins[j].A3Local.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/local", predicates))
-				}
-				if !state.Logins[i].A3Group.IsNull() && data.Logins[j].A3Group.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/group", predicates))
-				}
-				if !state.Logins[i].A4None.IsNull() && data.Logins[j].A4None.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/none", predicates))
-				}
-				if !state.Logins[i].A4Line.IsNull() && data.Logins[j].A4Line.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/line", predicates))
-				}
-				if !state.Logins[i].A4Enable.IsNull() && data.Logins[j].A4Enable.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/enable", predicates))
-				}
-				if !state.Logins[i].A4Local.IsNull() && data.Logins[j].A4Local.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/local", predicates))
-				}
-				if !state.Logins[i].A4Group.IsNull() && data.Logins[j].A4Group.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/group", predicates))
-				}
-				break
-			}
-		}
-		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v", predicates))
-		}
+	if !state.EnableDefaultGroup4None.IsNull() && data.EnableDefaultGroup4None.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/none")
+	}
+	if !state.EnableDefaultGroup4Line.IsNull() && data.EnableDefaultGroup4Line.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/line")
+	}
+	if !state.EnableDefaultGroup4Group.IsNull() && data.EnableDefaultGroup4Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/group")
+	}
+	if !state.EnableDefaultGroup4Enable.IsNull() && data.EnableDefaultGroup4Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/enable")
+	}
+	if !state.EnableDefaultGroup4Cache.IsNull() && data.EnableDefaultGroup4Cache.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/cache")
+	}
+	if !state.EnableDefaultGroup3None.IsNull() && data.EnableDefaultGroup3None.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/none")
+	}
+	if !state.EnableDefaultGroup3Line.IsNull() && data.EnableDefaultGroup3Line.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/line")
+	}
+	if !state.EnableDefaultGroup3Group.IsNull() && data.EnableDefaultGroup3Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/group")
+	}
+	if !state.EnableDefaultGroup3Enable.IsNull() && data.EnableDefaultGroup3Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/enable")
+	}
+	if !state.EnableDefaultGroup3Cache.IsNull() && data.EnableDefaultGroup3Cache.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/cache")
+	}
+	if !state.EnableDefaultGroup2None.IsNull() && data.EnableDefaultGroup2None.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/none")
+	}
+	if !state.EnableDefaultGroup2Line.IsNull() && data.EnableDefaultGroup2Line.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/line")
+	}
+	if !state.EnableDefaultGroup2Group.IsNull() && data.EnableDefaultGroup2Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/group")
+	}
+	if !state.EnableDefaultGroup2Enable.IsNull() && data.EnableDefaultGroup2Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/enable")
+	}
+	if !state.EnableDefaultGroup2Cache.IsNull() && data.EnableDefaultGroup2Cache.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/cache")
+	}
+	if !state.EnableDefaultGroup1None.IsNull() && data.EnableDefaultGroup1None.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/none")
+	}
+	if !state.EnableDefaultGroup1Line.IsNull() && data.EnableDefaultGroup1Line.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/line")
+	}
+	if !state.EnableDefaultGroup1Group.IsNull() && data.EnableDefaultGroup1Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/group")
+	}
+	if !state.EnableDefaultGroup1Enable.IsNull() && data.EnableDefaultGroup1Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/enable")
+	}
+	if !state.EnableDefaultGroup1Cache.IsNull() && data.EnableDefaultGroup1Cache.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/cache")
+	}
+	if !state.Dot1xDefaultA4Local.IsNull() && data.Dot1xDefaultA4Local.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a4-config/local")
+	}
+	if !state.Dot1xDefaultA4Group.IsNull() && data.Dot1xDefaultA4Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a4-config/group")
+	}
+	if !state.Dot1xDefaultA3Local.IsNull() && data.Dot1xDefaultA3Local.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a3-config/local")
+	}
+	if !state.Dot1xDefaultA3Group.IsNull() && data.Dot1xDefaultA3Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a3-config/group")
+	}
+	if !state.Dot1xDefaultA2Local.IsNull() && data.Dot1xDefaultA2Local.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a2-config/local")
+	}
+	if !state.Dot1xDefaultA2Group.IsNull() && data.Dot1xDefaultA2Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a2-config/group")
+	}
+	if !state.Dot1xDefaultA1Local.IsNull() && data.Dot1xDefaultA1Local.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a1-config/local")
+	}
+	if !state.Dot1xDefaultA1Group.IsNull() && data.Dot1xDefaultA1Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a1-config/group")
 	}
 	for i := range state.Dot1x {
 		stateKeys := [...]string{"name"}
@@ -3544,53 +3538,53 @@ func (data *AAAAuthentication) addDeletedItemsXML(ctx context.Context, state AAA
 				found = false
 			}
 			if found {
-				if !state.Dot1x[i].A1Group.IsNull() && data.Dot1x[j].A1Group.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a1-config/group", predicates))
-				}
-				if !state.Dot1x[i].A1Local.IsNull() && data.Dot1x[j].A1Local.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a1-config/local", predicates))
-				}
-				if !state.Dot1x[i].A1Cache.IsNull() && data.Dot1x[j].A1Cache.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a1-config/cache", predicates))
-				}
-				if !state.Dot1x[i].A1Radius.IsNull() && data.Dot1x[j].A1Radius.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a1-config/radius", predicates))
-				}
-				if !state.Dot1x[i].A2Group.IsNull() && data.Dot1x[j].A2Group.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a2-config/group", predicates))
-				}
-				if !state.Dot1x[i].A2Local.IsNull() && data.Dot1x[j].A2Local.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a2-config/local", predicates))
-				}
-				if !state.Dot1x[i].A2Cache.IsNull() && data.Dot1x[j].A2Cache.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a2-config/cache", predicates))
-				}
-				if !state.Dot1x[i].A2Radius.IsNull() && data.Dot1x[j].A2Radius.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a2-config/radius", predicates))
-				}
-				if !state.Dot1x[i].A3Group.IsNull() && data.Dot1x[j].A3Group.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a3-config/group", predicates))
-				}
-				if !state.Dot1x[i].A3Local.IsNull() && data.Dot1x[j].A3Local.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a3-config/local", predicates))
-				}
-				if !state.Dot1x[i].A3Cache.IsNull() && data.Dot1x[j].A3Cache.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a3-config/cache", predicates))
-				}
-				if !state.Dot1x[i].A3Radius.IsNull() && data.Dot1x[j].A3Radius.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a3-config/radius", predicates))
-				}
-				if !state.Dot1x[i].A4Group.IsNull() && data.Dot1x[j].A4Group.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a4-config/group", predicates))
-				}
-				if !state.Dot1x[i].A4Local.IsNull() && data.Dot1x[j].A4Local.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a4-config/local", predicates))
+				if !state.Dot1x[i].A4Radius.IsNull() && data.Dot1x[j].A4Radius.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a4-config/radius", predicates))
 				}
 				if !state.Dot1x[i].A4Cache.IsNull() && data.Dot1x[j].A4Cache.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a4-config/cache", predicates))
 				}
-				if !state.Dot1x[i].A4Radius.IsNull() && data.Dot1x[j].A4Radius.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a4-config/radius", predicates))
+				if !state.Dot1x[i].A4Local.IsNull() && data.Dot1x[j].A4Local.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a4-config/local", predicates))
+				}
+				if !state.Dot1x[i].A4Group.IsNull() && data.Dot1x[j].A4Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a4-config/group", predicates))
+				}
+				if !state.Dot1x[i].A3Radius.IsNull() && data.Dot1x[j].A3Radius.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a3-config/radius", predicates))
+				}
+				if !state.Dot1x[i].A3Cache.IsNull() && data.Dot1x[j].A3Cache.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a3-config/cache", predicates))
+				}
+				if !state.Dot1x[i].A3Local.IsNull() && data.Dot1x[j].A3Local.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a3-config/local", predicates))
+				}
+				if !state.Dot1x[i].A3Group.IsNull() && data.Dot1x[j].A3Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a3-config/group", predicates))
+				}
+				if !state.Dot1x[i].A2Radius.IsNull() && data.Dot1x[j].A2Radius.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a2-config/radius", predicates))
+				}
+				if !state.Dot1x[i].A2Cache.IsNull() && data.Dot1x[j].A2Cache.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a2-config/cache", predicates))
+				}
+				if !state.Dot1x[i].A2Local.IsNull() && data.Dot1x[j].A2Local.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a2-config/local", predicates))
+				}
+				if !state.Dot1x[i].A2Group.IsNull() && data.Dot1x[j].A2Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a2-config/group", predicates))
+				}
+				if !state.Dot1x[i].A1Radius.IsNull() && data.Dot1x[j].A1Radius.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a1-config/radius", predicates))
+				}
+				if !state.Dot1x[i].A1Cache.IsNull() && data.Dot1x[j].A1Cache.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a1-config/cache", predicates))
+				}
+				if !state.Dot1x[i].A1Local.IsNull() && data.Dot1x[j].A1Local.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a1-config/local", predicates))
+				}
+				if !state.Dot1x[i].A1Group.IsNull() && data.Dot1x[j].A1Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v/a1-config/group", predicates))
 				}
 				break
 			}
@@ -3599,91 +3593,98 @@ func (data *AAAAuthentication) addDeletedItemsXML(ctx context.Context, state AAA
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/dot1x/dot1x-list%v", predicates))
 		}
 	}
-	if !state.Dot1xDefaultA1Group.IsNull() && data.Dot1xDefaultA1Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a1-config/group")
-	}
-	if !state.Dot1xDefaultA1Local.IsNull() && data.Dot1xDefaultA1Local.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a1-config/local")
-	}
-	if !state.Dot1xDefaultA2Group.IsNull() && data.Dot1xDefaultA2Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a2-config/group")
-	}
-	if !state.Dot1xDefaultA2Local.IsNull() && data.Dot1xDefaultA2Local.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a2-config/local")
-	}
-	if !state.Dot1xDefaultA3Group.IsNull() && data.Dot1xDefaultA3Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a3-config/group")
-	}
-	if !state.Dot1xDefaultA3Local.IsNull() && data.Dot1xDefaultA3Local.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a3-config/local")
-	}
-	if !state.Dot1xDefaultA4Group.IsNull() && data.Dot1xDefaultA4Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a4-config/group")
-	}
-	if !state.Dot1xDefaultA4Local.IsNull() && data.Dot1xDefaultA4Local.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/dot1x/default/a4-config/local")
-	}
-	if !state.EnableDefaultGroup1Cache.IsNull() && data.EnableDefaultGroup1Cache.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/cache")
-	}
-	if !state.EnableDefaultGroup1Enable.IsNull() && data.EnableDefaultGroup1Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/enable")
-	}
-	if !state.EnableDefaultGroup1Group.IsNull() && data.EnableDefaultGroup1Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/group")
-	}
-	if !state.EnableDefaultGroup1Line.IsNull() && data.EnableDefaultGroup1Line.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/line")
-	}
-	if !state.EnableDefaultGroup1None.IsNull() && data.EnableDefaultGroup1None.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group1/none")
-	}
-	if !state.EnableDefaultGroup2Cache.IsNull() && data.EnableDefaultGroup2Cache.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/cache")
-	}
-	if !state.EnableDefaultGroup2Enable.IsNull() && data.EnableDefaultGroup2Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/enable")
-	}
-	if !state.EnableDefaultGroup2Group.IsNull() && data.EnableDefaultGroup2Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/group")
-	}
-	if !state.EnableDefaultGroup2Line.IsNull() && data.EnableDefaultGroup2Line.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/line")
-	}
-	if !state.EnableDefaultGroup2None.IsNull() && data.EnableDefaultGroup2None.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group2/none")
-	}
-	if !state.EnableDefaultGroup3Cache.IsNull() && data.EnableDefaultGroup3Cache.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/cache")
-	}
-	if !state.EnableDefaultGroup3Enable.IsNull() && data.EnableDefaultGroup3Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/enable")
-	}
-	if !state.EnableDefaultGroup3Group.IsNull() && data.EnableDefaultGroup3Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/group")
-	}
-	if !state.EnableDefaultGroup3Line.IsNull() && data.EnableDefaultGroup3Line.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/line")
-	}
-	if !state.EnableDefaultGroup3None.IsNull() && data.EnableDefaultGroup3None.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group3/none")
-	}
-	if !state.EnableDefaultGroup4Cache.IsNull() && data.EnableDefaultGroup4Cache.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/cache")
-	}
-	if !state.EnableDefaultGroup4Enable.IsNull() && data.EnableDefaultGroup4Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/enable")
-	}
-	if !state.EnableDefaultGroup4Group.IsNull() && data.EnableDefaultGroup4Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/group")
-	}
-	if !state.EnableDefaultGroup4Line.IsNull() && data.EnableDefaultGroup4Line.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/line")
-	}
-	if !state.EnableDefaultGroup4None.IsNull() && data.EnableDefaultGroup4None.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/enable/default/group4/none")
+	for i := range state.Logins {
+		stateKeys := [...]string{"name"}
+		stateKeyValues := [...]string{state.Logins[i].Name.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Logins[i].Name.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Logins {
+			found = true
+			if state.Logins[i].Name.ValueString() != data.Logins[j].Name.ValueString() {
+				found = false
+			}
+			if found {
+				if !state.Logins[i].A4Group.IsNull() && data.Logins[j].A4Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/group", predicates))
+				}
+				if !state.Logins[i].A4Local.IsNull() && data.Logins[j].A4Local.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/local", predicates))
+				}
+				if !state.Logins[i].A4Enable.IsNull() && data.Logins[j].A4Enable.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/enable", predicates))
+				}
+				if !state.Logins[i].A4Line.IsNull() && data.Logins[j].A4Line.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/line", predicates))
+				}
+				if !state.Logins[i].A4None.IsNull() && data.Logins[j].A4None.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a4/none", predicates))
+				}
+				if !state.Logins[i].A3Group.IsNull() && data.Logins[j].A3Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/group", predicates))
+				}
+				if !state.Logins[i].A3Local.IsNull() && data.Logins[j].A3Local.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/local", predicates))
+				}
+				if !state.Logins[i].A3Enable.IsNull() && data.Logins[j].A3Enable.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/enable", predicates))
+				}
+				if !state.Logins[i].A3Line.IsNull() && data.Logins[j].A3Line.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/line", predicates))
+				}
+				if !state.Logins[i].A3None.IsNull() && data.Logins[j].A3None.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a3/none", predicates))
+				}
+				if !state.Logins[i].A2Group.IsNull() && data.Logins[j].A2Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/group", predicates))
+				}
+				if !state.Logins[i].A2Local.IsNull() && data.Logins[j].A2Local.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/local", predicates))
+				}
+				if !state.Logins[i].A2Enable.IsNull() && data.Logins[j].A2Enable.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/enable", predicates))
+				}
+				if !state.Logins[i].A2Line.IsNull() && data.Logins[j].A2Line.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/line", predicates))
+				}
+				if !state.Logins[i].A2None.IsNull() && data.Logins[j].A2None.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a2/none", predicates))
+				}
+				if !state.Logins[i].A1Group.IsNull() && data.Logins[j].A1Group.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/group", predicates))
+				}
+				if !state.Logins[i].A1Local.IsNull() && data.Logins[j].A1Local.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/local", predicates))
+				}
+				if !state.Logins[i].A1Enable.IsNull() && data.Logins[j].A1Enable.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/enable", predicates))
+				}
+				if !state.Logins[i].A1Line.IsNull() && data.Logins[j].A1Line.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/line", predicates))
+				}
+				if !state.Logins[i].A1None.IsNull() && data.Logins[j].A1None.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v/a1/none", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/login%v", predicates))
+		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -3935,15 +3936,89 @@ func (data *AAAAuthentication) getDeletePaths(ctx context.Context) []string {
 
 func (data *AAAAuthentication) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	for i := range data.Logins {
-		keys := [...]string{"name"}
-		keyValues := [...]string{data.Logins[i].Name.ValueString()}
-		predicates := ""
-		for i := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
-		}
-
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/login%v", predicates))
+	if !data.EnableDefaultGroup4None.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/none")
+	}
+	if !data.EnableDefaultGroup4Line.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/line")
+	}
+	if !data.EnableDefaultGroup4Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/group")
+	}
+	if !data.EnableDefaultGroup4Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/enable")
+	}
+	if !data.EnableDefaultGroup4Cache.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/cache")
+	}
+	if !data.EnableDefaultGroup3None.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/none")
+	}
+	if !data.EnableDefaultGroup3Line.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/line")
+	}
+	if !data.EnableDefaultGroup3Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/group")
+	}
+	if !data.EnableDefaultGroup3Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/enable")
+	}
+	if !data.EnableDefaultGroup3Cache.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/cache")
+	}
+	if !data.EnableDefaultGroup2None.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/none")
+	}
+	if !data.EnableDefaultGroup2Line.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/line")
+	}
+	if !data.EnableDefaultGroup2Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/group")
+	}
+	if !data.EnableDefaultGroup2Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/enable")
+	}
+	if !data.EnableDefaultGroup2Cache.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/cache")
+	}
+	if !data.EnableDefaultGroup1None.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/none")
+	}
+	if !data.EnableDefaultGroup1Line.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/line")
+	}
+	if !data.EnableDefaultGroup1Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/group")
+	}
+	if !data.EnableDefaultGroup1Enable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/enable")
+	}
+	if !data.EnableDefaultGroup1Cache.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/cache")
+	}
+	if !data.Dot1xDefaultA4Local.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a4-config/local")
+	}
+	if !data.Dot1xDefaultA4Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a4-config/group")
+	}
+	if !data.Dot1xDefaultA3Local.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a3-config/local")
+	}
+	if !data.Dot1xDefaultA3Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a3-config/group")
+	}
+	if !data.Dot1xDefaultA2Local.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a2-config/local")
+	}
+	if !data.Dot1xDefaultA2Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a2-config/group")
+	}
+	if !data.Dot1xDefaultA1Local.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a1-config/local")
+	}
+	if !data.Dot1xDefaultA1Group.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a1-config/group")
 	}
 	for i := range data.Dot1x {
 		keys := [...]string{"name"}
@@ -3955,91 +4030,18 @@ func (data *AAAAuthentication) addDeletePathsXML(ctx context.Context, body strin
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/dot1x/dot1x-list%v", predicates))
 	}
-	if !data.Dot1xDefaultA1Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a1-config/group")
-	}
-	if !data.Dot1xDefaultA1Local.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a1-config/local")
-	}
-	if !data.Dot1xDefaultA2Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a2-config/group")
-	}
-	if !data.Dot1xDefaultA2Local.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a2-config/local")
-	}
-	if !data.Dot1xDefaultA3Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a3-config/group")
-	}
-	if !data.Dot1xDefaultA3Local.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a3-config/local")
-	}
-	if !data.Dot1xDefaultA4Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a4-config/group")
-	}
-	if !data.Dot1xDefaultA4Local.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/dot1x/default/a4-config/local")
-	}
-	if !data.EnableDefaultGroup1Cache.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/cache")
-	}
-	if !data.EnableDefaultGroup1Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/enable")
-	}
-	if !data.EnableDefaultGroup1Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/group")
-	}
-	if !data.EnableDefaultGroup1Line.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/line")
-	}
-	if !data.EnableDefaultGroup1None.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group1/none")
-	}
-	if !data.EnableDefaultGroup2Cache.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/cache")
-	}
-	if !data.EnableDefaultGroup2Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/enable")
-	}
-	if !data.EnableDefaultGroup2Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/group")
-	}
-	if !data.EnableDefaultGroup2Line.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/line")
-	}
-	if !data.EnableDefaultGroup2None.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group2/none")
-	}
-	if !data.EnableDefaultGroup3Cache.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/cache")
-	}
-	if !data.EnableDefaultGroup3Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/enable")
-	}
-	if !data.EnableDefaultGroup3Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/group")
-	}
-	if !data.EnableDefaultGroup3Line.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/line")
-	}
-	if !data.EnableDefaultGroup3None.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group3/none")
-	}
-	if !data.EnableDefaultGroup4Cache.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/cache")
-	}
-	if !data.EnableDefaultGroup4Enable.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/enable")
-	}
-	if !data.EnableDefaultGroup4Group.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/group")
-	}
-	if !data.EnableDefaultGroup4Line.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/line")
-	}
-	if !data.EnableDefaultGroup4None.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/enable/default/group4/none")
+	for i := range data.Logins {
+		keys := [...]string{"name"}
+		keyValues := [...]string{data.Logins[i].Name.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/login%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

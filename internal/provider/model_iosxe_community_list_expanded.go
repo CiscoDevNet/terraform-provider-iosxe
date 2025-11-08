@@ -201,7 +201,7 @@ func (data *CommunityListExpanded) updateFromBody(ctx context.Context, res gjson
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CommunityListExpanded) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
@@ -211,7 +211,7 @@ func (data *CommunityListExpanded) updateFromBodyXML(ctx context.Context, res xm
 		keyValues := [...]string{data.Entries[i].Action.ValueString(), data.Entries[i].Regex.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -297,7 +297,7 @@ func (data *CommunityListExpandedData) fromBody(ctx context.Context, res gjson.R
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CommunityListExpanded) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
 		data.Entries = make([]CommunityListExpandedEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := CommunityListExpandedEntries{}
@@ -318,7 +318,7 @@ func (data *CommunityListExpanded) fromBodyXML(ctx context.Context, res xmldot.R
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CommunityListExpandedData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
 		data.Entries = make([]CommunityListExpandedEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := CommunityListExpandedEntries{}
@@ -418,6 +418,7 @@ func (data *CommunityListExpanded) addDeletedItemsXML(ctx context.Context, state
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -463,6 +464,7 @@ func (data *CommunityListExpanded) addDeletePathsXML(ctx context.Context, body s
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/extended-grouping/extended_grouping%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

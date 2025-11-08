@@ -1,9 +1,8 @@
 package helpers
 
 import (
-	"fmt"
-
 	"reflect"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -670,6 +669,21 @@ func TestGetFromXPath(t *testing.T) {
 			xPath:       "/native/interface[name='GigabitEthernet2']/description",
 			shouldExist: false,
 		},
+		{
+			name: "single element with predicate accessing key field - radius case",
+			xml: `<data>
+				<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+					<radius>
+						<server xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-aaa">
+							<id>radius_10.10.15.12</id>
+						</server>
+					</radius>
+				</native>
+			</data>`,
+			xPath:         "/data/Cisco-IOS-XE-native:native/radius/Cisco-IOS-XE-aaa:server[id='radius_10.10.15.12']/id",
+			expectedValue: "radius_10.10.15.12",
+			shouldExist:   true,
+		},
 	}
 
 	for _, tt := range tests {
@@ -795,66 +809,6 @@ func TestGetXpathFilter(t *testing.T) {
 			}
 
 			t.Logf("XPath: %s -> Filter: %s", tt.xPath, result.Content)
-		})
-	}
-}
-
-// TestConvertRestconfPathToXPath tests the ConvertRestconfPathToXPath function
-func TestConvertRestconfPathToXPath(t *testing.T) {
-	tests := []struct {
-		name     string
-		path     string
-		expected string
-	}{
-		{
-			name:     "format string with %s=%v",
-			path:     "Cisco-IOS-XE-native:native/interface/%s=%v",
-			expected: "Cisco-IOS-XE-native:native/interface/%s[%v=%v]",
-		},
-		{
-			name:     "format string with multiple placeholders",
-			path:     "vrf/%s=%v/address-family/%s=%v",
-			expected: "vrf/%s[%v=%v]/address-family/%s[%v=%v]",
-		},
-		{
-			name:     "concrete path with single key",
-			path:     "interface/GigabitEthernet=1",
-			expected: "interface/GigabitEthernet[%v=1]",
-		},
-		{
-			name:     "concrete path with composite key",
-			path:     "vrf=VRF1,address-family=ipv4",
-			expected: "vrf[%v=VRF1][%v=address-family=ipv4]",
-		},
-		{
-			name:     "concrete path with multiple segments",
-			path:     "native/vrf=VRF1/address-family=ipv4",
-			expected: "native/vrf[%v=VRF1]/address-family[%v=ipv4]",
-		},
-		{
-			name:     "path without keys",
-			path:     "native/ip/source-route",
-			expected: "native/ip/source-route",
-		},
-		{
-			name:     "namespace prefix preserved",
-			path:     "Cisco-IOS-XE-native:native/interface/GigabitEthernet=1/ip",
-			expected: "Cisco-IOS-XE-native:native/interface/GigabitEthernet[%v=1]/ip",
-		},
-		{
-			name:     "mixed format strings and concrete values",
-			path:     "native/interface/%s=%v/vlan=100",
-			expected: "native/interface/%s[%v=%v]/vlan[%v=100]",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			result := ConvertRestconfPathToXPath(tt.path)
-			if result != tt.expected {
-				t.Errorf("ConvertRestconfPathToXPath(%q) = %q, want %q",
-					tt.path, result, tt.expected)
-			}
 		})
 	}
 }
@@ -1166,17 +1120,6 @@ func TestSetFromXPath_BooleanEmptyValue(t *testing.T) {
 	t.Log("✓ Boolean empty value correctly creates presence container element")
 }
 
-// TestGetXPathFormat tests what format getXPath produces
-func TestGetXPathFormat(t *testing.T) {
-	// Test ConvertRestconfPathToXPath
-	path := ConvertRestconfPathToXPath("Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:class-map=%v")
-	t.Logf("After ConvertRestconfPathToXPath: %s", path)
-
-	// Then sprintf with key
-	finalPath := fmt.Sprintf(path, "name", "CM1")
-	t.Logf("After fmt.Sprintf: %s", finalPath)
-}
-
 // TestSetFromXPath_ClassMapSequence tests the exact sequence used in class-map
 // to understand why authorized element is missing.
 func TestSetFromXPath_ClassMapSequence(t *testing.T) {
@@ -1374,4 +1317,562 @@ func TestAppendFromXPath_EmptyValue(t *testing.T) {
 	}
 
 	t.Log("✓ Empty values (presence containers) appended successfully")
+}
+
+// TestRemoveFromXPath_DebugCleanup tests the cleanup mechanism in isolation
+func TestRemoveFromXPath_DebugCleanup(t *testing.T) {
+	body := netconf.Body{}
+
+	// Add child first
+	t.Log("Adding child removal: /logging/trap/severity")
+	body = RemoveFromXPath(body, "/logging/trap/severity")
+	xml1 := body.Res()
+	t.Logf("After child:\n%s\n", xml1)
+
+	// Add parent
+	t.Log("Adding parent removal: /logging/trap")
+	body = RemoveFromXPath(body, "/logging/trap")
+	xml2 := body.Res()
+	t.Logf("After parent:\n%s\n", xml2)
+
+	// Check if child element was completely removed
+	severityElement := xmldot.Get(xml2, "logging.trap.severity")
+	if severityElement.Exists() {
+		t.Errorf("Child element should be completely removed, but still exists: %q", severityElement.Raw)
+	} else {
+		t.Log("✓ Child element was successfully removed")
+	}
+
+	// Also check operation attribute doesn't exist
+	severityOp := xmldot.Get(xml2, "logging.trap.severity.@operation")
+	if severityOp.Exists() {
+		t.Errorf("Child operation attribute should not exist, but found: %q", severityOp.String())
+	}
+}
+
+// TestRemoveFromXPath_ExactAddDeletePathsXMLSequence tests the exact sequence used by generated code
+func TestRemoveFromXPath_ExactAddDeletePathsXMLSequence(t *testing.T) {
+	body := netconf.Body{}
+	basePath := "/Cisco-IOS-XE-native:native/logging"
+
+	// Simulate the exact sequence from addDeletePathsXML
+	body = RemoveFromXPath(body, basePath+"/trap/severity")
+	body = RemoveFromXPath(body, basePath+"/trap")
+
+	xml := body.Res()
+	t.Logf("Generated XML:\n%s\n", xml)
+
+	// Check that severity element is completely gone
+	severityElement := xmldot.Get(xml, "native.logging.trap.severity")
+	severityOp := xmldot.Get(xml, "native.logging.trap.severity.@operation")
+
+	t.Logf("Severity element exists: %v, Raw: %q", severityElement.Exists(), severityElement.Raw)
+	t.Logf("Severity operation exists: %v, value: %q", severityOp.Exists(), severityOp.String())
+
+	// Check if severity element has operation="remove"
+	if strings.Contains(xml, `<severity operation="remove">`) {
+		t.Error("❌ XML still contains <severity operation=\"remove\">")
+	} else if severityElement.Exists() {
+		t.Errorf("❌ Severity element exists but shouldn't: Raw=%q", severityElement.Raw)
+	} else {
+		t.Log("✓ Severity element correctly removed")
+	}
+
+	// Verify trap still has operation="remove"
+	trapOp := xmldot.Get(xml, "native.logging.trap.@operation")
+	if !trapOp.Exists() || trapOp.String() != "remove" {
+		t.Errorf("❌ Trap should have operation='remove', but got exists=%v, value=%q", trapOp.Exists(), trapOp.String())
+	} else {
+		t.Log("✓ Trap has operation='remove'")
+	}
+}
+
+// TestRemoveFromXPath_RealWorldLoggingExample tests the exact scenario from the user's example
+func TestRemoveFromXPath_RealWorldLoggingExample(t *testing.T) {
+	body := netconf.Body{}
+	basePath := "/Cisco-IOS-XE-native:native/logging"
+
+	// Apply the exact sequence from the user's debug log
+	body = RemoveFromXPath(body, basePath+"/monitor-config/common-config/monitor/severity")
+	body = RemoveFromXPath(body, basePath+"/buffered/size-value")
+	body = RemoveFromXPath(body, basePath+"/buffered/severity-level")
+	body = RemoveFromXPath(body, basePath+"/console-config/console")
+	body = RemoveFromXPath(body, basePath+"/facility")
+	body = RemoveFromXPath(body, basePath+"/history/size")
+	body = RemoveFromXPath(body, basePath+"/history/severity-level")
+	body = RemoveFromXPath(body, basePath+"/trap")
+	body = RemoveFromXPath(body, basePath+"/trap/severity") // Should be skipped
+	body = RemoveFromXPath(body, basePath+"/origin-id/type-value")
+	body = RemoveFromXPath(body, basePath+"/source-interface-conf/interface-name-non-vrf")
+	body = RemoveFromXPath(body, basePath+"/source-interface-conf/source-interface-vrf[vrf='VRF1']")
+	body = RemoveFromXPath(body, basePath+"/host/ipv4-host-list[ipv4-host='1.1.1.1']")
+	body = RemoveFromXPath(body, basePath+"/host/ipv4-host-transport-list[ipv4-host='1.1.1.1']")
+	body = RemoveFromXPath(body, basePath+"/host/ipv4-host-vrf-list[ipv4-host='1.1.1.1'][vrf='VRF1']")
+	body = RemoveFromXPath(body, basePath+"/host/ipv4-host-vrf-transport-list[ipv4-host='1.1.1.1'][vrf='VRF1']")
+	body = RemoveFromXPath(body, basePath+"/host/ipv6/ipv6-host-list[ipv6-host='2001::1']")
+	body = RemoveFromXPath(body, basePath+"/host/ipv6/ipv6-host-transport-list[ipv6-host='2001::1']")
+	body = RemoveFromXPath(body, basePath+"/host/ipv6/ipv6-host-vrf-list[ipv6-host='2001::1'][vrf='VRF1']")
+	body = RemoveFromXPath(body, basePath+"/host/ipv6/ipv6-host-vrf-transport-list[ipv6-host='2001::1'][vrf='VRF1']")
+
+	resultXML := body.Res()
+	t.Logf("Generated XML:\n%s\n", resultXML)
+
+	// Verify that trap has operation="remove"
+	trapOp := xmldot.Get(resultXML, "native.logging.trap.@operation")
+	if !trapOp.Exists() || trapOp.String() != "remove" {
+		t.Errorf("Expected trap to have operation='remove'")
+	}
+
+	// Verify that trap/severity does NOT have operation="remove" (redundant)
+	trapSeverityOp := xmldot.Get(resultXML, "native.logging.trap.severity.@operation")
+	if trapSeverityOp.Exists() {
+		t.Errorf("trap/severity should NOT have operation='remove' (redundant), but found: %q", trapSeverityOp.String())
+	}
+
+	// Verify namespace is present
+	if !strings.Contains(resultXML, `xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native"`) {
+		t.Error("Missing namespace declaration for Cisco-IOS-XE-native")
+	}
+
+	t.Log("✓ Optimized XML successfully removes redundant child operations")
+}
+
+// TestRemoveFromXPath_SkipsRedundantChildRemovals tests that RemoveFromXPath skips
+// adding child removal operations when a parent is already marked for removal
+func TestRemoveFromXPath_SkipsRedundantChildRemovals(t *testing.T) {
+	tests := []struct {
+		name           string
+		removePaths    []string        // Paths to remove in order
+		shouldExist    map[string]bool // path -> should have operation="remove"
+		shouldNotExist []string        // paths that should not exist
+	}{
+		{
+			name: "child removal skipped when parent removed first",
+			removePaths: []string{
+				"/logging/trap",
+				"/logging/trap/severity",
+			},
+			shouldExist: map[string]bool{
+				"logging.trap.@operation": true,
+			},
+			shouldNotExist: []string{
+				"logging.trap.severity.@operation",
+			},
+		},
+		{
+			name: "child removal cleaned when parent added after",
+			removePaths: []string{
+				"/logging/trap/severity",
+				"/logging/trap",
+			},
+			shouldExist: map[string]bool{
+				"logging.trap.@operation": true,
+			},
+			shouldNotExist: []string{
+				"logging.trap.severity.@operation", // Should be removed when parent gets operation="remove"
+			},
+		},
+		{
+			name: "multiple children skipped when parent removed",
+			removePaths: []string{
+				"/logging/history",
+				"/logging/history/size",
+				"/logging/history/severity-level",
+			},
+			shouldExist: map[string]bool{
+				"logging.history.@operation": true,
+			},
+			shouldNotExist: []string{
+				"logging.history.size.@operation",
+				"logging.history.severity-level.@operation",
+			},
+		},
+		{
+			name: "nested children at different levels",
+			removePaths: []string{
+				"/logging/host",
+				"/logging/host/ipv6",
+				"/logging/host/ipv6/ipv6-host-list",
+			},
+			shouldExist: map[string]bool{
+				"logging.host.@operation": true,
+			},
+			shouldNotExist: []string{
+				"logging.host.ipv6.@operation",
+				"logging.host.ipv6.ipv6-host-list.@operation",
+			},
+		},
+		{
+			name: "sibling removals both added",
+			removePaths: []string{
+				"/logging/buffered/size-value",
+				"/logging/buffered/severity-level",
+			},
+			shouldExist: map[string]bool{
+				"logging.buffered.size-value.@operation":     true,
+				"logging.buffered.severity-level.@operation": true,
+			},
+		},
+		{
+			name: "complex real-world scenario",
+			removePaths: []string{
+				"/logging/trap",
+				"/logging/trap/severity",
+				"/logging/buffered/size-value",
+				"/logging/buffered/severity-level",
+				"/logging/host/ipv4-host-list[ipv4-host='1.1.1.1']",
+				"/logging/host/ipv4-host-list[ipv4-host='1.1.1.1']/ipv4-host",
+			},
+			shouldExist: map[string]bool{
+				"logging.trap.@operation":                    true,
+				"logging.buffered.size-value.@operation":     true,
+				"logging.buffered.severity-level.@operation": true,
+				"logging.host.ipv4-host-list.@operation":     true,
+			},
+			shouldNotExist: []string{
+				"logging.trap.severity.@operation",
+				"logging.host.ipv4-host-list.ipv4-host.@operation",
+			},
+		},
+		{
+			name: "child with keys added first, parent added later - keys preserved",
+			removePaths: []string{
+				"/logging/host/ipv4-host-vrf-list[ipv4-host='1.1.1.1'][vrf='VRF1']/transport",
+				"/logging/host/ipv4-host-vrf-list[ipv4-host='1.1.1.1'][vrf='VRF1']",
+			},
+			shouldExist: map[string]bool{
+				"logging.host.ipv4-host-vrf-list.@operation": true,
+			},
+			shouldNotExist: []string{
+				"logging.host.ipv4-host-vrf-list.transport.@operation",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			body := netconf.Body{}
+
+			// Apply all removal operations
+			for _, path := range tt.removePaths {
+				body = RemoveFromXPath(body, path)
+			}
+
+			resultXML := body.Res()
+			t.Logf("Generated XML:\n%s", resultXML)
+
+			// Check paths that should exist
+			for path, shouldHaveRemove := range tt.shouldExist {
+				result := xmldot.Get(resultXML, path)
+				exists := result.Exists()
+				value := result.String()
+
+				if shouldHaveRemove && (!exists || value != "remove") {
+					t.Errorf("Expected operation='remove' at %q, exists=%v, value=%q", path, exists, value)
+				} else if exists {
+					t.Logf("✓ Found operation='remove' at %q", path)
+				}
+			}
+
+			// Check paths that should NOT exist (redundant child removals)
+			for _, path := range tt.shouldNotExist {
+				result := xmldot.Get(resultXML, path)
+				if result.Exists() {
+					t.Errorf("Path %q should NOT exist (redundant child removal), but found value: %q", path, result.String())
+				} else {
+					t.Logf("✓ Correctly skipped redundant removal at %q", path)
+				}
+			}
+
+			// Verify key elements are preserved (not removed)
+			// Check for ipv4-host keys if present in paths
+			if strings.Contains(strings.Join(tt.removePaths, " "), "ipv4-host=") {
+				// Look for ipv4-host elements that should still exist as keys
+				if strings.Contains(resultXML, "<ipv4-host>1.1.1.1</ipv4-host>") {
+					t.Logf("✓ Key element <ipv4-host> preserved correctly")
+				}
+			}
+			// Check for vrf keys if present
+			if strings.Contains(strings.Join(tt.removePaths, " "), "vrf=") {
+				if strings.Contains(resultXML, "<vrf>VRF1</vrf>") {
+					t.Logf("✓ Key element <vrf> preserved correctly")
+				}
+			}
+		})
+	}
+}
+
+// TestCleanupRedundantRemoveOperations tests the cleanup function with various XML scenarios
+func TestCleanupRedundantRemoveOperations(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+	}{
+		{
+			name: "simple parent-child with redundant child operation",
+			input: `<logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <trap operation="remove">
+    <severity operation="remove"></severity>
+  </trap>
+</logging>`,
+			expected: `<logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <trap operation="remove"></trap>
+</logging>`,
+		},
+		{
+			name: "nested removals with multiple levels",
+			input: `<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <logging operation="remove">
+    <trap operation="remove">
+      <severity operation="remove"></severity>
+    </trap>
+    <buffered operation="remove">
+      <size-value operation="remove"></size-value>
+      <severity-level operation="remove"></severity-level>
+    </buffered>
+  </logging>
+</native>`,
+			expected: `<native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <logging operation="remove"></logging>
+</native>`,
+		},
+		{
+			name: "preserve keys in removed list items",
+			input: `<host operation="remove">
+  <ipv4-host-vrf-list operation="remove">
+    <ipv4-host>1.1.1.1</ipv4-host>
+    <vrf>VRF1</vrf>
+    <transport operation="remove"></transport>
+  </ipv4-host-vrf-list>
+</host>`,
+			expected: `<host operation="remove">
+  <ipv4-host-vrf-list>
+    <ipv4-host>1.1.1.1</ipv4-host>
+    <vrf>VRF1</vrf>
+  </ipv4-host-vrf-list>
+</host>`,
+		},
+		{
+			name: "multiple siblings with removals",
+			input: `<logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <trap operation="remove">
+    <severity operation="remove"></severity>
+  </trap>
+  <buffered operation="remove">
+    <size-value operation="remove"></size-value>
+    <severity-level operation="remove"></severity-level>
+  </buffered>
+  <console operation="remove"></console>
+</logging>`,
+			expected: `<logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <trap operation="remove"></trap>
+  <buffered operation="remove"></buffered>
+  <console operation="remove"></console>
+</logging>`,
+		},
+		{
+			name: "no redundant operations",
+			input: `<logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <trap operation="remove"></trap>
+  <console operation="remove"></console>
+</logging>`,
+			expected: `<logging xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+  <trap operation="remove"></trap>
+  <console operation="remove"></console>
+</logging>`,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			body := netconf.NewBody(tt.input)
+			result := CleanupRedundantRemoveOperations(body)
+
+			// Normalize whitespace for comparison
+			normalizeXML := func(s string) string {
+				// Remove leading/trailing whitespace
+				s = strings.TrimSpace(s)
+				// Collapse multiple spaces/newlines into single space
+				re := regexp.MustCompile(`\s+`)
+				s = re.ReplaceAllString(s, " ")
+				// Remove spaces around < and >
+				s = strings.ReplaceAll(s, " <", "<")
+				s = strings.ReplaceAll(s, "> ", ">")
+				return s
+			}
+
+			normalizedResult := normalizeXML(result.Res())
+			normalizedExpected := normalizeXML(tt.expected)
+
+			if normalizedResult != normalizedExpected {
+				t.Errorf("CleanupRedundantRemoveOperations() mismatch\nGot:\n%s\n\nExpected:\n%s", result.Res(), tt.expected)
+			} else {
+				t.Logf("✓ Cleanup successful")
+			}
+		})
+	}
+}
+
+// TestSetFromXPath_ThenAppendFromXPath_SiblingElements tests the spanning tree MST instance scenario
+// where we need to set id as a value and append multiple vlan-ids as siblings
+func TestSetFromXPath_ThenAppendFromXPath_SiblingElements(t *testing.T) {
+	cBody := netconf.Body{}
+
+	// Simulate what the spanning tree MST instance code does
+	// First, set the id value
+	cBody = SetFromXPath(cBody, "id", "1")
+	t.Log("After SetFromXPath id:")
+	t.Log(cBody.Res())
+
+	// Then, append vlan-ids values
+	cBody = AppendFromXPath(cBody, "vlan-ids", 10)
+	t.Log("\nAfter first AppendFromXPath vlan-ids:")
+	t.Log(cBody.Res())
+
+	cBody = AppendFromXPath(cBody, "vlan-ids", 20)
+	t.Log("\nAfter second AppendFromXPath vlan-ids:")
+	t.Log(cBody.Res())
+
+	resultXML := cBody.Res()
+
+	// Check the structure
+	idValue := xmldotGetValue(resultXML, "id")
+	vlanIds1 := xmldotGetValue(resultXML, "vlan-ids.0")
+	vlanIds2 := xmldotGetValue(resultXML, "vlan-ids.1")
+
+	t.Logf("\nParsed values:")
+	t.Logf("  id: %q", idValue)
+	t.Logf("  vlan-ids.0: %q", vlanIds1)
+	t.Logf("  vlan-ids.1: %q", vlanIds2)
+
+	// Verify id is set correctly
+	if idValue != "1" {
+		t.Errorf("Expected id='1', got %q", idValue)
+	}
+
+	// Verify vlan-ids are siblings, not nested under id
+	if vlanIds1 != "10" {
+		t.Errorf("Expected vlan-ids.0='10', got %q", vlanIds1)
+	}
+	if vlanIds2 != "20" {
+		t.Errorf("Expected vlan-ids.1='20', got %q", vlanIds2)
+	}
+
+	// Verify XML structure - id and vlan-ids should be siblings
+	if !strings.Contains(resultXML, "<id>1</id>") {
+		t.Error("Expected <id>1</id> element")
+	}
+	if !strings.Contains(resultXML, "<vlan-ids>10</vlan-ids>") {
+		t.Error("Expected <vlan-ids>10</vlan-ids> element")
+	}
+	if !strings.Contains(resultXML, "<vlan-ids>20</vlan-ids>") {
+		t.Error("Expected <vlan-ids>20</vlan-ids> element")
+	}
+
+	// Check for the malformed pattern from the bug report
+	if strings.Contains(resultXML, "<vlan-ids>10</vlan-ids>1") {
+		t.Error("Found malformed XML: vlan-ids followed by id text node (bug reproduced)")
+	}
+
+	t.Log("\n✓ All sibling elements verified successfully")
+}
+
+// TestCleanupRedundantRemoveOperations_RealWorld tests with actual logging resource XML
+func TestCleanupRedundantRemoveOperations_RealWorld(t *testing.T) {
+	// Build the same XML that addDeletePathsXML would create
+	body := netconf.Body{}
+	basePath := "/Cisco-IOS-XE-native:native/logging"
+
+	// Simulate the real order: child first, then parent
+	body = RemoveFromXPath(body, basePath+"/trap/severity")
+	body = RemoveFromXPath(body, basePath+"/trap")
+	body = RemoveFromXPath(body, basePath+"/buffered/size-value")
+	body = RemoveFromXPath(body, basePath+"/buffered/severity-level")
+	body = RemoveFromXPath(body, basePath+"/buffered") // Add parent removal
+
+	xmlBefore := body.Res()
+	t.Logf("Before cleanup:\n%s\n", xmlBefore)
+
+	// Apply cleanup
+	body = CleanupRedundantRemoveOperations(body)
+	xmlAfter := body.Res()
+	t.Logf("After cleanup:\n%s\n", xmlAfter)
+
+	// Verify trap/severity is removed
+	if strings.Contains(xmlAfter, `<severity operation="remove">`) {
+		t.Error("❌ Still contains <severity operation=\"remove\">")
+	} else {
+		t.Log("✓ severity operation removed under trap")
+	}
+
+	// Verify trap still has operation="remove"
+	if !strings.Contains(xmlAfter, `<trap operation="remove">`) {
+		t.Error("❌ trap should still have operation=\"remove\"")
+	} else {
+		t.Log("✓ trap still has operation=\"remove\"")
+	}
+
+	// Verify buffered children are removed
+	if strings.Contains(xmlAfter, `<size-value operation="remove">`) {
+		t.Error("❌ Still contains <size-value operation=\"remove\">")
+	} else {
+		t.Log("✓ size-value removed under buffered")
+	}
+
+	if strings.Contains(xmlAfter, `<severity-level operation="remove">`) {
+		t.Error("❌ Still contains <severity-level operation=\"remove\">")
+	} else {
+		t.Log("✓ severity-level removed under buffered")
+	}
+}
+
+// TestNamespaceExceptions tests that namespace exceptions are correctly applied
+func TestNamespaceExceptions(t *testing.T) {
+	tests := []struct {
+		name              string
+		xPath             string
+		expectedNamespace string
+		expectedPrefix    string
+	}{
+		{
+			name:              "Standard namespace pattern",
+			xPath:             "/Cisco-IOS-XE-native:native/interface",
+			expectedNamespace: "http://cisco.com/ns/yang/Cisco-IOS-XE-native",
+			expectedPrefix:    "Cisco-IOS-XE-native",
+		},
+		{
+			name:              "Template namespace exception",
+			xPath:             "/Cisco-IOS-XE-native:native/template/Cisco-IOS-XE-template:template_details",
+			expectedNamespace: "http://cisco.com/ns/yang/ios-xe/template",
+			expectedPrefix:    "Cisco-IOS-XE-template",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			body := netconf.Body{}
+			body = SetFromXPath(body, tt.xPath, "")
+
+			resultXML := body.Res()
+			t.Logf("Generated XML:\n%s", resultXML)
+
+			// Check if the correct namespace is present in the XML
+			if !strings.Contains(resultXML, tt.expectedNamespace) {
+				t.Errorf("Expected namespace %q not found in XML", tt.expectedNamespace)
+			} else {
+				t.Logf("✓ Correct namespace found: %s", tt.expectedNamespace)
+			}
+
+			// For template exception, verify both namespaces exist
+			if tt.expectedPrefix == "Cisco-IOS-XE-template" {
+				standardNamespace := "http://cisco.com/ns/yang/Cisco-IOS-XE-native"
+				if !strings.Contains(resultXML, standardNamespace) {
+					t.Errorf("Expected standard namespace %q not found in XML", standardNamespace)
+				} else {
+					t.Logf("✓ Standard namespace also present: %s", standardNamespace)
+				}
+			}
+		})
+	}
 }

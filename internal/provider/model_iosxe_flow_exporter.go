@@ -290,52 +290,52 @@ func (data *FlowExporter) updateFromBody(ctx context.Context, res gjson.Result) 
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *FlowExporter) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() && !data.Description.IsNull() {
 		data.Description = types.StringValue(value.String())
 	} else {
 		data.Description = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/destination/ipdest/ip"); value.Exists() && !data.DestinationIp.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/ipdest/ip"); value.Exists() && !data.DestinationIp.IsNull() {
 		data.DestinationIp = types.StringValue(value.String())
 	} else {
 		data.DestinationIp = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/source/Loopback"); value.Exists() && !data.SourceLoopback.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/Loopback"); value.Exists() && !data.SourceLoopback.IsNull() {
 		data.SourceLoopback = types.Int64Value(value.Int())
 	} else {
 		data.SourceLoopback = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/transport/udp"); value.Exists() && !data.TransportUdp.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/transport/udp"); value.Exists() && !data.TransportUdp.IsNull() {
 		data.TransportUdp = types.Int64Value(value.Int())
 	} else {
 		data.TransportUdp = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/template/data/timeout"); value.Exists() && !data.TemplateDataTimeout.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/template/data/timeout"); value.Exists() && !data.TemplateDataTimeout.IsNull() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	} else {
 		data.TemplateDataTimeout = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/export-protocol"); value.Exists() && !data.ExportProtocol.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/export-protocol"); value.Exists() && !data.ExportProtocol.IsNull() {
 		data.ExportProtocol = types.StringValue(value.String())
 	} else {
 		data.ExportProtocol = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/interface-table/timeout"); value.Exists() && !data.OptionInterfaceTableTimeout.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/interface-table/timeout"); value.Exists() && !data.OptionInterfaceTableTimeout.IsNull() {
 		data.OptionInterfaceTableTimeout = types.Int64Value(value.Int())
 	} else {
 		data.OptionInterfaceTableTimeout = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/vrf-table/timeout"); value.Exists() && !data.OptionVrfTableTimeout.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/vrf-table/timeout"); value.Exists() && !data.OptionVrfTableTimeout.IsNull() {
 		data.OptionVrfTableTimeout = types.Int64Value(value.Int())
 	} else {
 		data.OptionVrfTableTimeout = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/sampler-table"); !data.OptionSamplerTable.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/sampler-table"); !data.OptionSamplerTable.IsNull() {
 		if value.Exists() {
 			data.OptionSamplerTable = types.BoolValue(true)
 		} else {
@@ -344,12 +344,12 @@ func (data *FlowExporter) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 	} else {
 		data.OptionSamplerTable = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/application-table/timeout"); value.Exists() && !data.OptionApplicationTableTimeout.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/application-table/timeout"); value.Exists() && !data.OptionApplicationTableTimeout.IsNull() {
 		data.OptionApplicationTableTimeout = types.Int64Value(value.Int())
 	} else {
 		data.OptionApplicationTableTimeout = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/application-attributes/timeout"); value.Exists() && !data.OptionApplicationAttributesTimeout.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/application-attributes/timeout"); value.Exists() && !data.OptionApplicationAttributesTimeout.IsNull() {
 		data.OptionApplicationAttributesTimeout = types.Int64Value(value.Int())
 	} else {
 		data.OptionApplicationAttributesTimeout = types.Int64Null()
@@ -453,39 +453,39 @@ func (data *FlowExporterData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *FlowExporter) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/destination/ipdest/ip"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/ipdest/ip"); value.Exists() {
 		data.DestinationIp = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/source/Loopback"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/Loopback"); value.Exists() {
 		data.SourceLoopback = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/transport/udp"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/transport/udp"); value.Exists() {
 		data.TransportUdp = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/template/data/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/template/data/timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/export-protocol"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/export-protocol"); value.Exists() {
 		data.ExportProtocol = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/interface-table/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/interface-table/timeout"); value.Exists() {
 		data.OptionInterfaceTableTimeout = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/vrf-table/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/vrf-table/timeout"); value.Exists() {
 		data.OptionVrfTableTimeout = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/sampler-table"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/sampler-table"); value.Exists() {
 		data.OptionSamplerTable = types.BoolValue(true)
 	} else {
 		data.OptionSamplerTable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/application-table/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/application-table/timeout"); value.Exists() {
 		data.OptionApplicationTableTimeout = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/application-attributes/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/application-attributes/timeout"); value.Exists() {
 		data.OptionApplicationAttributesTimeout = types.Int64Value(value.Int())
 	}
 }
@@ -495,39 +495,39 @@ func (data *FlowExporter) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *FlowExporterData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/description"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/description"); value.Exists() {
 		data.Description = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/destination/ipdest/ip"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/destination/ipdest/ip"); value.Exists() {
 		data.DestinationIp = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/source/Loopback"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/source/Loopback"); value.Exists() {
 		data.SourceLoopback = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/transport/udp"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/transport/udp"); value.Exists() {
 		data.TransportUdp = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/template/data/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/template/data/timeout"); value.Exists() {
 		data.TemplateDataTimeout = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/export-protocol"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/export-protocol"); value.Exists() {
 		data.ExportProtocol = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/interface-table/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/interface-table/timeout"); value.Exists() {
 		data.OptionInterfaceTableTimeout = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/vrf-table/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/vrf-table/timeout"); value.Exists() {
 		data.OptionVrfTableTimeout = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/sampler-table"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/sampler-table"); value.Exists() {
 		data.OptionSamplerTable = types.BoolValue(true)
 	} else {
 		data.OptionSamplerTable = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/application-table/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/application-table/timeout"); value.Exists() {
 		data.OptionApplicationTableTimeout = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/option/application-attributes/timeout"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/option/application-attributes/timeout"); value.Exists() {
 		data.OptionApplicationAttributesTimeout = types.Int64Value(value.Int())
 	}
 }
@@ -581,40 +581,41 @@ func (data *FlowExporter) getDeletedItems(ctx context.Context, state FlowExporte
 
 func (data *FlowExporter) addDeletedItemsXML(ctx context.Context, state FlowExporter, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Description.IsNull() && data.Description.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
-	}
-	if !state.DestinationIp.IsNull() && data.DestinationIp.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/destination/ipdest/ip")
-	}
-	if !state.SourceLoopback.IsNull() && data.SourceLoopback.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/Loopback")
-	}
-	if !state.TransportUdp.IsNull() && data.TransportUdp.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/transport/udp")
-	}
-	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/template/data/timeout")
-	}
-	if !state.ExportProtocol.IsNull() && data.ExportProtocol.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/export-protocol")
-	}
-	if !state.OptionInterfaceTableTimeout.IsNull() && data.OptionInterfaceTableTimeout.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/interface-table/timeout")
-	}
-	if !state.OptionVrfTableTimeout.IsNull() && data.OptionVrfTableTimeout.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/vrf-table/timeout")
-	}
-	if !state.OptionSamplerTable.IsNull() && data.OptionSamplerTable.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/sampler-table")
+	if !state.OptionApplicationAttributesTimeout.IsNull() && data.OptionApplicationAttributesTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/application-attributes/timeout")
 	}
 	if !state.OptionApplicationTableTimeout.IsNull() && data.OptionApplicationTableTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/application-table/timeout")
 	}
-	if !state.OptionApplicationAttributesTimeout.IsNull() && data.OptionApplicationAttributesTimeout.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/application-attributes/timeout")
+	if !state.OptionSamplerTable.IsNull() && data.OptionSamplerTable.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/sampler-table")
+	}
+	if !state.OptionVrfTableTimeout.IsNull() && data.OptionVrfTableTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/vrf-table/timeout")
+	}
+	if !state.OptionInterfaceTableTimeout.IsNull() && data.OptionInterfaceTableTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/option/interface-table/timeout")
+	}
+	if !state.ExportProtocol.IsNull() && data.ExportProtocol.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/export-protocol")
+	}
+	if !state.TemplateDataTimeout.IsNull() && data.TemplateDataTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/template/data/timeout")
+	}
+	if !state.TransportUdp.IsNull() && data.TransportUdp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/transport/udp")
+	}
+	if !state.SourceLoopback.IsNull() && data.SourceLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/source/Loopback")
+	}
+	if !state.DestinationIp.IsNull() && data.DestinationIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/destination/ipdest/ip")
+	}
+	if !state.Description.IsNull() && data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/description")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -680,40 +681,41 @@ func (data *FlowExporter) getDeletePaths(ctx context.Context) []string {
 
 func (data *FlowExporter) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Description.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
-	}
-	if !data.DestinationIp.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/destination/ipdest/ip")
-	}
-	if !data.SourceLoopback.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/source/Loopback")
-	}
-	if !data.TransportUdp.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/transport/udp")
-	}
-	if !data.TemplateDataTimeout.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/template/data/timeout")
-	}
-	if !data.ExportProtocol.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/export-protocol")
-	}
-	if !data.OptionInterfaceTableTimeout.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/interface-table/timeout")
-	}
-	if !data.OptionVrfTableTimeout.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/vrf-table/timeout")
-	}
-	if !data.OptionSamplerTable.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/sampler-table")
+	if !data.OptionApplicationAttributesTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/application-attributes/timeout")
 	}
 	if !data.OptionApplicationTableTimeout.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/application-table/timeout")
 	}
-	if !data.OptionApplicationAttributesTimeout.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/application-attributes/timeout")
+	if !data.OptionSamplerTable.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/sampler-table")
+	}
+	if !data.OptionVrfTableTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/vrf-table/timeout")
+	}
+	if !data.OptionInterfaceTableTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/option/interface-table/timeout")
+	}
+	if !data.ExportProtocol.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/export-protocol")
+	}
+	if !data.TemplateDataTimeout.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/template/data/timeout")
+	}
+	if !data.TransportUdp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/transport/udp")
+	}
+	if !data.SourceLoopback.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/source/Loopback")
+	}
+	if !data.DestinationIp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/destination/ipdest/ip")
+	}
+	if !data.Description.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/description")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

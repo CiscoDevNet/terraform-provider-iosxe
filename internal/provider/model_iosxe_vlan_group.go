@@ -154,12 +154,12 @@ func (data *VLANGroup) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *VLANGroup) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vlan-lists"); value.Exists() && !data.VlanLists.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() && !data.VlanLists.IsNull() {
 		data.VlanLists = helpers.GetInt64ListXML(value.Array())
 	} else {
 		data.VlanLists = types.ListNull(types.Int64Type)
@@ -203,7 +203,7 @@ func (data *VLANGroupData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *VLANGroup) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vlan-lists"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() {
 		data.VlanLists = helpers.GetInt64ListXML(value.Array())
 	} else {
 		data.VlanLists = types.ListNull(types.Int64Type)
@@ -215,7 +215,7 @@ func (data *VLANGroup) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *VLANGroupData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vlan-lists"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vlan-lists"); value.Exists() {
 		data.VlanLists = helpers.GetInt64ListXML(value.Array())
 	} else {
 		data.VlanLists = types.ListNull(types.Int64Type)
@@ -281,6 +281,7 @@ func (data *VLANGroup) addDeletedItemsXML(ctx context.Context, state VLANGroup, 
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -314,9 +315,14 @@ func (data *VLANGroup) getDeletePaths(ctx context.Context) []string {
 func (data *VLANGroup) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 	if !data.VlanLists.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/vlan-lists")
+		var values []int64
+		data.VlanLists.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/vlan-lists[.=%v]", v))
+		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

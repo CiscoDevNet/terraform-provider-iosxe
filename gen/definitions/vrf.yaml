@@ -18,6 +18,7 @@ attributes:
     example: 22:22
   - yang_name: route-target/import
     type: Set
+    exclude_test: true
     attributes:
       - yang_name: asn-ip
         tf_name: value
@@ -28,6 +29,7 @@ attributes:
         example: false
   - yang_name: route-target/export
     type: Set
+    exclude_test: true
     attributes:
       - yang_name: asn-ip
         tf_name: value

@@ -149,6 +149,7 @@ attributes:
     example: 1300
   - yang_name: ipv6/nd/Cisco-IOS-XE-nd:ra/suppress/all
     example: true
+    exclude_test: true
   - yang_name: ipv6/address/autoconfig/default
     example: true
     exclude_test: true

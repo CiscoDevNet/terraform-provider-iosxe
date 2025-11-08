@@ -995,7 +995,7 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.Console[i].First.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/console").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/console").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1100,7 +1100,7 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{strconv.FormatInt(data.Vty[i].First.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vty").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vty").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1295,7 +1295,7 @@ func (data *Line) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.Aux[i].First.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/aux").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/aux").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1808,7 +1808,7 @@ func (data *LineData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *Line) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/console"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console"); value.Exists() {
 		data.Console = make([]LineConsole, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := LineConsole{}
@@ -1871,7 +1871,7 @@ func (data *Line) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vty"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vty"); value.Exists() {
 		data.Vty = make([]LineVty, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := LineVty{}
@@ -1982,7 +1982,7 @@ func (data *Line) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/aux"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/aux"); value.Exists() {
 		data.Aux = make([]LineAux, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := LineAux{}
@@ -2024,7 +2024,7 @@ func (data *Line) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/console"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/console"); value.Exists() {
 		data.Console = make([]LineConsole, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := LineConsole{}
@@ -2087,7 +2087,7 @@ func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vty"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vty"); value.Exists() {
 		data.Vty = make([]LineVty, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := LineVty{}
@@ -2198,7 +2198,7 @@ func (data *LineData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/aux"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/aux"); value.Exists() {
 		data.Aux = make([]LineAux, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := LineAux{}
@@ -2534,16 +2534,16 @@ func (data *Line) getDeletedItems(ctx context.Context, state Line) []string {
 
 func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body string) string {
 	b := netconf.NewBody(body)
-	for i := range state.Console {
+	for i := range state.Aux {
 		stateKeys := [...]string{"first"}
-		stateKeyValues := [...]string{state.Console[i].First.ValueString()}
+		stateKeyValues := [...]string{state.Aux[i].First.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Console[i].First.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Aux[i].First.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2551,77 +2551,35 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 		}
 
 		found := false
-		for j := range data.Console {
+		for j := range data.Aux {
 			found = true
-			if state.Console[i].First.ValueString() != data.Console[j].First.ValueString() {
+			if state.Aux[i].First.ValueString() != data.Aux[j].First.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Console[i].ExecTimeoutMinutes.IsNull() && data.Console[j].ExecTimeoutMinutes.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/exec-timeout/minutes", predicates))
+				if !state.Aux[i].TransportOutputNone.IsNull() && data.Aux[j].TransportOutputNone.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/transport/output/none", predicates))
 				}
-				if !state.Console[i].ExecTimeoutSeconds.IsNull() && data.Console[j].ExecTimeoutSeconds.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/exec-timeout/seconds", predicates))
+				if !state.Aux[i].Monitor.IsNull() && data.Aux[j].Monitor.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/monitor", predicates))
 				}
-				if !state.Console[i].LoginLocal.IsNull() && data.Console[j].LoginLocal.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/login/local", predicates))
+				if !state.Aux[i].ExecTimeoutSeconds.IsNull() && data.Aux[j].ExecTimeoutSeconds.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/exec-timeout/seconds", predicates))
 				}
-				if !state.Console[i].LoginAuthentication.IsNull() && data.Console[j].LoginAuthentication.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/login/authentication", predicates))
+				if !state.Aux[i].ExecTimeoutMinutes.IsNull() && data.Aux[j].ExecTimeoutMinutes.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/exec-timeout/minutes", predicates))
 				}
-				if !state.Console[i].PrivilegeLevel.IsNull() && data.Console[j].PrivilegeLevel.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/privilege/level/number", predicates))
+				if !state.Aux[i].LoggingSynchronous.IsNull() && data.Aux[j].LoggingSynchronous.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/logging/synchronous", predicates))
 				}
-				if !state.Console[i].Stopbits.IsNull() && data.Console[j].Stopbits.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/stopbits", predicates))
-				}
-				if !state.Console[i].PasswordLevel.IsNull() && data.Console[j].PasswordLevel.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/level", predicates))
-				}
-				if !state.Console[i].PasswordType.IsNull() && data.Console[j].PasswordType.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/type", predicates))
-				}
-				if !state.Console[i].Password.IsNull() && data.Console[j].Password.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/secret", predicates))
-				}
-				if !state.Console[i].EscapeCharacter.IsNull() && data.Console[j].EscapeCharacter.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/escape-character/char", predicates))
-				}
-				if !state.Console[i].LoggingSynchronous.IsNull() && data.Console[j].LoggingSynchronous.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/logging/synchronous", predicates))
-				}
-				if !state.Console[i].TransportOutputAll.IsNull() && data.Console[j].TransportOutputAll.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/all", predicates))
-				}
-				if !state.Console[i].TransportOutputNone.IsNull() && data.Console[j].TransportOutputNone.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/none", predicates))
-				}
-				if !state.Console[i].TransportOutput.IsNull() {
-					if data.Console[j].TransportOutput.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/output", predicates))
-					} else {
-						var dataValues, stateValues []string
-						data.Console[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
-						state.Console[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/output[.=%v]", predicates, v))
-							}
-						}
-					}
+				if !state.Aux[i].EscapeCharacter.IsNull() && data.Aux[j].EscapeCharacter.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/escape-character/char", predicates))
 				}
 				break
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v", predicates))
 		}
 	}
 	for i := range state.Vty {
@@ -2647,8 +2605,101 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 				found = false
 			}
 			if found {
-				if !state.Vty[i].Last.IsNull() && data.Vty[j].Last.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/last", predicates))
+				if !state.Vty[i].TransportOutput.IsNull() {
+					if data.Vty[j].TransportOutput.IsNull() {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/output", predicates))
+					} else {
+						var dataValues, stateValues []string
+						data.Vty[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/output[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Vty[i].TransportOutputNone.IsNull() && data.Vty[j].TransportOutputNone.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/none", predicates))
+				}
+				if !state.Vty[i].TransportOutputAll.IsNull() && data.Vty[j].TransportOutputAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/all", predicates))
+				}
+				if !state.Vty[i].LoggingSynchronous.IsNull() && data.Vty[j].LoggingSynchronous.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/logging/synchronous", predicates))
+				}
+				if !state.Vty[i].Stopbits.IsNull() && data.Vty[j].Stopbits.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/stopbits", predicates))
+				}
+				if !state.Vty[i].SessionTimeout.IsNull() && data.Vty[j].SessionTimeout.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/session-timeout/session-timeout-value", predicates))
+				}
+				if !state.Vty[i].Monitor.IsNull() && data.Vty[j].Monitor.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/monitor", predicates))
+				}
+				if !state.Vty[i].TransportInput.IsNull() {
+					if data.Vty[j].TransportInput.IsNull() {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/input", predicates))
+					} else {
+						var dataValues, stateValues []string
+						data.Vty[i].TransportInput.ElementsAs(ctx, &dataValues, false)
+						state.Vty[j].TransportInput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/input[.=%v]", predicates, v))
+							}
+						}
+					}
+				}
+				if !state.Vty[i].TransportInputNone.IsNull() && data.Vty[j].TransportInputNone.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/none", predicates))
+				}
+				if !state.Vty[i].TransportInputAll.IsNull() && data.Vty[j].TransportInputAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/all", predicates))
+				}
+				if !state.Vty[i].AuthorizationExecDefault.IsNull() && data.Vty[j].AuthorizationExecDefault.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/authorization/exec/default", predicates))
+				}
+				if !state.Vty[i].AuthorizationExec.IsNull() && data.Vty[j].AuthorizationExec.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/authorization/exec/authorization-name", predicates))
+				}
+				if !state.Vty[i].EscapeCharacter.IsNull() && data.Vty[j].EscapeCharacter.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/escape-character/char", predicates))
+				}
+				if !state.Vty[i].TransportPreferredProtocol.IsNull() && data.Vty[j].TransportPreferredProtocol.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/preferred/protocol", predicates))
+				}
+				if !state.Vty[i].LoginAuthentication.IsNull() && data.Vty[j].LoginAuthentication.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/login/authentication", predicates))
+				}
+				if !state.Vty[i].Password.IsNull() && data.Vty[j].Password.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/secret", predicates))
+				}
+				if !state.Vty[i].PasswordType.IsNull() && data.Vty[j].PasswordType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/type", predicates))
+				}
+				if !state.Vty[i].PasswordLevel.IsNull() && data.Vty[j].PasswordLevel.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/level", predicates))
+				}
+				if !state.Vty[i].ExecTimeoutSeconds.IsNull() && data.Vty[j].ExecTimeoutSeconds.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/exec-timeout/seconds", predicates))
+				}
+				if !state.Vty[i].ExecTimeoutMinutes.IsNull() && data.Vty[j].ExecTimeoutMinutes.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/exec-timeout/minutes", predicates))
 				}
 				for ci := range state.Vty[i].AccessClasses {
 					cstateKeys := [...]string{"direction"}
@@ -2673,11 +2724,11 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 							found = false
 						}
 						if found {
-							if !state.Vty[i].AccessClasses[ci].AccessList.IsNull() && data.Vty[j].AccessClasses[cj].AccessList.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/access-class/acccess-list%v/access-list", predicates, cpredicates))
-							}
 							if !state.Vty[i].AccessClasses[ci].VrfAlso.IsNull() && data.Vty[j].AccessClasses[cj].VrfAlso.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/access-class/acccess-list%v/vrf-also", predicates, cpredicates))
+							}
+							if !state.Vty[i].AccessClasses[ci].AccessList.IsNull() && data.Vty[j].AccessClasses[cj].AccessList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/access-class/acccess-list%v/access-list", predicates, cpredicates))
 							}
 							break
 						}
@@ -2686,101 +2737,8 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/access-class/acccess-list%v", predicates, cpredicates))
 					}
 				}
-				if !state.Vty[i].ExecTimeoutMinutes.IsNull() && data.Vty[j].ExecTimeoutMinutes.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/exec-timeout/minutes", predicates))
-				}
-				if !state.Vty[i].ExecTimeoutSeconds.IsNull() && data.Vty[j].ExecTimeoutSeconds.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/exec-timeout/seconds", predicates))
-				}
-				if !state.Vty[i].PasswordLevel.IsNull() && data.Vty[j].PasswordLevel.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/level", predicates))
-				}
-				if !state.Vty[i].PasswordType.IsNull() && data.Vty[j].PasswordType.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/type", predicates))
-				}
-				if !state.Vty[i].Password.IsNull() && data.Vty[j].Password.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/password/secret", predicates))
-				}
-				if !state.Vty[i].LoginAuthentication.IsNull() && data.Vty[j].LoginAuthentication.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/login/authentication", predicates))
-				}
-				if !state.Vty[i].TransportPreferredProtocol.IsNull() && data.Vty[j].TransportPreferredProtocol.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/preferred/protocol", predicates))
-				}
-				if !state.Vty[i].EscapeCharacter.IsNull() && data.Vty[j].EscapeCharacter.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/escape-character/char", predicates))
-				}
-				if !state.Vty[i].AuthorizationExec.IsNull() && data.Vty[j].AuthorizationExec.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/authorization/exec/authorization-name", predicates))
-				}
-				if !state.Vty[i].AuthorizationExecDefault.IsNull() && data.Vty[j].AuthorizationExecDefault.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/authorization/exec/default", predicates))
-				}
-				if !state.Vty[i].TransportInputAll.IsNull() && data.Vty[j].TransportInputAll.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/all", predicates))
-				}
-				if !state.Vty[i].TransportInputNone.IsNull() && data.Vty[j].TransportInputNone.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/none", predicates))
-				}
-				if !state.Vty[i].TransportInput.IsNull() {
-					if data.Vty[j].TransportInput.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/input", predicates))
-					} else {
-						var dataValues, stateValues []string
-						data.Vty[i].TransportInput.ElementsAs(ctx, &dataValues, false)
-						state.Vty[j].TransportInput.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/input/input[.=%v]", predicates, v))
-							}
-						}
-					}
-				}
-				if !state.Vty[i].Monitor.IsNull() && data.Vty[j].Monitor.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/monitor", predicates))
-				}
-				if !state.Vty[i].SessionTimeout.IsNull() && data.Vty[j].SessionTimeout.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/session-timeout/session-timeout-value", predicates))
-				}
-				if !state.Vty[i].Stopbits.IsNull() && data.Vty[j].Stopbits.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/stopbits", predicates))
-				}
-				if !state.Vty[i].LoggingSynchronous.IsNull() && data.Vty[j].LoggingSynchronous.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/logging/synchronous", predicates))
-				}
-				if !state.Vty[i].TransportOutputAll.IsNull() && data.Vty[j].TransportOutputAll.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/all", predicates))
-				}
-				if !state.Vty[i].TransportOutputNone.IsNull() && data.Vty[j].TransportOutputNone.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/none", predicates))
-				}
-				if !state.Vty[i].TransportOutput.IsNull() {
-					if data.Vty[j].TransportOutput.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/output", predicates))
-					} else {
-						var dataValues, stateValues []string
-						data.Vty[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
-						state.Vty[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/transport/output/output[.=%v]", predicates, v))
-							}
-						}
-					}
+				if !state.Vty[i].Last.IsNull() && data.Vty[j].Last.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v/last", predicates))
 				}
 				break
 			}
@@ -2789,16 +2747,16 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vty%v", predicates))
 		}
 	}
-	for i := range state.Aux {
+	for i := range state.Console {
 		stateKeys := [...]string{"first"}
-		stateKeyValues := [...]string{state.Aux[i].First.ValueString()}
+		stateKeyValues := [...]string{state.Console[i].First.ValueString()}
 		predicates := ""
 		for i := range stateKeys {
 			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
 		}
 
 		emptyKeys := true
-		if !reflect.ValueOf(state.Aux[i].First.ValueString()).IsZero() {
+		if !reflect.ValueOf(state.Console[i].First.ValueString()).IsZero() {
 			emptyKeys = false
 		}
 		if emptyKeys {
@@ -2806,38 +2764,81 @@ func (data *Line) addDeletedItemsXML(ctx context.Context, state Line, body strin
 		}
 
 		found := false
-		for j := range data.Aux {
+		for j := range data.Console {
 			found = true
-			if state.Aux[i].First.ValueString() != data.Aux[j].First.ValueString() {
+			if state.Console[i].First.ValueString() != data.Console[j].First.ValueString() {
 				found = false
 			}
 			if found {
-				if !state.Aux[i].EscapeCharacter.IsNull() && data.Aux[j].EscapeCharacter.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/escape-character/char", predicates))
+				if !state.Console[i].TransportOutput.IsNull() {
+					if data.Console[j].TransportOutput.IsNull() {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/output", predicates))
+					} else {
+						var dataValues, stateValues []string
+						data.Console[i].TransportOutput.ElementsAs(ctx, &dataValues, false)
+						state.Console[j].TransportOutput.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/output[.=%v]", predicates, v))
+							}
+						}
+					}
 				}
-				if !state.Aux[i].LoggingSynchronous.IsNull() && data.Aux[j].LoggingSynchronous.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/logging/synchronous", predicates))
+				if !state.Console[i].TransportOutputNone.IsNull() && data.Console[j].TransportOutputNone.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/none", predicates))
 				}
-				if !state.Aux[i].ExecTimeoutMinutes.IsNull() && data.Aux[j].ExecTimeoutMinutes.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/exec-timeout/minutes", predicates))
+				if !state.Console[i].TransportOutputAll.IsNull() && data.Console[j].TransportOutputAll.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/transport/output/all", predicates))
 				}
-				if !state.Aux[i].ExecTimeoutSeconds.IsNull() && data.Aux[j].ExecTimeoutSeconds.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/exec-timeout/seconds", predicates))
+				if !state.Console[i].LoggingSynchronous.IsNull() && data.Console[j].LoggingSynchronous.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/logging/synchronous", predicates))
 				}
-				if !state.Aux[i].Monitor.IsNull() && data.Aux[j].Monitor.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/monitor", predicates))
+				if !state.Console[i].EscapeCharacter.IsNull() && data.Console[j].EscapeCharacter.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/escape-character/char", predicates))
 				}
-				if !state.Aux[i].TransportOutputNone.IsNull() && data.Aux[j].TransportOutputNone.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v/transport/output/none", predicates))
+				if !state.Console[i].Password.IsNull() && data.Console[j].Password.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/secret", predicates))
+				}
+				if !state.Console[i].PasswordType.IsNull() && data.Console[j].PasswordType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/type", predicates))
+				}
+				if !state.Console[i].PasswordLevel.IsNull() && data.Console[j].PasswordLevel.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/password/level", predicates))
+				}
+				if !state.Console[i].Stopbits.IsNull() && data.Console[j].Stopbits.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/stopbits", predicates))
+				}
+				if !state.Console[i].PrivilegeLevel.IsNull() && data.Console[j].PrivilegeLevel.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/privilege/level/number", predicates))
+				}
+				if !state.Console[i].LoginAuthentication.IsNull() && data.Console[j].LoginAuthentication.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/login/authentication", predicates))
+				}
+				if !state.Console[i].LoginLocal.IsNull() && data.Console[j].LoginLocal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/login/local", predicates))
+				}
+				if !state.Console[i].ExecTimeoutSeconds.IsNull() && data.Console[j].ExecTimeoutSeconds.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/exec-timeout/seconds", predicates))
+				}
+				if !state.Console[i].ExecTimeoutMinutes.IsNull() && data.Console[j].ExecTimeoutMinutes.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v/exec-timeout/minutes", predicates))
 				}
 				break
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/aux%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/console%v", predicates))
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -2929,6 +2930,7 @@ func (data *Line) getDeletePaths(ctx context.Context) []string {
 func (data *Line) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

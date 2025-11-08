@@ -337,24 +337,24 @@ func (data *CDP) updateFromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() && !data.Holdtime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() && !data.Holdtime.IsNull() {
 		data.Holdtime = types.Int64Value(value.Int())
 	} else {
 		data.Holdtime = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() && !data.Timer.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() && !data.Timer.IsNull() {
 		data.Timer = types.Int64Value(value.Int())
 	} else {
 		data.Timer = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); !data.Run.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); !data.Run.IsNull() {
 		if value.Exists() {
 			data.Run = types.BoolValue(value.Bool())
 		}
 	} else {
 		data.Run = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() && !data.FilterTlvList.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() && !data.FilterTlvList.IsNull() {
 		data.FilterTlvList = types.StringValue(value.String())
 	} else {
 		data.FilterTlvList = types.StringNull()
@@ -364,7 +364,7 @@ func (data *CDP) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -562,21 +562,21 @@ func (data *CDPData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() {
 		data.Holdtime = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() {
 		data.Timer = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
 		data.Run = types.BoolValue(value.Bool())
 	} else {
 		data.Run = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
 		data.FilterTlvList = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
 		data.TlvLists = make([]CDPTlvLists, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := CDPTlvLists{}
@@ -619,21 +619,21 @@ func (data *CDP) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CDPData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime"); value.Exists() {
 		data.Holdtime = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:timer"); value.Exists() {
 		data.Timer = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable"); value.Exists() {
 		data.Run = types.BoolValue(value.Bool())
 	} else {
 		data.Run = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list"); value.Exists() {
 		data.FilterTlvList = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list"); value.Exists() {
 		data.TlvLists = make([]CDPTlvLists, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := CDPTlvLists{}
@@ -739,18 +739,6 @@ func (data *CDP) getDeletedItems(ctx context.Context, state CDP) []string {
 
 func (data *CDP) addDeletedItemsXML(ctx context.Context, state CDP, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:holdtime")
-	}
-	if !state.Timer.IsNull() && data.Timer.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:timer")
-	}
-	if !state.Run.IsNull() && data.Run.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:run-enable")
-	}
-	if !state.FilterTlvList.IsNull() && data.FilterTlvList.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list")
-	}
 	for i := range state.TlvLists {
 		stateKeys := [...]string{"name"}
 		stateKeyValues := [...]string{state.TlvLists[i].Name.ValueString()}
@@ -774,20 +762,20 @@ func (data *CDP) addDeletedItemsXML(ctx context.Context, state CDP, body string)
 				found = false
 			}
 			if found {
-				if !state.TlvLists[i].VtpMgmtDomain.IsNull() && data.TlvLists[j].VtpMgmtDomain.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/vtp-mgmt-domain", predicates))
-				}
-				if !state.TlvLists[i].Cos.IsNull() && data.TlvLists[j].Cos.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/cos", predicates))
-				}
-				if !state.TlvLists[i].Duplex.IsNull() && data.TlvLists[j].Duplex.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/duplex", predicates))
+				if !state.TlvLists[i].Version.IsNull() && data.TlvLists[j].Version.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/version", predicates))
 				}
 				if !state.TlvLists[i].Trust.IsNull() && data.TlvLists[j].Trust.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/trust", predicates))
 				}
-				if !state.TlvLists[i].Version.IsNull() && data.TlvLists[j].Version.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/version", predicates))
+				if !state.TlvLists[i].Duplex.IsNull() && data.TlvLists[j].Duplex.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/duplex", predicates))
+				}
+				if !state.TlvLists[i].Cos.IsNull() && data.TlvLists[j].Cos.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/cos", predicates))
+				}
+				if !state.TlvLists[i].VtpMgmtDomain.IsNull() && data.TlvLists[j].VtpMgmtDomain.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v/vtp-mgmt-domain", predicates))
 				}
 				break
 			}
@@ -796,7 +784,20 @@ func (data *CDP) addDeletedItemsXML(ctx context.Context, state CDP, body string)
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v", predicates))
 		}
 	}
+	if !state.FilterTlvList.IsNull() && data.FilterTlvList.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list")
+	}
+	if !state.Run.IsNull() && data.Run.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:run-enable")
+	}
+	if !state.Timer.IsNull() && data.Timer.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:timer")
+	}
+	if !state.Holdtime.IsNull() && data.Holdtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-cdp:holdtime")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -862,18 +863,6 @@ func (data *CDP) getDeletePaths(ctx context.Context) []string {
 
 func (data *CDP) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Holdtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime")
-	}
-	if !data.Timer.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:timer")
-	}
-	if !data.Run.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable")
-	}
-	if !data.FilterTlvList.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list")
-	}
 	for i := range data.TlvLists {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.TlvLists[i].Name.ValueString()}
@@ -884,7 +873,20 @@ func (data *CDP) addDeletePathsXML(ctx context.Context, body string) string {
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-cdp:tlv-list%v", predicates))
 	}
+	if !data.FilterTlvList.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:filter-tlv-list")
+	}
+	if !data.Run.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:run-enable")
+	}
+	if !data.Timer.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:timer")
+	}
+	if !data.Holdtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-cdp:holdtime")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

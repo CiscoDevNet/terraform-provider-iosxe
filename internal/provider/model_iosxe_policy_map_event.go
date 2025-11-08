@@ -127,13 +127,13 @@ func (data PolicyMapEvent) getPathShort() string {
 
 // getXPath returns the XPath for NETCONF operations
 func (data PolicyMapEvent) getXPath() string {
-	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[event-type=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.EventType.ValueString()))
 	return path
 }
 
 func (data PolicyMapEventData) getXPath() string {
-	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[name=%v]"
+	path := "/Cisco-IOS-XE-native:native/policy/Cisco-IOS-XE-policy:policy-map[name=%s]/event[event-type=%v]"
 	path = fmt.Sprintf(path, fmt.Sprintf("%v", data.Name.ValueString()), fmt.Sprintf("%v", data.EventType.ValueString()))
 	return path
 }
@@ -816,12 +816,12 @@ func (data *PolicyMapEvent) updateFromBody(ctx context.Context, res gjson.Result
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *PolicyMapEvent) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/event-type"); value.Exists() && !data.EventType.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/event-type"); value.Exists() && !data.EventType.IsNull() {
 		data.EventType = types.StringValue(value.String())
 	} else {
 		data.EventType = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match-type"); value.Exists() && !data.MatchType.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match-type"); value.Exists() && !data.MatchType.IsNull() {
 		data.MatchType = types.StringValue(value.String())
 	} else {
 		data.MatchType = types.StringNull()
@@ -831,7 +831,7 @@ func (data *PolicyMapEvent) updateFromBodyXML(ctx context.Context, res xmldot.Re
 		keyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].Number.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/class-number").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/class-number").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1463,10 +1463,10 @@ func (data *PolicyMapEventData) fromBody(ctx context.Context, res gjson.Result) 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *PolicyMapEvent) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match-type"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match-type"); value.Exists() {
 		data.MatchType = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/class-number"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/class-number"); value.Exists() {
 		data.ClassNumbers = make([]PolicyMapEventClassNumbers, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := PolicyMapEventClassNumbers{}
@@ -1629,10 +1629,10 @@ func (data *PolicyMapEvent) fromBodyXML(ctx context.Context, res xmldot.Result) 
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *PolicyMapEventData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match-type"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match-type"); value.Exists() {
 		data.MatchType = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/class-number"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/class-number"); value.Exists() {
 		data.ClassNumbers = make([]PolicyMapEventClassNumbers, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := PolicyMapEventClassNumbers{}
@@ -1967,9 +1967,6 @@ func (data *PolicyMapEvent) getDeletedItems(ctx context.Context, state PolicyMap
 
 func (data *PolicyMapEvent) addDeletedItemsXML(ctx context.Context, state PolicyMapEvent, body string) string {
 	b := netconf.NewBody(body)
-	if !state.MatchType.IsNull() && data.MatchType.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match-type")
-	}
 	for i := range state.ClassNumbers {
 		stateKeys := [...]string{"number"}
 		stateKeyValues := [...]string{strconv.FormatInt(state.ClassNumbers[i].Number.ValueInt64(), 10)}
@@ -1993,12 +1990,6 @@ func (data *PolicyMapEvent) addDeletedItemsXML(ctx context.Context, state Policy
 				found = false
 			}
 			if found {
-				if !state.ClassNumbers[i].Class.IsNull() && data.ClassNumbers[j].Class.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/class", predicates))
-				}
-				if !state.ClassNumbers[i].ExecutionType.IsNull() && data.ClassNumbers[j].ExecutionType.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/execution-type", predicates))
-				}
 				for ci := range state.ClassNumbers[i].ActionNumbers {
 					cstateKeys := [...]string{"number"}
 					cstateKeyValues := [...]string{strconv.FormatInt(state.ClassNumbers[i].ActionNumbers[ci].Number.ValueInt64(), 10)}
@@ -2022,107 +2013,107 @@ func (data *PolicyMapEvent) addDeletedItemsXML(ctx context.Context, state Policy
 							found = false
 						}
 						if found {
-							if !state.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].PauseReauthentication.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/pause/reauthentication", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Authorize.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authorize", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].TerminateConfig.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].TerminateConfig.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/terminate-config", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigServiceTemplate.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/service-template", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigAaaList.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/aaa-list", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigPrecedence.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/precedence", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigReplaceAll.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/replace-all", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateInterfaceTemplate.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/interface-template", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivatePolicyTypeControlSubscriber.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/policy/type/control/subscriber", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateInterfaceTemplate.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/interface-template", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateServiceTemplate.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/service-template", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivatePolicyTypeControlSubscriber.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/policy/type/control/subscriber", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingMethod.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/method", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetries.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/retries", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetryTime.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/retry-time", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/priority", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcList.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa/authc-list", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzList.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa/authz-list", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingBoth.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/both", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingParameterMap.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/parameter-map", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Replace.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/replace", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Restrict.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/restrict", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearSession.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/clear-session", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearAuthenticatedDataHostsOnPort.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/clear-authenticated-data-hosts-on-port", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Protect.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/protect", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ErrDisable.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/err-disable", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ResumeReauthentication.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/resume/reauthentication", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticationRestart.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authentication-restart", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].SetDomain.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetDomain.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/set-domain", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Unauthorize.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/unauthorize", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Notify.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/notify", predicates, cpredicates))
-							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerName.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerName.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/set-timer/name", predicates, cpredicates))
+							if !state.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].MapAttributeToServiceTable.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/map/attribute-to-service/table", predicates, cpredicates))
 							}
 							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerValue.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerValue.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/set-timer/value", predicates, cpredicates))
 							}
-							if !state.ClassNumbers[i].ActionNumbers[ci].MapAttributeToServiceTable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].MapAttributeToServiceTable.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/map/attribute-to-service/table", predicates, cpredicates))
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetTimerName.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetTimerName.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/set-timer/name", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Notify.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Notify.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/notify", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Unauthorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Unauthorize.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/unauthorize", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].SetDomain.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].SetDomain.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/set-domain", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticationRestart.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticationRestart.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authentication-restart", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ResumeReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ResumeReauthentication.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/resume/reauthentication", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ErrDisable.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ErrDisable.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/err-disable", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Protect.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Protect.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/protect", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ClearAuthenticatedDataHostsOnPort.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearAuthenticatedDataHostsOnPort.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/clear-authenticated-data-hosts-on-port", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ClearSession.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ClearSession.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/clear-session", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Restrict.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Restrict.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/restrict", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Replace.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Replace.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/replace", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingParameterMap.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingParameterMap.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/parameter-map", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingBoth.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingBoth.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/both", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthzList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthzList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa/authz-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingAaaAuthcList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingAaaAuthcList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/aaa/authc-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingPriority.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingPriority.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/priority", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetryTime.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetryTime.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/retry-time", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingRetries.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingRetries.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/retries", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].AuthenticateUsingMethod.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].AuthenticateUsingMethod.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authenticate/using/method", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivatePolicyTypeControlSubscriber.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/policy/type/control/subscriber", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateServiceTemplate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/service-template", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].DeactivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].DeactivateInterfaceTemplate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/deactivate/interface-template", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivatePolicyTypeControlSubscriber.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivatePolicyTypeControlSubscriber.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/policy/type/control/subscriber", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateInterfaceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateInterfaceTemplate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/interface-template", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigReplaceAll.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigReplaceAll.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/replace-all", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigPrecedence.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigPrecedence.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/precedence", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigAaaList.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigAaaList.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/aaa-list", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].ActivateServiceTemplateConfigServiceTemplate.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].ActivateServiceTemplateConfigServiceTemplate.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/activate/service-template-config/service-template", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].TerminateConfig.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].TerminateConfig.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/terminate-config", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].Authorize.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].Authorize.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/authorize", predicates, cpredicates))
+							}
+							if !state.ClassNumbers[i].ActionNumbers[ci].PauseReauthentication.IsNull() && data.ClassNumbers[j].ActionNumbers[cj].PauseReauthentication.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v/pause/reauthentication", predicates, cpredicates))
 							}
 							break
 						}
@@ -2131,6 +2122,12 @@ func (data *PolicyMapEvent) addDeletedItemsXML(ctx context.Context, state Policy
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/action-number%v", predicates, cpredicates))
 					}
 				}
+				if !state.ClassNumbers[i].ExecutionType.IsNull() && data.ClassNumbers[j].ExecutionType.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/execution-type", predicates))
+				}
+				if !state.ClassNumbers[i].Class.IsNull() && data.ClassNumbers[j].Class.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v/class", predicates))
+				}
 				break
 			}
 		}
@@ -2138,7 +2135,11 @@ func (data *PolicyMapEvent) addDeletedItemsXML(ctx context.Context, state Policy
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/class-number%v", predicates))
 		}
 	}
+	if !state.MatchType.IsNull() && data.MatchType.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/match-type")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -2223,9 +2224,6 @@ func (data *PolicyMapEvent) getDeletePaths(ctx context.Context) []string {
 
 func (data *PolicyMapEvent) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.MatchType.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match-type")
-	}
 	for i := range data.ClassNumbers {
 		keys := [...]string{"number"}
 		keyValues := [...]string{strconv.FormatInt(data.ClassNumbers[i].Number.ValueInt64(), 10)}
@@ -2236,7 +2234,11 @@ func (data *PolicyMapEvent) addDeletePathsXML(ctx context.Context, body string) 
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/class-number%v", predicates))
 	}
+	if !data.MatchType.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match-type")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

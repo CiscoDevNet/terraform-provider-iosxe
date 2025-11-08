@@ -240,15 +240,6 @@ func RemoveLastPathElement(p string) string {
 	return path.Dir(p)
 }
 
-// Templating helper function to get xpath if available
-func GetXPath(yangPath, xPath string) string {
-	if xPath != "" {
-		return xPath
-	}
-	return yangPath
-}
-
-
 // Templating helper function to support arithmetic addition
 func Add(a, b int) int {
 	return a + b
@@ -284,7 +275,7 @@ func ImportAttributes(config YamlConfig) []YamlConfigAttribute {
 }
 
 func GetDeletePath(attribute YamlConfigAttribute) string {
-	path := GetXPath(attribute.YangName, attribute.XPath)
+	path := attribute.XPath
 	if attribute.DeleteParent {
 		return RemoveLastPathElement(path)
 	}
@@ -313,7 +304,6 @@ var functions = template.FuncMap{
 	"camelCase":         CamelCase,
 	"snakeCase":         SnakeCase,
 	"hasId":             HasId,
-	"getXPath":          GetXPath,
 	"add":               Add,
 	"getImportExcludes": GetImportExcludes,
 	"importAttributes":  ImportAttributes,

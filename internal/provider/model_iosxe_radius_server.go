@@ -375,7 +375,7 @@ func (data *RadiusServer) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -470,17 +470,17 @@ func (data *RadiusServer) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 			data.Attributes[i].SendAttributes = types.ListNull(types.StringType)
 		}
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() && !data.DeadCriteriaTime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() && !data.DeadCriteriaTime.IsNull() {
 		data.DeadCriteriaTime = types.Int64Value(value.Int())
 	} else {
 		data.DeadCriteriaTime = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() && !data.DeadCriteriaTries.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() && !data.DeadCriteriaTries.IsNull() {
 		data.DeadCriteriaTries = types.Int64Value(value.Int())
 	} else {
 		data.DeadCriteriaTries = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() && !data.Deadtime.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() && !data.Deadtime.IsNull() {
 		data.Deadtime = types.Int64Value(value.Int())
 	} else {
 		data.Deadtime = types.Int64Null()
@@ -628,7 +628,7 @@ func (data *RadiusServerData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *RadiusServer) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute"); value.Exists() {
 		data.Attributes = make([]RadiusServerAttributes, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := RadiusServerAttributes{}
@@ -676,13 +676,13 @@ func (data *RadiusServer) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() {
 		data.DeadCriteriaTime = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() {
 		data.DeadCriteriaTries = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() {
 		data.Deadtime = types.Int64Value(value.Int())
 	}
 }
@@ -692,7 +692,7 @@ func (data *RadiusServer) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *RadiusServerData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:attribute"); value.Exists() {
 		data.Attributes = make([]RadiusServerAttributes, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := RadiusServerAttributes{}
@@ -740,13 +740,13 @@ func (data *RadiusServerData) fromBodyXML(ctx context.Context, res xmldot.Result
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time"); value.Exists() {
 		data.DeadCriteriaTime = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries"); value.Exists() {
 		data.DeadCriteriaTries = types.Int64Value(value.Int())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime"); value.Exists() {
 		data.Deadtime = types.Int64Value(value.Int())
 	}
 }
@@ -862,6 +862,15 @@ func (data *RadiusServer) getDeletedItems(ctx context.Context, state RadiusServe
 
 func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusServer, body string) string {
 	b := netconf.NewBody(body)
+	if !state.Deadtime.IsNull() && data.Deadtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:deadtime")
+	}
+	if !state.DeadCriteriaTries.IsNull() && data.DeadCriteriaTries.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries")
+	}
+	if !state.DeadCriteriaTime.IsNull() && data.DeadCriteriaTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time")
+	}
 	for i := range state.Attributes {
 		stateKeys := [...]string{"number"}
 		stateKeyValues := [...]string{state.Attributes[i].Number.ValueString()}
@@ -885,8 +894,26 @@ func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusSe
 				found = false
 			}
 			if found {
-				if !state.Attributes[i].AccessRequestInclude.IsNull() && data.Attributes[j].AccessRequestInclude.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/access-request/include", predicates))
+				if !state.Attributes[i].SendAttributes.IsNull() {
+					if data.Attributes[j].SendAttributes.IsNull() {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/send-attribute", predicates))
+					} else {
+						var dataValues, stateValues []string
+						data.Attributes[i].SendAttributes.ElementsAs(ctx, &dataValues, false)
+						state.Attributes[j].SendAttributes.ElementsAs(ctx, &stateValues, false)
+						for _, v := range stateValues {
+							found := false
+							for _, vv := range dataValues {
+								if v == vv {
+									found = true
+									break
+								}
+							}
+							if !found {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/send-attribute[.=%v]", predicates, v))
+							}
+						}
+					}
 				}
 				for ci := range state.Attributes[i].Attribute31Parameters {
 					cstateKeys := [...]string{"calling-station-id"}
@@ -911,17 +938,17 @@ func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusSe
 							found = false
 						}
 						if found {
-							if !state.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacFormat.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-mac/format", predicates, cpredicates))
-							}
-							if !state.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacLuCase.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-mac/lu-case", predicates, cpredicates))
+							if !state.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendMacOnly.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-send/mac-only", predicates, cpredicates))
 							}
 							if !state.Attributes[i].Attribute31Parameters[ci].IdSendNasPortDetail.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendNasPortDetail.IsNull() {
 								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-send/nas-port-detail", predicates, cpredicates))
 							}
-							if !state.Attributes[i].Attribute31Parameters[ci].IdSendMacOnly.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdSendMacOnly.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-send/mac-only", predicates, cpredicates))
+							if !state.Attributes[i].Attribute31Parameters[ci].IdMacLuCase.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacLuCase.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-mac/lu-case", predicates, cpredicates))
+							}
+							if !state.Attributes[i].Attribute31Parameters[ci].IdMacFormat.IsNull() && data.Attributes[j].Attribute31Parameters[cj].IdMacFormat.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v/id-mac/format", predicates, cpredicates))
 							}
 							break
 						}
@@ -930,26 +957,8 @@ func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusSe
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/attri31/attri31-list%v", predicates, cpredicates))
 					}
 				}
-				if !state.Attributes[i].SendAttributes.IsNull() {
-					if data.Attributes[j].SendAttributes.IsNull() {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/send-attribute", predicates))
-					} else {
-						var dataValues, stateValues []string
-						data.Attributes[i].SendAttributes.ElementsAs(ctx, &dataValues, false)
-						state.Attributes[j].SendAttributes.ElementsAs(ctx, &stateValues, false)
-						for _, v := range stateValues {
-							found := false
-							for _, vv := range dataValues {
-								if v == vv {
-									found = true
-									break
-								}
-							}
-							if !found {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/send-attribute[.=%v]", predicates, v))
-							}
-						}
-					}
+				if !state.Attributes[i].AccessRequestInclude.IsNull() && data.Attributes[j].AccessRequestInclude.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v/access-request/include", predicates))
 				}
 				break
 			}
@@ -958,16 +967,8 @@ func (data *RadiusServer) addDeletedItemsXML(ctx context.Context, state RadiusSe
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v", predicates))
 		}
 	}
-	if !state.DeadCriteriaTime.IsNull() && data.DeadCriteriaTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time")
-	}
-	if !state.DeadCriteriaTries.IsNull() && data.DeadCriteriaTries.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries")
-	}
-	if !state.Deadtime.IsNull() && data.Deadtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/Cisco-IOS-XE-aaa:deadtime")
-	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1028,6 +1029,15 @@ func (data *RadiusServer) getDeletePaths(ctx context.Context) []string {
 
 func (data *RadiusServer) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.Deadtime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime")
+	}
+	if !data.DeadCriteriaTries.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries")
+	}
+	if !data.DeadCriteriaTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time")
+	}
 	for i := range data.Attributes {
 		keys := [...]string{"number"}
 		keyValues := [...]string{data.Attributes[i].Number.ValueString()}
@@ -1038,16 +1048,8 @@ func (data *RadiusServer) addDeletePathsXML(ctx context.Context, body string) st
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/Cisco-IOS-XE-aaa:attribute%v", predicates))
 	}
-	if !data.DeadCriteriaTime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/time")
-	}
-	if !data.DeadCriteriaTries.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:dead-criteria/tries")
-	}
-	if !data.Deadtime.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/Cisco-IOS-XE-aaa:deadtime")
-	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

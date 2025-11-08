@@ -105,31 +105,31 @@ func (data SLAData) getXPath() string {
 func (data SLA) toBody(ctx context.Context) string {
 	body := `{"` + helpers.LastElement(data.getPath()) + `":{}}`
 	if len(data.Entries) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"", []interface{}{})
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry", []interface{}{})
 		for index, item := range data.Entries {
 			if !item.Number.IsNull() && !item.Number.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+""+"."+strconv.Itoa(index)+"."+"number", strconv.FormatInt(item.Number.ValueInt64(), 10))
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"number", strconv.FormatInt(item.Number.ValueInt64(), 10))
 			}
 			if !item.IcmpEchoDestination.IsNull() && !item.IcmpEchoDestination.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+""+"."+strconv.Itoa(index)+"."+"icmp-echo.destination", item.IcmpEchoDestination.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"icmp-echo.destination", item.IcmpEchoDestination.ValueString())
 			}
 			if !item.IcmpEchoSourceIp.IsNull() && !item.IcmpEchoSourceIp.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+""+"."+strconv.Itoa(index)+"."+"icmp-echo.source-ip", item.IcmpEchoSourceIp.ValueString())
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"entry"+"."+strconv.Itoa(index)+"."+"icmp-echo.source-ip", item.IcmpEchoSourceIp.ValueString())
 			}
 		}
 	}
 	if len(data.Schedules) > 0 {
-		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"", []interface{}{})
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"schedule", []interface{}{})
 		for index, item := range data.Schedules {
 			if !item.EntryNumber.IsNull() && !item.EntryNumber.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+""+"."+strconv.Itoa(index)+"."+"", strconv.FormatInt(item.EntryNumber.ValueInt64(), 10))
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"schedule"+"."+strconv.Itoa(index)+"."+"entry-number", strconv.FormatInt(item.EntryNumber.ValueInt64(), 10))
 			}
 			if !item.Life.IsNull() && !item.Life.IsUnknown() {
-				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+""+"."+strconv.Itoa(index)+"."+"", strconv.FormatInt(item.Life.ValueInt64(), 10))
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"schedule"+"."+strconv.Itoa(index)+"."+"life", strconv.FormatInt(item.Life.ValueInt64(), 10))
 			}
 			if !item.StartTimeNow.IsNull() && !item.StartTimeNow.IsUnknown() {
 				if item.StartTimeNow.ValueBool() {
-					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+""+"."+strconv.Itoa(index)+"."+"start-time.now-config", map[string]string{})
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"schedule"+"."+strconv.Itoa(index)+"."+"start-time.now-config", map[string]string{})
 				}
 			}
 		}
@@ -155,17 +155,17 @@ func (data SLA) toBodyXML(ctx context.Context) string {
 			if !item.IcmpEchoSourceIp.IsNull() && !item.IcmpEchoSourceIp.IsUnknown() {
 				cBody = helpers.SetFromXPath(cBody, "icmp-echo/source-ip", item.IcmpEchoSourceIp.ValueString())
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/entry", cBody.Res())
 		}
 	}
 	if len(data.Schedules) > 0 {
 		for _, item := range data.Schedules {
 			cBody := netconf.Body{}
 			if !item.EntryNumber.IsNull() && !item.EntryNumber.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "", strconv.FormatInt(item.EntryNumber.ValueInt64(), 10))
+				cBody = helpers.SetFromXPath(cBody, "entry-number", strconv.FormatInt(item.EntryNumber.ValueInt64(), 10))
 			}
 			if !item.Life.IsNull() && !item.Life.IsUnknown() {
-				cBody = helpers.SetFromXPath(cBody, "", strconv.FormatInt(item.Life.ValueInt64(), 10))
+				cBody = helpers.SetFromXPath(cBody, "life", strconv.FormatInt(item.Life.ValueInt64(), 10))
 			}
 			if !item.StartTimeNow.IsNull() && !item.StartTimeNow.IsUnknown() {
 				if item.StartTimeNow.ValueBool() {
@@ -174,7 +174,7 @@ func (data SLA) toBodyXML(ctx context.Context) string {
 					cBody = helpers.RemoveFromXPath(cBody, "start-time/now-config")
 				}
 			}
-			body = helpers.SetRawFromXPath(body, data.getXPath()+"/", cBody.Res())
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/schedule", cBody.Res())
 		}
 	}
 	bodyString, err := body.String()
@@ -198,7 +198,7 @@ func (data *SLA) updateFromBody(ctx context.Context, res gjson.Result) {
 		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
 
 		var r gjson.Result
-		res.Get(prefix + "").ForEach(
+		res.Get(prefix + "entry").ForEach(
 			func(_, v gjson.Result) bool {
 				found := false
 				for ik := range keys {
@@ -233,11 +233,11 @@ func (data *SLA) updateFromBody(ctx context.Context, res gjson.Result) {
 		}
 	}
 	for i := range data.Schedules {
-		keys := [...]string{""}
+		keys := [...]string{"entry-number"}
 		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
 
 		var r gjson.Result
-		res.Get(prefix + "").ForEach(
+		res.Get(prefix + "schedule").ForEach(
 			func(_, v gjson.Result) bool {
 				found := false
 				for ik := range keys {
@@ -255,12 +255,12 @@ func (data *SLA) updateFromBody(ctx context.Context, res gjson.Result) {
 				return true
 			},
 		)
-		if value := r.Get(""); value.Exists() && !data.Schedules[i].EntryNumber.IsNull() {
+		if value := r.Get("entry-number"); value.Exists() && !data.Schedules[i].EntryNumber.IsNull() {
 			data.Schedules[i].EntryNumber = types.Int64Value(value.Int())
 		} else {
 			data.Schedules[i].EntryNumber = types.Int64Null()
 		}
-		if value := r.Get(""); value.Exists() && !data.Schedules[i].Life.IsNull() {
+		if value := r.Get("life"); value.Exists() && !data.Schedules[i].Life.IsNull() {
 			data.Schedules[i].Life = types.Int64Value(value.Int())
 		} else {
 			data.Schedules[i].Life = types.Int64Null()
@@ -287,7 +287,7 @@ func (data *SLA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -322,11 +322,11 @@ func (data *SLA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		}
 	}
 	for i := range data.Schedules {
-		keys := [...]string{""}
+		keys := [...]string{"entry-number"}
 		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/schedule").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -344,12 +344,12 @@ func (data *SLA) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 				return true
 			},
 		)
-		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.Schedules[i].EntryNumber.IsNull() {
+		if value := helpers.GetFromXPath(r, "entry-number"); value.Exists() && !data.Schedules[i].EntryNumber.IsNull() {
 			data.Schedules[i].EntryNumber = types.Int64Value(value.Int())
 		} else {
 			data.Schedules[i].EntryNumber = types.Int64Null()
 		}
-		if value := helpers.GetFromXPath(r, ""); value.Exists() && !data.Schedules[i].Life.IsNull() {
+		if value := helpers.GetFromXPath(r, "life"); value.Exists() && !data.Schedules[i].Life.IsNull() {
 			data.Schedules[i].Life = types.Int64Value(value.Int())
 		} else {
 			data.Schedules[i].Life = types.Int64Null()
@@ -375,7 +375,7 @@ func (data *SLA) fromBody(ctx context.Context, res gjson.Result) {
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	if value := res.Get(prefix + ""); value.Exists() {
+	if value := res.Get(prefix + "entry"); value.Exists() {
 		data.Entries = make([]SLAEntries, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SLAEntries{}
@@ -392,14 +392,14 @@ func (data *SLA) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
-	if value := res.Get(prefix + ""); value.Exists() {
+	if value := res.Get(prefix + "schedule"); value.Exists() {
 		data.Schedules = make([]SLASchedules, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SLASchedules{}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("entry-number"); cValue.Exists() {
 				item.EntryNumber = types.Int64Value(cValue.Int())
 			}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("life"); cValue.Exists() {
 				item.Life = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("start-time.now-config"); cValue.Exists() {
@@ -422,7 +422,7 @@ func (data *SLAData) fromBody(ctx context.Context, res gjson.Result) {
 	if res.Get(helpers.LastElement(data.getPath())).IsArray() {
 		prefix += "0."
 	}
-	if value := res.Get(prefix + ""); value.Exists() {
+	if value := res.Get(prefix + "entry"); value.Exists() {
 		data.Entries = make([]SLAEntries, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SLAEntries{}
@@ -439,14 +439,14 @@ func (data *SLAData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
-	if value := res.Get(prefix + ""); value.Exists() {
+	if value := res.Get(prefix + "schedule"); value.Exists() {
 		data.Schedules = make([]SLASchedules, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
 			item := SLASchedules{}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("entry-number"); cValue.Exists() {
 				item.EntryNumber = types.Int64Value(cValue.Int())
 			}
-			if cValue := v.Get(""); cValue.Exists() {
+			if cValue := v.Get("life"); cValue.Exists() {
 				item.Life = types.Int64Value(cValue.Int())
 			}
 			if cValue := v.Get("start-time.now-config"); cValue.Exists() {
@@ -465,7 +465,7 @@ func (data *SLAData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *SLA) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry"); value.Exists() {
 		data.Entries = make([]SLAEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := SLAEntries{}
@@ -482,14 +482,14 @@ func (data *SLA) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/schedule"); value.Exists() {
 		data.Schedules = make([]SLASchedules, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := SLASchedules{}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "entry-number"); cValue.Exists() {
 				item.EntryNumber = types.Int64Value(cValue.Int())
 			}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "life"); cValue.Exists() {
 				item.Life = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "start-time/now-config"); cValue.Exists() {
@@ -508,7 +508,7 @@ func (data *SLA) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *SLAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/entry"); value.Exists() {
 		data.Entries = make([]SLAEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := SLAEntries{}
@@ -525,14 +525,14 @@ func (data *SLAData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 			return true
 		})
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/schedule"); value.Exists() {
 		data.Schedules = make([]SLASchedules, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := SLASchedules{}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "entry-number"); cValue.Exists() {
 				item.EntryNumber = types.Int64Value(cValue.Int())
 			}
-			if cValue := helpers.GetFromXPath(v, ""); cValue.Exists() {
+			if cValue := helpers.GetFromXPath(v, "life"); cValue.Exists() {
 				item.Life = types.Int64Value(cValue.Int())
 			}
 			if cValue := helpers.GetFromXPath(v, "start-time/now-config"); cValue.Exists() {
@@ -624,6 +624,42 @@ func (data *SLA) getDeletedItems(ctx context.Context, state SLA) []string {
 
 func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string) string {
 	b := netconf.NewBody(body)
+	for i := range state.Schedules {
+		stateKeys := [...]string{"entry-number"}
+		stateKeyValues := [...]string{strconv.FormatInt(state.Schedules[i].EntryNumber.ValueInt64(), 10)}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.Schedules[i].EntryNumber.ValueInt64()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.Schedules {
+			found = true
+			if state.Schedules[i].EntryNumber.ValueInt64() != data.Schedules[j].EntryNumber.ValueInt64() {
+				found = false
+			}
+			if found {
+				if !state.Schedules[i].StartTimeNow.IsNull() && data.Schedules[j].StartTimeNow.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v/start-time/now-config", predicates))
+				}
+				if !state.Schedules[i].Life.IsNull() && data.Schedules[j].Life.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v/life", predicates))
+				}
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/schedule%v", predicates))
+		}
+	}
 	for i := range state.Entries {
 		stateKeys := [...]string{"number"}
 		stateKeyValues := [...]string{strconv.FormatInt(state.Entries[i].Number.ValueInt64(), 10)}
@@ -647,56 +683,21 @@ func (data *SLA) addDeletedItemsXML(ctx context.Context, state SLA, body string)
 				found = false
 			}
 			if found {
-				if !state.Entries[i].IcmpEchoDestination.IsNull() && data.Entries[j].IcmpEchoDestination.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v/icmp-echo/destination", predicates))
-				}
 				if !state.Entries[i].IcmpEchoSourceIp.IsNull() && data.Entries[j].IcmpEchoSourceIp.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v/icmp-echo/source-ip", predicates))
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/source-ip", predicates))
+				}
+				if !state.Entries[i].IcmpEchoDestination.IsNull() && data.Entries[j].IcmpEchoDestination.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v/icmp-echo/destination", predicates))
 				}
 				break
 			}
 		}
 		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
-		}
-	}
-	for i := range state.Schedules {
-		stateKeys := [...]string{""}
-		stateKeyValues := [...]string{strconv.FormatInt(state.Schedules[i].EntryNumber.ValueInt64(), 10)}
-		predicates := ""
-		for i := range stateKeys {
-			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
-		}
-
-		emptyKeys := true
-		if !reflect.ValueOf(state.Schedules[i].EntryNumber.ValueInt64()).IsZero() {
-			emptyKeys = false
-		}
-		if emptyKeys {
-			continue
-		}
-
-		found := false
-		for j := range data.Schedules {
-			found = true
-			if state.Schedules[i].EntryNumber.ValueInt64() != data.Schedules[j].EntryNumber.ValueInt64() {
-				found = false
-			}
-			if found {
-				if !state.Schedules[i].Life.IsNull() && data.Schedules[j].Life.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v/", predicates))
-				}
-				if !state.Schedules[i].StartTimeNow.IsNull() && data.Schedules[j].StartTimeNow.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v/start-time/now-config", predicates))
-				}
-				break
-			}
-		}
-		if !found {
-			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/%v", predicates))
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/entry%v", predicates))
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -726,12 +727,12 @@ func (data *SLA) getDeletePaths(ctx context.Context) []string {
 	for i := range data.Schedules {
 		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/schedule=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 	for i := range data.Entries {
 		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
 
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/entry=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
 
 	return deletePaths
@@ -743,6 +744,16 @@ func (data *SLA) getDeletePaths(ctx context.Context) []string {
 
 func (data *SLA) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	for i := range data.Schedules {
+		keys := [...]string{"entry-number"}
+		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/schedule%v", predicates))
+	}
 	for i := range data.Entries {
 		keys := [...]string{"number"}
 		keyValues := [...]string{strconv.FormatInt(data.Entries[i].Number.ValueInt64(), 10)}
@@ -751,19 +762,10 @@ func (data *SLA) addDeletePathsXML(ctx context.Context, body string) string {
 			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
 		}
 
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
-	}
-	for i := range data.Schedules {
-		keys := [...]string{""}
-		keyValues := [...]string{strconv.FormatInt(data.Schedules[i].EntryNumber.ValueInt64(), 10)}
-		predicates := ""
-		for i := range keys {
-			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
-		}
-
-		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/%v", predicates))
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/entry%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

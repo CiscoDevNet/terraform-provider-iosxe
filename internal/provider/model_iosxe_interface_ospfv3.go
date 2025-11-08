@@ -233,7 +233,7 @@ func (data *InterfaceOSPFv3) updateFromBody(ctx context.Context, res gjson.Resul
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/broadcast"); !data.NetworkTypeBroadcast.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/broadcast"); !data.NetworkTypeBroadcast.IsNull() {
 		if value.Exists() {
 			data.NetworkTypeBroadcast = types.BoolValue(true)
 		} else {
@@ -242,7 +242,7 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.NetworkTypeBroadcast = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/non-broadcast"); !data.NetworkTypeNonBroadcast.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/non-broadcast"); !data.NetworkTypeNonBroadcast.IsNull() {
 		if value.Exists() {
 			data.NetworkTypeNonBroadcast = types.BoolValue(true)
 		} else {
@@ -251,7 +251,7 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.NetworkTypeNonBroadcast = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/point-to-multipoint"); !data.NetworkTypePointToMultipoint.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/point-to-multipoint"); !data.NetworkTypePointToMultipoint.IsNull() {
 		if value.Exists() {
 			data.NetworkTypePointToMultipoint = types.BoolValue(true)
 		} else {
@@ -260,7 +260,7 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.NetworkTypePointToMultipoint = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/point-to-point"); !data.NetworkTypePointToPoint.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/point-to-point"); !data.NetworkTypePointToPoint.IsNull() {
 		if value.Exists() {
 			data.NetworkTypePointToPoint = types.BoolValue(true)
 		} else {
@@ -269,7 +269,7 @@ func (data *InterfaceOSPFv3) updateFromBodyXML(ctx context.Context, res xmldot.R
 	} else {
 		data.NetworkTypePointToPoint = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/cost-config/value"); value.Exists() && !data.Cost.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cost-config/value"); value.Exists() && !data.Cost.IsNull() {
 		data.Cost = types.Int64Value(value.Int())
 	} else {
 		data.Cost = types.Int64Null()
@@ -349,27 +349,27 @@ func (data *InterfaceOSPFv3Data) fromBody(ctx context.Context, res gjson.Result)
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *InterfaceOSPFv3) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/broadcast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/broadcast"); value.Exists() {
 		data.NetworkTypeBroadcast = types.BoolValue(true)
 	} else {
 		data.NetworkTypeBroadcast = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/non-broadcast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/non-broadcast"); value.Exists() {
 		data.NetworkTypeNonBroadcast = types.BoolValue(true)
 	} else {
 		data.NetworkTypeNonBroadcast = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/point-to-multipoint"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/point-to-multipoint"); value.Exists() {
 		data.NetworkTypePointToMultipoint = types.BoolValue(true)
 	} else {
 		data.NetworkTypePointToMultipoint = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/point-to-point"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/point-to-point"); value.Exists() {
 		data.NetworkTypePointToPoint = types.BoolValue(true)
 	} else {
 		data.NetworkTypePointToPoint = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/cost-config/value"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cost-config/value"); value.Exists() {
 		data.Cost = types.Int64Value(value.Int())
 	}
 }
@@ -379,27 +379,27 @@ func (data *InterfaceOSPFv3) fromBodyXML(ctx context.Context, res xmldot.Result)
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *InterfaceOSPFv3Data) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/broadcast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/broadcast"); value.Exists() {
 		data.NetworkTypeBroadcast = types.BoolValue(true)
 	} else {
 		data.NetworkTypeBroadcast = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/non-broadcast"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/non-broadcast"); value.Exists() {
 		data.NetworkTypeNonBroadcast = types.BoolValue(true)
 	} else {
 		data.NetworkTypeNonBroadcast = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/point-to-multipoint"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/point-to-multipoint"); value.Exists() {
 		data.NetworkTypePointToMultipoint = types.BoolValue(true)
 	} else {
 		data.NetworkTypePointToMultipoint = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/network-type/point-to-point"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/network-type/point-to-point"); value.Exists() {
 		data.NetworkTypePointToPoint = types.BoolValue(true)
 	} else {
 		data.NetworkTypePointToPoint = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/cost-config/value"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/cost-config/value"); value.Exists() {
 		data.Cost = types.Int64Value(value.Int())
 	}
 }
@@ -435,22 +435,23 @@ func (data *InterfaceOSPFv3) getDeletedItems(ctx context.Context, state Interfac
 
 func (data *InterfaceOSPFv3) addDeletedItemsXML(ctx context.Context, state InterfaceOSPFv3, body string) string {
 	b := netconf.NewBody(body)
-	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network-type/broadcast")
-	}
-	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network-type/non-broadcast")
-	}
-	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network-type/point-to-multipoint")
+	if !state.Cost.IsNull() && data.Cost.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cost-config/value")
 	}
 	if !state.NetworkTypePointToPoint.IsNull() && data.NetworkTypePointToPoint.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network-type/point-to-point")
 	}
-	if !state.Cost.IsNull() && data.Cost.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/cost-config/value")
+	if !state.NetworkTypePointToMultipoint.IsNull() && data.NetworkTypePointToMultipoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network-type/point-to-multipoint")
+	}
+	if !state.NetworkTypeNonBroadcast.IsNull() && data.NetworkTypeNonBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network-type/non-broadcast")
+	}
+	if !state.NetworkTypeBroadcast.IsNull() && data.NetworkTypeBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/network-type/broadcast")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -507,22 +508,23 @@ func (data *InterfaceOSPFv3) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceOSPFv3) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.NetworkTypeBroadcast.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network-type/broadcast")
-	}
-	if !data.NetworkTypeNonBroadcast.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network-type/non-broadcast")
-	}
-	if !data.NetworkTypePointToMultipoint.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network-type/point-to-multipoint")
+	if !data.Cost.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cost-config/value")
 	}
 	if !data.NetworkTypePointToPoint.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network-type/point-to-point")
 	}
-	if !data.Cost.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/cost-config/value")
+	if !data.NetworkTypePointToMultipoint.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network-type/point-to-multipoint")
+	}
+	if !data.NetworkTypeNonBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network-type/non-broadcast")
+	}
+	if !data.NetworkTypeBroadcast.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/network-type/broadcast")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

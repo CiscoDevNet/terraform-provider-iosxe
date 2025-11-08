@@ -184,22 +184,22 @@ func (data *CryptoIPSecTransformSet) updateFromBody(ctx context.Context, res gjs
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CryptoIPSecTransformSet) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/tag"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/tag"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/esp"); value.Exists() && !data.Esp.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp"); value.Exists() && !data.Esp.IsNull() {
 		data.Esp = types.StringValue(value.String())
 	} else {
 		data.Esp = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/esp-hmac"); value.Exists() && !data.EspHmac.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp-hmac"); value.Exists() && !data.EspHmac.IsNull() {
 		data.EspHmac = types.StringValue(value.String())
 	} else {
 		data.EspHmac = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mode/tunnel-choice"); !data.ModeTunnel.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mode/tunnel-choice"); !data.ModeTunnel.IsNull() {
 		if value.Exists() {
 			data.ModeTunnel = types.BoolValue(true)
 		} else {
@@ -259,13 +259,13 @@ func (data *CryptoIPSecTransformSetData) fromBody(ctx context.Context, res gjson
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CryptoIPSecTransformSet) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/esp"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp"); value.Exists() {
 		data.Esp = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/esp-hmac"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp-hmac"); value.Exists() {
 		data.EspHmac = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mode/tunnel-choice"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mode/tunnel-choice"); value.Exists() {
 		data.ModeTunnel = types.BoolValue(true)
 	} else {
 		data.ModeTunnel = types.BoolValue(false)
@@ -277,13 +277,13 @@ func (data *CryptoIPSecTransformSet) fromBodyXML(ctx context.Context, res xmldot
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CryptoIPSecTransformSetData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/esp"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp"); value.Exists() {
 		data.Esp = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/esp-hmac"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/esp-hmac"); value.Exists() {
 		data.EspHmac = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/mode/tunnel-choice"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mode/tunnel-choice"); value.Exists() {
 		data.ModeTunnel = types.BoolValue(true)
 	} else {
 		data.ModeTunnel = types.BoolValue(false)
@@ -315,16 +315,17 @@ func (data *CryptoIPSecTransformSet) getDeletedItems(ctx context.Context, state 
 
 func (data *CryptoIPSecTransformSet) addDeletedItemsXML(ctx context.Context, state CryptoIPSecTransformSet, body string) string {
 	b := netconf.NewBody(body)
-	if !state.Esp.IsNull() && data.Esp.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/esp")
+	if !state.ModeTunnel.IsNull() && data.ModeTunnel.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mode/tunnel-choice")
 	}
 	if !state.EspHmac.IsNull() && data.EspHmac.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/esp-hmac")
 	}
-	if !state.ModeTunnel.IsNull() && data.ModeTunnel.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mode/tunnel-choice")
+	if !state.Esp.IsNull() && data.Esp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/esp")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -366,16 +367,17 @@ func (data *CryptoIPSecTransformSet) getDeletePaths(ctx context.Context) []strin
 
 func (data *CryptoIPSecTransformSet) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.Esp.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/esp")
+	if !data.ModeTunnel.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mode/tunnel-choice")
 	}
 	if !data.EspHmac.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/esp-hmac")
 	}
-	if !data.ModeTunnel.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mode/tunnel-choice")
+	if !data.Esp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/esp")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

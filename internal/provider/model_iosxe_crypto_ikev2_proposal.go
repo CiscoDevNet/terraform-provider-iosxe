@@ -710,12 +710,12 @@ func (data *CryptoIKEv2Proposal) updateFromBody(ctx context.Context, res gjson.R
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/en-3des"); !data.EncryptionEn3des.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/en-3des"); !data.EncryptionEn3des.IsNull() {
 		if value.Exists() {
 			data.EncryptionEn3des = types.BoolValue(true)
 		} else {
@@ -724,7 +724,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.EncryptionEn3des = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-128"); !data.EncryptionAesCbc128.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-128"); !data.EncryptionAesCbc128.IsNull() {
 		if value.Exists() {
 			data.EncryptionAesCbc128 = types.BoolValue(true)
 		} else {
@@ -733,7 +733,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.EncryptionAesCbc128 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-192"); !data.EncryptionAesCbc192.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-192"); !data.EncryptionAesCbc192.IsNull() {
 		if value.Exists() {
 			data.EncryptionAesCbc192 = types.BoolValue(true)
 		} else {
@@ -742,7 +742,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.EncryptionAesCbc192 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-256"); !data.EncryptionAesCbc256.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-256"); !data.EncryptionAesCbc256.IsNull() {
 		if value.Exists() {
 			data.EncryptionAesCbc256 = types.BoolValue(true)
 		} else {
@@ -751,7 +751,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.EncryptionAesCbc256 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-gcm-128"); !data.EncryptionAesGcm128.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-gcm-128"); !data.EncryptionAesGcm128.IsNull() {
 		if value.Exists() {
 			data.EncryptionAesGcm128 = types.BoolValue(true)
 		} else {
@@ -760,7 +760,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.EncryptionAesGcm128 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-gcm-256"); !data.EncryptionAesGcm256.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-gcm-256"); !data.EncryptionAesGcm256.IsNull() {
 		if value.Exists() {
 			data.EncryptionAesGcm256 = types.BoolValue(true)
 		} else {
@@ -769,7 +769,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.EncryptionAesGcm256 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/one"); !data.GroupOne.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/one"); !data.GroupOne.IsNull() {
 		if value.Exists() {
 			data.GroupOne = types.BoolValue(true)
 		} else {
@@ -778,7 +778,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupOne = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/two"); !data.GroupTwo.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/two"); !data.GroupTwo.IsNull() {
 		if value.Exists() {
 			data.GroupTwo = types.BoolValue(true)
 		} else {
@@ -787,7 +787,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupTwo = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/fourteen"); !data.GroupFourteen.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/fourteen"); !data.GroupFourteen.IsNull() {
 		if value.Exists() {
 			data.GroupFourteen = types.BoolValue(true)
 		} else {
@@ -796,7 +796,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupFourteen = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/fifteen"); !data.GroupFifteen.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/fifteen"); !data.GroupFifteen.IsNull() {
 		if value.Exists() {
 			data.GroupFifteen = types.BoolValue(true)
 		} else {
@@ -805,7 +805,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupFifteen = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/sixteen"); !data.GroupSixteen.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/sixteen"); !data.GroupSixteen.IsNull() {
 		if value.Exists() {
 			data.GroupSixteen = types.BoolValue(true)
 		} else {
@@ -814,7 +814,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupSixteen = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/nineteen"); !data.GroupNineteen.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/nineteen"); !data.GroupNineteen.IsNull() {
 		if value.Exists() {
 			data.GroupNineteen = types.BoolValue(true)
 		} else {
@@ -823,7 +823,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupNineteen = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty"); !data.GroupTwenty.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty"); !data.GroupTwenty.IsNull() {
 		if value.Exists() {
 			data.GroupTwenty = types.BoolValue(true)
 		} else {
@@ -832,7 +832,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupTwenty = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty-one"); !data.GroupTwentyOne.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty-one"); !data.GroupTwentyOne.IsNull() {
 		if value.Exists() {
 			data.GroupTwentyOne = types.BoolValue(true)
 		} else {
@@ -841,7 +841,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupTwentyOne = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty-four"); !data.GroupTwentyFour.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty-four"); !data.GroupTwentyFour.IsNull() {
 		if value.Exists() {
 			data.GroupTwentyFour = types.BoolValue(true)
 		} else {
@@ -850,7 +850,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.GroupTwentyFour = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/md5"); !data.IntegrityMd5.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/md5"); !data.IntegrityMd5.IsNull() {
 		if value.Exists() {
 			data.IntegrityMd5 = types.BoolValue(true)
 		} else {
@@ -859,7 +859,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.IntegrityMd5 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha1"); !data.IntegritySha1.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha1"); !data.IntegritySha1.IsNull() {
 		if value.Exists() {
 			data.IntegritySha1 = types.BoolValue(true)
 		} else {
@@ -868,7 +868,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.IntegritySha1 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha256"); !data.IntegritySha256.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha256"); !data.IntegritySha256.IsNull() {
 		if value.Exists() {
 			data.IntegritySha256 = types.BoolValue(true)
 		} else {
@@ -877,7 +877,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.IntegritySha256 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha384"); !data.IntegritySha384.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha384"); !data.IntegritySha384.IsNull() {
 		if value.Exists() {
 			data.IntegritySha384 = types.BoolValue(true)
 		} else {
@@ -886,7 +886,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.IntegritySha384 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha512"); !data.IntegritySha512.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha512"); !data.IntegritySha512.IsNull() {
 		if value.Exists() {
 			data.IntegritySha512 = types.BoolValue(true)
 		} else {
@@ -895,7 +895,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.IntegritySha512 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/md5"); !data.PrfMd5.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/md5"); !data.PrfMd5.IsNull() {
 		if value.Exists() {
 			data.PrfMd5 = types.BoolValue(true)
 		} else {
@@ -904,7 +904,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.PrfMd5 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha1"); !data.PrfSha1.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha1"); !data.PrfSha1.IsNull() {
 		if value.Exists() {
 			data.PrfSha1 = types.BoolValue(true)
 		} else {
@@ -913,7 +913,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.PrfSha1 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha256"); !data.PrfSha256.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha256"); !data.PrfSha256.IsNull() {
 		if value.Exists() {
 			data.PrfSha256 = types.BoolValue(true)
 		} else {
@@ -922,7 +922,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.PrfSha256 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha384"); !data.PrfSha384.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha384"); !data.PrfSha384.IsNull() {
 		if value.Exists() {
 			data.PrfSha384 = types.BoolValue(true)
 		} else {
@@ -931,7 +931,7 @@ func (data *CryptoIKEv2Proposal) updateFromBodyXML(ctx context.Context, res xmld
 	} else {
 		data.PrfSha384 = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha512"); !data.PrfSha512.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha512"); !data.PrfSha512.IsNull() {
 		if value.Exists() {
 			data.PrfSha512 = types.BoolValue(true)
 		} else {
@@ -1219,127 +1219,127 @@ func (data *CryptoIKEv2ProposalData) fromBody(ctx context.Context, res gjson.Res
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *CryptoIKEv2Proposal) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/en-3des"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/en-3des"); value.Exists() {
 		data.EncryptionEn3des = types.BoolValue(true)
 	} else {
 		data.EncryptionEn3des = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-128"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-128"); value.Exists() {
 		data.EncryptionAesCbc128 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesCbc128 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-192"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-192"); value.Exists() {
 		data.EncryptionAesCbc192 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesCbc192 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-256"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-256"); value.Exists() {
 		data.EncryptionAesCbc256 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesCbc256 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-gcm-128"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-gcm-128"); value.Exists() {
 		data.EncryptionAesGcm128 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesGcm128 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-gcm-256"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-gcm-256"); value.Exists() {
 		data.EncryptionAesGcm256 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesGcm256 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/one"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/one"); value.Exists() {
 		data.GroupOne = types.BoolValue(true)
 	} else {
 		data.GroupOne = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/two"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/two"); value.Exists() {
 		data.GroupTwo = types.BoolValue(true)
 	} else {
 		data.GroupTwo = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/fourteen"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/fourteen"); value.Exists() {
 		data.GroupFourteen = types.BoolValue(true)
 	} else {
 		data.GroupFourteen = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/fifteen"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/fifteen"); value.Exists() {
 		data.GroupFifteen = types.BoolValue(true)
 	} else {
 		data.GroupFifteen = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/sixteen"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/sixteen"); value.Exists() {
 		data.GroupSixteen = types.BoolValue(true)
 	} else {
 		data.GroupSixteen = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/nineteen"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/nineteen"); value.Exists() {
 		data.GroupNineteen = types.BoolValue(true)
 	} else {
 		data.GroupNineteen = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty"); value.Exists() {
 		data.GroupTwenty = types.BoolValue(true)
 	} else {
 		data.GroupTwenty = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty-one"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty-one"); value.Exists() {
 		data.GroupTwentyOne = types.BoolValue(true)
 	} else {
 		data.GroupTwentyOne = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty-four"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty-four"); value.Exists() {
 		data.GroupTwentyFour = types.BoolValue(true)
 	} else {
 		data.GroupTwentyFour = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/md5"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/md5"); value.Exists() {
 		data.IntegrityMd5 = types.BoolValue(true)
 	} else {
 		data.IntegrityMd5 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha1"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha1"); value.Exists() {
 		data.IntegritySha1 = types.BoolValue(true)
 	} else {
 		data.IntegritySha1 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha256"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha256"); value.Exists() {
 		data.IntegritySha256 = types.BoolValue(true)
 	} else {
 		data.IntegritySha256 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha384"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha384"); value.Exists() {
 		data.IntegritySha384 = types.BoolValue(true)
 	} else {
 		data.IntegritySha384 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha512"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha512"); value.Exists() {
 		data.IntegritySha512 = types.BoolValue(true)
 	} else {
 		data.IntegritySha512 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/md5"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/md5"); value.Exists() {
 		data.PrfMd5 = types.BoolValue(true)
 	} else {
 		data.PrfMd5 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha1"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha1"); value.Exists() {
 		data.PrfSha1 = types.BoolValue(true)
 	} else {
 		data.PrfSha1 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha256"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha256"); value.Exists() {
 		data.PrfSha256 = types.BoolValue(true)
 	} else {
 		data.PrfSha256 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha384"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha384"); value.Exists() {
 		data.PrfSha384 = types.BoolValue(true)
 	} else {
 		data.PrfSha384 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha512"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha512"); value.Exists() {
 		data.PrfSha512 = types.BoolValue(true)
 	} else {
 		data.PrfSha512 = types.BoolValue(false)
@@ -1351,127 +1351,127 @@ func (data *CryptoIKEv2Proposal) fromBodyXML(ctx context.Context, res xmldot.Res
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *CryptoIKEv2ProposalData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/en-3des"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/en-3des"); value.Exists() {
 		data.EncryptionEn3des = types.BoolValue(true)
 	} else {
 		data.EncryptionEn3des = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-128"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-128"); value.Exists() {
 		data.EncryptionAesCbc128 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesCbc128 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-192"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-192"); value.Exists() {
 		data.EncryptionAesCbc192 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesCbc192 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-cbc-256"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-cbc-256"); value.Exists() {
 		data.EncryptionAesCbc256 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesCbc256 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-gcm-128"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-gcm-128"); value.Exists() {
 		data.EncryptionAesGcm128 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesGcm128 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/encryption/aes-gcm-256"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/encryption/aes-gcm-256"); value.Exists() {
 		data.EncryptionAesGcm256 = types.BoolValue(true)
 	} else {
 		data.EncryptionAesGcm256 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/one"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/one"); value.Exists() {
 		data.GroupOne = types.BoolValue(true)
 	} else {
 		data.GroupOne = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/two"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/two"); value.Exists() {
 		data.GroupTwo = types.BoolValue(true)
 	} else {
 		data.GroupTwo = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/fourteen"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/fourteen"); value.Exists() {
 		data.GroupFourteen = types.BoolValue(true)
 	} else {
 		data.GroupFourteen = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/fifteen"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/fifteen"); value.Exists() {
 		data.GroupFifteen = types.BoolValue(true)
 	} else {
 		data.GroupFifteen = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/sixteen"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/sixteen"); value.Exists() {
 		data.GroupSixteen = types.BoolValue(true)
 	} else {
 		data.GroupSixteen = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/nineteen"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/nineteen"); value.Exists() {
 		data.GroupNineteen = types.BoolValue(true)
 	} else {
 		data.GroupNineteen = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty"); value.Exists() {
 		data.GroupTwenty = types.BoolValue(true)
 	} else {
 		data.GroupTwenty = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty-one"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty-one"); value.Exists() {
 		data.GroupTwentyOne = types.BoolValue(true)
 	} else {
 		data.GroupTwentyOne = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/group/twenty-four"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/group/twenty-four"); value.Exists() {
 		data.GroupTwentyFour = types.BoolValue(true)
 	} else {
 		data.GroupTwentyFour = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/md5"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/md5"); value.Exists() {
 		data.IntegrityMd5 = types.BoolValue(true)
 	} else {
 		data.IntegrityMd5 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha1"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha1"); value.Exists() {
 		data.IntegritySha1 = types.BoolValue(true)
 	} else {
 		data.IntegritySha1 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha256"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha256"); value.Exists() {
 		data.IntegritySha256 = types.BoolValue(true)
 	} else {
 		data.IntegritySha256 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha384"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha384"); value.Exists() {
 		data.IntegritySha384 = types.BoolValue(true)
 	} else {
 		data.IntegritySha384 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/integrity/sha512"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/integrity/sha512"); value.Exists() {
 		data.IntegritySha512 = types.BoolValue(true)
 	} else {
 		data.IntegritySha512 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/md5"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/md5"); value.Exists() {
 		data.PrfMd5 = types.BoolValue(true)
 	} else {
 		data.PrfMd5 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha1"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha1"); value.Exists() {
 		data.PrfSha1 = types.BoolValue(true)
 	} else {
 		data.PrfSha1 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha256"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha256"); value.Exists() {
 		data.PrfSha256 = types.BoolValue(true)
 	} else {
 		data.PrfSha256 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha384"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha384"); value.Exists() {
 		data.PrfSha384 = types.BoolValue(true)
 	} else {
 		data.PrfSha384 = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/prf/sha512"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/prf/sha512"); value.Exists() {
 		data.PrfSha512 = types.BoolValue(true)
 	} else {
 		data.PrfSha512 = types.BoolValue(false)
@@ -1569,82 +1569,83 @@ func (data *CryptoIKEv2Proposal) getDeletedItems(ctx context.Context, state Cryp
 
 func (data *CryptoIKEv2Proposal) addDeletedItemsXML(ctx context.Context, state CryptoIKEv2Proposal, body string) string {
 	b := netconf.NewBody(body)
-	if !state.EncryptionEn3des.IsNull() && data.EncryptionEn3des.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/en-3des")
-	}
-	if !state.EncryptionAesCbc128.IsNull() && data.EncryptionAesCbc128.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-128")
-	}
-	if !state.EncryptionAesCbc192.IsNull() && data.EncryptionAesCbc192.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-192")
-	}
-	if !state.EncryptionAesCbc256.IsNull() && data.EncryptionAesCbc256.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-256")
-	}
-	if !state.EncryptionAesGcm128.IsNull() && data.EncryptionAesGcm128.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-gcm-128")
-	}
-	if !state.EncryptionAesGcm256.IsNull() && data.EncryptionAesGcm256.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-gcm-256")
-	}
-	if !state.GroupOne.IsNull() && data.GroupOne.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/one")
-	}
-	if !state.GroupTwo.IsNull() && data.GroupTwo.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/two")
-	}
-	if !state.GroupFourteen.IsNull() && data.GroupFourteen.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/fourteen")
-	}
-	if !state.GroupFifteen.IsNull() && data.GroupFifteen.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/fifteen")
-	}
-	if !state.GroupSixteen.IsNull() && data.GroupSixteen.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/sixteen")
-	}
-	if !state.GroupNineteen.IsNull() && data.GroupNineteen.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/nineteen")
-	}
-	if !state.GroupTwenty.IsNull() && data.GroupTwenty.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty")
-	}
-	if !state.GroupTwentyOne.IsNull() && data.GroupTwentyOne.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty-one")
-	}
-	if !state.GroupTwentyFour.IsNull() && data.GroupTwentyFour.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty-four")
-	}
-	if !state.IntegrityMd5.IsNull() && data.IntegrityMd5.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/md5")
-	}
-	if !state.IntegritySha1.IsNull() && data.IntegritySha1.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha1")
-	}
-	if !state.IntegritySha256.IsNull() && data.IntegritySha256.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha256")
-	}
-	if !state.IntegritySha384.IsNull() && data.IntegritySha384.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha384")
-	}
-	if !state.IntegritySha512.IsNull() && data.IntegritySha512.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha512")
-	}
-	if !state.PrfMd5.IsNull() && data.PrfMd5.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/md5")
-	}
-	if !state.PrfSha1.IsNull() && data.PrfSha1.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha1")
-	}
-	if !state.PrfSha256.IsNull() && data.PrfSha256.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha256")
+	if !state.PrfSha512.IsNull() && data.PrfSha512.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha512")
 	}
 	if !state.PrfSha384.IsNull() && data.PrfSha384.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha384")
 	}
-	if !state.PrfSha512.IsNull() && data.PrfSha512.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha512")
+	if !state.PrfSha256.IsNull() && data.PrfSha256.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha256")
+	}
+	if !state.PrfSha1.IsNull() && data.PrfSha1.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/sha1")
+	}
+	if !state.PrfMd5.IsNull() && data.PrfMd5.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/prf/md5")
+	}
+	if !state.IntegritySha512.IsNull() && data.IntegritySha512.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha512")
+	}
+	if !state.IntegritySha384.IsNull() && data.IntegritySha384.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha384")
+	}
+	if !state.IntegritySha256.IsNull() && data.IntegritySha256.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha256")
+	}
+	if !state.IntegritySha1.IsNull() && data.IntegritySha1.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/sha1")
+	}
+	if !state.IntegrityMd5.IsNull() && data.IntegrityMd5.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/integrity/md5")
+	}
+	if !state.GroupTwentyFour.IsNull() && data.GroupTwentyFour.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty-four")
+	}
+	if !state.GroupTwentyOne.IsNull() && data.GroupTwentyOne.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty-one")
+	}
+	if !state.GroupTwenty.IsNull() && data.GroupTwenty.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/twenty")
+	}
+	if !state.GroupNineteen.IsNull() && data.GroupNineteen.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/nineteen")
+	}
+	if !state.GroupSixteen.IsNull() && data.GroupSixteen.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/sixteen")
+	}
+	if !state.GroupFifteen.IsNull() && data.GroupFifteen.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/fifteen")
+	}
+	if !state.GroupFourteen.IsNull() && data.GroupFourteen.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/fourteen")
+	}
+	if !state.GroupTwo.IsNull() && data.GroupTwo.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/two")
+	}
+	if !state.GroupOne.IsNull() && data.GroupOne.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/group/one")
+	}
+	if !state.EncryptionAesGcm256.IsNull() && data.EncryptionAesGcm256.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-gcm-256")
+	}
+	if !state.EncryptionAesGcm128.IsNull() && data.EncryptionAesGcm128.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-gcm-128")
+	}
+	if !state.EncryptionAesCbc256.IsNull() && data.EncryptionAesCbc256.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-256")
+	}
+	if !state.EncryptionAesCbc192.IsNull() && data.EncryptionAesCbc192.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-192")
+	}
+	if !state.EncryptionAesCbc128.IsNull() && data.EncryptionAesCbc128.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/aes-cbc-128")
+	}
+	if !state.EncryptionEn3des.IsNull() && data.EncryptionEn3des.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/encryption/en-3des")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -1824,82 +1825,83 @@ func (data *CryptoIKEv2Proposal) getDeletePaths(ctx context.Context) []string {
 
 func (data *CryptoIKEv2Proposal) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.EncryptionEn3des.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/en-3des")
-	}
-	if !data.EncryptionAesCbc128.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-cbc-128")
-	}
-	if !data.EncryptionAesCbc192.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-cbc-192")
-	}
-	if !data.EncryptionAesCbc256.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-cbc-256")
-	}
-	if !data.EncryptionAesGcm128.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-gcm-128")
-	}
-	if !data.EncryptionAesGcm256.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-gcm-256")
-	}
-	if !data.GroupOne.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/one")
-	}
-	if !data.GroupTwo.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/two")
-	}
-	if !data.GroupFourteen.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/fourteen")
-	}
-	if !data.GroupFifteen.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/fifteen")
-	}
-	if !data.GroupSixteen.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/sixteen")
-	}
-	if !data.GroupNineteen.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/nineteen")
-	}
-	if !data.GroupTwenty.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/twenty")
-	}
-	if !data.GroupTwentyOne.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/twenty-one")
-	}
-	if !data.GroupTwentyFour.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/twenty-four")
-	}
-	if !data.IntegrityMd5.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/md5")
-	}
-	if !data.IntegritySha1.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/sha1")
-	}
-	if !data.IntegritySha256.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/sha256")
-	}
-	if !data.IntegritySha384.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/sha384")
-	}
-	if !data.IntegritySha512.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/sha512")
-	}
-	if !data.PrfMd5.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/md5")
-	}
-	if !data.PrfSha1.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/sha1")
-	}
-	if !data.PrfSha256.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/sha256")
+	if !data.PrfSha512.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/sha512")
 	}
 	if !data.PrfSha384.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/sha384")
 	}
-	if !data.PrfSha512.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/sha512")
+	if !data.PrfSha256.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/sha256")
+	}
+	if !data.PrfSha1.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/sha1")
+	}
+	if !data.PrfMd5.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/prf/md5")
+	}
+	if !data.IntegritySha512.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/sha512")
+	}
+	if !data.IntegritySha384.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/sha384")
+	}
+	if !data.IntegritySha256.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/sha256")
+	}
+	if !data.IntegritySha1.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/sha1")
+	}
+	if !data.IntegrityMd5.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/integrity/md5")
+	}
+	if !data.GroupTwentyFour.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/twenty-four")
+	}
+	if !data.GroupTwentyOne.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/twenty-one")
+	}
+	if !data.GroupTwenty.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/twenty")
+	}
+	if !data.GroupNineteen.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/nineteen")
+	}
+	if !data.GroupSixteen.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/sixteen")
+	}
+	if !data.GroupFifteen.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/fifteen")
+	}
+	if !data.GroupFourteen.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/fourteen")
+	}
+	if !data.GroupTwo.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/two")
+	}
+	if !data.GroupOne.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/group/one")
+	}
+	if !data.EncryptionAesGcm256.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-gcm-256")
+	}
+	if !data.EncryptionAesGcm128.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-gcm-128")
+	}
+	if !data.EncryptionAesCbc256.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-cbc-256")
+	}
+	if !data.EncryptionAesCbc192.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-cbc-192")
+	}
+	if !data.EncryptionAesCbc128.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/aes-cbc-128")
+	}
+	if !data.EncryptionEn3des.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/encryption/en-3des")
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

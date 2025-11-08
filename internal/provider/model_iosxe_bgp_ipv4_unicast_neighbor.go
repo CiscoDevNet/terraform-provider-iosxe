@@ -312,12 +312,12 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBody(ctx context.Context, res gjso
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *BGPIPv4UnicastNeighbor) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/id"); value.Exists() && !data.Ip.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/id"); value.Exists() && !data.Ip.IsNull() {
 		data.Ip = types.StringValue(value.String())
 	} else {
 		data.Ip = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/activate"); !data.Activate.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/activate"); !data.Activate.IsNull() {
 		if value.Exists() {
 			data.Activate = types.BoolValue(true)
 		} else {
@@ -326,12 +326,12 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBodyXML(ctx context.Context, res x
 	} else {
 		data.Activate = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/send-community/send-community-where"); value.Exists() && !data.SendCommunity.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/send-community/send-community-where"); value.Exists() && !data.SendCommunity.IsNull() {
 		data.SendCommunity = types.StringValue(value.String())
 	} else {
 		data.SendCommunity = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-reflector-client"); !data.RouteReflectorClient.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-reflector-client"); !data.RouteReflectorClient.IsNull() {
 		if value.Exists() {
 			data.RouteReflectorClient = types.BoolValue(true)
 		} else {
@@ -340,12 +340,12 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBodyXML(ctx context.Context, res x
 	} else {
 		data.RouteReflectorClient = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/soft-reconfiguration"); value.Exists() && !data.SoftReconfiguration.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/soft-reconfiguration"); value.Exists() && !data.SoftReconfiguration.IsNull() {
 		data.SoftReconfiguration = types.StringValue(value.String())
 	} else {
 		data.SoftReconfiguration = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-originate"); !data.DefaultOriginate.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-originate"); !data.DefaultOriginate.IsNull() {
 		if value.Exists() {
 			data.DefaultOriginate = types.BoolValue(true)
 		} else {
@@ -354,7 +354,7 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBodyXML(ctx context.Context, res x
 	} else {
 		data.DefaultOriginate = types.BoolNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-originate/route-map"); value.Exists() && !data.DefaultOriginateRouteMap.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-originate/route-map"); value.Exists() && !data.DefaultOriginateRouteMap.IsNull() {
 		data.DefaultOriginateRouteMap = types.StringValue(value.String())
 	} else {
 		data.DefaultOriginateRouteMap = types.StringNull()
@@ -364,7 +364,7 @@ func (data *BGPIPv4UnicastNeighbor) updateFromBodyXML(ctx context.Context, res x
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-map").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -498,31 +498,31 @@ func (data *BGPIPv4UnicastNeighborData) fromBody(ctx context.Context, res gjson.
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *BGPIPv4UnicastNeighbor) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/activate"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/activate"); value.Exists() {
 		data.Activate = types.BoolValue(true)
 	} else {
 		data.Activate = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/send-community/send-community-where"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/send-community/send-community-where"); value.Exists() {
 		data.SendCommunity = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-reflector-client"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-reflector-client"); value.Exists() {
 		data.RouteReflectorClient = types.BoolValue(true)
 	} else {
 		data.RouteReflectorClient = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/soft-reconfiguration"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/soft-reconfiguration"); value.Exists() {
 		data.SoftReconfiguration = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-originate"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-originate"); value.Exists() {
 		data.DefaultOriginate = types.BoolValue(true)
 	} else {
 		data.DefaultOriginate = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-originate/route-map"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-originate/route-map"); value.Exists() {
 		data.DefaultOriginateRouteMap = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-map"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map"); value.Exists() {
 		data.RouteMaps = make([]BGPIPv4UnicastNeighborRouteMaps, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := BGPIPv4UnicastNeighborRouteMaps{}
@@ -543,31 +543,31 @@ func (data *BGPIPv4UnicastNeighbor) fromBodyXML(ctx context.Context, res xmldot.
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *BGPIPv4UnicastNeighborData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/activate"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/activate"); value.Exists() {
 		data.Activate = types.BoolValue(true)
 	} else {
 		data.Activate = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/send-community/send-community-where"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/send-community/send-community-where"); value.Exists() {
 		data.SendCommunity = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-reflector-client"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-reflector-client"); value.Exists() {
 		data.RouteReflectorClient = types.BoolValue(true)
 	} else {
 		data.RouteReflectorClient = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/soft-reconfiguration"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/soft-reconfiguration"); value.Exists() {
 		data.SoftReconfiguration = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-originate"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-originate"); value.Exists() {
 		data.DefaultOriginate = types.BoolValue(true)
 	} else {
 		data.DefaultOriginate = types.BoolValue(false)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/default-originate/route-map"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/default-originate/route-map"); value.Exists() {
 		data.DefaultOriginateRouteMap = types.StringValue(value.String())
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/route-map"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/route-map"); value.Exists() {
 		data.RouteMaps = make([]BGPIPv4UnicastNeighborRouteMaps, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := BGPIPv4UnicastNeighborRouteMaps{}
@@ -642,21 +642,6 @@ func (data *BGPIPv4UnicastNeighbor) getDeletedItems(ctx context.Context, state B
 
 func (data *BGPIPv4UnicastNeighbor) addDeletedItemsXML(ctx context.Context, state BGPIPv4UnicastNeighbor, body string) string {
 	b := netconf.NewBody(body)
-	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
-	}
-	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/route-reflector-client")
-	}
-	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/soft-reconfiguration")
-	}
-	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-originate")
-	}
-	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-originate/route-map")
-	}
 	for i := range state.RouteMaps {
 		stateKeys := [...]string{"inout"}
 		stateKeyValues := [...]string{state.RouteMaps[i].InOut.ValueString()}
@@ -690,7 +675,23 @@ func (data *BGPIPv4UnicastNeighbor) addDeletedItemsXML(ctx context.Context, stat
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/route-map%v", predicates))
 		}
 	}
+	if !state.DefaultOriginateRouteMap.IsNull() && data.DefaultOriginateRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-originate/route-map")
+	}
+	if !state.DefaultOriginate.IsNull() && data.DefaultOriginate.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/default-originate")
+	}
+	if !state.SoftReconfiguration.IsNull() && data.SoftReconfiguration.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/soft-reconfiguration")
+	}
+	if !state.RouteReflectorClient.IsNull() && data.RouteReflectorClient.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/route-reflector-client")
+	}
+	if !state.SendCommunity.IsNull() && data.SendCommunity.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/send-community/send-community-where")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -750,21 +751,6 @@ func (data *BGPIPv4UnicastNeighbor) getDeletePaths(ctx context.Context) []string
 
 func (data *BGPIPv4UnicastNeighbor) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.SendCommunity.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/send-community/send-community-where")
-	}
-	if !data.RouteReflectorClient.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/route-reflector-client")
-	}
-	if !data.SoftReconfiguration.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/soft-reconfiguration")
-	}
-	if !data.DefaultOriginate.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-originate")
-	}
-	if !data.DefaultOriginateRouteMap.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-originate/route-map")
-	}
 	for i := range data.RouteMaps {
 		keys := [...]string{"inout"}
 		keyValues := [...]string{data.RouteMaps[i].InOut.ValueString()}
@@ -775,7 +761,23 @@ func (data *BGPIPv4UnicastNeighbor) addDeletePathsXML(ctx context.Context, body 
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/route-map%v", predicates))
 	}
+	if !data.DefaultOriginateRouteMap.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-originate/route-map")
+	}
+	if !data.DefaultOriginate.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/default-originate")
+	}
+	if !data.SoftReconfiguration.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/soft-reconfiguration")
+	}
+	if !data.RouteReflectorClient.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/route-reflector-client")
+	}
+	if !data.SendCommunity.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/send-community/send-community-where")
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

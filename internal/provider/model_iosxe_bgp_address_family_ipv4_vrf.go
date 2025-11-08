@@ -690,7 +690,7 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBody(ctx context.Context, res gjs
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *BGPAddressFamilyIPv4VRF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/af-name"); value.Exists() && !data.AfName.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/af-name"); value.Exists() && !data.AfName.IsNull() {
 		data.AfName = types.StringValue(value.String())
 	} else {
 		data.AfName = types.StringNull()
@@ -700,7 +700,7 @@ func (data *BGPAddressFamilyIPv4VRF) updateFromBodyXML(ctx context.Context, res 
 		keyValues := [...]string{data.Vrfs[i].Name.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vrf").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -1244,7 +1244,7 @@ func (data *BGPAddressFamilyIPv4VRFData) fromBody(ctx context.Context, res gjson
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *BGPAddressFamilyIPv4VRF) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vrf"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf"); value.Exists() {
 		data.Vrfs = make([]BGPAddressFamilyIPv4VRFVrfs, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := BGPAddressFamilyIPv4VRFVrfs{}
@@ -1377,7 +1377,7 @@ func (data *BGPAddressFamilyIPv4VRF) fromBodyXML(ctx context.Context, res xmldot
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *BGPAddressFamilyIPv4VRFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/vrf"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/vrf"); value.Exists() {
 		data.Vrfs = make([]BGPAddressFamilyIPv4VRFVrfs, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := BGPAddressFamilyIPv4VRFVrfs{}
@@ -1738,140 +1738,14 @@ func (data *BGPAddressFamilyIPv4VRF) addDeletedItemsXML(ctx context.Context, sta
 				found = false
 			}
 			if found {
-				if !state.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() && data.Vrfs[j].Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/advertise/l2vpn/evpn", predicates))
+				if !state.Vrfs[i].Ipv4UnicastDistanceBgpLocal.IsNull() && data.Vrfs[j].Ipv4UnicastDistanceBgpLocal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/distance/bgp/local", predicates))
 				}
-				if !state.Vrfs[i].Ipv4UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv4UnicastRedistributeConnected.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/redistribute-vrf/connected", predicates))
+				if !state.Vrfs[i].Ipv4UnicastDistanceBgpInternal.IsNull() && data.Vrfs[j].Ipv4UnicastDistanceBgpInternal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/distance/bgp/internal-as", predicates))
 				}
-				if !state.Vrfs[i].Ipv4UnicastRouterIdLoopback.IsNull() && data.Vrfs[j].Ipv4UnicastRouterIdLoopback.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/bgp/router-id/interface/Loopback", predicates))
-				}
-				if !state.Vrfs[i].Ipv4UnicastRouterIdIp.IsNull() && data.Vrfs[j].Ipv4UnicastRouterIdIp.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/bgp/router-id/ip-id", predicates))
-				}
-				for ci := range state.Vrfs[i].Ipv4UnicastAggregateAddresses {
-					cstateKeys := [...]string{"ipv4-address", "ipv4-mask"}
-					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Address.ValueString(), state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Mask.ValueString()}
-					cpredicates := ""
-					for i := range cstateKeys {
-						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
-					}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Address.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Mask.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Vrfs[j].Ipv4UnicastAggregateAddresses {
-						found = true
-						if state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Address.ValueString() != data.Vrfs[j].Ipv4UnicastAggregateAddresses[cj].Ipv4Address.ValueString() {
-							found = false
-						}
-						if state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Mask.ValueString() != data.Vrfs[j].Ipv4UnicastAggregateAddresses[cj].Ipv4Mask.ValueString() {
-							found = false
-						}
-						if found {
-							break
-						}
-					}
-					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/aggregate-address%v", predicates, cpredicates))
-					}
-				}
-				if !state.Vrfs[i].Ipv4UnicastRedistributeStatic.IsNull() && data.Vrfs[j].Ipv4UnicastRedistributeStatic.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/redistribute-vrf/static", predicates))
-				}
-				for ci := range state.Vrfs[i].Ipv4UnicastNetworksMask {
-					cstateKeys := [...]string{"number", "mask"}
-					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString(), state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()}
-					cpredicates := ""
-					for i := range cstateKeys {
-						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
-					}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Vrfs[j].Ipv4UnicastNetworksMask {
-						found = true
-						if state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString() != data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Network.ValueString() {
-							found = false
-						}
-						if state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString() != data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Mask.ValueString() {
-							found = false
-						}
-						if found {
-							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].RouteMap.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/with-mask%v/route-map", predicates, cpredicates))
-							}
-							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Backdoor.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/with-mask%v/backdoor", predicates, cpredicates))
-							}
-							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Evpn.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/with-mask%v/evpn", predicates, cpredicates))
-							}
-							break
-						}
-					}
-					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/with-mask%v", predicates, cpredicates))
-					}
-				}
-				for ci := range state.Vrfs[i].Ipv4UnicastNetworks {
-					cstateKeys := [...]string{"number"}
-					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString()}
-					cpredicates := ""
-					for i := range cstateKeys {
-						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
-					}
-
-					cemptyKeys := true
-					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString()).IsZero() {
-						cemptyKeys = false
-					}
-					if cemptyKeys {
-						continue
-					}
-
-					found := false
-					for cj := range data.Vrfs[j].Ipv4UnicastNetworks {
-						found = true
-						if state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString() != data.Vrfs[j].Ipv4UnicastNetworks[cj].Network.ValueString() {
-							found = false
-						}
-						if found {
-							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].RouteMap.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/no-mask%v/route-map", predicates, cpredicates))
-							}
-							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].Backdoor.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/no-mask%v/backdoor", predicates, cpredicates))
-							}
-							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].Evpn.IsNull() {
-								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/no-mask%v/evpn", predicates, cpredicates))
-							}
-							break
-						}
-					}
-					if !found {
-						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/no-mask%v", predicates, cpredicates))
-					}
+				if !state.Vrfs[i].Ipv4UnicastDistanceBgpExternal.IsNull() && data.Vrfs[j].Ipv4UnicastDistanceBgpExternal.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/distance/bgp/extern-as", predicates))
 				}
 				for ci := range state.Vrfs[i].Ipv4UnicastAdminDistances {
 					cstateKeys := [...]string{"distance", "srcip", "wildbits"}
@@ -1918,14 +1792,140 @@ func (data *BGPAddressFamilyIPv4VRF) addDeletedItemsXML(ctx context.Context, sta
 						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/distance/adm-distance%v", predicates, cpredicates))
 					}
 				}
-				if !state.Vrfs[i].Ipv4UnicastDistanceBgpExternal.IsNull() && data.Vrfs[j].Ipv4UnicastDistanceBgpExternal.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/distance/bgp/extern-as", predicates))
+				for ci := range state.Vrfs[i].Ipv4UnicastNetworks {
+					cstateKeys := [...]string{"number"}
+					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv4UnicastNetworks {
+						found = true
+						if state.Vrfs[i].Ipv4UnicastNetworks[ci].Network.ValueString() != data.Vrfs[j].Ipv4UnicastNetworks[cj].Network.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].Evpn.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].Evpn.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/no-mask%v/evpn", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].Backdoor.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/no-mask%v/backdoor", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].Ipv4UnicastNetworks[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv4UnicastNetworks[cj].RouteMap.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/no-mask%v/route-map", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/no-mask%v", predicates, cpredicates))
+					}
 				}
-				if !state.Vrfs[i].Ipv4UnicastDistanceBgpInternal.IsNull() && data.Vrfs[j].Ipv4UnicastDistanceBgpInternal.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/distance/bgp/internal-as", predicates))
+				for ci := range state.Vrfs[i].Ipv4UnicastNetworksMask {
+					cstateKeys := [...]string{"number", "mask"}
+					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString(), state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv4UnicastNetworksMask {
+						found = true
+						if state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Network.ValueString() != data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Network.ValueString() {
+							found = false
+						}
+						if state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Mask.ValueString() != data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Mask.ValueString() {
+							found = false
+						}
+						if found {
+							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Evpn.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Evpn.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/with-mask%v/evpn", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].Backdoor.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].Backdoor.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/with-mask%v/backdoor", predicates, cpredicates))
+							}
+							if !state.Vrfs[i].Ipv4UnicastNetworksMask[ci].RouteMap.IsNull() && data.Vrfs[j].Ipv4UnicastNetworksMask[cj].RouteMap.IsNull() {
+								b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/with-mask%v/route-map", predicates, cpredicates))
+							}
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/network/with-mask%v", predicates, cpredicates))
+					}
 				}
-				if !state.Vrfs[i].Ipv4UnicastDistanceBgpLocal.IsNull() && data.Vrfs[j].Ipv4UnicastDistanceBgpLocal.IsNull() {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/distance/bgp/local", predicates))
+				if !state.Vrfs[i].Ipv4UnicastRedistributeStatic.IsNull() && data.Vrfs[j].Ipv4UnicastRedistributeStatic.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/redistribute-vrf/static", predicates))
+				}
+				for ci := range state.Vrfs[i].Ipv4UnicastAggregateAddresses {
+					cstateKeys := [...]string{"ipv4-address", "ipv4-mask"}
+					cstateKeyValues := [...]string{state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Address.ValueString(), state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Mask.ValueString()}
+					cpredicates := ""
+					for i := range cstateKeys {
+						cpredicates += fmt.Sprintf("[%s='%s']", cstateKeys[i], cstateKeyValues[i])
+					}
+
+					cemptyKeys := true
+					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Address.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if !reflect.ValueOf(state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Mask.ValueString()).IsZero() {
+						cemptyKeys = false
+					}
+					if cemptyKeys {
+						continue
+					}
+
+					found := false
+					for cj := range data.Vrfs[j].Ipv4UnicastAggregateAddresses {
+						found = true
+						if state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Address.ValueString() != data.Vrfs[j].Ipv4UnicastAggregateAddresses[cj].Ipv4Address.ValueString() {
+							found = false
+						}
+						if state.Vrfs[i].Ipv4UnicastAggregateAddresses[ci].Ipv4Mask.ValueString() != data.Vrfs[j].Ipv4UnicastAggregateAddresses[cj].Ipv4Mask.ValueString() {
+							found = false
+						}
+						if found {
+							break
+						}
+					}
+					if !found {
+						b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/aggregate-address%v", predicates, cpredicates))
+					}
+				}
+				if !state.Vrfs[i].Ipv4UnicastRouterIdIp.IsNull() && data.Vrfs[j].Ipv4UnicastRouterIdIp.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/bgp/router-id/ip-id", predicates))
+				}
+				if !state.Vrfs[i].Ipv4UnicastRouterIdLoopback.IsNull() && data.Vrfs[j].Ipv4UnicastRouterIdLoopback.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/bgp/router-id/interface/Loopback", predicates))
+				}
+				if !state.Vrfs[i].Ipv4UnicastRedistributeConnected.IsNull() && data.Vrfs[j].Ipv4UnicastRedistributeConnected.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/redistribute-vrf/connected", predicates))
+				}
+				if !state.Vrfs[i].Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() && data.Vrfs[j].Ipv4UnicastAdvertiseL2vpnEvpn.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/vrf%v/ipv4-unicast/advertise/l2vpn/evpn", predicates))
 				}
 				break
 			}
@@ -1935,6 +1935,7 @@ func (data *BGPAddressFamilyIPv4VRF) addDeletedItemsXML(ctx context.Context, sta
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -2014,6 +2015,7 @@ func (data *BGPAddressFamilyIPv4VRF) addDeletePathsXML(ctx context.Context, body
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/vrf%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

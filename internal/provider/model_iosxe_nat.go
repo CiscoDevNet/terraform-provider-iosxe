@@ -251,7 +251,7 @@ func (data *NAT) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 		keyValues := [...]string{data.InsideSourceInterfaces[i].Id.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/inside/source/list-interface/list").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/list-interface/list").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -396,7 +396,7 @@ func (data *NATData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *NAT) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/inside/source/list-interface/list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/list-interface/list"); value.Exists() {
 		data.InsideSourceInterfaces = make([]NATInsideSourceInterfaces, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := NATInsideSourceInterfaces{}
@@ -430,7 +430,7 @@ func (data *NAT) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *NATData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/inside/source/list-interface/list"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/inside/source/list-interface/list"); value.Exists() {
 		data.InsideSourceInterfaces = make([]NATInsideSourceInterfaces, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := NATInsideSourceInterfaces{}
@@ -592,6 +592,7 @@ func (data *NAT) addDeletedItemsXML(ctx context.Context, state NAT, body string)
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -648,6 +649,7 @@ func (data *NAT) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/inside/source/list-interface/list%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

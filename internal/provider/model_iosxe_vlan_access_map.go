@@ -200,27 +200,27 @@ func (data *VLANAccessMap) updateFromBody(ctx context.Context, res gjson.Result)
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *VLANAccessMap) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.StringValue(value.String())
 	} else {
 		data.Name = types.StringNull()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/value"); value.Exists() && !data.Sequence.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/value"); value.Exists() && !data.Sequence.IsNull() {
 		data.Sequence = types.Int64Value(value.Int())
 	} else {
 		data.Sequence = types.Int64Null()
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ipv6/address"); value.Exists() && !data.MatchIpv6Address.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/address"); value.Exists() && !data.MatchIpv6Address.IsNull() {
 		data.MatchIpv6Address = helpers.GetStringListXML(value.Array())
 	} else {
 		data.MatchIpv6Address = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/address"); value.Exists() && !data.MatchIpAddress.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ip/address"); value.Exists() && !data.MatchIpAddress.IsNull() {
 		data.MatchIpAddress = helpers.GetStringListXML(value.Array())
 	} else {
 		data.MatchIpAddress = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/action"); value.Exists() && !data.Action.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/action"); value.Exists() && !data.Action.IsNull() {
 		data.Action = types.StringValue(value.String())
 	} else {
 		data.Action = types.StringNull()
@@ -280,17 +280,17 @@ func (data *VLANAccessMapData) fromBody(ctx context.Context, res gjson.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *VLANAccessMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ipv6/address"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/address"); value.Exists() {
 		data.MatchIpv6Address = helpers.GetStringListXML(value.Array())
 	} else {
 		data.MatchIpv6Address = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/address"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ip/address"); value.Exists() {
 		data.MatchIpAddress = helpers.GetStringListXML(value.Array())
 	} else {
 		data.MatchIpAddress = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/action"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/action"); value.Exists() {
 		data.Action = types.StringValue(value.String())
 	}
 }
@@ -300,17 +300,17 @@ func (data *VLANAccessMap) fromBodyXML(ctx context.Context, res xmldot.Result) {
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *VLANAccessMapData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ipv6/address"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ipv6/address"); value.Exists() {
 		data.MatchIpv6Address = helpers.GetStringListXML(value.Array())
 	} else {
 		data.MatchIpv6Address = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/match/ip/address"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/match/ip/address"); value.Exists() {
 		data.MatchIpAddress = helpers.GetStringListXML(value.Array())
 	} else {
 		data.MatchIpAddress = types.ListNull(types.StringType)
 	}
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/action"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/action"); value.Exists() {
 		data.Action = types.StringValue(value.String())
 	}
 }
@@ -376,26 +376,8 @@ func (data *VLANAccessMap) getDeletedItems(ctx context.Context, state VLANAccess
 
 func (data *VLANAccessMap) addDeletedItemsXML(ctx context.Context, state VLANAccessMap, body string) string {
 	b := netconf.NewBody(body)
-	if !state.MatchIpv6Address.IsNull() {
-		if data.MatchIpv6Address.IsNull() {
-			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/address")
-		} else {
-			var dataValues, stateValues []string
-			data.MatchIpv6Address.ElementsAs(ctx, &dataValues, false)
-			state.MatchIpv6Address.ElementsAs(ctx, &stateValues, false)
-			for _, v := range stateValues {
-				found := false
-				for _, vv := range dataValues {
-					if v == vv {
-						found = true
-						break
-					}
-				}
-				if !found {
-					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/ipv6/address[.=%v]", v))
-				}
-			}
-		}
+	if !state.Action.IsNull() && data.Action.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/action")
 	}
 	if !state.MatchIpAddress.IsNull() {
 		if data.MatchIpAddress.IsNull() {
@@ -418,10 +400,29 @@ func (data *VLANAccessMap) addDeletedItemsXML(ctx context.Context, state VLANAcc
 			}
 		}
 	}
-	if !state.Action.IsNull() && data.Action.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/action")
+	if !state.MatchIpv6Address.IsNull() {
+		if data.MatchIpv6Address.IsNull() {
+			b = helpers.RemoveFromXPath(b, state.getXPath()+"/match/ipv6/address")
+		} else {
+			var dataValues, stateValues []string
+			data.MatchIpv6Address.ElementsAs(ctx, &dataValues, false)
+			state.MatchIpv6Address.ElementsAs(ctx, &stateValues, false)
+			for _, v := range stateValues {
+				found := false
+				for _, vv := range dataValues {
+					if v == vv {
+						found = true
+						break
+					}
+				}
+				if !found {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/match/ipv6/address[.=%v]", v))
+				}
+			}
+		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -460,16 +461,25 @@ func (data *VLANAccessMap) getDeletePaths(ctx context.Context) []string {
 
 func (data *VLANAccessMap) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
-	if !data.MatchIpv6Address.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ipv6/address")
-	}
-	if !data.MatchIpAddress.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/match/ip/address")
-	}
 	if !data.Action.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/action")
 	}
+	if !data.MatchIpAddress.IsNull() {
+		var values []string
+		data.MatchIpAddress.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/match/ip/address[.=%v]", v))
+		}
+	}
+	if !data.MatchIpv6Address.IsNull() {
+		var values []string
+		data.MatchIpv6Address.ElementsAs(ctx, &values, false)
+		for _, v := range values {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/match/ipv6/address[.=%v]", v))
+		}
+	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 

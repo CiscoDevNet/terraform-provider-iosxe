@@ -201,7 +201,7 @@ func (data *ASPathAccessList) updateFromBody(ctx context.Context, res gjson.Resu
 // Section below is generated&owned by "gen/generator.go". //template:begin updateFromBodyXML
 
 func (data *ASPathAccessList) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/name"); value.Exists() && !data.Name.IsNull() {
 		data.Name = types.Int64Value(value.Int())
 	} else {
 		data.Name = types.Int64Null()
@@ -211,7 +211,7 @@ func (data *ASPathAccessList) updateFromBodyXML(ctx context.Context, res xmldot.
 		keyValues := [...]string{data.Entries[i].Action.ValueString(), data.Entries[i].Regex.ValueString()}
 
 		var r xmldot.Result
-		helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping").ForEach(
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping").ForEach(
 			func(_ int, v xmldot.Result) bool {
 				found := false
 				for ik := range keys {
@@ -297,7 +297,7 @@ func (data *ASPathAccessListData) fromBody(ctx context.Context, res gjson.Result
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyXML
 
 func (data *ASPathAccessList) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
 		data.Entries = make([]ASPathAccessListEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := ASPathAccessListEntries{}
@@ -318,7 +318,7 @@ func (data *ASPathAccessList) fromBodyXML(ctx context.Context, res xmldot.Result
 // Section below is generated&owned by "gen/generator.go". //template:begin fromBodyDataXML
 
 func (data *ASPathAccessListData) fromBodyXML(ctx context.Context, res xmldot.Result) {
-	if value := helpers.GetFromXPath(res, "data/"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/extended-grouping/extended_grouping"); value.Exists() {
 		data.Entries = make([]ASPathAccessListEntries, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
 			item := ASPathAccessListEntries{}
@@ -418,6 +418,7 @@ func (data *ASPathAccessList) addDeletedItemsXML(ctx context.Context, state ASPa
 		}
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
@@ -463,6 +464,7 @@ func (data *ASPathAccessList) addDeletePathsXML(ctx context.Context, body string
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/extended-grouping/extended_grouping%v", predicates))
 	}
 
+	b = helpers.CleanupRedundantRemoveOperations(b)
 	return b.Res()
 }
 
