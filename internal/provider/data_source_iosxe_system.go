@@ -778,6 +778,26 @@ func (d *SystemDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 				MarkdownDescription: "Perform IP routing protocol routes purge on link failures",
 				Computed:            true,
 			},
+			"ip_cef_load_sharing_algorithm_include_ports_source": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ip_cef_load_sharing_algorithm_include_ports_destination": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ipv6_cef_load_sharing_algorithm_include_ports_source": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"ipv6_cef_load_sharing_algorithm_include_ports_destination": schema.BoolAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
+			"port_channel_load_balance": schema.StringAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+			},
 		},
 	}
 }

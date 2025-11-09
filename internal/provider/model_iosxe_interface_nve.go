@@ -73,6 +73,7 @@ type InterfaceNVEVnis struct {
 	VniRange           types.String `tfsdk:"vni_range"`
 	Ipv4MulticastGroup types.String `tfsdk:"ipv4_multicast_group"`
 	IngressReplication types.Bool   `tfsdk:"ingress_replication"`
+	LocalRouting       types.Bool   `tfsdk:"local_routing"`
 }
 
 // End of section. //template:end types
@@ -161,6 +162,11 @@ func (data InterfaceNVE) toBody(ctx context.Context) string {
 					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.vni"+"."+strconv.Itoa(index)+"."+"ir-cp-config.ingress-replication", map[string]string{})
 				}
 			}
+			if !item.LocalRouting.IsNull() && !item.LocalRouting.IsUnknown() {
+				if item.LocalRouting.ValueBool() {
+					body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"member.vni"+"."+strconv.Itoa(index)+"."+"ir-cp-config.local-routing", map[string]string{})
+				}
+			}
 		}
 	}
 	return body
@@ -221,6 +227,13 @@ func (data InterfaceNVE) toBodyXML(ctx context.Context) string {
 					cBody = helpers.SetFromXPath(cBody, "ir-cp-config/ingress-replication", "")
 				} else {
 					cBody = helpers.RemoveFromXPath(cBody, "ir-cp-config/ingress-replication")
+				}
+			}
+			if !item.LocalRouting.IsNull() && !item.LocalRouting.IsUnknown() {
+				if item.LocalRouting.ValueBool() {
+					cBody = helpers.SetFromXPath(cBody, "ir-cp-config/local-routing", "")
+				} else {
+					cBody = helpers.RemoveFromXPath(cBody, "ir-cp-config/local-routing")
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/member/vni", cBody.Res())
@@ -351,6 +364,15 @@ func (data *InterfaceNVE) updateFromBody(ctx context.Context, res gjson.Result) 
 		} else {
 			data.Vnis[i].IngressReplication = types.BoolNull()
 		}
+		if value := r.Get("ir-cp-config.local-routing"); !data.Vnis[i].LocalRouting.IsNull() {
+			if value.Exists() {
+				data.Vnis[i].LocalRouting = types.BoolValue(true)
+			} else {
+				data.Vnis[i].LocalRouting = types.BoolValue(false)
+			}
+		} else {
+			data.Vnis[i].LocalRouting = types.BoolNull()
+		}
 	}
 }
 
@@ -468,6 +490,15 @@ func (data *InterfaceNVE) updateFromBodyXML(ctx context.Context, res xmldot.Resu
 		} else {
 			data.Vnis[i].IngressReplication = types.BoolNull()
 		}
+		if value := helpers.GetFromXPath(r, "ir-cp-config/local-routing"); !data.Vnis[i].LocalRouting.IsNull() {
+			if value.Exists() {
+				data.Vnis[i].LocalRouting = types.BoolValue(true)
+			} else {
+				data.Vnis[i].LocalRouting = types.BoolValue(false)
+			}
+		} else {
+			data.Vnis[i].LocalRouting = types.BoolNull()
+		}
 	}
 }
 
@@ -524,6 +555,11 @@ func (data *InterfaceNVE) fromBody(ctx context.Context, res gjson.Result) {
 				item.IngressReplication = types.BoolValue(true)
 			} else {
 				item.IngressReplication = types.BoolValue(false)
+			}
+			if cValue := v.Get("ir-cp-config.local-routing"); cValue.Exists() {
+				item.LocalRouting = types.BoolValue(true)
+			} else {
+				item.LocalRouting = types.BoolValue(false)
 			}
 			data.Vnis = append(data.Vnis, item)
 			return true
@@ -585,6 +621,11 @@ func (data *InterfaceNVEData) fromBody(ctx context.Context, res gjson.Result) {
 			} else {
 				item.IngressReplication = types.BoolValue(false)
 			}
+			if cValue := v.Get("ir-cp-config.local-routing"); cValue.Exists() {
+				item.LocalRouting = types.BoolValue(true)
+			} else {
+				item.LocalRouting = types.BoolValue(false)
+			}
 			data.Vnis = append(data.Vnis, item)
 			return true
 		})
@@ -640,6 +681,11 @@ func (data *InterfaceNVE) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				item.IngressReplication = types.BoolValue(true)
 			} else {
 				item.IngressReplication = types.BoolValue(false)
+			}
+			if cValue := helpers.GetFromXPath(v, "ir-cp-config/local-routing"); cValue.Exists() {
+				item.LocalRouting = types.BoolValue(true)
+			} else {
+				item.LocalRouting = types.BoolValue(false)
 			}
 			data.Vnis = append(data.Vnis, item)
 			return true
@@ -697,6 +743,11 @@ func (data *InterfaceNVEData) fromBodyXML(ctx context.Context, res xmldot.Result
 			} else {
 				item.IngressReplication = types.BoolValue(false)
 			}
+			if cValue := helpers.GetFromXPath(v, "ir-cp-config/local-routing"); cValue.Exists() {
+				item.LocalRouting = types.BoolValue(true)
+			} else {
+				item.LocalRouting = types.BoolValue(false)
+			}
 			data.Vnis = append(data.Vnis, item)
 			return true
 		})
@@ -727,6 +778,9 @@ func (data *InterfaceNVE) getDeletedItems(ctx context.Context, state InterfaceNV
 				found = false
 			}
 			if found {
+				if !state.Vnis[i].LocalRouting.IsNull() && data.Vnis[j].LocalRouting.IsNull() {
+					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/local-routing", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+				}
 				if !state.Vnis[i].IngressReplication.IsNull() && data.Vnis[j].IngressReplication.IsNull() {
 					deletedItems = append(deletedItems, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/ingress-replication", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 				}
@@ -810,6 +864,9 @@ func (data *InterfaceNVE) addDeletedItemsXML(ctx context.Context, state Interfac
 				found = false
 			}
 			if found {
+				if !state.Vnis[i].LocalRouting.IsNull() && data.Vnis[j].LocalRouting.IsNull() {
+					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v/ir-cp-config/local-routing", predicates))
+				}
 				if !state.Vnis[i].IngressReplication.IsNull() && data.Vnis[j].IngressReplication.IsNull() {
 					b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/member/vni%v/ir-cp-config/ingress-replication", predicates))
 				}
@@ -879,6 +936,9 @@ func (data *InterfaceNVE) getEmptyLeafsDelete(ctx context.Context) []string {
 
 	for i := range data.Vnis {
 		keyValues := [...]string{data.Vnis[i].VniRange.ValueString()}
+		if !data.Vnis[i].LocalRouting.IsNull() && !data.Vnis[i].LocalRouting.ValueBool() {
+			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/local-routing", data.getPath(), strings.Join(keyValues[:], ",")))
+		}
 		if !data.Vnis[i].IngressReplication.IsNull() && !data.Vnis[i].IngressReplication.ValueBool() {
 			emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/member/vni=%v/ir-cp-config/ingress-replication", data.getPath(), strings.Join(keyValues[:], ",")))
 		}

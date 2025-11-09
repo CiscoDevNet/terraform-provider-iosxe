@@ -196,6 +196,30 @@ func (d *FlowRecordDataSource) Schema(ctx context.Context, req datasource.Schema
 				MarkdownDescription: "64 bits counter",
 				Computed:            true,
 			},
+			"match_datalink_mac_source_address_input": schema.BoolAttribute{
+				MarkdownDescription: "Source MAC address from packet at input",
+				Computed:            true,
+			},
+			"match_datalink_mac_destination_address_input": schema.BoolAttribute{
+				MarkdownDescription: "Destination MAC address from packet at input",
+				Computed:            true,
+			},
+			"match_datalink_vlan": schema.StringAttribute{
+				MarkdownDescription: "Match VLAN input/output, available on switch platforms (C9K)",
+				Computed:            true,
+			},
+			"match_datalink_source_vlan_id": schema.BoolAttribute{
+				MarkdownDescription: "Match source VLAN ID, available on router platforms (C8K, CSR1K)",
+				Computed:            true,
+			},
+			"match_datalink_destination_vlan_id": schema.BoolAttribute{
+				MarkdownDescription: "Match destination VLAN ID, available on router platforms (C8K, CSR1K)",
+				Computed:            true,
+			},
+			"match_ipv4_ttl": schema.BoolAttribute{
+				MarkdownDescription: "IPv4 TTL",
+				Computed:            true,
+			},
 			"collect_datalink_mac_source_address_input": schema.BoolAttribute{
 				MarkdownDescription: "Source MAC address from packet at input",
 				Computed:            true,

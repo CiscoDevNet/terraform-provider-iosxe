@@ -42,80 +42,82 @@ import (
 
 // Section below is generated&owned by "gen/generator.go". //template:begin types
 type InterfaceVLAN struct {
-	Device                       types.String                          `tfsdk:"device"`
-	Id                           types.String                          `tfsdk:"id"`
-	DeleteMode                   types.String                          `tfsdk:"delete_mode"`
-	Name                         types.Int64                           `tfsdk:"name"`
-	Autostate                    types.Bool                            `tfsdk:"autostate"`
-	Description                  types.String                          `tfsdk:"description"`
-	Shutdown                     types.Bool                            `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                            `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                            `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                            `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                          `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                          `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                          `tfsdk:"ipv4_address_mask"`
-	Unnumbered                   types.String                          `tfsdk:"unnumbered"`
-	IpDhcpRelaySourceInterface   types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupInEnable        types.Bool                            `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn              types.String                          `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable       types.Bool                            `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut             types.String                          `tfsdk:"ip_access_group_out"`
-	HelperAddresses              []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
-	BfdTemplate                  types.String                          `tfsdk:"bfd_template"`
-	BfdEnable                    types.Bool                            `tfsdk:"bfd_enable"`
-	BfdLocalAddress              types.String                          `tfsdk:"bfd_local_address"`
-	BfdInterval                  types.Int64                           `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx             types.Int64                           `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier        types.Int64                           `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                      types.Bool                            `tfsdk:"bfd_echo"`
-	Ipv6Enable                   types.Bool                            `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                           `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                            `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	LoadInterval                 types.Int64                           `tfsdk:"load_interval"`
-	MacAddress                   types.String                          `tfsdk:"mac_address"`
+	Device                            types.String                          `tfsdk:"device"`
+	Id                                types.String                          `tfsdk:"id"`
+	DeleteMode                        types.String                          `tfsdk:"delete_mode"`
+	Name                              types.Int64                           `tfsdk:"name"`
+	Autostate                         types.Bool                            `tfsdk:"autostate"`
+	Description                       types.String                          `tfsdk:"description"`
+	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
+	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
+	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
+	IpUnreachables                    types.Bool                            `tfsdk:"ip_unreachables"`
+	VrfForwarding                     types.String                          `tfsdk:"vrf_forwarding"`
+	Ipv4Address                       types.String                          `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                   types.String                          `tfsdk:"ipv4_address_mask"`
+	Unnumbered                        types.String                          `tfsdk:"unnumbered"`
+	IpDhcpRelaySourceInterface        types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpAccessGroupInEnable             types.Bool                            `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                   types.String                          `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable            types.Bool                            `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                  types.String                          `tfsdk:"ip_access_group_out"`
+	HelperAddresses                   []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
+	BfdTemplate                       types.String                          `tfsdk:"bfd_template"`
+	BfdEnable                         types.Bool                            `tfsdk:"bfd_enable"`
+	BfdLocalAddress                   types.String                          `tfsdk:"bfd_local_address"`
+	BfdInterval                       types.Int64                           `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx                  types.Int64                           `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier             types.Int64                           `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                           types.Bool                            `tfsdk:"bfd_echo"`
+	Ipv6Enable                        types.Bool                            `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                           types.Int64                           `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll               types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault      types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                   types.Bool                            `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses            []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                     []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	LoadInterval                      types.Int64                           `tfsdk:"load_interval"`
+	MacAddress                        types.String                          `tfsdk:"mac_address"`
+	IpDhcpRelayInformationOptionVpnId types.Bool                            `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
 }
 
 type InterfaceVLANData struct {
-	Device                       types.String                          `tfsdk:"device"`
-	Id                           types.String                          `tfsdk:"id"`
-	Name                         types.Int64                           `tfsdk:"name"`
-	Autostate                    types.Bool                            `tfsdk:"autostate"`
-	Description                  types.String                          `tfsdk:"description"`
-	Shutdown                     types.Bool                            `tfsdk:"shutdown"`
-	IpProxyArp                   types.Bool                            `tfsdk:"ip_proxy_arp"`
-	IpRedirects                  types.Bool                            `tfsdk:"ip_redirects"`
-	IpUnreachables               types.Bool                            `tfsdk:"ip_unreachables"`
-	VrfForwarding                types.String                          `tfsdk:"vrf_forwarding"`
-	Ipv4Address                  types.String                          `tfsdk:"ipv4_address"`
-	Ipv4AddressMask              types.String                          `tfsdk:"ipv4_address_mask"`
-	Unnumbered                   types.String                          `tfsdk:"unnumbered"`
-	IpDhcpRelaySourceInterface   types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
-	IpAccessGroupInEnable        types.Bool                            `tfsdk:"ip_access_group_in_enable"`
-	IpAccessGroupIn              types.String                          `tfsdk:"ip_access_group_in"`
-	IpAccessGroupOutEnable       types.Bool                            `tfsdk:"ip_access_group_out_enable"`
-	IpAccessGroupOut             types.String                          `tfsdk:"ip_access_group_out"`
-	HelperAddresses              []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
-	BfdTemplate                  types.String                          `tfsdk:"bfd_template"`
-	BfdEnable                    types.Bool                            `tfsdk:"bfd_enable"`
-	BfdLocalAddress              types.String                          `tfsdk:"bfd_local_address"`
-	BfdInterval                  types.Int64                           `tfsdk:"bfd_interval"`
-	BfdIntervalMinRx             types.Int64                           `tfsdk:"bfd_interval_min_rx"`
-	BfdIntervalMultiplier        types.Int64                           `tfsdk:"bfd_interval_multiplier"`
-	BfdEcho                      types.Bool                            `tfsdk:"bfd_echo"`
-	Ipv6Enable                   types.Bool                            `tfsdk:"ipv6_enable"`
-	Ipv6Mtu                      types.Int64                           `tfsdk:"ipv6_mtu"`
-	Ipv6NdRaSuppressAll          types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
-	Ipv6AddressAutoconfigDefault types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
-	Ipv6AddressDhcp              types.Bool                            `tfsdk:"ipv6_address_dhcp"`
-	Ipv6LinkLocalAddresses       []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
-	Ipv6Addresses                []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
-	LoadInterval                 types.Int64                           `tfsdk:"load_interval"`
-	MacAddress                   types.String                          `tfsdk:"mac_address"`
+	Device                            types.String                          `tfsdk:"device"`
+	Id                                types.String                          `tfsdk:"id"`
+	Name                              types.Int64                           `tfsdk:"name"`
+	Autostate                         types.Bool                            `tfsdk:"autostate"`
+	Description                       types.String                          `tfsdk:"description"`
+	Shutdown                          types.Bool                            `tfsdk:"shutdown"`
+	IpProxyArp                        types.Bool                            `tfsdk:"ip_proxy_arp"`
+	IpRedirects                       types.Bool                            `tfsdk:"ip_redirects"`
+	IpUnreachables                    types.Bool                            `tfsdk:"ip_unreachables"`
+	VrfForwarding                     types.String                          `tfsdk:"vrf_forwarding"`
+	Ipv4Address                       types.String                          `tfsdk:"ipv4_address"`
+	Ipv4AddressMask                   types.String                          `tfsdk:"ipv4_address_mask"`
+	Unnumbered                        types.String                          `tfsdk:"unnumbered"`
+	IpDhcpRelaySourceInterface        types.String                          `tfsdk:"ip_dhcp_relay_source_interface"`
+	IpAccessGroupInEnable             types.Bool                            `tfsdk:"ip_access_group_in_enable"`
+	IpAccessGroupIn                   types.String                          `tfsdk:"ip_access_group_in"`
+	IpAccessGroupOutEnable            types.Bool                            `tfsdk:"ip_access_group_out_enable"`
+	IpAccessGroupOut                  types.String                          `tfsdk:"ip_access_group_out"`
+	HelperAddresses                   []InterfaceVLANHelperAddresses        `tfsdk:"helper_addresses"`
+	BfdTemplate                       types.String                          `tfsdk:"bfd_template"`
+	BfdEnable                         types.Bool                            `tfsdk:"bfd_enable"`
+	BfdLocalAddress                   types.String                          `tfsdk:"bfd_local_address"`
+	BfdInterval                       types.Int64                           `tfsdk:"bfd_interval"`
+	BfdIntervalMinRx                  types.Int64                           `tfsdk:"bfd_interval_min_rx"`
+	BfdIntervalMultiplier             types.Int64                           `tfsdk:"bfd_interval_multiplier"`
+	BfdEcho                           types.Bool                            `tfsdk:"bfd_echo"`
+	Ipv6Enable                        types.Bool                            `tfsdk:"ipv6_enable"`
+	Ipv6Mtu                           types.Int64                           `tfsdk:"ipv6_mtu"`
+	Ipv6NdRaSuppressAll               types.Bool                            `tfsdk:"ipv6_nd_ra_suppress_all"`
+	Ipv6AddressAutoconfigDefault      types.Bool                            `tfsdk:"ipv6_address_autoconfig_default"`
+	Ipv6AddressDhcp                   types.Bool                            `tfsdk:"ipv6_address_dhcp"`
+	Ipv6LinkLocalAddresses            []InterfaceVLANIpv6LinkLocalAddresses `tfsdk:"ipv6_link_local_addresses"`
+	Ipv6Addresses                     []InterfaceVLANIpv6Addresses          `tfsdk:"ipv6_addresses"`
+	LoadInterval                      types.Int64                           `tfsdk:"load_interval"`
+	MacAddress                        types.String                          `tfsdk:"mac_address"`
+	IpDhcpRelayInformationOptionVpnId types.Bool                            `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
 }
 type InterfaceVLANHelperAddresses struct {
 	Address types.String `tfsdk:"address"`
@@ -276,6 +278,11 @@ func (data InterfaceVLAN) toBody(ctx context.Context) string {
 	}
 	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"mac-address", data.MacAddress.ValueString())
+	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.IsUnknown() {
+		if data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id", map[string]string{})
+		}
 	}
 	if len(data.HelperAddresses) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.helper-address", []interface{}{})
@@ -496,6 +503,13 @@ func (data InterfaceVLAN) toBodyXML(ctx context.Context) string {
 	}
 	if !data.MacAddress.IsNull() && !data.MacAddress.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/mac-address", data.MacAddress.ValueString())
+	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.IsUnknown() {
+		if data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
+		}
 	}
 	bodyString, err := body.String()
 	if err != nil {
@@ -822,6 +836,15 @@ func (data *InterfaceVLAN) updateFromBody(ctx context.Context, res gjson.Result)
 	} else {
 		data.MacAddress = types.StringNull()
 	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		if value.Exists() {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+		} else {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBody
@@ -1138,6 +1161,15 @@ func (data *InterfaceVLAN) updateFromBodyXML(ctx context.Context, res xmldot.Res
 	} else {
 		data.MacAddress = types.StringNull()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		if value.Exists() {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+		} else {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolNull()
+	}
 }
 
 // End of section. //template:end updateFromBodyXML
@@ -1312,6 +1344,11 @@ func (data *InterfaceVLAN) fromBody(ctx context.Context, res gjson.Result) {
 	}
 	if value := res.Get(prefix + "mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
 	}
 }
 
@@ -1488,6 +1525,11 @@ func (data *InterfaceVLANData) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
 	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyData
@@ -1658,6 +1700,11 @@ func (data *InterfaceVLAN) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
 	}
 }
 
@@ -1830,6 +1877,11 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/mac-address"); value.Exists() {
 		data.MacAddress = types.StringValue(value.String())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
 }
 
 // End of section. //template:end fromBodyDataXML
@@ -1838,6 +1890,9 @@ func (data *InterfaceVLANData) fromBodyXML(ctx context.Context, res xmldot.Resul
 
 func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceVLAN) []string {
 	deletedItems := make([]string, 0)
+	if !state.IpDhcpRelayInformationOptionVpnId.IsNull() && data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", state.getPath()))
+	}
 	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/mac-address", state.getPath()))
 	}
@@ -2022,6 +2077,9 @@ func (data *InterfaceVLAN) getDeletedItems(ctx context.Context, state InterfaceV
 
 func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state InterfaceVLAN, body string) string {
 	b := netconf.NewBody(body)
+	if !state.IpDhcpRelayInformationOptionVpnId.IsNull() && data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
+	}
 	if !state.MacAddress.IsNull() && data.MacAddress.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/mac-address")
 	}
@@ -2222,6 +2280,9 @@ func (data *InterfaceVLAN) addDeletedItemsXML(ctx context.Context, state Interfa
 
 func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", data.getPath()))
+	}
 
 	for i := range data.Ipv6Addresses {
 		keyValues := [...]string{data.Ipv6Addresses[i].Prefix.ValueString()}
@@ -2274,6 +2335,9 @@ func (data *InterfaceVLAN) getEmptyLeafsDelete(ctx context.Context) []string {
 
 func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 	var deletePaths []string
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", data.getPath()))
+	}
 	if !data.MacAddress.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/mac-address", data.getPath()))
 	}
@@ -2386,6 +2450,9 @@ func (data *InterfaceVLAN) getDeletePaths(ctx context.Context) []string {
 
 func (data *InterfaceVLAN) addDeletePathsXML(ctx context.Context, body string) string {
 	b := netconf.NewBody(body)
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
+	}
 	if !data.MacAddress.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/mac-address")
 	}

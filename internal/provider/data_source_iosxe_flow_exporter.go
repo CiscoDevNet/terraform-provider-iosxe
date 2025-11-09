@@ -84,6 +84,42 @@ func (d *FlowExporterDataSource) Schema(ctx context.Context, req datasource.Sche
 				MarkdownDescription: "Loopback interface",
 				Computed:            true,
 			},
+			"source_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "GigabitEthernet IEEE 802.3z",
+				Computed:            true,
+			},
+			"source_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Two GigabitEthernet ",
+				Computed:            true,
+			},
+			"source_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Five GigabitEthernet ",
+				Computed:            true,
+			},
+			"source_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Ten Gigabit Ethernet",
+				Computed:            true,
+			},
+			"source_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Twenty Five GigabitEthernet ",
+				Computed:            true,
+			},
+			"source_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Forty GigabitEthernet ",
+				Computed:            true,
+			},
+			"source_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: "Hundred GigabitEthernet",
+				Computed:            true,
+			},
+			"source_vlan": schema.Int64Attribute{
+				MarkdownDescription: "Iosxr Vlans",
+				Computed:            true,
+			},
+			"source_port_channel": schema.Int64Attribute{
+				MarkdownDescription: "Ethernet Channel of interfaces",
+				Computed:            true,
+			},
 			"transport_udp": schema.Int64Attribute{
 				MarkdownDescription: "UDP transport protocol",
 				Computed:            true,

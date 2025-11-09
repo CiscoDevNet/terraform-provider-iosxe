@@ -180,6 +180,26 @@ func (d *VRFDataSource) Schema(ctx context.Context, req datasource.SchemaRequest
 					},
 				},
 			},
+			"ipv4_route_replicate": schema.ListNestedAttribute{
+				MarkdownDescription: "",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"name": schema.StringAttribute{
+							MarkdownDescription: "Source VRF name or 'global'",
+							Computed:            true,
+						},
+						"unicast_all": schema.BoolAttribute{
+							MarkdownDescription: "All routes",
+							Computed:            true,
+						},
+						"unicast_all_route_map": schema.StringAttribute{
+							MarkdownDescription: "Route map reference",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"ipv6_route_target_import": schema.SetNestedAttribute{
 				MarkdownDescription: "Import Target-VPN community",
 				Computed:            true,

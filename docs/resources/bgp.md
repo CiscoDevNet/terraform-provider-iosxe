@@ -17,7 +17,8 @@ resource "iosxe_bgp" "example" {
   asn                  = "65000"
   default_ipv4_unicast = false
   log_neighbor_changes = true
-  router_id_loopback   = 100
+  bgp_graceful_restart = true
+  bgp_update_delay     = 200
 }
 ```
 
@@ -30,6 +31,9 @@ resource "iosxe_bgp" "example" {
 
 ### Optional
 
+- `bgp_graceful_restart` (Boolean) Graceful restart capability parameters
+- `bgp_update_delay` (Number) Set the max initial delay for sending update
+  - Range: `1`-`3600`
 - `default_ipv4_unicast` (Boolean) Activate ipv4-unicast for a peer by default
 - `delete_mode` (String) Configure behavior when deleting/destroying the resource. Either delete the entire object (YANG container) being managed, or only delete the individual resource attributes configured explicitly and leave everything else as-is. Default value is `all`.
   - Choices: `all`, `attributes`

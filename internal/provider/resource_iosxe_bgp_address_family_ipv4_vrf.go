@@ -276,6 +276,20 @@ func (r *BGPAddressFamilyIPv4VRFResource) Schema(ctx context.Context, req resour
 								int64validator.Between(1, 255),
 							},
 						},
+						"ipv4_unicast_maximum_paths_ebgp": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("eBGP-multipath").AddIntegerRangeDescription(1, 32).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 32),
+							},
+						},
+						"ipv4_unicast_maximum_paths_ibgp": schema.Int64Attribute{
+							MarkdownDescription: helpers.NewAttributeDescription("").AddIntegerRangeDescription(1, 32).String,
+							Optional:            true,
+							Validators: []validator.Int64{
+								int64validator.Between(1, 32),
+							},
+						},
 					},
 				},
 			},

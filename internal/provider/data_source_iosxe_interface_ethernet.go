@@ -388,6 +388,10 @@ func (d *InterfaceEthernetDataSource) Schema(ctx context.Context, req datasource
 				MarkdownDescription: "Rate Limit",
 				Computed:            true,
 			},
+			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
+				MarkdownDescription: "Enable vpn-id support on this interface",
+				Computed:            true,
+			},
 			"ip_dhcp_snooping_trust": schema.BoolAttribute{
 				MarkdownDescription: "DHCP Snooping trust config",
 				Computed:            true,

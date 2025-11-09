@@ -85,6 +85,11 @@ func TestAccDataSourceIosxeSystem(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_list_vrf_domain", "example.com"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_domain_list_vrf", "VRF1"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_routing_protocol_purge_interface", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_cef_load_sharing_algorithm_include_ports_source", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ip_cef_load_sharing_algorithm_include_ports_destination", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_source", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "ipv6_cef_load_sharing_algorithm_include_ports_destination", "true"))
+	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_system.test", "port_channel_load_balance", "src-dst-mixed-ip-port"))
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -178,6 +183,11 @@ func testAccDataSourceIosxeSystemConfig() string {
 	config += `	ip_domain_list_vrf_domain = "example.com"` + "\n"
 	config += `	ip_domain_list_vrf = "VRF1"` + "\n"
 	config += `	ip_routing_protocol_purge_interface = true` + "\n"
+	config += `	ip_cef_load_sharing_algorithm_include_ports_source = true` + "\n"
+	config += `	ip_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
+	config += `	ipv6_cef_load_sharing_algorithm_include_ports_source = true` + "\n"
+	config += `	ipv6_cef_load_sharing_algorithm_include_ports_destination = true` + "\n"
+	config += `	port_channel_load_balance = "src-dst-mixed-ip-port"` + "\n"
 	config += `	depends_on = [iosxe_yang.PreReq0, ]` + "\n"
 	config += `}` + "\n"
 

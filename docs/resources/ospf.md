@@ -56,8 +56,23 @@ resource "iosxe_ospf" "example" {
       nssa_no_redistribution                         = true
     }
   ]
-  auto_cost_reference_bandwidth = 40000
-  passive_interface_default     = true
+  auto_cost_reference_bandwidth                  = 40000
+  passive_interface_default                      = true
+  log_adjacency_changes                          = true
+  log_adjacency_changes_detail                   = true
+  nsf_cisco                                      = true
+  nsf_cisco_enforce_global                       = true
+  nsf_ietf                                       = true
+  nsf_ietf_restart_interval                      = 120
+  max_metric_router_lsa                          = true
+  max_metric_router_lsa_summary_lsa_metric       = 16711680
+  max_metric_router_lsa_external_lsa_metric      = 16711680
+  max_metric_router_lsa_include_stub             = true
+  max_metric_router_lsa_on_startup_time          = 60
+  max_metric_router_lsa_on_startup_wait_for_bgp  = true
+  fast_reroute_per_prefix_enable_prefix_priority = "high"
+  redistribute_static_subnets                    = true
+  redistribute_connected_subnets                 = true
 }
 ```
 
@@ -86,10 +101,25 @@ resource "iosxe_ospf" "example" {
   - Range: `1`-`255`
 - `domain_tag` (Number) OSPF domain-tag
   - Range: `1`-`4294967295`
+- `fast_reroute_per_prefix_enable_prefix_priority` (String) Priority of prefixes to be protected
+  - Choices: `high`, `low`
+- `log_adjacency_changes` (Boolean) Log changes in adjacency state
+- `log_adjacency_changes_detail` (Boolean) Log all state changes
+- `max_metric_router_lsa` (Boolean) Maximum metric in self-originated router-LSAs
+- `max_metric_router_lsa_external_lsa_metric` (Number) - Range: `1`-`16777214`
+- `max_metric_router_lsa_include_stub` (Boolean) Set maximum metric for stub links in router-LSAs
+- `max_metric_router_lsa_on_startup_time` (Number) - Range: `5`-`86400`
+- `max_metric_router_lsa_on_startup_wait_for_bgp` (Boolean) Let BGP decide when to originate router-LSA with normal metric
+- `max_metric_router_lsa_summary_lsa_metric` (Number) - Range: `1`-`16777214`
 - `mpls_ldp_autoconfig` (Boolean) Configure LDP automatic configuration
 - `mpls_ldp_sync` (Boolean) Configure LDP-IGP Synchronization
 - `neighbors` (Attributes List) Specify a neighbor router (see [below for nested schema](#nestedatt--neighbors))
 - `networks` (Attributes List) Enable routing on an IP network (see [below for nested schema](#nestedatt--networks))
+- `nsf_cisco` (Boolean) Cisco Non-stop forwarding
+- `nsf_cisco_enforce_global` (Boolean) For the whole OSPF process
+- `nsf_ietf` (Boolean) IETF graceful restart
+- `nsf_ietf_restart_interval` (Number) Graceful restart interval
+  - Range: `1`-`1800`
 - `passive_interface` (List of String)
 - `passive_interface_default` (Boolean) Suppress routing updates on all interfaces
 - `passive_interface_disable_five_gigabit_ethernets` (Attributes Set) (see [below for nested schema](#nestedatt--passive_interface_disable_five_gigabit_ethernets))
@@ -108,6 +138,8 @@ resource "iosxe_ospf" "example" {
 - `passive_interface_disable_vlans` (Attributes Set) (see [below for nested schema](#nestedatt--passive_interface_disable_vlans))
 - `priority` (Number) OSPF topology priority
   - Range: `0`-`127`
+- `redistribute_connected_subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
+- `redistribute_static_subnets` (Boolean) Consider subnets for redistribution into OSPF (Will be removed in the future)
 - `router_id` (String) Configure router identifier. New router-id will take effect immediately (peers will reset)
 - `shutdown` (Boolean) Shutdown the OSPF protocol under the current instance
 - `summary_addresses` (Attributes List) Configure IP address summaries (see [below for nested schema](#nestedatt--summary_addresses))

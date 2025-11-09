@@ -260,6 +260,8 @@ attributes:
   - yang_name: ip/arp/inspection/limit/rate
     example: 1000
     test_tags: [C9000V]
+  - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id
+    example: true
   - yang_name: ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust
     example: true
     test_tags: [C9000V]

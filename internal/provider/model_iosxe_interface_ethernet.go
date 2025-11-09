@@ -108,6 +108,7 @@ type InterfaceEthernet struct {
 	SpanningTreePortfastEdge                            types.Bool                                        `tfsdk:"spanning_tree_portfast_edge"`
 	IpArpInspectionTrust                                types.Bool                                        `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate                            types.Int64                                       `tfsdk:"ip_arp_inspection_limit_rate"`
+	IpDhcpRelayInformationOptionVpnId                   types.Bool                                        `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
 	IpDhcpSnoopingTrust                                 types.Bool                                        `tfsdk:"ip_dhcp_snooping_trust"`
 	Speed100                                            types.Bool                                        `tfsdk:"speed_100"`
 	Speed1000                                           types.Bool                                        `tfsdk:"speed_1000"`
@@ -245,6 +246,7 @@ type InterfaceEthernetData struct {
 	SpanningTreePortfastEdge                            types.Bool                                        `tfsdk:"spanning_tree_portfast_edge"`
 	IpArpInspectionTrust                                types.Bool                                        `tfsdk:"ip_arp_inspection_trust"`
 	IpArpInspectionLimitRate                            types.Int64                                       `tfsdk:"ip_arp_inspection_limit_rate"`
+	IpDhcpRelayInformationOptionVpnId                   types.Bool                                        `tfsdk:"ip_dhcp_relay_information_option_vpn_id"`
 	IpDhcpSnoopingTrust                                 types.Bool                                        `tfsdk:"ip_dhcp_snooping_trust"`
 	Speed100                                            types.Bool                                        `tfsdk:"speed_100"`
 	Speed1000                                           types.Bool                                        `tfsdk:"speed_1000"`
@@ -613,6 +615,11 @@ func (data InterfaceEthernet) toBody(ctx context.Context) string {
 	}
 	if !data.IpArpInspectionLimitRate.IsNull() && !data.IpArpInspectionLimitRate.IsUnknown() {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.arp.inspection.limit.rate", strconv.FormatInt(data.IpArpInspectionLimitRate.ValueInt64(), 10))
+	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.IsUnknown() {
+		if data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id", map[string]string{})
+		}
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.IsUnknown() {
 		if data.IpDhcpSnoopingTrust.ValueBool() {
@@ -1341,6 +1348,13 @@ func (data InterfaceEthernet) toBodyXML(ctx context.Context) string {
 	}
 	if !data.IpArpInspectionLimitRate.IsNull() && !data.IpArpInspectionLimitRate.IsUnknown() {
 		body = helpers.SetFromXPath(body, data.getXPath()+"/ip/arp/inspection/limit/rate", strconv.FormatInt(data.IpArpInspectionLimitRate.ValueInt64(), 10))
+	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.IsUnknown() {
+		if data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
+		}
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.IsUnknown() {
 		if data.IpDhcpSnoopingTrust.ValueBool() {
@@ -2327,6 +2341,15 @@ func (data *InterfaceEthernet) updateFromBody(ctx context.Context, res gjson.Res
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
 	} else {
 		data.IpArpInspectionLimitRate = types.Int64Null()
+	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		if value.Exists() {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+		} else {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolNull()
 	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); !data.IpDhcpSnoopingTrust.IsNull() {
 		if value.Exists() {
@@ -3511,6 +3534,15 @@ func (data *InterfaceEthernet) updateFromBodyXML(ctx context.Context, res xmldot
 	} else {
 		data.IpArpInspectionLimitRate = types.Int64Null()
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		if value.Exists() {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+		} else {
+			data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+		}
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolNull()
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust"); !data.IpDhcpSnoopingTrust.IsNull() {
 		if value.Exists() {
 			data.IpDhcpSnoopingTrust = types.BoolValue(true)
@@ -4417,6 +4449,11 @@ func (data *InterfaceEthernet) fromBody(ctx context.Context, res gjson.Result) {
 	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); value.Exists() {
 		data.IpDhcpSnoopingTrust = types.BoolValue(true)
 	} else {
@@ -5063,6 +5100,11 @@ func (data *InterfaceEthernetData) fromBody(ctx context.Context, res gjson.Resul
 	if value := res.Get(prefix + "ip.arp.inspection.limit.rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
 	}
+	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:relay.information.option.vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "ip.dhcp.Cisco-IOS-XE-dhcp:snooping.trust"); value.Exists() {
 		data.IpDhcpSnoopingTrust = types.BoolValue(true)
 	} else {
@@ -5704,6 +5746,11 @@ func (data *InterfaceEthernet) fromBodyXML(ctx context.Context, res xmldot.Resul
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/arp/inspection/limit/rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust"); value.Exists() {
 		data.IpDhcpSnoopingTrust = types.BoolValue(true)
@@ -6347,6 +6394,11 @@ func (data *InterfaceEthernetData) fromBodyXML(ctx context.Context, res xmldot.R
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/arp/inspection/limit/rate"); value.Exists() {
 		data.IpArpInspectionLimitRate = types.Int64Value(value.Int())
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id"); value.Exists() {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(true)
+	} else {
+		data.IpDhcpRelayInformationOptionVpnId = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust"); value.Exists() {
 		data.IpDhcpSnoopingTrust = types.BoolValue(true)
 	} else {
@@ -6949,6 +7001,9 @@ func (data *InterfaceEthernet) getDeletedItems(ctx context.Context, state Interf
 	}
 	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", state.getPath()))
+	}
+	if !state.IpDhcpRelayInformationOptionVpnId.IsNull() && data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", state.getPath()))
 	}
 	if !state.IpArpInspectionLimitRate.IsNull() && data.IpArpInspectionLimitRate.IsNull() {
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", state.getPath()))
@@ -7568,6 +7623,9 @@ func (data *InterfaceEthernet) addDeletedItemsXML(ctx context.Context, state Int
 	if !state.IpDhcpSnoopingTrust.IsNull() && data.IpDhcpSnoopingTrust.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust")
 	}
+	if !state.IpDhcpRelayInformationOptionVpnId.IsNull() && data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
+	}
 	if !state.IpArpInspectionLimitRate.IsNull() && data.IpArpInspectionLimitRate.IsNull() {
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/arp/inspection/limit/rate")
 	}
@@ -8035,6 +8093,9 @@ func (data *InterfaceEthernet) getEmptyLeafsDelete(ctx context.Context) []string
 	if !data.IpDhcpSnoopingTrust.IsNull() && !data.IpDhcpSnoopingTrust.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
 	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() && !data.IpDhcpRelayInformationOptionVpnId.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", data.getPath()))
+	}
 	if !data.IpArpInspectionTrust.IsNull() && !data.IpArpInspectionTrust.ValueBool() {
 		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/ip/arp/inspection/trust", data.getPath()))
 	}
@@ -8360,6 +8421,9 @@ func (data *InterfaceEthernet) getDeletePaths(ctx context.Context) []string {
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust", data.getPath()))
+	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id", data.getPath()))
 	}
 	if !data.IpArpInspectionLimitRate.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/arp/inspection/limit/rate", data.getPath()))
@@ -8791,6 +8855,9 @@ func (data *InterfaceEthernet) addDeletePathsXML(ctx context.Context, body strin
 	}
 	if !data.IpDhcpSnoopingTrust.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:snooping/trust")
+	}
+	if !data.IpDhcpRelayInformationOptionVpnId.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/dhcp/Cisco-IOS-XE-dhcp:relay/information/option/vpn-id")
 	}
 	if !data.IpArpInspectionLimitRate.IsNull() {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/arp/inspection/limit/rate")

@@ -481,6 +481,10 @@ func (r *InterfaceEthernetResource) Schema(ctx context.Context, req resource.Sch
 					int64validator.Between(0, 4294967295),
 				},
 			},
+			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable vpn-id support on this interface").String,
+				Optional:            true,
+			},
 			"ip_dhcp_snooping_trust": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("DHCP Snooping trust config").String,
 				Optional:            true,

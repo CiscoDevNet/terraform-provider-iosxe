@@ -158,6 +158,10 @@ func (r *InterfaceNVEResource) Schema(ctx context.Context, req resource.SchemaRe
 							MarkdownDescription: helpers.NewAttributeDescription("Ingress Replication control-plane (BGP) signaling").String,
 							Optional:            true,
 						},
+						"local_routing": schema.BoolAttribute{
+							MarkdownDescription: helpers.NewAttributeDescription("Enable vxlan centralized gateway forwarding for routed traffic").String,
+							Optional:            true,
+						},
 					},
 				},
 			},

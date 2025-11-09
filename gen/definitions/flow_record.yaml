@@ -85,6 +85,25 @@ attributes:
   - yang_name: collect/connection/server/counter/packets/long
     example: true
     exclude_test: true
+  - yang_name: match/datalink/mac/source/address/input
+    example: true
+  - yang_name: match/datalink/mac/destination/address/input
+    example: true
+  - yang_name: match/datalink/vlan
+    description: Match VLAN input/output, available on switch platforms (C9K)
+    example: input
+    test_tags: [C9000V]
+  - yang_name: match/datalink/source-vlan-id
+    description: Match source VLAN ID, available on router platforms (C8K, CSR1K)
+    example: true
+    test_tags: [C8000V]
+  - yang_name: match/datalink/destination-vlan-id
+    description: Match destination VLAN ID, available on router platforms (C8K, CSR1K)
+    example: true
+    test_tags: [C8000V]
+    exclude_test: true
+  - yang_name: match/ipv4/ttl
+    example: true
   - yang_name: collect/datalink/mac/source/address/input
     example: true
     exclude_test: true

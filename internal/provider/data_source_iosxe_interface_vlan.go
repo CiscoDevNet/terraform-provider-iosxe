@@ -240,6 +240,10 @@ func (d *InterfaceVLANDataSource) Schema(ctx context.Context, req datasource.Sch
 				MarkdownDescription: "Manually set interface MAC address",
 				Computed:            true,
 			},
+			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
+				MarkdownDescription: "Enable vpn-id support on this interface",
+				Computed:            true,
+			},
 		},
 	}
 }

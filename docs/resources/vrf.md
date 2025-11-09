@@ -40,6 +40,13 @@ resource "iosxe_vrf" "example" {
       value = "22:22"
     }
   ]
+  ipv4_route_replicate = [
+    {
+      name                  = "VRF1"
+      unicast_all           = true
+      unicast_all_route_map = "RM1"
+    }
+  ]
   ipv6_route_target_import = [
     {
       value = "22:22"
@@ -78,6 +85,7 @@ resource "iosxe_vrf" "example" {
   - Choices: `all`, `attributes`
 - `description` (String) VRF specific description
 - `device` (String) A device name from the provider configuration.
+- `ipv4_route_replicate` (Attributes List) (see [below for nested schema](#nestedatt--ipv4_route_replicate))
 - `ipv4_route_target_export` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export))
 - `ipv4_route_target_export_stitching` (Attributes Set) Export Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_export_stitching))
 - `ipv4_route_target_import` (Attributes Set) Import Target-VPN community (see [below for nested schema](#nestedatt--ipv4_route_target_import))
@@ -94,6 +102,19 @@ resource "iosxe_vrf" "example" {
 ### Read-Only
 
 - `id` (String) The path of the object.
+
+<a id="nestedatt--ipv4_route_replicate"></a>
+### Nested Schema for `ipv4_route_replicate`
+
+Required:
+
+- `name` (String) Source VRF name or 'global'
+
+Optional:
+
+- `unicast_all` (Boolean) All routes
+- `unicast_all_route_map` (String) Route map reference
+
 
 <a id="nestedatt--ipv4_route_target_export"></a>
 ### Nested Schema for `ipv4_route_target_export`

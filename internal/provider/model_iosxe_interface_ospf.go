@@ -58,6 +58,7 @@ type InterfaceOSPF struct {
 	Priority                     types.Int64                      `tfsdk:"priority"`
 	TtlSecurityHops              types.Int64                      `tfsdk:"ttl_security_hops"`
 	ProcessIds                   []InterfaceOSPFProcessIds        `tfsdk:"process_ids"`
+	MultiAreaIds                 []InterfaceOSPFMultiAreaIds      `tfsdk:"multi_area_ids"`
 	MessageDigestKeys            []InterfaceOSPFMessageDigestKeys `tfsdk:"message_digest_keys"`
 }
 
@@ -77,11 +78,15 @@ type InterfaceOSPFData struct {
 	Priority                     types.Int64                      `tfsdk:"priority"`
 	TtlSecurityHops              types.Int64                      `tfsdk:"ttl_security_hops"`
 	ProcessIds                   []InterfaceOSPFProcessIds        `tfsdk:"process_ids"`
+	MultiAreaIds                 []InterfaceOSPFMultiAreaIds      `tfsdk:"multi_area_ids"`
 	MessageDigestKeys            []InterfaceOSPFMessageDigestKeys `tfsdk:"message_digest_keys"`
 }
 type InterfaceOSPFProcessIds struct {
 	Id    types.Int64                    `tfsdk:"id"`
 	Areas []InterfaceOSPFProcessIdsAreas `tfsdk:"areas"`
+}
+type InterfaceOSPFMultiAreaIds struct {
+	AreaId types.String `tfsdk:"area_id"`
 }
 type InterfaceOSPFMessageDigestKeys struct {
 	Id          types.Int64  `tfsdk:"id"`
@@ -188,6 +193,14 @@ func (data InterfaceOSPF) toBody(ctx context.Context) string {
 			}
 		}
 	}
+	if len(data.MultiAreaIds) > 0 {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"multi-area.multi-area-id", []interface{}{})
+		for index, item := range data.MultiAreaIds {
+			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
+				body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"multi-area.multi-area-id"+"."+strconv.Itoa(index)+"."+"area-id", item.AreaId.ValueString())
+			}
+		}
+	}
 	if len(data.MessageDigestKeys) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"message-digest-key", []interface{}{})
 		for index, item := range data.MessageDigestKeys {
@@ -273,6 +286,15 @@ func (data InterfaceOSPF) toBodyXML(ctx context.Context) string {
 				}
 			}
 			body = helpers.SetRawFromXPath(body, data.getXPath()+"/process-id", cBody.Res())
+		}
+	}
+	if len(data.MultiAreaIds) > 0 {
+		for _, item := range data.MultiAreaIds {
+			cBody := netconf.Body{}
+			if !item.AreaId.IsNull() && !item.AreaId.IsUnknown() {
+				cBody = helpers.SetFromXPath(cBody, "area-id", item.AreaId.ValueString())
+			}
+			body = helpers.SetRawFromXPath(body, data.getXPath()+"/multi-area/multi-area-id", cBody.Res())
 		}
 	}
 	if len(data.MessageDigestKeys) > 0 {
@@ -430,6 +452,35 @@ func (data *InterfaceOSPF) updateFromBody(ctx context.Context, res gjson.Result)
 			} else {
 				data.ProcessIds[i].Areas[ci].AreaId = types.StringNull()
 			}
+		}
+	}
+	for i := range data.MultiAreaIds {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.MultiAreaIds[i].AreaId.ValueString()}
+
+		var r gjson.Result
+		res.Get(prefix + "multi-area.multi-area-id").ForEach(
+			func(_, v gjson.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := r.Get("area-id"); value.Exists() && !data.MultiAreaIds[i].AreaId.IsNull() {
+			data.MultiAreaIds[i].AreaId = types.StringValue(value.String())
+		} else {
+			data.MultiAreaIds[i].AreaId = types.StringNull()
 		}
 	}
 	for i := range data.MessageDigestKeys {
@@ -594,6 +645,35 @@ func (data *InterfaceOSPF) updateFromBodyXML(ctx context.Context, res xmldot.Res
 			}
 		}
 	}
+	for i := range data.MultiAreaIds {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.MultiAreaIds[i].AreaId.ValueString()}
+
+		var r xmldot.Result
+		helpers.GetFromXPath(res, "data"+data.getXPath()+"/multi-area/multi-area-id").ForEach(
+			func(_ int, v xmldot.Result) bool {
+				found := false
+				for ik := range keys {
+					if v.Get(keys[ik]).String() == keyValues[ik] {
+						found = true
+						continue
+					}
+					found = false
+					break
+				}
+				if found {
+					r = v
+					return false
+				}
+				return true
+			},
+		)
+		if value := helpers.GetFromXPath(r, "area-id"); value.Exists() && !data.MultiAreaIds[i].AreaId.IsNull() {
+			data.MultiAreaIds[i].AreaId = types.StringValue(value.String())
+		} else {
+			data.MultiAreaIds[i].AreaId = types.StringNull()
+		}
+	}
 	for i := range data.MessageDigestKeys {
 		keys := [...]string{"id"}
 		keyValues := [...]string{strconv.FormatInt(data.MessageDigestKeys[i].Id.ValueInt64(), 10)}
@@ -696,6 +776,17 @@ func (data *InterfaceOSPF) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "multi-area.multi-area-id"); value.Exists() {
+		data.MultiAreaIds = make([]InterfaceOSPFMultiAreaIds, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceOSPFMultiAreaIds{}
+			if cValue := v.Get("area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			data.MultiAreaIds = append(data.MultiAreaIds, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "message-digest-key"); value.Exists() {
 		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -786,6 +877,17 @@ func (data *InterfaceOSPFData) fromBody(ctx context.Context, res gjson.Result) {
 			return true
 		})
 	}
+	if value := res.Get(prefix + "multi-area.multi-area-id"); value.Exists() {
+		data.MultiAreaIds = make([]InterfaceOSPFMultiAreaIds, 0)
+		value.ForEach(func(k, v gjson.Result) bool {
+			item := InterfaceOSPFMultiAreaIds{}
+			if cValue := v.Get("area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			data.MultiAreaIds = append(data.MultiAreaIds, item)
+			return true
+		})
+	}
 	if value := res.Get(prefix + "message-digest-key"); value.Exists() {
 		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -869,6 +971,17 @@ func (data *InterfaceOSPF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 				})
 			}
 			data.ProcessIds = append(data.ProcessIds, item)
+			return true
+		})
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/multi-area/multi-area-id"); value.Exists() {
+		data.MultiAreaIds = make([]InterfaceOSPFMultiAreaIds, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceOSPFMultiAreaIds{}
+			if cValue := helpers.GetFromXPath(v, "area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			data.MultiAreaIds = append(data.MultiAreaIds, item)
 			return true
 		})
 	}
@@ -958,6 +1071,17 @@ func (data *InterfaceOSPFData) fromBodyXML(ctx context.Context, res xmldot.Resul
 			return true
 		})
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/multi-area/multi-area-id"); value.Exists() {
+		data.MultiAreaIds = make([]InterfaceOSPFMultiAreaIds, 0)
+		value.ForEach(func(_ int, v xmldot.Result) bool {
+			item := InterfaceOSPFMultiAreaIds{}
+			if cValue := helpers.GetFromXPath(v, "area-id"); cValue.Exists() {
+				item.AreaId = types.StringValue(cValue.String())
+			}
+			data.MultiAreaIds = append(data.MultiAreaIds, item)
+			return true
+		})
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/message-digest-key"); value.Exists() {
 		data.MessageDigestKeys = make([]InterfaceOSPFMessageDigestKeys, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -1009,6 +1133,31 @@ func (data *InterfaceOSPF) getDeletedItems(ctx context.Context, state InterfaceO
 		}
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/message-digest-key=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
+		}
+	}
+	for i := range state.MultiAreaIds {
+		stateKeyValues := [...]string{state.MultiAreaIds[i].AreaId.ValueString()}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.MultiAreaIds[i].AreaId.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.MultiAreaIds {
+			found = true
+			if state.MultiAreaIds[i].AreaId.ValueString() != data.MultiAreaIds[j].AreaId.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			deletedItems = append(deletedItems, fmt.Sprintf("%v/multi-area/multi-area-id=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
 	}
 	for i := range state.ProcessIds {
@@ -1132,6 +1281,36 @@ func (data *InterfaceOSPF) addDeletedItemsXML(ctx context.Context, state Interfa
 		}
 		if !found {
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/message-digest-key%v", predicates))
+		}
+	}
+	for i := range state.MultiAreaIds {
+		stateKeys := [...]string{"area-id"}
+		stateKeyValues := [...]string{state.MultiAreaIds[i].AreaId.ValueString()}
+		predicates := ""
+		for i := range stateKeys {
+			predicates += fmt.Sprintf("[%s='%s']", stateKeys[i], stateKeyValues[i])
+		}
+
+		emptyKeys := true
+		if !reflect.ValueOf(state.MultiAreaIds[i].AreaId.ValueString()).IsZero() {
+			emptyKeys = false
+		}
+		if emptyKeys {
+			continue
+		}
+
+		found := false
+		for j := range data.MultiAreaIds {
+			found = true
+			if state.MultiAreaIds[i].AreaId.ValueString() != data.MultiAreaIds[j].AreaId.ValueString() {
+				found = false
+			}
+			if found {
+				break
+			}
+		}
+		if !found {
+			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/multi-area/multi-area-id%v", predicates))
 		}
 	}
 	for i := range state.ProcessIds {
@@ -1263,6 +1442,11 @@ func (data *InterfaceOSPF) getDeletePaths(ctx context.Context) []string {
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/message-digest-key=%v", data.getPath(), strings.Join(keyValues[:], ",")))
 	}
+	for i := range data.MultiAreaIds {
+		keyValues := [...]string{data.MultiAreaIds[i].AreaId.ValueString()}
+
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/multi-area/multi-area-id=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
 	for i := range data.ProcessIds {
 		keyValues := [...]string{strconv.FormatInt(data.ProcessIds[i].Id.ValueInt64(), 10)}
 
@@ -1317,6 +1501,16 @@ func (data *InterfaceOSPF) addDeletePathsXML(ctx context.Context, body string) s
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/message-digest-key%v", predicates))
+	}
+	for i := range data.MultiAreaIds {
+		keys := [...]string{"area-id"}
+		keyValues := [...]string{data.MultiAreaIds[i].AreaId.ValueString()}
+		predicates := ""
+		for i := range keys {
+			predicates += fmt.Sprintf("[%s='%s']", keys[i], keyValues[i])
+		}
+
+		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/multi-area/multi-area-id%v", predicates))
 	}
 	for i := range data.ProcessIds {
 		keys := [...]string{"id"}

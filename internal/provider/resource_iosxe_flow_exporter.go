@@ -112,6 +112,48 @@ func (r *FlowExporterResource) Schema(ctx context.Context, req resource.SchemaRe
 					int64validator.Between(0, 2147483647),
 				},
 			},
+			"source_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("GigabitEthernet IEEE 802.3z").String,
+				Optional:            true,
+			},
+			"source_two_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Two GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"source_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"source_ten_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ten Gigabit Ethernet").String,
+				Optional:            true,
+			},
+			"source_twenty_five_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Twenty Five GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"source_forty_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Forty GigabitEthernet ").String,
+				Optional:            true,
+			},
+			"source_hundred_gigabit_ethernet": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Hundred GigabitEthernet").String,
+				Optional:            true,
+			},
+			"source_vlan": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Iosxr Vlans").AddIntegerRangeDescription(0, 65535).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 65535),
+				},
+			},
+			"source_port_channel": schema.Int64Attribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Ethernet Channel of interfaces").AddIntegerRangeDescription(0, 4294967295).String,
+				Optional:            true,
+				Validators: []validator.Int64{
+					int64validator.Between(0, 4294967295),
+				},
+			},
 			"transport_udp": schema.Int64Attribute{
 				MarkdownDescription: helpers.NewAttributeDescription("UDP transport protocol").AddIntegerRangeDescription(0, 65535).String,
 				Optional:            true,

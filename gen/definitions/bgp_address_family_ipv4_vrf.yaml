@@ -29,8 +29,8 @@ attributes:
       - yang_name: ipv4-unicast/bgp/router-id/id-choice/ip-id/ip-id
         xpath: ipv4-unicast/bgp/router-id/ip-id
         tf_name: ipv4_unicast_router_id_ip
-        example: 10.1.1.1
         exclude_test: true
+        example: 10.1.1.1
       - yang_name: ipv4-unicast/aggregate-address
         tf_name: ipv4_unicast_aggregate_addresses
         type: List
@@ -111,7 +111,13 @@ attributes:
         example: 200
       - yang_name: ipv4-unicast/distance/bgp/local
         example: 200
-
+      - yang_name: ipv4-unicast/maximum-paths/ebgp
+        tf_name: ipv4_unicast_maximum_paths_ebgp
+        example: 2
+      - yang_name: ipv4-unicast/maximum-paths/ibgp/ibgp-choice/max/max
+        tf_name: ipv4_unicast_maximum_paths_ibgp
+        xpath: ipv4-unicast/maximum-paths/ibgp/max
+        example: 2
 test_prerequisites:
   - path: /Cisco-IOS-XE-native:native/vrf/definition[name=VRF1]
     no_delete: true

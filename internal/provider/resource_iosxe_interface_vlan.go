@@ -303,6 +303,10 @@ func (r *InterfaceVLANResource) Schema(ctx context.Context, req resource.SchemaR
 				MarkdownDescription: helpers.NewAttributeDescription("Manually set interface MAC address").String,
 				Optional:            true,
 			},
+			"ip_dhcp_relay_information_option_vpn_id": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Enable vpn-id support on this interface").String,
+				Optional:            true,
+			},
 		},
 	}
 }

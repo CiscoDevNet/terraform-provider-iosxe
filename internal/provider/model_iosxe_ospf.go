@@ -64,6 +64,21 @@ type OSPF struct {
 	AutoCostReferenceBandwidth                         types.Int64                                              `tfsdk:"auto_cost_reference_bandwidth"`
 	PassiveInterfaceDefault                            types.Bool                                               `tfsdk:"passive_interface_default"`
 	PassiveInterface                                   types.List                                               `tfsdk:"passive_interface"`
+	LogAdjacencyChanges                                types.Bool                                               `tfsdk:"log_adjacency_changes"`
+	LogAdjacencyChangesDetail                          types.Bool                                               `tfsdk:"log_adjacency_changes_detail"`
+	NsfCisco                                           types.Bool                                               `tfsdk:"nsf_cisco"`
+	NsfCiscoEnforceGlobal                              types.Bool                                               `tfsdk:"nsf_cisco_enforce_global"`
+	NsfIetf                                            types.Bool                                               `tfsdk:"nsf_ietf"`
+	NsfIetfRestartInterval                             types.Int64                                              `tfsdk:"nsf_ietf_restart_interval"`
+	MaxMetricRouterLsa                                 types.Bool                                               `tfsdk:"max_metric_router_lsa"`
+	MaxMetricRouterLsaSummaryLsaMetric                 types.Int64                                              `tfsdk:"max_metric_router_lsa_summary_lsa_metric"`
+	MaxMetricRouterLsaExternalLsaMetric                types.Int64                                              `tfsdk:"max_metric_router_lsa_external_lsa_metric"`
+	MaxMetricRouterLsaIncludeStub                      types.Bool                                               `tfsdk:"max_metric_router_lsa_include_stub"`
+	MaxMetricRouterLsaOnStartupTime                    types.Int64                                              `tfsdk:"max_metric_router_lsa_on_startup_time"`
+	MaxMetricRouterLsaOnStartupWaitForBgp              types.Bool                                               `tfsdk:"max_metric_router_lsa_on_startup_wait_for_bgp"`
+	FastReroutePerPrefixEnablePrefixPriority           types.String                                             `tfsdk:"fast_reroute_per_prefix_enable_prefix_priority"`
+	RedistributeStaticSubnets                          types.Bool                                               `tfsdk:"redistribute_static_subnets"`
+	RedistributeConnectedSubnets                       types.Bool                                               `tfsdk:"redistribute_connected_subnets"`
 	PassiveInterfaceDisableGigabitEthernets            []OSPFPassiveInterfaceDisableGigabitEthernets            `tfsdk:"passive_interface_disable_gigabit_ethernets"`
 	PassiveInterfaceDisableTwoGigabitEthernets         []OSPFPassiveInterfaceDisableTwoGigabitEthernets         `tfsdk:"passive_interface_disable_two_gigabit_ethernets"`
 	PassiveInterfaceDisableFiveGigabitEthernets        []OSPFPassiveInterfaceDisableFiveGigabitEthernets        `tfsdk:"passive_interface_disable_five_gigabit_ethernets"`
@@ -102,6 +117,21 @@ type OSPFData struct {
 	AutoCostReferenceBandwidth                         types.Int64                                              `tfsdk:"auto_cost_reference_bandwidth"`
 	PassiveInterfaceDefault                            types.Bool                                               `tfsdk:"passive_interface_default"`
 	PassiveInterface                                   types.List                                               `tfsdk:"passive_interface"`
+	LogAdjacencyChanges                                types.Bool                                               `tfsdk:"log_adjacency_changes"`
+	LogAdjacencyChangesDetail                          types.Bool                                               `tfsdk:"log_adjacency_changes_detail"`
+	NsfCisco                                           types.Bool                                               `tfsdk:"nsf_cisco"`
+	NsfCiscoEnforceGlobal                              types.Bool                                               `tfsdk:"nsf_cisco_enforce_global"`
+	NsfIetf                                            types.Bool                                               `tfsdk:"nsf_ietf"`
+	NsfIetfRestartInterval                             types.Int64                                              `tfsdk:"nsf_ietf_restart_interval"`
+	MaxMetricRouterLsa                                 types.Bool                                               `tfsdk:"max_metric_router_lsa"`
+	MaxMetricRouterLsaSummaryLsaMetric                 types.Int64                                              `tfsdk:"max_metric_router_lsa_summary_lsa_metric"`
+	MaxMetricRouterLsaExternalLsaMetric                types.Int64                                              `tfsdk:"max_metric_router_lsa_external_lsa_metric"`
+	MaxMetricRouterLsaIncludeStub                      types.Bool                                               `tfsdk:"max_metric_router_lsa_include_stub"`
+	MaxMetricRouterLsaOnStartupTime                    types.Int64                                              `tfsdk:"max_metric_router_lsa_on_startup_time"`
+	MaxMetricRouterLsaOnStartupWaitForBgp              types.Bool                                               `tfsdk:"max_metric_router_lsa_on_startup_wait_for_bgp"`
+	FastReroutePerPrefixEnablePrefixPriority           types.String                                             `tfsdk:"fast_reroute_per_prefix_enable_prefix_priority"`
+	RedistributeStaticSubnets                          types.Bool                                               `tfsdk:"redistribute_static_subnets"`
+	RedistributeConnectedSubnets                       types.Bool                                               `tfsdk:"redistribute_connected_subnets"`
 	PassiveInterfaceDisableGigabitEthernets            []OSPFPassiveInterfaceDisableGigabitEthernets            `tfsdk:"passive_interface_disable_gigabit_ethernets"`
 	PassiveInterfaceDisableTwoGigabitEthernets         []OSPFPassiveInterfaceDisableTwoGigabitEthernets         `tfsdk:"passive_interface_disable_two_gigabit_ethernets"`
 	PassiveInterfaceDisableFiveGigabitEthernets        []OSPFPassiveInterfaceDisableFiveGigabitEthernets        `tfsdk:"passive_interface_disable_five_gigabit_ethernets"`
@@ -282,6 +312,69 @@ func (data OSPF) toBody(ctx context.Context) string {
 		var values []string
 		data.PassiveInterface.ElementsAs(ctx, &values, false)
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"passive-interface.interface", values)
+	}
+	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-adjacency-changes", data.LogAdjacencyChanges.ValueBool())
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
+		if data.LogAdjacencyChangesDetail.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"log-adjacency-changes-detail.log-adjacency-changes.detail", map[string]string{})
+		}
+	}
+	if !data.NsfCisco.IsNull() && !data.NsfCisco.IsUnknown() {
+		if data.NsfCisco.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-cisco", map[string]string{})
+		}
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.IsUnknown() {
+		if data.NsfCiscoEnforceGlobal.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-cisco.enforce.global", map[string]string{})
+		}
+	}
+	if !data.NsfIetf.IsNull() && !data.NsfIetf.IsUnknown() {
+		if data.NsfIetf.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-ietf", map[string]string{})
+		}
+	}
+	if !data.NsfIetfRestartInterval.IsNull() && !data.NsfIetfRestartInterval.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"nsf.nsf-ietf.restart-interval", strconv.FormatInt(data.NsfIetfRestartInterval.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.IsUnknown() {
+		if data.MaxMetricRouterLsa.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa", map[string]string{})
+		}
+	}
+	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.summary-lsa.metric", strconv.FormatInt(data.MaxMetricRouterLsaSummaryLsaMetric.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() && !data.MaxMetricRouterLsaExternalLsaMetric.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.external-lsa.metric", strconv.FormatInt(data.MaxMetricRouterLsaExternalLsaMetric.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.IsUnknown() {
+		if data.MaxMetricRouterLsaIncludeStub.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.include-stub", map[string]string{})
+		}
+	}
+	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() && !data.MaxMetricRouterLsaOnStartupTime.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.on-startup.time", strconv.FormatInt(data.MaxMetricRouterLsaOnStartupTime.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsUnknown() {
+		if data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"max-metric.router-lsa.on-startup.wait-for-bgp", map[string]string{})
+		}
+	}
+	if !data.FastReroutePerPrefixEnablePrefixPriority.IsNull() && !data.FastReroutePerPrefixEnablePrefixPriority.IsUnknown() {
+		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"fast-reroute.per-prefix.enable.prefix-priority", data.FastReroutePerPrefixEnablePrefixPriority.ValueString())
+	}
+	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.IsUnknown() {
+		if data.RedistributeStaticSubnets.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redistribute.static.subnets", map[string]string{})
+		}
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.IsUnknown() {
+		if data.RedistributeConnectedSubnets.ValueBool() {
+			body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"redistribute.connected.subnets", map[string]string{})
+		}
 	}
 	if len(data.Neighbors) > 0 {
 		body, _ = sjson.Set(body, helpers.LastElement(data.getPath())+"."+"neighbor", []interface{}{})
@@ -641,6 +734,87 @@ func (data OSPF) toBodyXML(ctx context.Context) string {
 		data.PassiveInterface.ElementsAs(ctx, &values, false)
 		for _, v := range values {
 			body = helpers.AppendFromXPath(body, data.getXPath()+"/passive-interface/interface", v)
+		}
+	}
+	if !data.LogAdjacencyChanges.IsNull() && !data.LogAdjacencyChanges.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes", data.LogAdjacencyChanges.ValueBool())
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.IsUnknown() {
+		if data.LogAdjacencyChangesDetail.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail")
+		}
+	}
+	if !data.NsfCisco.IsNull() && !data.NsfCisco.IsUnknown() {
+		if data.NsfCisco.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-cisco", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-cisco")
+		}
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.IsUnknown() {
+		if data.NsfCiscoEnforceGlobal.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-cisco/enforce/global", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-cisco/enforce/global")
+		}
+	}
+	if !data.NsfIetf.IsNull() && !data.NsfIetf.IsUnknown() {
+		if data.NsfIetf.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-ietf", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/nsf/nsf-ietf")
+		}
+	}
+	if !data.NsfIetfRestartInterval.IsNull() && !data.NsfIetfRestartInterval.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/nsf/nsf-ietf/restart-interval", strconv.FormatInt(data.NsfIetfRestartInterval.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.IsUnknown() {
+		if data.MaxMetricRouterLsa.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa")
+		}
+	}
+	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric", strconv.FormatInt(data.MaxMetricRouterLsaSummaryLsaMetric.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() && !data.MaxMetricRouterLsaExternalLsaMetric.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/external-lsa/metric", strconv.FormatInt(data.MaxMetricRouterLsaExternalLsaMetric.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.IsUnknown() {
+		if data.MaxMetricRouterLsaIncludeStub.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/include-stub", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa/include-stub")
+		}
+	}
+	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() && !data.MaxMetricRouterLsaOnStartupTime.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/on-startup/time", strconv.FormatInt(data.MaxMetricRouterLsaOnStartupTime.ValueInt64(), 10))
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsUnknown() {
+		if data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp")
+		}
+	}
+	if !data.FastReroutePerPrefixEnablePrefixPriority.IsNull() && !data.FastReroutePerPrefixEnablePrefixPriority.IsUnknown() {
+		body = helpers.SetFromXPath(body, data.getXPath()+"/fast-reroute/per-prefix/enable/prefix-priority", data.FastReroutePerPrefixEnablePrefixPriority.ValueString())
+	}
+	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.IsUnknown() {
+		if data.RedistributeStaticSubnets.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/static/subnets", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/static/subnets")
+		}
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.IsUnknown() {
+		if data.RedistributeConnectedSubnets.ValueBool() {
+			body = helpers.SetFromXPath(body, data.getXPath()+"/redistribute/connected/subnets", "")
+		} else {
+			body = helpers.RemoveFromXPath(body, data.getXPath()+"/redistribute/connected/subnets")
 		}
 	}
 	if len(data.PassiveInterfaceDisableGigabitEthernets) > 0 {
@@ -1079,6 +1253,119 @@ func (data *OSPF) updateFromBody(ctx context.Context, res gjson.Result) {
 		data.PassiveInterface = helpers.GetStringList(value.Array())
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := res.Get(prefix + "log-adjacency-changes"); !data.LogAdjacencyChanges.IsNull() {
+		if value.Exists() {
+			data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); !data.LogAdjacencyChangesDetail.IsNull() {
+		if value.Exists() {
+			data.LogAdjacencyChangesDetail = types.BoolValue(true)
+		} else {
+			data.LogAdjacencyChangesDetail = types.BoolValue(false)
+		}
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolNull()
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco"); !data.NsfCisco.IsNull() {
+		if value.Exists() {
+			data.NsfCisco = types.BoolValue(true)
+		} else {
+			data.NsfCisco = types.BoolValue(false)
+		}
+	} else {
+		data.NsfCisco = types.BoolNull()
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); !data.NsfCiscoEnforceGlobal.IsNull() {
+		if value.Exists() {
+			data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+		} else {
+			data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+		}
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolNull()
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf"); !data.NsfIetf.IsNull() {
+		if value.Exists() {
+			data.NsfIetf = types.BoolValue(true)
+		} else {
+			data.NsfIetf = types.BoolValue(false)
+		}
+	} else {
+		data.NsfIetf = types.BoolNull()
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() && !data.NsfIetfRestartInterval.IsNull() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	} else {
+		data.NsfIetfRestartInterval = types.Int64Null()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa"); !data.MaxMetricRouterLsa.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsa = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsa = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsa = types.BoolNull()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Null()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() && !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Null()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); !data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolNull()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() && !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Null()
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolNull()
+	}
+	if value := res.Get(prefix + "fast-reroute.per-prefix.enable.prefix-priority"); value.Exists() && !data.FastReroutePerPrefixEnablePrefixPriority.IsNull() {
+		data.FastReroutePerPrefixEnablePrefixPriority = types.StringValue(value.String())
+	} else {
+		data.FastReroutePerPrefixEnablePrefixPriority = types.StringNull()
+	}
+	if value := res.Get(prefix + "redistribute.static.subnets"); !data.RedistributeStaticSubnets.IsNull() {
+		if value.Exists() {
+			data.RedistributeStaticSubnets = types.BoolValue(true)
+		} else {
+			data.RedistributeStaticSubnets = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeStaticSubnets = types.BoolNull()
+	}
+	if value := res.Get(prefix + "redistribute.connected.subnets"); !data.RedistributeConnectedSubnets.IsNull() {
+		if value.Exists() {
+			data.RedistributeConnectedSubnets = types.BoolValue(true)
+		} else {
+			data.RedistributeConnectedSubnets = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolNull()
 	}
 	for i := range data.PassiveInterfaceDisableGigabitEthernets {
 		keys := [...]string{"name"}
@@ -1788,6 +2075,119 @@ func (data *OSPF) updateFromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes"); !data.LogAdjacencyChanges.IsNull() {
+		if value.Exists() {
+			data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+		}
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail"); !data.LogAdjacencyChangesDetail.IsNull() {
+		if value.Exists() {
+			data.LogAdjacencyChangesDetail = types.BoolValue(true)
+		} else {
+			data.LogAdjacencyChangesDetail = types.BoolValue(false)
+		}
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco"); !data.NsfCisco.IsNull() {
+		if value.Exists() {
+			data.NsfCisco = types.BoolValue(true)
+		} else {
+			data.NsfCisco = types.BoolValue(false)
+		}
+	} else {
+		data.NsfCisco = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco/enforce/global"); !data.NsfCiscoEnforceGlobal.IsNull() {
+		if value.Exists() {
+			data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+		} else {
+			data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+		}
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf"); !data.NsfIetf.IsNull() {
+		if value.Exists() {
+			data.NsfIetf = types.BoolValue(true)
+		} else {
+			data.NsfIetf = types.BoolValue(false)
+		}
+	} else {
+		data.NsfIetf = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf/restart-interval"); value.Exists() && !data.NsfIetfRestartInterval.IsNull() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	} else {
+		data.NsfIetfRestartInterval = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa"); !data.MaxMetricRouterLsa.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsa = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsa = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsa = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric"); value.Exists() && !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/external-lsa/metric"); value.Exists() && !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/include-stub"); !data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/time"); value.Exists() && !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	} else {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Null()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp"); !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		if value.Exists() {
+			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+		} else {
+			data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+		}
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fast-reroute/per-prefix/enable/prefix-priority"); value.Exists() && !data.FastReroutePerPrefixEnablePrefixPriority.IsNull() {
+		data.FastReroutePerPrefixEnablePrefixPriority = types.StringValue(value.String())
+	} else {
+		data.FastReroutePerPrefixEnablePrefixPriority = types.StringNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/subnets"); !data.RedistributeStaticSubnets.IsNull() {
+		if value.Exists() {
+			data.RedistributeStaticSubnets = types.BoolValue(true)
+		} else {
+			data.RedistributeStaticSubnets = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeStaticSubnets = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); !data.RedistributeConnectedSubnets.IsNull() {
+		if value.Exists() {
+			data.RedistributeConnectedSubnets = types.BoolValue(true)
+		} else {
+			data.RedistributeConnectedSubnets = types.BoolValue(false)
+		}
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolNull()
+	}
 	for i := range data.PassiveInterfaceDisableGigabitEthernets {
 		keys := [...]string{"name"}
 		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
@@ -2353,6 +2753,71 @@ func (data *OSPF) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
+	if value := res.Get(prefix + "log-adjacency-changes"); value.Exists() {
+		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); value.Exists() {
+		data.LogAdjacencyChangesDetail = types.BoolValue(true)
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco"); value.Exists() {
+		data.NsfCisco = types.BoolValue(true)
+	} else {
+		data.NsfCisco = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); value.Exists() {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf"); value.Exists() {
+		data.NsfIetf = types.BoolValue(true)
+	} else {
+		data.NsfIetf = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa"); value.Exists() {
+		data.MaxMetricRouterLsa = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsa = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); value.Exists() {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fast-reroute.per-prefix.enable.prefix-priority"); value.Exists() {
+		data.FastReroutePerPrefixEnablePrefixPriority = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "redistribute.static.subnets"); value.Exists() {
+		data.RedistributeStaticSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticSubnets = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "redistribute.connected.subnets"); value.Exists() {
+		data.RedistributeConnectedSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet"); value.Exists() {
 		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFPassiveInterfaceDisableGigabitEthernets, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -2666,6 +3131,71 @@ func (data *OSPFData) fromBody(ctx context.Context, res gjson.Result) {
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
+	if value := res.Get(prefix + "log-adjacency-changes"); value.Exists() {
+		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := res.Get(prefix + "log-adjacency-changes-detail.log-adjacency-changes.detail"); value.Exists() {
+		data.LogAdjacencyChangesDetail = types.BoolValue(true)
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco"); value.Exists() {
+		data.NsfCisco = types.BoolValue(true)
+	} else {
+		data.NsfCisco = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-cisco.enforce.global"); value.Exists() {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf"); value.Exists() {
+		data.NsfIetf = types.BoolValue(true)
+	} else {
+		data.NsfIetf = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "nsf.nsf-ietf.restart-interval"); value.Exists() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa"); value.Exists() {
+		data.MaxMetricRouterLsa = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsa = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.summary-lsa.metric"); value.Exists() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.external-lsa.metric"); value.Exists() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.include-stub"); value.Exists() {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.time"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	}
+	if value := res.Get(prefix + "max-metric.router-lsa.on-startup.wait-for-bgp"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "fast-reroute.per-prefix.enable.prefix-priority"); value.Exists() {
+		data.FastReroutePerPrefixEnablePrefixPriority = types.StringValue(value.String())
+	}
+	if value := res.Get(prefix + "redistribute.static.subnets"); value.Exists() {
+		data.RedistributeStaticSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticSubnets = types.BoolValue(false)
+	}
+	if value := res.Get(prefix + "redistribute.connected.subnets"); value.Exists() {
+		data.RedistributeConnectedSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolValue(false)
+	}
 	if value := res.Get(prefix + "passive-interface-config.disable-interface.GigabitEthernet"); value.Exists() {
 		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFPassiveInterfaceDisableGigabitEthernets, 0)
 		value.ForEach(func(k, v gjson.Result) bool {
@@ -2975,6 +3505,71 @@ func (data *OSPF) fromBodyXML(ctx context.Context, res xmldot.Result) {
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
 	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes"); value.Exists() {
+		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail"); value.Exists() {
+		data.LogAdjacencyChangesDetail = types.BoolValue(true)
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco"); value.Exists() {
+		data.NsfCisco = types.BoolValue(true)
+	} else {
+		data.NsfCisco = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco/enforce/global"); value.Exists() {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf"); value.Exists() {
+		data.NsfIetf = types.BoolValue(true)
+	} else {
+		data.NsfIetf = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf/restart-interval"); value.Exists() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa"); value.Exists() {
+		data.MaxMetricRouterLsa = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsa = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric"); value.Exists() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/external-lsa/metric"); value.Exists() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/include-stub"); value.Exists() {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/time"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fast-reroute/per-prefix/enable/prefix-priority"); value.Exists() {
+		data.FastReroutePerPrefixEnablePrefixPriority = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/subnets"); value.Exists() {
+		data.RedistributeStaticSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticSubnets = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); value.Exists() {
+		data.RedistributeConnectedSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolValue(false)
+	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet"); value.Exists() {
 		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFPassiveInterfaceDisableGigabitEthernets, 0)
 		value.ForEach(func(_ int, v xmldot.Result) bool {
@@ -3283,6 +3878,71 @@ func (data *OSPFData) fromBodyXML(ctx context.Context, res xmldot.Result) {
 		data.PassiveInterface = helpers.GetStringListXML(value.Array())
 	} else {
 		data.PassiveInterface = types.ListNull(types.StringType)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes"); value.Exists() {
+		data.LogAdjacencyChanges = types.BoolValue(value.Bool())
+	} else {
+		data.LogAdjacencyChanges = types.BoolNull()
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail"); value.Exists() {
+		data.LogAdjacencyChangesDetail = types.BoolValue(true)
+	} else {
+		data.LogAdjacencyChangesDetail = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco"); value.Exists() {
+		data.NsfCisco = types.BoolValue(true)
+	} else {
+		data.NsfCisco = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-cisco/enforce/global"); value.Exists() {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(true)
+	} else {
+		data.NsfCiscoEnforceGlobal = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf"); value.Exists() {
+		data.NsfIetf = types.BoolValue(true)
+	} else {
+		data.NsfIetf = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/nsf/nsf-ietf/restart-interval"); value.Exists() {
+		data.NsfIetfRestartInterval = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa"); value.Exists() {
+		data.MaxMetricRouterLsa = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsa = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric"); value.Exists() {
+		data.MaxMetricRouterLsaSummaryLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/external-lsa/metric"); value.Exists() {
+		data.MaxMetricRouterLsaExternalLsaMetric = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/include-stub"); value.Exists() {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaIncludeStub = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/time"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupTime = types.Int64Value(value.Int())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp"); value.Exists() {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(true)
+	} else {
+		data.MaxMetricRouterLsaOnStartupWaitForBgp = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/fast-reroute/per-prefix/enable/prefix-priority"); value.Exists() {
+		data.FastReroutePerPrefixEnablePrefixPriority = types.StringValue(value.String())
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/static/subnets"); value.Exists() {
+		data.RedistributeStaticSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeStaticSubnets = types.BoolValue(false)
+	}
+	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/redistribute/connected/subnets"); value.Exists() {
+		data.RedistributeConnectedSubnets = types.BoolValue(true)
+	} else {
+		data.RedistributeConnectedSubnets = types.BoolValue(false)
 	}
 	if value := helpers.GetFromXPath(res, "data"+data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet"); value.Exists() {
 		data.PassiveInterfaceDisableGigabitEthernets = make([]OSPFPassiveInterfaceDisableGigabitEthernets, 0)
@@ -3795,6 +4455,51 @@ func (data *OSPF) getDeletedItems(ctx context.Context, state OSPF) []string {
 		if !found {
 			deletedItems = append(deletedItems, fmt.Sprintf("%v/passive-interface-config/disable-interface/GigabitEthernet=%v", state.getPath(), strings.Join(stateKeyValues[:], ",")))
 		}
+	}
+	if !state.RedistributeConnectedSubnets.IsNull() && data.RedistributeConnectedSubnets.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redistribute/connected/subnets", state.getPath()))
+	}
+	if !state.RedistributeStaticSubnets.IsNull() && data.RedistributeStaticSubnets.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/redistribute/static/subnets", state.getPath()))
+	}
+	if !state.FastReroutePerPrefixEnablePrefixPriority.IsNull() && data.FastReroutePerPrefixEnablePrefixPriority.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/fast-reroute/per-prefix/enable/prefix-priority", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaOnStartupTime.IsNull() && data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/time", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaIncludeStub.IsNull() && data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaExternalLsaMetric.IsNull() && data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/external-lsa/metric", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa/summary-lsa/metric", state.getPath()))
+	}
+	if !state.MaxMetricRouterLsa.IsNull() && data.MaxMetricRouterLsa.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/max-metric/router-lsa", state.getPath()))
+	}
+	if !state.NsfIetfRestartInterval.IsNull() && data.NsfIetfRestartInterval.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-ietf/restart-interval", state.getPath()))
+	}
+	if !state.NsfIetf.IsNull() && data.NsfIetf.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-ietf", state.getPath()))
+	}
+	if !state.NsfCiscoEnforceGlobal.IsNull() && data.NsfCiscoEnforceGlobal.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", state.getPath()))
+	}
+	if !state.NsfCisco.IsNull() && data.NsfCisco.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/nsf/nsf-cisco", state.getPath()))
+	}
+	if !state.LogAdjacencyChangesDetail.IsNull() && data.LogAdjacencyChangesDetail.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", state.getPath()))
+	}
+	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/log-adjacency-changes", state.getPath()))
 	}
 	if !state.PassiveInterface.IsNull() {
 		if data.PassiveInterface.IsNull() {
@@ -4428,6 +5133,51 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 			b = helpers.RemoveFromXPath(b, fmt.Sprintf(state.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet%v", predicates))
 		}
 	}
+	if !state.RedistributeConnectedSubnets.IsNull() && data.RedistributeConnectedSubnets.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/connected/subnets")
+	}
+	if !state.RedistributeStaticSubnets.IsNull() && data.RedistributeStaticSubnets.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/redistribute/static/subnets")
+	}
+	if !state.FastReroutePerPrefixEnablePrefixPriority.IsNull() && data.FastReroutePerPrefixEnablePrefixPriority.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/fast-reroute/per-prefix/enable/prefix-priority")
+	}
+	if !state.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp")
+	}
+	if !state.MaxMetricRouterLsaOnStartupTime.IsNull() && data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/on-startup/time")
+	}
+	if !state.MaxMetricRouterLsaIncludeStub.IsNull() && data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/include-stub")
+	}
+	if !state.MaxMetricRouterLsaExternalLsaMetric.IsNull() && data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/external-lsa/metric")
+	}
+	if !state.MaxMetricRouterLsaSummaryLsaMetric.IsNull() && data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa/summary-lsa/metric")
+	}
+	if !state.MaxMetricRouterLsa.IsNull() && data.MaxMetricRouterLsa.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/max-metric/router-lsa")
+	}
+	if !state.NsfIetfRestartInterval.IsNull() && data.NsfIetfRestartInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-ietf/restart-interval")
+	}
+	if !state.NsfIetf.IsNull() && data.NsfIetf.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-ietf")
+	}
+	if !state.NsfCiscoEnforceGlobal.IsNull() && data.NsfCiscoEnforceGlobal.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-cisco/enforce/global")
+	}
+	if !state.NsfCisco.IsNull() && data.NsfCisco.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/nsf/nsf-cisco")
+	}
+	if !state.LogAdjacencyChangesDetail.IsNull() && data.LogAdjacencyChangesDetail.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail")
+	}
+	if !state.LogAdjacencyChanges.IsNull() && data.LogAdjacencyChanges.IsNull() {
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/log-adjacency-changes")
+	}
 	if !state.PassiveInterface.IsNull() {
 		if data.PassiveInterface.IsNull() {
 			var values []string
@@ -4666,6 +5416,34 @@ func (data *OSPF) addDeletedItemsXML(ctx context.Context, state OSPF, body strin
 func (data *OSPF) getEmptyLeafsDelete(ctx context.Context) []string {
 	emptyLeafsDelete := make([]string, 0)
 
+	if !data.RedistributeConnectedSubnets.IsNull() && !data.RedistributeConnectedSubnets.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redistribute/connected/subnets", data.getPath()))
+	}
+	if !data.RedistributeStaticSubnets.IsNull() && !data.RedistributeStaticSubnets.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/redistribute/static/subnets", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() && !data.MaxMetricRouterLsaOnStartupWaitForBgp.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() && !data.MaxMetricRouterLsaIncludeStub.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsa.IsNull() && !data.MaxMetricRouterLsa.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/max-metric/router-lsa", data.getPath()))
+	}
+	if !data.NsfIetf.IsNull() && !data.NsfIetf.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-ietf", data.getPath()))
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() && !data.NsfCiscoEnforceGlobal.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", data.getPath()))
+	}
+	if !data.NsfCisco.IsNull() && !data.NsfCisco.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/nsf/nsf-cisco", data.getPath()))
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() && !data.LogAdjacencyChangesDetail.ValueBool() {
+		emptyLeafsDelete = append(emptyLeafsDelete, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", data.getPath()))
+	}
+
 	for i := range data.Areas {
 		keyValues := [...]string{data.Areas[i].AreaId.ValueString()}
 		if !data.Areas[i].NssaNoRedistribution.IsNull() && !data.Areas[i].NssaNoRedistribution.ValueBool() {
@@ -4779,6 +5557,51 @@ func (data *OSPF) getDeletePaths(ctx context.Context) []string {
 		keyValues := [...]string{data.PassiveInterfaceDisableGigabitEthernets[i].Name.ValueString()}
 
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface-config/disable-interface/GigabitEthernet=%v", data.getPath(), strings.Join(keyValues[:], ",")))
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/connected/subnets", data.getPath()))
+	}
+	if !data.RedistributeStaticSubnets.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/redistribute/static/subnets", data.getPath()))
+	}
+	if !data.FastReroutePerPrefixEnablePrefixPriority.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/fast-reroute/per-prefix/enable/prefix-priority", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/wait-for-bgp", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/on-startup/time", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/include-stub", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/external-lsa/metric", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa/summary-lsa/metric", data.getPath()))
+	}
+	if !data.MaxMetricRouterLsa.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/max-metric/router-lsa", data.getPath()))
+	}
+	if !data.NsfIetfRestartInterval.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-ietf/restart-interval", data.getPath()))
+	}
+	if !data.NsfIetf.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-ietf", data.getPath()))
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-cisco/enforce/global", data.getPath()))
+	}
+	if !data.NsfCisco.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/nsf/nsf-cisco", data.getPath()))
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes-detail/log-adjacency-changes/detail", data.getPath()))
+	}
+	if !data.LogAdjacencyChanges.IsNull() {
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/log-adjacency-changes", data.getPath()))
 	}
 	if !data.PassiveInterface.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/passive-interface/interface", data.getPath()))
@@ -4991,6 +5814,51 @@ func (data *OSPF) addDeletePathsXML(ctx context.Context, body string) string {
 		}
 
 		b = helpers.RemoveFromXPath(b, fmt.Sprintf(data.getXPath()+"/passive-interface-config/disable-interface/GigabitEthernet%v", predicates))
+	}
+	if !data.RedistributeConnectedSubnets.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/connected/subnets")
+	}
+	if !data.RedistributeStaticSubnets.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/redistribute/static/subnets")
+	}
+	if !data.FastReroutePerPrefixEnablePrefixPriority.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/fast-reroute/per-prefix/enable/prefix-priority")
+	}
+	if !data.MaxMetricRouterLsaOnStartupWaitForBgp.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/on-startup/wait-for-bgp")
+	}
+	if !data.MaxMetricRouterLsaOnStartupTime.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/on-startup/time")
+	}
+	if !data.MaxMetricRouterLsaIncludeStub.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/include-stub")
+	}
+	if !data.MaxMetricRouterLsaExternalLsaMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/external-lsa/metric")
+	}
+	if !data.MaxMetricRouterLsaSummaryLsaMetric.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa/summary-lsa/metric")
+	}
+	if !data.MaxMetricRouterLsa.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/max-metric/router-lsa")
+	}
+	if !data.NsfIetfRestartInterval.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nsf/nsf-ietf/restart-interval")
+	}
+	if !data.NsfIetf.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nsf/nsf-ietf")
+	}
+	if !data.NsfCiscoEnforceGlobal.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nsf/nsf-cisco/enforce/global")
+	}
+	if !data.NsfCisco.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/nsf/nsf-cisco")
+	}
+	if !data.LogAdjacencyChangesDetail.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/log-adjacency-changes-detail/log-adjacency-changes/detail")
+	}
+	if !data.LogAdjacencyChanges.IsNull() {
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/log-adjacency-changes")
 	}
 	if !data.PassiveInterface.IsNull() {
 		var values []string

@@ -220,6 +220,33 @@ func (r *FlowRecordResource) Schema(ctx context.Context, req resource.SchemaRequ
 				MarkdownDescription: helpers.NewAttributeDescription("64 bits counter").String,
 				Optional:            true,
 			},
+			"match_datalink_mac_source_address_input": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Source MAC address from packet at input").String,
+				Optional:            true,
+			},
+			"match_datalink_mac_destination_address_input": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Destination MAC address from packet at input").String,
+				Optional:            true,
+			},
+			"match_datalink_vlan": schema.StringAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match VLAN input/output, available on switch platforms (C9K)").AddStringEnumDescription("input", "output").String,
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("input", "output"),
+				},
+			},
+			"match_datalink_source_vlan_id": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match source VLAN ID, available on router platforms (C8K, CSR1K)").String,
+				Optional:            true,
+			},
+			"match_datalink_destination_vlan_id": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("Match destination VLAN ID, available on router platforms (C8K, CSR1K)").String,
+				Optional:            true,
+			},
+			"match_ipv4_ttl": schema.BoolAttribute{
+				MarkdownDescription: helpers.NewAttributeDescription("IPv4 TTL").String,
+				Optional:            true,
+			},
 			"collect_datalink_mac_source_address_input": schema.BoolAttribute{
 				MarkdownDescription: helpers.NewAttributeDescription("Source MAC address from packet at input").String,
 				Optional:            true,

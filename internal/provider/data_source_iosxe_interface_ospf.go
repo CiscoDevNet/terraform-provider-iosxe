@@ -140,6 +140,18 @@ func (d *InterfaceOSPFDataSource) Schema(ctx context.Context, req datasource.Sch
 					},
 				},
 			},
+			"multi_area_ids": schema.ListNestedAttribute{
+				MarkdownDescription: "Set the OSPF multi-area ID",
+				Computed:            true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"area_id": schema.StringAttribute{
+							MarkdownDescription: "OSPF multi-area ID",
+							Computed:            true,
+						},
+					},
+				},
+			},
 			"message_digest_keys": schema.ListNestedAttribute{
 				MarkdownDescription: "Message digest authentication password (key)",
 				Computed:            true,

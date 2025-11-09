@@ -1,0 +1,40 @@
+---
+name: BGP Template Peer Policy
+path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=%v]/template/peer-policy[name=%v]
+doc_category: BGP
+attributes:
+  - yang_name: id
+    tf_name: asn
+    example: 65000
+  - yang_name: name
+    example: PEERPOLICY_1
+  - yang_name: route-reflector-client
+    example: true
+  - yang_name: send-community/send-community-where
+    tf_name: send_community
+    example: both
+  - yang_name: route-map1
+    type: List
+    tf_name: route_maps
+    attributes:
+      - yang_name: inout
+        tf_name: in_out
+        id: true
+        example: in
+      - yang_name: route-map-name
+        example: ROUTEMAP_1
+  - yang_name: allowas-in/as-number
+    tf_name: allowas_in_as_number
+    example: 2
+  - yang_name: as-override/split-horizon
+    tf_name: as_override_split_horizon
+    example: true
+test_prerequisites:
+  - path: /Cisco-IOS-XE-native:native/router/Cisco-IOS-XE-bgp:bgp[id=65000]
+    attributes:
+      - name: id
+        value: 65000
+  - path: /Cisco-IOS-XE-native:native/route-map[name=ROUTEMAP_1]
+    attributes:
+      - name: name
+        value: ROUTEMAP_1

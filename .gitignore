@@ -25,6 +25,7 @@ website/node_modules
 *.test
 *.iml
 .env
+logs/
 
 website/vendor
 
