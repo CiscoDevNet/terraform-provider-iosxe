@@ -6802,10 +6802,10 @@ func (data *System) getDeletedItems(ctx context.Context, state System) []string 
 		deletedItems = append(deletedItems, fmt.Sprintf("%v/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay", state.getPath()))
 	}
 	if !state.IpDomainListVrf.IsNull() && data.IpDomainListVrf.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/list/vrf/vrf-name", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/list/vrf", state.getPath()))
 	}
 	if !state.IpDomainListVrfDomain.IsNull() && data.IpDomainListVrfDomain.IsNull() {
-		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/list/vrf/domain-name", state.getPath()))
+		deletedItems = append(deletedItems, fmt.Sprintf("%v/ip/domain/list/vrf", state.getPath()))
 	}
 	if !state.IpDomainListNames.IsNull() {
 		if data.IpDomainListNames.IsNull() {
@@ -7621,10 +7621,10 @@ func (data *System) addDeletedItemsXML(ctx context.Context, state System, body s
 		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay")
 	}
 	if !state.IpDomainListVrf.IsNull() && data.IpDomainListVrf.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/domain/list/vrf/vrf-name")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/domain/list/vrf")
 	}
 	if !state.IpDomainListVrfDomain.IsNull() && data.IpDomainListVrfDomain.IsNull() {
-		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/domain/list/vrf/domain-name")
+		b = helpers.RemoveFromXPath(b, state.getXPath()+"/ip/domain/list/vrf")
 	}
 	if !state.IpDomainListNames.IsNull() {
 		if data.IpDomainListNames.IsNull() {
@@ -8625,10 +8625,10 @@ func (data *System) getDeletePaths(ctx context.Context) []string {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay", data.getPath()))
 	}
 	if !data.IpDomainListVrf.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/list/vrf/vrf-name", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/list/vrf", data.getPath()))
 	}
 	if !data.IpDomainListVrfDomain.IsNull() {
-		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/list/vrf/domain-name", data.getPath()))
+		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/list/vrf", data.getPath()))
 	}
 	if !data.IpDomainListNames.IsNull() {
 		deletePaths = append(deletePaths, fmt.Sprintf("%v/ip/domain/list/domain-name", data.getPath()))
@@ -9075,10 +9075,10 @@ func (data *System) addDeletePathsXML(ctx context.Context, body string) string {
 		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ethernet/Cisco-IOS-XE-ethernet:cfm/alarm-config/delay")
 	}
 	if !data.IpDomainListVrf.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/domain/list/vrf/vrf-name")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/domain/list/vrf")
 	}
 	if !data.IpDomainListVrfDomain.IsNull() {
-		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/domain/list/vrf/domain-name")
+		b = helpers.RemoveFromXPath(b, data.getXPath()+"/ip/domain/list/vrf")
 	}
 	if !data.IpDomainListNames.IsNull() {
 		var values []string

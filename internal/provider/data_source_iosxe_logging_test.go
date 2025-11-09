@@ -56,7 +56,7 @@ func TestAccDataSourceIosxeLogging(t *testing.T) {
 		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "logging_count", "true"))
 	}
 	if os.Getenv("IOSXE1712") != "" {
-		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_url", "flash:/local_logging"))
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_url", "bootflash:/local_logging"))
 	}
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_size", "1000000"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_logging.test", "persistent_filesize", "500000"))
@@ -137,7 +137,7 @@ func testAccDataSourceIosxeLoggingConfig() string {
 		config += `	logging_count = true` + "\n"
 	}
 	if os.Getenv("IOSXE1712") != "" {
-		config += `	persistent_url = "flash:/local_logging"` + "\n"
+		config += `	persistent_url = "bootflash:/local_logging"` + "\n"
 	}
 	config += `	persistent_size = 1000000` + "\n"
 	config += `	persistent_filesize = 500000` + "\n"

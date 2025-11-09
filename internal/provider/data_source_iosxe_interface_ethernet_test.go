@@ -97,7 +97,9 @@ func TestAccDataSourceIosxeInterfaceEthernet(t *testing.T) {
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "cdp_tlv_server_location", "false"))
 	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "ip_nat_inside", "true"))
-	checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "evpn_ethernet_segments.0.es_value", "1"))
+	if os.Getenv("C9000V") != "" {
+		checks = append(checks, resource.TestCheckResourceAttr("data.iosxe_interface_ethernet.test", "evpn_ethernet_segments.0.es_value", "1"))
+	}
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -243,9 +245,11 @@ func testAccDataSourceIosxeInterfaceEthernetConfig() string {
 	config += `	cdp_tlv_location = false` + "\n"
 	config += `	cdp_tlv_server_location = false` + "\n"
 	config += `	ip_nat_inside = true` + "\n"
-	config += `	evpn_ethernet_segments = [{` + "\n"
-	config += `		es_value = 1` + "\n"
-	config += `	}]` + "\n"
+	if os.Getenv("C9000V") != "" {
+		config += `	evpn_ethernet_segments = [{` + "\n"
+		config += `		es_value = 1` + "\n"
+		config += `	}]` + "\n"
+	}
 	config += `	depends_on = [iosxe_yang.PreReq0, iosxe_yang.PreReq1, iosxe_yang.PreReq2, iosxe_yang.PreReq3, iosxe_yang.PreReq4, iosxe_yang.PreReq5, ]` + "\n"
 	config += `}` + "\n"
 

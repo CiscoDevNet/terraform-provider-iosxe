@@ -529,6 +529,7 @@ attributes:
   - yang_name: Cisco-IOS-XE-l2vpn:evpn/ethernet-segment
     tf_name: evpn_ethernet_segments
     type: List
+    test_tags: [C9000V]
     attributes:
       - yang_name: es-value
         id: true
