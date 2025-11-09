@@ -681,10 +681,12 @@ attributes:
     tf_name: device_classifier
     example: true
     exclude_test: true
+    test_tags: [C9000V]
   - yang_name: table-map
     tf_name: table_maps
     type: List
     exclude_test: true
+    test_tags: [C9000V]
     attributes:
       - yang_name: name
         id: true
